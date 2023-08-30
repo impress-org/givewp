@@ -12,7 +12,6 @@ interface DialogStateProps {
     isOpen: boolean;
     step: number;
     showHeader: boolean;
-    showCloseIcon: boolean;
     dialogTitle: string;
     dialogIcon: JSX.Element;
 }
@@ -93,7 +92,6 @@ export default function TransferSuccessDialog() {
         isOpen: transfer.showTransferModal,
         step: 0,
         showHeader: true,
-        showCloseIcon: true,
         dialogTitle: __('Transfer existing donation data', 'give'),
         dialogIcon: <AlertTriangle />
     }
@@ -114,10 +112,13 @@ export default function TransferSuccessDialog() {
             },
             body: JSON.stringify({...params, formId: window.migrationOnboardingData.isMigratedForm})
         }).then((response) => {
+            if(response.ok) {
+                window.migrationOnboardingData.isTransferredForm = true
+            }
+            dispatch(setTransferState({showNotice: !response.ok}))
             setState(prev => ({
                 ...prev,
                 showHeader: false,
-                showCloseIcon: false,
                 step: response.ok ? 2 : 3,
                 dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
             }))
@@ -222,7 +223,6 @@ export default function TransferSuccessDialog() {
             isOpen={transfer.showTransferModal}
             icon={state.dialogIcon}
             showHeader={state.showHeader}
-            showCloseIcon={state.showCloseIcon}
             handleClose={handleClose}
             title={state.dialogTitle}
         >
