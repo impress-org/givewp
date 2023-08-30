@@ -6,7 +6,7 @@ import styles from '../style.module.scss';
 
 const portalContainer = document.createElement('div');
 
-export default function FormBuilderButtonPortal({isUpgrading = false, showDialog, setShowDialog}) {
+export default function FormBuilderButtonPortal({isUpgrading = false, isEditing = false, showDialog, setShowDialog}) {
 
     useEffect(() => {
         const target = document.querySelector('.wp-header-end');
@@ -30,6 +30,7 @@ export default function FormBuilderButtonPortal({isUpgrading = false, showDialog
             {showDialog && (
                 <FeatureNoticeDialog
                     isUpgrading={isUpgrading}
+                    isEditing={isEditing}
                     handleClose={() => setShowDialog(false)}
                 />
             )}

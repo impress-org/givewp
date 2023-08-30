@@ -18,6 +18,7 @@ export default function EditForm() {
                 showDialog={state.show}
                 setShowDialog={setState}
                 isUpgrading={state.upgrading}
+                isEditing={true}
             />
 
             <div className={styles.migrationGuideBox}>

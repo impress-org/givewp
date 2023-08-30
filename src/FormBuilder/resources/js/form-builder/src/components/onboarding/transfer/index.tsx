@@ -1,6 +1,7 @@
 import TransferNotice from './TransferNotice'
 import TransferDialog from './TransferDialog'
 import UpgradeDialog from './UpgradeDialog'
+import ReturnButton from './ReturnButton';
 
 export default function Transfer() {
     return (
@@ -8,6 +9,7 @@ export default function Transfer() {
             <TransferNotice />
             <TransferDialog />
             <UpgradeDialog />
+            <ReturnButton />
         </>
     )
 }

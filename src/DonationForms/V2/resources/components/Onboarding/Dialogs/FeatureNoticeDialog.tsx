@@ -5,7 +5,7 @@ import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
 
 
-export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
+export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose}) {
     const {supportedAddons, supportedGateways, migrationApiRoot, apiNonce} = window.GiveDonationForms;
     const handleUpgrade = async () => {
 
@@ -20,7 +20,7 @@ export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
 
         const data = await response.json();
 
-        if(response.ok) {
+        if (response.ok) {
             window.location = data.redirect;
         } else {
             alert('Error migrating form');
@@ -79,7 +79,12 @@ export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
                 ) : (
                     <Button
                         size="large"
-                        onClick={() => window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                        onClick={() => {
+                            if(isEditing) {
+                                sessionStorage.setItem('givewp-show-return-btn', 'true');
+                            }
+                            window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'
+                        }}
                         style={{width: '100%'}}
                     >
                         {__('Proceed with the new form builder', 'give')}
