@@ -18,13 +18,13 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateControllerDataTest extends TestCase
 {
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testToDonationShouldReturnDonationModel()
     {
@@ -79,7 +79,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws Exception
      */
     public function testToSubscriptionShouldReturnSubscriptionModel()
@@ -149,7 +149,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws Exception
      */
     public function testToInitialSubscriptionDonationShouldReturnDonationModel()
@@ -220,7 +220,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testGetCustomFieldsShouldReturnCustomFieldsArray()
     {

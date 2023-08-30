@@ -67,6 +67,7 @@ function DonationConfirmationReceiptApp() {
             heading={receipt.settings.heading}
             description={receipt.settings.description}
             donorDashboardUrl={receipt.settings.donorDashboardUrl}
+            pdfReceiptLink={receipt.settings.pdfReceiptLink}
             donorDetails={receipt.donorDetails}
             donationDetails={prepareDetails(receipt.donationDetails)}
             subscriptionDetails={prepareDetails(receipt.subscriptionDetails)}
