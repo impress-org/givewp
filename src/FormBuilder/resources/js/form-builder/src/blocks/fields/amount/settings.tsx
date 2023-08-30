@@ -8,12 +8,11 @@ import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlo
 import {Path, SVG} from '@wordpress/components';
 
 const {
-    recurringDonationChoice,
     recurringBillingInterval,
-    recurringBillingPeriod,
     recurringBillingPeriodOptions,
     recurringLengthOfTime,
     recurringEnabled,
+    recurringEnableOneTimeDonations,
     customAmountMin,
     customAmount,
     setPrice,
@@ -67,17 +66,9 @@ const settings: FieldBlock['settings'] = {
             type: 'boolean',
             default: recurringEnabled,
         },
-        recurringDonationChoice: {
-            type: 'string',
-            default: recurringDonationChoice,
-        },
         recurringBillingInterval: {
             type: 'number',
             default: recurringBillingInterval,
-        },
-        recurringBillingPeriod: {
-            type: 'string',
-            default: recurringBillingPeriod,
         },
         recurringBillingPeriodOptions: {
             type: 'array',
@@ -86,6 +77,10 @@ const settings: FieldBlock['settings'] = {
         recurringLengthOfTime: {
             type: 'string',
             default: recurringLengthOfTime, // ongoing
+        },
+        recurringEnableOneTimeDonations: {
+            type: 'boolean',
+            default: recurringEnableOneTimeDonations,
         },
     },
     edit: Edit,

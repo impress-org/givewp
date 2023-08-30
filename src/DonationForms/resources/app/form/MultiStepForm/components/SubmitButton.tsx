@@ -3,14 +3,12 @@ import {__} from '@wordpress/i18n';
 /**
  * @since 3.0.0
  */
-export default function SubmitButton({
-    isSubmitting,
-    submittingText = __('Submitting…', 'give'),
-    buttonText = __('Donate Now', 'give'),
-}) {
+export default function SubmitButton({isSubmitting, submittingText = __('Submitting…', 'give')}) {
+    const {donateButtonCaption} = window.givewp.form.hooks.useDonationFormSettings();
+
     return (
         <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
-            {isSubmitting ? submittingText : buttonText}
+            {isSubmitting ? submittingText : donateButtonCaption}
         </button>
     );
 }

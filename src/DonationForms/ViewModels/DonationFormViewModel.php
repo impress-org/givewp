@@ -89,7 +89,7 @@ class DonationFormViewModel
 
         wp_register_style(
             'givewp-global-form-styles',
-            GIVE_PLUGIN_URL . 'src/DonationForm/resources/styles/global.css'
+            GIVE_PLUGIN_URL . 'src/DonationForms/resources/styles/global.css'
         );
 
         wp_add_inline_style(

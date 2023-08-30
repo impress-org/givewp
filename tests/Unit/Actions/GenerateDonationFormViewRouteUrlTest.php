@@ -6,12 +6,12 @@ use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class GenerateDonationFormViewRouteUrlTest extends TestCase
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */

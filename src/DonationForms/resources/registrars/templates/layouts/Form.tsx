@@ -2,6 +2,8 @@ import type {FormProps} from '@givewp/forms/propTypes';
 import {__} from '@wordpress/i18n';
 
 export default function Form({children, formProps, formError, isSubmitting}: FormProps) {
+    const {donateButtonCaption} = window.givewp.form.hooks.useDonationFormSettings();
+
     return (
         <form {...formProps}>
             {children}
@@ -13,7 +15,7 @@ export default function Form({children, formProps, formError, isSubmitting}: For
             )}
             <section className="givewp-layouts givewp-layouts-section">
                 <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
-                    {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
+                    {isSubmitting ? __('Submitting…', 'give') : donateButtonCaption}
                 </button>
             </section>
         </form>

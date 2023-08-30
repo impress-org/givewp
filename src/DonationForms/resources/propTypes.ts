@@ -197,6 +197,7 @@ export interface DonationReceiptProps {
     heading: string;
     description: string;
     donorDashboardUrl: string;
+    pdfReceiptLink: string;
     donorDetails: ReceiptDetail[];
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];

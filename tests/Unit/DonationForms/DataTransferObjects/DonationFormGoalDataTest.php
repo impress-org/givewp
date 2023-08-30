@@ -13,7 +13,7 @@ class DonationFormGoalDataTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testToArrayShouldReturnExpectedArrayOfData()
     {
