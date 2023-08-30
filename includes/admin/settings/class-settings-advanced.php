@@ -359,7 +359,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         public function sanitize_option_donor_default_user_role($value) {
             $baseRole = ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' );
             $defaultUserRoles = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', $baseRole ) );
-            if(!current_user_can('administrator')){
+            if(!current_user_can('manage_options')){
                 if('administrator' === $value) {
                     if(!in_array('administrator', $defaultUserRoles)) {
                         $value = $baseRole;
