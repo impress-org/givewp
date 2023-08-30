@@ -156,9 +156,11 @@ class FormMetaDecorator extends FormModelDecorator
         );
     }
 
-    public function isRecurringDonationsEnabled()
+    public function isRecurringDonationsEnabled(): bool
     {
-        return give_is_form_recurring($this->form->id);
+        $_give_recurring = give_get_meta( $this->form->id, '_give_recurring', true );
+
+        return !empty($_give_recurring) && 'no' !== $_give_recurring;
     }
 
     public function isOfflineDonationsBillingFieldEnabled()
