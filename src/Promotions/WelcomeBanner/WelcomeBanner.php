@@ -2,14 +2,14 @@
 
 namespace Give\Promotions\WelcomeBanner;
 
-class NextGenWelcomeBanner
+class WelcomeBanner
 {
     /**
      * @unreleased
      */
     public function render(): void
     {
-        echo '<div id="givewp-plugin-banner"></div>';
+        echo '<div id="givewp-welcome-banner"></div>';
     }
 
     /**

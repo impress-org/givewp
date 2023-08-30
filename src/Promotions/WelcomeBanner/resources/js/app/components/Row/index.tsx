@@ -9,6 +9,6 @@ type ColumnRowProps = {
 /**
  * @unreleased
  */
-export default function ColumnRow({children}: ColumnRowProps) {
-    return <div className={'givewp-welcome-banner-col-row'}>{children}</div>;
+export default function Row({children}: ColumnRowProps) {
+    return <div className={'givewp-welcome-banner-row'}>{children}</div>;
 }
