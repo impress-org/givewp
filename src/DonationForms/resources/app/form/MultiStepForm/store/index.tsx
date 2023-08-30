@@ -11,6 +11,7 @@ StoreContextDispatch.displayName = 'DonationFormMultiStepStateDispatch';
 export type MultiStepFormContextState = {
     steps: StepObject[];
     currentStep: number;
+    showHeader: true;
 };
 
 type PropTypes = {
