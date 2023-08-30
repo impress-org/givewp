@@ -12,7 +12,7 @@ use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\SummerSalesBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
-use Give\Promotions\WelcomeBanner\NextGenWelcomeBanner;
+use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -82,9 +82,9 @@ class ServiceProvider implements ServiceProviderContract
             );
         }
 
-        if (NextGenWelcomeBanner::isShowing()) {
-            Hooks::addAction('admin_notices', NextGenWelcomeBanner::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', NextGenWelcomeBanner::class, 'loadScripts');
+        if (WelcomeBanner::isShowing()) {
+            Hooks::addAction('admin_notices', WelcomeBanner::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
     }
 
