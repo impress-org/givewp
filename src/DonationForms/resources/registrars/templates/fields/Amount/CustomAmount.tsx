@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
+import { CurrencyInputOnChangeValues } from "react-currency-input-field/dist/components/CurrencyInputProps";
 
 /**
  * @since 3.0.0
@@ -9,9 +10,9 @@ type CustomAmountProps = {
     fieldError?: string;
     currency?: string;
     currencySymbol?: string;
-    defaultValue?: number;
+    defaultValue?: string;
     value?: string;
-    onValueChange?: (value: string) => void;
+    onValueChange?: (value: string, name?: string, values?: CurrencyInputOnChangeValues) => void;
 };
 
 /**
@@ -35,7 +36,7 @@ const CustomAmount = (
                 defaultValue={defaultValue}
                 value={value}
                 decimalsLimit={2}
-                onValueChange={onValueChange}
+                onValueChange={(value) => onValueChange(value !== undefined ? value : '')}
             />
         </div>
     );
