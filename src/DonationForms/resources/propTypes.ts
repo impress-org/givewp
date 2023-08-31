@@ -46,7 +46,7 @@ export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'>
     dateFormat: string;
 }
 
-export interface PhoneProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
+export interface PhoneProps extends FieldHasDescriptionProps {
     phoneFormat: string;
 }
 
