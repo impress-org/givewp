@@ -151,6 +151,15 @@ function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayO
         'givewp-fields-gateways__gateway--active': isActive,
     });
 
+    let fontAwesomeClass = 'fa-solid fa-gear';
+    if (gateway.id.includes('stripe') || gateway.id.includes('card')) {
+        fontAwesomeClass = 'fa-solid fa-credit-card';
+    } else if (gateway.id.includes('paypal')) {
+        fontAwesomeClass = 'fa-brands fa-paypal';
+    } else if (gateway.id.includes('test')) {
+        fontAwesomeClass = 'fa-solid fa-screwdriver-wrench';
+    }
+
     return (
         <li className={className}>
             <label>
@@ -161,7 +170,10 @@ function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayO
                     defaultChecked={defaultChecked}
                     {...inputProps}
                 />
-                <span>{sprintf(__('Donate with %s', 'give'), gateway.label)}</span>
+                <span className="givewp-fields-gateways__gateway__label">
+                    {sprintf(__('Donate with %s', 'give'), gateway.label)}
+                </span>
+                <i className={`givewp-fields-gateways__gateway__icon ${fontAwesomeClass}`}></i>
             </label>
             <div className="givewp-fields-gateways__gateway__fields">
                 <ErrorBoundary
