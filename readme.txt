@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 2.33.0
+Stable tag: 2.33.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.33.1: August 31st, 2023 =
+* Security: The donor default user role has been sanitized to prevent privilege escalation
+
 = 2.33.0: August 28th, 2023 =
 * New: Admins can now select standard or advanced connection type during setup
 * New: Added a new SubscriptionSynced command class 
