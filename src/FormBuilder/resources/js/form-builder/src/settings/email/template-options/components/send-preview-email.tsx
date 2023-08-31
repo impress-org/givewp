@@ -4,8 +4,13 @@ import {Button, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
-export default ({emailType}) => {
-    const [emailAddress, setEmailAddress] = useState<string>('');
+type SendPreviewEmailProps = {
+    emailType: string;
+    defaultEmailAddress: string;
+};
+
+export default ({emailType, defaultEmailAddress}: SendPreviewEmailProps) => {
+    const [emailAddress, setEmailAddress] = useState<string>(defaultEmailAddress);
 
     const {
         settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail},
@@ -44,12 +49,12 @@ export default ({emailType}) => {
 
     return (
         <>
-            <h2 style={{}}>{__('Send a test email', 'givewp')}</h2>
-            <p style={{fontSize: '0.75rem', color: 'rgb(117,117,117)'}}>
+            <h2 className={'email-settings__header'}>{__('Send a test email', 'givewp')}</h2>
+            <p className={'email-settings__description'}>
                 {__('Specify below the email address you want to send a test email to', 'givewp')}
             </p>
-            <TextControl label={__('Email address', 'givewp')} onChange={setEmailAddress} value={emailAddress} />
-            <Button variant={'secondary'} onClick={sendTestEmail} style={{width: '100%', justifyContent: 'center'}}>
+            {defaultEmailAddress !== null && <TextControl onChange={setEmailAddress} value={emailAddress} />}
+            <Button className={'email-settings__email-btn'} variant={'secondary'} onClick={sendTestEmail}>
                 {__('Send test email', 'givewp')}
             </Button>
         </>
