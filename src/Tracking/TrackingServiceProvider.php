@@ -44,7 +44,7 @@ class TrackingServiceProvider implements ServiceProvider
 
         // Enable telemetry for Visual Form Builder
         add_action('rest_api_init', function () use ($isTrackingEnabled) {
-            $restRoute = $GLOBALS['wp']->query_vars['rest_route'];
+            $restRoute = $GLOBALS['wp']->query_vars['rest_route'] ?? '';
             if (empty($restRoute)) {
                 return;
             }
