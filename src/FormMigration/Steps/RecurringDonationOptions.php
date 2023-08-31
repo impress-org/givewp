@@ -24,13 +24,10 @@ class RecurringDonationOptions extends FormMigrationStep
      */
     public function process()
     {
-        // Recurring Donations = 'no', 'yes_donor', 'yes_admin'
-        $_give_recurring = $this->getMetaV2('_give_recurring');
-
         $block = $this->fieldBlocks->findByName('givewp/donation-amount');
         $amountBlock = new DonationAmountBlockModel($block);
 
-        switch ($_give_recurring) {
+        switch ($this->formV2->getRecurringDonationsOption()) {
             case 'no':
                 $amountBlock->setRecurringEnabled(false);
                 break;
@@ -55,50 +52,39 @@ class RecurringDonationOptions extends FormMigrationStep
         $amountBlock->setRecurringEnabled();
         $amountBlock->setRecurringEnableOneTimeDonations();
 
-        // 'donors_choice', 'admin_choice', 'custom' (The "Donor's Choice" option allows the donor to select the time period (commonly also referred as the "frequency") of their subscription. The "Preset Period" option provides only the selected period for the donor's subscription.)
-        $_give_period_functionality = $this->getMetaV2('_give_period_functionality');
-        // 'day', 'week', 'month', 'year'
-        $_give_period = $this->getMetaV2('_give_period');
-        // 'day', 'week', 'month', 'year'
-        $_give_period_default_donor_choice = $this->getMetaV2('_give_period_default_donor_choice');
-        // 'yes', 'no'
-        $_give_checkbox_default = $this->getMetaV2('_give_checkbox_default');
-        // integer
-        $_give_times = $this->getMetaV2('_give_times');
-        // integer
-        $_give_period_interval = $this->getMetaV2('_give_period_interval');
-
         // donor's choice of billing period means the donor selects the billing period
-        if ($_give_period_functionality === 'donors_choice') {
+        if ($this->formV2->isRecurringPeriodFunctionalityDonorsChoice()) {
             // add all available subscription billing period options
             $amountBlock->setRecurringBillingPeriodOptions(...SubscriptionPeriod::values());
 
-            if ($_give_checkbox_default === 'yes') {
-                $defaultPeriod = $this->getBillingPeriodFromMeta($_give_period_default_donor_choice);
+            if ($this->formV2->isRecurringDefaultCheckboxEnabled()) {
+                $defaultPeriod = $this->getBillingPeriodFromMeta(
+                    $this->formV2->getRecurringPeriodDefaultDonorsChoice()
+                );
 
                 $amountBlock->setRecurringOptInDefaultBillingPeriod($defaultPeriod);
             } else {
                 $amountBlock->setAttribute('recurringOptInDefaultBillingPeriod', 'one-time');
             }
             // admins choice of billing period means the admin selects the billing period
-        } elseif ($_give_period_functionality === 'admin_choice') {
-            $defaultBillingPeriod = $this->getBillingPeriodFromMeta($_give_period);
+        } elseif ($this->formV2->isRecurringPeriodFunctionalityAdminChoice()) {
+            $defaultBillingPeriod = $this->getBillingPeriodFromMeta($this->formV2->getRecurringPeriod());
 
             $amountBlock->setRecurringBillingPeriodOptions($defaultBillingPeriod);
 
-            if ($_give_checkbox_default === 'yes') {
+            if ($this->formV2->isRecurringDefaultCheckboxEnabled()) {
                 $amountBlock->setRecurringOptInDefaultBillingPeriod($defaultBillingPeriod);
             } else {
                 $amountBlock->setAttribute('recurringOptInDefaultBillingPeriod', 'one-time');
             }
         }
 
-        if (!empty($_give_period_interval)) {
-            $amountBlock->setRecurringBillingInterval((int)$_give_period_interval);
+        if (!empty($recurringBillingInterval = $this->formV2->getRecurringBillingInterval())) {
+            $amountBlock->setRecurringBillingInterval($recurringBillingInterval);
         }
 
-        if (!empty($_give_times)) {
-            $amountBlock->setRecurringLengthOfTime((int)$_give_times);
+        if (!empty($recurringLengthOfTime = $this->formV2->getRecurringLengthOfTime())) {
+            $amountBlock->setRecurringLengthOfTime($recurringLengthOfTime);
         }
     }
 
@@ -115,39 +101,30 @@ class RecurringDonationOptions extends FormMigrationStep
         $amountBlock->setRecurringEnabled();
         $amountBlock->setRecurringEnableOneTimeDonations(false);
 
-        // 'multi', 'set'
-        $_give_price_option = $this->getMetaV2('_give_price_option');
-        $_give_custom_amount = $this->getMetaV2('_give_custom_amount');
+        if ($this->formV2->isDonationOptionSet()) {
+            $billingPeriod = $this->getBillingPeriodFromMeta($this->formV2->getRecurringPeriod());
 
-        if ($_give_price_option === 'set') {
-            $_give_period = $this->getMetaV2('_give_period');
-            $_give_times = $this->getMetaV2('_give_times');
-            $_give_period_interval = $this->getMetaV2('_give_period_interval');
-            $billingPeriod = $this->getBillingPeriodFromMeta($_give_period);
-
-            $amountBlock->setRecurringLengthOfTime((int)$_give_times);
-            $amountBlock->setRecurringBillingInterval((int)$_give_period_interval);
+            $amountBlock->setRecurringLengthOfTime($this->formV2->getRecurringLengthOfTime());
+            $amountBlock->setRecurringBillingInterval($this->formV2->getRecurringBillingInterval());
             $amountBlock->setRecurringBillingPeriodOptions($billingPeriod);
             $amountBlock->setRecurringOptInDefaultBillingPeriod($billingPeriod);
-        } elseif ($_give_price_option === 'multi') {
-            if ($_give_custom_amount === 'enabled') {
-                $_give_recurring_custom_amount_period = $this->getMetaV2('_give_recurring_custom_amount_period');
-                $_give_recurring_custom_amount_interval = $this->getMetaV2('_give_recurring_custom_amount_interval');
-                $_give_recurring_custom_amount_times = $this->getMetaV2('_give_recurring_custom_amount_times');
-                $billingPeriod = $this->getBillingPeriodFromMeta($_give_recurring_custom_amount_period);
+        } elseif ($this->formV2->isDonationOptionMulti()) {
+            if ($this->formV2->isCustomAmountOptionEnabled()) {
+                $billingPeriod = $this->getBillingPeriodFromMeta($this->formV2->getRecurringCustomAmountPeriod());
 
-                $amountBlock->setRecurringLengthOfTime((int)$_give_recurring_custom_amount_times);
-                $amountBlock->setRecurringBillingInterval((int)$_give_recurring_custom_amount_interval);
+                $amountBlock->setRecurringLengthOfTime($this->formV2->getRecurringCustomAmountTimes());
+                $amountBlock->setRecurringBillingInterval($this->formV2->getRecurringCustomAmountInterval());
                 $amountBlock->setRecurringBillingPeriodOptions($billingPeriod);
                 $amountBlock->setRecurringOptInDefaultBillingPeriod($billingPeriod);
             } else {
                 // get from donation levels
-                $_give_donation_levels = $this->getMetaV2('_give_donation_levels');
+                $donationLevels = $this->formV2->getDonationLevels();
 
-                if (!empty($_give_donation_levels) && $_give_donation_levels[0]['_give_recurring'] === 'yes') {
-                    $level = $_give_donation_levels[0];
+                if (!empty($donationLevels) && $donationLevels[0]['_give_recurring'] === 'yes') {
+                    $level = $donationLevels[0];
                     $amountBlock->setRecurringLengthOfTime((int)$level["_give_times"]);
                     $amountBlock->setRecurringBillingInterval((int)$level["_give_period_interval"]);
+
                     $period = $this->getBillingPeriodFromMeta($level["_give_period"]);
                     $amountBlock->setRecurringBillingPeriodOptions($period);
                     $amountBlock->setRecurringOptInDefaultBillingPeriod($period);
