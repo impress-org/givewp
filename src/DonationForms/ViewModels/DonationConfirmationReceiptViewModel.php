@@ -143,11 +143,6 @@ class DonationConfirmationReceiptViewModel
         (new RegisterDesignSystemStyles())();
         wp_enqueue_style('givewp-design-system-foundation');
 
-        wp_register_style(
-            'givewp-global-form-styles',
-            GIVE_PLUGIN_URL . 'src/DonationForm/resources/styles/global.css'
-        );
-
         wp_add_inline_style(
             'givewp-global-form-styles',
             ":root {
@@ -155,8 +150,6 @@ class DonationConfirmationReceiptViewModel
             --givewp-secondary-color:{$secondaryColor};
             }"
         );
-
-        wp_enqueue_style('givewp-global-form-styles');
 
         wp_enqueue_style(
             'givewp-base-form-styles',

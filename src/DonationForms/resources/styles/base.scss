@@ -5,6 +5,7 @@
 }
 
 @layer base-elements {
+    @import "elements/iframe";
     @import "elements/icons";
     @import "elements/header";
     @import "elements/form";
