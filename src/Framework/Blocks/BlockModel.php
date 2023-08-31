@@ -78,9 +78,7 @@ class BlockModel implements Arrayable
      */
     public function setAttribute(string $name, $value): BlockModel
     {
-        if ($this->hasAttribute($name)) {
-            $this->attributes[$name] = $value;
-        }
+        $this->attributes[$name] = $value;
 
         return $this;
     }
