@@ -1,14 +1,17 @@
 .givewp-donation-form {
     &__steps {
-        padding: 0;
-        border-radius: 6px;
-        color: #696969;
         display: flex;
         flex-direction: column;
-        background-color: #fff;
+        max-width: 35rem;
         width: 100%;
         overflow: hidden;
         position: relative;
+        padding: 0;
+        margin: 0 auto;
+        border-radius: var(--givewp-rounded-8);
+        color: var(--givewp-grey-700);
+        background-color: var(--givewp-shades-white);
+        box-shadow: var(--givewp-shadow-sm);
 
         &-header {
             position: relative;
@@ -93,13 +96,72 @@
         }
     }
 
+    &__steps-button-next {
+        display: flex;
+        justify-content: center;
+        gap: var(--givewp-spacing-4);
+        background-color: var(--givewp-primary-color);
+        color: var(--givewp-grey-5);
+        line-height: 1.5;
+        font-weight: 600;
+
+        &:after {
+            content: "";
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: inherit;
+            background-image: var(--givewp-icon-arrow-right);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+            &:hover {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+            }
+        }
+    }
+
     &__step {
+        @keyframes fadeInRight {
+            from {
+                opacity: 0.25;
+                transform: translate3d(2rem, 0, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0.25;
+                transform: translate3d(-2rem, 0, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
         &--hidden {
             display: none;
         }
 
         &--visible {
             visibility: visible;
+        }
+
+        &--ascending {
+            animation: forwards 0.3s fadeInRight;
+        }
+
+        &--descending {
+            animation: forwards 0.3s fadeInLeft;
         }
     }
 }
