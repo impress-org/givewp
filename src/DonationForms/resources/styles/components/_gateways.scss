@@ -20,6 +20,7 @@
 
         label {
             display: flex;
+            flex-direction: row;
             gap: var(--givewp-spacing-4);
             align-items: flex-end;
             padding: var(--givewp-spacing-6) var(--givewp-spacing-4);
@@ -27,6 +28,7 @@
             border-width: 1px;
             border-color: inherit;
             border-radius: var(--givewp-rounded-4);
+            cursor: pointer;
         }
 
         &--active {
