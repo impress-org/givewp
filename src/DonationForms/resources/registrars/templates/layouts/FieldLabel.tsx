@@ -1,16 +1,13 @@
 import type {FieldLabelProps} from '@givewp/forms/propTypes';
-import {Fragment} from '@wordpress/element';
 
 /**
  * The label for a field with the required indicator if applicable.
  *
  * @since 3.0.0
  */
-export default function FieldLabel({label, required, as}: FieldLabelProps) {
-    const Wrapper = as || Fragment;
-
+export default function FieldLabel({label, required}: FieldLabelProps) {
     return (
-        <Wrapper>
+        <span className="givewp-fields__label-text">
             {label}
             {required && (
                 <>
@@ -20,6 +17,6 @@ export default function FieldLabel({label, required, as}: FieldLabelProps) {
                     </span>
                 </>
             )}
-        </Wrapper>
+        </span>
     );
 }

@@ -142,7 +142,6 @@ export interface FieldErrorProps {
 export interface FieldLabelProps {
     label: string;
     required: boolean;
-    as?: string | FC | null;
 }
 
 export enum GoalType {

@@ -9,6 +9,10 @@
 }
 
 .givewp-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+
     legend {
         font-size: var(--givewp-font-size-paragraph-lg);
         font-weight: 500;
@@ -17,16 +21,26 @@
     }
 
     label {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
         font-size: var(--givewp-font-size-paragraph-lg);
         font-weight: 500;
         line-height: 1.5;
         color: var(--givewp-grey-700);
 
         &:has(> input[type="checkbox"]) {
-            display: flex;
+            flex-direction: row;
             gap: var(--givewp-spacing-2);
             align-items: center;
         }
+    }
+
+    &__description {
+        margin: 0;
+        color: var(--givewp-grey-700);
+        line-height: 1.43;
+        font-size: 0.875rem;
     }
 }
 
