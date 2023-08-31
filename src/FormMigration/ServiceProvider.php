@@ -23,7 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton(Pipeline::class, function() {
+        give()->singleton(Pipeline::class, function () {
             return new Pipeline([
                 Steps\MigrateMeta::class,
                 Steps\FormTitle::class,
@@ -39,6 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\TermsAndConditions::class,
                 Steps\FormGrid::class,
                 Steps\OfflineDonations::class,
+                Steps\PaymentGateways::class,
                 // TODO: this step was causing errors, so I commented it out
                 //Steps\EmailSettings::class,
             ]);
@@ -56,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     protected function registerRoutes()
     {
-        add_action('rest_api_init', function() {
+        add_action('rest_api_init', function () {
 
             // give-api/v2/admin/forms/migrate
             register_rest_route('give-api/v2', 'admin/forms/migrate', [
@@ -72,7 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
                 'args' => [
                     'ids' => [
                         'type' => 'integer',
-                        'sanitize_callback' => function($value) {
+                        'sanitize_callback' => function ($value) {
                             return array_map('intval', explode(',', $value));
                         },
                         'description' => __('The ID of the form (v2) to migrate to v3.', 'givewp'),
@@ -83,8 +84,8 @@ class ServiceProvider implements ServiceProviderInterface
             // give-api/v2/admin/forms/transfer
             register_rest_route('give-api/v2', 'admin/forms/transfer', [
                 'methods' => WP_REST_Server::CREATABLE,
-		'callback' => function (WP_REST_Request $request) {
-		    return (new TransferController($request))(
+                'callback' => function (WP_REST_Request $request) {
+                    return (new TransferController($request))(
                         DonationFormV2::find($request->get_param('formId')),
                         TransferOptions::fromRequest($request)
                     );
@@ -95,7 +96,7 @@ class ServiceProvider implements ServiceProviderInterface
                 'args' => [
                     'formId' => [
                         'type' => 'integer',
-			'sanitize_callback' => function($value) {
+                        'sanitize_callback' => function ($value) {
                             return intval($value);
                             // return array_map('intval', explode(',', $value));
                         },
@@ -115,14 +116,13 @@ class ServiceProvider implements ServiceProviderInterface
                     ],
                 ],
             ]);
-
         }, 9);
     }
 
     protected function registerCommands()
     {
-        if ( defined( 'WP_CLI' ) && WP_CLI ) {
-            error_reporting( E_ALL & ~E_DEPRECATED );
+        if (defined('WP_CLI') && WP_CLI) {
+            error_reporting(E_ALL & ~E_DEPRECATED);
             WP_CLI::add_command('givewp form:migrate', MigrationCommand::class);
             WP_CLI::add_command('givewp form:transfer', TransferCommand::class);
         }

@@ -393,4 +393,16 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return give()->form_meta->get_meta($this->form->id, '_give_recurring_custom_amount_times', true);
     }
+
+    public function getStripeUseGlobalDefault(): bool
+    {
+        return (
+            give_get_meta($this->form->id, 'give_stripe_per_form_accounts', true) !== 'enabled'
+        );
+    }
+
+    public function getStripeAccountId(): string
+    {
+        return give_get_meta($this->form->id, '_give_stripe_default_account', true);
+    }
 }
