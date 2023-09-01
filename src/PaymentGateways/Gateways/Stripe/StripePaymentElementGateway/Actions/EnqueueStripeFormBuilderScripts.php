@@ -17,7 +17,7 @@ class EnqueueStripeFormBuilderScripts
      */
     public function __invoke()
     {
-        $scriptAsset = require GIVE_PLUGIN_DIR . '/build/stripePaymentElementFormBuilder.asset.php';
+        $scriptAsset = require trailingslashit(GIVE_PLUGIN_DIR) . 'build/stripePaymentElementFormBuilder.asset.php';
 
         wp_enqueue_script(
             'givewp-stripe-payment-element-form-builder',
