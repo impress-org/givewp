@@ -89,7 +89,7 @@ const Editor = ({onChange, value}) => {
             </CustomToolbar>
 
             <ReactQuill
-                style={{height: '16rem'}}
+                style={{height: '16rem', borderRadius: '2px'}}
                 ref={editorRef}
                 theme="snow"
                 value={value}
