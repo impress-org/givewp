@@ -1,11 +1,17 @@
+/**
+ * PayPal Commerce disconnect button
+ */
 .js-give-paypal-disconnect-paypal-account {
     background-color: transparent;
     border: none;
-    color: #2271b1;
+    color: #d63638;
     text-decoration: underline;
     cursor: pointer;
 }
 
+/**
+ * PayPal Commerce Connection Modal
+ */
 .give-modal.paypal-commerce-connect {
 	max-width: 596px;
 
@@ -35,5 +41,60 @@
 				color: #ff8c00;
 			}
 		}
+	}
+}
+
+/**
+ * PayPal Commerce Connection Account Type Selection Modal
+ */
+.givewp-paypal-commerce-connection-account-type-selection-modal{
+		color: #0E0E0E;
+
+	ul{
+		margin-left: 22px;
+
+		li{
+			font-size: 0.8em;
+			color: #666;
+
+            span.icon{
+				padding-right: 24px;
+				background-image: url(../images/admin/check-verified-icon.svg);
+				background-repeat: no-repeat;
+				background-position: center;
+            }
+		}
+	}
+
+    ul.flex2x2 {
+        display: flex;
+        flex-wrap: wrap;
+
+        li{
+            margin-left: 5px;
+            margin-bottom: 5px;
+            flex: 1 1 calc(50% - 10px);
+
+            &:nth-child(odd){
+                margin-left: 0;
+            }
+        }
+    }
+
+	p{
+		font-size: 16px;
+
+		&.welcome-text{
+			color: #404040;
+		}
+	}
+
+    span:not(.icon){
+		color: #0B72D9;
+		font-size: 0.7em;
+        float: right;
+		padding: 5px 12px;
+		background: #F2F9FF;
+		border-radius: 25px;
 	}
 }

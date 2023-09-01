@@ -27,7 +27,7 @@ class CreatePaymentIntent
     }
 
     /**
-     * @unreleased no longer store the payment intent secret
+     * @since 2.33.0 no longer store the payment intent secret
      * @since 2.19.0
      *
      * @throws InvalidPropertyName

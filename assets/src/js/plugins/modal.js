@@ -147,7 +147,10 @@ class GiveModal {
 	 */
 	static __closePopup( event ) {
 		event.preventDefault();
-		jQuery.magnificPopup.instance.close();
+
+		if( ! event.target.classList.contains( 'js-has-event-handler' )){
+			jQuery.magnificPopup.instance.close();
+		}
 	}
 
 	/**
@@ -305,6 +308,8 @@ class GiveConfirmModal extends GiveModal {
 		if ( 'undefined' !== typeof ( obj.modalWrapper ) && '' !== obj.modalWrapper ) {
 			this.config.classes.modalWrapper = obj.modalWrapper;
 		}
+
+		this.config.classes.modalWrapper += ' give-modal--confirm';
 
 		this.init();
 	}

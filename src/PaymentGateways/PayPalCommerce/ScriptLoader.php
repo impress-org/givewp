@@ -11,12 +11,62 @@ use Give_Admin_Settings;
  * Class ScriptLoader
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @unreleased Implement on-demand PayPal connection. Admin can select Advance or standard card processing.
  * @since 2.9.0
  */
 class ScriptLoader
 {
     /**
+     * List of connection account type.
+     *
      * @unreleased
+     * @var string[]
+     */
+    public static $accountTypes = [
+        'PPCP',
+        'EXPRESS_CHECKOUT'
+    ];
+
+    /**
+     * List of countries that support custom payment accounts
+     *
+     * @unreleased
+     * @var string[]
+     */
+    private $countriesAvailableForAdvanceConnection = [
+        'AU',
+        'AT',
+        'BE',
+        'BG',
+        'CY',
+        'CZ',
+        'DK',
+        'EE',
+        'FI',
+        'FR',
+        'GR',
+        'HU',
+        'IT',
+        'LV',
+        'LI',
+        'LT',
+        'LU',
+        'MT',
+        'NL',
+        'NO',
+        'PL',
+        'PT',
+        'RO',
+        'SK',
+        'SI',
+        'ES',
+        'SE',
+        'GB',
+        'US',
+    ];
+
+    /**
+     * @since 2.9.0
      *
      * @var PayPalCommerceGateway
      */
@@ -65,6 +115,8 @@ class ScriptLoader
             'give-paypal-partner-js',
             'givePayPalCommerce',
             [
+                'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
+                'accountTypes' => self::$accountTypes,
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
@@ -75,9 +127,9 @@ class ScriptLoader
                     'pciWarning' => sprintf(
                         __(
                             'PayPal allows you to accept credit or debit cards directly on your website. Because of
-							this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
-							GiveWP never stores sensitive information like card details to your server and works
-							seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
+                            this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
+                            GiveWP never stores sensitive information like card details to your server and works
+                            seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
                             'give'
                         ),
                         'https://givewp.com/documentation/resources/pci-compliance/'
@@ -93,7 +145,7 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ]
+                    ],
                 ],
             ]
         );
