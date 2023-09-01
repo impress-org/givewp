@@ -47,7 +47,7 @@ const tabs = [
                 <EmailSettings />
                 {/*The settings below have not been implemented yet.*/}
                 <OfflineDonationsSettings />
-                {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', () => {})}
+                {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
             </>
         ),
     },
