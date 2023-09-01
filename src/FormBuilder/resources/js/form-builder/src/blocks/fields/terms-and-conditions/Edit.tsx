@@ -3,7 +3,6 @@ import {
     Button,
     CheckboxControl,
     Icon,
-    Modal,
     PanelBody,
     PanelRow,
     SelectControl,
@@ -193,20 +192,6 @@ export default function Edit({
                                     onChange={(value) => setAttributes({agreementText: value})}
                                 />
                             </StyledPopover>
-
-                            {showAgreementTextModal && (
-                                <Modal
-                                    title={__('Agreement Text', 'give')}
-                                    onRequestClose={() => setShowAgreementTextModal(false)}
-                                    shouldCloseOnClickOutside={false}
-                                    style={{maxWidth: '35rem'}}
-                                >
-                                    <Editor
-                                        value={agreementText}
-                                        onChange={(value) => setAttributes({agreementText: value})}
-                                    />
-                                </Modal>
-                            )}
                         </>
                     )}
                 </PanelBody>
