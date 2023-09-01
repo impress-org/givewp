@@ -5,14 +5,14 @@ import type {FieldErrorProps} from '@givewp/forms/propTypes';
  *
  * @since 3.0.0
  */
-export default function FieldError({error}: FieldErrorProps) {
+export default function FieldError({error, name}: FieldErrorProps) {
     if (!error) {
         return null;
     }
 
     return (
-        <div className="error-message">
-            <p role="alert">{error}</p>
+        <div id={`givewp-field-error-${name}`} className="givewp-field-error-message" role="alert">
+            <p>{error}</p>
         </div>
     );
 }

@@ -48,7 +48,6 @@ module.exports = {
         classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
         classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
         multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
-        multiStepFormDesignJs: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/js/main.ts'),
         donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
         baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
         formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),

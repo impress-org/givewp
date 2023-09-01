@@ -11,7 +11,7 @@
     max-width: min(100%,51.5rem);
     margin: 0 auto;
     background: #fff;
-    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+    box-shadow: var(--givewp-shadow-sm);
 
    @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
        border-radius: 0.5rem;
@@ -89,7 +89,7 @@
     .receipt-body {
         .details {
             .headline {
-                color: #333333;
+                color: var(--givewp-grey-700);
                 font-weight: 600;
                 font-size: 1.25rem;
             }
@@ -109,13 +109,13 @@
 
                     > i {
                         align-self: center;
-                        color: #989898;
+                        color: var(--givewp-grey-300);
                     }
 
                     .detail {
                         align-self: center;
                         white-space: nowrap;
-                        color: #6b6b6b;
+                        color: var(--givewp-grey-500);
                         margin-inline-end: auto;
                     }
 
@@ -146,15 +146,15 @@
                     }
 
                     &[data-value='Complete'], &[data-value='Completed'] {
-                        --status-color: #1fe433;
+                        --status-color: var(--givewp-emerald-500);
                     }
 
                     &[data-value='Pending'] {
-                        --status-color: #ffba00;
+                        --status-color: var(--givewp-orange-300);
                     }
 
                     &[data-value='Failed'] {
-                        --status-color: red;
+                        --status-color: var(--givewp-red-400);
                     }
                 }
 

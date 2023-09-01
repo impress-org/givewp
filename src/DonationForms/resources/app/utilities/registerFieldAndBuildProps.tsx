@@ -20,6 +20,6 @@ export default function registerFieldAndBuildProps(
         inputProps: register(field.name, buildRegisterValidationOptions(field.validationRules)),
         fieldError,
         Label: () => <LabelTemplate label={field.label} required={field.validationRules.required} />,
-        ErrorMessage: () => <ErrorMessageTemplate error={fieldError} />,
+        ErrorMessage: () => <ErrorMessageTemplate error={fieldError} name={field.name} />,
     };
 }

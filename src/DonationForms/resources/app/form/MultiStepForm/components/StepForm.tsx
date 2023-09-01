@@ -49,7 +49,7 @@ export default function StepForm({
             <DonationFormErrorBoundary>
                 <MultiStepFormTemplate
                     formProps={{
-                        id: 'givewp-donation-form',
+                        className: 'givewp-layouts-multiStepForm__form',
                         onSubmit: handleSubmit((values: any) =>
                             handleSubmitRequest(
                                 values,
@@ -63,13 +63,7 @@ export default function StepForm({
                     isSubmitting={isSubmitting || isSubmitSuccessful}
                     formError={formError}
                     previousButton={null}
-                    nextButton={
-                        !isLastStep && (
-                            <div>
-                                <NextButton />
-                            </div>
-                        )
-                    }
+                    nextButton={!isLastStep && <NextButton />}
                     submitButton={isLastStep && <SubmitButton isSubmitting={isSubmitting || isSubmitSuccessful} />}
                 >
                     {children}
