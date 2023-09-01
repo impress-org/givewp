@@ -77,7 +77,7 @@ export default function Edit({
                     {useGlobalSettings && (
                         <GlobalSettingsLink
                             href={
-                                '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=terms-and-conditions'
+                                '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions'
                             }
                         />
                     )}
