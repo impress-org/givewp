@@ -143,18 +143,20 @@ class DonationConfirmationReceiptViewModel
         (new RegisterDesignSystemStyles())();
         wp_enqueue_style('givewp-design-system-foundation');
 
+        wp_register_style(
+            'givewp-base-form-styles',
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
+        );
+
         wp_add_inline_style(
-            'givewp-global-form-styles',
+            'givewp-base-form-styles',
             ":root {
             --givewp-primary-color:{$primaryColor};
             --givewp-secondary-color:{$secondaryColor};
             }"
         );
 
-        wp_enqueue_style(
-            'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
-        );
+        wp_enqueue_style('givewp-base-form-styles');
     }
 
     /**
