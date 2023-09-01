@@ -247,16 +247,18 @@ import {CSSProperties, useEffect, useState} from 'react';
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
+                const donationFormWithSubmitButton = Array.from(document.forms).pop();
+                const submitButton = donationFormWithSubmitButton.querySelector('[type="submit"]');
 
                 if(donationType === 'subscription') {
                     // @ts-ignore
-                    document.forms[0].querySelector('[type="submit"]').click();
+                    submitButton.click();
                     return;
                 }
 
                 return actions.order.capture().then((details) => {
                     // @ts-ignore
-                    document.forms[0].querySelector('[type="submit"]').click();
+                    submitButton.click();
                 });
             }
         }
