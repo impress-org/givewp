@@ -10,6 +10,9 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\EnqueueStripeFormBuilderScripts;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
@@ -70,15 +73,16 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(PayPalCommerceGateway::class);
         });
 
-
         add_filter("givewp_create_payment_gateway_data_" . PayPalCommerceGateway::id(), function ($gatewayData) {
             $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId']
                 ?? give_clean($_POST['gatewayData']['payPalOrderId']);
+
             return $gatewayData;
         });
 
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
+        $this->addStripeFormBuilderHooks();
     }
 
       /**
@@ -132,5 +136,15 @@ class ServiceProvider implements ServiceProviderInterface
 
         $legacyStripeAdapter->addDonationDetails();
         $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    private function addStripeFormBuilderHooks()
+    {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
+        Hooks::addAction('givewp_form_builder_new_form', AddStripeAttributesToNewForms::class);
+        Hooks::addAction('givewp_form_builder_updated', UpdateStripeFormBuilderSettingsMeta::class);
     }
 }

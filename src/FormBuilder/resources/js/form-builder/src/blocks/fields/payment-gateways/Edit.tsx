@@ -1,5 +1,5 @@
-import {BlockEditProps} from '@wordpress/blocks';
 import {ReactNode} from 'react';
+import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
@@ -19,6 +19,7 @@ const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
 
 export default function Edit(props: BlockEditProps<any>) {
     const {gateways} = getFormBuilderWindowData();
+
     return (
         <div
             style={{
