@@ -7,6 +7,18 @@ class WelcomeBanner
     /**
      * @unreleased
      */
+    public static function isShowing(): bool
+    {
+        global $pagenow;
+
+        $option = get_option('givewp_welcome_banner_dismiss');
+
+        return $pagenow === 'plugins.php' && !$option;
+    }
+
+    /**
+     * @unreleased
+     */
     public function render(): void
     {
         echo '<div id="givewp-welcome-banner"></div>';
@@ -38,17 +50,5 @@ class WelcomeBanner
 
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style('givewp-admin-fonts');
-    }
-
-    /**
-     * @unreleased
-     */
-    public static function isShowing(): bool
-    {
-        global $pagenow;
-
-        $option = get_option('givewp_welcome_banner_dismiss');
-
-        return $pagenow === 'plugins.php' && ! $option;
     }
 }

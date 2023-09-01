@@ -45,7 +45,7 @@ class DismissWelcomeBannerRoute implements RestRoute
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('manage_options')) {
+        if (!current_user_can('manage_options')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__(
