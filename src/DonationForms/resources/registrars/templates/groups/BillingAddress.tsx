@@ -50,11 +50,13 @@ function StateFieldContainer({
     state: HiddenStateField,
     setCityRequired,
     setZipRequired,
+    nodeName,
 }: {
     apiUrl: string;
     state: FC;
     setCityRequired: Function;
     setZipRequired: Function;
+    nodeName: string;
 }) {
     const Label = window.givewp.form.templates.layouts.fieldLabel;
     const FieldError = window.givewp.form.templates.layouts.fieldError;
@@ -163,7 +165,7 @@ function StateFieldContainer({
                     <ErrorMessage
                         errors={errors}
                         name={'state'}
-                        render={({message}) => <FieldError error={message} />}
+                        render={({message}) => <FieldError error={message} name={nodeName} />}
                     />
                 </label>
             </NodeWrapper>
@@ -191,7 +193,11 @@ function StateFieldContainer({
 
                 <HiddenStateField />
 
-                <ErrorMessage errors={errors} name="state" render={({message}) => <FieldError error={message} />} />
+                <ErrorMessage
+                    errors={errors}
+                    name="state"
+                    render={({message}) => <FieldError error={message} name={nodeName} />}
+                />
             </label>
         </NodeWrapper>
     );
@@ -204,6 +210,7 @@ export default function BillingAddress({
     groupLabel,
     nodeComponents: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
     apiUrl,
+    name,
 }: BillingAddressProps) {
     // these are necessary to set the required indicator on the city and zip field labels
     // the actual validation will come from the server as we don't yet have the ability to update the actual client validation rules here
@@ -223,6 +230,7 @@ export default function BillingAddress({
                     state={state}
                     setCityRequired={setCityRequired}
                     setZipRequired={setZipRequired}
+                    nodeName={name}
                 />
                 <Zip validationRules={{required: zipRequired}} />
             </fieldset>

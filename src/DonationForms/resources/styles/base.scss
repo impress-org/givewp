@@ -4,22 +4,25 @@
     @import "pico";
 }
 
-@layer base-components {
-  @import "components/gateways";
-  @import "components/amount";
-  @import "components/donation-summary";
-  @import "components/receipt";
-  @import "components/pagination";
-  @import "components/billingAddress";
-}
-
 @layer base-elements {
+    @import "elements/iframe";
+    @import "elements/icons";
     @import "elements/header";
     @import "elements/form";
     @import "elements/sections";
     @import "elements/groups";
     @import "elements/fields";
     @import "elements/multi-step-form";
+}
+
+@layer base-components {
+    @import "components/gateways";
+    @import "components/goal";
+    @import "components/amount";
+    @import "components/donation-summary";
+    @import "components/receipt";
+    @import "components/pagination";
+    @import "components/billingAddress";
 }
 
 @layer base-overrides {

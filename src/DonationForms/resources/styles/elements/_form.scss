@@ -1,9 +1,3 @@
 .givewp-donation-form {
-    padding: .25rem;
-
-    form {
-        margin: 0;
-        display: grid;
-        gap: 1rem;
-    }
+    padding: var(--givewp-spacing-2);
 }

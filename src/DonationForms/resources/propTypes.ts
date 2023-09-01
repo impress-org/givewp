@@ -17,6 +17,7 @@ export type GatewayOptionProps = {
     inputProps: UseFormRegisterReturn;
     gateway: Gateway;
     defaultChecked: boolean;
+    isActive: boolean;
 };
 
 export interface SelectableFieldProps extends FieldProps {
@@ -45,7 +46,7 @@ export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'>
     dateFormat: string;
 }
 
-export interface PhoneProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
+export interface PhoneProps extends FieldHasDescriptionProps {
     phoneFormat: string;
 }
 
@@ -135,6 +136,7 @@ export interface FormProps {
 
 export interface FieldErrorProps {
     error: string;
+    name: string;
 }
 
 export interface FieldLabelProps {

@@ -67,7 +67,7 @@ class DonationFormViewModelTest extends TestCase
                         $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
                         $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
                     'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                        'donations',
+                        'Donations',
                         'give'
                     ),
                 ],

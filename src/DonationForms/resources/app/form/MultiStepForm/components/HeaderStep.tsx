@@ -12,16 +12,15 @@ export default function HeaderStep() {
     return (
         <div>
             <Header />
-            <section className="givewp-layouts givewp-layouts-section">
-                <button
-                    type="button"
-                    onClick={() => {
-                        dispatchMultiStep(setCurrentStep(1));
-                    }}
-                >
-                    {__('Donate Now', 'give')}
-                </button>
-            </section>
+            <button
+                type="button"
+                className="givewp-donation-form__steps-button-next"
+                onClick={() => {
+                    dispatchMultiStep(setCurrentStep(1));
+                }}
+            >
+                {__('Donate', 'give')}
+            </button>
         </div>
     );
 }

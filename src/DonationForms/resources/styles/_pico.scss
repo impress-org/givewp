@@ -10,6 +10,7 @@ $enable-semantic-container: true;
 
 // Enable .classes
 $enable-classes: true;
+$enable-important: false;
 
 // Config
 @import "@picocss/pico/scss/variables";
@@ -45,7 +46,6 @@ $enable-classes: true;
 @import "@picocss/pico/scss/content/embedded"; // audio, canvas, iframe, img, svg, video
 @import "@picocss/pico/scss/content/button"; // button, a[role=button], type=button, type=submit ...
 @import "@picocss/pico/scss/content/form"; // input, select, textarea, label, fieldset, legend
-@import "@picocss/pico/scss/content/form-checkbox-radio"; // type=checkbox, type=radio, role=switch
 @import "@picocss/pico/scss/content/form-alt-input-types"; // type=color, type=date, type=file, type=search, ...
 @import "@picocss/pico/scss/content/table"; // table, tr, td, ...
 @import "@picocss/pico/scss/content/code"; // pre, code, ...
@@ -70,7 +70,6 @@ label {
 }
 
 // Accent-color
-progress,
 [type="checkbox"],
 [type="radio"],
 [type="range"] {

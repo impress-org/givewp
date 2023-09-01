@@ -7,7 +7,7 @@ import type {FieldLabelProps} from '@givewp/forms/propTypes';
  */
 export default function FieldLabel({label, required}: FieldLabelProps) {
     return (
-        <span>
+        <span className="givewp-fields__label-text">
             {label}
             {required && (
                 <>

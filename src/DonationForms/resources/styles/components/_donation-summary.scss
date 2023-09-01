@@ -1,42 +1,68 @@
 .givewp-elements-donationSummary {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--givewp-spacing-2);
+    background-color: var(--givewp-grey-5);
+    padding: var(--givewp-spacing-6);
 
-    & > strong {
-        font-size: clamp(1.25rem, 0.8rem + 1.3vw, 1.5rem);
-        font-weight: 400;
+    &__header {
+        margin: 0;
+        font-size: var(--givewp-font-size-headline-lg);
+        font-weight: 600;
     }
 
     &__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
         list-style-type: none;
-        padding-left: 0;
+        padding: 0;
+        margin: 0;
 
-        &-item {
-            display: grid;
-            padding: 1rem 0;
+        &__item {
+            display: flex;
+            flex-direction: row;
             justify-content: space-between;
-            grid-template-columns: repeat(2, 1fr);
+            align-items: flex-end;
+            padding: var(--givewp-spacing-4) 0;
+            margin: 0;
 
-            &:not(:first-child) {
-                border-top: 0.0625rem solid #ccc;
+            &__label-container {
+                display: flex;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
             }
 
-            &:last-child {
-                font-weight: bold;
+            &__label {
+                font-size: var(--givewp-font-size-headline-md);
+                font-weight: 500;
+                color: var(--givewp-grey-900);
             }
-        }
 
-        &-item-description {
-            display: inline-grid;
-            grid-column-start: 1;
-            grid-column-end: 3;
-            grid-row-start: 2;
-            grid-row-end: 3;
-        }
+            &__description {
+                font-size: var(--givewp-font-size-headline-sm);
+                color: var(--givewp-grey-700);
+            }
 
-        &-item-value {
-            text-align: right;
+            &__value {
+                text-align: right;
+                color: var(--givewp-grey-900);
+                font-weight: 500;
+                font-size: var(--givewp-font-size-headline-md);
+            }
+
+            &--total {
+                border-top: solid 1px var(--givewp-grey-100);
+                padding: var(--givewp-spacing-5) 0 0 0;
+            }
+
+            &--total &__label, &--total &__value {
+                font-weight: 600;
+            }
+
+            &--total &__value {
+                font-size: var(--givewp-font-size-headline-lg);
+            }
         }
     }
 }
