@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import Badge from './components/Badge';
 import './styles.scss';
-import dismissWelcomeBanner from './utils/requests';
+import {useDismiss} from './hooks/useDismiss';
 import getWindowData from '../index';
 import LeftContentSection from './components/Sections/LeftContentSection';
 import RightContentSection from './components/Sections/RightContentSection';
@@ -10,7 +10,12 @@ import RightContentSection from './components/Sections/RightContentSection';
  * @unreleased
  */
 export default function App() {
+    const {showBanner, dismissBanner} = useDismiss();
     const {assets} = getWindowData();
+
+    if (!showBanner) {
+        return;
+    }
 
     return (
         <div className={'givewp-welcome-banner'}>
@@ -21,7 +26,7 @@ export default function App() {
                     iconSrc={`${assets}/green-circle-check-icon.svg`}
                     alt={'check-mark'}
                 />
-                <button onClick={dismissWelcomeBanner}>
+                <button onClick={dismissBanner}>
                     <img src={`${assets}/close-icon.svg`} alt={'dismiss'} />
                 </button>
             </div>
