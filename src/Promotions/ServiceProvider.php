@@ -11,6 +11,8 @@ use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\SummerSalesBanner;
+use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
+use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -47,6 +49,7 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
@@ -77,6 +80,11 @@ class ServiceProvider implements ServiceProviderContract
                 LegacyFormEditor::class,
                 'renderDonationOptionsRecurringRecommendation'
             );
+        }
+
+        if (WelcomeBanner::isShowing()) {
+            Hooks::addAction('admin_notices', WelcomeBanner::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
     }
 

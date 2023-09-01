@@ -1,0 +1,24 @@
+.givewp-welcome-banner-badge {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    width: 1.13rem;
+    min-width: fit-content;
+    height: 1.313rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+    border-radius: .75rem;
+
+    &--primary {
+        background-color: var(--givewp-green-25);
+        color: var(--givewp-green-500);
+        font-weight: bold;
+    }
+
+    &--secondary {
+        padding-top: 0;
+        padding-bottom: 0;
+        background-color: var(--givewp-orange-400);
+        color: var(--givewp-shades-white);
+    }
+}

@@ -178,7 +178,7 @@ final class Give
     private $container;
 
     /**
-     * @since 2.25.0 added HttpServiceProvider
+     * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
      *
@@ -225,8 +225,6 @@ final class Give
         FormMigrationServiceProvider::class,
         //TODO: merge this service provider
         Give\PaymentGateways\Gateways\ServiceProvider::class,
-        //TODO: this was the beta welcome banner, remove this?
-        Give\Promotions\ServiceProviderV3::class,
 
     ];
 
@@ -247,27 +245,6 @@ final class Give
     public function __construct()
     {
         $this->container = new Container();
-    }
-
-    /**
-     * Bootstraps the Give Plugin
-     *
-     * @since 2.8.0
-     */
-    public function boot()
-    {
-        $this->setup_constants();
-
-        $this->disableVisualDonationFormBuilderFeaturePlugin();
-
-        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
-        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
-
-        add_action('plugins_loaded', [$this, 'init'], 0);
-
-        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
-
-        do_action('give_loaded');
     }
 
     /**
@@ -311,6 +288,20 @@ final class Give
     }
 
     /**
+     * Loads the plugin language files.
+     *
+     * @unreleased Use Language class
+     * @since  1.0
+     * @access public
+     *
+     * @return void
+     */
+    public function load_textdomain()
+    {
+        Language::load();
+    }
+
+    /**
      * Binds the initial classes to the service provider.
      *
      * @since 2.8.0
@@ -319,6 +310,73 @@ final class Give
     {
         $this->container->singleton('templates', Templates::class);
         $this->container->singleton('routeForm', FormRoute::class);
+    }
+
+    /**
+     * Sets up the Exception Handler to catch and handle uncaught exceptions
+     *
+     * @since 2.11.1
+     */
+    private function setupExceptionHandler()
+    {
+        $handler = new UncaughtExceptionLogger();
+        $handler->setupExceptionHandler();
+    }
+
+    /**
+     * Load all the service providers to bootstrap the various parts of the application.
+     *
+     * @since 2.8.0
+     */
+    private function loadServiceProviders()
+    {
+        if ($this->providersLoaded) {
+            return;
+        }
+
+        $providers = [];
+
+        foreach ($this->serviceProviders as $serviceProvider) {
+            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
+                throw new InvalidArgumentException(
+                    "$serviceProvider class must implement the ServiceProvider interface"
+                );
+            }
+
+            /** @var ServiceProvider $serviceProvider */
+            $serviceProvider = new $serviceProvider();
+
+            $serviceProvider->register();
+
+            $providers[] = $serviceProvider;
+        }
+
+        foreach ($providers as $serviceProvider) {
+            $serviceProvider->boot();
+        }
+
+        $this->providersLoaded = true;
+    }
+
+    /**
+     * Bootstraps the Give Plugin
+     *
+     * @since 2.8.0
+     */
+    public function boot()
+    {
+        $this->setup_constants();
+
+        $this->disableVisualDonationFormBuilderFeaturePlugin();
+
+        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
+        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
+
+        add_action('plugins_loaded', [$this, 'init'], 0);
+
+        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
+
+        do_action('give_loaded');
     }
 
     /**
@@ -362,18 +420,28 @@ final class Give
         }
     }
 
-    /**
-     * Loads the plugin language files.
-     *
-     * @unreleased Use Language class
-     * @since  1.0
-     * @access public
-     *
-     * @return void
-     */
-    public function load_textdomain()
+    protected function disableVisualDonationFormBuilderFeaturePlugin()
     {
-        Language::load();
+        // Include plugin.php to use is_plugin_active() below.
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        // Prevent fatal error due to a renamed class.
+        class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
+
+        if (is_plugin_active('givewp-next-gen/give-visual-form-builder.php')) {
+            deactivate_plugins(['givewp-next-gen/give-visual-form-builder.php']);
+
+            add_action('admin_notices', function () {
+                Give()->notices->register_notice([
+                    'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
+                    'description' => __(
+                        'The Visual Form Builder Beta plugin is no longer needed, since the form builder is included in your current version of GiveWP. To prevent conflicts, the Beta plugin has been deactivated and can be safely deleted.',
+                        'give'
+                    ),
+                    'type' => 'info',
+                ]);
+            });
+        }
     }
 
     /**
@@ -419,41 +487,6 @@ final class Give
     }
 
     /**
-     * Load all the service providers to bootstrap the various parts of the application.
-     *
-     * @since 2.8.0
-     */
-    private function loadServiceProviders()
-    {
-        if ($this->providersLoaded) {
-            return;
-        }
-
-        $providers = [];
-
-        foreach ($this->serviceProviders as $serviceProvider) {
-            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
-                throw new InvalidArgumentException(
-                    "$serviceProvider class must implement the ServiceProvider interface"
-                );
-            }
-
-            /** @var ServiceProvider $serviceProvider */
-            $serviceProvider = new $serviceProvider();
-
-            $serviceProvider->register();
-
-            $providers[] = $serviceProvider;
-        }
-
-        foreach ($providers as $serviceProvider) {
-            $serviceProvider->boot();
-        }
-
-        $this->providersLoaded = true;
-    }
-
-    /**
      * Register a Service Provider for bootstrapping
      *
      * @since 2.8.0
@@ -468,9 +501,9 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @since 2.8.0 retrieve from the service container
      * @since 2.7.0
      *
+     * @since 2.8.0 retrieve from the service container
      * @param string $propertyName
      *
      * @return mixed
@@ -486,9 +519,9 @@ final class Give
      *
      * @since 2.8.0
      *
-     * @param $arguments
-     *
      * @param $name
+     *
+     * @param $arguments
      *
      * @return mixed
      */
@@ -507,38 +540,6 @@ final class Give
     {
         return $this->container;
     }
-
-    /**
-     * Sets up the Exception Handler to catch and handle uncaught exceptions
-     *
-     * @since 2.11.1
-     */
-    private function setupExceptionHandler()
-    {
-        $handler = new UncaughtExceptionLogger();
-        $handler->setupExceptionHandler();
-    }
-
-    protected function disableVisualDonationFormBuilderFeaturePlugin()
-    {
-        // Include plugin.php to use is_plugin_active() below.
-        include_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-        // Prevent fatal error due to a renamed class.
-        class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
-
-        if ( is_plugin_active('givewp-next-gen/give-visual-form-builder.php' )) {
-            deactivate_plugins(['givewp-next-gen/give-visual-form-builder.php']);
-
-            add_action('admin_notices', function() {
-                Give()->notices->register_notice([
-                    'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
-                    'description' => __('The Visual Form Builder Beta plugin is no longer needed, since the form builder is included in your current version of GiveWP. To prevent conflicts, the Beta plugin has been deactivated and can be safely deleted.', 'give'),
-                    'type' => 'info',
-                ]);
-            });
-        }
-    }
 }
 
 /**
@@ -551,8 +552,8 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
- * @since 2.8.0 add parameter for quick retrieval from container
- * @since 1.0
+ * @since    2.8.0 add parameter for quick retrieval from container
+ * @since    1.0
  *
  * @template T
  *
