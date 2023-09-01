@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {useEffect} from '@wordpress/element';
 import {Button, Popover} from '@wordpress/components';
 import {close} from '@wordpress/icons';
 
@@ -13,6 +14,10 @@ export default function StyledPopover({title, visible, onClose, children}: Props
     if (!visible) {
         return null;
     }
+
+    useEffect(() => {
+        return onClose;
+    }, []);
 
     return (
         <Popover placement="left-end" variant={'unstyled'} focusOnMount={false}>
