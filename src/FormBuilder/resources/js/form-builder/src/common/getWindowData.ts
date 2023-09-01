@@ -40,7 +40,7 @@ interface FormBuilderWindowData {
  * @since 3.0.0
  */
 declare const window: {
-    storageData: FormBuilderWindowData;
+    giveStorageData: FormBuilderWindowData;
     givewp: {
         form: {
             blocks: BlockRegistrar;

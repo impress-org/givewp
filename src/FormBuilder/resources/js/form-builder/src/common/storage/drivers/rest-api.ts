@@ -1,7 +1,10 @@
 import {__} from '@wordpress/i18n';
 import {StorageDriver} from "@givewp/form-builder/common/storage/interface";
 
+// @ts-ignore
 const storageData = window.giveStorageData;
+// @ts-ignore
+const jQuery = window.jQuery;
 
 const restApiStorageDriver: StorageDriver = {
     save: ({blocks, formSettings}) => {

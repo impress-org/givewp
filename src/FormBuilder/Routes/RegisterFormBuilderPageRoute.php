@@ -107,7 +107,7 @@ class RegisterFormBuilderPageRoute
 
         wp_add_inline_script(
             '@givewp/form-builder/script',
-            'window.giveStorageData = ' . wp_json_encode($formBuilderViewModel->storageData($donationFormId)) . ';',
+            'window.giveStorageData = ' . json_encode($formBuilderViewModel->storageData($donationFormId)) . ';',
             'before'
         );
 
