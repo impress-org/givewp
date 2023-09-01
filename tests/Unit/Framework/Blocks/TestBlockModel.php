@@ -7,12 +7,12 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class TestBlockModel extends TestCase
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      * @return void
      */
     public function testHasName()
@@ -26,7 +26,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      * @return void
      */
     public function testHasAttributes()
@@ -43,7 +43,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @return void
      */
     public function testSetAttributes()
@@ -61,7 +61,7 @@ class TestBlockModel extends TestCase
 
     /**
      * @return void
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testHasInnerBlocksCollection()
     {
@@ -78,7 +78,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */

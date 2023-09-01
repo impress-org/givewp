@@ -20,6 +20,7 @@ module.exports = {
             '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
             '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             '@givewp/forms/app': srcPath('DonationForms/resources/app'),
+            '@givewp/forms/registrars': srcPath('DonationForms/resources/registrars'),
             '@givewp/forms/shared': srcPath('DonationForms/resources/shared'),
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
@@ -34,6 +35,9 @@ module.exports = {
         donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
         stripePaymentElementGateway: srcPath(
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
+        ),
+        stripePaymentElementFormBuilder: srcPath(
+            'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/resources/js/index.tsx'
         ),
         testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
         testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),

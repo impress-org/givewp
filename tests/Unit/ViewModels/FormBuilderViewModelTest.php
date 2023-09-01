@@ -23,7 +23,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception
@@ -65,19 +65,22 @@ class FormBuilderViewModelTest extends TestCase
                 'recurringAddonData' => [
                     'isInstalled' => defined('GIVE_RECURRING_VERSION'),
                 ],
+                'formFieldManagerData' => [
+                    'isInstalled' => defined('GIVE_FFM_VERSION'),
+                ],
                 'emailTemplateTags' => $viewModel->getEmailTemplateTags(),
                 'emailNotifications' => array_map(static function ($notification) {
                     return EmailNotificationData::fromLegacyNotification($notification);
-                }, apply_filters('give_email_notification_options_metabox_fields', array(), $formId)),
+                }, apply_filters('give_email_notification_options_metabox_fields', [], $formId)),
                 'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
                 'emailDefaultAddress' => get_option('admin_email'),
                 'disallowedFieldNames' => $this->getDisallowedFieldNames(),
                 'donationConfirmationTemplateTags' => $viewModel->getDonationConfirmationPageTemplateTags(),
                 'termsAndConditions' => [
                     'checkboxLabel' => give_get_option('agree_to_terms_label'),
-                    'agreementText' => give_get_option('agreement_text')
-                    ],
+                    'agreementText' => give_get_option('agreement_text'),
                 ],
+            ],
             $viewModel->storageData($formId)
         );
     }

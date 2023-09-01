@@ -23,6 +23,9 @@ interface FormBuilderWindowData {
     formPage: FormPageSettings;
     currency: string;
     gateways: Gateway[];
+    formFieldManagerData?: {
+        isInstalled: boolean;
+    };
     recurringAddonData?: {
         isInstalled: boolean;
     };

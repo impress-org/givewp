@@ -13,6 +13,8 @@ class PaymentGateways extends Field {
      */
     public $isTestMode;
 
+    const TYPE = 'gateways';
+
     /**
      * @since 3.0.0
      */
@@ -21,6 +23,4 @@ class PaymentGateways extends Field {
 
         return $this;
     }
-
-    const TYPE = 'gateways';
 }
