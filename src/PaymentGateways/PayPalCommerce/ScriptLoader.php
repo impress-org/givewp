@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
@@ -141,12 +140,19 @@ EOT;
      */
     public function loadPublicAssets()
     {
-        if (!Utils::gatewayIsActive() || !Utils::isAccountReadyToAcceptPayment()) {
+        $formId = FrontendFormTemplateUtils::getFormId();
+
+        if (
+            ! $formId
+            || \Give\Helpers\Form\Utils::isV3Form($formId)
+            || !Utils::gatewayIsActive()
+            || !Utils::isAccountReadyToAcceptPayment()
+        ) {
             return;
         }
 
         try {
-            $formSettings = $this->payPalCommerceGateway->formSettings(FrontendFormTemplateUtils::getFormId());
+            $formSettings = $this->payPalCommerceGateway->formSettings($formId);
             $paypalSDKOptions = $formSettings['sdkOptions'];
 
             // Remove v3 donation form related param.
