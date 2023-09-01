@@ -31,7 +31,7 @@ class WelcomeBanner
             [
                 'root' => esc_url_raw(rest_url('give-api/v2/welcome-banner')),
                 'nonce' => wp_create_nonce('wp_rest'),
-                'action' => 'givewp_next_gen_welcome_release_banner_dismiss',
+                'action' => 'givewp_welcome_banner_dismiss',
                 'assets' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/welcome-banner',
             ]
         );
@@ -47,7 +47,7 @@ class WelcomeBanner
     {
         global $pagenow;
 
-        $option = get_option('givewp_next_gen_welcome_release_banner_dismiss');
+        $option = get_option('givewp_welcome_banner_dismiss');
 
         return $pagenow === 'plugins.php' && ! $option;
     }
