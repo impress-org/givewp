@@ -60,6 +60,33 @@ class GatewaySubscriptionController
     }
 
     /**
+     * @since 2.33.0
+     */
+    public function synchronizeSubscription(Subscription $subscription)
+    {
+        try {
+            $command = $this->gateway->synchronizeSubscription($subscription);
+            $this->handleGatewayCommand($command, $subscription->initialDonation(), $subscription);
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->gateway::id(),
+                    'Donation' => $subscription->initialDonation()->toArray(),
+                    'Subscription' => $subscription->toArray(),
+                ]
+            );
+
+            $message = __(
+                'An unexpected error occurred while synchronizing the subscription.  Please try again or contact the site administrator.',
+                'give'
+            );
+
+            $this->handleExceptionResponse($exception, $message);
+        }
+    }
+
+    /**
      * Handle gateway subscription command
      *
      * @since 2.27.0 move logic into action

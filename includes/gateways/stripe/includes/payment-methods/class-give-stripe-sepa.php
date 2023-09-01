@@ -157,7 +157,7 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		/**
          * This function will be used for donation processing.
          *
-         * @unreleased no longer store the intent secret in the database
+         * @since 2.33.0 no longer store the intent secret in the database
          * @since  2.6.1
          *
          * @param array $donation_data List of donation data.

@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * @unreleased Add logic to reload PayPal SDK script for donation form.
+     * @since 2.33.0 Add logic to reload PayPal SDK script for donation form.
      * @since 2.20.0
      * @param {object} $form
      */

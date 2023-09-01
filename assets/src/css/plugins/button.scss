@@ -57,6 +57,15 @@
 			color: #fff;
 			box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
 		}
+
+		&:disabled {
+			color: #a7aaad!important;
+			background: #f6f7f7!important;
+			border-color: #dcdcde!important;
+			box-shadow: none!important;
+			text-shadow: none!important;
+			cursor: default
+		}
 	}
 
 
@@ -85,6 +94,15 @@
 
 		&:focus {
 			background: #eee;
+		}
+
+		&:disabled {
+			color: #a7aaad!important;
+			background: #f6f7f7!important;
+			border-color: #dcdcde!important;
+			box-shadow: none!important;
+			text-shadow: none!important;
+			cursor: default
 		}
 	}
 }

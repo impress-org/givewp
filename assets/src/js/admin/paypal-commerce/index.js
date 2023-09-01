@@ -1,3 +1,11 @@
+/**
+ * External dependencies.
+ */
+import {__} from '@wordpress/i18n';
+
+/**
+ * Internal dependencies.
+ */
 import { GiveConfirmModal, GiveErrorAlert } from '../../plugins/modal';
 
 window.addEventListener( 'DOMContentLoaded', function() {
@@ -74,6 +82,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
             onBoardingButton.addEventListener( 'click', function( evt ) {
                 evt.preventDefault();
 
+                let isAdminSelectedConnectionAccountType =  false;
+                let connectionAccountType = null;
                 const mode = onBoardingButton.getAttribute( 'data-mode' );
                 const countryCode = countryField.value;
                 const container = {
@@ -88,14 +98,15 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     }
                 }
                 const buttonState = {
+                    intialLabelWithIcon: null,
                     enable: () => {
                         onBoardingButton.disabled = false;
-                        evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
+                        evt.target.innerHTML = buttonState.intialLabelWithIcon;
                     },
                     disable: () => {
                         // Preserve initial label.
-                        if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
-                            onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
+                        if ( buttonState.intialLabelWithIcon === null) {
+                            buttonState.intialLabelWithIcon = evt.target.innerHTML;
                         }
 
                         onBoardingButton.disabled = true;
@@ -103,6 +114,149 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     },
                 };
                 const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
+                const getPartnerLinkAjaxRequest = async () => {
+                    // Request partner obboarding link.
+                    const response = await fetch(ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType ?? 'EXPRESS_CHECKOUT'}`);
+                     const data =  await response.json();
+
+                    if (true === data.success) {
+                        const payPalLink = document.querySelector('[data-paypal-button]');
+
+                        // Dynamically set callback function name.
+                        payPalLink.setAttribute(
+                            'data-paypal-onboard-complete',
+                            'live' === mode
+                                ? 'giveLivePayPalOnBoardedCallback'
+                                : 'giveSandboxPayPalOnBoardedCallback'
+                        );
+
+                        // Set PayPal button link (Partener link).
+                        payPalLink.href = `${data.data.partnerLink}&displayMode=minibrowser`;
+
+                        payPalLink.click();
+                    } else{
+                        // Show error message.
+                        new GiveErrorAlert({
+                            modalContent: {
+                                title: __( 'Connect With PayPal', 'give'),
+                                desc: __( 'There was an issue retrieving a link to connect to PayPal. Please try again. If the issue continues please contact an administrator.', 'give'),
+                            }
+                        }).render();
+                    }
+
+                    buttonState.enable();
+                };
+                const getHelpMessageAjaxRequest = async () => {
+                    const response = await fetch(ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice');
+                    const data = await response.json();
+
+                    if (true === data.success) {
+                        function createElementFromHTML(htmlString) {
+                            const div = document.createElement('div');
+                            div.innerHTML = htmlString.trim();
+                            return div.firstChild;
+                        }
+
+                        const buttonContainer = container.$el_container.querySelector('.connect-button-wrap');
+                        buttonContainer.append(createElementFromHTML(data.data));
+                    }
+                }
+
+                // eslint-disable-next-line no-undef
+                const modalBody  =  `
+                    <div class="give-modal__description">
+                        <p class="welcome-text">Select account type for connection</p>
+                        <p>
+                            <label for="paypal_donations_connection_account_type_express_checkout">
+                                <input type="radio"
+                                    name="paypal_donations_connection_account_type"
+                                    id="paypal_donations_connection_account_type_express_checkout"
+                                    value="EXPRESS_CHECKOUT">&nbsp;${ __( 'Standard Card Processing', 'give') }
+                            </label>
+                        </p>
+                        <ul>
+                            <li><span class="icon"></span>${__( 'Accept Credit & Debit Cards', 'give')}</li>
+                            <li><span class="icon"></span>${__( 'Seller Protection', 'give')}</li>
+                        </ul>
+                        <p>
+                            <label for="paypal_donations_connection_account_type_ppcp">
+                                <input type="radio"
+                                    name="paypal_donations_connection_account_type"
+                                    id="paypal_donations_connection_account_type_ppcp"
+                                    value="PPCP">&nbsp;${__( 'Advanced Card Processing', 'give')}
+                            </label>
+                            <span>${__( 'Requires Application Approval', 'give')}</span>
+                        </p>
+                         <ul class="flex2x2">
+                            <li><span class="icon"></span>${__( 'Accept Credit & Debit Cards', 'give')}</li>
+                            <li><span class="icon"></span>${__( 'Fraud Protection', 'give')}</li>
+                            <li><span class="icon"></span>${__( 'Seller Protection', 'give')}</li>
+                            <li><span class="icon"></span>${__( 'Chargeback Protection', 'give')}</li>
+                        </ul>
+                        <div class="give-field-description">
+                            <a href="https://docs.givewp.com/connection-comparison" target="_blank">
+                                ${__('Read more about the connection types', 'give')}
+                            </a>
+                        </div>
+                    </div>
+                `.trim();
+
+                const modal = new Give.modal.GiveConfirmModal({
+                        classes: {
+                            modalWrapper: 'givewp-paypal-commerce-connection-account-type-selection-modal',
+                        },
+                        modalContent: {
+                            title: __( 'PayPal Connection', 'give' ),
+                            body: modalBody,
+                        },
+                        closeOnBgClick: true,
+                        callbacks: {
+                            open: () => {
+                                // Disable confirm button in modal till user selects account type.
+                                document.querySelector('.give-popup-confirm-button').disabled = true;
+
+                                // Add event listener to enable confirm button when user selects account type.
+                                document.querySelectorAll('input[name="paypal_donations_connection_account_type"]')
+                                    .forEach( (radioField) => {
+                                        radioField.addEventListener('click', function () {
+                                            document.querySelector('.give-popup-confirm-button').disabled = false;
+                                        })
+                                    })
+                            },
+                            close: () => {
+                                // Remove errors.
+                                container.removeErrors();
+
+                                // Enable button if admin available for both conneciton account types but did not select any.
+                                if(!isAdminSelectedConnectionAccountType){
+                                    // Hide PayPal quick help message.
+                                    paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+
+                                    // Enable button.
+                                    buttonState.enable();
+                                }
+                            },
+                            afterClose:  () => {
+                                // Get partner link, if admin selected a connection account type
+                                if(isAdminSelectedConnectionAccountType){
+                                    // Get partner link.
+                                    getPartnerLinkAjaxRequest();
+                                }
+
+                                // Reset property.
+                                connectionAccountType = null;
+                                isAdminSelectedConnectionAccountType = false;
+                            }
+                        },
+                        successConfirm: () => {
+                                const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
+                                radioField && ( connectionAccountType = radioField.value );
+
+                                // Modal will only open when admin available for both conneciton account types.
+                                // So we only need to validate if admin selected any account type or not.
+                                isAdminSelectedConnectionAccountType =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
+                        }
+                });
 
                 container.removeErrors();
                 buttonState.disable();
@@ -110,44 +264,17 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 // Hide PayPal quick help message.
                 paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
 
-                fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
-                    .then( response => response.json() )
-                    .then( function( res ) {
-                        if ( true === res.success ) {
-                            const payPalLink = document.querySelector( '[data-paypal-button]' );
+                // Ask for connection account type if admin selected acount which is available for PPCP and Express Checkout account.
+                // Request parther link otherwise which will fetch onboarding link for Express Checkout account type.
+                if( givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode ) ) {
+                    modal.render();
+                } else{
+                    // Get partner link or onboarding link and help message.
+                    getPartnerLinkAjaxRequest();
+                }
 
-                            // Dynamically set callback function name.
-                            payPalLink.setAttribute(
-                                'data-paypal-onboard-complete',
-                                'live' === mode
-                                    ? 'giveLivePayPalOnBoardedCallback'
-                                    : 'giveSandboxPayPalOnBoardedCallback'
-                            );
-
-                            // Set PayPal button link (Partener link).
-                            payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
-
-                            payPalLink.click();
-                        }
-
-                        buttonState.enable();
-                    } )
-                    .then( function() {
-                        fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
-                            .then( response => response.json() )
-                            .then( function( res ) {
-                                if ( true === res.success ) {
-                                    function createElementFromHTML( htmlString ) {
-                                        const div = document.createElement( 'div' );
-                                        div.innerHTML = htmlString.trim();
-                                        return div.firstChild;
-                                    }
-
-                                    const buttonContainer = container.$el_container.querySelector( '.connect-button-wrap' );
-                                    buttonContainer.append( createElementFromHTML( res.data ) );
-                                }
-                            } );
-                    } );
+                // Get help message.
+                getHelpMessageAjaxRequest();
 
                 return false;
             } );
