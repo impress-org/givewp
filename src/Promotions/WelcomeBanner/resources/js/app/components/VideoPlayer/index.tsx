@@ -41,7 +41,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
                         <img className={'givewp-welcome-banner-video-fallback__image'} src={fallbackImage} alt={'/'} />
                     </div>
                 ) : (
-                    <video ref={videoRef} src={src} />
+                    <video ref={videoRef} src={src} loop muted />
                 )}
 
                 {!useFallbackImage && (
