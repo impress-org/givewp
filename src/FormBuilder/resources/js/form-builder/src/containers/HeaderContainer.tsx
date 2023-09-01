@@ -60,7 +60,16 @@ const HeaderContainer = ({
             .catch((error) => {
                 dispatch(setIsDirty(false));
                 setSaving(null);
-                alert(error.message);
+
+                let message = error.message;
+                if (error?.cause?.code === 'rest_cookie_invalid_nonce') {
+                    message = __(
+                        'Due to inactivity, your login session has expired. Please refresh the page and try again.',
+                        'give'
+                    );
+                }
+
+                alert(message);
             })
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));

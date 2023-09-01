@@ -19,14 +19,15 @@ class GenerateDonationFormPreviewRouteUrlTest extends TestCase
     {
         $viewUrl = (new GenerateDonationFormPreviewRouteUrl())(1);
 
-        $this->assertSame(esc_url(
+        $this->assertSame(
             add_query_arg(
                 [
                     'givewp-route' => 'donation-form-view-preview',
-                    'form-id' => 1
+                    'form-id' => 1,
                 ],
                 site_url()
-            )
-        ), $viewUrl);
+            ),
+            $viewUrl
+        );
     }
 }

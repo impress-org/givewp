@@ -86,18 +86,6 @@ class RegisterFormBuilderPageRoute
             true
         );
 
-        (new EnqueueScript(
-            '@givewp/form-builder/storage',
-            'src/FormBuilder/resources/js/storage.js',
-            GIVE_PLUGIN_DIR,
-            GIVE_PLUGIN_URL,
-            'give'
-        ))
-            ->dependencies(['jquery'])
-            ->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId))
-            ->loadInFooter()
-            ->enqueue();
-
         /**
          * @since 3.0.0
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
@@ -115,6 +103,12 @@ class RegisterFormBuilderPageRoute
             ),
             GIVE_VERSION,
             true
+        );
+
+        wp_add_inline_script(
+            '@givewp/form-builder/script',
+            'window.giveStorageData = ' . json_encode($formBuilderViewModel->storageData($donationFormId)) . ';',
+            'before'
         );
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
