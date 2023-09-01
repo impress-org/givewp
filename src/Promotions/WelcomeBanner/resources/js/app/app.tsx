@@ -22,7 +22,7 @@ export default function App() {
                     alt={'check-mark'}
                 />
                 <button onClick={dismissWelcomeBanner}>
-                    <img src={`${assets}/close-icon.svg`} alt={'dismiss welcome banner'} />
+                    <img src={`${assets}/close-icon.svg`} alt={'dismiss'} />
                 </button>
             </div>
 

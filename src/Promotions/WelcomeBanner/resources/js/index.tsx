@@ -19,6 +19,9 @@ export default function getWindowData(): windowData {
 
 const root = document.getElementById('givewp-welcome-banner');
 
+/**
+ * @unreleased
+ */
 const RenderApp = () => (
     <StrictMode>
         <App />
@@ -27,6 +30,7 @@ const RenderApp = () => (
 
 if (root) {
     const pluginHeader = document.querySelector('.wp-header-end');
+    // Place banner underneath Plugin header
     pluginHeader.insertAdjacentElement('afterend', root);
 
     ReactDOM.render(<RenderApp />, root);
