@@ -7,7 +7,7 @@ import {
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import type {Gateway} from '@givewp/forms/types';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
@@ -63,11 +63,34 @@ import {CSSProperties, useEffect, useState} from 'react';
         lineHeight: '1.2',
     } as CSSProperties;
 
+    /**
+     * Get PayPal script options.
+     *
+     * This function return the paypal script options on basis of context.
+     *  - If donation type is subscription then remove hosted fields from components.
+     *
+     *  @return {object} PayPal script options.
+     */
+    const getPayPalScriptOptions = ({isSubscription}) => {
+        let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
+
+        // Remove hosted fields from components if subscription.
+        if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
+            paypalScriptOptions.components = paypalScriptOptions.components.split(',')
+                .filter((component) => component !== 'hosted-fields')
+                .join(',');
+        }
+
+        return paypalScriptOptions;
+    }
+
     const getFormData = () => {
         const formData = new FormData();
 
         formData.append('give-form-id', payPalDonationsSettings.donationFormId);
         formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
+
+        formData.append('give_payment_mode', 'paypal-commerce');
 
         formData.append('give-amount', amount);
 
@@ -160,6 +183,7 @@ import {CSSProperties, useEffect, useState} from 'react';
 
     const FormFieldsProvider = ({children}) => {
         const {useWatch} = window.givewp.form.hooks;
+
         amount = useWatch({name: 'amount'});
         firstName = useWatch({name: 'firstName'});
         lastName = useWatch({name: 'lastName'});
@@ -177,24 +201,64 @@ import {CSSProperties, useEffect, useState} from 'react';
         const {useWatch, useFormState} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
-
         const {isSubmitting, isSubmitSuccessful} = useFormState();
+        const {useFormContext} = window.givewp.form.hooks;
+        const {getFieldState, setFocus, getValues, formState: {errors}, trigger, setError} = useFormContext();
+        const gateway = window.givewp.gateways.get('paypal-commerce');
 
         const props = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
             forceReRender: debounce(() => [amount, firstName, lastName, email, currency], 500),
+            onClick: async (data, actions) => {
+                // Validate whether payment gateway support subscriptions.
+                if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
+                    setError('FORM_ERROR', {
+                        message: __(
+                            'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
+                            'give'
+                        )
+                    },
+                        {shouldFocus: true}
+                    );
+
+                    // Scroll to the top of the form.
+                    // Add this moment we do not have a way to scroll to the error message.
+                    // In the future we can add a way to scroll to the error message and remove this code.
+                    document.querySelector('#give-next-gen button[type="submit"]')
+                        .scrollIntoView({behavior: 'smooth'});
+
+                    return actions.reject();
+
+                }
+
+                // Validate the form values before proceeding.
+                const result = await trigger();
+                if(result === false){
+                    // Set focus on first invalid field.
+                                       for (const fieldName in getValues()) {
+                        if(getFieldState(fieldName).invalid){
+                            setFocus(fieldName);
+                        }
+                                       }
+                    return actions.reject();
+                }
+
+                return actions.resolve();
+            },
             onApprove: async (data, actions) => {
+                const donationFormWithSubmitButton = Array.from(document.forms).pop();
+                const submitButton = donationFormWithSubmitButton.querySelector('[type="submit"]');
 
                 if(donationType === 'subscription') {
                     // @ts-ignore
-                    document.forms[0].querySelector('[type="submit"]').click();
+                    submitButton.click();
                     return;
                 }
 
                 return actions.order.capture().then((details) => {
                     // @ts-ignore
-                    document.forms[0].querySelector('[type="submit"]').click();
+                    submitButton.click();
                 });
             }
         }
@@ -210,7 +274,6 @@ import {CSSProperties, useEffect, useState} from 'react';
         const {useWatch} = window.givewp.form.hooks;
         const firstName = useWatch({name: 'firstName'});
         const lastName = useWatch({name: 'lastName'});
-        const donationType = useWatch({name: 'donationType'});
 
         const cardholderDefault = [firstName ?? '', lastName ?? ''].filter((x) => x).join(' ');
         const [_cardholderName, setCardholderName] = useState(null);
@@ -219,18 +282,10 @@ import {CSSProperties, useEffect, useState} from 'react';
             cardholderName = _cardholderName ?? cardholderDefault;
         });
 
-        /**
-         * Hosted fields are not supported for subscriptions at this time.
-         */
-        const supportsHostedFields = donationType !== 'subscription';
-
         return (
 
-                <PayPalHostedFieldsProvider
-                    notEligibleError={<div>Your account is not eligible</div>}
-                    createOrder={createOrderHandler}
-                >
-                    <div style={{ display: supportsHostedFields ? 'initial' : 'none'}}>
+                <PayPalHostedFieldsProvider createOrder={createOrderHandler}>
+                    <div>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
                     <TextControl
@@ -287,18 +342,18 @@ import {CSSProperties, useEffect, useState} from 'react';
     };
 
     function PaymentMethodsWrapper() {
-
         const {useWatch} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
-
         const [{options}, dispatch] = usePayPalScriptReducer();
 
         useEffect(() => {
+            const isSubscription = donationType === 'subscription';
+
             dispatch({
                 type: 'resetOptions',
                 value: {
-                    ...options,
+                    ...getPayPalScriptOptions({isSubscription}),
                     currency: currency,
                     vault: donationType === 'subscription',
                     intent: donationType === 'subscription' ? 'subscription' : 'capture',
@@ -309,7 +364,7 @@ import {CSSProperties, useEffect, useState} from 'react';
         return (
             <>
                 <SmartButtonsContainer />
-                <HostedFieldsContainer />
+                { -1 !== options.components.indexOf('hosted-fields')  && <HostedFieldsContainer /> }
             </>
         );
     }
@@ -337,30 +392,68 @@ import {CSSProperties, useEffect, useState} from 'react';
                 throw new Error('Invalid hosted fields');
             }
 
-            return hostedField.cardFields
-                .submit({cardholderName: cardholderName})
-                .then(async (data) => {
-                    await fetch(
-                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
-                            data.orderId,
-                        {
-                            method: 'POST',
-                            body: getFormData(),
-                        }
-                    );
-                    return {...data, payPalOrderId: data.orderId};
-                })
-                .catch((err) => {
-                    console.log('paypal commerce error', err);
-                    throw new Error('paypal commerce error');
-                });
+            const approveOrderCallback = async (data) => {
+                await fetch(
+                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
+                    data.orderId,
+                    {
+                        method: 'POST',
+                        body: getFormData(),
+                    }
+                );
+                return {...data, payPalOrderId: data.orderId};
+            };
+
+            try{
+                const result = await hostedField.cardFields
+                    .submit({
+                        // Trigger 3D Secure authentication
+                        contingencies: [ 'SCA_WHEN_REQUIRED' ],
+                        cardholderName: cardholderName
+                    });
+
+
+                if (
+                    ! result // Check whether get result from paypal gateway server.
+                    || (
+                        [ 'NO', 'POSSIBLE' ].includes( result.liabilityShift ) // Check whether card required 3D secure validation.
+                        && !  (result.liabilityShifted && 'POSSIBLE' === result.liabilityShift) // Check whether card passed 3D secure validation.
+                    )
+                ) {
+                    throw new Error(__(
+                        'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
+                        'give'
+                    ));
+                }
+
+                return await approveOrderCallback(result);
+            } catch (err) {
+                console.log('paypal donations error', err);
+
+                // Handle PayPal error.
+                const isPayPalDonationError = err.hasOwnProperty('details');
+                if( isPayPalDonationError ){
+                                        throw new Error(err.details[0].description);
+                }
+
+                throw new Error(
+                    sprintf(
+                        __('Paypal Donations Error: %s', 'give'),
+                        err.message
+                    )
+                );
+            }
         },
         Fields() {
+            const {useWatch} = window.givewp.form.hooks;
+            const donationType = useWatch({name: 'donationType'});
+            const isSubscription = donationType === 'subscription';
+
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider
                         deferLoading={true}
-                        options={payPalDonationsSettings.sdkOptions}
+                        options={getPayPalScriptOptions({isSubscription})}
                     >
                         <PaymentMethodsWrapper />
                     </PayPalScriptProvider>

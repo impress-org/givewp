@@ -9,8 +9,10 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
-use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\EnqueueStripeFormBuilderScripts;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
@@ -21,7 +23,6 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
-use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface
@@ -46,8 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
         } catch (Exception $e) {
             Log::error('Error Registering Gateways', [
                     'message' => $e->getMessage()
-                ]
-            );
+                ]);
         }
     }
 
@@ -70,44 +70,19 @@ class ServiceProvider implements ServiceProviderInterface
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
 
-            $registrar->unregisterGateway(PayPalCommerce::id());
             $registrar->registerGateway(PayPalCommerceGateway::class);
         });
 
+        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerceGateway::id(), function ($gatewayData) {
+            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId']
+                ?? give_clean($_POST['gatewayData']['payPalOrderId']);
 
-        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
-            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
             return $gatewayData;
         });
 
-        add_filter('give_recurring_modify_donation_data', function($recurringData) {
-            /**
-             * PayPal Donations/Commerce (NextGen)
-             * Optionally account for the period, frequency, and times values being passed via post data.
-             */
-            if(isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
-                $recurringData['period'] = $recurringData['period'] ?: $recurringData['post_data']['period'];
-                $recurringData['frequency'] = $recurringData['frequency'] ?: $recurringData['post_data']['frequency'];
-                $recurringData['times'] = $recurringData['times'] ?: $recurringData['post_data']['times'];
-            }
-
-            return $recurringData;
-        });
-
-        /**
-         * This module will eventually live in give-recurring
-         */
-        if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
-                static function () {
-                    return PayPalCommerceSubscriptionModule::class;
-                }
-            );
-        }
-
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
+        $this->addStripeFormBuilderHooks();
     }
 
       /**
@@ -161,5 +136,15 @@ class ServiceProvider implements ServiceProviderInterface
 
         $legacyStripeAdapter->addDonationDetails();
         $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    private function addStripeFormBuilderHooks()
+    {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
+        Hooks::addAction('givewp_form_builder_new_form', AddStripeAttributesToNewForms::class);
+        Hooks::addAction('givewp_form_builder_updated', UpdateStripeFormBuilderSettingsMeta::class);
     }
 }

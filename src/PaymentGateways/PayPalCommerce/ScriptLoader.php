@@ -2,8 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
 /**
@@ -15,22 +16,23 @@ use Give_Admin_Settings;
 class ScriptLoader
 {
     /**
-     * @since 2.9.0
+     * @unreleased
      *
-     * @var MerchantDetails
+     * @var PayPalCommerceGateway
      */
-    private $merchantRepository;
+    private $payPalCommerceGateway;
 
     /**
      * ScriptLoader constructor.
      *
+     * @unreleased Remove $merchantRepository parameter and add $payPalCommerceGateway parameter.
      * @since 2.9.0
      *
-     * @param MerchantDetails $merchantRepository
+     * @param PayPalCommerceGateway $payPalCommerceGateway
      */
-    public function __construct(MerchantDetails $merchantRepository)
+    public function __construct(PayPalCommerceGateway $payPalCommerceGateway)
     {
-        $this->merchantRepository = $merchantRepository;
+        $this->payPalCommerceGateway = $payPalCommerceGateway;
     }
 
     /**
@@ -138,26 +140,24 @@ EOT;
      */
     public function loadPublicAssets()
     {
-        if (!Utils::gatewayIsActive() || !Utils::isAccountReadyToAcceptPayment()) {
+        $formId = FrontendFormTemplateUtils::getFormId();
+
+        if (
+            ! $formId
+            || \Give\Helpers\Form\Utils::isV3Form($formId)
+            || !Utils::gatewayIsActive()
+            || !Utils::isAccountReadyToAcceptPayment()
+        ) {
             return;
         }
 
-        /* @var MerchantDetail $merchant */
-        $merchant = give(MerchantDetail::class);
+        try {
+            $formSettings = $this->payPalCommerceGateway->formSettings($formId);
+            $paypalSDKOptions = $formSettings['sdkOptions'];
 
-        $scriptId = 'give-paypal-commerce-js';
-        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
-
-        // Add hosted fields if payment field type is auto.
-        $paymentComponents[] = 'buttons';
-        if( 'auto' === $paymentFieldType ) {
-            $paymentComponents[] = 'hosted-fields';
-        }
-        
-        $clientToken = '';
-        try{
-            $clientToken = $this->merchantRepository->getClientToken();
-        } catch ( \Exception $exception ) {
+            // Remove v3 donation form related param.
+            unset($paypalSDKOptions['data-namespace']);
+        } catch (\Exception $e) {
             give_set_error(
                 'give-paypal-commerce-client-token-error',
                 sprintf(
@@ -165,28 +165,16 @@ EOT;
                         'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
                         'give'
                     ),
-                    $exception->getMessage()
+                    $e->getMessage()
                 )
             );
+            return;
         }
 
-        /**
-         * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
-         * @since 2.27.1 Removed locale query parameter.
-         */
-        $payPalSdkQueryParameters = [
-            'client-id' => $merchant->clientId,
-            'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => implode(',', $paymentComponents),
-            'disable-funding' => 'credit',
-            'vault' => true,
-            'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $clientToken,
-        ];
+        /* @var MerchantDetail $merchant */
+        $merchant = give(MerchantDetail::class);
 
-        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
-            $payPalSdkQueryParameters['enable-funding'] = 'venmo';
-        }
+        $scriptId = 'give-paypal-commerce-js';
 
         wp_enqueue_script(
             $scriptId,
@@ -222,16 +210,14 @@ EOT;
                 // List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
                 'hostedCardFieldStyles' => apply_filters('give_paypal_commerce_hosted_field_style', []),
                 'supportsCustomPayments' => $merchant->supportsCustomPayments ? 1 : '',
-                'accountCountry' => $merchant->accountCountry,
                 'separatorLabel' => esc_html__('Or pay with card', 'give'),
-                'payPalSdkQueryParameters' => $payPalSdkQueryParameters,
+                'payPalSdkQueryParameters' => $paypalSDKOptions,
                 'textForOverlayScreen' => sprintf(
                     '<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
                     esc_html__('Donation Processing...', 'give'),
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
-                ),
-                'paymentFieldType' => $paymentFieldType,
+                )
             ]
         );
     }

@@ -3,7 +3,11 @@ import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {__} from '@wordpress/i18n';
 
-const EmailPreviewContent = ({emailType}) => {
+type EmailPreviewContentProps = {
+    emailType: string;
+};
+
+const EmailPreviewContent = ({emailType}: EmailPreviewContentProps) => {
     const [previewHtml, setPreviewHtml] = useState<string>(null);
 
     const {
@@ -41,19 +45,13 @@ const EmailPreviewContent = ({emailType}) => {
     }, []);
 
     return previewHtml ? (
-        <iframe srcDoc={previewHtml} style={{width: '100%', height: '100%', border: 'none'}} />
+        <iframe
+            srcDoc={previewHtml}
+            className={'email-settings-preview-iframe'}
+            style={{width: '100%', height: '100%', border: 'none'}}
+        />
     ) : (
-        <div
-            style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            {__('Generating preview...', 'give')}
-        </div>
+        <div className={'email-settings-preview-generating'}>{__('Generating preview...', 'give')}</div>
     );
 };
 

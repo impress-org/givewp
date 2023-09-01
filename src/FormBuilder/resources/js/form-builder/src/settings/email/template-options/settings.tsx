@@ -1,11 +1,17 @@
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {Icon as WPIcon, plus} from '@wordpress/icons';
+
 import {__} from '@wordpress/i18n';
 import Editor from './components/editor';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import DeleteButton from '@givewp/form-builder/blocks/fields/amount/inspector/delete-button';
+import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
 
-const EmailTemplateSettings = ({notification}) => {
+type EmailTemplateSettingsProps = {
+    notification: string;
+};
+
+const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
     const dispatch = useFormStateDispatch();
     const {
         settings: {emailTemplateOptions},
@@ -41,14 +47,7 @@ const EmailTemplateSettings = ({notification}) => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 'var(--givewp-spacing-6)',
-                marginBottom: '20px', // Prevent clipping
-            }}
-        >
+        <div className={'email-settings-template__container'}>
             <RadioControl
                 className="radio-control--email-options"
                 label={__('Email options', 'givewp')}
@@ -85,6 +84,7 @@ const EmailTemplateSettings = ({notification}) => {
                     />
 
                     <SelectControl
+                        className={'select-control--email-options'}
                         onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
                         label={__('Email content type', 'givewp')}
                         help={__('Choose email type', 'givewp')}
@@ -96,26 +96,21 @@ const EmailTemplateSettings = ({notification}) => {
                     />
 
                     {config.supportsRecipients && (
-                        <>
-                            <BaseControl
-                                id={'give-email-template-recipient'}
-                                label={__('Email', 'givewp')}
-                                help={__('Enter the email address that should receive a notification.', 'givewp')}
-                            >
+                        <div className={'email-settings-template__recipient'}>
+                            <div>
+                                <h2 className={'email-settings__header'}>{__('Email recipient', 'givewp')}</h2>
+                                <p className={'email-settings__description'}>
+                                    {__('Email address that should receive a notification', 'givewp')}
+                                </p>
+                            </div>
+                            <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
                                 {recipients.map((recipientEmail, index) => {
                                     return (
                                         <li
                                             key={'level-option-inspector-' + index}
-                                            style={{
-                                                display: 'flex',
-                                                gap: '16px',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'flex-end',
-                                            }}
-                                            className={'givewp-donation-level-control'}
+                                            className={'base-control--email-options'}
                                         >
                                             <TextControl
-                                                label={__('Donation amount level', 'give')}
                                                 hideLabelFromVision
                                                 value={recipientEmail}
                                                 onChange={(value) => {
@@ -124,23 +119,29 @@ const EmailTemplateSettings = ({notification}) => {
                                                     updateEmailTemplateOption('recipient', newRecipients);
                                                 }}
                                             />
-                                            <DeleteButton
+
+                                            <Button
+                                                className={'email-settings-template__recipient-delete-btn'}
                                                 onClick={() => {
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateOption('recipient', recipients.slice());
                                                 }}
-                                            />
+                                            >
+                                                <TrashIcon />
+                                            </Button>
                                         </li>
                                     );
                                 })}
+
                                 <Button
-                                    variant={'tertiary'}
+                                    className={'email-settings-template__recipient-add-email-btn'}
+                                    variant={'secondary'}
                                     onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}
                                 >
-                                    Add email
+                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'givewp')}
                                 </Button>
                             </BaseControl>
-                        </>
+                        </div>
                     )}
                     {!config.supportsRecipients && (
                         <TextControl
