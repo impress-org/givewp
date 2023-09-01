@@ -279,9 +279,9 @@ final class Give
         /**
          * Fire the action after Give core loads.
          *
-         * @param Give class instance.
-         *
          * @since 1.8.7
+         *
+         * @param Give class instance.
          *
          */
         do_action('give_init', $this);
@@ -291,10 +291,10 @@ final class Give
      * Loads the plugin language files.
      *
      * @unreleased Use Language class
-     * @return void
      * @since  1.0
      * @access public
      *
+     * @return void
      */
     public function load_textdomain()
     {
@@ -382,10 +382,10 @@ final class Give
     /**
      * Setup plugin constants
      *
-     * @return void
      * @since  1.0
      * @access private
      *
+     * @return void
      */
     private function setup_constants()
     {
@@ -447,9 +447,9 @@ final class Give
     /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
-     * @return void
      * @since 2.5.0
      *
+     * @return void
      */
     public function display_old_recurring_compatibility_notice()
     {
@@ -489,9 +489,9 @@ final class Give
     /**
      * Register a Service Provider for bootstrapping
      *
-     * @param string $serviceProvider
      * @since 2.8.0
      *
+     * @param string $serviceProvider
      */
     public function registerServiceProvider($serviceProvider)
     {
@@ -501,13 +501,13 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
+     * @since 2.7.0
+     *
+     * @since 2.8.0 retrieve from the service container
      * @param string $propertyName
      *
      * @return mixed
      * @throws Exception
-     * @since 2.7.0
-     *
-     * @since 2.8.0 retrieve from the service container
      */
     public function __get($propertyName)
     {
@@ -517,13 +517,13 @@ final class Give
     /**
      * Magic methods are passed to the service container.
      *
-     * @param $arguments
+     * @since 2.8.0
      *
      * @param $name
      *
-     * @return mixed
-     * @since 2.8.0
+     * @param $arguments
      *
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
@@ -552,14 +552,14 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
- * @param class-string<T>|null $abstract Selector for data to retrieve from the service container
- *
- * @return Give|T
  * @since    2.8.0 add parameter for quick retrieval from container
  * @since    1.0
  *
  * @template T
  *
+ * @param class-string<T>|null $abstract Selector for data to retrieve from the service container
+ *
+ * @return Give|T
  */
 function give(string $abstract = null)
 {
