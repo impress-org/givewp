@@ -52,14 +52,14 @@ declare const window: {
  * @since 3.0.0
  */
 export default function getWindowData(): FormBuilderWindowData {
-    return window.storageData;
+    return window.giveStorageData;
 }
 
 /**
  * @since 3.0.0
  */
 export function getFormBuilderWindowData(): FormBuilderWindowData {
-    return window.storageData;
+    return window.giveStorageData;
 }
 
 /**
