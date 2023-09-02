@@ -30,6 +30,8 @@ export interface ListTablePageProps {
     paymentMode?: boolean;
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
+    columnFilters?: Array<ColumnFilterConfig>;
+    banner?: () => JSX.Element;
 }
 
 export interface FilterConfig {
@@ -42,6 +44,11 @@ export interface FilterConfig {
     inlineSize?: string;
     text?: string;
     options?: Array<{text: string; value: string}>;
+}
+
+export interface ColumnFilterConfig {
+    column: string;
+    filter: Function
 }
 
 export interface BulkActionsConfig {
@@ -72,6 +79,8 @@ export default function ListTablePage({
     paymentMode,
     listTableBlankSlate,
     productRecommendation,
+    columnFilters = [],
+    banner
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -201,6 +210,11 @@ export default function ListTablePage({
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
+                {banner && (
+                    <section role="banner">
+                        {banner()}
+                    </section>
+                )}
                 <section role="search" id={styles.searchContainer}>
                     {filterSettings.map((filter) => (
                         <Filter
@@ -233,6 +247,7 @@ export default function ListTablePage({
                                 testMode={testMode}
                                 listTableBlankSlate={listTableBlankSlate}
                                 productRecommendation={productRecommendation}
+                                columnFilters={columnFilters}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
