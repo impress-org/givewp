@@ -24,10 +24,7 @@ import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
-console.log('Core: ', setFormSettings);
-console.log('Core: ', useFormState);
-console.log('Core: ', useFormStateDispatch);
-
+// @ts-ignore
 window.givewp.form.settings = {setFormSettings, useFormState, useFormStateDispatch};
 
 const tabs = [
@@ -54,13 +51,7 @@ const tabs = [
                 <EmailSettings />
                 {/*The settings below have not been implemented yet.*/}
                 <OfflineDonationsSettings />
-                {wp.hooks.applyFilters(
-                    'givewp_form_builder_pdf_settings',
-                    '',
-                    setFormSettings,
-                    useFormState,
-                    useFormStateDispatch
-                )}
+                {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
             </>
         ),
     },
