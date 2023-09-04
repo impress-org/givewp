@@ -134,7 +134,6 @@ class LegacyServiceProvider implements ServiceProvider
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal/paypal-standard.php';
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
-        require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
         require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
         require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
         require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notifications.php';

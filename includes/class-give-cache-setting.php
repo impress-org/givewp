@@ -236,10 +236,6 @@ class Give_Cache_Setting {
 	public function setup_gateways_list() {
 		// Default, built-in gateways
 		$gateways = [
-			'manual'  => [
-				'admin_label'    => __( 'Test Donation', 'give' ),
-				'checkout_label' => __( 'Test Donation', 'give' ),
-			],
 			'offline' => [
 				'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
 				'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),

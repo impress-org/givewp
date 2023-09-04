@@ -60,13 +60,10 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerGateways()
     {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
-            if (!$registrar->hasPaymentGateway(TestGateway::id())) {
-                $registrar->registerGateway(TestGateway::class);
-            }
+            $registrar->registerGateway(TestGateway::class);
 
-            if (!$registrar->hasPaymentGateway(TestOffsiteGateway::id())) {
-                $registrar->registerGateway(TestOffsiteGateway::class);
-            }
+            // Enable as needed for testing but do not push to production
+            // $registrar->registerGateway(TestOffsiteGateway::class);
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
 

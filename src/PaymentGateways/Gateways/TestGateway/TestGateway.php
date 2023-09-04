@@ -23,7 +23,7 @@ class TestGateway extends PaymentGateway
      */
     public static function id(): string
     {
-        return 'test-gateway';
+        return 'manual';
     }
 
     /**
@@ -39,7 +39,7 @@ class TestGateway extends PaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway', 'give');
+        return __('Test Donations', 'give');
     }
 
     /**
@@ -66,7 +66,7 @@ class TestGateway extends PaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway', 'give');
+        return __('Test Donations', 'give');
     }
 
     /**
