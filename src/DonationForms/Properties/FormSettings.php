@@ -162,12 +162,12 @@ class FormSettings implements Arrayable, Jsonable
     public $donateButtonCaption;
 
     /**
-     * @var PdfSettings
+     * @var array
      */
     public $pdfSettings;
 
-
     /**
+     * @unreleased Add pdfSettings property
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -231,7 +231,7 @@ class FormSettings implements Arrayable, Jsonable
 
         $self->offlineDonationsInstructions = $array['offlineDonationsInstructions'] ?? '';
 
-        $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? PdfSettings::fromArray($array['pdfSettings']) : PdfSettings::fromArray([]);
+        $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
         return $self;
     }
