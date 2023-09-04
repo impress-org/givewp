@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * Class TestGateway
+ * @since 3.0.0 change to Test Donations and manual id to replace legacy gateway
  * @since 2.18.0
  */
 class TestGateway extends PaymentGateway

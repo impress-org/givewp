@@ -39,6 +39,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Load all the legacy class files since they don't have auto-loading
      *
+     * @since 3.0.0 remove the manual (Test Donations) gateway from loading in favor of the new Test Donations gateway
      * @since 2.8.0
      */
     private function includeLegacyFiles()
