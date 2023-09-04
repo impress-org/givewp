@@ -1,5 +1,6 @@
 import {FormStatus} from '@givewp/form-builder/types/formStatus';
 import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
+import {PdfSettings} from '@givewp/form-builder/types/pdfSettings';
 
 /**
  * @since 3.0.0
@@ -37,4 +38,5 @@ export type FormSettings = {
     offlineDonationsCustomize: boolean;
     offlineDonationsInstructions: string;
     donateButtonCaption: string;
+    pdfSettings: PdfSettings;
 };

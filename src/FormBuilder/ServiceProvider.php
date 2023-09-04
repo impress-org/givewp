@@ -10,6 +10,7 @@ use Give\FormBuilder\Actions\UpdateDonorCommentsMeta;
 use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
 use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\FormBuilder\Actions\UpdateFormGridMeta;
+use Give\FormBuilder\Actions\UpdatePdfSettingsMeta;
 use Give\FormBuilder\EmailPreview\Routes\RegisterEmailPreviewRoutes;
 use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\EditFormRoute;
@@ -61,6 +62,7 @@ class ServiceProvider implements ServiceProviderInterface
             give(UpdateEmailSettingsMeta::class)->__invoke($form);
             give(UpdateEmailTemplateMeta::class)->__invoke($form);
             give(UpdateDonorCommentsMeta::class)->__invoke($form);
+            give(UpdatePdfSettingsMeta::class)->__invoke($form);
         });
 
         Hooks::addAction('givewp_form_builder_new_form', ConvertGlobalDefaultOptionsToDefaultBlocks::class);
