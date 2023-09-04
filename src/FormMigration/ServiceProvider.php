@@ -100,7 +100,7 @@ class ServiceProvider implements ServiceProviderInterface
                     'changeUrl' => [
                         'type' => 'boolean',
                         'required' => false,
-                        'default' => false
+                        'default' => true
                     ],
                     'delete' => [
                         'type' => 'boolean',
@@ -109,7 +109,7 @@ class ServiceProvider implements ServiceProviderInterface
                     'redirect' => [
                         'type' => 'boolean',
                         'required' => false,
-                        'default' => false
+                        'default' => true
                     ],
                 ],
             ]);

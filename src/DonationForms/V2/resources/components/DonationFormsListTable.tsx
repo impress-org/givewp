@@ -227,16 +227,14 @@ export default function DonationFormsListTable() {
                 columnFilters={columnFilters}
                 banner={Onboarding}
             >
-                {!state.showBanner && (
-                    <div className={styles.tryNewFormBuilderBtnContainer}>
-                        <FormBuilderButton
-                            onClick={() => setState(prev => ({
-                                ...prev,
-                                showFeatureNoticeDialog: true
-                            }))}
-                        />
-                    </div>
-                )}
+                <div className={styles.tryNewFormBuilderBtnContainer}>
+                    <FormBuilderButton
+                        onClick={() => setState(prev => ({
+                            ...prev,
+                            showFeatureNoticeDialog: true
+                        }))}
+                    />
+                </div>
                 <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
