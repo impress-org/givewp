@@ -231,6 +231,8 @@ class Give_Donation_Form_Grid_Block {
             'progress_bar_color'  => $attributes['progressBarColor']
         );
 
+        array_walk($parameters['ids'], '_give_redirect_form_id');
+
 		$html = give_form_grid_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();
 
