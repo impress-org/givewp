@@ -21,9 +21,11 @@ export default function MultiStepForm({
         <form {...formProps}>
             {children}
 
-            <section className="givewp-layouts givewp-layouts-section">
-                {formError && <FormError error={formError} />}
-            </section>
+            {formError && (
+                <section className="givewp-layouts givewp-layouts-section">
+                    <FormError error={formError} />
+                </section>
+            )}
 
             {previousButton}
             {nextButton}
