@@ -33,6 +33,7 @@ class GatewayPaymentController
     }
 
     /**
+     * @since 3.0.0 Catch and handle errors from the gateway upstream
      * @since 2.27.0
      *
      * @throws Exception|TypeNotSupported|PaymentGatewayException
