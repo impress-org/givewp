@@ -7,6 +7,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\Actions\GetPaymentMethodFromRequest;
 use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
@@ -42,6 +43,7 @@ class RegisterPaymentGateways
         //TestGateway::class,
         //TestGatewayOffsite::class,
         PayPalStandard::class,
+        OfflineGateway::class,
     ];
 
     /**

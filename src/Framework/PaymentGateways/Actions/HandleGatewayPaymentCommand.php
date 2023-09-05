@@ -8,12 +8,14 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentPendingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentPending;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -47,6 +49,14 @@ class HandleGatewayPaymentCommand
 
         if ($command instanceof PaymentProcessing) {
             $handler = new PaymentProcessingHandler($command);
+
+            $handler->handle($donation);
+
+            return new RedirectResponse(give_get_success_page_uri());
+        }
+
+        if ($command instanceof PaymentPending) {
+            $handler = new PaymentPendingHandler($command);
 
             $handler->handle($donation);
 
