@@ -46,6 +46,7 @@ trait HandleHttpResponses
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
+     * @since 3.0.0 Update response with type and WP_Error errors.
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      */
@@ -66,6 +67,7 @@ trait HandleHttpResponses
                 $errors = new WP_Error($type, $exception->getMessage());
             }
 
+            // This structure works for v2 and v3 forms.
             wp_send_json_error([
                 'type' => $type,
                 'errors' => $errors,
@@ -73,6 +75,7 @@ trait HandleHttpResponses
             ]);
         }
 
+        // This is for backwards compatibility with v2 forms.
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
     }
