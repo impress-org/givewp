@@ -17,14 +17,14 @@ class TransferOptions
     public static function fromRequest(WP_REST_Request $request): self
     {
         return new self(
-            $request->get_param('changeUrl')
+            $request->get_param('delete')
         );
     }
 
     public static function fromArray($options): self
     {
         return new self(
-            $options['changeUrl']
+            $options['delete']
         );
     }
 
