@@ -7,6 +7,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\PaymentGateways\Actions\HandleGatewaySubscriptionCommand;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
@@ -34,29 +35,14 @@ class GatewaySubscriptionController
 
     /**
      * @since 2.27.0
+     *
+     * @throws Exception|TypeNotSupported|PaymentGatewayException
      */
     public function create(Donation $donation, Subscription $subscription, array $gatewayData = [])
     {
-        try {
-            $command = $this->gateway->createSubscription($donation, $subscription, $gatewayData);
-            $this->handleGatewayCommand($command, $donation, $subscription);
-        } catch (\Exception $exception) {
-            PaymentGatewayLog::error(
-                $exception->getMessage(),
-                [
-                    'Payment Gateway' => $this->gateway::id(),
-                    'Donation' => $donation->toArray(),
-                    'Subscription' => $subscription->toArray(),
-                ]
-            );
+        $command = $this->gateway->createSubscription($donation, $subscription, $gatewayData);
 
-            $message = __(
-                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
-                'give'
-            );
-
-            $this->handleExceptionResponse($exception, $message);
-        }
+        $this->handleGatewayCommand($command, $donation, $subscription);
     }
 
     /**

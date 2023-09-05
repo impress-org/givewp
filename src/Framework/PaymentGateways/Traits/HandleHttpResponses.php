@@ -2,9 +2,12 @@
 
 namespace Give\Framework\PaymentGateways\Traits;
 
+use Exception;
+use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use WP_Error;
 
 trait HandleHttpResponses
 {
@@ -46,16 +49,28 @@ trait HandleHttpResponses
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      */
-    public function handleExceptionResponse(\Exception $exception, string $message)
-    {
+    public function handleExceptionResponse(
+        Exception $exception,
+        string $message,
+        string $type = DonationFormErrorTypes::UNKNOWN,
+        WP_Error $errors = null
+    ) {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();
+            $type = DonationFormErrorTypes::GATEWAY;
         }
 
-        if (wp_doing_ajax()) {
+        if (wp_doing_ajax() || $this->wantsJson()) {
             $response = new JsonResponse($message);
+            if (!$errors) {
+                $errors = new WP_Error($type, $exception->getMessage());
+            }
 
-            $this->handleResponse($response);
+            wp_send_json_error([
+                'type' => $type,
+                'errors' => $errors,
+                'data' => $response->getData()
+            ]);
         }
 
         give_set_error('PaymentGatewayException', $message);
