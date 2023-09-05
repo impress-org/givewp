@@ -33,7 +33,5 @@ class TransferDonations
         DB::table('give_revenue')
             ->where('form_id', $this->sourceId)
             ->update(['form_id' => $destinationId]);
-
-        give_update_meta($destinationId, 'transferredFormId', true);
     }
 }

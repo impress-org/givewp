@@ -56,6 +56,8 @@ class TransferController
             if($options->shouldRedirect()) {
                 give_update_meta($v3FormId, 'redirectedFormId', $formV2->id);
             }
+
+            give_update_meta($v3FormId, 'transferredFormId', true);
         });
 
         return new WP_REST_Response(array('errors' => [], 'successes' => [

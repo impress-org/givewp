@@ -73,6 +73,8 @@ class TransferCommand
                     give_update_meta($formIdV3, 'redirectedFormId', $sourceId);
                 }
 
+                give_update_meta($formIdV3, 'transferredFormId', true);
+
                 if($isDryRun) {
                     DB::rollback();
                 }

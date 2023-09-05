@@ -216,7 +216,7 @@ class DonationFormsAdminPage
      */
     public function renderMigrationGuideBox(WP_Post $post)
     {
-        if ($post->post_type === 'give_forms') {  // todo include is form migrated check (&& ! give_is_form_migrated($post->ID))
+        if ($post->post_type === 'give_forms' && !_give_is_form_migrated($post->ID)) {
             echo '<div id="give-admin-edit-v2form"></div>';
         }
     }
