@@ -79,3 +79,7 @@ label {
 a:focus, [role=link]:focus {
   --background-color: transparent;
 }
+
+ul li {
+  list-style: disc;
+}
