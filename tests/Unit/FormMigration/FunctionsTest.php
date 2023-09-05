@@ -56,19 +56,19 @@ class FunctionsTest extends TestCase
         $this->assertFalse(_give_is_form_migrated($donationFormV2->id));
     }
 
-    public function testIsFormDonationsTransferred()
+    public function testIsFormTransferred()
     {
         $donationFormV2 = $this->createSimpleDonationForm();
         $donationFormV3 = DonationForm::factory()->create();
         give_update_meta($donationFormV3->id, 'transferredFormId', $donationFormV2->id);
 
-        $this->assertTrue(_give_is_form_donations_transferred($donationFormV2->id));
+        $this->assertTrue(_give_is_form_transferred($donationFormV2->id));
     }
 
-    public function testIsFormDonationsNotTransferred()
+    public function testIsFormNotTransferred()
     {
         $donationFormV2 = $this->createSimpleDonationForm();
 
-        $this->assertFalse(_give_is_form_donations_transferred($donationFormV2->id));
+        $this->assertFalse(_give_is_form_transferred($donationFormV2->id));
     }
 }
