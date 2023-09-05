@@ -2,6 +2,7 @@
 
 namespace Give\FormMigration\Actions;
 
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 
 class TransferDonations
@@ -25,6 +26,10 @@ class TransferDonations
 
     public function __invoke($destinationId)
     {
+        DB::table('posts')
+            ->where('ID', $destinationId)
+            ->update(['post_status' => DonationFormStatus::UPGRADED]);
+
         DB::table('give_donationmeta')
             ->where('meta_key', '_give_payment_form_id')
             ->where('meta_value', $this->sourceId)
