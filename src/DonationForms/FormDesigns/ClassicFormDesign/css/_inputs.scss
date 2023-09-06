@@ -68,6 +68,27 @@ textarea {
     }
 }
 
+input[type="file"] {
+    --form-element-spacing-horizontal: 0;
+    border: 0.078rem solid transparent;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    height: auto;
+    padding: 0 !important;
+
+    &::file-selector-button {
+        --form-element-spacing-horizontal: 1rem;
+        background-color: var(--givewp-primary-color);
+        border-color: var(--givewp-primary-color);
+        font-size: 0.875rem;
+    }
+
+    &[aria-invalid="true"],
+    &:invalid {
+        border-color: red;
+    }
+}
+
 button[type="submit"] {
     display: flex;
     justify-content: center;
