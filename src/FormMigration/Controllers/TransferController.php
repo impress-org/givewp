@@ -43,18 +43,11 @@ class TransferController
                 )
             );
 
+            TransferFormUrl::from($formV2->id)->to($v3FormId);
             TransferDonations::from($formV2->id)->to($v3FormId);
-
-            if($options->shouldChangeUrl()) {
-                TransferFormUrl::from($formV2->id)->to($v3FormId);
-            }
 
             if($options->shouldDelete()) {
                 wp_trash_post($formV2->id);
-            }
-
-            if($options->shouldRedirect()) {
-                give_update_meta($v3FormId, 'redirectedFormId', $formV2->id);
             }
 
             give_update_meta($v3FormId, 'transferredFormId', true);

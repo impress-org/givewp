@@ -172,6 +172,8 @@ class Give_Donation_Form_Block {
 		$parameters['display_style']         = $attributes['displayStyle'];
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
+        _give_redirect_form_id($parameters['id']);
+
 		return give_form_shortcode( $parameters );
 	}
 

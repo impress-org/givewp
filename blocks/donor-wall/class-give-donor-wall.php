@@ -234,6 +234,8 @@ class Give_Donor_Wall_Block {
             'show_time'         => $attributes['showTimestamp'],
 		];
 
+        array_walk($parameters['form_id'], '_give_redirect_form_id');
+
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();
 

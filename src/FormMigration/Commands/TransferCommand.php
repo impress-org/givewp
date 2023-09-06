@@ -46,9 +46,7 @@ class TransferCommand
 
 
         $options = TransferOptions::fromArray([
-            'changeUrl' => (bool) get_flag_value($assoc_args, 'changeUrl'),
             'delete' => (bool) get_flag_value($assoc_args, 'delete'),
-            'redirect' => (bool) get_flag_value($assoc_args, 'redirect'),
         ]);
 
         $isDryRun = get_flag_value($assoc_args, 'dry-run');
@@ -59,18 +57,11 @@ class TransferCommand
 
         try {
             DB::transaction(function() use ($formIdV3, $sourceId, $options, $isDryRun) {
+                TransferFormUrl::from($sourceId)->to($formIdV3);
                 TransferDonations::from($sourceId)->to($formIdV3);
-
-                if($options->shouldChangeUrl()) {
-                    TransferFormUrl::from($sourceId)->to($formIdV3);
-                }
 
                 if($options->shouldDelete()) {
                     wp_trash_post($sourceId);
-                }
-
-                if($options->shouldRedirect()) {
-                    give_update_meta($formIdV3, 'redirectedFormId', $sourceId);
                 }
 
                 give_update_meta($formIdV3, 'transferredFormId', true);
