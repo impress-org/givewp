@@ -311,4 +311,22 @@ class DonateControllerData
             'zip' => $this->zip,
         ]);
     }
+
+    /**
+     * @since 3.0.0
+     */
+    public function has(string $name): bool
+    {
+        return isset($this->{$name});
+    }
+
+    /**
+     * @since 3.0.0
+     *
+     * @return mixed|null
+     */
+    public function get(string $name)
+    {
+        return property_exists($this, $name) ? $this->{$name} : null;
+    }
 }
