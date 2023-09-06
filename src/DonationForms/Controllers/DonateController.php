@@ -10,6 +10,7 @@ use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * @since 3.0.0
@@ -59,6 +60,8 @@ class DonateController
             $donation->save();
 
             do_action('givewp_donate_controller_donation_created', $formData, $donation);
+
+            $subscription = Subscription::find($subscription->id);
 
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
