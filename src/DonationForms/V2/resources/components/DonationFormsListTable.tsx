@@ -22,6 +22,7 @@ declare global {
             table: { columns: Array<object> };
             pluginUrl: string;
             showBanner: boolean;
+            isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
         };
