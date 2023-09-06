@@ -81,6 +81,7 @@ export default function ListTablePage({
         action: (selected) => {},
         label: '',
     });
+    const [selectedAction, setSelectedAction] = useState<string>('');
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
@@ -129,10 +130,10 @@ export default function ListTablePage({
             bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
         }
 
-        const formData = new FormData(event.target);
-        const action = formData.get('giveListTableBulkActions');
-        const actionIndex = bulkActions.findIndex((config) => action == config.value);
+        const actionIndex = bulkActions.findIndex((config) => selectedAction === config.value);
+
         if (actionIndex < 0) return;
+
         const selected = [];
         const names = [];
         checkboxRefs.current.forEach((checkbox) => {
@@ -171,18 +172,21 @@ export default function ListTablePage({
         />
     );
 
-    const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => (
-        <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-            <BulkActionSelect
-                parameters={parameters}
-                data={data}
-                bulkActions={bulkActions}
-                showModal={openBulkActionModal}
-            />
-            {PageActionsTop && testModeFilter && <TestModeFilter />}
-            {page && setPage && showPagination()}
-        </div>
-    );
+    const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
+        return (
+            <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
+                <BulkActionSelect
+                    selectedState={[selectedAction, setSelectedAction]}
+                    parameters={parameters}
+                    data={data}
+                    bulkActions={bulkActions}
+                    showModal={openBulkActionModal}
+                />
+                {PageActionsTop && testModeFilter && <TestModeFilter />}
+                {page && setPage && showPagination()}
+            </div>
+        );
+    };
 
     const TestModeFilter = () => (
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />

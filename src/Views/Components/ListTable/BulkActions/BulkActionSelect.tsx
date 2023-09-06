@@ -2,10 +2,9 @@ import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage
 import styles from './BulkActionSelect.module.scss';
 import {__} from '@wordpress/i18n';
 import Select from '@givewp/components/ListTable/Select';
-import {useState} from 'react';
 
-export const BulkActionSelect = ({bulkActions = null, showModal, data, parameters}) => {
-    const [selectedState, setSelectedState] = useState();
+export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
+    const [selectedAction, setSelectedAction] = selectedState;
 
     if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
         bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
@@ -16,12 +15,12 @@ export const BulkActionSelect = ({bulkActions = null, showModal, data, parameter
     }
 
     const changeSelected = (event) => {
-        setSelectedState(event.target.value);
+        setSelectedAction(event.target.value);
     };
 
     return (
         <form id={styles.bulkActionsForm} onSubmit={showModal}>
-            <Select name="giveListTableBulkActions" value={selectedState} onChange={changeSelected}>
+            <Select value={selectedAction} onChange={changeSelected}>
                 <option value="">{__('Bulk Actions', 'give')}</option>
                 {bulkActions.map((action) => {
                     if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
