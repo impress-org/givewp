@@ -112,7 +112,7 @@ class TestListDonationForms extends TestCase
             $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
             $expectedItem['permalink'] = get_permalink($donationForm->id);
 
-            $expectedItem['migrated'] = false; // Added for Form Migrations.
+            $expectedItem['v3form'] = (bool)give_get_meta($donationForm->id, 'formBuilderSettings');
 
             $expectedItems[] = $expectedItem;
         }
