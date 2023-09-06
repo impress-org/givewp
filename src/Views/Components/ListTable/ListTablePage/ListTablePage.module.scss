@@ -173,7 +173,7 @@
     display: flex;
     align-items: center;
 
-    .tooltipContainer {
+    .iconContainer {
         position: relative;
         display: flex;
         align-items: center;
@@ -182,34 +182,6 @@
             margin-right: 5px;
             fill: #3A21D9;
         }
-    }
-
-
-    .tooltip {
-        display: none;
-        position: absolute;
-        width: 300px;
-        bottom: 25px;
-        left: -10px;
-        background-color: #19661c;
-        color: #fff;
-        padding: 1rem;
-        border-radius: 4px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
-    }
-
-    .tooltip::after {
-        content: " ";
-        position: absolute;
-        top: 100%;
-        left: 14px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #19661c transparent transparent transparent;
-    }
-
-    .tooltipContainer:hover .tooltip {
-        display: unset;
     }
 }
 
