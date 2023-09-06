@@ -40,8 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormGrid::class,
                 Steps\OfflineDonations::class,
                 Steps\PaymentGateways::class,
-                // TODO: this step was causing errors, so I commented it out
-                //Steps\EmailSettings::class,
+                Steps\EmailSettings::class,
             ]);
         });
     }
