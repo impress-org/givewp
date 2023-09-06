@@ -21,29 +21,31 @@ export default function EditForm() {
                 isEditing={true}
             />
 
-            <div className={styles.migrationGuideBox}>
-                <div className={styles.migrationGuideTitle}>
-                    <CompassIcon />
-                    {__('Migration Guide', 'give')}
-                </div>
+            {!window.GiveDonationForms.isMigrated && (
+                <div className={styles.migrationGuideBox}>
+                    <div className={styles.migrationGuideTitle}>
+                        <CompassIcon />
+                        {__('Migration Guide', 'give')}
+                    </div>
 
-                <div className={styles.migrationGuideContent}>
-                    {__('Easily upgrade your form to support the new form builder', 'give')}
-                </div>
+                    <div className={styles.migrationGuideContent}>
+                        {__('Easily upgrade your form to support the new form builder', 'give')}
+                    </div>
 
-                <Button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setState({
-                            upgrading: true,
-                            show: true
-                        });
-                    }}
-                    style={{width: '100%'}}
-                >
-                    {__('Upgrade this form', 'give')}
-                </Button>
-            </div>
+                    <Button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setState({
+                                upgrading: true,
+                                show: true
+                            });
+                        }}
+                        style={{width: '100%'}}
+                    >
+                        {__('Upgrade this form', 'give')}
+                    </Button>
+                </div>
+            )}
         </>
     )
 }

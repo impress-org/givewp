@@ -133,7 +133,7 @@ class ListDonationForms extends Endpoint
                 $item['name'] = get_the_title($item['id']);
                 $item['edit'] = get_edit_post_link($item['id'], 'edit');
                 $item['permalink'] = get_permalink($item['id']);
-                $item['migrated'] = (bool)give_get_meta($item['id'], 'migratedFormId');
+                $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
             }
         }
 

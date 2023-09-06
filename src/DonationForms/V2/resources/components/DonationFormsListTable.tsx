@@ -22,6 +22,7 @@ declare global {
             table: { columns: Array<object> };
             pluginUrl: string;
             showBanner: boolean;
+            isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
         };
@@ -81,14 +82,11 @@ const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
         filter: item => {
-            if (item?.migrated) {
+            if (item?.v3form) {
                 return (
                     <div className={styles.migratedForm}>
-                        <div className={styles.tooltipContainer}>
+                        <div className={styles.iconContainer}>
                             <CubeIcon />
-                            <div className={styles.tooltip}>
-                                {__('This icon indicates that this is an upgraded form, which uses the new form builder', 'give')}
-                            </div>
                         </div>
                         <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                     </div>

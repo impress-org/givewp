@@ -129,6 +129,7 @@ class DonationFormsAdminPage
             'supportedGateways' => $this->getSupportedGateways(),
             'migrationApiRoot' => $this->migrationApiRoot,
             'apiNonce' => $this->apiNonce,
+            'isMigrated' => _give_is_form_migrated((int)$_GET['post'])
         ];
 
         EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
@@ -216,7 +217,7 @@ class DonationFormsAdminPage
      */
     public function renderMigrationGuideBox(WP_Post $post)
     {
-        if ($post->post_type === 'give_forms' && !_give_is_form_migrated($post->ID)) {
+        if ($post->post_type === 'give_forms') {
             echo '<div id="give-admin-edit-v2form"></div>';
         }
     }
