@@ -4,10 +4,8 @@ import {__} from '@wordpress/i18n';
 import Select from '@givewp/components/ListTable/Select';
 import {useState} from 'react';
 
-let selected = '';
-
 export const BulkActionSelect = ({bulkActions = null, showModal, data, parameters}) => {
-    const [selectedState, setSelectedState] = useState(selected);
+    const [selectedState, setSelectedState] = useState();
 
     if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
         bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
@@ -18,7 +16,6 @@ export const BulkActionSelect = ({bulkActions = null, showModal, data, parameter
     }
 
     const changeSelected = (event) => {
-        selected = event.target.value;
         setSelectedState(event.target.value);
     };
 
