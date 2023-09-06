@@ -43,7 +43,7 @@ export const BulkActionCheckbox = ({id, name, singleName}) => {
 };
 
 export const BulkActionCheckboxAll = ({pluralName, data}) => {
-    const checkboxRefs = useContext(CheckboxContext);
+    const checkboxRefs = useContext<CheckboxContextProps>(CheckboxContext);
     const [checked, setChecked] = useState(false);
     // reset the 'Select all' checkbox when table contents change
     useEffect(() => {
@@ -66,9 +66,22 @@ export const BulkActionCheckboxAll = ({pluralName, data}) => {
     );
 };
 
-const toggleAllRowCheckboxes = (event, checkboxRefs, setChecked, checked) => {
+const toggleAllRowCheckboxes: ToggleAllRowCheckboxesProps = (_event, checkboxRefs, setChecked, checked) => {
     checkboxRefs.current.forEach((checkbox) => {
         checkbox.checked = !checked;
     });
     setChecked(!checked);
 };
+
+type CheckboxContextProps = {
+    current: HTMLInputElement[];
+};
+
+interface ToggleAllRowCheckboxesProps {
+    (
+        event: React.ChangeEvent<HTMLInputElement>,
+        checkboxRefs: CheckboxContextProps,
+        setChecked: React.Dispatch<React.SetStateAction<boolean>>,
+        checked: boolean
+    ): void;
+}
