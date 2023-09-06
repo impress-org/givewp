@@ -16,7 +16,7 @@ class FunctionsTest extends TestCase
     {
         $donationFormV2 = $this->createSimpleDonationForm();
         $donationFormV3 = DonationForm::factory()->create();
-        give_update_meta($donationFormV3->id, 'redirectedFormId', $donationFormV2->id);
+        give_update_meta($donationFormV3->id, 'transferredFormId', $donationFormV2->id);
 
         $formId = $donationFormV2->id;
 
@@ -29,7 +29,7 @@ class FunctionsTest extends TestCase
     {
         $donationFormV2 = $this->createSimpleDonationForm();
         $donationFormV3 = DonationForm::factory()->create();
-        give_update_meta($donationFormV3->id, 'redirectedFormId', $donationFormV2->id);
+        give_update_meta($donationFormV3->id, 'transferredFormId', $donationFormV2->id);
 
         $formId = $donationFormV2->id;
         $atts['id'] = $donationFormV2->id;
