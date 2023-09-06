@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-1);
+    width: 100%;
 
     legend {
         font-size: var(--givewp-font-size-paragraph-lg);
@@ -175,5 +176,23 @@ input[type="checkbox"] {
         background-position: center;
         background-size: 0.75em auto;
         background-repeat: no-repeat;
+    }
+}
+
+input[type="file"] {
+    border: 0.078rem solid transparent;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    height: auto;
+
+    &::file-selector-button {
+        background-color: var(--givewp-primary-color);
+        border-color: var(--givewp-primary-color);
+        font-size: 0.875rem;
+    }
+
+    &[aria-invalid="true"],
+    &:invalid {
+        border-color: var(--form-element-invalid-border-color);
     }
 }

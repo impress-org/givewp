@@ -42,6 +42,10 @@ export interface FieldHasDescriptionProps extends FieldProps {
     description: string;
 }
 
+export interface FileProps extends FieldHasDescriptionProps {
+    allowedMimeTypes: string[];
+}
+
 export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
     dateFormat: string;
 }

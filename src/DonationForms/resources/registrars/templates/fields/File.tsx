@@ -1,13 +1,13 @@
-import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
+import {FileProps} from '@givewp/forms/propTypes';
 
 export default function File({
     Label,
+    allowedMimeTypes,
     ErrorMessage,
     fieldError,
-    placeholder,
     description,
     inputProps,
-}: FieldHasDescriptionProps) {
+}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {setValue} = window.givewp.form.hooks.useFormContext();
     const {name} = inputProps;
@@ -20,9 +20,7 @@ export default function File({
             <input
                 type="file"
                 aria-invalid={fieldError ? 'true' : 'false'}
-                // TODO: Update with accept prop
-                //accept="image/png, image/jpeg"
-                placeholder={placeholder}
+                accept={allowedMimeTypes.join(',')}
                 onChange={(e) => {
                     setValue(name, e.target.files[0]);
                 }}
