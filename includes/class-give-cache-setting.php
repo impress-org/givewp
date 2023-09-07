@@ -230,7 +230,7 @@ class Give_Cache_Setting {
 	 *
 	 * Note: use give_get_enabled_payment_gateways function to get list of registered gateway.
 	 *
-   * @since 3.0.0 test and offline gateways are defaulted in the new Gateway API
+     * @since 3.0.0 test and offline gateways are defaulted in the new Gateway API
 	 * @since 2.4.0
 	 * @since 2.15.0 Set payment gateway checkout label to  admin defined payment gateway checkout label.
 	 */

@@ -30,9 +30,10 @@ class HandleGatewayPaymentCommand
     /**
      * Handle gateway command
      *
+     * @since 3.0.0 Handle PaymentPending command
      * @since 2.29.0 Handle PaymentRefunded command
-     * @since      2.27.0 return responses
-     * @since      2.18.0
+     * @since 2.27.0 return responses
+     * @since 2.18.0
      *
      * @return JsonResponse|RedirectResponse
      * @throws TypeNotSupported|Exception
