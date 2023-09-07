@@ -22,7 +22,9 @@ export default function Amount({
     allowCustomAmount,
     messages,
 }: AmountProps) {
-    const [customAmountValue, setCustomAmountValue] = useState<string>('');
+    const isFixedAmount = !allowLevels;
+    const [customAmountValue, setCustomAmountValue] = useState<string>(
+      isFixedAmount ? fixedAmountValue.toString() : '');
     const {useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
@@ -36,8 +38,6 @@ export default function Amount({
 
         return getAmountLevelsWithCurrencySettings(levels, currency, currencySwitcherSettings);
     }, [currency]);
-
-    const isFixedAmount = !allowLevels;
 
     const resetCustomAmount = useCallback(() => {
         if (customAmountValue !== '') {
@@ -82,7 +82,7 @@ export default function Amount({
             {allowCustomAmount && (
                 <CustomAmount
                     fieldError={fieldError}
-                    defaultValue={isFixedAmount ? fixedAmountValue : null}
+                    defaultValue={customAmountValue}
                     currency={currency}
                     value={customAmountValue}
                     onValueChange={(value) => {
