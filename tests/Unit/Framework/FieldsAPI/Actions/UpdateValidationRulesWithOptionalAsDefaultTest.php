@@ -41,22 +41,36 @@ class UpdateValidationRulesWithOptionalAsDefaultTest extends TestCase
 
         $action = new UpdateValidationRulesWithOptionalAsDefault();
 
-        $this->assertFalse($action($requiredField->getValidationRules())->hasRule('optional'));
-        $this->assertTrue($action($notRequiredField->getValidationRules())->hasRule('optional'));
+        $requiredFieldRules = $action($requiredField->getValidationRules());
+        $this->assertFalse($requiredFieldRules->hasRule('optional'));
+        $this->assertCount(1, $requiredFieldRules->getRules());
 
-        $this->assertTrue($action($alreadyOptionalField->getValidationRules())->hasRule('optional'));
-        $this->assertCount(1, $action($alreadyOptionalField->getValidationRules())->getRules());
+        $notRequiredFieldRules = $action($notRequiredField->getValidationRules());
+        $this->assertTrue($notRequiredFieldRules->hasRule('optional'));
+        $this->assertCount(2, $notRequiredFieldRules->getRules());
+
+        $alreadyOptionalFieldRules = $action($alreadyOptionalField->getValidationRules());
+        $this->assertTrue($alreadyOptionalFieldRules->hasRule('optional'));
+        $this->assertCount(1, $alreadyOptionalFieldRules->getRules());
 
         $excludeUnlessFieldRules = $action($excludeUnlessField->getValidationRules())->getRules();
         $this->assertInstanceOf(ExcludeUnless::class, $excludeUnlessFieldRules[0]);
+        $this->assertEquals($excludeUnlessFieldRules[0], ExcludeUnless::fromString('required_field,foo'));
         $this->assertInstanceOf(Optional::class, $excludeUnlessFieldRules[1]);
+        $this->assertCount(2, $excludeUnlessFieldRules);
 
         $excludeIfFieldRules = $action($excludeIfField->getValidationRules())->getRules();
         $this->assertInstanceOf(ExcludeIf::class, $excludeIfFieldRules[0]);
+        $this->assertEquals($excludeIfFieldRules[0], ExcludeIf::fromString('required_field,foo'));
         $this->assertInstanceOf(Optional::class, $excludeIfFieldRules[1]);
+        $this->assertCount(2, $excludeIfFieldRules);
 
-        $excludeUnlessFieldWithAlreadyOptionalRules = $action($excludeUnlessFieldWithAlreadyOptional->getValidationRules())->getRules();
+        $excludeUnlessFieldWithAlreadyOptionalRules = $action(
+            $excludeUnlessFieldWithAlreadyOptional->getValidationRules()
+        )->getRules();
         $this->assertInstanceOf(ExcludeUnless::class, $excludeUnlessFieldWithAlreadyOptionalRules[0]);
+        $this->assertEquals($excludeUnlessFieldRules[0], ExcludeUnless::fromString('required_field,foo'));
         $this->assertInstanceOf(Optional::class, $excludeUnlessFieldWithAlreadyOptionalRules[1]);
+        $this->assertCount(2, $excludeUnlessFieldWithAlreadyOptionalRules);
     }
 }
