@@ -315,94 +315,132 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $field
 		 * @param $settings
 		 */
-		public function render_enabled_gateways( $field, $settings ) {
-			$id              = $field['id'];
-			$gateways        = give_get_ordered_payment_gateways( give_get_payment_gateways() );
-			$gateways_label  = give_get_option( 'gateways_label', [] );
-			$default_gateway = give_get_option( 'default_gateway', current( array_keys( $gateways ) ) );
+        public function render_enabled_gateways($field, $settings)
+        {
+            $id = $field['id'];
+            $gateways = give_get_ordered_payment_gateways(give_get_payment_gateways());
+            $gateways_label = give_get_option('gateways_label', []);
+            $default_gateway = give_get_option('default_gateway', current(array_keys($gateways)));
 
-			ob_start();
+            $current_page = give_get_current_setting_page();
+            $current_tab = give_get_current_setting_tab();
+            $current_section = give_get_current_setting_section();
 
-			echo '<div class="gateway-enabled-wrap">';
+            $groups = [
+                'give-v2' => __('Option-Based Form Editor', 'give'),
+                'give-v3' => __('Visual Form Builder', 'give'),
+            ];
+            $defaultGroup = current(array_keys($groups));
 
-			echo '<div class="gateway-enabled-settings-title">';
-			printf(
-				'
-						<span></span>
-						<span>%1$s</span>
-						<span>%2$s</span>
-						<span>%3$s</span>
-						<span>%4$s</span>
-						',
-				__( 'Gateway', 'give' ),
-				__( 'Label', 'give' ),
-				__( 'Default', 'give' ),
-				__( 'Enabled', 'give' )
-			);
-			echo '</div>';
+            ob_start();
 
-			echo '<ul class="give-checklist-fields give-payment-gatways-list">';
-			foreach ( $gateways as $key => $option ) :
-				$enabled = null;
-                if (is_array($settings) && array_key_exists($key, $settings)) {
-                    $enabled = '1';
-                }
+            echo '<h4>' . $field['title'] . '</h4>';
+            echo '<div class="give-settings-section-content">';
+            echo '<div class="give-settings-section-group-menu">';
+            echo '<ul>';
+            foreach ($groups as $slug => $group) {
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $active_class = ($slug === $current_group) ? 'active' : '';
 
-                echo '<li>';
-                printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
-                printf(
-                    '<span class="admin-label">%1$s %2$s</span>',
-                    esc_html($option['admin_label']),
-                    !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
-                        esc_attr($option['admin_tooltip'])
-                    ) : ''
+                echo sprintf(
+                    '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
+                    esc_html($active_class),
+                    esc_url(
+                        admin_url(
+                            "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}"
+                        )
+                    ),
+                    esc_html($slug),
+                    esc_html($group)
                 );
-
-                $label = '';
-                if (!empty($gateways_label[$key])) {
-                    $label = $gateways_label[$key];
-                }
-
-                printf(
-                    '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
-                    'gateways_label',
-                    esc_attr($key),
-                    esc_html($label),
-                    esc_html($option['checkout_label'])
-                );
-
-                printf(
-                    '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
-                    'default_gateway',
-                    $key,
-                    checked($key, $default_gateway, false),
-                    disabled(null, $enabled, false)
-                );
-
-                printf(
-                    '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
-                    esc_attr($id),
-                    esc_attr($key),
-                    checked('1', $enabled, false),
-                    esc_html($option['admin_label'])
-                );
-                echo '</li>';
-            endforeach;
-            echo '</ul>';
-
-            echo '</div>'; // end gateway-enabled-wrap.
-
-            if (defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '<')) {
-                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) GiveWP 3.0 is coming! In preparation for that, gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
-            } else {
-                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) Gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
             }
+            echo '</ul>';
+            echo '</div>';
 
-            printf(
-                '<tr><th>%1$s</th><td>%2$s</td></tr>',
-                $field['title'],
-                ob_get_clean()
-            );
+            echo '<div class="give-settings-section-group-content">';
+            foreach (array_keys($groups) as $group) :
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $hide_class = $group !== $current_group ? 'give-hidden' : '';
+
+                printf(
+                    '<div id="give-settings-section-group-%1$s" class="give-settings-section-group %2$s">',
+                    esc_attr($group),
+                    esc_html($hide_class)
+                );
+
+                echo '<div class="gateway-enabled-wrap">';
+                echo '<div class="gateway-enabled-settings-title">';
+                printf(
+                    '
+                            <span></span>
+                            <span>%1$s</span>
+                            <span>%2$s</span>
+                            <span>%3$s</span>
+                            <span>%4$s</span>
+                            ',
+                    __('Gateway', 'give'),
+                    __('Label', 'give'),
+                    __('Default', 'give'),
+                    __('Enabled', 'give')
+                );
+                echo '</div>';
+
+                echo '<ul class="give-checklist-fields give-payment-gatways-list">';
+                foreach ($gateways as $key => $option) :
+                    $enabled = null;
+                    if (is_array($settings) && array_key_exists($key, $settings)) {
+                        $enabled = '1';
+                    }
+
+                    echo '<li>';
+                    printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
+                    printf(
+                        '<span class="admin-label">%1$s %2$s</span>',
+                        esc_html($option['admin_label']),
+                        !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
+                            esc_attr($option['admin_tooltip'])
+                        ) : ''
+                    );
+
+                    $label = '';
+                    if (!empty($gateways_label[$key])) {
+                        $label = $gateways_label[$key];
+                    }
+
+                    printf(
+                        '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
+                        'gateways_label',
+                        esc_attr($key),
+                        esc_html($label),
+                        esc_html($option['checkout_label'])
+                    );
+
+                    printf(
+                        '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
+                        'default_gateway',
+                        $key,
+                        checked($key, $default_gateway, false),
+                        disabled(null, $enabled, false)
+                    );
+
+                    printf(
+                        '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
+                        esc_attr($id),
+                        esc_attr($key),
+                        checked('1', $enabled, false),
+                        esc_html($option['admin_label'])
+                    );
+                    echo '</li>';
+                endforeach;
+                echo '</ul>';
+
+                echo '</div>'; // end gateway-enabled-wrap.
+                echo '</div>'; // end give-settings-section-group-content.
+            endforeach;
+
+            echo '</div>'; // end give-settings-section-content.
+
+            printf('<tr><td colspan="2" style="padding: 0">%s</td></tr>', ob_get_clean());
         }
 	}
 
