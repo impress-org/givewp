@@ -20,11 +20,11 @@ class UpdateValidationRulesWithOptionalAsDefault
      */
     public function __invoke(ValidationRuleSet $rules): ValidationRuleSet
     {
-        if (!$rules->hasRules()) {
+        if (!$rules->hasRules() || $rules->hasRule('optional')) {
             return $rules;
         }
 
-        if (!$rules->hasRule('required') && !$rules->hasRule('optional')) {
+        if (!$rules->hasRule('required')) {
             $rules->prependRule('optional');
         }
 

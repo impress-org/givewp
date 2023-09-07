@@ -37,7 +37,7 @@ class UpdateValidationRulesWithOptionalAsDefaultTest extends TestCase
             ->rules('excludeUnless:required_field,foo');
 
         $excludeUnlessFieldWithAlreadyOptional = Text::make('excludeUnless_field')
-            ->rules('optional', 'excludeUnless:required_field,foo');
+            ->rules('excludeUnless:required_field,foo', 'optional');
 
         $action = new UpdateValidationRulesWithOptionalAsDefault();
 
