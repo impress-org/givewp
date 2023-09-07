@@ -240,10 +240,6 @@ class Give_Cache_Setting {
 				'admin_label'    => __( 'Test Donation', 'give' ),
 				'checkout_label' => __( 'Test Donation', 'give' ),
 			],
-//			'offline' => [
-//				'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-//				'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
-//			],
 		];
 
 		/**
