@@ -37,7 +37,7 @@ class TransferController
                     JOIN `{$wpdb->posts}`
                         ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
                     WHERE `post_status` != 'trash'
-                      AND `meta_key` = 'transferredFormId'
+                      AND `meta_key` = 'migratedFormId'
                       AND `meta_value` = %d",
                     $formV2->id
                 )
