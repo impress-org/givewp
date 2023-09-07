@@ -78,7 +78,7 @@ function OfflineInspectorControls({
                         />
                     </PanelRow>
                 )}
-                {!attributes.offlineUseGlobalInstructions && (
+                {attributes.offlineEnabled && !attributes.offlineUseGlobalInstructions && (
                     <PanelRow>
                         <ControlForPopover
                             id="offline-donation-instructions"

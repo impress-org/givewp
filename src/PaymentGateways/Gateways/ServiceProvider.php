@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\PaymentGateways\Gateways\Offline\Actions\DisableGatewayWhenDisabledPerForm;
 use Give\PaymentGateways\Gateways\Offline\Actions\EnqueueOfflineFormBuilderScripts;
 use Give\PaymentGateways\Gateways\Offline\Actions\UpdateOfflineMetaFromFormBuilder;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
@@ -155,5 +156,12 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueOfflineFormBuilderScripts::class);
         Hooks::addAction('givewp_form_builder_updated', UpdateOfflineMetaFromFormBuilder::class);
+        Hooks::addFilter(
+            'givewp_donation_form_enabled_gateways',
+            DisableGatewayWhenDisabledPerForm::class,
+            '__invoke',
+            10,
+            2
+        );
     }
 }

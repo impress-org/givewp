@@ -4,6 +4,14 @@ namespace Give\PaymentGateways\Gateways\Offline\Actions;
 
 use Give\DonationForms\Models\DonationForm;
 
+/**
+ * Updates the Offline gateway meta based on the form builder settings. This is done in order to use the legacy
+ * instructions function.
+ *
+ * @unreleased
+ *
+ * @see give_get_offline_payment_instruction()
+ */
 class UpdateOfflineMetaFromFormBuilder
 {
     public function __invoke(DonationForm $form)
