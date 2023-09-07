@@ -23,7 +23,7 @@ class DonationConfirmationReceiptViewModelTest extends TestCase
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create();
-        $donationFormRepository = new DonationFormRepository(give(PaymentGatewayRegister::class));
+        $donationFormRepository = give(DonationFormRepository::class);
         $donation = Donation::factory()->create([
             'formId' => $donationForm->id,
         ]);
