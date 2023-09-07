@@ -27,8 +27,10 @@ class TransferDonations
     public function __invoke($destinationId)
     {
         DB::transaction(function() use ($destinationId) {
+
+            // Mark the v2 form as "upgraded".
             DB::table('posts')
-                ->where('ID', $destinationId)
+                ->where('ID', $this->sourceId)
                 ->update(['post_status' => DonationFormStatus::UPGRADED]);
 
             DB::table('give_donationmeta')
