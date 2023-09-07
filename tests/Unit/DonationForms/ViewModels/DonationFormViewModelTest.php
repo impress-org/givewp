@@ -33,7 +33,7 @@ class DonationFormViewModelTest extends TestCase
             'settings' => FormSettings::fromArray(['designId' => $formDesign::id()]),
         ]);
 
-        $donationFormRepository = new DonationFormRepository((new PaymentGatewayRegister));
+        $donationFormRepository = give(DonationFormRepository::class);
 
         $donationFormGoalData = new DonationFormGoalData($donationForm->id, $donationForm->settings);
         $totalRevenue = $donationFormRepository->getTotalRevenue($donationForm->id);
