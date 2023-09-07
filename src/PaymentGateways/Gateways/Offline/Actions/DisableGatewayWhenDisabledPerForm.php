@@ -34,6 +34,10 @@ class DisableGatewayWhenDisabledPerForm
             throw new RuntimeException('Payment gateways block not found');
         }
 
+        if (!$paymentGatewaysBlock->hasAttribute('offlineEnabled')) {
+            return $gateways;
+        }
+
         ['offlineEnabled' => $enabled] = $paymentGatewaysBlock->getAttributes();
 
         if (!$enabled) {
