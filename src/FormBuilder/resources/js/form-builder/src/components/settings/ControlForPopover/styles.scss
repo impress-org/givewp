@@ -1,10 +1,17 @@
 .givewp-control-popover-setting-button {
   transition: all 0.2s;
-  &:hover, &--active {
-    background-color: #3D5A66;
+
+  &--has-caption {
+    border: 1px solid var(--givewp-grey-400);
+  }
+
+  &:hover,
+  &--active {
+    background-color: #3d5a66;
     color: #fff;
-    &:not([aria-disabled=true]):active {
-      background-color: #3D5A66;
+
+    &:not([aria-disabled='true']):active {
+      background-color: #3d5a66;
       color: #fff;
     }
   }

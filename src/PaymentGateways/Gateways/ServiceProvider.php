@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\PaymentGateways\Gateways\Offline\Actions\EnqueueOfflineFormBuilderScripts;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
@@ -83,6 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
         $this->addStripeFormBuilderHooks();
+        $this->bootOfflineDonations();
     }
 
       /**
@@ -146,5 +148,10 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
         Hooks::addAction('givewp_form_builder_new_form', AddStripeAttributesToNewForms::class);
         Hooks::addAction('givewp_form_builder_updated', UpdateStripeFormBuilderSettingsMeta::class);
+    }
+
+    private function bootOfflineDonations()
+    {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueOfflineFormBuilderScripts::class);
     }
 }

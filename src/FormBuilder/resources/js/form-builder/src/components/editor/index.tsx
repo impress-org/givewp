@@ -1,17 +1,24 @@
-import ReactQuill from 'react-quill';
-import {useEffect, useRef} from 'react';
-import _ from 'lodash';
+import {useEffect, useRef} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
+
+import ReactQuill from 'react-quill';
+import _ from 'lodash';
+import cx from 'classnames';
 
 import 'react-quill/dist/quill.snow.css';
 
+interface EditorProps {
+    onChange: (value: string) => void;
+    value: string;
+    className?: string;
+}
+
 /**
- * https://github.com/zenoamaro/react-quill
+ * A simple WYSIWYG editor for use in basic settings.
  *
- * @param onChange
- * @param value
+ * @see https://github.com/zenoamaro/react-quill
  */
-const Editor = ({onChange, value}) => {
+export default function Editor ({onChange, value, className}: EditorProps) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -80,8 +87,10 @@ const Editor = ({onChange, value}) => {
         'image',
     ];
 
+    const baseClasses = cx('text-editor givewp-ql-text-editor', className);
+
     return (
-        <div className="text-editor givewp-ql-text-editor">
+        <div className={baseClasses}>
             <CustomToolbar>
                 <button id="ql-wpmedia" className="ql-wpmedia" onClick={openMediaLibrary}>
                     <MediaIcon />
@@ -130,5 +139,3 @@ const MediaIcon = () => {
         </svg>
     );
 };
-
-export default Editor;

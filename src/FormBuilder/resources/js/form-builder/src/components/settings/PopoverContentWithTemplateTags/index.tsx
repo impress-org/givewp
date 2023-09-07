@@ -5,6 +5,7 @@ import {useState} from '@wordpress/element';
 import type {Ref} from 'react';
 import {close as closeIcon, copy as copyIcon} from '@wordpress/icons';
 import './styles.scss';
+import Editor from '@givewp/form-builder/components/editor';
 
 /**
  * @since 3.0.0
@@ -23,6 +24,7 @@ type PopoverContentWithTemplateTagsProps = {
     templateTags: TemplateTag[];
     onContentChange?(content: string): void;
     heading: string;
+    useEditor?: boolean;
 };
 
 /**
@@ -58,6 +60,7 @@ export default function PopoverContentWithTemplateTags({
     onClose,
     templateTags,
     heading,
+    useEditor,
 }: PopoverContentWithTemplateTagsProps) {
     return (
         <Popover className="givewp-popover-content-settings" onClose={onClose} placement="left-start" offset={30}>
@@ -67,13 +70,23 @@ export default function PopoverContentWithTemplateTags({
                 </div>
                 <Button icon={closeIcon} className="givewp-popover-content-settings__close-button" onClick={onClose} />
             </div>
-            <TextareaControl
-                className="givewp-popover-content-settings__textarea"
-                value={content}
-                onChange={(newContent) => {
-                    onContentChange(newContent);
-                }}
-            />
+            {useEditor ? (
+                <Editor
+                    className="givewp-popover-content-settings__editor"
+                    value={content}
+                    onChange={(newContent) => {
+                        onContentChange(newContent);
+                    }}
+                />
+            ) : (
+                <TextareaControl
+                    className="givewp-popover-content-settings__textarea"
+                    value={content}
+                    onChange={(newContent) => {
+                        onContentChange(newContent);
+                    }}
+                />
+            )}
             <div className="givewp-popover-content-settings__template-tags-heading">
                 <span>{__('Template tags', 'give')}</span>
             </div>
