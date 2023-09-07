@@ -12,29 +12,46 @@ use Give\PaymentGateways\Gateways\Offline\Views\LegacyFormFieldMarkup;
 
 /**
  * The Offline payment gateway, intended to reflect donations that are made offline and will be later confirmed.
+ *
+ * @unreleased
  */
 class OfflineGateway extends PaymentGateway
 {
+    /**
+     * @unreleased
+     */
     public static function id(): string
     {
         return 'offline';
     }
 
+    /**
+     * @unreleased
+     */
     public function getId(): string
     {
         return self::id();
     }
 
+    /**
+     * @unreleased
+     */
     public function getName(): string
     {
         return __('Offline Donation', 'give');
     }
 
+    /**
+     * @unreleased
+     */
     public function getPaymentMethodLabel(): string
     {
         return __('Offline Donation', 'give');
     }
 
+    /**
+     * @unreleased
+     */
     public function formSettings(int $formId): array
     {
         return [
@@ -60,16 +77,25 @@ class OfflineGateway extends PaymentGateway
         Language::setScriptTranslations($this::id());
     }
 
+    /**
+     * @unreleased
+     */
     public function getLegacyFormFieldMarkup(int $formId): string
     {
         return (new LegacyFormFieldMarkup())($formId, true);
     }
 
+    /**
+     * @unreleased
+     */
     public function createPayment(Donation $donation, $gatewayData): PaymentPending
     {
         return new PaymentPending();
     }
 
+    /**
+     * @unreleased
+     */
     public function refundDonation(Donation $donation)
     {
         throw new RuntimeException(
