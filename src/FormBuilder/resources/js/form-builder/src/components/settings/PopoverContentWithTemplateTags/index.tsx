@@ -24,7 +24,7 @@ type PopoverContentWithTemplateTagsProps = {
     templateTags: TemplateTag[];
     onContentChange?(content: string): void;
     heading: string;
-    useEditor?: boolean;
+    richText?: boolean;
 };
 
 /**
@@ -60,7 +60,7 @@ export default function PopoverContentWithTemplateTags({
     onClose,
     templateTags,
     heading,
-    useEditor,
+    richText,
 }: PopoverContentWithTemplateTagsProps) {
     return (
         <Popover className="givewp-popover-content-settings" onClose={onClose} placement="left-start" offset={30}>
@@ -70,7 +70,7 @@ export default function PopoverContentWithTemplateTags({
                 </div>
                 <Button icon={closeIcon} className="givewp-popover-content-settings__close-button" onClick={onClose} />
             </div>
-            {useEditor ? (
+            {richText ? (
                 <Editor
                     className="givewp-popover-content-settings__editor"
                     value={content}

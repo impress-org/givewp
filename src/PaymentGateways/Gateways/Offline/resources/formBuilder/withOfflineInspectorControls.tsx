@@ -98,7 +98,7 @@ function OfflineInspectorControls({
                                     content={attributes.offlineDonationInstructions}
                                     templateTags={offlineInstructionTags}
                                     onClose={closeInstructions}
-                                    useEditor
+                                    richText
                                 />
                             )}
                         </ControlForPopover>
