@@ -9,6 +9,7 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Offline\Actions\EnqueueOfflineFormBuilderScripts;
+use Give\PaymentGateways\Gateways\Offline\Actions\UpdateOfflineMetaFromFormBuilder;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
@@ -153,5 +154,6 @@ class ServiceProvider implements ServiceProviderInterface
     private function bootOfflineDonations()
     {
         Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueOfflineFormBuilderScripts::class);
+        Hooks::addAction('givewp_form_builder_updated', UpdateOfflineMetaFromFormBuilder::class);
     }
 }

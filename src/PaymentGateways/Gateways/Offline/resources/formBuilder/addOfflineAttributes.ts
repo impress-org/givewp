@@ -5,18 +5,19 @@ declare const window: {
 } & Window;
 
 export const offlineAttributes = {
-    offlineUseGlobalDefault: {
+    offlineEnabled: {
         type: 'boolean',
         default: true,
     },
-    offlineEnabled: {
+    offlineUseGlobalInstructions: {
         type: 'boolean',
+        default: true,
     },
     offlineDonationInstructions: {
         type: 'string',
         default: window.giveOfflineGatewaySettings.defaultInstructions,
     },
-}
+};
 
 export default function addAttribute(settings, name) {
     if (name === 'givewp/payment-gateways') {

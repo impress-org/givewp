@@ -1,7 +1,7 @@
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {InspectorControls} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
-import {PanelBody, PanelRow, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, ToggleControl, RadioControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
 import ControlForPopover from "@givewp/form-builder/components/settings/ControlForPopover";
 import PopoverContentWithTemplateTags from "@givewp/form-builder/components/settings/PopoverContentWithTemplateTags";
@@ -17,8 +17,8 @@ declare const window: {
 } & Window;
 
 type OfflineAttributes = {
-    offlineUseGlobalDefault?: boolean;
     offlineEnabled?: boolean;
+    offlineUseGlobalInstructions?: boolean;
     offlineDonationInstructions?: string;
 };
 
@@ -42,11 +42,7 @@ function OfflineInspectorControls({
     setAttributes: OfflineSetAttributes;
     attributes: OfflineAttributes;
 }) {
-    const {
-        isOpen: isInstructionsOpen,
-        toggle: toggleInstructions,
-        close: closeInstructions,
-    } = usePopoverState();
+    const {isOpen: isInstructionsOpen, toggle: toggleInstructions, close: closeInstructions} = usePopoverState();
     useSetDefaultAttributes(attributes, setAttributes, offlineAttributes);
 
     const windowSettings = window.giveOfflineGatewaySettings;
@@ -57,7 +53,7 @@ function OfflineInspectorControls({
 
     const globalDefaultHelper = textWithLinkToOfflineSettings(
         __(
-            'When disabled, the <a>Global settings</a> will determine whether the Offline gateway is enabled and its instructions',
+            'Global instructions are defined in the <a>Global Settings</a>. When disabled, custom instructions can be written for this form',
             'give'
         )
     );
@@ -67,44 +63,46 @@ function OfflineInspectorControls({
             <PanelBody title={__('Offline Donations', 'give')}>
                 <PanelRow>
                     <ToggleControl
-                        label={__('Use global default', 'give')}
-                        checked={attributes.offlineUseGlobalDefault}
-                        onChange={(value) => setAttributes({offlineUseGlobalDefault: value})}
-                        help={globalDefaultHelper}
+                        label={__('Enable offline donations', 'give')}
+                        checked={attributes.offlineEnabled}
+                        onChange={(value) => setAttributes({offlineEnabled: value})}
                     />
                 </PanelRow>
-                {!attributes.offlineUseGlobalDefault && (
-                    <>
-                        <PanelRow>
-                            <ToggleControl
-                                label={__('Enable Offline Gateway', 'give')}
-                                checked={attributes.offlineEnabled}
-                                onChange={(value) => setAttributes({offlineEnabled: value})}
-                                help={__('Enable or enable the Offline gateway for this form', 'give')}
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <ControlForPopover
-                                id="offline-donation-instructions"
-                                help={__('The instructions provided to the donor on how to send their payment', 'give')}
-                                heading={__('Donation Instructions', 'give')}
-                                buttonCaption={__('Edit', 'give')}
-                                onButtonClick={toggleInstructions}
-                                isButtonActive={isInstructionsOpen}
-                            >
-                                {isInstructionsOpen && (
-                                    <PopoverContentWithTemplateTags
-                                        onContentChange={(content) => setAttributes({offlineDonationInstructions: content})}
-                                        heading={__('Donation Instructions', 'give')}
-                                        content={attributes.offlineDonationInstructions}
-                                        templateTags={offlineInstructionTags}
-                                        onClose={closeInstructions}
-                                        useEditor
-                                    />
-                                )}
-                            </ControlForPopover>
-                        </PanelRow>
-                    </>
+                {attributes.offlineEnabled && (
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Use global instructions', 'give')}
+                            checked={attributes.offlineUseGlobalInstructions}
+                            onChange={(value) => setAttributes({offlineUseGlobalInstructions: value})}
+                            help={globalDefaultHelper}
+                        />
+                    </PanelRow>
+                )}
+                {!attributes.offlineUseGlobalInstructions && (
+                    <PanelRow>
+                        <ControlForPopover
+                            id="offline-donation-instructions"
+                            help={__(
+                                'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to',
+                                'give'
+                            )}
+                            heading={__('Donation Instructions', 'give')}
+                            buttonCaption={__('Edit', 'give')}
+                            onButtonClick={toggleInstructions}
+                            isButtonActive={isInstructionsOpen}
+                        >
+                            {isInstructionsOpen && (
+                                <PopoverContentWithTemplateTags
+                                    onContentChange={(content) => setAttributes({offlineDonationInstructions: content})}
+                                    heading={__('Donation Instructions', 'give')}
+                                    content={attributes.offlineDonationInstructions}
+                                    templateTags={offlineInstructionTags}
+                                    onClose={closeInstructions}
+                                    useEditor
+                                />
+                            )}
+                        </ControlForPopover>
+                    </PanelRow>
                 )}
             </PanelBody>
         </InspectorControls>

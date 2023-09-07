@@ -2,7 +2,8 @@ import {useEffect} from '@wordpress/element';
 
 type AttributesDefinitions = {
     [key: string]: {
-        type: string;
+        type?: string;
+        enum?: string[];
         default?: any;
     };
 };
