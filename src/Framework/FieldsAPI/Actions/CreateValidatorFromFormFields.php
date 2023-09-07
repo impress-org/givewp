@@ -23,7 +23,9 @@ class CreateValidatorFromFormFields
         $rules = [];
 
         foreach ($formFields as $field) {
-            $rules[$field->getName()] = $field->getValidationRules();
+            $rules[$field->getName()] = (new UpdateValidationRulesWithOptionalAsDefault())(
+                $field->getValidationRules()
+            );
 
             if (method_exists($field, 'getLabel')) {
                 $labels[$field->getName()] = $field->getLabel();
