@@ -380,7 +380,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             ob_start();
 
             echo '<h4>' . __('Enabled Gateways', 'give') . '</h4>';
-            echo '<div class="give-settings-section-content">';
+            echo '<div class="give-settings-section-content give-payment-gateways-settings">';
             echo '<div class="give-settings-section-group-menu">';
             echo '<ul>';
             foreach ($groups as $slug => $group) {

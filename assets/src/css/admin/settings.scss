@@ -285,6 +285,17 @@ div.give-field-description {
 //--------------------------------------------------------------
 // Payment Gateways
 //--------------------------------------------------------------
+.give-payment-gateways-settings {
+    &.give-settings-section-content {
+        .give-settings-section-group-menu {
+            width: 20rem;
+
+            ul li a {
+                padding: 1.25rem 1rem;
+            }
+        }
+    }
+}
 
 .gateway-enabled-wrap {
 
