@@ -122,10 +122,16 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                             ],
                         ],
                         [
-                            'name' => __('Enabled Gateways', 'give'),
+                            'name' => __('Enabled Gateways', 'give') . ' - v2',
                             'desc' => __('Enable your payment gateway. Can be ordered by dragging.', 'give'),
                             'id' => 'gateways',
                             'type' => 'enabled_gateways',
+                        ],
+                        [
+                            'name' => __('Enabled Gateways', 'give') . ' - v3',
+                            'desc' => __('Enable your payment gateway. Can be ordered by dragging.', 'give'),
+                            'id' => 'gateways_v3',
+                            'type' => 'enabled_gateways_hidden',
                         ],
 
                         /**
@@ -135,9 +141,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                          * This setting will not render on admin setting screen but help internal code to recognize "gateways_label"  setting and add them to give setting when save.
                          */
                         [
-                            'name' => __('Gateways Label', 'give'),
+                            'name' => __('Gateways Label', 'give') . ' - v2',
                             'desc' => '',
                             'id' => 'gateways_label',
+                            'type' => 'gateways_label_hidden',
+                        ],
+                        [
+                            'name' => __('Gateways Label', 'give') . ' - v3',
+                            'desc' => '',
+                            'id' => 'gateways_label_v3',
                             'type' => 'gateways_label_hidden',
                         ],
 
@@ -148,9 +160,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                          * This setting will not render on admin setting screen but help internal code to recognize "default_gateway"  setting and add them to give setting when save.
                          */
                         [
-                            'name' => __('Default Gateway', 'give'),
+                            'name' => __('Default Gateway', 'give') . ' - v2',
                             'desc' => __('The gateway that will be selected by default.', 'give'),
                             'id' => 'default_gateway',
+                            'type' => 'default_gateway_hidden',
+                        ],
+                        [
+                            'name' => __('Default Gateway', 'give') . ' - v3',
+                            'desc' => __('The gateway that will be selected by default.', 'give'),
+                            'id' => 'default_gateway_v3',
                             'type' => 'default_gateway_hidden',
                         ],
 
@@ -318,9 +336,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
         public function render_enabled_gateways($field, $settings)
         {
             $id = $field['id'];
-            $gateways = give_get_ordered_payment_gateways(give_get_payment_gateways());
-            $gateways_label = give_get_option('gateways_label', []);
-            $default_gateway = give_get_option('default_gateway', current(array_keys($gateways)));
+            $gateways = give_get_payment_gateways();
 
             $current_page = give_get_current_setting_page();
             $current_tab = give_get_current_setting_tab();
@@ -334,27 +350,36 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 ARRAY_FILTER_USE_KEY
             );
 
+            $v2Gateways = give_get_ordered_payment_gateways(
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(2) + $fixedGateways),
+                2
+            );
+            $v3Gateways = give_get_ordered_payment_gateways(
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(3) + $fixedGateways),
+                3
+            );
+
             $groups = [
                 'v2' => [
                     'label' => __('Option-Based Form Editor', 'give'),
-                    'gateways' => array_intersect_key(
-                        $gateways,
-                        give()->gateways->getPaymentGateways(2) + $fixedGateways
-                    ),
+                    'gateways' => $v2Gateways,
+                    'settings' => $settings,
+                    'gatewaysLabel' => give_get_option('gateways_label', []),
+                    'defaultGateway' => give_get_option('default_gateway', current(array_keys($v2Gateways))),
                 ],
                 'v3' => [
                     'label' => __('Visual Form Builder', 'give'),
-                    'gateways' => array_intersect_key(
-                        $gateways,
-                        give()->gateways->getPaymentGateways(3) + $fixedGateways
-                    ),
+                    'gateways' => $v3Gateways,
+                    'settings' => give_get_option('gateways_v3', []),
+                    'gatewaysLabel' => give_get_option('gateways_label_v3', []),
+                    'defaultGateway' => give_get_option('default_gateway_v3', current(array_keys($v3Gateways))),
                 ],
             ];
             $defaultGroup = current(array_keys($groups));
 
             ob_start();
 
-            echo '<h4>' . $field['title'] . '</h4>';
+            echo '<h4>' . __('Enabled Gateways', 'give') . '</h4>';
             echo '<div class="give-settings-section-content">';
             echo '<div class="give-settings-section-group-menu">';
             echo '<ul>';
@@ -381,6 +406,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             foreach ($groups as $slug => $group) :
                 $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
                 $hide_class = $slug !== $current_group ? 'give-hidden' : '';
+                $suffix = $slug === 'v3' ? '_v3' : '';
 
                 printf(
                     '<div id="give-settings-section-group-%1$s" class="give-settings-section-group %2$s">',
@@ -408,7 +434,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 echo '<ul class="give-checklist-fields give-payment-gatways-list">';
                 foreach ($group['gateways'] as $key => $option) :
                     $enabled = null;
-                    if (is_array($settings) && array_key_exists($key, $settings)) {
+                    if (is_array($group['settings']) && array_key_exists($key, $group['settings'])) {
                         $enabled = '1';
                     }
 
@@ -423,13 +449,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                     );
 
                     $label = '';
-                    if (!empty($gateways_label[$key])) {
-                        $label = $gateways_label[$key];
+                    if (!empty($group['gatewaysLabel'][$key])) {
+                        $label = $group['gatewaysLabel'][$key];
                     }
 
                     printf(
                         '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
-                        'gateways_label',
+                        'gateways_label' . $suffix,
                         esc_attr($key),
                         esc_html($label),
                         esc_html($option['checkout_label'])
@@ -437,15 +463,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
                     printf(
                         '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
-                        'default_gateway',
+                        'default_gateway' . $suffix,
                         $key,
-                        checked($key, $default_gateway, false),
+                        checked($key, $group['defaultGateway'], false),
                         disabled(null, $enabled, false)
                     );
 
                     printf(
                         '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
-                        esc_attr($id),
+                        esc_attr($id) . $suffix,
                         esc_attr($key),
                         checked('1', $enabled, false),
                         esc_html($option['admin_label'])

@@ -17,12 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Returns a list of all available gateways.
  *
+ * @unreleased add $version param
  * @since 2.30.0 add filter give_payment_gateways_admin_label
  * @since 1.0
+ * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_payment_gateways()
+function give_get_payment_gateways(?int $version = 2)
 {
+    $suffix = $version === 3 ? '_v3' : '';
+
     // Default, built-in gateways
     $gateways = apply_filters(
         'give_payment_gateways',
@@ -39,7 +43,7 @@ function give_get_payment_gateways()
         }
     });
 
-    $gatewayLabels = give_get_option('gateways_label', []);
+    $gatewayLabels = give_get_option('gateways_label' . $suffix, []);
 
     // Replace payment gateway checkout label with admin defined checkout label.
     if ($gatewayLabels) {
@@ -330,16 +334,19 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 /**
  * Returns a ordered list of all available gateways.
  *
+ * @unlreased add $version param
  * @since 1.4.5
  *
  * @param array $gateways List of payment gateways
- *
+ * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_ordered_payment_gateways( $gateways ) {
+function give_get_ordered_payment_gateways($gateways, ?int $version = 2)
+{
+    $suffix = $version === 3 ? '_v3' : '';
 
 	// Get gateways setting.
-	$gateways_setting = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
+    $gateways_setting = $_POST['gateways' . $suffix] ?? give_get_option('gateways' . $suffix);
 
 	// Return from here if we do not have gateways setting.
 	if ( empty( $gateways_setting ) ) {
@@ -367,5 +374,5 @@ function give_get_ordered_payment_gateways( $gateways ) {
 	 *
 	 * @param array $gateways All the available gateways
 	 */
-	return apply_filters( 'give_payment_gateways_order', $gateways );
+    return apply_filters('give_payment_gateways_order' . $suffix, $gateways);
 }
