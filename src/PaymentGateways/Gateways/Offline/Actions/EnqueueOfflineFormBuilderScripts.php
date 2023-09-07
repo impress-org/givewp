@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\Offline\Actions;
 
+use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
+
 class EnqueueOfflineFormBuilderScripts
 {
     /**
@@ -25,6 +27,7 @@ class EnqueueOfflineFormBuilderScripts
             'givewp-offline-gateway-form-builder',
             'window.giveOfflineGatewaySettings = ' . wp_json_encode(
                 [
+                    'offlineEnabled' => give_is_gateway_active(OfflineGateway::id()),
                     'offlineSettingsUrl' => admin_url(
                         'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=offline-donations'
                     ),
