@@ -39,6 +39,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Load all the legacy class files since they don't have auto-loading
      *
+     * @since 3.0.0 remove the manual (Test Donations) gateway from loading in favor of the new Test Donations gateway
      * @since 2.8.0
      */
     private function includeLegacyFiles()
@@ -134,7 +135,6 @@ class LegacyServiceProvider implements ServiceProvider
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/paypal/paypal-standard.php';
         require_once GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php';
-        require_once GIVE_PLUGIN_DIR . 'includes/gateways/manual.php';
         require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php';
         require_once GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php';
         require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notifications.php';

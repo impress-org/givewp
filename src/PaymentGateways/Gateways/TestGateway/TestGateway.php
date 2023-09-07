@@ -13,7 +13,9 @@ use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
- * Class TestGateway
+ * A gateway for testing the donation process. No actual payment is processed and only form validation is performed.
+ *
+ * @since 3.0.0 change to Test Donations and manual id to replace legacy gateway
  * @since 2.18.0
  */
 class TestGateway extends PaymentGateway
@@ -23,7 +25,7 @@ class TestGateway extends PaymentGateway
      */
     public static function id(): string
     {
-        return 'test-gateway';
+        return 'manual';
     }
 
     /**
@@ -39,7 +41,7 @@ class TestGateway extends PaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway', 'give');
+        return __('Test Donation', 'give');
     }
 
     /**
@@ -66,7 +68,7 @@ class TestGateway extends PaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway', 'give');
+        return __('Test Donation', 'give');
     }
 
     /**
