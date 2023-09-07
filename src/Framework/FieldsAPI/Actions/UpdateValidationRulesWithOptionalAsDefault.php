@@ -6,6 +6,7 @@ namespace Give\Framework\FieldsAPI\Actions;
 
 use Give\Vendors\StellarWP\Validation\Rules\ExcludeIf;
 use Give\Vendors\StellarWP\Validation\Rules\ExcludeUnless;
+use Give\Vendors\StellarWP\Validation\Rules\Optional;
 use Give\Vendors\StellarWP\Validation\ValidationRuleSet;
 
 class UpdateValidationRulesWithOptionalAsDefault
@@ -23,15 +24,17 @@ class UpdateValidationRulesWithOptionalAsDefault
             return $rules;
         }
 
-        if (!$rules->hasRule('required')) {
+        if (!$rules->hasRule('required') && !$rules->hasRule('optional')) {
             $rules->prependRule('optional');
         }
 
         $excludeRuleIds = [ExcludeIf::id(), ExcludeUnless::id()];
 
         foreach ($excludeRuleIds as $excludeRuleId) {
-            if ($rules->hasRule($excludeRuleId) && $rules->hasRule('optional')) {
+            // If the exclude rule is present, remove it and prepend it to the rules array so that optional comes after.
+            if ($rules->hasRule($excludeRuleId) && $rules->getRules()[0] instanceof Optional) {
                 $excludeRule = $rules->getRule($excludeRuleId);
+
                 $rules->removeRuleWithId($excludeRuleId);
                 $rules->prependRule($excludeRule);
             }
