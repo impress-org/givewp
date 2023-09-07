@@ -74,7 +74,7 @@ class RegisterFormBuilderPageRoute
 
         // validate form exists before proceeding
         // TODO: improve on this validation
-        if (!get_post($donationFormId)) {
+        if ( ! get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
 
@@ -91,7 +91,7 @@ class RegisterFormBuilderPageRoute
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
          * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
          * which might include dependencies that are not supported in some version of WordPress.
-         * @link https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
+         * @link  https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
          */
         Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
@@ -113,7 +113,23 @@ class RegisterFormBuilderPageRoute
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
-            'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+            'autoStartTour' => ! get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+        ]);
+
+        $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
+        $transferredFormId = give_get_meta($donationFormId, 'transferredFormId', true);
+
+        wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'formId' => $donationFormId,
+            'migrationActionUrl' => admin_url('admin-ajax.php?action=givewp_migration_hide_notice'),
+            'transferActionUrl' => admin_url('admin-ajax.php?action=givewp_transfer_hide_notice'),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+            'isMigratedForm' => $migratedFormId,
+            'isTransferredForm' => $transferredFormId,
+            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-migration-hide-notice', true),
+            'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-transfer-hide-notice', true),
         ]);
 
         View::render('FormBuilder.admin-form-builder');
@@ -122,7 +138,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Load Gutenberg scripts and styles from core.
      *
-     * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
+     * @see   https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
      *
      * @since 3.0.0
      */
@@ -150,7 +166,7 @@ class RegisterFormBuilderPageRoute
         return array_filter($formBuilderJsDependencies, static function ($dependency) use ($scripts) {
             $isRegistered = $scripts->query($dependency, 'registered');
 
-            if (!$isRegistered) {
+            if ( ! $isRegistered) {
                 Log::error(
                     sprintf(
                         'Script %s is not registered. Please check the script dependencies.',

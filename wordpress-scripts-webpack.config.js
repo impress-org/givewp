@@ -24,6 +24,7 @@ module.exports = {
             '@givewp/forms/shared': srcPath('DonationForms/resources/shared'),
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
+            '@givewp/components': srcPath('Views/Components/'),
         },
     },
     entry: {
