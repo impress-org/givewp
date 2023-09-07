@@ -1,5 +1,4 @@
 import {FormProps} from '@givewp/forms/propTypes';
-import {__} from '@wordpress/i18n';
 import {ReactNode} from 'react';
 
 interface Props extends FormProps {
@@ -7,6 +6,7 @@ interface Props extends FormProps {
     nextButton: ReactNode;
     submitButton: ReactNode;
 }
+
 export default function MultiStepForm({
     children,
     formProps,
@@ -15,15 +15,16 @@ export default function MultiStepForm({
     nextButton,
     submitButton,
 }: Props) {
+    const FormError = window.givewp.form.templates.layouts.formError;
+
     return (
         <form {...formProps}>
             {children}
 
             {formError && (
-                <div style={{textAlign: 'center'}}>
-                    <p>{__('The following error occurred when submitting the form:', 'give')}</p>
-                    <p>{formError}</p>
-                </div>
+                <section className="givewp-layouts givewp-layouts-section">
+                    <FormError error={formError} />
+                </section>
             )}
 
             {previousButton}
