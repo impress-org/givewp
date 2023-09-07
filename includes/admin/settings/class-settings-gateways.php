@@ -326,19 +326,27 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             $current_tab = give_get_current_setting_tab();
             $current_section = give_get_current_setting_section();
 
+            $fixedGateways = array_filter(
+                $gateways,
+                static function ($gatewayId) {
+                    return in_array($gatewayId, ['manual', 'offline'], true);
+                },
+                ARRAY_FILTER_USE_KEY
+            );
+
             $groups = [
                 'v2' => [
                     'label' => __('Option-Based Form Editor', 'give'),
                     'gateways' => array_intersect_key(
                         $gateways,
-                        give()->gateways->getPaymentGateways(2) + ['manual' => [], 'offline' => []]
+                        give()->gateways->getPaymentGateways(2) + $fixedGateways
                     ),
                 ],
                 'v3' => [
                     'label' => __('Visual Form Builder', 'give'),
                     'gateways' => array_intersect_key(
                         $gateways,
-                        give()->gateways->getPaymentGateways(3) + ['manual' => [], 'offline' => []]
+                        give()->gateways->getPaymentGateways(3) + $fixedGateways
                     ),
                 ],
             ];
