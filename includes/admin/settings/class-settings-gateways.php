@@ -327,8 +327,20 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             $current_section = give_get_current_setting_section();
 
             $groups = [
-                'give-v2' => __('Option-Based Form Editor', 'give'),
-                'give-v3' => __('Visual Form Builder', 'give'),
+                'v2' => [
+                    'label' => __('Option-Based Form Editor', 'give'),
+                    'gateways' => array_intersect_key(
+                        $gateways,
+                        give()->gateways->getPaymentGateways(2) + ['manual' => [], 'offline' => []]
+                    ),
+                ],
+                'v3' => [
+                    'label' => __('Visual Form Builder', 'give'),
+                    'gateways' => array_intersect_key(
+                        $gateways,
+                        give()->gateways->getPaymentGateways(3) + ['manual' => [], 'offline' => []]
+                    ),
+                ],
             ];
             $defaultGroup = current(array_keys($groups));
 
@@ -351,20 +363,20 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                         )
                     ),
                     esc_html($slug),
-                    esc_html($group)
+                    esc_html($group['label'])
                 );
             }
             echo '</ul>';
             echo '</div>';
 
             echo '<div class="give-settings-section-group-content">';
-            foreach (array_keys($groups) as $group) :
+            foreach ($groups as $slug => $group) :
                 $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
-                $hide_class = $group !== $current_group ? 'give-hidden' : '';
+                $hide_class = $slug !== $current_group ? 'give-hidden' : '';
 
                 printf(
                     '<div id="give-settings-section-group-%1$s" class="give-settings-section-group %2$s">',
-                    esc_attr($group),
+                    esc_attr($slug),
                     esc_html($hide_class)
                 );
 
@@ -375,8 +387,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                             <span></span>
                             <span>%1$s</span>
                             <span>%2$s</span>
-                            <span>%3$s</span>
-                            <span>%4$s</span>
+                            <span style="text-align: center;">%3$s</span>
+                            <span style="text-align: center;">%4$s</span>
                             ',
                     __('Gateway', 'give'),
                     __('Label', 'give'),
@@ -386,7 +398,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 echo '</div>';
 
                 echo '<ul class="give-checklist-fields give-payment-gatways-list">';
-                foreach ($gateways as $key => $option) :
+                foreach ($group['gateways'] as $key => $option) :
                     $enabled = null;
                     if (is_array($settings) && array_key_exists($key, $settings)) {
                         $enabled = '1';
