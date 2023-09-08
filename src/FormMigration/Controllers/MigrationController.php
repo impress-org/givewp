@@ -53,8 +53,14 @@ class MigrationController
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
 
-        return new WP_REST_Response(array('errors' => [], 'successes' => [
-            $payload->formV2->id
-        ]));
+        return new WP_REST_Response([
+            'v2FormId' => $payload->formV2->id,
+            'v3FormId' => $payload->formV3->id,
+            'redirect' => add_query_arg([
+                'post_type' => 'give_forms',
+                'page' => 'givewp-form-builder',
+                'donationFormID' => $payload->formV3->id,
+            ], admin_url('edit.php')),
+        ]);
     }
 }

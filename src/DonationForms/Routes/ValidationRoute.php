@@ -6,6 +6,7 @@ namespace Give\DonationForms\Routes;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use WP_Error;
@@ -36,7 +37,7 @@ class ValidationRoute
             
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
-            $type = 'validation_error';
+            $type = DonationFormErrorTypes::VALIDATION;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
         }

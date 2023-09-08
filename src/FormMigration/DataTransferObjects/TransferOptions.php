@@ -6,52 +6,30 @@ use WP_REST_Request;
 
 class TransferOptions
 {
-    /** @var string */
-    protected $changeUrl;
-
     /** @var bool */
     protected $delete;
 
-    /** @var bool */
-    protected $redirect;
-
-    public function __construct(bool $changeUrl, bool $delete, bool $redirect)
+    public function __construct(bool $delete)
     {
-        $this->changeUrl = $changeUrl;
         $this->delete = $delete;
-        $this->redirect = $redirect;
     }
 
     public static function fromRequest(WP_REST_Request $request): self
     {
         return new self(
-            $request->get_param('changeUrl'),
-            $request->get_param('delete'),
-            $request->get_param('redirect')
+            $request->get_param('delete')
         );
     }
 
     public static function fromArray($options): self
     {
         return new self(
-            $options['changeUrl'],
-            $options['delete'],
-            $options['redirect']
+            $options['delete']
         );
-    }
-
-    public function shouldChangeUrl(): bool
-    {
-        return $this->changeUrl;
     }
 
     public function shouldDelete(): bool
     {
         return $this->delete;
-    }
-
-    public function shouldRedirect(): bool
-    {
-        return $this->redirect;
     }
 }

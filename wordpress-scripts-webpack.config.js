@@ -24,6 +24,7 @@ module.exports = {
             '@givewp/forms/shared': srcPath('DonationForms/resources/shared'),
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
+            '@givewp/components': srcPath('Views/Components/'),
         },
     },
     entry: {
@@ -41,6 +42,8 @@ module.exports = {
         ),
         testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
         testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
+        offlineGateway: srcPath('PaymentGateways/Gateways/Offline/resources/offlineGateway.tsx'),
+        offlineGatewayFormBuilder: srcPath('PaymentGateways/Gateways/Offline/resources/formBuilder/index.tsx'),
         payPalStandardGateway: srcPath(
             'PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'
         ),

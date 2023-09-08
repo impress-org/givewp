@@ -23,7 +23,7 @@ class DonationConfirmationReceiptViewModelTest extends TestCase
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create();
-        $donationFormRepository = new DonationFormRepository((new PaymentGatewayRegister));
+        $donationFormRepository = give(DonationFormRepository::class);
         $donation = Donation::factory()->create([
             'formId' => $donationForm->id,
         ]);
@@ -36,10 +36,10 @@ class DonationConfirmationReceiptViewModelTest extends TestCase
 
         $viewModel = new DonationConfirmationReceiptViewModel($donation);
 
-        $this->assertEquals($viewModel->formExports(), [
+        $this->assertEquals([
             'registeredGateways' => $formDataGateways,
             'form' => $formApi,
-        ]);
+        ], $viewModel->formExports());
     }
 
     /**

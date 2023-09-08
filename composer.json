@@ -67,15 +67,15 @@
             "Give\\": "src/"
         },
         "files": [
-            "src/Framework/Http/Response/functions.php"
+            "src/Framework/Http/Response/functions.php",
+            "src/FormMigration/functions.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
             "Give\\PHPStan\\": ".phpstan/",
             "Give\\Tests\\": "tests/"
-        },
-        "files": ["src/FormMigration/functions.php"]
+        }
     },
     "config": {
         "platform": {

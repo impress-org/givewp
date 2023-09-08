@@ -6,6 +6,7 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import {ColumnFilterConfig} from '@givewp/components/ListTable/ListTablePage';
 
 export interface ListTableProps {
     //required
@@ -26,6 +27,7 @@ export interface ListTableProps {
     testMode?: boolean;
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
+    columnFilters?: Array<ColumnFilterConfig>;
 }
 
 export interface ListTableColumn {
@@ -56,6 +58,7 @@ export const ListTable = ({
     testMode,
     listTableBlankSlate,
     productRecommendation,
+    columnFilters = [],
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -195,6 +198,7 @@ export const ListTable = ({
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
+                                columnFilters={columnFilters}
                             />
                         </tbody>
                     </table>

@@ -76,6 +76,7 @@ class FormMetaDecorator extends FormModelDecorator
                 return true;
             }
         }
+
         return false;
     }
 
@@ -87,6 +88,7 @@ class FormMetaDecorator extends FormModelDecorator
     public function getFormTemplateSettings(): array
     {
         $template = $this->getFormTemplate();
+
         return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
     }
 
@@ -404,5 +406,20 @@ class FormMetaDecorator extends FormModelDecorator
     public function getStripeAccountId(): string
     {
         return give_get_meta($this->form->id, '_give_stripe_default_account', true);
+    }
+
+    /**
+     * @return array{offlineEnabled: bool, offlineUseGlobalInstructions: bool, offlineDonationInstructions: string}
+     */
+    public function getOfflineAttributes(): array
+    {
+        $customization = give_get_meta($this->form->id, '_give_customize_offline_donations', true);
+        $instructions = give_get_meta($this->form->id, '_give_offline_checkout_notes', true);
+
+        return [
+            'offlineEnabled' => $customization !== 'disabled',
+            'offlineUseGlobalInstructions' => $customization === 'global',
+            'offlineDonationInstructions' => $instructions,
+        ];
     }
 }

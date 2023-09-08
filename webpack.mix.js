@@ -45,6 +45,8 @@ mix.setPublicPath('assets/dist')
     .js('src/Promotions/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
 
     .ts('src/DonationForms/V2/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
+    .ts('src/DonationForms/V2/resources/edit-v2form.tsx', 'js/give-edit-v2form.js')
+    .ts('src/DonationForms/V2/resources/add-v2form.tsx', 'js/give-add-v2form.js')
     .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js')
     .ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js')
     .ts('src/Subscriptions/resources/admin-subscriptions.tsx', 'js/give-admin-subscriptions.js')

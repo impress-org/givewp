@@ -4,7 +4,6 @@ import {moreVertical} from '@wordpress/icons';
 import classNames from 'classnames';
 import './styles.scss';
 
-
 /**
  * @since 3.0.0
  */
@@ -12,6 +11,7 @@ interface ControlForPopoverProps {
     id: string;
     help: string;
     heading: string;
+    buttonCaption?: string;
     onButtonClick: () => void;
     children: ReactNode;
     isButtonActive: boolean;
@@ -20,7 +20,15 @@ interface ControlForPopoverProps {
 /**
  * @since 3.0.0
  */
-export default function ControlForPopover({id, help, heading, children, onButtonClick, isButtonActive}: ControlForPopoverProps) {
+export default function ControlForPopover({
+    id,
+    help,
+    heading,
+    buttonCaption,
+    children,
+    onButtonClick,
+    isButtonActive,
+}: ControlForPopoverProps) {
     return (
         <BaseControl id={id} help={help}>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -28,9 +36,11 @@ export default function ControlForPopover({id, help, heading, children, onButton
                 <Button
                     className={classNames('givewp-control-popover-setting-button', {
                         'givewp-control-popover-setting-button--active': isButtonActive,
+                        'givewp-control-popover-setting-button--has-caption': buttonCaption !== '',
                     })}
                     onClick={onButtonClick}
-                    icon={moreVertical}
+                    icon={buttonCaption ? null : moreVertical}
+                    children={buttonCaption ? buttonCaption : null}
                 />
             </div>
             {children}

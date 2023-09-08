@@ -46,7 +46,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  PaymentGatewayRegister  $paymentGatewayRegister
+     * @param PaymentGatewayRegister $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -114,14 +114,14 @@ class DonationFormRepository
                 ->insert([
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => $donationForm->settings->toJson()
+                    'meta_value' => $donationForm->settings->toJson(),
                 ]);
 
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
-                    'meta_value' => $donationForm->blocks->toJson()
+                    'meta_value' => $donationForm->blocks->toJson(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -147,7 +147,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  DonationForm  $donationForm
+     * @param DonationForm $donationForm
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -186,7 +186,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->settings->toJson()
+                    'meta_value' => $donationForm->settings->toJson(),
                 ]);
 
 
@@ -194,7 +194,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->blocks->toJson()
+                    'meta_value' => $donationForm->blocks->toJson(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -246,7 +246,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  DonationForm  $donationForm
+     * @param DonationForm $donationForm
      *
      * @return void
      */
@@ -314,7 +314,7 @@ class DonationFormRepository
             $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
         }
 
-        return $gateways;
+        return apply_filters('givewp_donation_form_enabled_gateways', $gateways, $formId);
     }
 
     /**
@@ -346,7 +346,7 @@ class DonationFormRepository
                 'id' => $gatewayId,
                 'label' => $label,
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
-                'settings' => $settings
+                'settings' => $settings,
             ];
         }
 
@@ -407,7 +407,7 @@ class DonationFormRepository
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): DonationFormNode
     {
         try {
-            list($form, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+            [$form, $blockNodeRelationships] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
             $formNodes = $form->all();
 
             /** @var Section $firstSection */
