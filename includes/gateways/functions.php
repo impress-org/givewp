@@ -63,11 +63,11 @@ function give_get_payment_gateways(?int $version = 2): array
  * @unreleased add $version param
  * @since  1.0
  *
- * @param int $form_id Form ID
+ * @param int|null $form_id Form ID
  * @param int|null $version
  * @return array $gateway_list All the available gateways
  */
-function give_get_enabled_payment_gateways(int $form_id = 0, ?int $version = 2): array
+function give_get_enabled_payment_gateways(?int $form_id = 0, ?int $version = 2): array
 {
     $suffix = $version === 3 ? '_v3' : '';
     $gateways = give_get_payment_gateways($version);
@@ -100,7 +100,7 @@ function give_get_enabled_payment_gateways(int $form_id = 0, ?int $version = 2):
  */
 function give_is_gateway_active(string $gateway, ?int $version = 2): bool
 {
-    $gateways = give_get_enabled_payment_gateways($version);
+    $gateways = give_get_enabled_payment_gateways(null, $version);
 
 	$ret = array_key_exists( $gateway, $gateways );
 
@@ -113,11 +113,11 @@ function give_is_gateway_active(string $gateway, ?int $version = 2): bool
  * @unlreased add $version param
  * @since 1.0
  *
- * @param  $form_id      int ID of the Give Form
+ * @param int|null $form_id int ID of the Give Form
  * @param int|null $version
  * @return string Gateway ID
  */
-function give_get_default_gateway(int $form_id, ?int $version = 2): string
+function give_get_default_gateway(?int $form_id, ?int $version = 2): string
 {
     $suffix = $version === 3 ? '_v3' : '';
     $enabled_gateways = array_keys(give_get_enabled_payment_gateways($form_id, $version));
