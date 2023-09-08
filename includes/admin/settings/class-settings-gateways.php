@@ -342,20 +342,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             $current_tab = give_get_current_setting_tab();
             $current_section = give_get_current_setting_section();
 
-            $fixedGateways = array_filter(
-                $gateways,
-                static function ($gatewayId) {
-                    return in_array($gatewayId, ['manual', 'offline'], true);
-                },
-                ARRAY_FILTER_USE_KEY
-            );
-
             $v2Gateways = give_get_ordered_payment_gateways(
-                array_intersect_key($gateways, give()->gateways->getPaymentGateways(2) + $fixedGateways),
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(2)),
                 2
             );
             $v3Gateways = give_get_ordered_payment_gateways(
-                array_intersect_key($gateways, give()->gateways->getPaymentGateways(3) + $fixedGateways),
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(3)),
                 3
             );
 
