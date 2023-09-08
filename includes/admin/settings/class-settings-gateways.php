@@ -358,6 +358,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                     'settings' => $settings,
                     'gatewaysLabel' => give_get_option('gateways_label', []),
                     'defaultGateway' => give_get_option('default_gateway', current(array_keys($v2Gateways))),
+                    'helper' => [
+                        'text' => __(
+                            'Uses the traditional settings options for creating and customizing a donation form.',
+                            'give'
+                        ),
+                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg',
+                    ]
                 ],
                 'v3' => [
                     'label' => __('Visual Form Builder', 'give'),
@@ -365,6 +372,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                     'settings' => give_get_option('gateways_v3', []),
                     'gatewaysLabel' => give_get_option('gateways_label_v3', []),
                     'defaultGateway' => give_get_option('default_gateway_v3', current(array_keys($v3Gateways))),
+                    'helper' => [
+                        'text' => __(
+                            'Uses the blocks-based visual form builder for creating and customizing a donation form.',
+                            'give'
+                        ),
+                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v3.jpg',
+                    ]
                 ],
             ];
             $defaultGroup = current(array_keys($groups));
@@ -379,8 +393,25 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
                 $active_class = ($slug === $current_group) ? 'active' : '';
 
+                if ($group['helper']) {
+                    $helper = sprintf(
+                        '<div class="give-settings-section-group-helper">
+                            <img src="%1$s" />
+                            <div class="give-settings-section-group-helper__popout">
+                                <img src="%2$s" />
+                                <h5>%3$s</h5>
+                                <p>%4$s</p>
+                            </div>
+                        </div>',
+                        esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
+                        esc_url($group['helper']['image']),
+                        esc_html($group['label']),
+                        esc_html($group['helper']['text'])
+                    );
+                }
+
                 echo sprintf(
-                    '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
+                    '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s %5$s</a></li>',
                     esc_html($active_class),
                     esc_url(
                         admin_url(
@@ -388,7 +419,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                         )
                     ),
                     esc_html($slug),
-                    esc_html($group['label'])
+                    esc_html($group['label']),
+                    $helper ?? ''
                 );
             }
             echo '</ul>';

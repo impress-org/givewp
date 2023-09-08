@@ -288,10 +288,55 @@ div.give-field-description {
 .give-payment-gateways-settings {
     &.give-settings-section-content {
         .give-settings-section-group-menu {
-            width: 20rem;
+            width: 22rem;
 
             ul li a {
+                display: flex;
+                gap: 1rem;
+                justify-content: space-between;
                 padding: 1.25rem 1rem;
+                position: relative;
+
+                .give-settings-section-group-helper {
+                    --popout-display: none;
+                    display: flex;
+
+                    &:hover {
+                        --popout-display: block;
+                    }
+
+                    &__popout {
+                        background-color: #fff;
+                        border: 1px solid #e6e6e6;
+                        border-radius: 4px;
+                        box-shadow: 0 4px 8px 0 #0000000D;
+                        color: #404040;
+                        display: var(--popout-display, none);
+                        left: 100%;
+                        position: absolute;
+                        top: 0;
+                        transform: translateX(10px);
+
+                        img {
+                            display: block;
+                        }
+
+                        h5 {
+                            font-size: 0.875rem;
+                            line-height: 1.5;
+                            margin: 0;
+                            padding: 1rem 1.5rem 0.5rem;
+                        }
+
+                        p {
+
+                            font-size: 0.75rem;
+                            line-height: 1.5;
+                            margin: 0;
+                            padding: 0 1.5rem 1.5rem;
+                        }
+                    }
+                }
             }
         }
     }
