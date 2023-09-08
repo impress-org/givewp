@@ -4,7 +4,7 @@ import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wo
 import {Icon as WPIcon, plus} from '@wordpress/icons';
 
 import {__} from '@wordpress/i18n';
-import Editor from './components/editor';
+import Editor from '@givewp/form-builder/components/editor';
 import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
 
 type EmailTemplateSettingsProps = {
