@@ -13,7 +13,6 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
@@ -164,7 +163,7 @@ class FormBuilderViewModel
      */
     public function getGateways(): array
     {
-        $enabledGateways = array_keys(give_get_option('gateways'));
+        $enabledGateways = array_keys(give_get_option('gateways_v3'));
 
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
             /** @var PaymentGateway $gateway */
@@ -173,10 +172,10 @@ class FormBuilderViewModel
             return [
                 'id' => $gateway::id(),
                 'enabled' => in_array($gateway::id(), $enabledGateways, true),
-                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
+                'label' => give_get_gateway_checkout_label($gateway::id(), 3) ?? $gateway->getPaymentMethodLabel(),
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
-        }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
+        }, give()->gateways->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
     }
