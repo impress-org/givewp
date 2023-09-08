@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -40,7 +40,7 @@ const HeaderContainer = ({
     toggleShowSidebar,
     onSaveNotice,
 }) => {
-    const {blocks, settings: formSettings, isDirty} = useFormState();
+    const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
@@ -48,6 +48,7 @@ const HeaderContainer = ({
 
     const isDraftDisabled = ( isSaving || !isDirty ) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = ( isSaving || !isDirty ) && 'publish' === formSettings.formStatus;
+    const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
 
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
@@ -60,16 +61,7 @@ const HeaderContainer = ({
             .catch((error) => {
                 dispatch(setIsDirty(false));
                 setSaving(null);
-
-                let message = error.message;
-                if (error?.cause?.code === 'rest_cookie_invalid_nonce') {
-                    message = __(
-                        'Due to inactivity, your login session has expired. Please refresh the page and try again.',
-                        'give'
-                    );
-                }
-
-                alert(message);
+                alert(error.message);
             })
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
@@ -164,6 +156,16 @@ const HeaderContainer = ({
                                     >
                                         {__('Show Guided Tour', 'give')}
                                     </MenuItem>
+                                    {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
+                                        <MenuItem
+                                            onClick={() => {
+                                                dispatch(setTransferState({showTransferModal: true}));
+                                                onClose();
+                                            }}
+                                        >
+                                            {__('Transfer Donation Data', 'give')}
+                                        </MenuItem>
+                                    )}
                                 </MenuGroup>
                             </div>
                         )}

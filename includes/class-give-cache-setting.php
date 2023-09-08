@@ -230,21 +230,12 @@ class Give_Cache_Setting {
 	 *
 	 * Note: use give_get_enabled_payment_gateways function to get list of registered gateway.
 	 *
+     * @since 3.0.0 test and offline gateways are defaulted in the new Gateway API
 	 * @since 2.4.0
 	 * @since 2.15.0 Set payment gateway checkout label to  admin defined payment gateway checkout label.
 	 */
 	public function setup_gateways_list() {
-		// Default, built-in gateways
-		$gateways = [
-			'manual'  => [
-				'admin_label'    => __( 'Test Donation', 'give' ),
-				'checkout_label' => __( 'Test Donation', 'give' ),
-			],
-			'offline' => [
-				'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-				'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
-			],
-		];
+		$gateways = [];
 
 		/**
 		 * Filter the supported gateways list

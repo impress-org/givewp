@@ -1,20 +1,30 @@
+import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
+import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
+import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 
 declare global {
     interface Window {
         GiveDonationForms: {
             apiNonce: string;
+            bannerActionUrl: string;
+            migrationApiRoot: string;
             apiRoot: string;
-            authors: Array<{id: string | number; name: string}>;
-            table: {columns: Array<object>};
+            authors: Array<{ id: string | number; name: string }>;
+            table: { columns: Array<object> };
             pluginUrl: string;
+            showBanner: boolean;
+            isMigrated: boolean;
+            supportedAddons: Array<string>;
+            supportedGateways: Array<string>;
         };
 
         GiveNextGen?: {
@@ -46,6 +56,10 @@ const donationStatus = [
         value: 'trash',
         text: __('Trash', 'give'),
     },
+    {
+        value: 'upgraded',
+        text: __('Upgraded', 'give'),
+    },
 ];
 
 const donationFormsFilters: Array<FilterConfig> = [
@@ -62,6 +76,29 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
+];
+
+const columnFilters: Array<ColumnFilterConfig> = [
+    {
+        column: 'title',
+        filter: item => {
+            if (item?.v3form) {
+                return (
+                    <div className={styles.migratedForm}>
+                        <div className={styles.tooltipContainer}>
+                            <CubeIcon />
+                            <div className={styles.tooltip}>
+                                {__('Uses the Visual Form Builder', 'give')}
+                            </div>
+                        </div>
+                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                    </div>
+                );
+            }
+
+            return <Interweave attributes={{className: 'interweave'}} content={item?.title} />;
+        },
+    }
 ];
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
@@ -171,29 +208,42 @@ const ListTableBlankSlate = (
 );
 
 export default function DonationFormsListTable() {
+
+    const [state, setState] = useState<OnboardingStateProps>({
+        showBanner: Boolean(window.GiveDonationForms.showBanner),
+        showFeatureNoticeDialog: false
+    })
+
     return (
-        <ListTablePage
-            title={__('Donation Forms', 'give')}
-            singleName={__('donation form', 'give')}
-            pluralName={__('donation forms', 'give')}
-            rowActions={DonationFormsRowActions}
-            bulkActions={donationFormsBulkActions}
-            apiSettings={window.GiveDonationForms}
-            filterSettings={donationFormsFilters}
-            listTableBlankSlate={ListTableBlankSlate}
-        >
-            {!!window.GiveNextGen?.newFormUrl && (
-                <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
-                    {__('Add Next Gen Form', 'give')}
+        <OnboardingContext.Provider value={[state, setState]}>
+            <ListTablePage
+                title={__('Donation Forms', 'give')}
+                singleName={__('donation form', 'give')}
+                pluralName={__('donation forms', 'give')}
+                rowActions={DonationFormsRowActions}
+                bulkActions={donationFormsBulkActions}
+                apiSettings={window.GiveDonationForms}
+                filterSettings={donationFormsFilters}
+                listTableBlankSlate={ListTableBlankSlate}
+                columnFilters={columnFilters}
+                banner={Onboarding}
+            >
+                <div className={styles.tryNewFormBuilderBtnContainer}>
+                    <FormBuilderButton
+                        onClick={() => setState(prev => ({
+                            ...prev,
+                            showFeatureNoticeDialog: true
+                        }))}
+                    />
+                </div>
+                <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
+                    {__('Add Form', 'give')}
                 </a>
-            )}
-            <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
-                {__('Add Form', 'give')}
-            </a>
-            <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
-                {__('Switch to Legacy View')}
-            </button>
-        </ListTablePage>
+                <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
+                    {__('Switch to Legacy View')}
+                </button>
+            </ListTablePage>
+        </OnboardingContext.Provider>
     );
 }
 

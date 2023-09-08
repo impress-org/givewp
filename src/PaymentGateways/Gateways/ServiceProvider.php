@@ -8,6 +8,9 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\PaymentGateways\Gateways\Offline\Actions\DisableGatewayWhenDisabledPerForm;
+use Give\PaymentGateways\Gateways\Offline\Actions\EnqueueOfflineFormBuilderScripts;
+use Give\PaymentGateways\Gateways\Offline\Actions\UpdateOfflineMetaFromFormBuilder;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
@@ -60,13 +63,8 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerGateways()
     {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
-            if (!$registrar->hasPaymentGateway(TestGateway::id())) {
-                $registrar->registerGateway(TestGateway::class);
-            }
-
-            if (!$registrar->hasPaymentGateway(TestOffsiteGateway::id())) {
-                $registrar->registerGateway(TestOffsiteGateway::class);
-            }
+            // Enable as needed for testing but do not push to production
+            // $registrar->registerGateway(TestOffsiteGateway::class);
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
 
@@ -83,6 +81,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
         $this->addStripeFormBuilderHooks();
+        $this->bootOfflineDonations();
     }
 
       /**
@@ -146,5 +145,18 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
         Hooks::addAction('givewp_form_builder_new_form', AddStripeAttributesToNewForms::class);
         Hooks::addAction('givewp_form_builder_updated', UpdateStripeFormBuilderSettingsMeta::class);
+    }
+
+    private function bootOfflineDonations()
+    {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueOfflineFormBuilderScripts::class);
+        Hooks::addAction('givewp_form_builder_updated', UpdateOfflineMetaFromFormBuilder::class);
+        Hooks::addFilter(
+            'givewp_donation_form_enabled_gateways',
+            DisableGatewayWhenDisabledPerForm::class,
+            '__invoke',
+            10,
+            2
+        );
     }
 }
