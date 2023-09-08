@@ -293,8 +293,8 @@ class DonationFormRepository
     {
         $gateways = [];
 
-        $enabledGateways = give_get_option('gateways');
-        $defaultGateway = give_get_default_gateway($formId);
+        $enabledGateways = give_get_option('gateways_v3');
+        $defaultGateway = give_get_default_gateway($formId, 3);
 
         foreach ($enabledGateways as $gatewayId => $enabled) {
             if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
@@ -337,7 +337,7 @@ class DonationFormRepository
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayId = $gateway::id();
             $settings = $this->getGatewayFormSettings($formId, $gateway);
-            $label = give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel();
+            $label = give_get_gateway_checkout_label($gatewayId, 3) ?? $gateway->getPaymentMethodLabel();
 
             /*
              * TODO: Make gateway arrayable
