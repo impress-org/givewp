@@ -400,3 +400,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	} );
 } );
+
+// Payment Gateways Settings dialog
+document.addEventListener('DOMContentLoaded', () => {
+    const dialog = document.getElementById('give-payment-gateway-settings-dialog');
+
+    if (dialog === null) {
+        return;
+    }
+
+    const dialogCloseButton = dialog.querySelector('#give-payment-gateway-settings-dialog__close');
+    dialogCloseButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        dialog.close();
+    });
+
+    dialog.showModal();
+});

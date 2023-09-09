@@ -9,6 +9,7 @@
  * @subpackage  Classes/Give_Settings_Gateways
  */
 
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
@@ -511,6 +512,92 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             echo '</div>'; // end give-settings-section-content.
 
             printf('<tr><td colspan="2" style="padding: 0">%s</td></tr>', ob_get_clean());
+
+            $this->maybeRenderNoticeDialog();
+        }
+
+        private function maybeRenderNoticeDialog()
+        {
+            $noticeVersion = '3.0.0';
+            $hasUserSeenGatewayNotice = version_compare(
+                get_user_meta(
+                    get_current_user_id(),
+                    'give-payment-gateways-settings-dialog-read',
+                    true
+                ),
+                $noticeVersion,
+                '>='
+            );
+
+            if ($hasUserSeenGatewayNotice) {
+                return;
+            }
+
+            $supportedGateways = (new DonationFormsAdminPage())->getSupportedGateways();
+            ?>
+
+            <dialog class="give-payment-gateway-settings-dialog" id="give-payment-gateway-settings-dialog">
+                <div class="give-payment-gateway-settings-dialog__header">
+                    <?php
+                    _e('Feature notice', 'give'); ?>
+                    <button
+                        class="give-payment-gateway-settings-dialog__close"
+                        id="give-payment-gateway-settings-dialog__close"
+                        aria-label="<?php
+                        esc_attr_e('Close dialog', 'give'); ?>"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"
+                             aria-label="Close dialog icon">
+                            <path
+                                d="M18.707 6.707a1 1 0 0 0-1.414-1.414L12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="give-payment-gateway-settings-dialog__content">
+                    <div class="give-payment-gateway-settings-dialog__content-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.5 2a1 1 0 0 0-2 0v1.5H2a1 1 0 0 0 0 2h1.5V7a1 1 0 0 0 2 0V5.5H7a1 1 0 0 0 0-2H5.5V2zM5.5 17a1 1 0 1 0-2 0v1.5H2a1 1 0 1 0 0 2h1.5V22a1 1 0 1 0 2 0v-1.5H7a1 1 0 1 0 0-2H5.5V17zM13.933 2.641a1 1 0 0 0-1.866 0L10.332 7.15c-.3.78-.394 1.006-.523 1.188a2 2 0 0 1-.471.47c-.182.13-.407.224-1.188.524L3.64 11.067a1 1 0 0 0 0 1.866l4.509 1.735c.78.3 1.006.394 1.188.523.182.13.341.29.47.471.13.182.224.407.524 1.188l1.735 4.509a1 1 0 0 0 1.866 0l1.735-4.509c.3-.78.394-1.006.523-1.188.13-.182.29-.341.471-.47.182-.13.407-.224 1.188-.524l4.509-1.735a1 1 0 0 0 0-1.866L17.85 9.332c-.78-.3-1.006-.394-1.188-.523a2.001 2.001 0 0 1-.47-.471c-.13-.182-.224-.407-.524-1.188L13.933 2.64z"
+                                fill="#F2CC0C"></path>
+                        </svg>
+                        <?php
+                        esc_html_e('What\'s new', 'give'); ?>
+                    </div>
+                    <?php
+                    esc_html_e(
+                        'GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donations Form Builder. However, we are still working on gateway compatibility with the new forms experience.',
+                        'give'
+                    ); ?>
+                    <?php
+                    if ($supportedGateways) : ?>
+                        <div class="give-payment-gateway-settings-dialog__content-title"><?php
+                            esc_html_e('Supported gateways', 'give'); ?></div>
+                        <div class="give-payment-gateway-settings-dialog__content-itemsContainer">
+                            <?php
+                            foreach ($supportedGateways as $gateway) : ?>
+                                <div class="give-payment-gateway-settings-dialog__content-item">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M7.063.986a1.531 1.531 0 0 1 1.872 0l.783.601.98-.129c.69-.09 1.354.294 1.62.935l.377.913.911.376h.002c.641.267 1.025.93.935 1.62l-.13.98.602.783a1.534 1.534 0 0 1 0 1.872l-.601.783.129.98c.09.69-.294 1.354-.935 1.62h-.002l-.91.377-.378.912a1.537 1.537 0 0 1-1.62.936l-.98-.13-.783.601a1.531 1.531 0 0 1-1.872 0l-.782-.6-.98.129a1.537 1.537 0 0 1-1.62-.936l-.377-.912-.911-.376H2.39a1.537 1.537 0 0 1-.935-1.621l.129-.98-.601-.783a1.533 1.533 0 0 1 0-1.872l.601-.782-.129-.98c-.09-.69.294-1.354.935-1.62l.002-.001.91-.376.377-.913a1.537 1.537 0 0 1 1.62-.935l.98.13.783-.602zm3.741 5.82a.667.667 0 0 0-.943-.943L7.333 8.392 6.47 7.53a.667.667 0 1 0-.943.943L6.86 9.806c.26.26.683.26.943 0l3-3z"
+                                              fill="#459948"></path>
+                                    </svg>
+                                    <?php
+                                    echo $gateway; ?>
+                                </div>
+                            <?php
+                            endforeach; ?>
+                        </div>
+                    <?php
+                    endif; ?>
+                    <button class="give-payment-gateway-settings-dialog__content-button"><?php
+                        esc_html_e('Got it', 'give'); ?></button>
+                    <a href="#" class="give-payment-gateway-settings-dialog__content-link"><?php
+                        esc_html_e('Read more on Add-ons and Gateways compatibility', 'give'); ?></a>
+                </div>
+            </dialog>
+
+            <?php
         }
 	}
 
