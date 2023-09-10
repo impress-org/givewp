@@ -105,6 +105,8 @@ class LegacyFormSettingCompatibility
      * Note: Only for internal use. This function can be removed or change in future
      *
      * @since 2.7.0
+     *
+     * @unreleased
      */
     public static function migrateExistingFormSettings()
     {
@@ -134,6 +136,7 @@ class LegacyFormSettingCompatibility
             'form_content' => '_give_form_content',
         ];
 
+        $settings = [];
         foreach ($mapToSetting as $newSetting => $oldSetting) {
             if ($value = Give()->form_meta->get_meta($formId, $oldSetting, true)) {
                 $settings['display_settings'][$newSetting] = $value;
