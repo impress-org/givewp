@@ -105,6 +105,8 @@ class LegacyFormSettingCompatibility
      * Note: Only for internal use. This function can be removed or change in future
      *
      * @since 2.7.0
+     *
+     * @unreleased
      */
     public static function migrateExistingFormSettings()
     {
@@ -140,6 +142,7 @@ class LegacyFormSettingCompatibility
             }
         }
 
+        if (empty($settings)) return;
         Give()->form_meta->update_meta($formId, '_give_form_template', 'legacy');
         Give()->form_meta->update_meta($formId, '_give_legacy_form_template_settings', $settings);
     }
