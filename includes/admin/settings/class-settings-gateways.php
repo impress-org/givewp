@@ -533,6 +533,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 return;
             }
 
+            update_user_meta(
+                get_current_user_id(),
+                'give-payment-gateways-settings-dialog-read',
+                $noticeVersion
+            );
+
             $supportedGateways = (new DonationFormsAdminPage())->getSupportedGateways();
             ?>
 
