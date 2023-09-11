@@ -602,7 +602,8 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                     endif; ?>
                     <button class="give-payment-gateway-settings-dialog__content-button"><?php
                         esc_html_e('Got it', 'give'); ?></button>
-                    <a href="#" class="give-payment-gateway-settings-dialog__content-link"><?php
+                    <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank"
+                       class="give-payment-gateway-settings-dialog__content-link"><?php
                         esc_html_e('Read more on Add-ons and Gateways compatibility', 'give'); ?></a>
                 </div>
             </dialog>
