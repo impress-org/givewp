@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\RemovePaymentIntentSecretMeta;
+use Give\PaymentGateways\Migrations\CopyV2GatewaysSettingsToV3;
 use Give\PaymentGateways\PayPalCommerce\Banners\GatewaySettingPageBanner;
 use Give\PaymentGateways\PayPalCommerce\Banners\PayPalStandardToDonationsMigrationGlobalBanner;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
@@ -71,6 +72,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerMigrations()
     {
         give(MigrationsRegister::class)->addMigrations([
+            CopyV2GatewaysSettingsToV3::class,
             AddStatementDescriptorToStripeAccounts::class,
             AddMissingTransactionIdForUncompletedDonations::class,
             RemoveLogWithCardInfo::class,
