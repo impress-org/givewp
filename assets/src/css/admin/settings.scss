@@ -285,17 +285,25 @@ div.give-field-description {
 //--------------------------------------------------------------
 // Payment Gateways
 //--------------------------------------------------------------
+.give-payment-gateways-settings {
+    &.give-settings-section-content {
+        .give-settings-section-group-menu {
+            width: 20rem;
+
+            ul li a {
+                padding: 1.25rem 1rem;
+            }
+        }
+    }
+}
 
 .gateway-enabled-wrap {
-	background-color: #f7f7f7;
-	border: 1px solid #e5e5e5;
 
 	.gateway-enabled-settings-title {
 		display: grid;
 		grid-template-columns: 0.5fr 2.5fr 5fr 1fr 1fr;
 		grid-gap: 20px;
-		border-bottom: 1px solid #e5e5e5;
-		padding: 1rem;
+        padding: 1rem 0;
 		font-weight: 600;
 	}
 
@@ -315,7 +323,7 @@ div.give-field-description {
 
 .give-payment-gatways-list {
 	margin: 0;
-	padding: 1rem;
+    padding: 1rem 0;
 }
 
 .give-payment-gatways-list li {

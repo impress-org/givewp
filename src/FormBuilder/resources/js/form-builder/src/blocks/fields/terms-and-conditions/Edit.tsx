@@ -15,7 +15,7 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Markup} from 'interweave';
 
-import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import Editor from '@givewp/form-builder/components/editor';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';

@@ -1,6 +1,7 @@
 const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
 const UPDATE_DIRTY = 'update_dirty';
+const UPDATE_TRANSFER_STATE = 'update_transfer_state';
 
 /**
  * This reducer is used within the FormStateProvider for state management
@@ -29,6 +30,16 @@ export default function reducer(state, action) {
             return {
                 ...state,
                 isDirty: action.isDirty,
+            };
+
+        case UPDATE_TRANSFER_STATE:
+            return {
+                ...state,
+                isDirty: action.isDirty,
+                transfer: {
+                    ...state.transfer,
+                    ...action.transfer,
+                },
             };
 
         default:
@@ -63,5 +74,15 @@ export function setIsDirty(isDirty: boolean) {
     return {
         type: UPDATE_DIRTY,
         isDirty,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function setTransferState(transfer) {
+    return {
+        type: UPDATE_TRANSFER_STATE,
+        transfer,
     };
 }

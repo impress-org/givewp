@@ -35,6 +35,7 @@ import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
+import FormError from "./layouts/FormError";
 
 const defaultFormTemplates = {
     fields: {
@@ -81,6 +82,7 @@ const defaultFormTemplates = {
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,
         donationSummaryItems: DonationSummaryItems,
+        formError: FormError,
     },
 };
 

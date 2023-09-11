@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
-    id: 'test-gateway',
+    id: 'manual',
     async beforeCreatePayment(values: FormData) {
         // To test out a gateway error, you can fill in the donation form with "error" as the first name.
         if (values.firstName === 'error') {

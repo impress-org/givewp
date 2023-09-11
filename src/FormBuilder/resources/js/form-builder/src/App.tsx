@@ -7,6 +7,7 @@ import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
 import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
+import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -15,6 +16,11 @@ const initialState = {
     settings: {
         ...initialFormSettings,
     },
+    transfer: {
+        showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
+        showUpgradeModal: Boolean(window.migrationOnboardingData.showUpgradeDialog),
+        showTransferModal: false,
+    }
 };
 
 if (initialBlocks instanceof Error) {
@@ -33,6 +39,7 @@ export default function App() {
                 <ShortcutProvider>
                     <BlockEditorContainer />
                     <Feedback />
+                    <Transfer />
                 </ShortcutProvider>
             </FormStateProvider>
         </FormBuilderErrorBoundary>

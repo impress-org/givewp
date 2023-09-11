@@ -3,17 +3,15 @@ import {__} from '@wordpress/i18n';
 
 export default function Form({children, formProps, formError, isSubmitting}: FormProps) {
     const {donateButtonCaption} = window.givewp.form.hooks.useDonationFormSettings();
+    const FormError = window.givewp.form.templates.layouts.formError;
 
     return (
         <form {...formProps}>
             {children}
-            {formError && (
-                <div style={{textAlign: 'center'}}>
-                    <p>{__('The following error occurred when submitting the form:', 'give')}</p>
-                    <p>{formError}</p>
-                </div>
-            )}
+
             <section className="givewp-layouts givewp-layouts-section">
+                {formError && <FormError error={formError} />}
+
                 <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
                     {isSubmitting ? __('Submitting…', 'give') : donateButtonCaption}
                 </button>

@@ -36,7 +36,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
         $this->assertEquals('PayPal Standard', $out['paypal']['admin_label']);
         $this->assertEquals('PayPal', $out['paypal']['checkout_label']);
 
-        $this->assertEquals('Test Donation *(v2)', $out['manual']['admin_label']);
+        $this->assertEquals('Test Donation', $out['manual']['admin_label']);
         $this->assertEquals('Test Donation', $out['manual']['checkout_label']);
     }
 
@@ -86,7 +86,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     public function test_get_gateway_admin_label()
     {
         $this->assertEquals('PayPal Standard', give_get_gateway_admin_label('paypal'));
-        $this->assertEquals('Test Donation *(v2)', give_get_gateway_admin_label('manual'));
+        $this->assertEquals('Test Donation', give_get_gateway_admin_label('manual'));
     }
 
     /**
