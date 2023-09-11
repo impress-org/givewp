@@ -13,7 +13,6 @@ import {
     FormDesignSettings,
     FormGridSettings,
     FormSummarySettings,
-    OfflineDonationsSettings,
     RegistrationSettings,
 } from '../../../settings';
 import {PopoutSlot} from '../popout';
