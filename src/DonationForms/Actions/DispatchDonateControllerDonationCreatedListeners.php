@@ -15,9 +15,9 @@ class DispatchDonateControllerDonationCreatedListeners
      * @since 3.0.0
      * @throws NameCollisionException
      */
-    public function __invoke(DonateControllerData $formData, Donation $donation, Subscription $subscription = null)
+    public function __invoke(DonateControllerData $formData, Donation $donation, ?Subscription $subscription)
     {
-        (new StoreCustomFields())($formData->getDonationForm(), $donation, $formData->getCustomFields(), $subscription);
+        (new StoreCustomFields())($formData->getDonationForm(), $donation, $subscription, $formData->getCustomFields());
         (new TemporarilyReplaceLegacySuccessPageUri())($formData, $donation);
         (new AddRedirectUrlsToGatewayData())($formData, $donation);
     }

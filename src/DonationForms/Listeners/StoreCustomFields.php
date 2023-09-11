@@ -23,7 +23,7 @@ class StoreCustomFields
      * @return void
      * @throws NameCollisionException
      */
-    public function __invoke(DonationForm $form, Donation $donation, array $customFields, Subscription $subscription = null)
+    public function __invoke(DonationForm $form, Donation $donation, ?Subscription $subscription, array $customFields)
     {
         $form->schema()->walkFields(
             function (Field $field) use ($customFields, $donation, $subscription) {
@@ -56,9 +56,8 @@ class StoreCustomFields
 
     /**
      * @since 3.0.0
-     * @return array|null
      */
-    protected function handleFileUpload(File $field)
+    protected function handleFileUpload(File $field): ?array
     {
         if (!isset($_FILES[$field->getName()])) {
             return null;
@@ -70,7 +69,7 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function storeAsDonorMeta(int $donorId, string $metaKey, $value)
+    protected function storeAsDonorMeta(int $donorId, string $metaKey, $value): void
     {
         give()->donor_meta->update_meta($donorId, $metaKey, $value);
     }
@@ -78,7 +77,7 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function storeAsDonationMeta(int $donationId, string $metaKey, $value)
+    protected function storeAsDonationMeta(int $donationId, string $metaKey, $value): void
     {
         give()->payment_meta->update_meta($donationId, $metaKey, $value);
     }
@@ -86,7 +85,7 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function storeAsSubscriptionMeta(int $subscriptionId, string $metaKey, $value)
+    protected function storeAsSubscriptionMeta(int $subscriptionId, string $metaKey, $value): void
     {
         give()->subscription_meta->update_meta($subscriptionId, $metaKey, $value);
     }
@@ -95,12 +94,16 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function persistFieldScope(Field $field, $value, Donation $donation, Subscription $subscription = null)
+    protected function persistFieldScope(Field $field, $value, Donation $donation, ?Subscription $subscription): void
     {
         if ($field->getScope()->isDonor()) {
             $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
         } elseif ($field->getScope()->isDonation()) {
             $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $value);
+        } elseif ($field->getScope()->isSubscription()) {
+            if ($subscription) {
+                $this->storeAsSubscriptionMeta($subscription->id, $field->getMetaKey() ?? $field->getName(), $value);
+            }
         } elseif ($field->getScope()->isCallback()) {
             $field->getScopeCallback()($field, $value, $donation, $subscription);
         } else {
