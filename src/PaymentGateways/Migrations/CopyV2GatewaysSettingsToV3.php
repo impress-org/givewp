@@ -33,7 +33,7 @@ class CopyV2GatewaysSettingsToV3 extends Migration
     {
         $v2Gateways = give_get_option('gateways', []);
         give_update_option('gateways_v3', $v2Gateways);
-        give_update_option('gateways_label_v3', give_get_option('gateways_label'));
+        give_update_option('gateways_label_v3', give_get_option('gateways_label', []));
         give_update_option('default_gateway_v3', give_get_option('default_gateway', current(array_keys($v2Gateways))));
     }
 
