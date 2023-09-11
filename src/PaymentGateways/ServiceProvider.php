@@ -73,12 +73,12 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerMigrations()
     {
         give(MigrationsRegister::class)->addMigrations([
-            CopyV2GatewaysSettingsToV3::class,
             AddStatementDescriptorToStripeAccounts::class,
             AddMissingTransactionIdForUncompletedDonations::class,
             RemoveLogWithCardInfo::class,
             RemovePaymentIntentSecretMeta::class,
             RegisterPayPalDonationsRefreshTokenCronJobByMode::class,
+            CopyV2GatewaysSettingsToV3::class,
         ]);
     }
 
