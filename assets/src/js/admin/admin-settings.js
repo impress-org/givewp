@@ -409,10 +409,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const dialogCloseButton = dialog.querySelector('#give-payment-gateway-settings-dialog__close');
-    dialogCloseButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        dialog.close();
+    Array.from(
+        dialog.querySelectorAll(
+            '#give-payment-gateway-settings-dialog__close, .give-payment-gateway-settings-dialog__content-button'
+        )
+    ).forEach((element) => {
+        element.addEventListener('click', (e) => {
+            e.preventDefault();
+            dialog.close();
+        });
     });
 
     dialog.showModal();
