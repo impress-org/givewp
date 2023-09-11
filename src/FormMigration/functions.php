@@ -24,7 +24,10 @@ function _give_redirect_form_id(&$formId, &...$extraReference) {
             "
                     SELECT `form_id`
                     FROM `{$wpdb->prefix}give_formmeta`
-                    WHERE `meta_key` = 'redirectedFormId'
+                    JOIN `{$wpdb->posts}`
+                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
+                    WHERE `post_status` != 'trash'
+                      AND `meta_key` = 'transferredFormId'
                       AND `meta_value` = %d",
             $formId
         )
@@ -63,7 +66,7 @@ function _give_is_form_migrated($formId) {
  *
  * @return bool
  */
-function _give_is_form_donations_transferred($formId) {
+function _give_is_form_transferred($formId) {
     global $wpdb;
 
     return (bool) DB::get_var(

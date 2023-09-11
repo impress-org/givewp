@@ -1,15 +1,13 @@
-@import 'variables';
-@import 'utilities';
-@import 'header';
-@import 'stats';
-@import 'goal';
-@import 'inputs';
-@import 'sections';
-@import 'layouts';
-@import 'gateways';
-@import 'receipt';
+@layer form-design {
+    @import 'variables';
+    @import 'utilities';
+    @import 'header';
+    @import 'inputs';
+    @import 'sections';
+    @import 'layouts';
 
-body,
-.givewp-donation-form {
-    font-family: 'system-ui', sans-serif;
+    body,
+    .givewp-donation-form {
+        font-family: 'system-ui', sans-serif;
+    }
 }

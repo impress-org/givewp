@@ -62,5 +62,10 @@ export default function DonationSummary() {
 
     const donationTotal = formatter.format(getDonationTotal(totals, amount));
 
-    return <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />;
+    return (
+        <>
+            <h2 className="givewp-elements-donationSummary__header">{__('Donation Summary', 'give')}</h2>
+            <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />
+        </>
+    );
 }

@@ -1193,12 +1193,15 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
- * @param int $form_id The form ID.
- *
- * @return void
  * @since  1.0
+ *
+ * @param int $form_id The form ID.
+ * @param bool $return Whether to return the output or echo it. *
+ *
+ * @return void|string
  */
-function give_default_cc_address_fields( $form_id ) {
+function give_default_cc_address_fields($form_id, $return = false)
+{
 	// Get user info.
 	$give_user_info = _give_get_prefill_form_field_values( $form_id );
 
@@ -1419,6 +1422,11 @@ function give_default_cc_address_fields( $form_id ) {
 		?>
 	</fieldset>
 	<?php
+
+    if ($return) {
+        return ob_get_clean();
+    }
+
 	echo ob_get_clean();
 }
 

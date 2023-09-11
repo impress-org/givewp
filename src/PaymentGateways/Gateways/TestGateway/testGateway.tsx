@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
-    id: 'test-gateway',
+    id: 'manual',
     async beforeCreatePayment(values: FormData) {
         // To test out a gateway error, you can fill in the donation form with "error" as the first name.
         if (values.firstName === 'error') {
@@ -16,7 +16,7 @@ const gateway: Gateway = {
     Fields() {
         return (
             <fieldset className="no-fields">
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: 20 + 'px'}}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <svg width="84" height="67" viewBox="0 0 84 67" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clipPath="url(#clip0)">
                             <path

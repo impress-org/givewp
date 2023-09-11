@@ -2,10 +2,11 @@
 
 namespace Give\DonationForms\ViewModels;
 
-use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
+use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
@@ -94,7 +95,7 @@ class DonationConfirmationReceiptViewModel
             $this->donation->formId
         ) ? $this->getDonationForm() : null;
 
-        $formDesignId = $donationForm ? $donationForm->settings->designId : DeveloperFormDesign::id();
+        $formDesignId = $donationForm ? $donationForm->settings->designId : ClassicFormDesign::id();
         $customCss = $donationForm && $donationForm->settings->customCss ? $donationForm->settings->customCss : null;
         $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
         $secondaryColor = $donationForm ? $donationForm->settings->secondaryColor : '#000000';
@@ -139,25 +140,23 @@ class DonationConfirmationReceiptViewModel
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
     {
+        (new RegisterDesignSystemStyles())();
+        wp_enqueue_style('givewp-design-system-foundation');
+
         wp_register_style(
-            'givewp-global-form-styles',
-            GIVE_PLUGIN_URL . 'src/DonationForm/resources/styles/global.css'
+            'givewp-base-form-styles',
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
         );
 
         wp_add_inline_style(
-            'givewp-global-form-styles',
+            'givewp-base-form-styles',
             ":root {
             --givewp-primary-color:{$primaryColor};
             --givewp-secondary-color:{$secondaryColor};
             }"
         );
 
-        wp_enqueue_style('givewp-global-form-styles');
-
-        wp_enqueue_style(
-            'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
-        );
+        wp_enqueue_style('givewp-base-form-styles');
     }
 
     /**

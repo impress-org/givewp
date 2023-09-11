@@ -38,14 +38,6 @@ class MultiStepFormDesign extends FormDesign
     /**
      * @since 3.0.0
      */
-    public function js(): string
-    {
-        return GIVE_PLUGIN_URL . 'build/multiStepFormDesignJs.js';
-    }
-
-    /**
-     * @since 3.0.0
-     */
     public function dependencies(): array
     {
         $scriptAsset = require GIVE_PLUGIN_DIR . 'build/multiStepFormDesignJs.asset.php';

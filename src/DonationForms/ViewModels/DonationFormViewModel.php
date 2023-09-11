@@ -23,6 +23,7 @@ use Give\Helpers\Language;
 class DonationFormViewModel
 {
     use HasScriptAssetFile;
+
     /**
      * @var int
      */
@@ -88,24 +89,19 @@ class DonationFormViewModel
         wp_enqueue_style('givewp-design-system-foundation');
 
         wp_register_style(
-            'givewp-global-form-styles',
-            GIVE_PLUGIN_URL . 'src/DonationForms/resources/styles/global.css'
+            'givewp-base-form-styles',
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
         );
 
         wp_add_inline_style(
-            'givewp-global-form-styles',
+            'givewp-base-form-styles',
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
             }"
         );
 
-        wp_enqueue_style('givewp-global-form-styles');
-
-        wp_enqueue_style(
-            'givewp-base-form-styles',
-            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
-        );
+        wp_enqueue_style('givewp-base-form-styles');
     }
 
     /**
@@ -129,8 +125,8 @@ class DonationFormViewModel
             'totalCountValue' => $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                'donations',
+            'totalCountLabel' => $goalType->isDonors() ? __('Donors', 'give') : __(
+                'Donations',
                 'give'
             ),
         ];
@@ -159,7 +155,7 @@ class DonationFormViewModel
             'validateUrl' => $validateUrl,
             'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
-                'donation-confirmation-receipt-view'
+                'donation-confirmation-receipt-view',
             ],
             'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi->jsonSerialize(), [
