@@ -328,6 +328,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		/**
 		 * Render enabled gateways
 		 *
+         * @unreleased split gateways into separated tabs for v2 and v3 settings
 		 * @since  2.0.5
 		 * @access public
 		 *
@@ -516,6 +517,9 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             $this->maybeRenderNoticeDialog();
         }
 
+        /**
+         * @unreleased
+         */
         private function maybeRenderNoticeDialog()
         {
             $noticeVersion = '3.0.0';
