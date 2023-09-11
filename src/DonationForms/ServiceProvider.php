@@ -128,7 +128,7 @@ class ServiceProvider implements ServiceProviderInterface
             DispatchDonateControllerDonationCreatedListeners::class,
             '__invoke',
             10,
-            2
+            3
         );
 
         Hooks::addAction(
