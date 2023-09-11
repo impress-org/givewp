@@ -293,25 +293,27 @@ class DonationFormRepository
     {
         $gateways = [];
 
-        $enabledGateways = give_get_option('gateways_v3');
+        $enabledGateways = give_get_option('gateways_v3', []);
         $defaultGateway = give_get_default_gateway($formId, 3);
 
-        foreach ($enabledGateways as $gatewayId => $enabled) {
-            if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
-                continue;
+        if (!empty($enabledGateways)) {
+            foreach ($enabledGateways as $gatewayId => $enabled) {
+                if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
+                    continue;
+                }
+
+                $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+
+                if (!in_array(3, $gateway->supportsFormVersions(), true)) {
+                    continue;
+                }
+
+                $gateways[$gatewayId] = $gateway;
             }
 
-            $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
-
-            if (!in_array(3, $gateway->supportsFormVersions(), true)) {
-                continue;
+            if (array_key_exists($defaultGateway, $gateways)) {
+                $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
             }
-
-            $gateways[$gatewayId] = $gateway;
-        }
-
-        if (array_key_exists($defaultGateway, $gateways)) {
-            $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
         }
 
         return apply_filters('givewp_donation_form_enabled_gateways', $gateways, $formId);

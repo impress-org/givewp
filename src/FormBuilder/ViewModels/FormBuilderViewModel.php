@@ -163,7 +163,7 @@ class FormBuilderViewModel
      */
     public function getGateways(): array
     {
-        $enabledGateways = array_keys(give_get_option('gateways_v3'));
+        $enabledGateways = array_keys(give_get_option('gateways_v3', []));
 
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
             /** @var PaymentGateway $gateway */
