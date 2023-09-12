@@ -11,9 +11,10 @@ namespace Give\Framework\FieldsAPI\ValueObjects;
  */
 class PersistenceScope
 {
-    const DONATION = 'donation';
-    const DONOR = 'donor';
-    const CALLBACK = 'callback';
+    public const DONATION = 'donation';
+    public const SUBSCRIPTION = 'subscription';
+    public const DONOR = 'donor';
+    public const CALLBACK = 'callback';
 
     /**
      * @var string
@@ -34,6 +35,14 @@ class PersistenceScope
     public static function donor(): self
     {
         return new self(self::DONOR);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public static function subscription(): self
+    {
+        return new self(self::SUBSCRIPTION);
     }
 
     /**
@@ -58,6 +67,14 @@ class PersistenceScope
     public function isDonation(): bool
     {
         return $this->scope === self::DONATION;
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function isSubscription(): bool
+    {
+        return $this->scope === self::SUBSCRIPTION;
     }
 
     /**

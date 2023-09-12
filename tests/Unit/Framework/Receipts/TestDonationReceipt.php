@@ -244,7 +244,7 @@ class TestDonationReceipt extends TestCase
             'formId' => $donationForm->id,
         ]);
 
-        (new StoreCustomFields())($donationForm, $donation, ['custom_text_block_meta' => 'Custom Text Block Value']);
+        (new StoreCustomFields())($donationForm, $donation, null, ['custom_text_block_meta' => 'Custom Text Block Value']);
 
         $receipt = new DonationReceipt($donation);
 

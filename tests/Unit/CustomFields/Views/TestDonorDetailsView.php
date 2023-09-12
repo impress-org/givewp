@@ -52,7 +52,7 @@ class TestDonorDetailsView extends TestCase
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['formId' => $form->id, 'donorId' => $donor->id]);
 
-        (new StoreCustomFields())($form, $donation, ['custom_text_block_meta' => 'Custom Text Block Value']);
+        (new StoreCustomFields())($form, $donation, null, ['custom_text_block_meta' => 'Custom Text Block Value']);
 
         $form = DonationForm::find($form->id);
 
