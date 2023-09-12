@@ -1,6 +1,6 @@
-import {BlockSupports, registerBlockType, setUnregisteredTypeHandlerName} from '@wordpress/blocks';
-import {__experimentalGetCoreBlocks} from '@wordpress/block-library';
-import {getBlockRegistrar} from '@givewp/form-builder/common/getWindowData';
+import { BlockSupports, registerBlockType, setUnregisteredTypeHandlerName } from "@wordpress/blocks";
+import { __experimentalGetCoreBlocks } from "@wordpress/block-library";
+import { getBlockRegistrar } from "@givewp/form-builder/common/getWindowData";
 
 /**
  * Registers the missing block from WordPress core.
@@ -18,7 +18,7 @@ const registerMissingBlock = () => {
     if (missingBlock) {
         const {name, metadata, settings} = missingBlock;
 
-	       registerBlockType( { name, ...metadata }, settings );
+        registerBlockType({name, ...metadata}, settings);
 
         setUnregisteredTypeHandlerName(name);
     }
