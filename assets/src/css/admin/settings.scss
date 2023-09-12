@@ -379,10 +379,6 @@ div.give-field-description {
                 background-color: #074a8c;
             }
         }
-
-        &-link {
-            text-decoration: none;
-        }
     }
 }
 
@@ -414,6 +410,7 @@ div.give-field-description {
                         color: #404040;
                         display: var(--popout-display, none);
                         left: 100%;
+                        overflow: hidden;
                         position: absolute;
                         top: 0;
                         transform: translateX(10px);
@@ -424,6 +421,7 @@ div.give-field-description {
 
                         h5 {
                             font-size: 0.875rem;
+                            font-weight: 700;
                             line-height: 1.5;
                             margin: 0;
                             padding: 1rem 1.5rem 0.5rem;
@@ -431,7 +429,7 @@ div.give-field-description {
 
                         p {
                             font-size: 0.75rem;
-                            font-weight: 400;
+                            font-weight: 500;
                             line-height: 1.5;
                             margin: 0;
                             padding: 0 1.5rem 1.5rem;
