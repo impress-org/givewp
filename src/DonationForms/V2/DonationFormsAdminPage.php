@@ -351,23 +351,22 @@ class DonationFormsAdminPage
         return $output;
     }
 
+    /**
+     * Get an array of supported gateways
+     *
+     * @unreleased
+     * @return array
+     */
     public function getSupportedGateways(): array
     {
-        $supportedGateways = [
-            'Authorize.net' => class_exists('Give_Authorize'),
-            'PayPal Standard' => true,
-            'PayPal Donations' => true,
-            'Stripe Elements' => true, // todo add check
-        ];
+        $gateways = give_get_payment_gateways();
+        $supportedGateways = array_intersect_key($gateways, give()->gateways->getPaymentGateways(3));
 
-        $output = [];
+        ksort($supportedGateways);
+        unset($supportedGateways['manual']);
 
-        foreach ($supportedGateways as $name => $isInstalled) {
-            if ($isInstalled) {
-                $output[] = $name;
-            }
-        }
-
-        return $output;
+        return array_map(function ($gateway) {
+            return $gateway['admin_label'];
+        }, $supportedGateways);
     }
 }
