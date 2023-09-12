@@ -1,5 +1,6 @@
+import {Markup} from 'interweave';
 import type {ParagraphProps} from '@givewp/forms/propTypes';
 
 export default function Paragraph({content}: ParagraphProps) {
-    return <p>{content}</p>;
+    return <Markup content={content} tagName={'p'} />;
 }
