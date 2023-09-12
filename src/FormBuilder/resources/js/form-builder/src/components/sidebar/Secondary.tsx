@@ -3,16 +3,22 @@ import BlockListTree from './panels/BlockListTree';
 import {__experimentalLibrary as Library} from '@wordpress/block-editor';
 import AdditionalFieldsPanel from '@givewp/form-builder/promos/additionalFields';
 import {useSelect} from '@wordpress/data';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const BlockListInserter = () => {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isPrimaryBlockList = !!selectedBlock && selectedBlock.name !== 'givewp/section';
+    const {
+        formFieldManagerData: {isInstalled},
+    } = getFormBuilderWindowData();
+
+    const showAdditionalFieldsPanel = !isInstalled && isPrimaryBlockList;
 
     return (
         <div>
             <Library showInserterHelpPanel={false} />
-            {isPrimaryBlockList && <AdditionalFieldsPanel />}
+            {showAdditionalFieldsPanel && <AdditionalFieldsPanel />}
         </div>
     );
 };
