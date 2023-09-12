@@ -17,7 +17,8 @@ const settings: ElementBlock['settings'] = {
     attributes: {
         content: {
             type: 'string',
-            source: 'html',
+            source: 'attribute',
+            selector: 'p',
             default: '',
         },
     },
