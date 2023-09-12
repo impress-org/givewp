@@ -16,6 +16,8 @@
 
         &:hover {
             color: var(--givewp-green-600);
+            border: 1px solid var(--green-500, #459948);
+            background: var(--green-25, #F2FFF3);
         }
     }
 
@@ -25,6 +27,8 @@
 
         &:hover {
             color: var(--givewp-shades-white);
+            border: 1px solid var(--givewp-green-600, #2D802F);
+            background: var(--givewp-green-600, #2D802F);
         }
     }
 }
