@@ -84,7 +84,8 @@
     }
 }
 
-.givewp-fields-radio {
+.givewp-fields-radio,
+.givewp-fields-checkbox {
     &__options {
         display: flex;
         flex-direction: column;
@@ -95,10 +96,10 @@
         display: flex;
         align-items: flex-end;
         gap: var(--givewp-spacing-2);
-    }
 
-    label {
-        font-weight: 400;
+        label {
+            font-weight: 400;
+        }
     }
 }
 
