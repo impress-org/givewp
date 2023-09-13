@@ -234,10 +234,9 @@ class FormSettings implements Arrayable, Jsonable
      */
     public static function fromJson(string $json): self
     {
-        $self = new self();
-        $array = json_decode($json, true);
-
-        return $self::fromArray($array);
+        return self::fromArray(
+            json_decode($json, true)
+        );
     }
 
     /**
@@ -258,6 +257,9 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
+                    'emailTemplateOptions' => array_map(function($emailTemplateOptions) {
+                        return array_map('addslashes', $emailTemplateOptions);
+                    }, $this->emailTemplateOptions),
                 ]
             )
         );
