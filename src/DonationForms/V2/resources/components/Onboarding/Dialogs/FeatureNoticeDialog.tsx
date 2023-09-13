@@ -38,7 +38,7 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     <StarsIcon /> {__("What's new", 'give')}
                 </div>
 
-                {__('GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donations Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "Add form" option for now', 'give')}
+                {__('GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donation Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "Add form" option for now.', 'give')}
 
                 {supportedAddons.length > 0 && (
                     <>
