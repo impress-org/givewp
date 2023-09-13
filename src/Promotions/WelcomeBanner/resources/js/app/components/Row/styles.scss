@@ -7,16 +7,13 @@
             padding: 0;
             font-size: 1.25rem;
             font-weight: bold;
-            line-height: 1.4;
             letter-spacing: normal;
             text-align: left;
             color: var(--givep-grey-900);
         }
 
         > p {
-            align-self: stretch;
             font-size: 0.875rem;
-            line-height: 1.5;
             letter-spacing: normal;
             text-align: left;
             color: var(--givewp-grey-900);
@@ -29,11 +26,16 @@
         align-items: center;
         align-self: flex-start;
         gap: var(--givewp-spacing-2);
+        margin-bottom: var(--givewp-spacing-2);
         width: 100%;
+
+        > h2 {
+            margin: 0;
+        }
     }
 
-    h2 {
-        margin: var(--givewp-spacing-2) 0;
+    > h2 {
+        margin: 0 0 var(--givewp-spacing-2) 0;
     }
 
     > p {
@@ -55,18 +57,19 @@
         justify-content: space-between;
         min-height: 100%;
         align-self: stretch;
-    }
 
-    .givewp-welcome-banner-row:nth-child(2) {
-        flex: 1.15;
-        justify-content: flex-start;
+        > h2 {
+            line-height: 1.61;
+        }
 
-        p {
-            margin-bottom: auto;
+        > span {
+            h2 {
+                line-height: 1.61;
+            }
         }
     }
 
-    .givewp-welcome-banner-row:nth-child(3) {
+    .givewp-welcome-banner-row:nth-child(2), .givewp-welcome-banner-row:nth-child(3) {
         flex: 1.15;
     }
 }
