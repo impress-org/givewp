@@ -9,6 +9,7 @@
  * @subpackage  Classes/Give_Settings_Gateways
  */
 
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
@@ -122,10 +123,16 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                             ],
                         ],
                         [
-                            'name' => __('Enabled Gateways', 'give'),
+                            'name' => __('Enabled Gateways', 'give') . ' - v2',
                             'desc' => __('Enable your payment gateway. Can be ordered by dragging.', 'give'),
                             'id' => 'gateways',
                             'type' => 'enabled_gateways',
+                        ],
+                        [
+                            'name' => __('Enabled Gateways', 'give') . ' - v3',
+                            'desc' => __('Enable your payment gateway. Can be ordered by dragging.', 'give'),
+                            'id' => 'gateways_v3',
+                            'type' => 'enabled_gateways_hidden',
                         ],
 
                         /**
@@ -135,9 +142,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                          * This setting will not render on admin setting screen but help internal code to recognize "gateways_label"  setting and add them to give setting when save.
                          */
                         [
-                            'name' => __('Gateways Label', 'give'),
+                            'name' => __('Gateways Label', 'give') . ' - v2',
                             'desc' => '',
                             'id' => 'gateways_label',
+                            'type' => 'gateways_label_hidden',
+                        ],
+                        [
+                            'name' => __('Gateways Label', 'give') . ' - v3',
+                            'desc' => '',
+                            'id' => 'gateways_label_v3',
                             'type' => 'gateways_label_hidden',
                         ],
 
@@ -148,9 +161,15 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                          * This setting will not render on admin setting screen but help internal code to recognize "default_gateway"  setting and add them to give setting when save.
                          */
                         [
-                            'name' => __('Default Gateway', 'give'),
+                            'name' => __('Default Gateway', 'give') . ' - v2',
                             'desc' => __('The gateway that will be selected by default.', 'give'),
                             'id' => 'default_gateway',
+                            'type' => 'default_gateway_hidden',
+                        ],
+                        [
+                            'name' => __('Default Gateway', 'give') . ' - v3',
+                            'desc' => __('The gateway that will be selected by default.', 'give'),
+                            'id' => 'default_gateway_v3',
                             'type' => 'default_gateway_hidden',
                         ],
 
@@ -309,100 +328,287 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		/**
 		 * Render enabled gateways
 		 *
+         * @unreleased split gateways into separated tabs for v2 and v3 settings
 		 * @since  2.0.5
 		 * @access public
 		 *
 		 * @param $field
 		 * @param $settings
 		 */
-		public function render_enabled_gateways( $field, $settings ) {
-			$id              = $field['id'];
-			$gateways        = give_get_ordered_payment_gateways( give_get_payment_gateways() );
-			$gateways_label  = give_get_option( 'gateways_label', [] );
-			$default_gateway = give_get_option( 'default_gateway', current( array_keys( $gateways ) ) );
+        public function render_enabled_gateways($field, $settings)
+        {
+            $id = $field['id'];
+            $gateways = give_get_payment_gateways();
 
-			ob_start();
+            $current_page = give_get_current_setting_page();
+            $current_tab = give_get_current_setting_tab();
+            $current_section = give_get_current_setting_section();
 
-			echo '<div class="gateway-enabled-wrap">';
+            $v2Gateways = give_get_ordered_payment_gateways(
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(2)),
+                2
+            );
+            $v3Gateways = give_get_ordered_payment_gateways(
+                array_intersect_key($gateways, give()->gateways->getPaymentGateways(3)),
+                3
+            );
 
-			echo '<div class="gateway-enabled-settings-title">';
-			printf(
-				'
-						<span></span>
-						<span>%1$s</span>
-						<span>%2$s</span>
-						<span>%3$s</span>
-						<span>%4$s</span>
-						',
-				__( 'Gateway', 'give' ),
-				__( 'Label', 'give' ),
-				__( 'Default', 'give' ),
-				__( 'Enabled', 'give' )
-			);
-			echo '</div>';
+            $groups = [
+                'v2' => [
+                    'label' => __('Option-Based Form Editor', 'give'),
+                    'gateways' => $v2Gateways,
+                    'settings' => $settings,
+                    'gatewaysLabel' => give_get_option('gateways_label', []),
+                    'defaultGateway' => give_get_option('default_gateway', current(array_keys($v2Gateways))),
+                    'helper' => [
+                        'text' => __(
+                            'Uses the traditional settings options for creating and customizing a donation form.',
+                            'give'
+                        ),
+                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg',
+                    ]
+                ],
+                'v3' => [
+                    'label' => __('Visual Form Builder', 'give'),
+                    'gateways' => $v3Gateways,
+                    'settings' => give_get_option('gateways_v3', []),
+                    'gatewaysLabel' => give_get_option('gateways_label_v3', []),
+                    'defaultGateway' => give_get_option('default_gateway_v3', current(array_keys($v3Gateways))),
+                    'helper' => [
+                        'text' => __(
+                            'Uses the blocks-based visual form builder for creating and customizing a donation form.',
+                            'give'
+                        ),
+                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v3.jpg',
+                    ]
+                ],
+            ];
+            $defaultGroup = current(array_keys($groups));
 
-			echo '<ul class="give-checklist-fields give-payment-gatways-list">';
-			foreach ( $gateways as $key => $option ) :
-				$enabled = null;
-                if (is_array($settings) && array_key_exists($key, $settings)) {
-                    $enabled = '1';
+            ob_start();
+
+            echo '<h4>' . __('Enabled Gateways', 'give') . '</h4>';
+            echo '<div class="give-settings-section-content give-payment-gateways-settings">';
+            echo '<div class="give-settings-section-group-menu">';
+            echo '<ul>';
+            foreach ($groups as $slug => $group) {
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $active_class = ($slug === $current_group) ? 'active' : '';
+
+                if ($group['helper']) {
+                    $helper = sprintf(
+                        '<div class="give-settings-section-group-helper">
+                            <img src="%1$s" />
+                            <div class="give-settings-section-group-helper__popout">
+                                <img src="%2$s" />
+                                <h5>%3$s</h5>
+                                <p>%4$s</p>
+                            </div>
+                        </div>',
+                        esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
+                        esc_url($group['helper']['image']),
+                        esc_html($group['label']),
+                        esc_html($group['helper']['text'])
+                    );
                 }
 
-                echo '<li>';
-                printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
-                printf(
-                    '<span class="admin-label">%1$s %2$s</span>',
-                    esc_html($option['admin_label']),
-                    !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
-                        esc_attr($option['admin_tooltip'])
-                    ) : ''
+                echo sprintf(
+                    '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s %5$s</a></li>',
+                    esc_html($active_class),
+                    esc_url(
+                        admin_url(
+                            "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}"
+                        )
+                    ),
+                    esc_html($slug),
+                    esc_html($group['label']),
+                    $helper ?? ''
                 );
-
-                $label = '';
-                if (!empty($gateways_label[$key])) {
-                    $label = $gateways_label[$key];
-                }
-
-                printf(
-                    '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
-                    'gateways_label',
-                    esc_attr($key),
-                    esc_html($label),
-                    esc_html($option['checkout_label'])
-                );
-
-                printf(
-                    '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
-                    'default_gateway',
-                    $key,
-                    checked($key, $default_gateway, false),
-                    disabled(null, $enabled, false)
-                );
-
-                printf(
-                    '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
-                    esc_attr($id),
-                    esc_attr($key),
-                    checked('1', $enabled, false),
-                    esc_html($option['admin_label'])
-                );
-                echo '</li>';
-            endforeach;
+            }
             echo '</ul>';
+            echo '</div>';
 
-            echo '</div>'; // end gateway-enabled-wrap.
+            echo '<div class="give-settings-section-group-content">';
+            foreach ($groups as $slug => $group) :
+                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                $hide_class = $slug !== $current_group ? 'give-hidden' : '';
+                $suffix = $slug === 'v3' ? '_v3' : '';
 
-            if (defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '<')) {
-                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) GiveWP 3.0 is coming! In preparation for that, gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
-            } else {
-                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) Gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
+                printf(
+                    '<div id="give-settings-section-group-%1$s" class="give-settings-section-group %2$s">',
+                    esc_attr($slug),
+                    esc_html($hide_class)
+                );
+
+                echo '<div class="gateway-enabled-wrap">';
+                echo '<div class="gateway-enabled-settings-title">';
+                printf(
+                    '
+                            <span></span>
+                            <span>%1$s</span>
+                            <span>%2$s</span>
+                            <span style="text-align: center;">%3$s</span>
+                            <span style="text-align: center;">%4$s</span>
+                            ',
+                    __('Gateway', 'give'),
+                    __('Label', 'give'),
+                    __('Default', 'give'),
+                    __('Enabled', 'give')
+                );
+                echo '</div>';
+
+                echo '<ul class="give-checklist-fields give-payment-gatways-list">';
+                foreach ($group['gateways'] as $key => $option) :
+                    $enabled = null;
+                    if (is_array($group['settings']) && array_key_exists($key, $group['settings'])) {
+                        $enabled = '1';
+                    }
+
+                    echo '<li>';
+                    printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
+                    printf(
+                        '<span class="admin-label">%1$s %2$s</span>',
+                        esc_html($option['admin_label']),
+                        !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
+                            esc_attr($option['admin_tooltip'])
+                        ) : ''
+                    );
+
+                    $label = '';
+                    if (!empty($group['gatewaysLabel'][$key])) {
+                        $label = $group['gatewaysLabel'][$key];
+                    }
+
+                    printf(
+                        '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
+                        'gateways_label' . $suffix,
+                        esc_attr($key),
+                        esc_html($label),
+                        esc_html($option['checkout_label'])
+                    );
+
+                    printf(
+                        '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
+                        'default_gateway' . $suffix,
+                        $key,
+                        checked($key, $group['defaultGateway'], false),
+                        disabled(null, $enabled, false)
+                    );
+
+                    printf(
+                        '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
+                        esc_attr($id) . $suffix,
+                        esc_attr($key),
+                        checked('1', $enabled, false),
+                        esc_html($option['admin_label'])
+                    );
+                    echo '</li>';
+                endforeach;
+                echo '</ul>';
+
+                echo '</div>'; // end gateway-enabled-wrap.
+                echo '</div>'; // end give-settings-section-group-content.
+            endforeach;
+
+            echo '</div>'; // end give-settings-section-content.
+
+            printf('<tr><td colspan="2" style="padding: 0">%s</td></tr>', ob_get_clean());
+
+            $this->maybeRenderNoticeDialog();
+        }
+
+        /**
+         * @unreleased
+         */
+        private function maybeRenderNoticeDialog()
+        {
+            $noticeVersion = '3.0.0';
+            $hasUserSeenGatewayNotice = version_compare(
+                get_user_meta(
+                    get_current_user_id(),
+                    'give-payment-gateways-settings-dialog-read',
+                    true
+                ),
+                $noticeVersion,
+                '>='
+            );
+
+            if ($hasUserSeenGatewayNotice) {
+                return;
             }
 
-            printf(
-                '<tr><th>%1$s</th><td>%2$s</td></tr>',
-                $field['title'],
-                ob_get_clean()
+            update_user_meta(
+                get_current_user_id(),
+                'give-payment-gateways-settings-dialog-read',
+                $noticeVersion
             );
+
+            $supportedGateways = (new DonationFormsAdminPage())->getSupportedGateways();
+            ?>
+
+            <dialog class="give-payment-gateway-settings-dialog" id="give-payment-gateway-settings-dialog">
+                <div class="give-payment-gateway-settings-dialog__header">
+                    <?php
+                    _e('Feature notice', 'give'); ?>
+                    <button
+                        class="give-payment-gateway-settings-dialog__close"
+                        id="give-payment-gateway-settings-dialog__close"
+                        aria-label="<?php
+                        esc_attr_e('Close dialog', 'give'); ?>"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"
+                             aria-label="Close dialog icon">
+                            <path
+                                d="M18.707 6.707a1 1 0 0 0-1.414-1.414L12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="give-payment-gateway-settings-dialog__content">
+                    <div class="give-payment-gateway-settings-dialog__content-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.5 2a1 1 0 0 0-2 0v1.5H2a1 1 0 0 0 0 2h1.5V7a1 1 0 0 0 2 0V5.5H7a1 1 0 0 0 0-2H5.5V2zM5.5 17a1 1 0 1 0-2 0v1.5H2a1 1 0 1 0 0 2h1.5V22a1 1 0 1 0 2 0v-1.5H7a1 1 0 1 0 0-2H5.5V17zM13.933 2.641a1 1 0 0 0-1.866 0L10.332 7.15c-.3.78-.394 1.006-.523 1.188a2 2 0 0 1-.471.47c-.182.13-.407.224-1.188.524L3.64 11.067a1 1 0 0 0 0 1.866l4.509 1.735c.78.3 1.006.394 1.188.523.182.13.341.29.47.471.13.182.224.407.524 1.188l1.735 4.509a1 1 0 0 0 1.866 0l1.735-4.509c.3-.78.394-1.006.523-1.188.13-.182.29-.341.471-.47.182-.13.407-.224 1.188-.524l4.509-1.735a1 1 0 0 0 0-1.866L17.85 9.332c-.78-.3-1.006-.394-1.188-.523a2.001 2.001 0 0 1-.47-.471c-.13-.182-.224-.407-.524-1.188L13.933 2.64z"
+                                fill="#F2CC0C"></path>
+                        </svg>
+                        <?php
+                        esc_html_e('What\'s new', 'give'); ?>
+                    </div>
+                    <?php
+                    esc_html_e(
+                        'GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donations Form Builder. However, we are still working on gateway compatibility with the new forms experience.',
+                        'give'
+                    ); ?>
+                    <?php
+                    if ($supportedGateways) : ?>
+                        <div class="give-payment-gateway-settings-dialog__content-title"><?php
+                            esc_html_e('Supported gateways', 'give'); ?></div>
+                        <div class="give-payment-gateway-settings-dialog__content-itemsContainer">
+                            <?php
+                            foreach ($supportedGateways as $gateway) : ?>
+                                <div class="give-payment-gateway-settings-dialog__content-item">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M7.063.986a1.531 1.531 0 0 1 1.872 0l.783.601.98-.129c.69-.09 1.354.294 1.62.935l.377.913.911.376h.002c.641.267 1.025.93.935 1.62l-.13.98.602.783a1.534 1.534 0 0 1 0 1.872l-.601.783.129.98c.09.69-.294 1.354-.935 1.62h-.002l-.91.377-.378.912a1.537 1.537 0 0 1-1.62.936l-.98-.13-.783.601a1.531 1.531 0 0 1-1.872 0l-.782-.6-.98.129a1.537 1.537 0 0 1-1.62-.936l-.377-.912-.911-.376H2.39a1.537 1.537 0 0 1-.935-1.621l.129-.98-.601-.783a1.533 1.533 0 0 1 0-1.872l.601-.782-.129-.98c-.09-.69.294-1.354.935-1.62l.002-.001.91-.376.377-.913a1.537 1.537 0 0 1 1.62-.935l.98.13.783-.602zm3.741 5.82a.667.667 0 0 0-.943-.943L7.333 8.392 6.47 7.53a.667.667 0 1 0-.943.943L6.86 9.806c.26.26.683.26.943 0l3-3z"
+                                              fill="#459948"></path>
+                                    </svg>
+                                    <?php
+                                    echo $gateway; ?>
+                                </div>
+                            <?php
+                            endforeach; ?>
+                        </div>
+                    <?php
+                    endif; ?>
+                    <button class="give-payment-gateway-settings-dialog__content-button"><?php
+                        esc_html_e('Got it', 'give'); ?></button>
+                    <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank"
+                       class="give-payment-gateway-settings-dialog__content-link"><?php
+                        esc_html_e('Read more on Add-ons and Gateways compatibility', 'give'); ?></a>
+                </div>
+            </dialog>
+
+            <?php
         }
 	}
 

@@ -13,7 +13,6 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
@@ -55,17 +54,20 @@ class FormBuilderViewModel
             'recurringAddonData' => [
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
             ],
+            'formFieldManagerData' => [
+                'isInstalled' => defined('GIVE_FFM_VERSION'),
+            ],
             'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
                 return EmailNotificationData::fromLegacyNotification($notification);
-            }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
+            }, apply_filters('give_email_notification_options_metabox_fields', [], $donationFormId)),
             'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
             'disallowedFieldNames' => $this->getDisallowedFieldNames(),
             'donationConfirmationTemplateTags' => $this->getDonationConfirmationPageTemplateTags(),
             'termsAndConditions' => [
                 'checkboxLabel' => give_get_option('agree_to_terms_label'),
-                'agreementText' => give_get_option('agreement_text')
+                'agreementText' => give_get_option('agreement_text'),
             ],
         ];
     }
@@ -95,22 +97,22 @@ class FormBuilderViewModel
                 'desc' => __('The first name supplied by the donor during their donation.', 'give'),
                 'description' => __('The first name supplied by the donor during their donation.', 'give'),
                 'func' => null,
-                "context" => 'donation'
+                "context" => 'donation',
             ],
             [
                 'tag' => 'last_name',
                 'desc' => __('The last name supplied by the donor during their donation.', 'give'),
                 'description' => __('The last name supplied by the donor during their donation.', 'give'),
                 'func' => null,
-                "context" => 'donation'
+                "context" => 'donation',
             ],
             [
                 'tag' => 'email',
                 'desc' => __('The email supplied by the donor during their donation.', 'give'),
                 'description' => __('The email supplied by the donor during their donation.', 'give'),
                 'func' => null,
-                "context" => 'donation'
-            ]
+                "context" => 'donation',
+            ],
         ]);
 
         $supportedContexts = [
@@ -125,7 +127,7 @@ class FormBuilderViewModel
 
         return array_values(
             array_filter($templateTags, static function ($tag) use ($supportedContexts) {
-                return !empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
+                return ! empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
             })
         );
     }
@@ -161,7 +163,7 @@ class FormBuilderViewModel
      */
     public function getGateways(): array
     {
-        $enabledGateways = array_keys(give_get_option('gateways'));
+        $enabledGateways = array_keys(give_get_option('gateways_v3', []));
 
         $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
             /** @var PaymentGateway $gateway */
@@ -170,10 +172,10 @@ class FormBuilderViewModel
             return [
                 'id' => $gateway::id(),
                 'enabled' => in_array($gateway::id(), $enabledGateways, true),
-                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
+                'label' => give_get_gateway_checkout_label($gateway::id(), 3) ?? $gateway->getPaymentMethodLabel(),
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
-        }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
+        }, give()->gateways->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
     }

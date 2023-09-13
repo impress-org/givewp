@@ -12,7 +12,6 @@ import {
     FormDesignSettings,
     FormGridSettings,
     FormSummarySettings,
-    OfflineDonationsSettings,
     RegistrationSettings,
 } from '../../../settings';
 import {PopoutSlot} from '../popout';
@@ -45,8 +44,6 @@ const tabs = [
                 <DonationConfirmation />
                 <FormGridSettings />
                 <EmailSettings />
-                {/*The settings below have not been implemented yet.*/}
-                <OfflineDonationsSettings />
             </>
         ),
     },

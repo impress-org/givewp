@@ -7,6 +7,7 @@ use Give\DonationForms\Controllers\DonateController;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
@@ -54,15 +55,15 @@ class DonateRoute
             $data = $formData->validated();
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
-            $type = 'validation_error';
+            $type = DonationFormErrorTypes::VALIDATION;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
         } catch (PaymentGatewayException $exception) {
-            $type = 'gateway_error';
+            $type = DonationFormErrorTypes::GATEWAY;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         } catch (\Exception $exception) {
-            $type = 'unknown_error';
+            $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }

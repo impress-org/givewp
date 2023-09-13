@@ -71,6 +71,7 @@ export default function Authentication({
     loginNotice,
     loginConfirmation,
     lostPasswordUrl,
+    name,
 }: AuthProps) {
     const [isAuth, setIsAuth] = useState<boolean>(isAuthenticated);
     const [showLogin, setShowLogin] = useState<boolean>(required);
@@ -84,7 +85,7 @@ export default function Authentication({
                 </p>
             )}
             {!isAuth && showLogin && (
-                <LoginForm success={() => setIsAuth(true)} lostPasswordUrl={lostPasswordUrl}>
+                <LoginForm success={() => setIsAuth(true)} lostPasswordUrl={lostPasswordUrl} nodeName={name}>
                     <Login />
                     <Password />
                 </LoginForm>
@@ -111,7 +112,7 @@ export default function Authentication({
     );
 }
 
-const LoginForm = ({children, success, lostPasswordUrl}) => {
+const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     const {authUrl} = getWindowData();
     const {useWatch, useFormContext} = window.givewp.form.hooks;
     const {setValue, getValues} = useFormContext();
@@ -149,7 +150,7 @@ const LoginForm = ({children, success, lostPasswordUrl}) => {
         <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
             <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>{children}</div>
 
-            {!!errorMessage && <FieldError error={errorMessage} />}
+            {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
             <div
                 style={{

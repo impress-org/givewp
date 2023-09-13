@@ -23,7 +23,6 @@ export default function NextButton() {
 
     return (
         !isLastStep && (
-            <div>
                 <button
                     className="givewp-donation-form__steps-button-next"
                     type="button"
@@ -57,7 +56,6 @@ export default function NextButton() {
                 >
                     {__('Continue')}
                 </button>
-            </div>
         )
     );
 }

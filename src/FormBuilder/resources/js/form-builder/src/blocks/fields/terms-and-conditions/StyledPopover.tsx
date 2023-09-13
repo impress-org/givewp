@@ -11,13 +11,13 @@ type Props = {
 };
 
 export default function StyledPopover({title, visible, onClose, children}: Props) {
-    if (!visible) {
-        return null;
-    }
-
     useEffect(() => {
         return onClose;
     }, []);
+
+    if (!visible) {
+        return null;
+    }
 
     return (
         <Popover placement="left-end" variant={'unstyled'} focusOnMount={false}>

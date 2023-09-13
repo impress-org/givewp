@@ -14,7 +14,6 @@ use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteD
 use Give\DonationForms\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
-use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Repositories\DonationFormRepository;
@@ -129,7 +128,7 @@ class ServiceProvider implements ServiceProviderInterface
             DispatchDonateControllerDonationCreatedListeners::class,
             '__invoke',
             10,
-            2
+            3
         );
 
         Hooks::addAction(
@@ -149,7 +148,6 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             try {
                 $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
-                $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
                 $formDesignRegistrar->registerDesign(MultiStepFormDesign::class);
             } catch (Exception $e) {
                 Log::error('Error registering form designs', [

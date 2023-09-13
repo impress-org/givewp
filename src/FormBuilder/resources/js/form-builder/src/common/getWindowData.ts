@@ -23,6 +23,9 @@ interface FormBuilderWindowData {
     formPage: FormPageSettings;
     currency: string;
     gateways: Gateway[];
+    formFieldManagerData?: {
+        isInstalled: boolean;
+    };
     recurringAddonData?: {
         isInstalled: boolean;
     };
@@ -40,7 +43,7 @@ interface FormBuilderWindowData {
  * @since 3.0.0
  */
 declare const window: {
-    storageData: FormBuilderWindowData;
+    giveStorageData: FormBuilderWindowData;
     givewp: {
         form: {
             blocks: BlockRegistrar;
@@ -52,14 +55,14 @@ declare const window: {
  * @since 3.0.0
  */
 export default function getWindowData(): FormBuilderWindowData {
-    return window.storageData;
+    return window.giveStorageData;
 }
 
 /**
  * @since 3.0.0
  */
 export function getFormBuilderWindowData(): FormBuilderWindowData {
-    return window.storageData;
+    return window.giveStorageData;
 }
 
 /**

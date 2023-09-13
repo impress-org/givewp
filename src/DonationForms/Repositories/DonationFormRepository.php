@@ -46,7 +46,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  PaymentGatewayRegister  $paymentGatewayRegister
+     * @param PaymentGatewayRegister $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -114,14 +114,14 @@ class DonationFormRepository
                 ->insert([
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => $donationForm->settings->toJson()
+                    'meta_value' => $donationForm->settings->toJson(),
                 ]);
 
             DB::table('give_formmeta')
                 ->insert([
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
-                    'meta_value' => $donationForm->blocks->toJson()
+                    'meta_value' => $donationForm->blocks->toJson(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -147,7 +147,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  DonationForm  $donationForm
+     * @param DonationForm $donationForm
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -186,7 +186,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->settings->toJson()
+                    'meta_value' => $donationForm->settings->toJson(),
                 ]);
 
 
@@ -194,7 +194,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
                 ->update([
-                    'meta_value' => $donationForm->blocks->toJson()
+                    'meta_value' => $donationForm->blocks->toJson(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -246,7 +246,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param  DonationForm  $donationForm
+     * @param DonationForm $donationForm
      *
      * @return void
      */
@@ -293,28 +293,30 @@ class DonationFormRepository
     {
         $gateways = [];
 
-        $enabledGateways = give_get_option('gateways');
-        $defaultGateway = give_get_default_gateway($formId);
+        $enabledGateways = give_get_option('gateways_v3', []);
+        $defaultGateway = give_get_default_gateway($formId, 3);
 
-        foreach ($enabledGateways as $gatewayId => $enabled) {
-            if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
-                continue;
+        if (!empty($enabledGateways)) {
+            foreach ($enabledGateways as $gatewayId => $enabled) {
+                if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
+                    continue;
+                }
+
+                $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+
+                if (!in_array(3, $gateway->supportsFormVersions(), true)) {
+                    continue;
+                }
+
+                $gateways[$gatewayId] = $gateway;
             }
 
-            $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
-
-            if (!in_array(3, $gateway->supportsFormVersions(), true)) {
-                continue;
+            if (array_key_exists($defaultGateway, $gateways)) {
+                $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
             }
-
-            $gateways[$gatewayId] = $gateway;
         }
 
-        if (array_key_exists($defaultGateway, $gateways)) {
-            $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
-        }
-
-        return $gateways;
+        return apply_filters('givewp_donation_form_enabled_gateways', $gateways, $formId);
     }
 
     /**
@@ -337,7 +339,7 @@ class DonationFormRepository
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayId = $gateway::id();
             $settings = $this->getGatewayFormSettings($formId, $gateway);
-            $label = give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel();
+            $label = give_get_gateway_checkout_label($gatewayId, 3) ?? $gateway->getPaymentMethodLabel();
 
             /*
              * TODO: Make gateway arrayable
@@ -346,7 +348,7 @@ class DonationFormRepository
                 'id' => $gatewayId,
                 'label' => $label,
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
-                'settings' => $settings
+                'settings' => $settings,
             ];
         }
 
@@ -407,7 +409,7 @@ class DonationFormRepository
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): DonationFormNode
     {
         try {
-            list($form, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+            [$form, $blockNodeRelationships] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
             $formNodes = $form->all();
 
             /** @var Section $firstSection */

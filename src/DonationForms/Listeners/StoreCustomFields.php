@@ -9,6 +9,7 @@ use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Types;
+use Give\Subscriptions\Models\Subscription;
 
 class StoreCustomFields
 {
@@ -22,10 +23,10 @@ class StoreCustomFields
      * @return void
      * @throws NameCollisionException
      */
-    public function __invoke(DonationForm $form, Donation $donation, array $customFields)
+    public function __invoke(DonationForm $form, Donation $donation, ?Subscription $subscription, array $customFields)
     {
         $form->schema()->walkFields(
-            function (Field $field) use ($customFields, $donation) {
+            function (Field $field) use ($customFields, $donation, $subscription) {
                 $fieldName = $field->getName();
 
                 if (!array_key_exists($fieldName, $customFields)) {
@@ -42,12 +43,12 @@ class StoreCustomFields
                     }
 
                     foreach ($fileIds as $fileId) {
-                        $this->persistFieldScope($field, $fileId, $donation);
+                        $this->persistFieldScope($field, $fileId, $donation, $subscription);
                     }
                 } else {
                     $value = $customFields[$fieldName];
 
-                    $this->persistFieldScope($field, $value, $donation);
+                    $this->persistFieldScope($field, $value, $donation, $subscription);
                 }
             }
         );
@@ -55,9 +56,8 @@ class StoreCustomFields
 
     /**
      * @since 3.0.0
-     * @return array|null
      */
-    protected function handleFileUpload(File $field)
+    protected function handleFileUpload(File $field): ?array
     {
         if (!isset($_FILES[$field->getName()])) {
             return null;
@@ -69,7 +69,7 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function storeAsDonorMeta(int $donorId, string $metaKey, $value)
+    protected function storeAsDonorMeta(int $donorId, string $metaKey, $value): void
     {
         give()->donor_meta->update_meta($donorId, $metaKey, $value);
     }
@@ -77,7 +77,7 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function storeAsDonationMeta(int $donationId, string $metaKey, $value)
+    protected function storeAsDonationMeta(int $donationId, string $metaKey, $value): void
     {
         give()->payment_meta->update_meta($donationId, $metaKey, $value);
     }
@@ -85,14 +85,27 @@ class StoreCustomFields
     /**
      * @since 3.0.0
      */
-    protected function persistFieldScope(Field $field, $value, Donation $donation)
+    protected function storeAsSubscriptionMeta(int $subscriptionId, string $metaKey, $value): void
+    {
+        give()->subscription_meta->update_meta($subscriptionId, $metaKey, $value);
+    }
+
+
+    /**
+     * @since 3.0.0
+     */
+    protected function persistFieldScope(Field $field, $value, Donation $donation, ?Subscription $subscription): void
     {
         if ($field->getScope()->isDonor()) {
             $this->storeAsDonorMeta($donation->donorId, $field->getMetaKey() ?? $field->getName(), $value);
         } elseif ($field->getScope()->isDonation()) {
             $this->storeAsDonationMeta($donation->id, $field->getMetaKey() ?? $field->getName(), $value);
+        } elseif ($field->getScope()->isSubscription()) {
+            if ($subscription) {
+                $this->storeAsSubscriptionMeta($subscription->id, $field->getMetaKey() ?? $field->getName(), $value);
+            }
         } elseif ($field->getScope()->isCallback()) {
-            $field->getScopeCallback()($field, $value, $donation);
+            $field->getScopeCallback()($field, $value, $donation, $subscription);
         } else {
             do_action(
                 "givewp_donation_form_persist_field_scope_{$field->getScopeValue()}",

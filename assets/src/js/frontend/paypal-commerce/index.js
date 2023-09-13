@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const smartButtons = new SmartButtons($form);
         const customCardFields = new CustomCardFields($form);
 
-        if (SmartButtons.canShow() || CustomCardFields.canShow($form)) {
+        if (SmartButtons.canShow()) {
             smartButtons.boot();
         }
 
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * @unreleased Add logic to reload PayPal SDK script for donation form.
+     * @since 2.33.0 Add logic to reload PayPal SDK script for donation form.
      * @since 2.20.0
      * @param {object} $form
      */
@@ -165,10 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(() => {
                 // Check if hosted fields are not available but enabled in admin settings.
                 let payPalComponents = givePayPalCommerce.payPalSdkQueryParameters.components.split(',');
-                const canReloadPayPalComponents = payPalComponents.includes('hosted-fields')
-                    && !AdvancedCardFields.canShow();
 
-                if( canReloadPayPalComponents ) {
+                // Check if hosted fields are enabled in admin settings.
+                // Do not need to reload PayPal SDK if hosted fields are not enabled.
+                const isHostedFieldsEnabled = paypal.hasOwnProperty('HostedFields')
+                    && payPalComponents.indexOf('hosted-fields') !== -1;
+                if(!isHostedFieldsEnabled) {
+                    return;
+                }
+
+                // Reload PayPal SDK if hosted fields are not available.
+                // This will enable Credit and Debit card smart button.
+                if( !AdvancedCardFields.canShow()  ) {
                     // Reset PayPal components to reload hosted fields.
                     payPalComponents = payPalComponents.filter(component => component !== 'hosted-fields');
                     givePayPalCommerce.payPalSdkQueryParameters.components = payPalComponents.join(',');

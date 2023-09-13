@@ -1,5 +1,5 @@
-import LocalStorage from './drivers/local';
 import type {StorageDriver} from './interface';
+import restApiStorageDriver from '@givewp/form-builder/common/storage/drivers/rest-api';
 
 declare global {
     interface Window {
@@ -7,6 +7,6 @@ declare global {
     }
 }
 
-const Storage: StorageDriver = window.storage ?? LocalStorage;
+const Storage: StorageDriver = restApiStorageDriver;
 
 export default Storage;

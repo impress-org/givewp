@@ -5,7 +5,6 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
-use Give\Framework\EnqueueScript;
 use Give\Framework\Views\View;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -26,14 +25,10 @@ class RegisterFormBuilderPageRoute
      */
     public function __invoke()
     {
-        $pageTitle = __('Visual Donation Form Builder', 'givewp');
-        $menuTitle = __('Add v3 Form', 'givewp');
-        $version = __('Beta', 'givewp');
-
         add_submenu_page(
-            'edit.php?post_type=give_forms',
-            "$pageTitle&nbsp;<span class='awaiting-mod'>$version</span>",
-            "$menuTitle&nbsp;<span class='awaiting-mod'>$version</span>",
+            null, // do not display in menu, just register page
+            'Visual Donation Form Builder', // ignored
+            'Add Form', // ignored
             'manage_options',
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
@@ -78,6 +73,11 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.'));
         }
 
+        wp_enqueue_style(
+            '@givewp/form-builder/registrars',
+            GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css'
+        );
+
         wp_enqueue_script(
             '@givewp/form-builder/registrars',
             $formBuilderViewModel->jsPathToRegistrars(),
@@ -86,24 +86,12 @@ class RegisterFormBuilderPageRoute
             true
         );
 
-        (new EnqueueScript(
-            '@givewp/form-builder/storage',
-            'src/FormBuilder/resources/js/storage.js',
-            GIVE_PLUGIN_DIR,
-            GIVE_PLUGIN_URL,
-            'give'
-        ))
-            ->dependencies(['jquery'])
-            ->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId))
-            ->loadInFooter()
-            ->enqueue();
-
         /**
          * @since 3.0.0
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
          * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
          * which might include dependencies that are not supported in some version of WordPress.
-         * @link https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
+         * @link  https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
          */
         Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
@@ -117,9 +105,39 @@ class RegisterFormBuilderPageRoute
             true
         );
 
+        wp_add_inline_script(
+            '@givewp/form-builder/script',
+            'window.giveStorageData = ' . json_encode($formBuilderViewModel->storageData($donationFormId)) . ';',
+            'before'
+        );
+
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
             'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+        ]);
+
+        $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
+        $transferredFormId = give_get_meta($donationFormId, 'transferredFormId', true);
+
+        wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'formId' => $donationFormId,
+            'migrationActionUrl' => admin_url('admin-ajax.php?action=givewp_migration_hide_notice'),
+            'transferActionUrl' => admin_url('admin-ajax.php?action=givewp_transfer_hide_notice'),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+            'isMigratedForm' => $migratedFormId,
+            'isTransferredForm' => $transferredFormId,
+            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta(
+                    $donationFormId,
+                    'givewp-form-builder-migration-hide-notice',
+                    true
+                ),
+            'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta(
+                    $donationFormId,
+                    'givewp-form-builder-transfer-hide-notice',
+                    true
+                ),
         ]);
 
         View::render('FormBuilder.admin-form-builder');
@@ -128,7 +146,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Load Gutenberg scripts and styles from core.
      *
-     * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
+     * @see   https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
      *
      * @since 3.0.0
      */

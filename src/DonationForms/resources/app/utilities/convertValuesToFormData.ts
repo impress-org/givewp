@@ -3,9 +3,16 @@
  */
 export default function convertValuesToFormData(values: object): FormData {
     const formData = new FormData();
+    for (const valueKey in values) {
+        const value = values[valueKey];
 
-    for (const key in values) {
-        formData.append(key, values[key]);
+        if (value !== null && typeof value === 'object' && !(value instanceof File)) {
+            for (const objKey in value) {
+                formData.append(`${valueKey}[${objKey}]`, value[objKey]);
+            }
+        } else {
+            formData.append(valueKey, value);
+        }
     }
 
     return formData;

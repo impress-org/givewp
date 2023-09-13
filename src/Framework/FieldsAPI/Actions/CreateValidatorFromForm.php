@@ -10,6 +10,7 @@ use Give\Vendors\StellarWP\Validation\Validator;
 class CreateValidatorFromForm
 {
     /**
+     * @since 3.0.0 Update validation rules with optional as default.
      * @since 2.24.0
      */
     public function __invoke(Form $form, array $values): Validator
@@ -18,7 +19,9 @@ class CreateValidatorFromForm
         $rules = [];
 
         foreach ($form->getFields() as $field) {
-            $rules[$field->getName()] = $field->getValidationRules();
+            $rules[$field->getName()] = (new UpdateValidationRulesWithOptionalAsDefault())(
+                $field->getValidationRules()
+            );
 
             if (method_exists($field, 'getLabel')) {
                 $labels[$field->getName()] = $field->getLabel();

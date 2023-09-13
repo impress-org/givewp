@@ -91,7 +91,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/paypal/paypal-standard.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/offline-donations.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/gateways/manual.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/class-give-emails.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/class-give-email-tags.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/functions.php' );

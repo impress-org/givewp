@@ -17,7 +17,7 @@ class TestDonationReceiptBuilder extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testToConfirmationPageShouldReturnDonationReceipt()
     {
@@ -82,7 +82,7 @@ class TestDonationReceiptBuilder extends TestCase
                 )
             );
         }
-      
+
         if ($receipt->donation->anonymous) {
             $additionalDetails->addDetail(
                 new ReceiptDetail(
@@ -100,6 +100,7 @@ class TestDonationReceiptBuilder extends TestCase
             'description' => $description,
             'currency' => $receipt->donation->amount->getCurrency()->getCode(),
             'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+            'pdfReceiptLink' => '',
         ];
 
 

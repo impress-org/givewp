@@ -21,8 +21,8 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.6.0 update form export data
-     * @since 0.1.0
+     * @since 3.0.0 update form export data
+     * @since 3.0.0
      */
     public function testExportsShouldReturnExpectedArrayOfData()
     {
@@ -33,7 +33,7 @@ class DonationFormViewModelTest extends TestCase
             'settings' => FormSettings::fromArray(['designId' => $formDesign::id()]),
         ]);
 
-        $donationFormRepository = new DonationFormRepository((new PaymentGatewayRegister));
+        $donationFormRepository = give(DonationFormRepository::class);
 
         $donationFormGoalData = new DonationFormGoalData($donationForm->id, $donationForm->settings);
         $totalRevenue = $donationFormRepository->getTotalRevenue($donationForm->id);
@@ -67,7 +67,7 @@ class DonationFormViewModelTest extends TestCase
                         $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
                         $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
                     'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                        'donations',
+                        'Donations',
                         'give'
                     ),
                 ],

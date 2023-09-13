@@ -3,7 +3,6 @@ import {
     Button,
     CheckboxControl,
     Icon,
-    Modal,
     PanelBody,
     PanelRow,
     SelectControl,
@@ -16,7 +15,7 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Markup} from 'interweave';
 
-import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import Editor from '@givewp/form-builder/components/editor';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
@@ -79,7 +78,7 @@ export default function Edit({
                     {useGlobalSettings && (
                         <GlobalSettingsLink
                             href={
-                                '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=terms-and-conditions'
+                                '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions'
                             }
                         />
                     )}
@@ -194,20 +193,6 @@ export default function Edit({
                                     onChange={(value) => setAttributes({agreementText: value})}
                                 />
                             </StyledPopover>
-
-                            {showAgreementTextModal && (
-                                <Modal
-                                    title={__('Agreement Text', 'give')}
-                                    onRequestClose={() => setShowAgreementTextModal(false)}
-                                    shouldCloseOnClickOutside={false}
-                                    style={{maxWidth: '35rem'}}
-                                >
-                                    <Editor
-                                        value={agreementText}
-                                        onChange={(value) => setAttributes({agreementText: value})}
-                                    />
-                                </Modal>
-                            )}
                         </>
                     )}
                 </PanelBody>

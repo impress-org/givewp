@@ -8,7 +8,8 @@
     "icon": "superhero",
     "description": "The GiveWP Donation Form block inserts an existing donation form into the page.",
     "supports": {
-        "html": false
+        "html": false,
+        "inserter": false
     },
     "attributes": {
         "formId": {
