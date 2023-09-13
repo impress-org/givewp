@@ -93,7 +93,7 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
 
                 <br />
 
-                <a href="#">
+                <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank">
                     {__('Read more on Add-ons and Gateways compatibility', 'give')}
                 </a>
             </>
