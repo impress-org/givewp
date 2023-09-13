@@ -26,14 +26,10 @@ class RegisterFormBuilderPageRoute
      */
     public function __invoke()
     {
-        $pageTitle = __('Visual Donation Form Builder', 'givewp');
-        $menuTitle = __('Add v3 Form', 'givewp');
-        $version = __('Beta', 'givewp');
-
         add_submenu_page(
-            'edit.php?post_type=give_forms',
-            "$pageTitle&nbsp;<span class='awaiting-mod'>$version</span>",
-            "$menuTitle&nbsp;<span class='awaiting-mod'>$version</span>",
+            null, // do not display in menu, just register page
+            'Visual Donation Form Builder', // ignored
+            'Add Form', // ignored
             'manage_options',
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
