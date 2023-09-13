@@ -13,6 +13,8 @@
     padding: var(--givewp-spacing-3);
 
     &__details {
+        flex: 1;
+
         > h2 {
             font-size: 0.875rem;
             font-weight: bold;
