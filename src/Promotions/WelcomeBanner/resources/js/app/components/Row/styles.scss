@@ -58,14 +58,19 @@
         min-height: 100%;
         align-self: stretch;
 
+        &__header {
+            h1 {
+                line-height: 1.265;
+            }
+        }
+
         > h2 {
-            line-height: 1.61;
+            line-height: 1.5;
+
         }
 
         > span {
-            h2 {
-                line-height: 1.61;
-            }
+            line-height: 1.5;
         }
     }
 
