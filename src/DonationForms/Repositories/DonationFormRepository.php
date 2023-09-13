@@ -294,7 +294,6 @@ class DonationFormRepository
         $gateways = [];
 
         $enabledGateways = give_get_option('gateways_v3', []);
-        $defaultGateway = give_get_default_gateway($formId, 3);
 
         if (!empty($enabledGateways)) {
             foreach ($enabledGateways as $gatewayId => $enabled) {
@@ -311,6 +310,8 @@ class DonationFormRepository
                 $gateways[$gatewayId] = $gateway;
             }
 
+            $defaultGateway = give_get_default_gateway($formId, 3);
+            
             if (array_key_exists($defaultGateway, $gateways)) {
                 $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
             }
