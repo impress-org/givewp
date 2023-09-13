@@ -8,7 +8,7 @@ type VideoPlayerProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null);

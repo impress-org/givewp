@@ -93,7 +93,7 @@ class onBoardingRedirectHandler
      * Use this function to manually set connection mode. Values can be 'live' or 'sandbox'.
      * Services are classes which depends upon connection mode and used to interact with PayPal API or core logic.
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @return void
      */
@@ -368,7 +368,7 @@ class onBoardingRedirectHandler
     /**
      * Handles the request for refreshing the account status
      *
-     * @unreleased Make function publicly accessible.
+     * @since 3.0.0 Make function publicly accessible.
      * @since 2.9.0
      */
     public function refreshAccountStatus()

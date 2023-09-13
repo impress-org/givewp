@@ -78,7 +78,7 @@ export function setIsDirty(isDirty: boolean) {
 }
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export function setTransferState(transfer) {
     return {

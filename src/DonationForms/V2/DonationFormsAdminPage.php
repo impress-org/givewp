@@ -119,7 +119,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts for the edit v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      * @return void
      */
     public function loadEditFormScripts()
@@ -209,7 +209,7 @@ class DonationFormsAdminPage
     /**
      * Render the migration guide box on the old edit donation form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @param WP_Post $post
      *
@@ -265,7 +265,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @return bool
      */
@@ -277,7 +277,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the add v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @return bool
      */
@@ -308,7 +308,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
-     * @unreleased
+     * @since 3.0.0
      * @return array
      */
     public function getSupportedAddons(): array
@@ -354,7 +354,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported gateways
      *
-     * @unreleased
+     * @since 3.0.0
      * @return array
      */
     public function getSupportedGateways(): array

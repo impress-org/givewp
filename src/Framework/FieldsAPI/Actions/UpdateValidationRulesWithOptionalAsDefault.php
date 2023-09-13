@@ -16,7 +16,7 @@ class UpdateValidationRulesWithOptionalAsDefault
      * This is to ensure that fields that are not required are not validated unless they have a value.
      * Additionally, this ensures that the "optional" rule is placed before the "exclude" rules to preserve the intended pipeline functionality.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function __invoke(ValidationRuleSet $rules): ValidationRuleSet
     {

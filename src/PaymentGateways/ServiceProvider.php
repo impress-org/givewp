@@ -66,7 +66,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased add CopyV2GatewaysSettingsToV3 migration
+     * @since 3.0.0 add CopyV2GatewaysSettingsToV3 migration
      * @since 2.33.0 add RemovePaymentIntentSecretMeta migration
      * @since 2.19.6
      */

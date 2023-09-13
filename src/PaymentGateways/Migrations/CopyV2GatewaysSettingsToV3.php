@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 class CopyV2GatewaysSettingsToV3 extends Migration
 {

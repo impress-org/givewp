@@ -60,7 +60,7 @@ class DonationFormsData implements TrackData
     /**
      * Get forms data.
      *
-     * @unreleased Add support for v3 forms
+     * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      * @return array
      */
@@ -244,7 +244,7 @@ class DonationFormsData implements TrackData
     /**
      * This function is used to get the form template.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     private function getFormTemplate(int $formId): string
     {

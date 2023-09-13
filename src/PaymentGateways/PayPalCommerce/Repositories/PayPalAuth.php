@@ -133,7 +133,7 @@ class PayPalAuth
     /**
      * Retrieves a Partner Link for on-boarding
      *
-     * @unreleased Implement $accountType. This parameter is required by GiveWP gateway server.
+     * @since 3.0.0 Implement $accountType. This parameter is required by GiveWP gateway server.
      * @since 2.9.0
      *
      * @return array|null

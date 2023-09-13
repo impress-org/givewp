@@ -14,7 +14,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased Remove slash from GIVE_CONNECT_URL.
+     * @since 3.0.0 Remove slash from GIVE_CONNECT_URL.
      * @since 2.25.0
      */
     public function register()

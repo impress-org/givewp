@@ -6,7 +6,7 @@ type LinkProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export function InternalLink({children, href}: LinkProps) {
     return (
@@ -17,7 +17,7 @@ export function InternalLink({children, href}: LinkProps) {
 }
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export function ExternalLink({children, href}: LinkProps) {
     return (

@@ -17,7 +17,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * This function uses to render the credit card form for v2 donation forms.
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @param int $formId
      * @param array $args
@@ -61,7 +61,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
-     * @unreleased
+     * @since 3.0.0
      * @throws \Exception
      */
     private function getPayPalSDKOptions(int $formId): array

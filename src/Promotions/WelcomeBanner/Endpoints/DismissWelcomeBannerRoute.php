@@ -11,13 +11,13 @@ class DismissWelcomeBannerRoute implements RestRoute
 {
     /**
      * @var string
-     * @unreleased
+     * @since 3.0.0
      */
     protected $endpoint = 'welcome-banner/dismiss';
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 3.0.0
      */
     public function registerRoute(): void
     {
@@ -41,7 +41,7 @@ class DismissWelcomeBannerRoute implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function permissionsCheck()
     {
@@ -62,7 +62,7 @@ class DismissWelcomeBannerRoute implements RestRoute
     /**
      * Sets up the proper HTTP status code for authorization.
      * @return int
-     * @unreleased
+     * @since 3.0.0
      */
     public function authorizationStatusCode(): int
     {
@@ -77,7 +77,7 @@ class DismissWelcomeBannerRoute implements RestRoute
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
-     * @unreleased
+     * @since 3.0.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {

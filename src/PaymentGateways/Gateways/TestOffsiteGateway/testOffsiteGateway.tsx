@@ -8,7 +8,7 @@ interface TestOffsiteGateway extends Gateway {
 }
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 const testOffsiteGateway: TestOffsiteGateway = {
     id: 'test-offsite-gateway',

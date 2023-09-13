@@ -13,12 +13,12 @@ use Give\PaymentGateways\Gateways\Offline\Views\LegacyFormFieldMarkup;
 /**
  * The Offline payment gateway, intended to reflect donations that are made offline and will be later confirmed.
  *
- * @unreleased
+ * @since 3.0.0
  */
 class OfflineGateway extends PaymentGateway
 {
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public static function id(): string
     {
@@ -26,7 +26,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getId(): string
     {
@@ -34,7 +34,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getName(): string
     {
@@ -42,7 +42,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getPaymentMethodLabel(): string
     {
@@ -50,7 +50,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function formSettings(int $formId): array
     {
@@ -78,7 +78,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getLegacyFormFieldMarkup(int $formId): string
     {
@@ -86,7 +86,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function createPayment(Donation $donation, $gatewayData): PaymentPending
     {
@@ -94,7 +94,7 @@ class OfflineGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function refundDonation(Donation $donation)
     {

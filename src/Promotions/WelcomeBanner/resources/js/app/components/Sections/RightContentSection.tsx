@@ -8,7 +8,7 @@ type RightContentSectionProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function RightContentSection({assets}: RightContentSectionProps) {
     return (

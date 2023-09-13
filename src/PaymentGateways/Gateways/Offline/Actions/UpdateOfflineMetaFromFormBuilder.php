@@ -8,7 +8,7 @@ use Give\DonationForms\Models\DonationForm;
  * Updates the Offline gateway meta based on the form builder settings. This is done in order to use the legacy
  * instructions function.
  *
- * @unreleased
+ * @since 3.0.0
  *
  * @see give_get_offline_payment_instruction()
  */

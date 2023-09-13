@@ -304,7 +304,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Set script translations
+     * @since 3.0.0 Set script translations
      * @since 3.0.0
      */
     private function enqueueDesign(string $formDesignId)

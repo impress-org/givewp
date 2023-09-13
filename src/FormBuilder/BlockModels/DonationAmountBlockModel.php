@@ -8,7 +8,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 /**
  * This is a decorator for the Block Model block "givewp/donation-amount".
  *
- * @unreleased
+ * @since 3.0.0
  */
 class DonationAmountBlockModel
 {
@@ -18,7 +18,7 @@ class DonationAmountBlockModel
     public $block;
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function __construct(BlockModel $block)
     {
@@ -26,7 +26,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getAttribute($name)
     {
@@ -34,7 +34,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function hasAttribute($name): bool
     {
@@ -42,7 +42,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setAttribute(string $name, $value): self
     {
@@ -52,7 +52,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getLabel(): string
     {
@@ -60,7 +60,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getLevels(): array
     {
@@ -68,7 +68,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      *
      * @return string|null
      */
@@ -88,7 +88,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringBillingInterval(): int
     {
@@ -96,7 +96,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringLengthOfTime(): int
     {
@@ -104,7 +104,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringOptInDefaultBillingPeriod(): string
     {
@@ -112,7 +112,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringBillingPeriodOptions(): array
     {
@@ -120,7 +120,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringEnableOneTimeDonations(): bool
     {
@@ -128,7 +128,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringEnabled(): bool
     {
@@ -136,7 +136,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringEnabled(bool $enabled = true): self
     {
@@ -144,7 +144,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringEnableOneTimeDonations(bool $enabled = true): self
     {
@@ -152,7 +152,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringBillingInterval(int $interval): self
     {
@@ -160,7 +160,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringLengthOfTime(int $lengthOfTime): self
     {
@@ -168,7 +168,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringBillingPeriodOptions(SubscriptionPeriod ...$options): self
     {
@@ -183,7 +183,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function setRecurringOptInDefaultBillingPeriod(SubscriptionPeriod $period): self
     {
@@ -191,7 +191,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isCustomAmountEnabled(): bool
     {
@@ -199,7 +199,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getPriceOption(): string
     {
@@ -207,7 +207,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getSetPrice(): int
     {

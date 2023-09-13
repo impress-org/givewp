@@ -23,7 +23,7 @@ class Date extends Field
     /**
      * Set the date format for the element.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function dateFormat(string $dateFormat): self
     {
@@ -35,7 +35,7 @@ class Date extends Field
     /**
      * Get the date format for the element.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getDateFormat(): string
     {

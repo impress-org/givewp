@@ -4,7 +4,7 @@ import './style.scss';
 
 /**
  *
- * @unreleased
+ * @since 3.0.0
  */
 export type ButtonProps = {
     variant?: 'primary' | 'secondary' | 'danger';

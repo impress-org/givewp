@@ -5,7 +5,7 @@ namespace Give\Promotions\WelcomeBanner;
 class WelcomeBanner
 {
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public static function isShowing(): bool
     {
@@ -17,7 +17,7 @@ class WelcomeBanner
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function render(): void
     {
@@ -25,7 +25,7 @@ class WelcomeBanner
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function loadScripts(): void
     {
