@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_payment_gateways(?int $version = 2): array
+function give_get_payment_gateways($version = 2)
 {
     $suffix = $version === 3 ? '_v3' : '';
 
@@ -67,7 +67,7 @@ function give_get_payment_gateways(?int $version = 2): array
  * @param int|null $version
  * @return array $gateway_list All the available gateways
  */
-function give_get_enabled_payment_gateways(?int $form_id = 0, ?int $version = 2): array
+function give_get_enabled_payment_gateways($form_id = 0, $version = 2)
 {
     $suffix = $version === 3 ? '_v3' : '';
     $gateways = give_get_payment_gateways($version);
@@ -98,7 +98,7 @@ function give_get_enabled_payment_gateways(?int $form_id = 0, ?int $version = 2)
  * @param int|null $version
  * @return bool true if enabled, false otherwise
  */
-function give_is_gateway_active(string $gateway, ?int $version = 2): bool
+function give_is_gateway_active($gateway, $version = 2)
 {
     $gateways = give_get_enabled_payment_gateways(null, $version);
 
@@ -117,7 +117,7 @@ function give_is_gateway_active(string $gateway, ?int $version = 2): bool
  * @param int|null $version
  * @return string Gateway ID
  */
-function give_get_default_gateway(?int $form_id, ?int $version = 2): string
+function give_get_default_gateway($form_id, $version = 2)
 {
     $suffix = $version === 3 ? '_v3' : '';
     $enabled_gateways = array_keys(give_get_enabled_payment_gateways($form_id, $version));
@@ -171,7 +171,7 @@ function give_get_gateway_admin_label($gateway)
  * @param int|null $version
  * @return string Checkout label for the gateway
  */
-function give_get_gateway_checkout_label(string $gateway, ?int $version = 2): string
+function give_get_gateway_checkout_label($gateway, $version = 2)
 {
     $gateways = give_get_payment_gateways($version);
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
@@ -352,7 +352,7 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
  * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_ordered_payment_gateways(array $gateways, ?int $version = 2): array
+function give_get_ordered_payment_gateways($gateways, $version = 2)
 {
     $suffix = $version === 3 ? '_v3' : '';
 
