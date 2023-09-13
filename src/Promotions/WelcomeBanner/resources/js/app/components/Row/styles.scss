@@ -3,7 +3,7 @@
 
     &__header {
         > h1 {
-            margin: 0;
+            margin-bottom: var(--givewp-spacing-2);
             padding: 0;
             font-size: 1.25rem;
             font-weight: bold;
@@ -20,7 +20,7 @@
             letter-spacing: normal;
             text-align: left;
             color: var(--givewp-grey-900);
-            margin-bottom: 0;
+            margin: 0;
         }
     }
 
@@ -32,7 +32,7 @@
     }
 
     h2 {
-        margin: var(--givewp-spacing-3) 0;
+        margin: var(--givewp-spacing-2) 0;
     }
 
     > p {
@@ -42,6 +42,42 @@
         letter-spacing: normal;
         text-align: left;
         color: var(--givewp-grey-900);
-        margin-top: 0;
+        margin: 0 0 var(--givewp-spacing-2) 0;
+    }
+}
+
+@media (max-width: 1280px) {
+    .givewp-welcome-banner-row {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100%;
+        align-self: stretch;
+
+        h2 {
+            white-space: nowrap;
+        }
+    }
+
+    .givewp-welcome-banner-row:nth-child(2) {
+        flex: 1.15;
+        justify-content: flex-start;
+
+        p {
+            margin-bottom: auto;
+        }
+    }
+
+    .givewp-welcome-banner-row:nth-child(3) {
+        flex: 1.15;
+    }
+}
+
+@media (max-width: 1140px) {
+    .givewp-welcome-banner-row:nth-child(2) {
+        p {
+            margin-bottom: var(--givewp-spacing-2);
+        }
     }
 }
