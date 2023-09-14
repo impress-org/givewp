@@ -400,7 +400,7 @@ class DonationFormRepository
             return 0;
         }
 
-        return $query->totalRevenue;
+        return (int)$query->totalRevenue;
     }
 
     /**
