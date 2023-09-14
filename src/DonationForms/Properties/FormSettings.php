@@ -257,11 +257,16 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
-                    'emailTemplateOptions' => array_map(function($emailTemplateOptions) {
-                        return array_map('addslashes', $emailTemplateOptions);
-                    }, $this->emailTemplateOptions),
+                    'emailTemplateOptions' => array_map([$this, 'addSlashesRecursive'], $this->emailTemplateOptions),
                 ]
             )
         );
+    }
+
+    public function addSlashesRecursive($value)
+    {
+        return is_array($value)
+            ? array_map([$this, 'addSlashesRecursive'], $value)
+            : addslashes($value);
     }
 }
