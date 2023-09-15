@@ -104,3 +104,17 @@
     outline: 1px solid lightgray;
     background-color: white;
 }
+
+/**
+ * Snackbar icon
+ */
+.givewp-return-btn {
+    .components-snackbar__icon {
+        top: 14px !important;
+        left: 26px !important;
+    }
+
+    span {
+        cursor: pointer;
+    }
+}
