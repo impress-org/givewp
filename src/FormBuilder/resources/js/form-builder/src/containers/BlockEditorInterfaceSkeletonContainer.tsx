@@ -11,6 +11,7 @@ import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
 import {Sidebar} from '@givewp/form-builder/components';
+import {getWindowData} from '@givewp/form-builder/common';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {createSuccessNotice} = useDispatch('core/notices');
@@ -18,6 +19,9 @@ export default function BlockEditorInterfaceSkeletonContainer() {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const [selectedTab, setSelectedTab] = useState('form');
+    const {
+        formPage: { permalink}
+    } = getWindowData();
 
     return (
         <InterfaceSkeleton
@@ -32,6 +36,12 @@ export default function BlockEditorInterfaceSkeletonContainer() {
                     onSaveNotice={() => {
                         createSuccessNotice(__('Form updated.', 'give'), {
                             type: 'snackbar',
+                            actions: [
+                                {
+                                    onClick: () => window.open(permalink, '_blank'),
+                                    label: __('View', 'give')
+                                }
+                            ]
                         });
                     }}
                 />
