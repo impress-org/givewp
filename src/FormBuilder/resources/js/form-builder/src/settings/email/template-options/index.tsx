@@ -79,7 +79,7 @@ export default () => {
                             <div className={'email-settings'}>
                                 <Button
                                     className={'email-settings__close-btn'}
-                                    variant={'secondary'}
+                                    variant={'primary'}
                                     onClick={closeModal}
                                 >
                                     {__('Close', 'givewp')}
