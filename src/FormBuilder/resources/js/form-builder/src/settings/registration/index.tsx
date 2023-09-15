@@ -15,6 +15,10 @@ const RegistrationSettings = () => {
                     label={__('Send new account notifications', 'give')}
                     checked={registrationNotification}
                     onChange={() => dispatch(setFormSettings({registrationNotification: !registrationNotification}))}
+                    help={__(
+                        'When enabled, donors will be notified that they have an account they can use to manage their donations. Disable if you do not want donors to be aware of their account.',
+                        'give'
+                    )}
                 />
             </PanelRow>
         </PanelBody>
