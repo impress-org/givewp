@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
+import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -10,6 +10,7 @@ import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
+import removeHtmlTags from '@givewp/form-builder/common/removeHtmlTags';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
