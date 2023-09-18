@@ -38,13 +38,13 @@ export default function ConsentField({
     };
 
     const Label = () => (
-        <>
+        <span className={'givewp-consent-show-terms-field-label'}>
             <LabelWithRequired />
             &nbsp;
             {!isFormDisplay && (
                 <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
             )}
-        </>
+        </span>
     );
 
     return (
