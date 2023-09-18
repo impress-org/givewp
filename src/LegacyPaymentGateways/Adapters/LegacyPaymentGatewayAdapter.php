@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
@@ -58,6 +59,9 @@ class LegacyPaymentGatewayAdapter
         $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
+
+        $this->validateDonationFormStatus($formData->formId);
+
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
@@ -184,6 +188,27 @@ class LegacyPaymentGatewayAdapter
             wp_die(
                 esc_html__(
                     'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.',
+                    'give'
+                ),
+                esc_html__('Error', 'give'),
+                ['response' => 403]
+            );
+        }
+    }
+
+    /**
+     * Validate Donation Form Status
+     *
+     * @unreleased
+     */
+    private function validateDonationFormStatus(int $formId)
+    {
+        $donationForm = DonationForm::find($formId);
+
+        if (!$donationForm || $donationForm->status->isTrash()) {
+            wp_die(
+                esc_html__(
+                    'This donation form is not accepting donations.',
                     'give'
                 ),
                 esc_html__('Error', 'give'),
