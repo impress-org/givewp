@@ -22,12 +22,6 @@
         }
     }
 
-    &__editor {
-        .ql-toolbar, .ql-container {
-            border: none !important;
-        }
-    }
-
     &__textarea, &__editor {
         .components-base-control__field {
             margin-bottom: 0;
