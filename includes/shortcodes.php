@@ -901,10 +901,8 @@ function give_form_grid_shortcode( $atts ) {
 
 	// Maybe filter forms by IDs.
 	if ( ! empty( $atts['ids'] ) ) {
-		$form_args['post__in'] = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+		$form_args['post__in'] = array_map('_give_redirect_form_id', array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) ) );
 	}
-
-    array_walk($form_args['post__in'], '_give_redirect_form_id');
 
 	// Convert comma-separated form IDs into array.
 	if ( ! empty( $atts['exclude'] ) ) {
