@@ -23,6 +23,10 @@ export default function updateBlockTypes(settings) {
     }
 
     if (fieldSettings.metaKey) {
+        fieldAttributes.metaUUID = {
+            type: 'string',
+        };
+
         fieldAttributes.fieldName = {
             type: 'string',
         };

@@ -49,6 +49,14 @@ export default function Edit(props: BlockEditProps<any>) {
                     }
                     template={props.attributes.innerBlocksTemplate}
                     renderAppender={InnerBlocks.DefaultBlockAppender}
+                    prioritizedInserterBlocks={[
+                        'givewp/text',
+                        'givewp/paragraph',
+                        'givewp-form-field-manager/dropdown',
+                        'givewp-form-field-manager/phone',
+                        'givewp-form-field-manager/radio',
+                        'givewp-form-field-manager/html',
+                    ]}
                 />
             </div>
 

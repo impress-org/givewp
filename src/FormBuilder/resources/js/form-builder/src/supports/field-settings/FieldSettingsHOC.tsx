@@ -21,7 +21,7 @@ import MetaKeyTextControl, {slugifyMeta} from '@givewp/form-builder/supports/fie
  */
 const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
-        const {name, attributes, setAttributes} = props;
+        const {name, attributes, setAttributes, clientId} = props;
 
         const fieldSettings: FieldSettings = useMemo(() => {
             // @ts-ignore
@@ -41,6 +41,7 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
                     attributes={attributes}
                     setAttributes={setAttributes}
                     fieldSettings={fieldSettings}
+                    clientId={clientId}
                 />
             </>
         );
@@ -58,10 +59,10 @@ const generateEmailTag = (fieldName, storeAsDonorMeta) => {
  *
  * @since 3.0.0
  */
-function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
+function FieldSettingsEdit({attributes, setAttributes, fieldSettings, clientId}) {
     const validateFieldName = useFieldNameValidator();
-    const [hasFieldNameAttribute, setHasFieldNameAttribute] = useState(attributes.hasOwnProperty('fieldName'));
-    const [isNewField] = useState(!hasFieldNameAttribute);
+    const [hasFieldNameAttribute, setHasFieldNameAttribute] = useState<boolean>(attributes.hasOwnProperty('fieldName'));
+    const [isNewField] = useState<boolean>(attributes.metaUUID !== clientId);
 
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {
@@ -109,6 +110,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
         if (isNewField) {
             updateFieldName();
             setHasFieldNameAttribute(false);
+            setAttributes({metaUUID: clientId});
         }
     }, []);
 
@@ -224,7 +226,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
                                 value={attributes.fieldName}
                                 onChange={(newName) => setAttributes({fieldName: newName})}
                                 onBlur={enforceFieldName}
-                                lockValue={isNewField}
+                                lockValue={!isNewField}
                             />
                         </PanelRow>
                     )}

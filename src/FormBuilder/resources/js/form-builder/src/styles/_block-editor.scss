@@ -118,7 +118,7 @@
 
     .wp-block {
 
-        &.is-selected {
+        &.is-selected, &.is-selected:focus {
             // Outline doesn't seem to respect border-radius directly,
             // but adding a 1px border-radius seems to get it close.
             border-radius: 1px;
