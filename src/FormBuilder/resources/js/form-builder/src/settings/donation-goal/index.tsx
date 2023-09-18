@@ -19,16 +19,22 @@ const DonationGoalSettings = () => {
         {
             value: 'amount',
             label: __('Amount Raised', 'give'),
+            description: __('The total amount raised for the form', 'give'),
         },
         {
             value: 'donations',
             label: __('Number of Donations', 'give'),
+            description: __('The total number of donations made for the form', 'give'),
         },
         {
             value: 'donors',
             label: __('Number of Donors', 'give'),
+            description: __('The total number of unique donors who have donated to the form', 'give'),
         },
     ];
+
+    const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
+    const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
 
     return (
         <PanelBody title={__('Donation Goal', 'give')} initialOpen={false}>
@@ -56,12 +62,14 @@ const DonationGoalSettings = () => {
                             onChange={() => dispatch(setFormSettings({enableAutoClose: !enableAutoClose}))}
                         />
                     </PanelRow>
-                    { enableAutoClose && (
+                    {enableAutoClose && (
                         <PanelRow>
                             <TextareaControl
                                 label={__('Goal Achieved Message', 'give')}
                                 value={goalAchievedMessage}
-                                onChange={(goalAchievedMessage) => dispatch(setFormSettings({goalAchievedMessage: goalAchievedMessage}))}
+                                onChange={(goalAchievedMessage) =>
+                                    dispatch(setFormSettings({goalAchievedMessage: goalAchievedMessage}))
+                                }
                             />
                         </PanelRow>
                     )}
@@ -71,6 +79,7 @@ const DonationGoalSettings = () => {
                             value={goalType}
                             options={goalTypeOptions}
                             onChange={(goalType) => dispatch(setFormSettings({goalType: goalType}))}
+                            help={selectedGoalDescription}
                         />
                     </PanelRow>
                     <PanelRow>

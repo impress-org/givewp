@@ -38,6 +38,7 @@ class CreateFormRoute
                     'title' => __('GiveWP Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
                     'settings' => FormSettings::fromArray([
+                        'enableDonationGoal' => true,
                         'goalAmount' => 1000,
                     ]),
                     'blocks' => BlockCollection::fromJson($blocksJson)
