@@ -199,7 +199,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Validate Donation Form Status
      *
-     * @unreleased
+     * @since 2.33.2
      */
     private function validateDonationFormStatus(int $formId)
     {
