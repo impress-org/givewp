@@ -34,20 +34,20 @@ const Logo = () => (
 );
 
 const HeaderContainer = ({
-    selectedSecondarySidebar,
-    toggleSelectedSecondarySidebar,
-    showSidebar,
-    toggleShowSidebar,
-    onSaveNotice,
-}) => {
+                             selectedSecondarySidebar,
+                             toggleSelectedSecondarySidebar,
+                             showSidebar,
+                             toggleShowSidebar,
+                             onSaveNotice,
+                         }) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
     const [isSaving, setSaving] = useState(null);
 
-    const isDraftDisabled = ( isSaving || !isDirty ) && 'draft' === formSettings.formStatus;
-    const isPublishDisabled = ( isSaving || !isDirty ) && 'publish' === formSettings.formStatus;
+    const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
+    const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
 
     const onSave = (formStatus: FormStatus) => {
@@ -120,8 +120,8 @@ const HeaderContainer = ({
                         {isSaving && 'draft' === isSaving
                             ? __('Saving...', 'give')
                             : 'draft' === formSettings.formStatus
-                            ? __('Save as Draft', 'give')
-                            : __('Switch to Draft', 'give')}
+                                ? __('Save as Draft', 'give')
+                                : __('Switch to Draft', 'give')}
                     </Button>
                     <Button
                         onClick={() => onSave('publish')}
@@ -132,15 +132,31 @@ const HeaderContainer = ({
                         {isSaving && 'publish' === isSaving
                             ? __('Updating...', 'give')
                             : 'publish' === formSettings.formStatus
-                            ? __('Update', 'give')
-                            : __('Publish', 'give')}
+                                ? __('Update', 'give')
+                                : __('Publish', 'give')}
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                     <Dropdown
                         popoverProps={{placement: 'bottom-start'}}
                         // @ts-ignore
                         focusOnMount={'container'}
-                        renderToggle={({isOpen, onToggle}) => <Button onClick={onToggle} icon={moreVertical} />}
+                        renderToggle={({isOpen, onToggle}) => {
+                            if (!isOpen && transfer.showTooltip) {
+                                onToggle();
+                            }
+
+                            return (
+                                <Button
+                                    icon={moreVertical}
+                                    onClick={() => {
+                                        if (transfer.showTooltip) {
+                                            dispatch(setTransferState({showTooltip: false}))
+                                        }
+                                        onToggle();
+                                    }}
+                                />
+                            )
+                        }}
                         renderContent={({onClose}) => (
                             <div style={{minWidth: '280px', maxWidth: '400px'}}>
                                 <MenuGroup label={__('Tools', 'give')}>
@@ -157,14 +173,23 @@ const HeaderContainer = ({
                                         {__('Show Guided Tour', 'give')}
                                     </MenuItem>
                                     {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
-                                        <MenuItem
-                                            onClick={() => {
-                                                dispatch(setTransferState({showTransferModal: true}));
-                                                onClose();
-                                            }}
-                                        >
-                                            {__('Transfer Donation Data', 'give')}
-                                        </MenuItem>
+                                        <>
+                                            <MenuItem
+                                                className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
+                                                onClick={() => {
+                                                    dispatch(setTransferState({showTransferModal: true}));
+                                                    onClose();
+                                                }}
+                                            >
+                                                {__('Transfer Donation Data', 'give')}
+                                            </MenuItem>
+
+                                            {transfer.showTooltip && (
+                                                <div className="givewp-transfer-tooltip">
+                                                    {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
+                                                </div>
+                                            )}
+                                        </>
                                     )}
                                 </MenuGroup>
                             </div>
