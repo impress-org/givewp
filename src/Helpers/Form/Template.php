@@ -14,14 +14,21 @@ class Template
      * This function will return selected form template for a specific form.
      *
      * @since 2.7.0
+     * @unreleased
      *
-     * @param int $formId Form id. Default value: check explanation in ./Utils.php:103
+     * @param int $formId Form id. Default value: check explanation in Frontend::getFormId
      *
      * @return string
      */
     public static function getActiveID($formId = null)
     {
-        return Give()->form_meta->get_meta($formId ?: Frontend::getFormId(), '_give_form_template', true);
+        /*
+         * Bailout: If neither the parameter nor the Frontend::getFormId allows to get a
+         * form ID do not call get_meta.
+         * The `get_meta` method return unpredictable values if called with an invalid ID.
+         */
+        if (!($formId = $formId ?: Frontend::getFormId())) return '';
+        return Give()->form_meta->get_meta($formId, '_give_form_template', true);
     }
 
     /**
