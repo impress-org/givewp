@@ -13,7 +13,6 @@ use _WP_Dependency;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Helpers\Form\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Session\SessionDonation\DonationAccessor;
@@ -51,8 +50,6 @@ class LoadTemplate
      */
     private function setUpTemplate($formId = null)
     {
-        $formId = (int)($formId ?: FrontendFormTemplateUtils::getFormId());
-
         $templateID = FormTemplateUtils::getActiveID($formId) ?: $this->defaultTemplateID;
 
         $this->template = Give()->templates->getTemplate($templateID);

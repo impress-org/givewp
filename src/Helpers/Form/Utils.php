@@ -226,7 +226,6 @@ class Utils
      */
     public static function isLegacyForm($formID = null)
     {
-        $formID = $formID ?: Frontend::getFormId();
         $formTemplate = Template::getActiveID($formID);
 
         return ! $formTemplate || 'legacy' === Template::getActiveID($formID);
