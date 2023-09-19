@@ -23,8 +23,8 @@
             cursor: pointer;
 
             &--selected {
-                outline: 2px solid var(--givewp-neutral-100);
-                outline-offset: -1px;
+                background-color: var(--givewp-neutral-90);
+                color: var(--givewp-shades-white);
             }
         }
     }
