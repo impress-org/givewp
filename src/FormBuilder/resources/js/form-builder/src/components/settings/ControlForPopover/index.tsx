@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {BaseControl, Button} from '@wordpress/components';
 import classNames from 'classnames';
-import PopoverEditIcon from './PopoverEdicIcon';
+import PopoverEditIcon from './PopoverEditIcon';
 import './styles.scss';
 
 /**
