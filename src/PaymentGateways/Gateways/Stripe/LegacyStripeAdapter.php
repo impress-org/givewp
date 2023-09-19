@@ -20,7 +20,7 @@ class LegacyStripeAdapter
     {
         $settings = give_get_settings();
         $gatewaysFromSettings = $settings['gateways'] ?? [];
-        $gatewaysFromOption = give_get_option('gateways');
+        $gatewaysFromOption = give_get_option('gateways_v3', []);
 
         // for some reason, the gateways from the settings are not always in the gateways from the option.
         // this might be a service provider race conditions.
