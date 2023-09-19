@@ -21,7 +21,13 @@ class Template
      */
     public static function getActiveID($formId = null)
     {
-        return Give()->form_meta->get_meta($formId ?: Frontend::getFormId(), '_give_form_template', true);
+        /*
+         * Bailout: If neither the parameter nor the Utils\Frontend allows to get a form ID
+         * do not call get_meta.
+         * This method return unpredictable values if called with an invalid ID.
+         */
+        if (!($formId = $formId ?: Frontend::getFormId())) return null;
+        return Give()->form_meta->get_meta($formId, '_give_form_template', true);
     }
 
     /**
