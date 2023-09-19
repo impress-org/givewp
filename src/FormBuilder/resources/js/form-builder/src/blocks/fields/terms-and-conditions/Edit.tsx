@@ -66,15 +66,13 @@ export default function Edit({
                         />
                     </PanelRow>
 
-                    {useGlobalSettings && (
+                    {useGlobalSettings ? (
                         <GlobalSettingsLink
                             href={
                                 '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions'
                             }
                         />
-                    )}
-
-                    {!useGlobalSettings && (
+                    ) : (
                         <>
                             <PanelRow>
                                 <TextControl
@@ -97,7 +95,10 @@ export default function Edit({
                                             label: __('Show terms in form', 'give'),
                                             value: DisplayTypeEnum.SHOW_FORM_TERMS,
                                         },
-                                        {label: __('Link to terms', 'give'), value: DisplayTypeEnum.SHOW_LINK_TERMS},
+                                        {
+                                            label: __('Link to terms', 'give'),
+                                            value: DisplayTypeEnum.SHOW_LINK_TERMS,
+                                        },
                                     ]}
                                 />
                             </PanelRow>
