@@ -44,7 +44,7 @@ export default function ConsentField({
     };
 
     const Label = () => (
-        <span className={'givewp-consent-show-terms-field-label'}>
+        <span className={'givewp-fields-consent__checkbox-label'}>
             <FieldLabel label={checkboxLabel} required={!label && required} />
             &nbsp;
             {!isFormDisplay && (
@@ -54,7 +54,7 @@ export default function ConsentField({
     );
 
     return (
-        <>
+        <div className={'givewp-fields-consent'}>
             {label && <LabelWithRequired />}
             {/*// @ts-ignore*/}
             <Checkbox {...{Label, ErrorMessage, fieldError, inputProps}} value={'accepted'} />
@@ -68,6 +68,6 @@ export default function ConsentField({
                     <Markup content={agreementText} noWrap />
                 </div>
             )}
-        </>
+        </div>
     );
 }

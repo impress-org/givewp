@@ -13,20 +13,20 @@ export default function ConsentModal({setShowModal, modalHeading, modalAcceptanc
     };
 
     return createPortal(
-        <div className={'givewp-consent-modal'} role="dialog" aria-label={modalHeading}>
+        <div className={'givewp-fields-consent-modal'} role="dialog" aria-label={modalHeading}>
             <div
-                className={'givewp-consent-modal-content'}
+                className={'givewp-fields-consent-modal-content'}
                 ref={(element) => {
                     element && scrollModalIntoView(element);
                 }}
             >
                 <h2>{modalHeading}</h2>
 
-                <div className={'givewp-consent-modal-content__agreement-text'}>
+                <div className={'givewp-fields-consent-modal-content__agreement-text'}>
                     <Markup content={agreementText} />
                 </div>
 
-                <div className={'givewp-consent-modal-content__actions'}>
+                <div className={'givewp-fields-consent-modal-content__actions'}>
                     <Button variant={'secondary'} onClick={() => setShowModal(false)}>
                         {__('Cancel', 'give')}
                     </Button>
