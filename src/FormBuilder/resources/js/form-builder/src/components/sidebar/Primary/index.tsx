@@ -48,7 +48,6 @@ const tabs = [
                 <DonationConfirmation />
                 <FormGridSettings />
                 <EmailSettings />
-                {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
             </>
         ),
     },
