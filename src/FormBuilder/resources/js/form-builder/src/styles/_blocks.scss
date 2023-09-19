@@ -5,19 +5,19 @@
     .give-donation-block {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: var(--givewp-spacing-6);
 
         &__levels {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: var(--givewp-spacing-4);
             text-align: center;
         }
 
         &__level {
             font-size: 18px;
             font-weight: 500;
-            padding: 1rem;
+            padding: var(--givewp-spacing-4);
             border-radius: var(--givewp-rounded-4);
             background-color: var(--givewp-neutral-70);
             cursor: pointer;
