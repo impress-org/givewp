@@ -160,6 +160,14 @@ class FormSettings implements Arrayable, Jsonable
      * @var string
      */
     public $donateButtonCaption;
+    /**
+     * @var string
+     */
+    public $multiStepFirstButtonText;
+    /**
+     * @var string
+     */
+    public $multiStepNextButtonText;
 
 
     /**
@@ -225,6 +233,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->offlineDonationsCustomize = $array['offlineDonationsCustomize'] ?? false;
 
         $self->offlineDonationsInstructions = $array['offlineDonationsInstructions'] ?? '';
+
+        $self->multiStepFirstButtonText = $array['multiStepFirstButtonText'] ?? __('Donate now', 'give');
+
+        $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
 
         return $self;
     }

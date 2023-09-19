@@ -38,4 +38,6 @@ export type FormSettings = {
     offlineDonationsCustomize: boolean;
     offlineDonationsInstructions: string;
     donateButtonCaption: string;
+    multiStepFirstButtonText: string;
+    multiStepNextButtonText: string;
 };
