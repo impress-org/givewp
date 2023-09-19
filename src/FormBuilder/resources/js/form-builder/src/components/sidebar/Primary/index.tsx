@@ -1,6 +1,5 @@
 import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 import TabPanel from '../TabPanel';
 
@@ -22,9 +21,6 @@ import BlockCard from '../../forks/BlockCard';
 import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
-
-// @ts-ignore
-window.givewp.form.settings = {setFormSettings, useFormState, useFormStateDispatch};
 
 const tabs = [
     {
