@@ -17,7 +17,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isPublished()
  * @method bool isPrivate()
  * @method bool isDraft()
- * @method bool isTrashed()
+ * @method bool isTrash()
  * @method bool isUpgraded()
  */
 class DonationFormStatus extends Enum
