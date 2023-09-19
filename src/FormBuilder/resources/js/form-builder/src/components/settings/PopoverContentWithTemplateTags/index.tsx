@@ -63,7 +63,7 @@ export default function PopoverContentWithTemplateTags({
     richText,
 }: PopoverContentWithTemplateTagsProps) {
     return (
-        <Popover className="givewp-popover-content-settings" resize={false} shift placement="left-start" offset={30}>
+        <Popover className="givewp-popover-content-settings" resize={false} shift placement="left" offset={30}>
             <div className="givewp-popover-content-settings__header">
                 <div className="givewp-popover-content-settings__heading">
                     <span>{heading}</span>
