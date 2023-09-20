@@ -1,7 +1,7 @@
 import {Path, SVG} from '@wordpress/components';
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function PopoverEditIcon() {
     return (

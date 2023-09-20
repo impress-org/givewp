@@ -290,7 +290,7 @@ final class Give
     /**
      * Loads the plugin language files.
      *
-     * @unreleased Use Language class
+     * @since 3.0.0 Use Language class
      * @since  1.0
      * @access public
      *
@@ -391,7 +391,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.0.0-rc.4');
+            define('GIVE_VERSION', '3.0.0');
         }
 
         // Plugin Root File.
