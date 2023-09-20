@@ -54,6 +54,7 @@ export default function Edit({
                         onChange={(value) => setAttributes({groupLabel: value})}
                         style={{width: '100%', fontSize: '1.1rem', fontWeight: 500}}
                         allowedFormats={[]}
+                        className="give-billing-address-block__group-label"
                     />
                 </div>
             )}
