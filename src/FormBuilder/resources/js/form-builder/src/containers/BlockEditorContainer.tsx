@@ -15,7 +15,19 @@ export default function BlockEditorContainer() {
     const {blocks} = useFormState();
     const dispatch = useFormStateDispatch();
     const dispatchFormBlocks = (blocks) => {
-        dispatch(setFormBlocks(blocks));
+        dispatch(setFormBlocks(blocks.map((block) => {
+            return block.name == 'givewp/section'
+                ? block
+                : {
+                    ...block,
+                    name: 'givewp/section',
+                    attributes: {
+                        title: 'Dynamically Added Section',
+                        description: 'See what I did there?',
+                        innerBlocksTemplate: [[block.name, block.attributes]],
+                    }
+                }
+        })));
     };
 
     parseMissingBlocks(blocks);
