@@ -233,6 +233,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         multiple={false}
                         options={donationLevels}
                         setOptions={handleLevelsChange}
+                        defaultControlsTooltip={__('Default Level', 'give')}
                     />
                 </PanelBody>
             )}

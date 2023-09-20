@@ -1,0 +1,31 @@
+/**
+ * Amount Block
+ */
+[data-type='givewp/donation-amount'] {
+    .give-donation-block {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
+        &__levels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--givewp-spacing-4);
+            text-align: center;
+        }
+
+        &__level {
+            font-size: 18px;
+            font-weight: 500;
+            padding: var(--givewp-spacing-4);
+            border-radius: var(--givewp-rounded-4);
+            background-color: var(--givewp-neutral-70);
+            cursor: pointer;
+
+            &--selected {
+                background-color: var(--givewp-neutral-90);
+                color: var(--givewp-shades-white);
+            }
+        }
+    }
+}
