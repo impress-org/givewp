@@ -19,8 +19,7 @@
         font-size: 1rem;
         font-weight: bold;
         line-height: 1.4;
-        margin-top: 0;
-        padding: .215rem 0;
+        margin: 0 0 .5rem 0;
         letter-spacing: normal;
         text-align: left;
     }
@@ -29,14 +28,26 @@
         flex: 1;
         display: flex;
         justify-content: space-between;
-        flex-wrap: wrap;
         gap: 1.375rem;
         height: 100%;
     }
 }
 
-@media (max-width: 652px) {
+@media (max-width: 1280px) {
     .givewp-welcome-banner-left-content {
-        flex-grow: 1;
+        flex: 1;
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 1140px) {
+    .givewp-welcome-banner-left-content {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 750px) {
+    .givewp-welcome-banner-right-content__media-container {
+        flex-direction: column;
     }
 }
