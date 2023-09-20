@@ -34,13 +34,13 @@ const settings: SectionBlock['settings'] = {
             type: 'string',
             source: 'attribute',
             selector: 'h1',
-            default: 'Section Title',
+            default: __('Section Title', 'give'),
         },
         description: {
             type: 'string',
             source: 'attribute',
             selector: 'p',
-            default: 'Section Description',
+            default: __('Section Description', 'give'),
         },
         allowedBlocks: {
             default: true,

@@ -6,6 +6,7 @@ import BlockEditorInterfaceSkeletonContainer
     from '@givewp/form-builder/containers/BlockEditorInterfaceSkeletonContainer';
 import Onboarding from '@givewp/form-builder/components/onboarding';
 import parseMissingBlocks from '@givewp/form-builder/common/parseMissingBlocks';
+import {__} from "@wordpress/i18n";
 
 
 /**
@@ -22,8 +23,8 @@ export default function BlockEditorContainer() {
                     ...block,
                     name: 'givewp/section',
                     attributes: {
-                        title: 'Dynamically Added Section',
-                        description: 'See what I did there?',
+                        title: __('Section Title', 'give'),
+                        description: __('Section Description', 'give'),
                         innerBlocksTemplate: [[block.name, block.attributes]],
                     }
                 }
