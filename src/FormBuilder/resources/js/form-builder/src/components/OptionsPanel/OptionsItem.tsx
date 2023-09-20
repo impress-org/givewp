@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import {__} from '@wordpress/i18n';
-import {Button, Icon} from '@wordpress/components';
+import {Button, Icon, Tooltip} from '@wordpress/components';
 
 import {draggable, minusCircle} from './icons';
 import {OptionsItemProps} from './types';
@@ -12,6 +12,7 @@ export default function OptionsItem({
     option,
     showValues,
     multiple,
+    defaultTooltip,
     handleUpdateOptionLabel,
     handleUpdateOptionValue,
     handleUpdateOptionChecked,
@@ -22,12 +23,22 @@ export default function OptionsItem({
             <span className={'givewp-options-list--item--draggable'} {...provided.dragHandleProps}>
                 <Icon icon={draggable} />
             </span>
-            <input
-                type={multiple ? 'checkbox' : 'radio'}
-                checked={option.checked}
-                className={'givewp-options-list--item--checked'}
-                onClick={() => handleUpdateOptionChecked(!option.checked)}
-            />
+            <Tooltip
+                text={defaultTooltip ? defaultTooltip : __('Default', 'give')}
+                position="top"
+                placement="top"
+                delay={500}
+            >
+                {/* div is required (for some reason) for the Tooltip to work, do not remove */}
+                <div>
+                    <input
+                        type={multiple ? 'checkbox' : 'radio'}
+                        checked={option.checked}
+                        className={'givewp-options-list--item--checked'}
+                        onClick={() => handleUpdateOptionChecked(!option.checked)}
+                    />
+                </div>
+            </Tooltip>
             <div
                 className={cn('givewp-options-list--item--inputs', {
                     ['givewp-options-list--item--inputs--open']: showValues,

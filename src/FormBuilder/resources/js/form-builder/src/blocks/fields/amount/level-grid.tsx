@@ -1,12 +1,5 @@
 const LevelGrid = ({children}) => {
-    return (
-        <div style={{
-            textAlign: 'center',
-            display: 'grid',
-            gap: '14px',
-            gridTemplateColumns: '1fr 1fr 1fr',
-        }}>{children}</div>
-    );
+    return <div className="give-donation-block__levels">{children}</div>;
 };
 
 export default LevelGrid;
