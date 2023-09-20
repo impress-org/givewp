@@ -167,7 +167,6 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
-     * @unreleased Add pdfSettings property
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
