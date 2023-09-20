@@ -7,12 +7,12 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 class RecurringDonationOptions extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function canHandle(): bool
     {
@@ -20,7 +20,7 @@ class RecurringDonationOptions extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function process()
     {
@@ -45,7 +45,7 @@ class RecurringDonationOptions extends FormMigrationStep
     /**
      * Donor's choice has its own set of options for period functionality and default period (checkbox opt-in).
      *
-     * @unreleased
+     * @since 3.0.0
      */
     protected function handleDonorChoice(DonationAmountBlockModel $amountBlock)
     {
@@ -94,7 +94,7 @@ class RecurringDonationOptions extends FormMigrationStep
      * If donation option is 'multi' and custom amount is enabled, then it uses the custom amount recurring options.
      * If donation option is 'multi' and custom amount is disabled, then it uses the first donation level recurring options.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     protected function handleAdminDefined(DonationAmountBlockModel $amountBlock)
     {
@@ -134,7 +134,7 @@ class RecurringDonationOptions extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     protected function getBillingPeriodFromMeta(string $period): SubscriptionPeriod
     {

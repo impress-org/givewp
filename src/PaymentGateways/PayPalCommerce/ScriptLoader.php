@@ -11,7 +11,7 @@ use Give_Admin_Settings;
  * Class ScriptLoader
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @unreleased Implement on-demand PayPal connection. Admin can select Advance or standard card processing.
+ * @since 3.0.0 Implement on-demand PayPal connection. Admin can select Advance or standard card processing.
  * @since 2.9.0
  */
 class ScriptLoader
@@ -19,7 +19,7 @@ class ScriptLoader
     /**
      * List of connection account type.
      *
-     * @unreleased
+     * @since 3.0.0
      * @var string[]
      */
     public static $accountTypes = [
@@ -30,7 +30,7 @@ class ScriptLoader
     /**
      * List of countries that support custom payment accounts
      *
-     * @unreleased
+     * @since 3.0.0
      * @var string[]
      */
     private $countriesAvailableForAdvanceConnection = [
@@ -75,7 +75,7 @@ class ScriptLoader
     /**
      * ScriptLoader constructor.
      *
-     * @unreleased Remove $merchantRepository parameter and add $payPalCommerceGateway parameter.
+     * @since 3.0.0 Remove $merchantRepository parameter and add $payPalCommerceGateway parameter.
      * @since 2.9.0
      *
      * @param PayPalCommerceGateway $payPalCommerceGateway

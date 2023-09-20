@@ -7,7 +7,7 @@ import LeftContentSection from './components/Sections/LeftContentSection';
 import RightContentSection from './components/Sections/RightContentSection';
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function App() {
     const {showBanner, dismissBanner} = useDismiss();

@@ -215,7 +215,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      * @return string 'multi', 'set'
      */
     public function getDonationOption(): string
@@ -224,7 +224,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      * @return string 'multi', 'set'
      */
     public function isDonationOptionMulti(): string
@@ -241,7 +241,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getDonationLevels(): array
     {
@@ -249,7 +249,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringDonationsEnabled(): bool
     {
@@ -261,7 +261,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * Recurring Donations = 'no', 'yes_donor', 'yes_admin'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringDonationsOption(): string
     {
@@ -269,7 +269,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringDefaultCheckboxEnabled(): bool
     {
@@ -279,7 +279,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * 'day', 'week', 'month', 'year'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringPeriod(): string
     {
@@ -289,7 +289,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * 'day', 'week', 'month', 'year'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringPeriodDefaultDonorsChoice(): string
     {
@@ -297,7 +297,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringLengthOfTime(): int
     {
@@ -305,7 +305,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringBillingInterval(): int
     {
@@ -315,7 +315,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * 'yes', 'no'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringDefaultCheckboxOption(): string
     {
@@ -325,7 +325,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * 'donors_choice', 'admin_choice', 'custom' (The "Donor's Choice" option allows the donor to select the time period (commonly also referred as the "frequency") of their subscription. The "Preset Period" option provides only the selected period for the donor's subscription.)
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringPeriodFunctionality(): string
     {
@@ -333,7 +333,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      * @return string 'enabled', 'disabled'
      */
     public function getCustomAmountOption(): string
@@ -342,7 +342,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      * @return string 'enabled', 'disabled'
      */
     public function isCustomAmountOptionEnabled(): string
@@ -351,7 +351,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringPeriodFunctionalityDonorsChoice(): bool
     {
@@ -359,7 +359,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function isRecurringPeriodFunctionalityAdminChoice(): bool
     {
@@ -369,7 +369,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * This used when donation option is 'multi' and custom amount is 'enabled'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringCustomAmountPeriod(): string
     {
@@ -379,7 +379,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * This used when donation option is 'multi' and custom amount is 'enabled'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringCustomAmountInterval(): int
     {
@@ -389,7 +389,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * This used when donation option is 'multi' and custom amount is 'enabled'
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getRecurringCustomAmountTimes(): int
     {

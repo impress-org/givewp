@@ -7,7 +7,7 @@ type RowProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function Row({children}: RowProps) {
     return <div className={'givewp-welcome-banner-row'}>{children}</div>;

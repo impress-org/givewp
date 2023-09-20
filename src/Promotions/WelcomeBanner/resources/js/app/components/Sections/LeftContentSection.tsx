@@ -9,7 +9,7 @@ type LeftContentSectionProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function LeftContentSection({assets}: LeftContentSectionProps) {
     return (

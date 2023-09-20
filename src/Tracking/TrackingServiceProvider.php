@@ -32,7 +32,7 @@ class TrackingServiceProvider implements ServiceProvider
     /**
      * @inheritdoc
      *
-     * @unreleased Enable tracking if request is made by form builder
+     * @since 3.0.0 Enable tracking if request is made by form builder
      */
     public function boot()
     {
@@ -87,7 +87,7 @@ class TrackingServiceProvider implements ServiceProvider
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     private function enableTracking()
     {
@@ -100,7 +100,7 @@ class TrackingServiceProvider implements ServiceProvider
      *
      * 'give_send_tracking_data' action hook that will be triggered track routine cron job.
      *
-     * @unreleased Add support for v3 forms
+     * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      */
     private function registerTrackEvents()

@@ -119,7 +119,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts for the edit v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      * @return void
      */
     public function loadEditFormScripts()
@@ -209,7 +209,7 @@ class DonationFormsAdminPage
     /**
      * Render the migration guide box on the old edit donation form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @param WP_Post $post
      *
@@ -265,7 +265,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @return bool
      */
@@ -277,7 +277,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the add v2 form page
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @return bool
      */
@@ -308,7 +308,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
-     * @unreleased
+     * @since 3.0.0
      * @return array
      */
     public function getSupportedAddons(): array
@@ -351,23 +351,22 @@ class DonationFormsAdminPage
         return $output;
     }
 
+    /**
+     * Get an array of supported gateways
+     *
+     * @since 3.0.0
+     * @return array
+     */
     public function getSupportedGateways(): array
     {
-        $supportedGateways = [
-            'Authorize.net' => class_exists('Give_Authorize'),
-            'PayPal Standard' => true,
-            'PayPal Donations' => true,
-            'Stripe Elements' => true, // todo add check
-        ];
+        $gateways = give_get_payment_gateways();
+        $supportedGateways = array_intersect_key($gateways, give()->gateways->getPaymentGateways(3));
 
-        $output = [];
+        ksort($supportedGateways);
+        unset($supportedGateways['manual']);
 
-        foreach ($supportedGateways as $name => $isInstalled) {
-            if ($isInstalled) {
-                $output[] = $name;
-            }
-        }
-
-        return $output;
+        return array_map(function ($gateway) {
+            return $gateway['admin_label'];
+        }, $supportedGateways);
     }
 }

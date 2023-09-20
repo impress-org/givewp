@@ -19,6 +19,7 @@ import Editor from '@givewp/form-builder/components/editor';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import './index.scss';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
@@ -209,47 +210,23 @@ type CheckboxPlaceholderProps = {
 
 function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: CheckboxPlaceholderProps) {
     return (
-        <div style={{display: 'block'}}>
+        <div className={'givewp-terms-and-conditions'}>
             <div
+                className={'givewp-terms-and-conditions-container'}
                 style={{
                     display: isFormDisplay ? 'block' : 'inline-flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    gap: 5,
-                    border: 'none',
                 }}
             >
                 <CheckboxControl label={label} onChange={null} disabled={true} />
 
                 {isFormDisplay && (
-                    <div
-                        style={{
-                            marginTop: '1rem',
-                            lineHeight: '150%',
-                            maxHeight: '17.5rem',
-                            minHeight: '6.5rem',
-                            overflowY: 'scroll',
-                            border: '1px solid var(--givewp-grey-200, #BFBFBF)',
-                            borderRadius: 5,
-                            padding: '0 1rem',
-                            background: 'var(--givewp-shades-white, #fff)',
-                        }}
-                    >
+                    <div className={'givewp-terms-and-conditions-container__form-display'}>
                         <Markup content={agreementText} />
                     </div>
                 )}
 
                 {!isFormDisplay && (
-                    <div
-                        style={{
-                            display: 'inline-block',
-                            minWidth: 'fit-content',
-                            color: 'var(--givewp-grey-80), #595959',
-                            fontSize: '1rem',
-                        }}
-                    >
-                        {linkText}
-                    </div>
+                    <div className={'givewp-terms-and-conditions-container__link-display'}>{linkText}</div>
                 )}
             </div>
         </div>

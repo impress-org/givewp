@@ -8,7 +8,7 @@ type RightContentSectionProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function RightContentSection({assets}: RightContentSectionProps) {
     return (
@@ -22,7 +22,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                         'givewp'
                     )}
                 >
-                    <VideoPlayer src={`${assets}/`} fallbackImage={`${assets}/design-mode.min.png`} />
+                    <VideoPlayer src={`${assets}/design-mode.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
                 </SpotLight>
 
                 <SpotLight

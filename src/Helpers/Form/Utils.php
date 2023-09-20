@@ -244,7 +244,7 @@ class Utils
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public static function isV3Form(int $formId): bool
     {

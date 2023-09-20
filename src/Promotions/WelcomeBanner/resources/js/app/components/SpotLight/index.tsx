@@ -7,7 +7,7 @@ type SpotLightProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function SpotLight({title, description, children}: SpotLightProps) {
     return (

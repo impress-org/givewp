@@ -17,7 +17,7 @@ class EnqueueStripeFormBuilderScripts
      */
     public function __invoke()
     {
-        $enabledGateways = array_keys(give_get_option('gateways_v3'));
+        $enabledGateways = array_keys(give_get_option('gateways_v3', []));
         $stripeEnabled = in_array('stripe_payment_element', $enabledGateways, true);
 
         if (!$stripeEnabled) {

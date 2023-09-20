@@ -16,10 +16,11 @@ const registerMissingBlock = () => {
     });
 
     if (missingBlock) {
-        const {name: missingBlockName} = missingBlock;
-        missingBlock.init();
+        const {name, metadata, settings} = missingBlock;
 
-        setUnregisteredTypeHandlerName(missingBlockName);
+        registerBlockType({name, ...metadata}, settings);
+
+        setUnregisteredTypeHandlerName(name);
     }
 };
 

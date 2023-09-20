@@ -10,12 +10,12 @@ use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 /**
  * Checks to see if the Offline gateway is disabled for the form and disables it if so. *
  *
- * @unreleased
+ * @since 3.0.0
  */
 class DisableGatewayWhenDisabledPerForm
 {
     /**
-     * @unreleased
+     * @since 3.0.0
      *
      * @param array<PaymentGateway> $gateways
      *

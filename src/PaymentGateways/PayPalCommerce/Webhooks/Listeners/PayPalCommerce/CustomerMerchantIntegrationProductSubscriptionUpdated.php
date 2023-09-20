@@ -9,7 +9,7 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
  * Class PaymentCaptureCompleted
  * @package Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce
  *
- * @unreleased
+ * @since 3.0.0
  */
 class CustomerMerchantIntegrationProductSubscriptionUpdated extends PaymentEventListener
 {

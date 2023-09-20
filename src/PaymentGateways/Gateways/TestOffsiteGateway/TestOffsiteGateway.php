@@ -52,7 +52,7 @@ class TestOffsiteGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function formSettings(int $formId): array
     {
@@ -133,7 +133,7 @@ class TestOffsiteGateway extends PaymentGateway
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
-     * @unreleased
+     * @since 3.0.0
      *
      * @throws Exception
      */

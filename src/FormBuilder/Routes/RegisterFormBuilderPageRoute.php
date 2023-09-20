@@ -5,7 +5,6 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
-use Give\Framework\EnqueueScript;
 use Give\Framework\Views\View;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -26,14 +25,10 @@ class RegisterFormBuilderPageRoute
      */
     public function __invoke()
     {
-        $pageTitle = __('Visual Donation Form Builder', 'givewp');
-        $menuTitle = __('Add v3 Form', 'givewp');
-        $version = __('Beta', 'givewp');
-
         add_submenu_page(
-            'edit.php?post_type=give_forms',
-            "$pageTitle&nbsp;<span class='awaiting-mod'>$version</span>",
-            "$menuTitle&nbsp;<span class='awaiting-mod'>$version</span>",
+            null, // do not display in menu, just register page
+            'Visual Donation Form Builder', // ignored
+            'Add Form', // ignored
             'manage_options',
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
@@ -74,9 +69,14 @@ class RegisterFormBuilderPageRoute
 
         // validate form exists before proceeding
         // TODO: improve on this validation
-        if ( ! get_post($donationFormId)) {
+        if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        wp_enqueue_style(
+            '@givewp/form-builder/registrars',
+            GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css'
+        );
 
         wp_enqueue_script(
             '@givewp/form-builder/registrars',
@@ -113,7 +113,7 @@ class RegisterFormBuilderPageRoute
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
-            'autoStartTour' => ! get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+            'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
         ]);
 
         $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
@@ -128,8 +128,16 @@ class RegisterFormBuilderPageRoute
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
             'isTransferredForm' => $transferredFormId,
-            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-migration-hide-notice', true),
-            'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-transfer-hide-notice', true),
+            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta(
+                    $donationFormId,
+                    'givewp-form-builder-migration-hide-notice',
+                    true
+                ),
+            'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta(
+                    $donationFormId,
+                    'givewp-form-builder-transfer-hide-notice',
+                    true
+                ),
         ]);
 
         View::render('FormBuilder.admin-form-builder');
@@ -166,7 +174,7 @@ class RegisterFormBuilderPageRoute
         return array_filter($formBuilderJsDependencies, static function ($dependency) use ($scripts) {
             $isRegistered = $scripts->query($dependency, 'registered');
 
-            if ( ! $isRegistered) {
+            if (!$isRegistered) {
                 Log::error(
                     sprintf(
                         'Script %s is not registered. Please check the script dependencies.',

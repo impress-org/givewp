@@ -3,12 +3,12 @@
 namespace Give\Helpers;
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 class Language
 {
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public static function load()
     {
@@ -33,7 +33,7 @@ class Language
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public static function setScriptTranslations($handle)
     {
@@ -43,7 +43,7 @@ class Language
     /**
      * Return the plugin language dir relative path, e.g. "give/languages/"
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public static function getRelativePath(): string
     {

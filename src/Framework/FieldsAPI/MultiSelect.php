@@ -22,7 +22,7 @@ class MultiSelect extends Field
     const TYPE = 'multiSelect';
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function getFieldType(): string
     {
@@ -30,7 +30,7 @@ class MultiSelect extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     public function fieldType(string $fieldType): MultiSelect
     {

@@ -5,6 +5,7 @@ import Edit from './Edit';
 
 const settings: ElementBlock['settings'] = {
     title: __('Paragraph', 'custom-block-editor'),
+    description: 'Place a styled paragraph in your form.',
     category: 'content',
     supports: {
         html: false,
@@ -17,7 +18,8 @@ const settings: ElementBlock['settings'] = {
     attributes: {
         content: {
             type: 'string',
-            source: 'html',
+            source: 'attribute',
+            selector: 'p',
             default: '',
         },
     },

@@ -17,7 +17,7 @@ class WebhookRegister
      *
      * Structure: PayPalEventName => EventHandlerClass
      *
-     * @unreleased Register new events and handlers.
+     * @since 3.0.0 Register new events and handlers.
      * @since 2.9.0
      *
      * @var string[]

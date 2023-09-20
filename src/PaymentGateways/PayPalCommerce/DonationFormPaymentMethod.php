@@ -30,7 +30,7 @@ class DonationFormPaymentMethod
     /**
      * Disable PayPal payment option if gateway account is not setup.
      *
-     * @unreleased Use new payment gateway class.
+     * @since 3.0.0 Use new payment gateway class.
      * @sicne 2.9.6
      *
      * @param array $gateways

@@ -26,7 +26,7 @@ class Phone extends Field
     /**
      * Set the phone format for the element.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function phoneFormat(string $phoneFormat): self
     {
@@ -38,7 +38,7 @@ class Phone extends Field
     /**
      * Get the phone format for the element.
      *
-     * @unreleased
+     * @since 3.0.0
      */
     public function getPhoneFormat(): string
     {

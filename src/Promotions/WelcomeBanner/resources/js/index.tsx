@@ -20,7 +20,7 @@ export default function getWindowData(): windowData {
 const root = document.getElementById('givewp-welcome-banner');
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 const RenderApp = () => (
     <StrictMode>
