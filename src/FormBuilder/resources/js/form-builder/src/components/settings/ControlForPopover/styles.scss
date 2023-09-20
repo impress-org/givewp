@@ -1,18 +1,17 @@
 .givewp-control-popover-setting-button {
-  transition: all 0.2s;
+    transition: all 0.2s;
 
-  &--has-caption {
-    border: 1px solid var(--givewp-grey-400);
-  }
+    &:hover,
+    &--active {
+        svg > path {
+            fill: #007cba;
+        }
 
-  &:hover,
-  &--active {
-    background-color: #3d5a66;
-    color: #fff;
-
-    &:not([aria-disabled='true']):active {
-      background-color: #3d5a66;
-      color: #fff;
+        &:not([aria-disabled='true']):active {
+            svg > path {
+                fill: #007cba;
+            }
+        }
     }
-  }
 }
+

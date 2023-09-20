@@ -1,25 +1,16 @@
-import {
-    BaseControl,
-    Button,
-    CheckboxControl,
-    Icon,
-    PanelBody,
-    PanelRow,
-    SelectControl,
-    TextControl,
-} from '@wordpress/components';
-import {moreVertical} from '@wordpress/icons';
+import {CheckboxControl, PanelBody, PanelRow, SelectControl, TextControl} from '@wordpress/components';
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Markup} from 'interweave';
-
-import Editor from '@givewp/form-builder/components/editor';
-import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import './index.scss';
+import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
+import Editor from '@givewp/form-builder/components/editor';
+import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
+
+import './styles.scss';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
@@ -75,15 +66,13 @@ export default function Edit({
                         />
                     </PanelRow>
 
-                    {useGlobalSettings && (
+                    {useGlobalSettings ? (
                         <GlobalSettingsLink
                             href={
                                 '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions'
                             }
                         />
-                    )}
-
-                    {!useGlobalSettings && (
+                    ) : (
                         <>
                             <PanelRow>
                                 <TextControl
@@ -106,7 +95,10 @@ export default function Edit({
                                             label: __('Show terms in form', 'give'),
                                             value: DisplayTypeEnum.SHOW_FORM_TERMS,
                                         },
-                                        {label: __('Link to terms', 'give'), value: DisplayTypeEnum.SHOW_LINK_TERMS},
+                                        {
+                                            label: __('Link to terms', 'give'),
+                                            value: DisplayTypeEnum.SHOW_LINK_TERMS,
+                                        },
                                     ]}
                                 />
                             </PanelRow>
@@ -133,34 +125,28 @@ export default function Edit({
 
                             {!isLinkDisplay && (
                                 <PanelRow>
-                                    <BaseControl
-                                        id={'give-terms-and-conditions-agreement-text'}
+                                    <ControlForPopover
+                                        id="terms-and-conditions"
                                         help={__(
                                             'This is the actual text which the user will have to agree to in order to make a donation.',
                                             'give'
                                         )}
+                                        heading={__('Agreement Text', 'give')}
+                                        onButtonClick={() => setShowAgreementTextModal(!showAgreementTextModal)}
+                                        isButtonActive={showAgreementTextModal}
                                     >
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }}
+                                        <StyledPopover
+                                            title={__('Agreement Text', 'give')}
+                                            visible={showAgreementTextModal}
+                                            onClose={() => setShowAgreementTextModal(false)}
                                         >
-                                            <span>{__('Agreement text')}</span>
-                                            <Button
-                                                style={{
-                                                    color: showAgreementTextModal ? '#ffffff' : ' #1e1e1e',
-                                                    background: showAgreementTextModal ? '#3D5A66' : 'transparent',
-                                                    verticalAlign: 'center',
-                                                }}
-                                                variant={'primary'}
-                                                onClick={() => setShowAgreementTextModal(true)}
-                                            >
-                                                <Icon icon={moreVertical} />
-                                            </Button>
-                                        </div>
-                                    </BaseControl>
+                                            <Editor
+                                                className="givewp-popover-content-settings__editor"
+                                                value={agreementText}
+                                                onChange={(value) => setAttributes({agreementText: value})}
+                                            />
+                                        </StyledPopover>
+                                    </ControlForPopover>
                                 </PanelRow>
                             )}
 
@@ -182,17 +168,6 @@ export default function Edit({
                                     </PanelRow>
                                 </>
                             )}
-
-                            <StyledPopover
-                                title={__('Agreement Text', 'give')}
-                                visible={showAgreementTextModal}
-                                onClose={() => setShowAgreementTextModal(false)}
-                            >
-                                <Editor
-                                    value={agreementText}
-                                    onChange={(value) => setAttributes({agreementText: value})}
-                                />
-                            </StyledPopover>
                         </>
                     )}
                 </PanelBody>

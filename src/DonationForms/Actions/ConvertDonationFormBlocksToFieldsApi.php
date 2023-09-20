@@ -104,9 +104,9 @@ class ConvertDonationFormBlocksToFieldsApi
      * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
      * @since 3.0.0
      *
+     * @return Node|null
      * @throws EmptyNameException|NameCollisionException
      *
-     * @return Node|null
      */
     protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
@@ -193,7 +193,6 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/terms-and-conditions":
                 return $this->createNodeFromConsentBlock($block, $blockIndex)
-                    ->label(__('Terms and Conditions', 'give'))
                     ->required();
 
             case "givewp/login":

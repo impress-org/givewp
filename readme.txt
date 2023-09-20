@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.33.2: September 18, 2023 =
+* Fix: Added validation for form status to prevent donations to donation forms with the status of "Trash"
+
 = 2.33.1: August 31st, 2023 =
 * Security: The donor default user role has been sanitized to prevent privilege escalation
 

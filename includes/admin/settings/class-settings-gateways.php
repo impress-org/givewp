@@ -328,7 +328,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		/**
 		 * Render enabled gateways
 		 *
-         * @unreleased split gateways into separated tabs for v2 and v3 settings
+         * @since 3.0.0 split gateways into separated tabs for v2 and v3 settings
 		 * @since  2.0.5
 		 * @access public
 		 *
@@ -518,7 +518,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
         }
 
         /**
-         * @unreleased
+         * @since 3.0.0
          */
         private function maybeRenderNoticeDialog()
         {
