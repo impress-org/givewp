@@ -23,7 +23,17 @@ import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
-// @ts-ignore
+declare const window: {
+    givewp: {
+        form: {
+            settings: {
+                setFormSettings: typeof setFormSettings;
+                useFormState: typeof useFormState;
+                useFormStateDispatch: typeof useFormStateDispatch;
+            };
+        };
+    };
+} & Window;
 window.givewp.form.settings = {setFormSettings, useFormState, useFormStateDispatch};
 
 const tabs = [
