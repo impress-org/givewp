@@ -36,13 +36,18 @@
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        flex-wrap: wrap;
         gap: var(--givewp-spacing-18);
         width: 100%;
     }
 }
 
 
+@media (max-width: 1280px) {
+    .givewp-welcome-banner__content-container {
+        flex-direction: column;
+        gap: var(--givewp-spacing-12);
+    }
+}
 
 
 
