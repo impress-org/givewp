@@ -35,6 +35,7 @@ export default function TransferNotice() {
                     onClick={() => {
                         dispatch(setTransferState({showNotice: false, showTooltip: true}))
                         fetch(transferActionUrl + `&formId=${formId}`, {method: 'POST'})
+                        document.getElementById('FormBuilderSidebarToggle')?.click();
                     }}
                 />
             </div>

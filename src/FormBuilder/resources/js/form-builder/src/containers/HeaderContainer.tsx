@@ -141,12 +141,9 @@ const HeaderContainer = ({
                         // @ts-ignore
                         focusOnMount={'container'}
                         renderToggle={({isOpen, onToggle}) => {
-                            if (!isOpen && transfer.showTooltip) {
-                                onToggle();
-                            }
-
                             return (
                                 <Button
+                                    id="FormBuilderSidebarToggle"
                                     icon={moreVertical}
                                     onClick={() => {
                                         if (transfer.showTooltip) {
