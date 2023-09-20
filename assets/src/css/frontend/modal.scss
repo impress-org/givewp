@@ -9,180 +9,186 @@
 
 // Wrapper for popup
 .give-modal {
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: $mfp-z-index-base + 2147482500;
-	//position: fixed;
-	overflow: hidden;
-	outline: none !important;
-	-webkit-backface-visibility: hidden; // fixes webkit bug that can cause "false" scrollbar
-	-webkit-overflow-scrolling: touch;
-	-webkit-transform: translateZ(0);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $mfp-z-index-base + 2147482500;
+    //position: fixed;
+    overflow: hidden;
+    outline: none !important;
+    -webkit-backface-visibility: hidden; // fixes webkit bug that can cause "false" scrollbar
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translateZ(0);
 
-	form[id*='give-form'] {
-		margin-bottom: 0;
-		.give-submit {
-			margin-bottom: 0;
-		}
-		.give-payment-mode-label {
-			margin-top: 0;
-			padding-top: 0;
-		}
-		@media (max-width: 580px) {
-			.give-input {
-				font-size: 16px; // Prevents mobile zoom to inputs.
-			}
-		}
-	}
+    form[id*='give-form'] {
+        margin-bottom: 0;
 
-	// Popup content holder
-	.mfp-content {
-		box-sizing: border-box;
-		position: relative;
-		background: #fff;
-		padding: 20px;
-		width: auto;
-		max-width: 650px;
-		margin: 40px auto;
-		z-index: $mfp-z-index-base + 2147482600;
+        .give-submit {
+            margin-bottom: 0;
+        }
 
-		[id*='give-form'] #give-payment-mode-select,
-		[id*='give-form'] #give_purchase_form_wrap,
-		[id*='give-form'].give-display-button-only .give-donation-amount,
-		[id*='give-form'].give-display-button-only .give-donation-levels-wrap {
-			display: block;
-		}
+        .give-payment-mode-label {
+            margin-top: 0;
+            padding-top: 0;
+        }
 
-		.mfp-close:hover {
-			background-color: transparent;
-		}
-	}
+        @media (max-width: 580px) {
+            .give-input {
+                font-size: 16px; // Prevents mobile zoom to inputs.
+            }
+        }
+    }
 
-	form.give-form button.mfp-close {
-		position: absolute;
-		display: block !important;
-	}
+    // Popup content holder
+    .mfp-content {
+        box-sizing: border-box;
+        position: relative;
+        background: #fff;
+        padding: 20px;
+        width: auto;
+        max-width: 650px;
+        margin: 40px auto;
+        z-index: $mfp-z-index-base + 2147482600;
 
-	.mfp-container::after {
-		display: none;
-	}
+        [id*='give-form'] #give-payment-mode-select,
+        [id*='give-form'] #give_purchase_form_wrap,
+        [id*='give-form'].give-display-button-only .give-donation-amount,
+        [id*='give-form'].give-display-button-only .give-donation-levels-wrap {
+            display: block;
+        }
+
+        .mfp-close:hover {
+            background-color: transparent;
+        }
+    }
+
+    form.give-form button.mfp-close {
+        position: absolute;
+        display: block !important;
+    }
+
+    .mfp-container::after {
+        display: none;
+    }
 }
 
 // Move-from-top effect.
 
 .give-modal {
-	.mfp-content {
-		vertical-align: middle;
-		opacity: 0;
-		transition: all 0.2s;
-		transform: translateY(-100px);
-	}
+    .mfp-content {
+        vertical-align: middle;
+        opacity: 0;
+        transition: all 0.2s;
+        transform: translateY(-100px);
+    }
 
-	&.mfp-bg {
-		opacity: 0;
-		transition: all 0.2s;
-	}
+    &.mfp-bg {
+        opacity: 0;
+        transition: all 0.2s;
+    }
 
-	/* animate in */
-	&.mfp-ready {
-		.mfp-content {
-			opacity: 1;
-			transform: translateY(0);
-		}
-		&.mfp-bg {
-			opacity: 0.8;
-		}
-	}
+    /* animate in */
+    &.mfp-ready {
+        .mfp-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-	/* animate out */
-	&.mfp-removing {
-		.mfp-content {
-			transform: translateY(-50px);
-			opacity: 0;
-		}
-		&.mfp-bg {
-			opacity: 0;
-		}
-	}
+        &.mfp-bg {
+            opacity: 0.8;
+        }
+    }
+
+    /* animate out */
+    &.mfp-removing {
+        .mfp-content {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        &.mfp-bg {
+            opacity: 0;
+        }
+    }
 }
 
 /**
  * Form Grid Magnific Popup CSS
  */
 .give-donation-grid-item-form {
-	position: relative;
-	margin: 0 auto;
-	max-width: 600px;
-	background-color: #fff;
-	padding: 1rem 1.5rem;
-	height: 85vh;
-	overflow-y: auto;
+    position: relative;
+    margin: 0 auto;
+    max-width: 100%;
+    width: 720px;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    max-height: 85vh;
+    overflow-y: auto;
 
-	#give_purchase_form_wrap {
-		display: block !important;
-	}
+    #give_purchase_form_wrap {
+        display: block !important;
+    }
 
-	.give-btn-reveal,
-	.give-btn-modal {
-		display: none !important;
-	}
+    .give-btn-reveal,
+    .give-btn-modal {
+        display: none !important;
+    }
 }
 
 .modal-fade-slide.give-modal {
-	.mfp-content {
-		padding: 0;
-		max-width: 100%;
-	}
+    .mfp-content {
+        padding: 0;
+        max-width: 100%;
+    }
 }
 
 .modal-fade-slide .give-modal--slide {
-	opacity: 0;
-	transition: all 0.2s ease-out;
-	transform: translateY(-20px) perspective(600px) rotateX(0);
+    opacity: 0;
+    transition: all 0.2s ease-out;
+    transform: translateY(-20px) perspective(600px) rotateX(0);
 }
 
 .modal-fade-slide.mfp-ready .give-modal--slide {
-	opacity: 1;
-	transform: translateY(0) perspective(600px) rotateX(0);
+    opacity: 1;
+    transform: translateY(0) perspective(600px) rotateX(0);
 }
 
 .modal-fade-slide.mfp-removing .give-modal--slide {
-	opacity: 0;
-	transform: translateY(-10px) perspective(600px) rotateX(0);
+    opacity: 0;
+    transform: translateY(-10px) perspective(600px) rotateX(0);
 }
 
 .modal-fade-slide.mfp-bg {
-	opacity: 0;
-	transition: opacity 0.3s ease-out;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
 }
 
 .modal-fade-slide.mfp-ready.mfp-bg {
-	opacity: 0.8;
+    opacity: 0.8;
 }
 
 .modal-fade-slide.mfp-removing.mfp-bg {
-	opacity: 0;
+    opacity: 0;
 }
 
 .mfp-close:hover {
-	background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /**
  * Display Style Button
  */
 .mfp-content {
-	.give-display-button-only .give-form-title {
-		display: none;
-	}
+    .give-display-button-only .give-form-title {
+        display: none;
+    }
 
-	.give-display-button-only > *:not(form) {
-		display: block;
-	}
+    .give-display-button-only > *:not(form) {
+        display: block;
+    }
 
-	.give-display-button-only form > *:not(.give-btn-modal) {
-		display: block;
-	}
+    .give-display-button-only form > *:not(.give-btn-modal) {
+        display: block;
+    }
 }
