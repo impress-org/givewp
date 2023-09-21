@@ -1,17 +1,139 @@
 .givewp__component {
-    &--DesignPreviewLoading {
 
-        position: absolute;
-        margin-top: -48px;
-
-        width: 100%;
+    &-DesignPreview {
+        position: relative;
         display: flex;
-        align-items: flex-start;
+        flex-basis: 0;
         justify-content: center;
+        align-items: flex-start;
 
-        svg {
-            width: 32px;
-            height: 32px;
+        &-spinner {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+
+            svg {
+                width: 32px;
+                height: 32px;
+            }
         }
+
+        &-container {
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border: solid 1px var(--givewp-gray-10);
+            background-color: var(--givewp-shades-white);
+
+            &-classic {
+                flex-shrink: 0;
+                padding: 1.5rem;
+
+                &-header,
+                &-image,
+                &-donation-levels,
+                &-progressbar {
+                    background-color: var(--givewp-gray-10);
+                    border-radius: 4px;
+                }
+
+                &-header {
+                    height: 4rem;
+                    margin-bottom: 2rem;
+                }
+            }
+
+            &-multistep {
+                width: 35rem;
+                padding: 1.5rem;
+
+                &-header,
+                &-image,
+                &-donation-levels,
+                &-progressbar {
+                    background-color: var(--givewp-gray-10);
+                    border-radius: 4px;
+                }
+
+                &-header {
+                    height: 4rem;
+                    margin-bottom: 2rem;
+                }
+
+                &-image {
+                    height: 20rem;
+                }
+
+                &-donation-levels {
+                    display: flex;
+                    flex-direction: row;
+                    align-content: space-between;
+                    margin-top: 5px;
+                    border-bottom: solid 1px var(--givewp-gray-20);
+                    border-radius: 4px 4px 0 0;
+
+                    div {
+                        border-radius: 4px 4px 0 0;
+                        flex: 1;
+                        padding: 1.2rem;
+                        background-color: var(--givewp-gray-10);
+                    }
+
+                    div:nth-child(2) {
+                        border-left: solid 1px var(--givewp-gray-20);
+                        border-right: solid 1px var(--givewp-gray-20);
+                    }
+
+                    div > div {
+                        background-color: var(--givewp-gray-20);
+                        border-radius: 4px;
+                        height: 1rem;
+                    }
+                }
+
+                &-progressbar {
+                    border-radius: 0 0 4px 4px;
+                    padding: 1rem 1.5rem;
+
+                    div {
+                        background-color: var(--givewp-gray-20);
+                        border-radius: 10px;
+                        height: 1.5rem;
+                    }
+                }
+
+                &-button {
+                    padding: 1.5rem 2rem;
+
+                    div {
+                        background-color: var(--givewp-gray-10);
+                        height: 4rem;
+                    }
+                }
+
+                &-footer {
+                    padding: 0 1rem;
+                    display: flex;
+                    justify-content: center;
+
+                    div {
+                        background-color: var(--givewp-gray-10);
+                        height: 1rem;
+                        width: 30%;
+                    }
+                }
+            }
+
+
+        }
+
     }
+
+
 }
