@@ -11,12 +11,16 @@ import Notice from './notice';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 
-const DonationLevels = ({levels}: {levels: DonationAmountAttributes['levels']}) => (
+const DonationLevels = ({levels, defaultLevel}: {levels: DonationAmountAttributes['levels']; defaultLevel: string}) => (
     <LevelGrid>
         {levels.map((level: string, index: number) => {
             const levelAmount = formatCurrencyAmount(level);
 
-            return <LevelButton key={index}>{levelAmount}</LevelButton>;
+            return (
+                <LevelButton selected={level === defaultLevel} key={index}>
+                    {levelAmount}
+                </LevelButton>
+            );
         })}
     </LevelGrid>
 );
@@ -53,6 +57,7 @@ const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
+        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -85,7 +90,7 @@ const Edit = ({attributes, setAttributes}) => {
 
     return (
         <BaseControl id="amount-field" label={label}>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
+            <div className="give-donation-block">
                 {isRecurringDonor && (
                     <BillingPeriodControl
                         options={
@@ -97,7 +102,7 @@ const Edit = ({attributes, setAttributes}) => {
                     />
                 )}
 
-                {isMultiLevel && <DonationLevels levels={levels} />}
+                {isMultiLevel && <DonationLevels levels={levels} defaultLevel={defaultLevel} />}
 
                 {customAmount && <CustomAmount amount={setPrice} />}
 

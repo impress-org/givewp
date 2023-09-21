@@ -13,12 +13,14 @@
     padding: var(--givewp-spacing-3);
 
     &__details {
+        flex: 1;
+
         > h2 {
             font-size: 0.875rem;
             font-weight: bold;
             line-height: 1.4;
             text-align: left;
-            margin: var(--givewp-spacing-4) 0 var(--givewp-spacing-2)
+            margin: var(--givewp-spacing-4) 0 var(--givewp-spacing-2);
         }
 
         > p {

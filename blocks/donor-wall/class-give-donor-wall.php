@@ -209,7 +209,9 @@ class Give_Donor_Wall_Block {
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-			'form_id'           => implode(',', $this->getAsArray($attributes['formID'] ) ),
+			'form_id'           => implode(',',
+                array_map('_give_redirect_form_id', $this->getAsArray($attributes['formID']))
+            ),
 			'ids'               => implode(',', $this->getAsArray($attributes['ids'] ) ),
             'cats'              => implode(',', $this->getAsArray($attributes['categories'] ) ),
             'tags'              => implode(',', $this->getAsArray($attributes['tags'] ) ),
@@ -233,8 +235,6 @@ class Give_Donor_Wall_Block {
             'color'             => $attributes['color'],
             'show_time'         => $attributes['showTimestamp'],
 		];
-
-        array_walk($parameters['form_id'], '_give_redirect_form_id');
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();

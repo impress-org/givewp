@@ -139,14 +139,17 @@ $borderColor: #9A9A9A;
         color: var(--givewp-grey-900);
         text-align: center;
         line-height: 1.2;
-        block-size: 100%;
         padding: var(--givewp-spacing-3);
-        transition-property: background-color, color, filter, box-shadow, transform;
+        transition-property: background-color, color, filter, box-shadow, transform, border;
         transition-duration: 200ms;
         transition-timing-function: ease-in;
         width: 100%;
         margin-bottom: 0;
         box-shadow: none;
+
+        &:hover {
+            border-color: var(--givewp-primary-color);
+        }
 
         @media screen and (min-width: variables.$givewp-breakpoint-sm) {
             padding: var(--givewp-spacing-4);

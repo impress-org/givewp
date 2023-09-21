@@ -18,10 +18,16 @@ export default function ConsentField({
     modalAcceptanceText,
     agreementText,
     Label: LabelWithRequired,
+    label,
+    validationRules,
 }: ConsentProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const {useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
+
+    const FieldLabel = window.givewp.form.templates.layouts.fieldLabel;
+
+    const {required} = validationRules;
 
     const isModalDisplay = displayType === 'showModalTerms';
     const isFormDisplay = displayType === 'showFormTerms';
@@ -38,17 +44,18 @@ export default function ConsentField({
     };
 
     const Label = () => (
-        <>
-            <LabelWithRequired />
+        <span className={'givewp-fields-consent__checkbox-label'}>
+            <FieldLabel label={checkboxLabel} required={!label && required} />
             &nbsp;
             {!isFormDisplay && (
                 <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
             )}
-        </>
+        </span>
     );
 
     return (
-        <>
+        <div className={'givewp-fields-consent'}>
+            {label && <LabelWithRequired />}
             {/*// @ts-ignore*/}
             <Checkbox {...{Label, ErrorMessage, fieldError, inputProps}} value={'accepted'} />
 
@@ -61,6 +68,6 @@ export default function ConsentField({
                     <Markup content={agreementText} noWrap />
                 </div>
             )}
-        </>
+        </div>
     );
 }

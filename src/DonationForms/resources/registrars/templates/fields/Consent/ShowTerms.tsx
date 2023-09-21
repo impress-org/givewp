@@ -1,3 +1,5 @@
+import './styles.scss';
+
 export default function ShowTerms({displayType, linkText, linkUrl, openTerms}) {
     const isLinkDisplay = displayType === 'showLinkTerms';
 
@@ -6,18 +8,6 @@ export default function ShowTerms({displayType, linkText, linkUrl, openTerms}) {
             {linkText}
         </a>
     ) : (
-        <button
-            onClick={openTerms}
-            style={{
-                border: 0,
-                color: 'inherit',
-                display: 'inline',
-                width: 'fit-content',
-                padding: 0,
-                background: 'none',
-            }}
-        >
-            {linkText}
-        </button>
+        <button onClick={openTerms}>{linkText}</button>
     );
 }
