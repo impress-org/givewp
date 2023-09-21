@@ -161,6 +161,10 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $donateButtonCaption;
 
+    /**
+     * @var array
+     */
+    public $pdfSettings;
 
     /**
      * @since 3.0.0
@@ -225,6 +229,8 @@ class FormSettings implements Arrayable, Jsonable
         $self->offlineDonationsCustomize = $array['offlineDonationsCustomize'] ?? false;
 
         $self->offlineDonationsInstructions = $array['offlineDonationsInstructions'] ?? '';
+
+        $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
         return $self;
     }

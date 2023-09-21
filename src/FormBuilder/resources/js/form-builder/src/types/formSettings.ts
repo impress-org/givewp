@@ -38,4 +38,5 @@ export type FormSettings = {
     offlineDonationsCustomize: boolean;
     offlineDonationsInstructions: string;
     donateButtonCaption: string;
+    pdfSettings: object;
 };
