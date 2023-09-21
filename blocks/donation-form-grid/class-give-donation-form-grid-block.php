@@ -207,7 +207,9 @@ class Give_Donation_Form_Grid_Block {
 	public function render_block( $attributes ) {
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-			'ids'                 => implode(',', $this->getAsArray($attributes['formIDs'] ) ),
+			'ids'                 => implode(',',
+                array_map('_give_redirect_form_id', $this->getAsArray($attributes['formIDs']))
+            ),
 			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
@@ -230,8 +232,6 @@ class Give_Donation_Form_Grid_Block {
             'image_height_options' => $attributes['imageHeightOptions'],
             'progress_bar_color'  => $attributes['progressBarColor']
         );
-
-        array_walk($parameters['ids'], '_give_redirect_form_id');
 
 		$html = give_form_grid_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();

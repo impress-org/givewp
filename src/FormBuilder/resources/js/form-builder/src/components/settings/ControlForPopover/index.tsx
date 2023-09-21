@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {BaseControl, Button} from '@wordpress/components';
-import {edit as EditIcon} from '@wordpress/icons';
 import classNames from 'classnames';
+import PopoverEditIcon from './PopoverEditIcon';
 import './styles.scss';
 
 /**
@@ -39,7 +39,7 @@ export default function ControlForPopover({
                         'givewp-control-popover-setting-button--has-caption': buttonCaption !== '',
                     })}
                     onClick={onButtonClick}
-                    icon={buttonCaption ? null : EditIcon}
+                    icon={buttonCaption ? null : PopoverEditIcon}
                     children={buttonCaption ? buttonCaption : null}
                 />
             </div>

@@ -81,7 +81,7 @@
     height: 100%;
     overflow: hidden;
     flex: 1;
-
+    margin-top: 1.5rem;
     .components-text-control__input {
         height: 2.25rem;
     }
@@ -99,7 +99,7 @@
     &__close-btn {
         z-index: 11;
         position: absolute;
-        top: 0;
+        top: -0.4rem;
         right: 0;
         display: flex;
         gap: var(--givewp-spacing-3);

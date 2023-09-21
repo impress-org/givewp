@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Returns a list of all available gateways.
  *
- * @unreleased add $version param
+ * @since 3.0.0 add $version param
  * @since 2.30.0 add filter give_payment_gateways_admin_label
  * @since 1.0
  * @param int|null $version
@@ -60,7 +60,7 @@ function give_get_payment_gateways($version = 2)
 /**
  * Returns a list of all enabled gateways.
  *
- * @unreleased add $version param
+ * @since 3.0.0 add $version param
  * @since  1.0
  *
  * @param int|null $form_id Form ID
@@ -163,7 +163,7 @@ function give_get_gateway_admin_label($gateway)
 /**
  * Returns the checkout label for the specified gateway
  *
- * @unreleased add $version param
+ * @since 3.0.0 add $version param
  * @since 1.0
  * @since 2.15.0 Code removed. Here no need to forcefully change manual payment gateway checkout label to "Test Donation".
  *

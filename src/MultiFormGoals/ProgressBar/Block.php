@@ -56,11 +56,9 @@ class Block
      **/
     public function renderCallback($attributes)
     {
-        array_walk($attributes['ids'], '_give_redirect_form_id');
-
         $progressBar = new ProgressBar(
             [
-                'ids' => $attributes['ids'],
+                'ids' => array_map('_give_redirect_form_id', $attributes['ids']),
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],

@@ -98,6 +98,27 @@
     }
 }
 
+.components-modal__header {
+    box-shadow: inset 0 -1px 0 0 #ddd;
+}
+
+.components-modal__header-heading {
+    top: 1rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    margin-top: -0.2rem !important;
+}
+
+.components-modal__header {
+    height: 3.5rem !important;
+    padding: 16px 32px 8px !important;
+}
+
+.components-modal__content {
+    margin-top: 3.25rem;
+
+}
+
 /*
 Add border bottom to tabs, while removing body top border.
 This creates a consistent separator between the tabs and the rest of the sidebar.
@@ -198,14 +219,9 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     }
 }
 
-
-.give-billing-period-control .components-radio-control__input[type='radio'] + label {
-    border: 1px solid transparent;
-    border-radius: 2px;
-}
-
 .give-billing-period-control .components-radio-control__input[type='radio']:checked + label {
-    border-color: black;
+    background-color: var(--givewp-gray-60);
+    color: var(--givewp-shades-white);
 }
 
 .givewp-options-header {

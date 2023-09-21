@@ -40,4 +40,5 @@ export type FormSettings = {
     donateButtonCaption: string;
     multiStepFirstButtonText: string;
     multiStepNextButtonText: string;
+    pdfSettings: object;
 };

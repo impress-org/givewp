@@ -1,14 +1,14 @@
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {InspectorControls} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
-import {PanelBody, PanelRow, ToggleControl, RadioControl} from '@wordpress/components';
+import {PanelBody, PanelRow, ToggleControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
-import ControlForPopover from "@givewp/form-builder/components/settings/ControlForPopover";
-import PopoverContentWithTemplateTags from "@givewp/form-builder/components/settings/PopoverContentWithTemplateTags";
+import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
+import PopoverContentWithTemplateTags from '@givewp/form-builder/components/settings/PopoverContentWithTemplateTags';
 
 import useSetDefaultAttributes from './useSetDefaultAttributes';
 import {offlineAttributes} from './addOfflineAttributes';
-import usePopoverState from "@givewp/form-builder/hooks/usePopoverState";
+import usePopoverState from '@givewp/form-builder/hooks/usePopoverState';
 
 declare const window: {
     giveOfflineGatewaySettings: {
@@ -33,7 +33,7 @@ const offlineInstructionTags = [
         id: 'sitename',
         description: __('The name of this website.', 'give'),
     },
-]
+];
 
 function OfflineInspectorControls({
     attributes,
@@ -87,7 +87,6 @@ function OfflineInspectorControls({
                                 'give'
                             )}
                             heading={__('Donation Instructions', 'give')}
-                            buttonCaption={__('Edit', 'give')}
                             onButtonClick={toggleInstructions}
                             isButtonActive={isInstructionsOpen}
                         >
