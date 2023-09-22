@@ -55,3 +55,88 @@
         height: auto;
     }
 }
+
+/**
+ + Transfer notice
+ */
+
+.givewp-transfer-notice-container {
+    z-index: 99999999;
+    position: fixed;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--givewp-blue-600);
+    color: #fff;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    gap: 10px;
+
+    .givewp-transfer-next-step {
+        flex-grow: 0;
+        font-size: 0.75rem;
+        font-weight: bold;
+        line-height: 1.33;
+        letter-spacing: 0.06px;
+        color: var(--givewp-blue-600);
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .givewp-transfer-button {
+        all: unset;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .givewp-transfer-close-icon-container {
+        position: absolute;
+        right: 15px;
+
+        svg {
+            fill: #fff;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+    }
+}
+
+/**
+ * Tooltip
+ */
+
+.givewp-transfer-tooltip {
+    position: absolute;
+    bottom: -90px;
+    left: 0;
+    background-color: #19661c;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+}
+
+.givewp-transfer-tooltip::after {
+    content: " ";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color:  transparent transparent #19661c transparent;
+}
+
+.givewp-transfer-selected-menuitem {
+    border: 2px solid #19661c !important;
+    border-radius: 4px;
+}
+
