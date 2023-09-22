@@ -8,8 +8,8 @@ const containerStyles = {
     zIndex: 99999999,
     position: 'fixed',
     bottom: 0,
-    left: '10%',
-    right: '10%',
+    left: '15%',
+    right: '15%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -20,19 +20,22 @@ const containerStyles = {
     fontWeight: 500,
     fontSize: '0.875rem',
     lineHeight: '1.5rem',
-    gap: '10px'
+    gap: 'var(--givewp-spacing-6)'
 } as CSSProperties;
 
 const buttonStyles = {
     all: 'unset',
     fontWeight: 'bold',
-    color: '#fff',
-    cursor: 'pointer'
+    color: 'var(--givewp-grey-900)',
+    backgroundColor: '#fff',
+    cursor: 'pointer',
+    borderRadius: '4px',
+    padding: 'var(--givewp-spacing-2) var(--givewp-spacing-4)',
 } as CSSProperties;
 
 const closeIconContainerStyles = {
-    position: 'absolute',
-    right: 15
+    display: 'flex',
+    alignItems: 'center',
 } as CSSProperties;
 
 const closeIconStyles = {
@@ -55,7 +58,7 @@ export default function TransferNotice() {
 
     return (
         <div style={containerStyles}>
-            <div>
+            <div style={{flex: 1}}>
                 {__('Once you\'re happy with your new form, permanently transfer your existing donation data to this new form.', 'give')}
             </div>
             <div>
