@@ -14,24 +14,13 @@ const containerStyles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'var(--givewp-blue-600)',
+    backgroundColor: 'var(--givewp-blue-500)',
     color: '#fff',
-    padding: '15px',
+    padding: 'var(--givewp-spacing-4)',
     fontWeight: 500,
     fontSize: '0.875rem',
+    lineHeight: '1.5rem',
     gap: '10px'
-} as CSSProperties;
-
-const nextStepStyles = {
-    flexGrow: 0,
-    fontSize: '0.75rem',
-    fontWeight: 'bold',
-    lineHeight: '1.33',
-    letterSpacing: '0.06px',
-    color: 'var(--givewp-blue-600)',
-    backgroundColor: '#fff',
-    borderRadius: '4px',
-    padding: '0.25rem 0.5rem'
 } as CSSProperties;
 
 const buttonStyles = {
@@ -67,12 +56,7 @@ export default function TransferNotice() {
     return (
         <div style={containerStyles}>
             <div>
-                <div style={nextStepStyles}>
-                    {__('Next step', 'give')}
-                </div>
-            </div>
-            <div>
-                {__('When you are satisfied with the new form builder, you can move all donation data from the existing form to this one.', 'give')}
+                {__('Once you\'re happy with your new form, permanently transfer your existing donation data to this new form.', 'give')}
             </div>
             <div>
                 <button
