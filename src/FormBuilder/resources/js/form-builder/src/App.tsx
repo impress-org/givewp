@@ -20,6 +20,7 @@ const initialState = {
         showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
         showUpgradeModal: Boolean(window.migrationOnboardingData.showUpgradeDialog),
         showTransferModal: false,
+        showTooltip: false,
     }
 };
 

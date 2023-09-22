@@ -6,6 +6,7 @@ import {PanelBody, PanelRow, TextareaControl, TextControl} from '@wordpress/comp
 
 import {useSelect} from '@wordpress/data';
 import {BlockEditProps} from '@wordpress/blocks';
+import {getBlockRegistrar} from "@givewp/form-builder/common/getWindowData";
 
 export default function Edit(props: BlockEditProps<any>) {
     const {
@@ -45,7 +46,7 @@ export default function Edit(props: BlockEditProps<any>) {
 
                 <InnerBlocks
                     allowedBlocks={
-                        [] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */
+                        getBlockRegistrar().getAll().filter((block) => block.name !== 'givewp/section').map((block) => block.name)
                     }
                     template={props.attributes.innerBlocksTemplate}
                     renderAppender={InnerBlocks.DefaultBlockAppender}

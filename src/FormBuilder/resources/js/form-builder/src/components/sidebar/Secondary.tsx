@@ -6,19 +6,14 @@ import {useSelect} from '@wordpress/data';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const BlockListInserter = () => {
-    // @ts-ignore
-    const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
-    const isPrimaryBlockList = !!selectedBlock && selectedBlock.name !== 'givewp/section';
     const {
-        formFieldManagerData: {isInstalled},
+        formFieldManagerData: {isInstalled: isFormFieldManagerInstalled},
     } = getFormBuilderWindowData();
-
-    const showAdditionalFieldsPanel = !isInstalled && isPrimaryBlockList;
 
     return (
         <div>
             <Library showInserterHelpPanel={false} />
-            {showAdditionalFieldsPanel && <AdditionalFieldsPanel />}
+            {!isFormFieldManagerInstalled && <AdditionalFieldsPanel />}
         </div>
     );
 };
