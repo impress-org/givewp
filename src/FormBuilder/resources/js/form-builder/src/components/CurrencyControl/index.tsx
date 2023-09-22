@@ -75,20 +75,3 @@ const CurrencyControl = ({label, help, hideLabelFromVision, value, onValueChange
 };
 
 export {formatCurrencyAmount, Currency, CurrencyControl};
-
-// @ts-ignore
-window.givewp = window.givewp || {};
-// @ts-ignore
-window.givewp.form = window.givewp.form || {};
-window.givewp.form.components = window.givewp.form.components || {};
-window.givewp.form.components.CurrencyControl = CurrencyControl;
-
-declare const window: {
-    givewp?: {
-        form?: {
-            components?: {
-                CurrencyControl?: typeof CurrencyControl;
-            };
-        };
-    };
-} & Window;
