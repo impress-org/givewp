@@ -16,7 +16,7 @@ const containerStyles = {
     justifyContent: 'center',
     backgroundColor: 'var(--givewp-blue-500)',
     color: '#fff',
-    padding: 'var(--givewp-spacing-4)',
+    padding: 'var(--givewp-spacing-2) var(--givewp-spacing-6)',
     fontWeight: 500,
     fontSize: '0.875rem',
     lineHeight: '1.5rem',
