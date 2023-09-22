@@ -1,8 +1,9 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {CheckVerified, StarsIcon} from '@givewp/components/AdminUI/Icons';
 import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
+import {Interweave} from "interweave";
 
 
 export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose}) {
@@ -27,6 +28,14 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
         }
     }
 
+    // @note the <Button/> component does not support the `className` prop.
+    const upgradeButtonStyles = {
+        width: '100%',
+        marginTop: 'var(--givewp-spacing-6)',
+        marginBottom: 'var(--givewp-spacing-4)',
+        backgroundColor: 'var(--wp-blue-blue-50)'
+    }
+
     return (
         <ModalDialog
             isOpen={true}
@@ -38,12 +47,13 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     <StarsIcon /> {__("What's new", 'give')}
                 </div>
 
-                <p className={styles.message}>
-                    {__(
-                        'GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donation Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "Add form" option for now.',
-                        'give'
-                    )}
-                </p>
+                <Interweave tagName={'p'} className={styles.message} content={
+                    sprintf(
+                        __('GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donation Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "%sAdd form%s" option for now.', 'give'),
+                        '<strong>',
+                        '</strong>'
+                    )
+                } />
 
                 {supportedAddons.length > 0 && (
                     <>
@@ -77,7 +87,7 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     <Button
                         size="large"
                         onClick={handleUpgrade}
-                        style={{width: '100%'}}
+                        style={upgradeButtonStyles}
                     >
                         {__('Proceed with upgrade', 'give')}
                     </Button>
@@ -90,13 +100,11 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                             }
                             window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'
                         }}
-                        style={{width: '100%'}}
+                        style={upgradeButtonStyles}
                     >
                         {__('Proceed with the new form builder', 'give')}
                     </Button>
                 )}
-
-                <br />
 
                 <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank">
                     {__('Read more on Add-ons and Gateways compatibility', 'give')}
