@@ -24,7 +24,6 @@ export default function Header({contentLeft, contentMiddle, contentRight}: Props
                     gap: '0.5rem',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    flexBasis: '20%',
                 }}
             >
                 {contentLeft}

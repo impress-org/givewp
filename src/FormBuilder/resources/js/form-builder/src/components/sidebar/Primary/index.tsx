@@ -72,23 +72,6 @@ const tabs = [
             </>
         ),
     },
-    {
-        name: 'design',
-        title: __('Design'),
-        className: 'tab-block',
-        content: () => (
-            <>
-                <BlockCard
-                    icon={brush}
-                    title="Form Design"
-                    description={__('These settings affect the appearance of your form.', 'give')}
-                />
-                <FormDesignSettings />
-                <DonationGoalSettings />
-                <CustomStyleSettings />
-            </>
-        ),
-    },
 ];
 
 function Sidebar({selectedTab, setSelectedTab}) {
