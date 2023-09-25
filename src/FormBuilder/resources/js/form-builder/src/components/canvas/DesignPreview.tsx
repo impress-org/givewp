@@ -37,7 +37,8 @@ const DesignPreview = () => {
                     border: '0',
                     display: isLoading ? 'none' : 'inherit',
                 }}
-                onInit={() => {
+                onInit={iframe => {
+                    iframe.iFrameResizer.resize();
                     setLoading(false);
                     setIsEditing(true);
                 }}
