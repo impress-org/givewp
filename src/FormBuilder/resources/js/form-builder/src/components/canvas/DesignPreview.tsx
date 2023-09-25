@@ -36,11 +36,9 @@ const DesignPreview = () => {
                     minWidth: '100%',
                     border: '0',
                     display: isLoading ? 'none' : 'inherit',
-                    // opacity: isLoading ? 0.5 : 1, //todo check with jeffrey
-                    // transition: 'opacity 0.3s'
                 }}
                 onInit={() => {
-                   // setLoading(false);
+                    setLoading(false);
                     setIsEditing(true);
                 }}
             />
