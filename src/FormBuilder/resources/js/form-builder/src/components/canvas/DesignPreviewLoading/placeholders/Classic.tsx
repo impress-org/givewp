@@ -27,6 +27,25 @@ export default function Classic() {
                     <div></div>
                     <div></div>
                 </div>
+                <div className="givewp__component-DesignPreview-container-classic-barshort"></div>
+                <div className="givewp__component-DesignPreview-container-classic-grid">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div className="givewp__component-DesignPreview-container-classic-bar"></div>
+                <div className="givewp__component-DesignPreview-container-classic-doublebar-small">
+                    <div>
+                        <div></div>
+                    </div>
+                    <div>
+                         <div></div>
+                    </div>
+                </div>
             </div>
 
         </div>
