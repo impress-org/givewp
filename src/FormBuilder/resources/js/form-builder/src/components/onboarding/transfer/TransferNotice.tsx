@@ -14,13 +14,8 @@ export default function TransferNotice() {
 
     return (
         <div className="givewp-transfer-notice-container">
-            <div>
-                <div className="givewp-transfer-next-step">
-                    {__('Next step', 'give')}
-                </div>
-            </div>
-            <div>
-                {__('When you are satisfied with the new form builder, you can move all donation data from the existing form to this one.', 'give')}
+            <div style={{flex: 1}}>
+                {__('Once you\'re happy with your new form, permanently transfer your existing donation data to this new form.', 'give')}
             </div>
             <div>
                 <button
