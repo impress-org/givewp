@@ -121,9 +121,10 @@ class Give_Sequential_Donation_Number {
             DB::table('posts')
                 ->where('ID', $donation_id)
                 ->update([
-                    'post_title' => $serial_code,
+                    'post_title' => trim($serial_code),
                     'post_name' => "{$this->donation_title_prefix}-{$serial_number}",
                 ]);
+            clean_post_cache($donation_id);
 
 			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
