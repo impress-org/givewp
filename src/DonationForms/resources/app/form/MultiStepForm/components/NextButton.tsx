@@ -12,7 +12,7 @@ const {validateUrl} = getWindowData();
 /**
  * @since 3.0.0
  */
-export default function NextButton() {
+export default function NextButton({buttonText = __('Continue')}: {buttonText?: string}) {
     const {steps, currentStep} = useDonationFormMultiStepState();
     const getGateway = useGetGatewayById();
     const fieldNames = useMemo(() => steps.find(({id}) => id === currentStep)?.fields ?? [], [steps, currentStep]);
@@ -23,39 +23,39 @@ export default function NextButton() {
 
     return (
         !isLastStep && (
-                <button
-                    className="givewp-donation-form__steps-button-next"
-                    type="button"
-                    disabled={isValidating}
-                    aria-busy={isValidating}
-                    onClick={async () => {
-                        setIsValidating(true);
-                        const isClientValid = await trigger(fieldNames);
+            <button
+                className="givewp-donation-form__steps-button-next"
+                type="button"
+                disabled={isValidating}
+                aria-busy={isValidating}
+                onClick={async () => {
+                    setIsValidating(true);
+                    const isClientValid = await trigger(fieldNames);
 
-                        if (!isClientValid) {
-                            setIsValidating(false);
-
-                            return;
-                        }
-
-                        const values = getValues();
-
-                        const isServerValid = await handleValidationRequest(
-                            validateUrl,
-                            values,
-                            setError,
-                            getGateway(values?.gatewayId)
-                        );
-
+                    if (!isClientValid) {
                         setIsValidating(false);
 
-                        if (isServerValid) {
-                            setNextStep(currentStep, values);
-                        }
-                    }}
-                >
-                    {__('Continue')}
-                </button>
+                        return;
+                    }
+
+                    const values = getValues();
+
+                    const isServerValid = await handleValidationRequest(
+                        validateUrl,
+                        values,
+                        setError,
+                        getGateway(values?.gatewayId)
+                    );
+
+                    setIsValidating(false);
+
+                    if (isServerValid) {
+                        setNextStep(currentStep, values);
+                    }
+                }}
+            >
+                {buttonText}
+            </button>
         )
     );
 }

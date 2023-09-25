@@ -10,6 +10,8 @@ type PropTypes = {
         currencySwitcherSettings?: CurrencySwitcherSetting[];
         currencySwitcherMessage?: string;
         donateButtonCaption: string;
+        multiStepNextButtonText: string;
+        multiStepFirstButtonText: string;
     };
     children: ReactNode;
 };

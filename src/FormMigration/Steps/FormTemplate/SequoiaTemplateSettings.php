@@ -65,9 +65,10 @@ class SequoiaTemplateSettings extends FormMigrationStep
         MapSettingsToDesignHeader::make($this->formV3)
             ->__invoke(new DesignHeaderSettings($enabled, $headline, $description));
 
+        $this->formV3->settings->multiStepFirstButtonText = $donateLabel;
+
         // @note `image` is not supported in v3 forms (defers to the Form Design).
 
-        // @note `donate_label` is not supported in v3 forms (defers to the Form Design).
     }
 
     protected function paymentAmount($settings)
@@ -82,7 +83,7 @@ class SequoiaTemplateSettings extends FormMigrationStep
             ->setAttribute('title', $headerLabel)
             ->setAttribute('description', $content);
 
-        // @note `next_label` is not supported in v3 forms (defers to the Form Design).
+        $this->formV3->settings->multiStepNextButtonText = $nextLabel;
     }
 
     protected function paymentInformation($settings)
@@ -103,6 +104,8 @@ class SequoiaTemplateSettings extends FormMigrationStep
 
         MapSettingsToDonationSummary::make($this->fieldBlocks)
             ->__invoke(DonationSummarySettings::make($settings));
+
+        $this->formV3->settings->donateButtonCaption = $checkoutLabel;
     }
 
     protected function donationReceipt($settings)
