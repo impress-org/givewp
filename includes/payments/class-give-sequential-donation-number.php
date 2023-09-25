@@ -1,5 +1,7 @@
 <?php
 // Exit if access directly.
+use Give\Framework\Database\DB;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -115,18 +117,12 @@ class Give_Sequential_Donation_Number {
 		);
 
 		try {
-			/* @var WP_Error $wp_error */
-			$wp_error = wp_update_post(
-				array(
-					'ID'         => $donation_id,
-					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
-					'post_title' => trim( $serial_code ),
-				)
-			);
-
-			if ( is_wp_error( $wp_error ) ) {
-				throw new Exception( $wp_error->get_error_message() );
-			}
+            DB::table('posts')
+                ->where('ID', $donation_id)
+                ->update([
+                    'post_title' => $serial_code,
+                    'post_name' => "{$this->donation_title_prefix}-{$serial_number}",
+                ]);
 
 			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {
