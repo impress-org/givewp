@@ -47,13 +47,14 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     <StarsIcon /> {__("What's new", 'give')}
                 </div>
 
-                <Interweave tagName={'p'} className={styles.message} content={
-                    sprintf(
-                        __('GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donation Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "%sAdd form%s" option for now.', 'give'),
-                        '<strong>',
-                        '</strong>'
-                    )
-                } />
+                <p className={styles.message}>
+                    {createInterpolateElement(
+                        sprintf(__('GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donation Form Builder. The team is still working on add-on and gateway compatibility. If you need to use an add-on or gateway that isn\'t listed, use the "%sAdd form%s" option for now.', 'give'), '<b>','</b>'),
+                        {
+                            b: <strong />,
+                        }
+                    )}
+                </p>
 
                 {supportedAddons.length > 0 && (
                     <>
