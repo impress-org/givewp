@@ -3,13 +3,14 @@ import {GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
+import {Button, Dropdown, MenuGroup, MenuItem, Modal} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
+import {Markup} from 'interweave';
 
 const Logo = () => (
     <div
@@ -34,17 +35,18 @@ const Logo = () => (
 );
 
 const HeaderContainer = ({
-                             selectedSecondarySidebar,
-                             toggleSelectedSecondarySidebar,
-                             showSidebar,
-                             toggleShowSidebar,
-                             onSaveNotice,
-                         }) => {
+    selectedSecondarySidebar,
+    toggleSelectedSecondarySidebar,
+    showSidebar,
+    toggleShowSidebar,
+    onSaveNotice,
+}) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
     const [isSaving, setSaving] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
@@ -61,7 +63,7 @@ const HeaderContainer = ({
             .catch((error) => {
                 dispatch(setIsDirty(false));
                 setSaving(null);
-                alert(error.message);
+                setErrorMessage(error.message);
             })
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
@@ -73,130 +75,152 @@ const HeaderContainer = ({
 
     // @ts-ignore
     return (
-        <Header
-            contentLeft={
-                <>
-                    <Logo />
-                    <div
-                        id="AddBlockButtonContainer"
-                        style={{
-                            padding: 'var(--givewp-spacing-2)',
-                            margin: 'calc(var(--givewp-spacing-2) * -1)',
-                        }}
-                    >
+        <>
+            <Header
+                contentLeft={
+                    <>
+                        <Logo />
+                        <div
+                            id="AddBlockButtonContainer"
+                            style={{
+                                padding: 'var(--givewp-spacing-2)',
+                                margin: 'calc(var(--givewp-spacing-2) * -1)',
+                            }}
+                        >
+                            <Button
+                                style={{width: '32px', height: '32px', minWidth: '32px'}}
+                                className="rotate-icon"
+                                onClick={() => toggleSelectedSecondarySidebar('add')}
+                                isPressed={'add' === selectedSecondarySidebar}
+                                icon={plus}
+                                variant="primary"
+                            />
+                        </div>
                         <Button
-                            style={{width: '32px', height: '32px', minWidth: '32px'}}
-                            className="rotate-icon"
-                            onClick={() => toggleSelectedSecondarySidebar('add')}
-                            isPressed={'add' === selectedSecondarySidebar}
-                            icon={plus}
-                            variant="primary"
+                            style={{width: '32px', height: '32px'}}
+                            onClick={() => toggleSelectedSecondarySidebar('list')}
+                            isPressed={'list' === selectedSecondarySidebar}
+                            icon={listView}
                         />
-                    </div>
-                    <Button
-                        style={{width: '32px', height: '32px'}}
-                        onClick={() => toggleSelectedSecondarySidebar('list')}
-                        isPressed={'list' === selectedSecondarySidebar}
-                        icon={listView}
+                    </>
+                }
+                contentMiddle={
+                    <RichText
+                        tagName="div"
+                        value={formTitle}
+                        onChange={(value) => dispatch(setFormSettings({formTitle: value}))}
+                        style={{fontSize: '16px'}}
                     />
-                </>
-            }
-            contentMiddle={
-                <RichText
-                    tagName="div"
-                    value={formTitle}
-                    onChange={(value) => dispatch(setFormSettings({formTitle: value}))}
-                    style={{fontSize: '16px'}}
-                />
-            }
-            contentRight={
-                <>
-                    <Button
-                        onClick={() => onSave('draft')}
-                        aria-disabled={isDraftDisabled}
-                        disabled={isDraftDisabled}
-                        variant="tertiary"
-                    >
-                        {isSaving && 'draft' === isSaving
-                            ? __('Saving...', 'give')
-                            : 'draft' === formSettings.formStatus
+                }
+                contentRight={
+                    <>
+                        <Button
+                            onClick={() => onSave('draft')}
+                            aria-disabled={isDraftDisabled}
+                            disabled={isDraftDisabled}
+                            variant="tertiary"
+                        >
+                            {isSaving && 'draft' === isSaving
+                                ? __('Saving...', 'give')
+                                : 'draft' === formSettings.formStatus
                                 ? __('Save as Draft', 'give')
                                 : __('Switch to Draft', 'give')}
-                    </Button>
-                    <Button
-                        onClick={() => onSave('publish')}
-                        aria-disabled={isPublishDisabled}
-                        disabled={isPublishDisabled}
-                        variant="primary"
-                    >
-                        {isSaving && 'publish' === isSaving
-                            ? __('Updating...', 'give')
-                            : 'publish' === formSettings.formStatus
+                        </Button>
+                        <Button
+                            onClick={() => onSave('publish')}
+                            aria-disabled={isPublishDisabled}
+                            disabled={isPublishDisabled}
+                            variant="primary"
+                        >
+                            {isSaving && 'publish' === isSaving
+                                ? __('Updating...', 'give')
+                                : 'publish' === formSettings.formStatus
                                 ? __('Update', 'give')
                                 : __('Publish', 'give')}
-                    </Button>
-                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
-                    <Dropdown
-                        popoverProps={{placement: 'bottom-start'}}
-                        // @ts-ignore
-                        focusOnMount={'container'}
-                        renderToggle={({isOpen, onToggle}) => {
-                            return (
-                                <Button
-                                    id="FormBuilderSidebarToggle"
-                                    icon={moreVertical}
-                                    onClick={() => {
-                                        if (transfer.showTooltip) {
-                                            dispatch(setTransferState({showTooltip: false}))
-                                        }
-                                        onToggle();
-                                    }}
-                                />
-                            )
-                        }}
-                        renderContent={({onClose}) => (
-                            <div style={{minWidth: '280px', maxWidth: '400px'}}>
-                                <MenuGroup label={__('Tools', 'give')}>
-                                    <MenuItem
+                        </Button>
+                        <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                        <Dropdown
+                            popoverProps={{placement: 'bottom-start'}}
+                            // @ts-ignore
+                            focusOnMount={'container'}
+                            renderToggle={({isOpen, onToggle}) => {
+                                return (
+                                    <Button
+                                        id="FormBuilderSidebarToggle"
+                                        icon={moreVertical}
                                         onClick={() => {
-                                            // @ts-ignore
-                                            if (!window.tour.isActive()) {
-                                                // @ts-ignore
-                                                window.tour.start();
-                                                onClose();
+                                            if (transfer.showTooltip) {
+                                                dispatch(setTransferState({showTooltip: false}));
                                             }
+                                            onToggle();
                                         }}
-                                    >
-                                        {__('Show Guided Tour', 'give')}
-                                    </MenuItem>
-                                    {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
-                                        <>
-                                            <MenuItem
-                                                className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
-                                                onClick={() => {
-                                                    dispatch(setTransferState({showTransferModal: true}));
+                                    />
+                                );
+                            }}
+                            renderContent={({onClose}) => (
+                                <div style={{minWidth: '280px', maxWidth: '400px'}}>
+                                    <MenuGroup label={__('Tools', 'give')}>
+                                        <MenuItem
+                                            onClick={() => {
+                                                // @ts-ignore
+                                                if (!window.tour.isActive()) {
+                                                    // @ts-ignore
+                                                    window.tour.start();
                                                     onClose();
-                                                }}
-                                            >
-                                                {__('Transfer Donation Data', 'give')}
-                                            </MenuItem>
+                                                }
+                                            }}
+                                        >
+                                            {__('Show Guided Tour', 'give')}
+                                        </MenuItem>
+                                        {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
+                                            <>
+                                                <MenuItem
+                                                    className={
+                                                        transfer.showTooltip && 'givewp-transfer-selected-menuitem'
+                                                    }
+                                                    onClick={() => {
+                                                        dispatch(setTransferState({showTransferModal: true}));
+                                                        onClose();
+                                                    }}
+                                                >
+                                                    {__('Transfer Donation Data', 'give')}
+                                                </MenuItem>
 
-                                            {transfer.showTooltip && (
-                                                <div className="givewp-transfer-tooltip">
-                                                    {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
-                                                </div>
-                                            )}
-                                        </>
-                                    )}
-                                </MenuGroup>
-                            </div>
-                        )}
-                    />
-                </>
-            }
-        />
+                                                {transfer.showTooltip && (
+                                                    <div className="givewp-transfer-tooltip">
+                                                        {__(
+                                                            'Want to transfer donation data later? Access this option in the three dots menu above at any time.',
+                                                            'give'
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </MenuGroup>
+                                </div>
+                            )}
+                        />
+                    </>
+                }
+            />
+            {errorMessage && (
+                <Modal
+                    title={__('Error saving form', 'give')}
+                    onRequestClose={() => setErrorMessage(null)}
+                    className="give-error-modal"
+                >
+                    <Markup content={errorMessage} />
+                    <Button
+                        variant="primary"
+                        className="give-error-modal__dismiss-button"
+                        onClick={() => setErrorMessage(null)}
+                    >
+                        {__('Got it!', 'give')}
+                    </Button>
+                </Modal>
+            )}
+        </>
     );
 };
-
 
 export default HeaderContainer;
