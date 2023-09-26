@@ -5,12 +5,9 @@ import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-
 import TabPanel from '../TabPanel';
 
 import {
-    CustomStyleSettings,
-    DonateButtonSettings,
     DonationConfirmation,
     DonationGoalSettings,
     EmailSettings,
-    FormDesignSettings,
     FormGridSettings,
     FormSummarySettings,
     RegistrationSettings,
@@ -19,7 +16,7 @@ import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../../hooks/useSelectedBlocks';
 import BlockCard from '../../forks/BlockCard';
-import {brush, settings} from '@wordpress/icons';
+import {settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
@@ -52,7 +49,6 @@ const tabs = [
                     )}
                 />
                 <FormSummarySettings />
-                <DonateButtonSettings />
                 <DonationGoalSettings />
                 <RegistrationSettings />
                 <DonationConfirmation />

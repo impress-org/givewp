@@ -1,5 +1,10 @@
 import {__} from "@wordpress/i18n";
-import {CustomStyleSettings, DonationGoalSettings, FormDesignSettings} from "@givewp/form-builder/settings";
+import {
+    CustomStyleSettings,
+    DonateButtonSettings,
+    DonationGoalSettings,
+    FormDesignSettings
+} from "@givewp/form-builder/settings";
 
 const Sidebar = () => {
     return (
@@ -11,6 +16,7 @@ const Sidebar = () => {
             tabIndex={-1}
         >
             <FormDesignSettings />
+            <DonateButtonSettings />
             <DonationGoalSettings />
             <CustomStyleSettings />
         </div>

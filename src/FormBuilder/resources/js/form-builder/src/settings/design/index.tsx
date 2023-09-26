@@ -69,7 +69,7 @@ const FormDesignSettings = () => {
                     ]}
                 />
             </PanelBody>
-            <PanelBody title={__('Header', 'give')} initialOpen={true}>
+            <PanelBody title={__('Header', 'give')} initialOpen={false}>
                 <PanelRow>
                     <ToggleControl
                         label={__('Show Header', 'give')}
