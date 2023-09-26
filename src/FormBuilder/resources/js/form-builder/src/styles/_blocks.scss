@@ -29,3 +29,11 @@
         }
     }
 }
+
+[data-type="givewp/billing-address"] {
+    .give-billing-address-block {
+        &__group-label {
+            color: var(--givewp-gray-100);
+        }
+    }
+}

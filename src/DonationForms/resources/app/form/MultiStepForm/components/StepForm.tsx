@@ -10,6 +10,7 @@ import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import NextButton from '@givewp/forms/app/form/MultiStepForm/components/NextButton';
 import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGetGatewayById';
+import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -30,6 +31,7 @@ export default function StepForm({
     isLastStep: boolean;
 }) {
     const {defaultValues, validationSchema} = useDonationFormState();
+    const {multiStepNextButtonText, multiStepFirstButtonText} = useDonationFormSettings();
     const getGateway = useGetGatewayById();
 
     const methods = useForm<FormInputs>({
@@ -63,7 +65,7 @@ export default function StepForm({
                     isSubmitting={isSubmitting || isSubmitSuccessful}
                     formError={formError}
                     previousButton={null}
-                    nextButton={!isLastStep && <NextButton />}
+                    nextButton={!isLastStep && <NextButton buttonText={isFirstStep ? multiStepFirstButtonText : multiStepNextButtonText} />}
                     submitButton={isLastStep && <SubmitButton isSubmitting={isSubmitting || isSubmitSuccessful} />}
                 >
                     {children}

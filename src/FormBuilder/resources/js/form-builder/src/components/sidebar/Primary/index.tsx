@@ -1,5 +1,6 @@
 import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 import TabPanel from '../TabPanel';
 
@@ -21,6 +22,19 @@ import BlockCard from '../../forks/BlockCard';
 import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
+
+declare const window: {
+    givewp: {
+        form: {
+            settings: {
+                setFormSettings: typeof setFormSettings;
+                useFormState: typeof useFormState;
+                useFormStateDispatch: typeof useFormStateDispatch;
+            };
+        };
+    };
+} & Window;
+window.givewp.form.settings = {setFormSettings, useFormState, useFormStateDispatch};
 
 const tabs = [
     {
@@ -44,6 +58,7 @@ const tabs = [
                 <DonationConfirmation />
                 <FormGridSettings />
                 <EmailSettings />
+                {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
             </>
         ),
     },

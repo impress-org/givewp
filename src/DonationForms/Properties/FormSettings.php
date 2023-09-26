@@ -160,7 +160,19 @@ class FormSettings implements Arrayable, Jsonable
      * @var string
      */
     public $donateButtonCaption;
+    /**
+     * @var string
+     */
+    public $multiStepFirstButtonText;
+    /**
+     * @var string
+     */
+    public $multiStepNextButtonText;
 
+    /**
+     * @var array
+     */
+    public $pdfSettings;
 
     /**
      * @since 3.0.0
@@ -181,7 +193,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = ! empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
+        $self->goalType = !empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
         $self->designId = $array['designId'] ?? ClassicFormDesign::id();
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
@@ -201,7 +213,7 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
-        $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
+        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();
 
@@ -225,6 +237,11 @@ class FormSettings implements Arrayable, Jsonable
         $self->offlineDonationsCustomize = $array['offlineDonationsCustomize'] ?? false;
 
         $self->offlineDonationsInstructions = $array['offlineDonationsInstructions'] ?? '';
+
+        $self->multiStepFirstButtonText = $array['multiStepFirstButtonText'] ?? __('Donate now', 'give');
+
+        $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
+        $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
         return $self;
     }
