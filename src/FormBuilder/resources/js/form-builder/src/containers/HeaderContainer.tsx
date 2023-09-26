@@ -91,6 +91,7 @@ const HeaderContainer = ({
                     <Logo />
                     {SecondarySidebarButtons && <SecondarySidebarButtons />}
                     <Button
+                        id={'editor-state-toggle'}
                         style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
                         onClick={() => toggleEditorMode()}
                         icon={EditIcon}

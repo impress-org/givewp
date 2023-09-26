@@ -3,7 +3,8 @@ import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
-import steps from './steps';
+import {designSteps, schemaSteps} from './steps';
+import {useEditorState} from "@givewp/form-builder/stores/editor-state";
 
 import 'shepherd.js/dist/css/shepherd.css';
 
@@ -11,7 +12,8 @@ declare global {
     interface Window {
         onboardingTourData?: {
             actionUrl: string;
-            autoStartTour: boolean;
+            autoStartDesignTour: boolean;
+            autoStartSchemaTour: boolean;
         };
         migrationOnboardingData?: {
             pluginUrl: string;
@@ -32,6 +34,8 @@ function TourEffectsAndEvents() {
     // @ts-ignore
     const tour = window.tour = useContext(ShepherdTourContext);
 
+    const {mode} = useEditorState();
+
     const {selectBlock} = useDispatch('core/block-editor');
 
     useEffect(() => {
@@ -46,7 +50,7 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('selectAmountBlock', selectAmountBlockCallback);
         }
-    }, [])
+    }, [mode])
 
     useEffect(() => {
 
@@ -62,11 +66,21 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('click', clickExitTourCallback);
         }
-    }, [])
+    }, [mode])
 
     useEffect(() => {
         const onTourComplete = () => {
-            fetch(window.onboardingTourData.actionUrl, {method: 'POST'})
+
+            const data = new FormData();
+            data.append('mode', mode);
+
+            fetch(window.onboardingTourData.actionUrl, {
+                method: 'POST',
+                body: data,
+            })
+
+            // Trigger tools menu
+            // Highlight
         }
 
         tour.on('complete', onTourComplete);
@@ -74,23 +88,25 @@ function TourEffectsAndEvents() {
         return () => {
             tour.off('complete', onTourComplete);
         }
-    }, [])
+    }, [mode])
 
     useEffect(() => {
-        window.onboardingTourData.autoStartTour && (tour.isActive() || tour.start());
-    }, [])
+        mode === 'design' && window.onboardingTourData.autoStartDesignTour && (tour.isActive() || tour.start());
+        mode === 'schema' && window.onboardingTourData.autoStartSchemaTour && (tour.isActive() || tour.start());
+    }, [mode])
 
     return <></>
 }
 
 const Onboarding = () => {
     const {transfer} = useFormState();
+    const {mode} = useEditorState();
 
     if (transfer.showUpgradeModal) {
         return null;
     }
 
-    return <ShepherdTour steps={steps} tourOptions={options}>
+    return <ShepherdTour steps={mode === 'schema' ? schemaSteps : designSteps} tourOptions={options}>
         <TourEffectsAndEvents />
     </ShepherdTour>
 }

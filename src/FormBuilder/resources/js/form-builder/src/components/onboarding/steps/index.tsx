@@ -6,17 +6,34 @@ import withDefaults from "./withDefaults";
 
 type Placement = 'top'|'top-start'|'top-end'|'bottom'|'bottom-start'|'bottom-end'|'right'|'right-start'|'right-end'|'left'|'left-start'|'left-end';
 
-export default Object.values(compose(
+const designSteps = Object.values(compose(
     withText,
     withButtons,
-    withDefaults({
-        canClickTarget: false,
-        scrollTo: false,
-        cancelIcon: {
-            enabled: false,
-        },
-        arrow: false,
-    }),
+    withDefaults,
+)([
+    {
+        id: 'welcome',
+        title: __('Choose your form design', 'give'),
+        text: __('Select one that suits your taste and requirements for your cause.', 'give'),
+    },
+    {
+        id: 'edit-design',
+        attachTo: { element: '#sidebar-primary', on: 'left-start' as Placement },
+        title: __('Editing a form design', 'give'),
+        text: __('This is where you can customize the appearance (i.e. colors and features) of your form based on the selected form design.', 'give'),
+    },
+    {
+        id: 'edit-form',
+        attachTo: { element: '#editor-state-toggle', on: 'bottom' as Placement },
+        title: __('Edit form', 'give'),
+        text: __('This is where you add and edit various blocks and sections to make up your form.', 'give'),
+    },
+]))
+
+const schemaSteps = Object.values(compose(
+    withText,
+    withButtons,
+    withDefaults,
 )([
     {
         id: 'welcome',
@@ -45,7 +62,7 @@ export default Object.values(compose(
     {
         id: 'addBlock',
         attachTo: { element: '#sidebar-secondary', on: 'right-start' as Placement },
-        title: __('Quick Inserter', 'give'),
+        title: __('Add section/block', 'give'),
         text: __('Drag and drop the block you need onto the canvas. Input fields that can only be inserted once are greyed out when in use.', 'give'),
         beforeShowPromise: function () {
             return new Promise<void>(function (resolve) {
@@ -66,48 +83,9 @@ export default Object.values(compose(
             });
         },
     },
-    {
-        id: 'designTab',
-        attachTo: { element: '.components-tab-panel__tabs button:last-of-type', on: 'left' as Placement },
-        title: __('Design Mode', 'give'),
-        text: __('Select the design tab to switch the canvas into a preview of what the form will look like, and access various settings for the visual aspect of the form.', 'give'),
-        beforeShowPromise: function () {
-            return new Promise<void>(function (resolve) {
-                // @ts-ignore
-                document.querySelector('.components-tab-panel__tabs button:last-of-type').click();
-                resolve();
-            });
-        },
-    },
-    {
-        id: 'formTemplate',
-        attachTo: { element: '.components-panel__row', on: 'left-start' as Placement },
-        title: __('Form Design', 'give'),
-        text: __('Select the design of the form based on what you need. More form designs are coming soon!', 'give'),
-    },
-    {
-        id: 'formDesign',
-        attachTo: { element: 'iframe', on: 'right-start' as Placement },
-        title: __('Live Preview', 'give'),
-        text: __('As you make changes or select a different design, those changes happen live on the canvas.', 'give'),
-    },
-    {
-        id: 'editingAFormDesign',
-        attachTo: { element: '.givewp-next-gen-sidebar-primary', on: 'left-start' as Placement },
-        title: __('Design Settings', 'give'),
-        text: __('Individual form designs have various settings and options to allow you to customize appearance via features like goal progress bars, headings, and custom CSS.', 'give'),
-    },
-    {
-        id: 'congrats',
-        title: __('You\'re Ready to Build!', 'give'),
-        text: __('The visual donation form builder lets you build and customize forms to more easily raise money online. If you need it, access this tour again with the three-dot menu in the top right of the editor screen. Happy fundraising!', 'give'),
-        beforeShowPromise: function () {
-            return new Promise<void>(function (resolve) {
-                // @ts-ignore
-                document.querySelector('.components-tab-panel__tabs button:first-of-type').click();
-                document.getElementById('AddBlockButtonContainer').querySelector('button').click();
-                resolve();
-            });
-        },
-    },
 ]))
+
+export {
+    designSteps,
+    schemaSteps,
+}
