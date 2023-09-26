@@ -34,10 +34,7 @@
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
                     "recurringOptInDefaultBillingPeriod": "month",
-                    "recurringEnableOneTimeDonations": true,
-                    "lock": {
-                        "remove": true
-                    }
+                    "recurringEnableOneTimeDonations": true
                 },
                 "innerBlocks": []
             }
@@ -57,9 +54,6 @@
                 "name": "givewp/donor-name",
                 "isValid": true,
                 "attributes": {
-                    "lock": {
-                        "remove": true
-                    },
                     "showHonorific": false,
                     "honorifics": [
                         "Mr",
@@ -106,11 +100,7 @@
                 "clientId": "145d8b8a-1870-4516-b0d5-fa7848578819",
                 "name": "givewp/payment-gateways",
                 "isValid": true,
-                "attributes": {
-                    "lock": {
-                        "remove": true
-                    }
-                },
+                "attributes": {},
                 "innerBlocks": []
             }
         ]
