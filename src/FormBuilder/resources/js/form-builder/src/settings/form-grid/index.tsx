@@ -64,7 +64,7 @@ const FormGridSettings = () => {
                     <p>
                         {__('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give')}
                     </p>
-                    <ExternalLink href={'https://givewp.com/documentation/core/add-ons/form-grid/'}>{__('Learn more about the Form Grid', 'give')}</ExternalLink>
+                    <ExternalLink href={'https://docs.givewp.com/form-grid-addon'}>{__('Learn more about the Form Grid', 'give')}</ExternalLink>
                     <Button
                         icon={closeSmall}
                         aria-label={__('Dismiss', 'give')}

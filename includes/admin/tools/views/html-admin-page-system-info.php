@@ -1025,7 +1025,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether the current theme is a child theme.', 'give' ) ); ?></td>
 		<td>
 			<?php
-			echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://codex.wordpress.org/Child_Themes' );
+			echo is_child_theme() ? __( 'Yes', 'give' ) : __( 'No', 'give' ) . ' &ndash; ' . sprintf( __( 'If you\'re modifying GiveWP on a parent theme you didn\'t build personally, then we recommend using a child theme. See: <a href="%s" target="_blank">How to Create a Child Theme</a>', 'give' ), 'https://docs.givewp.com/wp-child-themes' );
 			?>
 		</td>
 	</tr>
