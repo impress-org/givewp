@@ -40,7 +40,7 @@ export default function EditForm() {
                                 show: true
                             });
                         }}
-                        style={{width: '100%'}}
+                        style={{width: '100%', backgroundColor: 'var(--givewp-blue-500)'}}
                     >
                         {__('Upgrade this form', 'give')}
                     </Button>

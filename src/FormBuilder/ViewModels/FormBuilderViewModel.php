@@ -40,6 +40,7 @@ class FormBuilderViewModel
                 return [
                     'id' => $design::id(),
                     'name' => $design::name(),
+                    'isMultiStep' => $design->isMultiStep(),
                 ];
             }, give(FormDesignRegistrar::class)->getDesigns()),
             'formPage' => [

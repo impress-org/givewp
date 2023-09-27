@@ -1,4 +1,12 @@
-import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
+import {
+    Fill,
+    PanelBody,
+    PanelRow,
+    SelectControl,
+    TextareaControl,
+    TextControl,
+    ToggleControl
+} from '@wordpress/components';
 import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
@@ -8,6 +16,7 @@ import debounce from 'lodash.debounce';
 const {formDesigns} = getWindowData();
 
 const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id, label: name}));
+const getDesign = (designId) => formDesigns[designId];
 
 const FormDesignSettings = () => {
     const {
@@ -20,9 +29,12 @@ const FormDesignSettings = () => {
             description,
             primaryColor,
             secondaryColor,
+            multiStepNextButtonText,
+            multiStepFirstButtonText,
         },
     } = useFormState();
     const dispatch = useFormStateDispatch();
+    const design = getDesign(designId);
 
     return (
         <>
@@ -102,6 +114,30 @@ const FormDesignSettings = () => {
                     </>
                 )}
             </PanelBody>
+            {design.isMultiStep && (
+                <PanelBody title={__('Multi-Step', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <TextControl
+                            label={__('First Step Button Text', 'give')}
+                            value={multiStepFirstButtonText}
+                            onChange={(multiStepFirstButtonText) =>
+                                dispatch(setFormSettings({multiStepFirstButtonText}))
+                            }
+                            help={__(
+                                'Customize the text that appears in the first step, prompting the user to go to the next step.'
+                            )}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <TextControl
+                            label={__('Next Step Button Text', 'give')}
+                            value={multiStepNextButtonText}
+                            onChange={(multiStepNextButtonText) => dispatch(setFormSettings({multiStepNextButtonText}))}
+                            help={__('Customize the text that appears prompting the user to go to the next step.')}
+                        />
+                    </PanelRow>
+                </PanelBody>
+            )}
         </>
     );
 };
