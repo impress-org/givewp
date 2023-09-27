@@ -42,6 +42,7 @@ const DesignPreview = () => {
                     border: '0',
                     display: isLoading && designUpdated ? 'none' : 'inherit',
                     opacity: isLoading ? 0.5 : 1,
+                    transition: 'opacity 0.3s ease-in-out',
                 }}
                 onInit={iframe => {
                     iframe.iFrameResizer.resize();
