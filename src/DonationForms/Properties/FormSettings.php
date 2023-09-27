@@ -243,6 +243,12 @@ class FormSettings implements Arrayable, Jsonable
         $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
         $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
+        $donationFormId = $_GET['donationFormID'] ?? false;
+        if (count($self->pdfSettings) === 0 && $donationFormId) {
+            $self->pdfSettings = apply_filters('givewp_form_builder_pdf_settings_default_values', [],
+                (int)$donationFormId);
+        }
+
         return $self;
     }
 
