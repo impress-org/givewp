@@ -296,14 +296,3 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         }
     }
 }
-
-.give-error-modal {
-    ul {
-        list-style: disc;
-        padding-inline-start: 1rem;
-    }
-
-    &__dismiss-button {
-        float: right;
-    }
-}

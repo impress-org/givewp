@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
+import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button, Dropdown, MenuGroup, MenuItem, Modal} from '@wordpress/components';
+import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
@@ -11,6 +11,7 @@ import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
+import {InfoModal, ModalType} from '../components/modal';
 
 const Logo = () => (
     <div
@@ -204,20 +205,13 @@ const HeaderContainer = ({
                 }
             />
             {errorMessage && (
-                <Modal
+                <InfoModal
                     title={__('Error saving form', 'give')}
+                    type={ModalType.Error}
                     onRequestClose={() => setErrorMessage(null)}
-                    className="give-error-modal"
                 >
                     <Markup content={errorMessage} />
-                    <Button
-                        variant="primary"
-                        className="give-error-modal__dismiss-button"
-                        onClick={() => setErrorMessage(null)}
-                    >
-                        {__('Got it!', 'give')}
-                    </Button>
-                </Modal>
+                </InfoModal>
             )}
         </>
     );
