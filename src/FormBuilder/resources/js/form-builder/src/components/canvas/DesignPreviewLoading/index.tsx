@@ -5,7 +5,7 @@ import MultiStep from './placeholders/MultiStep';
 
 import './index.scss';
 
-export default function DesignPreviewLoading({design, editing}) {
+export default function DesignPreviewLoading({design, editing, designUpdated}) {
     const getDesignPlaceholder = (design: string) => {
         switch (design) {
             case 'classic':
@@ -23,9 +23,11 @@ export default function DesignPreviewLoading({design, editing}) {
                 <Spinner />
                 {editing ? __('Updating your changes', 'give') : __('Preparing your form design', 'give')}...
             </div>
-            <div className="givewp__component-DesignPreview-container">
-                {getDesignPlaceholder(design)}
-            </div>
+            {designUpdated && (
+                <div className="givewp__component-DesignPreview-container">
+                    {getDesignPlaceholder(design)}
+                </div>
+            )}
         </div>
     );
 }

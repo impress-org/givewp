@@ -10,6 +10,7 @@ const DesignPreview = () => {
     const {blocks, settings: formSettings} = useFormState();
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [designUpdated, setDesignUpdated] = useState<boolean>(true);
     const [sourceDocument, setSourceDocument] = useState<string>(null);
     const [previewHTML, setPreviewHTML] = useState<string>(null);
 
@@ -23,9 +24,13 @@ const DesignPreview = () => {
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
+    useEffect(() => {
+        setDesignUpdated(true);
+    }, [formSettings.designId]);
+
     return (
         <>
-            {isLoading && <DesignPreviewLoading design={formSettings.designId} editing={isEditing} />}
+            {isLoading && <DesignPreviewLoading design={formSettings.designId} editing={isEditing} designUpdated={designUpdated} />}
             <IframeResizer
                 srcDoc={previewHTML}
                 checkOrigin={
@@ -35,12 +40,14 @@ const DesignPreview = () => {
                     width: '1px',
                     minWidth: '100%',
                     border: '0',
-                    display: isLoading ? 'none' : 'inherit',
+                    display: isLoading && designUpdated ? 'none' : 'inherit',
+                    opacity: isLoading ? 0.5 : 1,
                 }}
                 onInit={iframe => {
                     iframe.iFrameResizer.resize();
                     setLoading(false);
                     setIsEditing(true);
+                    setDesignUpdated(false);
                 }}
             />
 
