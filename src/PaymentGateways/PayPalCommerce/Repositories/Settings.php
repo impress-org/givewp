@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
+use Give\PaymentGateways\PayPalCommerce\Utils;
 
 class Settings
 {
@@ -70,13 +71,14 @@ class Settings
     /**
      * Returns the account access token
      *
+     * @unreleased Set transaction type to "standard" if the country is not supported.
      * @since 2.9.0
-     *
-     * @return array|null
      */
-    public function getTransactionType()
+    public function getTransactionType(): string
     {
-        return give_get_option(self::TRANSACTION_TYPE, 'donation');
+        return Utils::isDonationTransactionTypeSupported(give_get_country())
+            ? give_get_option(self::TRANSACTION_TYPE, 'donation')
+            : 'standard';
     }
 
     /**
