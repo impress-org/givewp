@@ -105,8 +105,9 @@ class AdminSettingFields
     }
 
     /**
-     * Paypal Checkout account manager custom field
+     * PayPal Checkout account manager custom field
      *
+     * @unreleased Update PayPal sandbox connection button description.
      * @since 2.9.0
      */
     public function payPalCommerceAccountManagerField()
@@ -128,9 +129,12 @@ class AdminSettingFields
         $paypalSandboxSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
         $paypalSandboxSetting->mode = 'sandbox';
         $paypalSandboxSetting->connectButtonLabel = esc_html__('Connect with PayPal Sandbox', 'give');
-        $paypalSandboxSetting->description = esc_html__(
-            'PayPal sandbox is currently NOT connected. This is a separate PayPal Sandbox account, used for testing. Live PayPal accounts will not work.',
-            'give'
+        $paypalSandboxSetting->description = sprintf(
+            '%1$s <a href="%2$s" target="_blank">%3$s</a> <strong>%4$s</strong>',
+            esc_html__('PayPal sandbox is currently NOT connected.', 'give'),
+            esc_url('https://docs.givewp.com/paypal-sandbox-setup'),
+            esc_html__('Set up a separate PayPal Sandbox account for testing.', 'give'),
+            esc_html__('Live PayPal accounts will not work.', 'give')
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
 
