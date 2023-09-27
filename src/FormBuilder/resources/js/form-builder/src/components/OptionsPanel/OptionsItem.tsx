@@ -4,7 +4,7 @@ import {Button, Icon, Tooltip} from '@wordpress/components';
 
 import {draggable, minusCircle} from './icons';
 import {OptionsItemProps} from './types';
-import {CurrencyControl} from '@givewp/form-builder/common/currency';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 
 export default function OptionsItem({
     currency,

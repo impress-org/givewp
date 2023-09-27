@@ -9,7 +9,7 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common/currency';
+import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/components/CurrencyControl';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
