@@ -3,7 +3,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {CheckVerified, StarsIcon} from '@givewp/components/AdminUI/Icons';
 import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
-import {Interweave} from "interweave";
+import {createInterpolateElement} from "@wordpress/element";
 
 
 export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose}) {
