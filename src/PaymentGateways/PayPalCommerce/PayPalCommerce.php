@@ -111,8 +111,6 @@ class PayPalCommerce extends PaymentGateway
      */
     public function getOptions()
     {
-        $merchantDetails = give(MerchantDetail::class);
-
         $settings = [
             [
                 'type' => 'title',
@@ -201,6 +199,8 @@ class PayPalCommerce extends PaymentGateway
             ],
         ];
 
+        /* @var MerchantDetail $merchantDetails */
+        $merchantDetails = give(MerchantDetail::class);
         if ($merchantDetails->accountIsReady) {
             $settings = give_settings_array_insert(
                 $settings,
