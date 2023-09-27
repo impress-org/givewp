@@ -5,6 +5,7 @@ import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
 import {designSteps, schemaSteps} from './steps';
 import {useEditorState} from "@givewp/form-builder/stores/editor-state";
+import {setFormSettings, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 import 'shepherd.js/dist/css/shepherd.css';
 
@@ -35,8 +36,31 @@ function TourEffectsAndEvents() {
     const tour = window.tour = useContext(ShepherdTourContext);
 
     const {mode} = useEditorState();
-
+    const dispatch = useFormStateDispatch();
     const {selectBlock} = useDispatch('core/block-editor');
+
+    // @ts-ignore
+    window.onboardingResetDesign = window.onboardingResetDesign || function() {
+        dispatch(setFormSettings({designId: 'classic'}))
+    }
+
+    useEffect(() => {
+
+        const clickDelegationCallback = (e) => {
+            if(e.target.closest(".js-onboarding-set-design-classic")){
+                dispatch(setFormSettings({designId: 'classic'}))
+            }
+            if(e.target.closest(".js-onboarding-set-design-multi-step")){
+                dispatch(setFormSettings({designId: 'multi-step'}))
+            }
+        }
+
+        document.addEventListener("click", clickDelegationCallback);
+
+        return () => {
+            window.removeEventListener('click', clickDelegationCallback);
+        }
+    }, [mode])
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
