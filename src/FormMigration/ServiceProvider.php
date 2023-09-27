@@ -41,6 +41,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\OfflineDonations::class,
                 Steps\PaymentGateways::class,
                 Steps\EmailSettings::class,
+                Steps\FormMeta::class,
             ]);
         });
     }
