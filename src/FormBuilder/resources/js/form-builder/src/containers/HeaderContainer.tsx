@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {GiveIcon} from '../components/icons';
+import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
@@ -10,6 +10,8 @@ import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
+import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
+import EditorMode from "@givewp/form-builder/types/editorMode";
 
 const Logo = () => (
     <div
@@ -34,8 +36,7 @@ const Logo = () => (
 );
 
 const HeaderContainer = ({
-                             selectedSecondarySidebar,
-                             toggleSelectedSecondarySidebar,
+                             SecondarySidebarButtons = null,
                              showSidebar,
                              toggleShowSidebar,
                              onSaveNotice,
@@ -71,34 +72,33 @@ const HeaderContainer = ({
             });
     };
 
+    const {mode} = useEditorState();
+    const dispatchEditorState = useEditorStateDispatch();
+    const toggleEditorMode = () => {
+        if(EditorMode.schema === mode) {
+            dispatchEditorState(setEditorMode(EditorMode.design));
+        }
+        if(EditorMode.design === mode) {
+            dispatchEditorState(setEditorMode(EditorMode.schema));
+        }
+    }
+
     // @ts-ignore
     return (
         <Header
             contentLeft={
                 <>
                     <Logo />
-                    <div
-                        id="AddBlockButtonContainer"
-                        style={{
-                            padding: 'var(--givewp-spacing-2)',
-                            margin: 'calc(var(--givewp-spacing-2) * -1)',
-                        }}
-                    >
-                        <Button
-                            style={{width: '32px', height: '32px', minWidth: '32px'}}
-                            className="rotate-icon"
-                            onClick={() => toggleSelectedSecondarySidebar('add')}
-                            isPressed={'add' === selectedSecondarySidebar}
-                            icon={plus}
-                            variant="primary"
-                        />
-                    </div>
+                    {SecondarySidebarButtons && <SecondarySidebarButtons />}
                     <Button
-                        style={{width: '32px', height: '32px'}}
-                        onClick={() => toggleSelectedSecondarySidebar('list')}
-                        isPressed={'list' === selectedSecondarySidebar}
-                        icon={listView}
-                    />
+                        id={'editor-state-toggle'}
+                        style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
+                        onClick={() => toggleEditorMode()}
+                        icon={EditIcon}
+                        >
+                        {EditorMode.schema === mode && __('Edit form design', 'give')}
+                        {EditorMode.design === mode && __('Edit form', 'give')}
+                    </Button>
                 </>
             }
             contentMiddle={

@@ -113,7 +113,8 @@ class RegisterFormBuilderPageRoute
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
-            'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+            'autoStartDesignTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-design-tour-completed', true),
+            'autoStartSchemaTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-schema-tour-completed', true),
         ]);
 
         $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
