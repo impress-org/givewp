@@ -30,6 +30,7 @@ interface FormBuilderWindowData {
     recurringAddonData?: {
         isInstalled: boolean;
     };
+    isRecurringEnabled: boolean;
     gatewaySettingsUrl: string;
     emailPreviewURL: string;
     emailTemplateTags: TemplateTag[];

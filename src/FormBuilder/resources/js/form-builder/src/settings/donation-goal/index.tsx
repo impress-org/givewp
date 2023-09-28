@@ -8,10 +8,13 @@ import {
     ToggleControl,
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+
+const {isRecurringEnabled} = getFormBuilderWindowData();
 
 const DonationGoalSettings = () => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
+        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount, goalShouldOnlyCountRecurringDonations},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -90,6 +93,19 @@ const DonationGoalSettings = () => {
                             onChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 100)}
                         />
                     </PanelRow>
+
+                    {isRecurringEnabled && (
+                      <PanelRow>
+                          <ToggleControl
+                            label={__('Only Count Recurring Donations', 'give')}
+                            help={__('Do you want to only count recurring donations towards the goal?', 'give')}
+                            checked={goalShouldOnlyCountRecurringDonations}
+                            onChange={() => {
+                                dispatch(setFormSettings({goalShouldOnlyCountRecurringDonations: !goalShouldOnlyCountRecurringDonations}));
+                            }}
+                          />
+                      </PanelRow>
+                    )}
                 </>
             )}
         </PanelBody>

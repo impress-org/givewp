@@ -18,9 +18,11 @@ use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 /**
  * @since 3.0.0
@@ -46,7 +48,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param PaymentGatewayRegister $paymentGatewayRegister
+     * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -147,7 +149,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -246,7 +248,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      */
@@ -311,7 +313,7 @@ class DonationFormRepository
             }
 
             $defaultGateway = give_get_default_gateway($formId, 3);
-            
+
             if (array_key_exists($defaultGateway, $gateways)) {
                 $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
             }
@@ -379,8 +381,8 @@ class DonationFormRepository
      */
     public function getTotalNumberOfDonorsFromSubscriptionInitialDonations(int $formId): int
     {
-         return DB::table('give_donationmeta')
-             ->where('meta_key', DonationMetaKeys::DONOR_ID)
+        return DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::DONOR_ID)
             ->whereIn('donation_id', function ($builder) {
                 $builder
                     ->select('donation_id')
@@ -388,11 +390,11 @@ class DonationFormRepository
                     ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION)
                     ->where('meta_value', 1);
             })
-             ->whereIn('donation_id', function ($builder) use ($formId) {
+            ->whereIn('donation_id', function ($builder) use ($formId) {
                 $builder
                     ->select('donation_id')
                     ->from('give_donationmeta')
-                     ->where('meta_key', DonationMetaKeys::FORM_ID)
+                    ->where('meta_key', DonationMetaKeys::FORM_ID)
                     ->where('meta_value', $formId);
             })->count('DISTINCT meta_value');
     }
@@ -414,7 +416,7 @@ class DonationFormRepository
      */
     public function getTotalNumberOfSubscriptionInitialDonations(int $formId): int
     {
-       return DB::table('give_donationmeta')
+        return DB::table('give_donationmeta')
             ->where('meta_key', DonationMetaKeys::FORM_ID)
             ->where('meta_value', $formId)
             ->whereIn('donation_id', function ($builder) {
@@ -442,6 +444,16 @@ class DonationFormRepository
         }
 
         return (int)$query->totalRevenue;
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function getTotalRevenueFromSubscriptions(int $formId): float
+    {
+        return DB::table('give_subscriptions')
+            ->where('product_id', $formId)
+            ->sum('initial_amount');
     }
 
     /**

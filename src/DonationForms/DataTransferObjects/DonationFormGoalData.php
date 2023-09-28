@@ -54,18 +54,10 @@ class DonationFormGoalData implements Arrayable
         $donationFormRepository = give(DonationFormRepository::class);
 
         if ($this->goalType->isDonors()) {
-             if ($this->formSettings->goalShouldOnlyCountRecurringDonations) {
-                return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->formId);
-            }
-
             return $donationFormRepository->getTotalNumberOfDonors($this->formId);
         }
 
         if ($this->goalType->isDonations()) {
-            if ($this->formSettings->goalShouldOnlyCountRecurringDonations) {
-                return $donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->formId);
-            }
-
             return $donationFormRepository->getTotalNumberOfDonations($this->formId);
         }
 
@@ -74,10 +66,31 @@ class DonationFormGoalData implements Arrayable
 
     /**
      * @since 3.0.0
+     *
+     * @return int|float
+     */
+    public function getCurrentAmountFromSubscriptions()
+    {
+        /** @var DonationFormRepository $donationFormRepository */
+        $donationFormRepository = give(DonationFormRepository::class);
+
+        if ($this->goalType->isDonors()) {
+            return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->formId);
+        }
+
+        if ($this->goalType->isDonations()) {
+            return $donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->formId);
+        }
+
+        return $donationFormRepository->getTotalRevenueFromSubscriptions($this->formId);
+    }
+
+    /**
+     * @since 3.0.0
      */
     public function toArray(): array
     {
-        $currentAmount = $this->getCurrentAmount();
+        $currentAmount = $this->formSettings->goalShouldOnlyCountRecurringDonations ? $this->getCurrentAmountFromSubscriptions() : $this->getCurrentAmount();
         $progressPercentage = !$currentAmount || !$this->targetAmount ? 0 : ($currentAmount / $this->targetAmount) * 100;
 
         return [

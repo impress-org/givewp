@@ -123,11 +123,7 @@ class DonationFormViewModel
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
 
-        //TODO: update label for recurring only?
-        $totalCountLabel = $goalType->isDonors() ? __('Donors', 'give') : __(
-                'Donations',
-                'give'
-            );
+        $totalCountLabel = $goalType->isDonors() ? __('Donors', 'give') : __('Donations','give');
 
         if ($this->formSettings->goalShouldOnlyCountRecurringDonations){
           $totalCountValue = $goalType->isDonors() ? $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->donationFormId) : $this->donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->donationFormId);

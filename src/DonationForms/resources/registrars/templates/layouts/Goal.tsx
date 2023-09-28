@@ -38,7 +38,7 @@ export default function Goal({
                 ></progress>
                 <div className="givewp-layouts-goal__progress__markers">
                     <span className="givewp-layouts-goal__progress__marker">
-                        {currentAmount} {goalLabel}
+                        {currentAmountFormatted} {goalLabel}
                     </span>
                     <span className="givewp-layouts-goal__progress__marker">
                         {targetAmountFormatted} {goalLabel}
