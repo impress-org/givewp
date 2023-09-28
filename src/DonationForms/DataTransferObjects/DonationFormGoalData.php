@@ -54,10 +54,18 @@ class DonationFormGoalData implements Arrayable
         $donationFormRepository = give(DonationFormRepository::class);
 
         if ($this->goalType->isDonors()) {
+             if ($this->formSettings->goalShouldOnlyCountRecurringDonations) {
+                return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->formId);
+            }
+
             return $donationFormRepository->getTotalNumberOfDonors($this->formId);
         }
 
         if ($this->goalType->isDonations()) {
+            if ($this->formSettings->goalShouldOnlyCountRecurringDonations) {
+                return $donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->formId);
+            }
+
             return $donationFormRepository->getTotalNumberOfDonations($this->formId);
         }
 

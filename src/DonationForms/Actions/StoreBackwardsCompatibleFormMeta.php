@@ -83,7 +83,10 @@ class StoreBackwardsCompatibleFormMeta
         $goalAmount = ('amount' === $goalType) ? give_sanitize_amount_for_db(
             $donationForm->settings->goalAmount
         ) : $donationForm->settings->goalAmount;
+
         $this->saveSingleFormMeta($donationForm->id, $metaLookup[$goalType], $goalAmount);
+
+        $this->saveSingleFormMeta($donationForm->id, '_give_recurring_goal_format', (int)$donationForm->settings->goalShouldOnlyCountRecurringDonations);
     }
 
     /**

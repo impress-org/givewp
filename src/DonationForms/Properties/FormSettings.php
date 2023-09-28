@@ -8,6 +8,8 @@ use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
+use const FILTER_VALIDATE_BOOLEAN;
+
 class FormSettings implements Arrayable, Jsonable
 {
     /**
@@ -173,6 +175,10 @@ class FormSettings implements Arrayable, Jsonable
      * @var array
      */
     public $pdfSettings;
+    /**
+     * @var boolean
+     */
+    public $goalShouldOnlyCountRecurringDonations;
 
     /**
      * @since 3.0.0
@@ -241,7 +247,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->multiStepFirstButtonText = $array['multiStepFirstButtonText'] ?? __('Donate now', 'give');
 
         $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
+
         $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
+
+        $self->goalShouldOnlyCountRecurringDonations = filter_var($array['goalShouldOnlyCountRecurringDonations'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         return $self;
     }
