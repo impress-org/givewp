@@ -4,7 +4,7 @@ import LevelGrid from './level-grid';
 import LevelButton from './level-buttons';
 import Inspector from './inspector';
 import periodLookup from './period-lookup';
-import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
+import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/components/CurrencyControl';
 import {BaseControl, RadioControl} from '@wordpress/components';
 import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared/AmountMessages';
 import Notice from './notice';

@@ -1,3 +1,4 @@
+import {WPComponent} from '@wordpress/element';
 import type {
     EmailNotification,
     FormDesign,
@@ -47,6 +48,9 @@ declare const window: {
     givewp: {
         form: {
             blocks: BlockRegistrar;
+            components: {
+                [key: string]: WPComponent;
+            };
         };
     };
 } & Window;

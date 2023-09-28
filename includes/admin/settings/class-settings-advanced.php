@@ -103,7 +103,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							/* translators: %s: the_content */
 							'name'    => sprintf( __( '%s filter', 'give' ), '<code>the_content</code>' ),
 							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
-							'desc'    => sprintf( __( 'This controls whether or not GiveWP legacy form content is treated like WordPress content. Disabling this option means that things like social sharing and other theme- or plugin-added functionality to enhance or append things to content will not be applied to GiveWP legacy form content. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content' ), '<code>the_content</code>' ),
+							'desc'    => sprintf( __( 'This controls whether or not GiveWP legacy form content is treated like WordPress content. Disabling this option means that things like social sharing and other theme- or plugin-added functionality to enhance or append things to content will not be applied to GiveWP legacy form content. <a href="%1$s" target="_blank">Learn more</a> about %2$s filter.', 'give' ), esc_url( 'https://docs.givewp.com/thecontent-filter' ), '<code>the_content</code>' ),
 							'id'      => 'the_content_filter',
 							'default' => 'enabled',
 							'type'    => 'radio_inline',
@@ -221,7 +221,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 								__( 'Add emails one at a time to ensure that donations using that email bypass GiveWP\'s Akismet SPAM filtering. Emails added to the list here are always allowed to donate, even if they\'ve been flagged by Akismet.', 'give' ),
 								sprintf(
 									__( 'To permanently prevent emails from being flagged as SPAM by Akismet <a href="%1$s" target="_blank">contact their team here</a>.', 'give' ),
-									esc_url( 'https://akismet.com/contact/' )
+									esc_url( 'https://docs.givewp.com/akismet-contact' )
 								)
 							),
 							'id'               => 'akismet_whitelisted_email_addresses',
