@@ -63,7 +63,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     <RowAction
                         onClick={trashEnabled ? removeRow(deleteForm) : confirmModal}
                         actionId={item.id}
-                        highlight={!trashEnabled}
+                        highlight={true}
                         displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
                         hiddenText={item?.name}
                     />
