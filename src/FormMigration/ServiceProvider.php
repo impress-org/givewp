@@ -42,6 +42,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\PaymentGateways::class,
                 Steps\EmailSettings::class,
                 Steps\FormMeta::class,
+                Steps\PdfSettings::class,
             ]);
         });
     }
