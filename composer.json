@@ -96,7 +96,8 @@
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
-                "symfony/polyfill-mbstring"
+                "symfony/polyfill-mbstring",
+                "symfony/http-foundation"
             ],
             "delete_vendor_packages": true,
             "override_autoload": {

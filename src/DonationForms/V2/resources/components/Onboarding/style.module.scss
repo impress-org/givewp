@@ -41,7 +41,13 @@
 }
 
 .message {
+    font-size: 0.875rem;
     margin: 0 0 var(--givewp-spacing-5);
+    color: var(--givewp-grey-900);
+
+    strong {
+        color: var(--givewp-grey-700);
+    }
 }
 
 .title {
@@ -50,6 +56,7 @@
     margin-bottom: var(--givewp-spacing-3);
     display: flex;
     align-items: center;
+    color: var(--givewp-grey-900);
 
     svg {
         margin-right: var(--givewp-spacing-2);
