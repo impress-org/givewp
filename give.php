@@ -407,7 +407,7 @@ final class Give
     public function install()
     {
         $this->loadServiceProviders();
-        give_install();
+        give_install(true);
     }
 
     /**
