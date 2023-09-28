@@ -119,16 +119,24 @@ class DonationFormViewModel
     {
         $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
         $goalType = $this->goalType();
+        $totalCountValue = $goalType->isDonors() ?
+                $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
+                $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
+
+        //TODO: update label for recurring only?
+        $totalCountLabel = $goalType->isDonors() ? __('Donors', 'give') : __(
+                'Donations',
+                'give'
+            );
+
+        if ($this->formSettings->goalShouldOnlyCountRecurringDonations){
+          $totalCountValue = $goalType->isDonors() ? $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->donationFormId) : $this->donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->donationFormId);
+        }
 
         return [
             'totalRevenue' => $totalRevenue,
-            'totalCountValue' => $goalType->isDonors() ?
-                $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
-                $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalCountLabel' => $goalType->isDonors() ? __('Donors', 'give') : __(
-                'Donations',
-                'give'
-            ),
+            'totalCountValue' => $totalCountValue,
+            'totalCountLabel' => $totalCountLabel,
         ];
     }
 
