@@ -24,9 +24,12 @@ class DonationOptions extends FormMigrationStep
             $amountField->setAttribute('levels', wp_list_pluck($donationLevels, '_give_amount'));
         }
 
-        if(give_is_setting_enabled($this->getMetaV2('_give_custom_amount'))) {
+        if($this->formV2->isCustomAmountOptionEnabled()) {
+            $amountField->setAttribute('customAmount', true);
             $amountField->setAttribute('customAmountMin', $this->getMetaV2('_give_custom_amount_range_minimum'));
             $amountField->setAttribute('customAmountMax', $this->getMetaV2('_give_custom_amount_range_maximum'));
+        } else {
+            $amountField->setAttribute('customAmount', false);
         }
 
         // @note No corresponding setting in v3 for "Custom Amount Text"

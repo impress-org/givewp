@@ -14,6 +14,8 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
      * @since 2.24.0
      *
      * @return M|null
+     *
+     * @param int $output For inheritance compatibility only, unused.
      */
     public function get($output = OBJECT)
     {
@@ -34,6 +36,8 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
      * @since 2.24.0
      *
      * @return M[]|null
+     *
+     * @param int $output For inheritance compatibility only, unused.
      */
     public function getAll($output = OBJECT)
     {

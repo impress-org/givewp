@@ -20,7 +20,7 @@
     }
 }
 .shepherd-target {
-    border: solid 2px var(--wp-blue-blue-50);
+    outline: solid 2px var(--wp-blue-blue-50);
 }
 #form-blocks-canvas.shepherd-target {
     padding: 58px;
@@ -60,4 +60,66 @@
             background-color: var(--givewp-shades-white) !important;
         }
     }
+}
+
+// First step of the Design onboarding tour
+.shepherd-element[data-shepherd-step-id="design-welcome"] {
+    max-width: 775px;
+
+    .shepherd-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: var(--givewp-space-10);
+    }
+
+    .onboarding-set-design {
+
+        position: relative;
+
+        svg {
+            visibility: hidden;
+            position: absolute;
+            bottom: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-1);
+        }
+
+        [type=radio] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        [type=radio] + img {
+            cursor: pointer;
+        }
+
+        [type=radio] + div {
+            height: 100%;
+            border-radius: 2px;
+            border: solid 1px var(--givewp-grey-50);
+        }
+
+        [type=radio] + div:hover,
+        [type=radio]:checked + div {
+            border-color: var(--givewp-green-500);
+        }
+
+        [type=radio]:checked + div {
+            outline: 1px solid var(--givewp-green-500);
+        }
+
+        [type=radio]:checked + div svg {
+            visibility: visible;
+        }
+    }
+}
+
+// Hack to hide the rendered for design on the first step of onboarding.
+// This prevents the user from seeing the design change when they select a design,
+// which can be confusing because the multi-step design is fully hidden by the modal.
+// This also covers up the initial render of the form design when launching the form builder.
+.shepherd-target iframe {
+    display: none;
 }
