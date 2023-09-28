@@ -128,10 +128,20 @@
     font-family: 'Open Sans', sans-serif;
     background-color: #fffaf2;
     font-size: 16px;
+    transition: 0.3s;
 
     svg {
         margin-right: 10px;
         fill: #f29718;
+    }
+
+    &:hover {
+        background-color: #f29718;
+        color: #fff;
+
+        svg {
+            fill: #fff;
+        }
     }
 }
 
