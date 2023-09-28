@@ -37,6 +37,11 @@
         border-radius: 0.5rem;
         color: #000;
         background-color: var(--givewp-blue-25);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
     }
 }
 
