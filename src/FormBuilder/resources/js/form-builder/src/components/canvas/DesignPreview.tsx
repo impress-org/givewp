@@ -9,6 +9,8 @@ import DesignPreviewLoading from '@givewp/form-builder/components/canvas/DesignP
 const DesignPreview = () => {
     const {blocks, settings: formSettings} = useFormState();
     const [isLoading, setLoading] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [designUpdated, setDesignUpdated] = useState<boolean>(true);
     const [sourceDocument, setSourceDocument] = useState<string>(null);
     const [previewHTML, setPreviewHTML] = useState<string>(null);
 
@@ -22,9 +24,13 @@ const DesignPreview = () => {
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
+    useEffect(() => {
+        setDesignUpdated(true);
+    }, [formSettings.designId]);
+
     return (
         <>
-            {isLoading && <DesignPreviewLoading />}
+            {isLoading && <DesignPreviewLoading design={formSettings.designId} editing={isEditing} designUpdated={designUpdated} />}
             <IframeResizer
                 srcDoc={previewHTML}
                 checkOrigin={
@@ -34,6 +40,15 @@ const DesignPreview = () => {
                     width: '1px',
                     minWidth: '100%',
                     border: '0',
+                    display: isLoading && designUpdated ? 'none' : 'inherit',
+                    opacity: isLoading ? 0.5 : 1,
+                    transition: 'opacity 0.3s ease-in-out',
+                }}
+                onInit={iframe => {
+                    iframe.iFrameResizer.resize();
+                    setLoading(false);
+                    setIsEditing(true);
+                    setDesignUpdated(false);
                 }}
             />
 
@@ -42,7 +57,6 @@ const DesignPreview = () => {
                 onLoad={(event) => {
                     const target = event.target as HTMLIFrameElement;
                     setPreviewHTML(target.contentWindow.document.documentElement.innerHTML);
-                    setLoading(false);
                 }}
                 srcDoc={sourceDocument}
                 style={{display: 'none'}}
