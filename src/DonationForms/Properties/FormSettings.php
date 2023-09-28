@@ -250,8 +250,7 @@ class FormSettings implements Arrayable, Jsonable
 
         $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
-        //$self->goalShouldOnlyCountRecurringDonations = filter_var($array['goalShouldOnlyCountRecurringDonations'] ?? false, FILTER_VALIDATE_BOOLEAN);
-        $self->goalShouldOnlyCountRecurringDonations = true;
+        $self->goalShouldOnlyCountRecurringDonations = filter_var($array['goalShouldOnlyCountRecurringDonations'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         return $self;
     }
