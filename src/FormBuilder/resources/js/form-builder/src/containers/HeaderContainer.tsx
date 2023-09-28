@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {GiveIcon} from '../components/icons';
+import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -12,6 +12,8 @@ import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
+import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
+import EditorMode from "@givewp/form-builder/types/editorMode";
 
 const Logo = () => (
     <div
@@ -36,12 +38,11 @@ const Logo = () => (
 );
 
 const HeaderContainer = ({
-    selectedSecondarySidebar,
-    toggleSelectedSecondarySidebar,
-    showSidebar,
-    toggleShowSidebar,
-    onSaveNotice,
-}) => {
+                             SecondarySidebarButtons = null,
+                             showSidebar,
+                             toggleShowSidebar,
+                             onSaveNotice,
+                         }) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
@@ -74,6 +75,17 @@ const HeaderContainer = ({
             });
     };
 
+    const {mode} = useEditorState();
+    const dispatchEditorState = useEditorStateDispatch();
+    const toggleEditorMode = () => {
+        if(EditorMode.schema === mode) {
+            dispatchEditorState(setEditorMode(EditorMode.design));
+        }
+        if(EditorMode.design === mode) {
+            dispatchEditorState(setEditorMode(EditorMode.schema));
+        }
+    }
+
     // @ts-ignore
     return (
         <>
@@ -81,28 +93,16 @@ const HeaderContainer = ({
                 contentLeft={
                     <>
                         <Logo />
-                        <div
-                            id="AddBlockButtonContainer"
-                            style={{
-                                padding: 'var(--givewp-spacing-2)',
-                                margin: 'calc(var(--givewp-spacing-2) * -1)',
-                            }}
-                        >
-                            <Button
-                                style={{width: '32px', height: '32px', minWidth: '32px'}}
-                                className="rotate-icon"
-                                onClick={() => toggleSelectedSecondarySidebar('add')}
-                                isPressed={'add' === selectedSecondarySidebar}
-                                icon={plus}
-                                variant="primary"
-                            />
-                        </div>
+                        {SecondarySidebarButtons && <SecondarySidebarButtons />}
                         <Button
-                            style={{width: '32px', height: '32px'}}
-                            onClick={() => toggleSelectedSecondarySidebar('list')}
-                            isPressed={'list' === selectedSecondarySidebar}
-                            icon={listView}
-                        />
+                            id={'editor-state-toggle'}
+                            style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
+                            onClick={() => toggleEditorMode()}
+                            icon={EditIcon}
+                        >
+                            {EditorMode.schema === mode && __('Edit form design', 'give')}
+                            {EditorMode.design === mode && __('Edit form', 'give')}
+                        </Button>
                     </>
                 }
                 contentMiddle={
@@ -124,8 +124,8 @@ const HeaderContainer = ({
                             {isSaving && 'draft' === isSaving
                                 ? __('Saving...', 'give')
                                 : 'draft' === formSettings.formStatus
-                                ? __('Save as Draft', 'give')
-                                : __('Switch to Draft', 'give')}
+                                    ? __('Save as Draft', 'give')
+                                    : __('Switch to Draft', 'give')}
                         </Button>
                         <Button
                             onClick={() => onSave('publish')}
@@ -136,8 +136,8 @@ const HeaderContainer = ({
                             {isSaving && 'publish' === isSaving
                                 ? __('Updating...', 'give')
                                 : 'publish' === formSettings.formStatus
-                                ? __('Update', 'give')
-                                : __('Publish', 'give')}
+                                    ? __('Update', 'give')
+                                    : __('Publish', 'give')}
                         </Button>
                         <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                         <Dropdown
@@ -151,12 +151,12 @@ const HeaderContainer = ({
                                         icon={moreVertical}
                                         onClick={() => {
                                             if (transfer.showTooltip) {
-                                                dispatch(setTransferState({showTooltip: false}));
+                                                dispatch(setTransferState({showTooltip: false}))
                                             }
                                             onToggle();
                                         }}
                                     />
-                                );
+                                )
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
@@ -176,9 +176,7 @@ const HeaderContainer = ({
                                         {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                             <>
                                                 <MenuItem
-                                                    className={
-                                                        transfer.showTooltip && 'givewp-transfer-selected-menuitem'
-                                                    }
+                                                    className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
                                                     onClick={() => {
                                                         dispatch(setTransferState({showTransferModal: true}));
                                                         onClose();
@@ -189,10 +187,7 @@ const HeaderContainer = ({
 
                                                 {transfer.showTooltip && (
                                                     <div className="givewp-transfer-tooltip">
-                                                        {__(
-                                                            'Want to transfer donation data later? Access this option in the three dots menu above at any time.',
-                                                            'give'
-                                                        )}
+                                                        {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
                                                     </div>
                                                 )}
                                             </>

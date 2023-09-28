@@ -1,5 +1,4 @@
 import {
-    Fill,
     PanelBody,
     PanelRow,
     SelectControl,
@@ -69,7 +68,7 @@ const FormDesignSettings = () => {
                     ]}
                 />
             </PanelBody>
-            <PanelBody title={__('Header', 'give')} initialOpen={true}>
+            <PanelBody title={__('Header', 'give')} initialOpen={false}>
                 <PanelRow>
                     <ToggleControl
                         label={__('Show Header', 'give')}
@@ -115,7 +114,7 @@ const FormDesignSettings = () => {
                 )}
             </PanelBody>
             {design.isMultiStep && (
-                <PanelBody title={__('Multi-Step', 'give')} initialOpen={true}>
+                <PanelBody title={__('Multi-Step', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('First Step Button Text', 'give')}

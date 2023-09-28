@@ -15,6 +15,7 @@ use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\EditFormRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderPageRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderRestRoutes;
+use Give\FormBuilder\ValueObjects\EditorMode;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -71,7 +72,8 @@ class ServiceProvider implements ServiceProviderInterface
     protected function setupOnboardingTour()
     {
         add_action('wp_ajax_givewp_tour_completed', static function () {
-            add_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', time(), true);
+            $mode = new EditorMode($_POST['mode']);
+            add_user_meta(get_current_user_id(), "givewp-form-builder-$mode-tour-completed", time(), true);
         });
 
         add_action('wp_ajax_givewp_migration_hide_notice', static function () {
