@@ -117,7 +117,7 @@ class DonationFormViewModel
      */
     private function formStatsData(): array
     {
-        $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+        $totalRevenue = $this->formSettings->goalShouldOnlyCountRecurringDonations ? $this->donationFormRepository->getTotalRevenueFromSubscriptions($this->donationFormId) : $this->donationFormRepository->getTotalRevenue($this->donationFormId);
         $goalType = $this->goalType();
         $totalCountValue = $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
