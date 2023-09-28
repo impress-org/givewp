@@ -408,6 +408,11 @@ class FormMetaDecorator extends FormModelDecorator
         return give_get_meta($this->form->id, '_give_stripe_default_account', true);
     }
 
+    public function isGoalCountingOnlyRecurringDonations(): bool
+    {
+        return filter_var(give_get_meta($this->form->id, '_give_recurring_goal_format', true), FILTER_VALIDATE_BOOLEAN);
+    }
+
     /**
      * @return array{offlineEnabled: bool, offlineUseGlobalInstructions: bool, offlineDonationInstructions: string}
      */
