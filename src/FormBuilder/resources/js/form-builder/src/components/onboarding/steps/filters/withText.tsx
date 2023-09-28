@@ -11,7 +11,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
                     <Logo />
                 </div>
             )}
-            {!isFirst && !isLast && (
+            {!isFirst && (
                 <div
                     style={{
                         display: 'flex',
@@ -46,8 +46,9 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
 
 const withText = (steps) => {
     return steps.map((step, index) => {
-        const stepCountAdjustedForBookends = steps.length - 2;
-        const textContent = (
+        const stepCountAdjustedForBookends = steps.length - 1;
+        const Component = step.component;
+        const content = (
             <TextContent
                 title={step.title}
                 description={step.text}
@@ -58,7 +59,7 @@ const withText = (steps) => {
             />
         );
         const tempContainer = document.createElement('div');
-        render(textContent, tempContainer);
+        render( Component ?? content, tempContainer);
 
         return {
             ...step,
