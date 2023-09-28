@@ -14,13 +14,12 @@ export default function Goal({
     totalCountLabel,
     totalCountValue,
     totalRevenue,
-    totalRevenueFormatted,
 }: GoalProps) {
     return (
         <>
             <aside className="givewp-layouts-goal__stats-panel">
                 <ul className="givewp-layouts-goal__stats-panel__list">
-                    <Stat value={totalRevenueFormatted} label={__('Raised', 'give')} />
+                    <Stat value={totalRevenue} label={__('Raised', 'give')} />
                     <Stat value={totalCountValue} label={totalCountLabel} />
                     <Stat value={targetAmountFormatted} label={__('Goal', 'give')} />
                 </ul>
@@ -37,9 +36,7 @@ export default function Goal({
                     aria-label={__(`${currentAmount} of ${targetAmount} ${goalLabel} goal`, 'give')}
                 ></progress>
                 <div className="givewp-layouts-goal__progress__markers">
-                    <span className="givewp-layouts-goal__progress__marker">
-                        {currentAmount} {goalLabel}
-                    </span>
+                    <span className="givewp-layouts-goal__progress__marker">0 {goalLabel}</span>
                     <span className="givewp-layouts-goal__progress__marker">
                         {targetAmountFormatted} {goalLabel}
                     </span>
