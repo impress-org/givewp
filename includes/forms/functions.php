@@ -1055,9 +1055,7 @@ function give_show_login_register_option( $form_id ) {
 /**
  * Get pre fill form field values.
  *
- * Note: Will extract form field values from give_purchase session data.
- *
- * @unreleased Extract values from WP user, logged donor and session donor.
+ * @unreleased Extract values from logged WP user and logged donor.
  *             Allow third party filter values.
  * @since  1.8
  *
@@ -1068,8 +1066,6 @@ function give_show_login_register_option( $form_id ) {
 function _give_get_prefill_form_field_values ($form_id) {
 	$logged_in_user_info = [];
 	$logged_in_donor_info = [];
-	$donor_from_session_info = [];
-	$session_info = [];
 
 	// donor info from logged user
 	if ( is_user_logged_in() ) {
@@ -1119,44 +1115,9 @@ function _give_get_prefill_form_field_values ($form_id) {
 		];
 	}
 
-	// donor info from session
-	$give_purchase_data = Give()->session->get('give_purchase');
-	if (
-		// get data from session only if related to same form
-		isset($give_purchase_data['post_data']['give-form-id'])
-		&& $give_purchase_data['post_data']['give-form-id'] == $form_id
-	) {
-		// from Give_Donor which related to session give_email
-		if (!empty($give_purchase_data['post_data']['give_email'])) {
-			$donor_email = $give_purchase_data['post_data']['give_email'];
-			$donor = new Give_Donor($donor_email);
-			$donor_address = $donor->get_donor_address();
-			$donor_from_session_info = [
-				'give_first'      => $donor->get_first_name(),
-				'give_last'       => $donor->get_last_name(),
-				'give_title'      => $donor->get_meta( '_give_donor_title_prefix', true ),
-				'company_name'    => $donor->get_company_name(),
-				'give_email'      => $donor_email,
-				'card_address'    => $donor_address['line1'],
-				'card_address_2'  => $donor_address['line2'],
-				'billing_country' => $donor_address['country'],
-				'card_state'      => $donor_address['state'],
-				'card_city'       => $donor_address['city'],
-				'card_zip'        => $donor_address['zip'],
-			];
-		}
-
-		// from last POST data
-		if(!empty($give_purchase_data['post_data'])) {
-			$session_info = $give_purchase_data['post_data'];
-		}
-	}
-
 	$donor_info = array_merge(
 		$logged_in_user_info,
-		$logged_in_donor_info,
-		$donor_from_session_info,
-		$session_info
+		$logged_in_donor_info
 	);
 
 	// allow third party plugins filtering the result
@@ -1164,7 +1125,7 @@ function _give_get_prefill_form_field_values ($form_id) {
 		'_give_get_prefill_form_field_values',
 		$donor_info,
 		$form_id,
-		compact('logged_in_user_info', 'logged_in_donor_info', 'donor_from_session_info', 'session_info')
+		compact('logged_in_user_info', 'logged_in_donor_info')
 	);
 }
 
