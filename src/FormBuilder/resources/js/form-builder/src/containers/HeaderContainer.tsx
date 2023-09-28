@@ -209,6 +209,7 @@ const HeaderContainer = ({
                     title={__('Error saving form', 'give')}
                     type={ModalType.Error}
                     onRequestClose={() => setErrorMessage(null)}
+                    closeButtonCaption={__('Got it!', 'give')}
                 >
                     <Markup content={errorMessage} />
                 </InfoModal>

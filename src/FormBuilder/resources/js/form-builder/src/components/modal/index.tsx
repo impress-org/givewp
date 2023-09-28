@@ -8,10 +8,10 @@ interface ModalProps extends GutenbergModalTypes.Props {
     closeButtonCaption?: string;
 }
 
-export function Modal({onRequestClose, closeButtonCaption, children, ...props}: ModalProps) {
+export function Modal({onRequestClose, closeButtonCaption, className, children, ...props}: ModalProps) {
     return (
         // @ts-ignore
-        <GutenbergModal className="give-modal" onRequestClose={onRequestClose} {...props}>
+        <GutenbergModal className={cx('give-modal', className)} onRequestClose={onRequestClose} {...props}>
             {children}
             {closeButtonCaption && (
                 // @ts-ignore
@@ -39,13 +39,8 @@ const icons = {
     [ModalType.Error]: warning,
 };
 
-export function InfoModal({
-    type = ModalType.Info,
-    onRequestClose,
-    children,
-    ...props
-}: InfoModalProps) {
-    const classes = cx('give-modal', 'give-modal--has-icon', {
+export function InfoModal({type = ModalType.Info, onRequestClose, children, ...props}: InfoModalProps) {
+    const classes = cx('give-modal--has-icon', {
         'give-modal--warning': type === ModalType.Warning,
         'give-modal--error': type === ModalType.Error,
     });
@@ -54,8 +49,8 @@ export function InfoModal({
 
     return (
         // @ts-ignore
-        <GutenbergModal icon={<Icon icon={icon} />} className={classes} onRequestClose={onRequestClose} {...props}>
+        <Modal icon={<Icon icon={icon} />} className={classes} onRequestClose={onRequestClose} {...props}>
             {children}
-        </GutenbergModal>
+        </Modal>
     );
 }
