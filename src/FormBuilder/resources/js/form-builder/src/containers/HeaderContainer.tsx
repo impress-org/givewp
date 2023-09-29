@@ -107,11 +107,16 @@ const HeaderContainer = ({
                     </>
                 }
                 contentMiddle={
-                    <RichText
-                        tagName="div"
+                    <TextControl
+                        className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(value) => dispatch(setFormSettings({formTitle: value}))}
-                        style={{fontSize: '16px'}}
+                        onChange={(value) => {
+                            dispatch(setFormSettings({formTitle: value}));
+                        }}
+                        onBlur={(event) => {
+                            const cleanedFormTitle = removeHtmlTags(event.target.value);
+                            dispatch(setFormSettings({formTitle: cleanedFormTitle}));
+                        }}
                     />
                 }
                 contentRight={
