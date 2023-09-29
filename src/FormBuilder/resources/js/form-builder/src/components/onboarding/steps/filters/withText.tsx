@@ -1,5 +1,4 @@
 import {render} from '@wordpress/element';
-import Logo from '@givewp/form-builder/components/icons/logo';
 import {Button} from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 

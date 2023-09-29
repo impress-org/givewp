@@ -165,3 +165,61 @@
         visibility: hidden;
     }
 }
+
+.show-schema-welcome-modal {
+
+    .components-modal__header {
+        display: none;
+    }
+
+    .components-modal__content {
+        margin: 0;
+        width: 27.5rem;
+        padding: var(--givewp-spacing-6);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .givewp-schema-welcome--container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
+        svg {
+            height: 1.867rem;
+            width: 1.867rem;
+        }
+
+        h3 {
+            margin: 0;
+            margin-bottom: var(--givewp-spacing-2);
+            font-size: 1.25rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.4;
+        }
+
+        p {
+            font-size: 0.875rem;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+        }
+    }
+
+    .givewp-schema-welcome--button {
+        width: 100%;
+        justify-content: center;
+        padding: var(--givewp-spacing-3);
+
+        font-size: 1rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+    }
+}

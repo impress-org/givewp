@@ -10,11 +10,11 @@ import classDesignScreenshot from "./images/classic-design-screenshot.png";
 // @ts-ignore
 import multiStepDesignScreenshot from "./images/multi-step-design-screenshot.png";
 
-export default ({onClose}) => {
+export default ({onContinue}) => {
     const tour = useContext(ShepherdTourContext);
 
     const onProceed = () => {
-        onClose()
+        onContinue()
         tour.start()
     }
 
@@ -53,7 +53,9 @@ export default ({onClose}) => {
                 />
             </div>
 
-            <Button className={'givewp-design-selector--button'} variant={'primary'} onClick={onProceed}>Proceed</Button>
+            <Button className={'givewp-design-selector--button'} variant={'primary'} onClick={onProceed}>
+                {__('Proceed', 'give')}
+            </Button>
         </div>
     </Modal>
 }

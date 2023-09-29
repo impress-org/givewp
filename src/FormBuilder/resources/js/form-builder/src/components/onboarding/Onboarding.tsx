@@ -9,6 +9,7 @@ import {setFormSettings, useFormStateDispatch} from "@givewp/form-builder/stores
 
 import 'shepherd.js/dist/css/shepherd.css';
 import DesignSelector from "@givewp/form-builder/components/onboarding/DesignSelector";
+import SchemaWelcome from "@givewp/form-builder/components/onboarding/SchemaWelcome";
 
 declare global {
     interface Window {
@@ -39,11 +40,6 @@ function TourEffectsAndEvents() {
     const {mode} = useEditorState();
     const dispatch = useFormStateDispatch();
     const {selectBlock} = useDispatch('core/block-editor');
-
-    // @ts-ignore
-    window.onboardingResetDesign = window.onboardingResetDesign || function() {
-        dispatch(setFormSettings({designId: 'classic'}))
-    }
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
@@ -97,10 +93,6 @@ function TourEffectsAndEvents() {
         }
     }, [mode])
 
-    useEffect(() => {
-        mode === 'schema' && window.onboardingTourData.autoStartSchemaTour && (tour.isActive() || tour.start());
-    }, [mode])
-
     return <></>
 }
 
@@ -108,6 +100,7 @@ const Onboarding = () => {
     const {transfer} = useFormState();
     const {mode} = useEditorState();
     const [showDesignSelector, setShowDesignSelector] = useState(!!window.onboardingTourData.autoStartDesignTour);
+    const [showSchemaWelcome, setShowSchemaWelcome] = useState(!!window.onboardingTourData.autoStartSchemaTour);
 
     if (transfer.showUpgradeModal) {
         return null;
@@ -118,7 +111,8 @@ const Onboarding = () => {
     return <>
         <ShepherdTour steps={steps} tourOptions={options}>
             <TourEffectsAndEvents />
-            {mode === 'design' && showDesignSelector && <DesignSelector onClose={() => setShowDesignSelector(false)} />}
+            {mode === 'design' && showDesignSelector && <DesignSelector onContinue={() => setShowDesignSelector(false)} />}
+            {mode === 'schema' && showSchemaWelcome && <SchemaWelcome onContinue={() => setShowSchemaWelcome(false)} />}
         </ShepherdTour>
     </>
 }
