@@ -17,7 +17,7 @@ export default [
     },
     {
         id: 'schema-add-button',
-        attachTo: { element: '#AddBlockButtonContainer', on: 'bottom' as Placement },
+        attachTo: { element: '#AddBlockButtonContainer', on: 'bottom-end' as Placement },
         title: __('Sidebar Toggles', 'give'),
         text: __('These two buttons give you the ability to add and reorder sections and blocks to the canvas, with drag-and-drop ease.', 'give'),
     },

@@ -1,6 +1,5 @@
 import {__} from "@wordpress/i18n";
 import Placement from "./types/placement";
-import DesignWelcome from "./components/DesignWelcome";
 
 export default [
     {
@@ -11,7 +10,7 @@ export default [
     },
     {
         id: 'design-edit-form',
-        attachTo: { element: '#editor-state-toggle', on: 'bottom' as Placement },
+        attachTo: { element: '#editor-state-toggle', on: 'bottom-end' as Placement },
         title: __('Edit form', 'give'),
         text: __('This is where you add and edit various blocks and sections to make up your form.', 'give'),
     },
