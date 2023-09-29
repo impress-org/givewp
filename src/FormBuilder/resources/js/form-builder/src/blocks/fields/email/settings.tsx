@@ -14,7 +14,6 @@ const settings: FieldBlock['settings'] = {
     },
     attributes: {
         ...defaultSettings.attributes,
-        lock: {remove: true},
         label: {
             default: __('Email Address'),
         },

@@ -18,7 +18,6 @@ const login: FieldBlock = {
             multiple: false,
         },
         attributes: {
-            lock: {remove: true},
             required: {
                 type: 'boolean',
                 default: false,

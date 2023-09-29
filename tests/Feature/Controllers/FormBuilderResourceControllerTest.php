@@ -182,7 +182,7 @@ class FormBuilderResourceControllerTest extends TestCase
         $response = $formBuilderResourceController->update($mockRequest);
 
         $this->assertInstanceOf(WP_Error::class, $response);
-        $this->assertSame(404, $response->get_error_code());
+        $this->assertSame(400, $response->get_error_code());
     }
 
     /**
@@ -224,7 +224,7 @@ class FormBuilderResourceControllerTest extends TestCase
         $response = $formBuilderResourceController->show($mockRequest);
 
         $this->assertInstanceOf(WP_Error::class, $response);
-        $this->assertSame(404, $response->get_error_code());
+        $this->assertSame(400, $response->get_error_code());
     }
 
 
