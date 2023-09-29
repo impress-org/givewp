@@ -138,7 +138,7 @@ export default function TransferSuccessDialog() {
                     content={__(sprintf('Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="givewp-dialog-form-name">[${settings.formTitle}]</span>`), 'give')} />
             </div>
 
-            <br /><br />
+            <br />
 
             <Button
                 size="large"
@@ -167,7 +167,7 @@ export default function TransferSuccessDialog() {
                 {__('Your donation data was successfully transferred to the upgraded form.', 'give')}
             </div>
 
-            <br /><br />
+            <br />
 
             <Button
                 size="large"
@@ -189,7 +189,7 @@ export default function TransferSuccessDialog() {
                 {__('Something went wrong with the transfer.', 'give')}
             </div>
 
-            <br /><br />
+            <br />
 
             <Button
                 size="large"
