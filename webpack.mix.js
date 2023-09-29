@@ -64,6 +64,10 @@ mix.setPublicPath('assets/dist')
         const packageJson = require('./node_modules/@givewp/design-system-foundation/package.json');
         const version = packageJson.version;
 
+        if (!fs.existsSync(__dirname + '/assets/dist/css/design-system')) {
+            fs.mkdirSync(__dirname + '/assets/dist/css/design-system');
+        }
+
         fs.writeFileSync(__dirname + '/assets/dist/css/design-system/version', version);
     })
 
