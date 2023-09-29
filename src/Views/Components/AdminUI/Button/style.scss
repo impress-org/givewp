@@ -3,8 +3,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: var(--givewp-spacing-1);
-    font-size: .875rem;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
@@ -26,21 +24,21 @@
 
     &.primary {
         color: var(--givewp-shades-white);
-        background: var(--givewp-blue-600);
+        background: var(--givewp-blue-500);
 
         &:hover {
-            background-color: var(--givewp-blue-700);
+            background-color: var(--givewp-blue-600);
         }
 
         &:active {
-            background-color: var(--givewp-blue-600);
+            background-color: var(--givewp-blue-500);
         }
     }
 
     &.secondary {
         background: var(--givewp-shades-white);
-        color: var(--givewp-blue-600);
-        border-color: var(--givewp-blue-600);
+        color: var(--givewp-grey-900);
+        border-color: var(--givewp-grey-900);
 
         &:hover {
             color: var(--givewp-blue-700);
@@ -72,8 +70,10 @@
     }
 
     &.large {
-        padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-20);
         font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.5;
     }
 
     &:disabled {
