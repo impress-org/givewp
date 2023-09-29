@@ -4,19 +4,6 @@ import DesignWelcome from "./components/DesignWelcome";
 
 export default [
     {
-        id: 'design-welcome',
-        title: __('Choose your form design', 'give'),
-        text: __('Select one that suits your taste and requirements for your cause.', 'give'),
-        component: <DesignWelcome />,
-        beforeShowPromise: function () {
-            return new Promise<void>(function (resolve) {
-                // @ts-ignore
-                window.onboardingResetDesign();
-                resolve();
-            });
-        },
-    },
-    {
         id: 'design-edit-settings',
         attachTo: { element: '#sidebar-primary', on: 'left-start' as Placement },
         title: __('Editing a form design', 'give'),

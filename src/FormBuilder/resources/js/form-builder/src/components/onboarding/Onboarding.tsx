@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
@@ -8,6 +8,7 @@ import {useEditorState} from "@givewp/form-builder/stores/editor-state";
 import {setFormSettings, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 import 'shepherd.js/dist/css/shepherd.css';
+import DesignSelector from "@givewp/form-builder/components/onboarding/DesignSelector";
 
 declare global {
     interface Window {
@@ -43,24 +44,6 @@ function TourEffectsAndEvents() {
     window.onboardingResetDesign = window.onboardingResetDesign || function() {
         dispatch(setFormSettings({designId: 'classic'}))
     }
-
-    useEffect(() => {
-
-        const clickDelegationCallback = (e) => {
-            if(e.target.closest(".js-onboarding-set-design-classic")){
-                dispatch(setFormSettings({designId: 'classic'}))
-            }
-            if(e.target.closest(".js-onboarding-set-design-multi-step")){
-                dispatch(setFormSettings({designId: 'multi-step'}))
-            }
-        }
-
-        document.addEventListener("click", clickDelegationCallback);
-
-        return () => {
-            window.removeEventListener('click', clickDelegationCallback);
-        }
-    }, [mode])
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
@@ -115,7 +98,6 @@ function TourEffectsAndEvents() {
     }, [mode])
 
     useEffect(() => {
-        mode === 'design' && window.onboardingTourData.autoStartDesignTour && (tour.isActive() || tour.start());
         mode === 'schema' && window.onboardingTourData.autoStartSchemaTour && (tour.isActive() || tour.start());
     }, [mode])
 
@@ -125,14 +107,20 @@ function TourEffectsAndEvents() {
 const Onboarding = () => {
     const {transfer} = useFormState();
     const {mode} = useEditorState();
+    const [showDesignSelector, setShowDesignSelector] = useState(!!window.onboardingTourData.autoStartDesignTour);
 
     if (transfer.showUpgradeModal) {
         return null;
     }
 
-    return <ShepherdTour steps={mode === 'schema' ? schemaSteps : designSteps} tourOptions={options}>
-        <TourEffectsAndEvents />
-    </ShepherdTour>
+    const steps = mode === 'schema' ? schemaSteps : designSteps;
+
+    return <>
+        <ShepherdTour steps={steps} tourOptions={options}>
+            <TourEffectsAndEvents />
+            {mode === 'design' && showDesignSelector && <DesignSelector onClose={() => setShowDesignSelector(false)} />}
+        </ShepherdTour>
+    </>
 }
 
 export default Onboarding;
