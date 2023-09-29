@@ -2,19 +2,15 @@ import cx from 'classnames';
 import CheckCircleIcon from "../icons/check-circle"
 import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
-const DesignCard = ({design, title, description, image, alt}) => {
-
-    const {settings: {designId}} = useFormState();
-    const dispatch = useFormStateDispatch();
-
+const DesignCard = ({title, description, image, alt, selected, onSelected}) => {
     return <div
-        className={cx('givewp-design-selector--card', {selected: designId === design})}
-        onClick={() => dispatch(setFormSettings({designId: design}))}
+        className={cx('givewp-design-selector--card', {selected: selected})}
+        onClick={onSelected}
     >
         <img src={image} alt={alt} />
         <strong>{title}</strong>
         <p>{description}</p>
-        {designId === design && <CheckCircleIcon />}
+        {selected && <CheckCircleIcon />}
     </div>
 }
 

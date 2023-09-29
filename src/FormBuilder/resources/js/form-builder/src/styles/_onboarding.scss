@@ -153,6 +153,11 @@
         font-stretch: normal;
         font-style: normal;
         line-height: 1.5;
+
+        &:disabled,
+        &[disabled] {
+            background-color: var(--givewp-grey-300) !important;
+        }
     }
 }
 
@@ -221,5 +226,14 @@
         font-stretch: normal;
         font-style: normal;
         line-height: 1.5;
+    }
+}
+
+// Guided tour overrides for the design tour.
+[data-shepherd-step-id^="design"] {
+    .js-exit-tour, // Hide "Exit Tour" for the design tour.
+    .shepherd-button-secondary // Hide the "previous" button for the design tour.
+    {
+        display: none;
     }
 }

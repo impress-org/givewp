@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import {useState, useContext} from 'react';
 import {Button, Modal} from "@wordpress/components"
 import {ShepherdTourContext} from "react-shepherd"
 import {__} from "@wordpress/i18n";
@@ -9,13 +9,23 @@ import classDesignScreenshot from "./images/classic-design-screenshot.png";
 
 // @ts-ignore
 import multiStepDesignScreenshot from "./images/multi-step-design-screenshot.png";
+import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 export default ({onContinue}) => {
     const tour = useContext(ShepherdTourContext);
 
+    const dispatch = useFormStateDispatch();
+
     const onProceed = () => {
         onContinue()
         tour.start()
+    }
+
+    const [selectedDesign, setSelectedDesign] = useState(null)
+
+    const onDesignSelected = (design) => {
+        setSelectedDesign(design)
+        dispatch(setFormSettings({designId: design}))
     }
 
     return <Modal
@@ -38,14 +48,16 @@ export default ({onContinue}) => {
 
             <div className={'givewp-design-selector--cards'}>
                 <DesignCard
-                    design={'classic'}
+                    selected={selectedDesign === 'classic'}
+                    onSelected={() => onDesignSelected('classic')}
                     image={classDesignScreenshot}
                     alt={__('Classic form design', 'give')}
                     title={__('Classic', 'give')}
                     description={__('This displays all form fields on one page. Donors fill out the form as they scroll down the page', 'give')}
                 />
                 <DesignCard
-                    design={'multi-step'}
+                    selected={selectedDesign === 'multi-step'}
+                    onSelected={() => onDesignSelected('multi-step')}
                     image={multiStepDesignScreenshot}
                     alt={__('Multi-Step form design', 'give')}
                     title={__('Multi-step', 'give')}
@@ -53,7 +65,7 @@ export default ({onContinue}) => {
                 />
             </div>
 
-            <Button className={'givewp-design-selector--button'} variant={'primary'} onClick={onProceed}>
+            <Button disabled={!selectedDesign} className={'givewp-design-selector--button'} variant={'primary'} onClick={onProceed}>
                 {__('Proceed', 'give')}
             </Button>
         </div>
