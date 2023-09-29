@@ -1,8 +1,15 @@
-import {render} from '@wordpress/element';
+import {createInterpolateElement, render} from '@wordpress/element';
 import {Button} from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 
 const TextContent = ({title, description, stepNumber, stepCount, isLast}) => {
+
+    const stepCountText = createInterpolateElement(__('<strong>Step <stepNumber /></strong> of <stepCount />', 'give'), {
+        strong: <strong />,
+        stepNumber: <span>{stepNumber}</span>,
+        stepCount: <span>{stepCount}</span>,
+    });
+
     return (
         <div>
             <div
@@ -16,7 +23,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isLast}) => {
                     alignItems: 'center',
                 }}
             >
-                <div>{sprintf(__('Step %s of %s', 'give'), stepNumber, stepCount)}</div>
+                <div>{stepCountText}</div>
                 <Button variant="link" className={'js-exit-tour'}>
                     {__('Exit tour', 'give')}
                 </Button>
