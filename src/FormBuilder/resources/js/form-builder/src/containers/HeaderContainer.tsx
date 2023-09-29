@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
+import {drawerRight, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
-import {RichText} from '@wordpress/block-editor';
-import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
+import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
@@ -110,14 +109,12 @@ const HeaderContainer = ({
                     <TextControl
                         className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(value) => {
-                            dispatch(setFormSettings({formTitle: value}));
-                        }}
+                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
                         onBlur={(event) => {
                             const cleanedFormTitle = removeHtmlTags(event.target.value);
                             dispatch(setFormSettings({formTitle: cleanedFormTitle}));
                         }}
-                    />
+                />
                 }
                 contentRight={
                     <>
