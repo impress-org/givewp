@@ -47,7 +47,7 @@
 
 .message {
     font-size: 0.875rem;
-    margin: 0 0 var(--givewp-spacing-5);
+    margin: 0 0 var(--givewp-spacing-6);
     color: var(--givewp-grey-900);
 
     strong {
@@ -92,6 +92,7 @@
         flex-basis: 50%;
         margin-bottom: var(--givewp-spacing-2);
         align-items: center;
+        line-height: 1.5;
 
         svg {
             margin-right: var(--givewp-spacing-2);
@@ -186,4 +187,13 @@
     .migrationGuideContent {
         margin-bottom: 10px;
     }
+}
+
+.proceedButton {
+    width: 100%;
+    margin-top: var(--givewp-spacing-6);
+}
+
+.link {
+    margin-top: var(--givewp-spacing-6);
 }

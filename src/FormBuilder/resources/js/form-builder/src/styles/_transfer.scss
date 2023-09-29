@@ -51,7 +51,7 @@
     border-bottom: 1px solid var(--givewp-grey-50);
 
     img {
-        width: 90%;
+        width: 80%;
         height: auto;
     }
 }
@@ -79,12 +79,21 @@
 
     .givewp-transfer-button {
         all: unset;
-        font-weight: bold;
-        color: var(--givewp-grey-900);
-        background-color: #fff;
         cursor: pointer;
-        border-radius: 4px;
-        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        font-weight: 500;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        border-radius: 0.5rem;
+        color: #000;
+        background-color: var(--givewp-blue-25);
+        font-size: 0.875rem;
+        line-height: 1.71;
+        letter-spacing: normal;
+        margin-right: var(--givewp-spacing-3);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
     }
 
     .givewp-transfer-close-icon-container {

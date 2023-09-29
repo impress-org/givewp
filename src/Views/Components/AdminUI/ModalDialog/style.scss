@@ -56,9 +56,12 @@
             position: absolute;
             cursor: pointer;
             z-index: 999;
+            fill: var(--givewp-grey-500);
+        }
+
+        .givewp-modal-close {
             top: var(--givewp-spacing-4);
             right: var(--givewp-spacing-5);
-            fill: var(--givewp-grey-500);
         }
 
         .givewp-modal-close-headless {
@@ -68,6 +71,13 @@
             padding: var(--givewp-spacing-1);
             background-color: var(--givewp-grey-50);
             border-radius: 50%;
+            top: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-2);
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
         }
 
         .givewp-modal-content {
