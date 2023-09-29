@@ -72,7 +72,7 @@ jobs:
                 run: |
                     case "$MYSQL_VERSION" in
                       'mysql:5.7')
-                        MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
+                        MYSQL_PORT=${{ job.services.mysql57.ports[3306] }}
                         MYSQL_PASS=N0Tweak!@123!
                         ;;
                       'mysql:8.0')
