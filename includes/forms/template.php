@@ -752,7 +752,7 @@ function give_add_button_open_form( $form_id, $args ) {
 function give_user_info_fields( $form_id ) {
 
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$give_user_info = apply_filters('give_user_info_fields_user_info', _give_get_prefill_form_field_values( $form_id ));
 	$title          = ! empty( $give_user_info['give_title'] ) ? $give_user_info['give_title'] : '';
 	$first_name     = ! empty( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : '';
 	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
@@ -1203,7 +1203,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 function give_default_cc_address_fields($form_id, $return = false)
 {
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$give_user_info = apply_filters('give_default_cc_address_fields_user_info', _give_get_prefill_form_field_values( $form_id ));
 
 	ob_start();
 	?>
