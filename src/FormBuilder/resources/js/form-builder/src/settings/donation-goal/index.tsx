@@ -4,7 +4,8 @@ import {
     __experimentalNumberControl as NumberControl,
     PanelBody,
     PanelRow,
-    SelectControl, TextareaControl,
+    SelectControl,
+    TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
@@ -12,29 +13,53 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 
 const {isRecurringEnabled} = getFormBuilderWindowData();
 
+const oneTimeGoalOptions = [
+    {
+        value: 'amount',
+        label: __('Amount Raised', 'give'),
+        description: __('The total amount raised for the form', 'give'),
+    },
+    {
+        value: 'donations',
+        label: __('Number of Donations', 'give'),
+        description: __('The total number of donations made for the form', 'give'),
+    },
+    {
+        value: 'donors',
+        label: __('Number of Donors', 'give'),
+        description: __('The total number of unique donors who have donated to the form', 'give'),
+    },
+];
+
+const recurringGoalTypeOptions = [
+    {
+        value: 'amountFromSubscriptions',
+        label: __('Amount Raised (from subscriptions)', 'give'),
+        description: __('The total amount raised for the form (from subscriptions)', 'give'),
+    },
+    {
+        value: 'subscriptions',
+        label: __('Number of Subscriptions', 'give'),
+        description: __('The total number of subscriptions made for the form', 'give'),
+    },
+    {
+        value: 'donorsFromSubscriptions',
+        label: __('Number of Donors (from subscriptions)', 'give'),
+        description: __('The total number of unique donors who have donated to the form (from subscriptions)', 'give'),
+    },
+];
+
+const goalTypeOptions = isRecurringEnabled ? oneTimeGoalOptions.concat(recurringGoalTypeOptions) : oneTimeGoalOptions;
+
 const DonationGoalSettings = () => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount, goalShouldOnlyCountRecurringDonations},
+        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
-    const goalTypeOptions = [
-        {
-            value: 'amount',
-            label: __('Amount Raised', 'give'),
-            description: __('The total amount raised for the form', 'give'),
-        },
-        {
-            value: 'donations',
-            label: __('Number of Donations', 'give'),
-            description: __('The total number of donations made for the form', 'give'),
-        },
-        {
-            value: 'donors',
-            label: __('Number of Donors', 'give'),
-            description: __('The total number of unique donors who have donated to the form', 'give'),
-        },
-    ];
+    if (isRecurringEnabled) {
+        goalTypeOptions.concat(recurringGoalTypeOptions);
+    }
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
@@ -93,19 +118,6 @@ const DonationGoalSettings = () => {
                             onChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 100)}
                         />
                     </PanelRow>
-
-                    {isRecurringEnabled && (
-                      <PanelRow>
-                          <ToggleControl
-                            label={__('Only Count Recurring Donations', 'give')}
-                            help={__('Do you want to only count recurring donations towards the goal?', 'give')}
-                            checked={goalShouldOnlyCountRecurringDonations}
-                            onChange={() => {
-                                dispatch(setFormSettings({goalShouldOnlyCountRecurringDonations: !goalShouldOnlyCountRecurringDonations}));
-                            }}
-                          />
-                      </PanelRow>
-                    )}
                 </>
             )}
         </PanelBody>

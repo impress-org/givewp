@@ -41,5 +41,4 @@ export type FormSettings = {
     multiStepFirstButtonText: string;
     multiStepNextButtonText: string;
     pdfSettings: object;
-    goalShouldOnlyCountRecurringDonations: boolean;
 };

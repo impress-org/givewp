@@ -47,11 +47,17 @@ class DonationFormGoalData implements Arrayable
 
     /**
      * @since 3.0.0
+     *
+     * @return int|float|null
      */
-    public function getCurrentAmount(): int
+    public function getCurrentAmount()
     {
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
+
+        if ($this->goalType->isAmount()) {
+            return $donationFormRepository->getTotalRevenue($this->formId);
+        }
 
         if ($this->goalType->isDonors()) {
             return $donationFormRepository->getTotalNumberOfDonors($this->formId);
@@ -61,28 +67,39 @@ class DonationFormGoalData implements Arrayable
             return $donationFormRepository->getTotalNumberOfDonations($this->formId);
         }
 
-        return $donationFormRepository->getTotalRevenue($this->formId);
+        if ($this->goalType->isSubscriptions()) {
+            return $donationFormRepository->getTotalNumberOfSubscriptions($this->formId);
+        }
+
+        if ($this->goalType->isAmountFromSubscriptions()) {
+            return $donationFormRepository->getTotalRevenueFromSubscriptions($this->formId);
+        }
+
+        if ($this->goalType->isDonorsFromSubscriptions()) {
+            return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
+        }
+
+        return null;
     }
 
     /**
      * @since 3.0.0
-     *
-     * @return int|float
      */
-    public function getCurrentAmountFromSubscriptions()
+    public function getLabel(): string
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
-
-        if ($this->goalType->isDonors()) {
-            return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptionInitialDonations($this->formId);
+        if ($this->goalType->isDonors() || $this->goalType->isDonorsFromSubscriptions()){
+            return __('donors', 'give');
         }
 
         if ($this->goalType->isDonations()) {
-            return $donationFormRepository->getTotalNumberOfSubscriptionInitialDonations($this->formId);
+            return __('donations', 'give');
         }
 
-        return $donationFormRepository->getTotalRevenueFromSubscriptions($this->formId);
+        if ($this->goalType->isSubscriptions()) {
+            return __('recurring donations', 'give');
+        }
+
+        return __('amount', 'give');
     }
 
     /**
@@ -90,18 +107,18 @@ class DonationFormGoalData implements Arrayable
      */
     public function toArray(): array
     {
-        $currentAmount = $this->formSettings->goalShouldOnlyCountRecurringDonations ? $this->getCurrentAmountFromSubscriptions() : $this->getCurrentAmount();
+        $currentAmount = $this->getCurrentAmount();
         $progressPercentage = !$currentAmount || !$this->targetAmount ? 0 : ($currentAmount / $this->targetAmount) * 100;
 
         return [
             'type' => $this->goalType->getValue(),
-            'typeIsCount' => !$this->goalType->isAmount(),
-            'typeIsMoney' => $this->goalType->isAmount(),
+            'typeIsCount' => !$this->goalType->isAmount() && !$this->goalType->isAmountFromSubscriptions(),
+            'typeIsMoney' => $this->goalType->isAmount() || $this->goalType->isAmountFromSubscriptions(),
             'enabled' => $this->isEnabled,
             'show' => $this->isEnabled,
             'currentAmount' => $currentAmount,
             'targetAmount' => $this->targetAmount,
-            'label' => $this->goalType->isDonors() ? __('donors', 'give') : __('donations', 'give'),
+            'label' => $this->getLabel(),
             'progressPercentage' => $progressPercentage,
             'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100
         ];

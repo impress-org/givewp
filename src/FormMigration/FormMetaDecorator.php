@@ -101,15 +101,18 @@ class FormMetaDecorator extends FormModelDecorator
 
     public function getDonationGoalType(): GoalType
     {
+        $onlyRecurringEnabled = $this->isGoalCountingOnlyRecurringDonations();
+
         switch (give_get_form_goal_format($this->form->id)) {
             case 'donors':
-                return GoalType::DONORS();
+                return $onlyRecurringEnabled ? GoalType::DONORS_FROM_SUBSCRIPTIONS() : GoalType::DONORS();
             case 'donation': // @note v2: Singular
-                return GoalType::DONATIONS(); // @note v3: Plural
+                return $onlyRecurringEnabled ? GoalType::SUBSCRIPTIONS() : GoalType::DONATIONS();
+                // @note v3: Plural
             case 'amount':
             case 'percentage': // @note `percentage` is not supported in v3 - defaulting to `amount`
             default:
-                return GoalType::AMOUNT();
+                return $onlyRecurringEnabled ? GoalType::AMOUNT_FROM_SUBSCRIPTIONS() : GoalType::AMOUNT();
         }
     }
 

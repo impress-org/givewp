@@ -379,7 +379,7 @@ class DonationFormRepository
      *
      * @since 3.0.0
      */
-    public function getTotalNumberOfDonorsFromSubscriptionInitialDonations(int $formId): int
+    public function getTotalNumberOfDonorsFromSubscriptions(int $formId): int
     {
         return DB::table('give_donationmeta')
             ->where('meta_key', DonationMetaKeys::DONOR_ID)
@@ -414,7 +414,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      */
-    public function getTotalNumberOfSubscriptionInitialDonations(int $formId): int
+    public function getTotalNumberOfSubscriptions(int $formId): int
     {
         return DB::table('give_donationmeta')
             ->where('meta_key', DonationMetaKeys::FORM_ID)
