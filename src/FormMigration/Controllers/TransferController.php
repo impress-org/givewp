@@ -39,7 +39,7 @@ class TransferController
                 wp_trash_post($formV2->id);
             }
 
-            wp_update_post(['ID' => $v3FormId, 'post_status' => DonationFormStatus::PUBLISHED()->getValue()]);
+            wp_update_post(['ID' => $v3FormId, 'post_status' => $formV2->status->getValue()]);
             give_update_meta($v3FormId, 'transferredFormId', true);
         });
 
