@@ -11,9 +11,7 @@ const settings: FieldBlock['settings'] = {
     supports: {
         multiple: false,
     },
-    attributes: {
-        lock: {remove: false},
-    },
+    attributes: {},
     edit: Edit,
     icon: () => (
         <Icon

@@ -6,7 +6,7 @@ import blocksJson from '@givewp/form-builder/blocks.json';
  *
  * @since 3.0.0
  */
-const getDefaultBlockAttributes = (blockName: string) => {
+const getDefaultBlockAttributes = (blockName: string): any => {
     // @ts-ignore
     return blocksJson.flatMap(({innerBlocks}) => innerBlocks).find(({name}) => name === blockName)?.attributes;
 };

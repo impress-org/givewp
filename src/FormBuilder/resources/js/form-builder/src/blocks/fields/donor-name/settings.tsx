@@ -13,7 +13,6 @@ const settings: FieldBlock['settings'] = {
         multiple: false,
     },
     attributes: {
-        lock: {remove: true},
         showHonorific: {
             type: 'boolean',
             default: true,
