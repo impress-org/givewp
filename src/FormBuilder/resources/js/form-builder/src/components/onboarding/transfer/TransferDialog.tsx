@@ -43,12 +43,10 @@ function Confirmation({handleTransferConfirmation}) {
                 {__('Transferring donation data to the upgraded form', 'give')}
             </div>
 
-            <div>
+            <div className="givewp-dialog-content">
                 <Interweave
                     content={__('Type <strong>transfer</strong> to confirm transfer of donation data for the form selected. This means all blocks, shortcodes, and the form URL will automatically redirect to the upgraded form.', 'give')} />
             </div>
-
-            <br />
 
             <div>
                 <Input
@@ -157,11 +155,11 @@ export default function TransferSuccessDialog() {
 
     const Completed = () => (
         <>
-            <div className={cx('givewp-dialog-title', 'givewp-dialog-center')}>
+            <div className={cx('givewp-dialog-title-small', 'givewp-dialog-center')}>
                 {__('Transfer completed successfully', 'give')}
             </div>
 
-            <div className={cx('givewp-dialog-content', 'givewp-dialog-center')}>
+            <div className={cx('givewp-dialog-content-small', 'givewp-dialog-center')}>
                 {__('Your donation data was successfully transferred to the upgraded form.', 'give')}
             </div>
 
