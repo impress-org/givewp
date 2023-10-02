@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {InterfaceSkeleton} from '@wordpress/interface';
 import useToggleState from '../hooks/useToggleState';
 
@@ -11,22 +11,34 @@ import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
 import {Sidebar} from '@givewp/form-builder/components';
+import DesignSidebar from '../components/sidebar/Design'
+import {Button} from "@wordpress/components";
+import {listView, plus} from "@wordpress/icons";
+import {useEditorState} from "@givewp/form-builder/stores/editor-state";
+import EditorMode from "@givewp/form-builder/types/editorMode";
 
 export default function BlockEditorInterfaceSkeletonContainer() {
+
+    const {mode} = useEditorState();
+
+    if(EditorMode.design === mode) {
+        return <DesignEditorSkeleton />;
+    }
+
+    if(EditorMode.schema === mode) {
+        return <SchemaEditorSkeleton />;
+    }
+}
+
+const DesignEditorSkeleton = () => {
     const {createSuccessNotice} = useDispatch('core/notices');
 
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
-    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
-    const [selectedTab, setSelectedTab] = useState('form');
 
     return (
         <InterfaceSkeleton
             header={
                 <HeaderContainer
-                    selectedSecondarySidebar={selectedSecondarySidebar}
-                    toggleSelectedSecondarySidebar={(name) =>
-                        setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false)
-                    }
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
                     onSaveNotice={() => {
@@ -36,7 +48,66 @@ export default function BlockEditorInterfaceSkeletonContainer() {
                     }}
                 />
             }
-            content={'design' === selectedTab ? <DesignPreview /> : <FormBlocks />}
+            content={<DesignPreview />}
+            sidebar={<DesignSidebar />}
+            notices={<NoticesContainer />}
+        />
+    );
+}
+
+const SchemaEditorSkeleton = () => {
+    const {createSuccessNotice} = useDispatch('core/notices');
+
+    const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
+    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
+    const [selectedTab, setSelectedTab] = useState('form');
+
+    const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false)
+
+    const SecondarySidebarButtons = () => {
+        return (
+            <>
+                <div
+                    id="AddBlockButtonContainer"
+                    style={{
+                        padding: 'var(--givewp-spacing-2)',
+                        margin: 'calc(var(--givewp-spacing-2) * -1)',
+                    }}
+                >
+                    <Button
+                        style={{width: '32px', height: '32px', minWidth: '32px'}}
+                        className="rotate-icon"
+                        onClick={() => toggleSelectedSecondarySidebar('add')}
+                        isPressed={'add' === selectedSecondarySidebar}
+                        icon={plus}
+                        variant="primary"
+                    />
+                </div>
+                <Button
+                    style={{width: '32px', height: '32px'}}
+                    onClick={() => toggleSelectedSecondarySidebar('list')}
+                    isPressed={'list' === selectedSecondarySidebar}
+                    icon={listView}
+                />
+            </>
+        )
+    }
+
+    return (
+        <InterfaceSkeleton
+            header={
+                <HeaderContainer
+                    SecondarySidebarButtons={SecondarySidebarButtons}
+                    showSidebar={showSidebar}
+                    toggleShowSidebar={toggleShowSidebar}
+                    onSaveNotice={() => {
+                        createSuccessNotice(__('Form updated.', 'give'), {
+                            type: 'snackbar',
+                        });
+                    }}
+                />
+            }
+            content={<FormBlocks />}
             sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
             secondarySidebar={!!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />}
             notices={<NoticesContainer />}

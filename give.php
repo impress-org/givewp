@@ -391,7 +391,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.0.0');
+            define('GIVE_VERSION', '2.33.2');
         }
 
         // Plugin Root File.
@@ -480,10 +480,18 @@ final class Give
         }
     }
 
+    /**
+     * Install Give
+     *
+     * Runs on plugin activation and performs initial setup.
+     *
+     * @since 2.33.3 set network_wide parameter to true, enabling installing in WP multisite
+     * @since 1.0.0
+     */
     public function install()
     {
         $this->loadServiceProviders();
-        give_install();
+        give_install(true);
     }
 
     /**

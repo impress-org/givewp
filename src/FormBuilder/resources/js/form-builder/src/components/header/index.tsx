@@ -20,22 +20,22 @@ export default function Header({contentLeft, contentMiddle, contentRight}: Props
         >
             <section
                 style={{
+                    flex: 1,
                     display: 'flex',
                     gap: '0.5rem',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    flexBasis: '20%',
                 }}
             >
                 {contentLeft}
             </section>
-            <section>{contentMiddle}</section>
+            <section style={{flex: 1, textAlign: 'center'}}>{contentMiddle}</section>
             <section
                 style={{
+                    flex: 1,
                     display: 'flex',
                     gap: '0.5rem',
                     alignItems: 'center',
-                    flexBasis: '20%',
                     justifyContent: 'flex-end',
                 }}
             >

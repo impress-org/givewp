@@ -23,12 +23,12 @@ jobs:
         strategy:
             matrix:
                 php: [ 7.2, 7.4, 8.0 ]
-                mysql: [ 'mysql:5.6', 'mysql:8.0' ]
+                mysql: [ 'mysql:5.7', 'mysql:8.0' ]
                 wordpress: [ '6.0', latest ]
 
         services:
-            mysql56:
-                image: mysql:5.6
+            mysql57:
+                image: mysql:5.7
                 env:
                     MYSQL_ROOT_PASSWORD: N0Tweak!@123!
                 ports:
@@ -71,8 +71,8 @@ jobs:
             -   name: Store MySQL details in environment
                 run: |
                     case "$MYSQL_VERSION" in
-                      'mysql:5.6')
-                        MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
+                      'mysql:5.7')
+                        MYSQL_PORT=${{ job.services.mysql57.ports[3306] }}
                         MYSQL_PASS=N0Tweak!@123!
                         ;;
                       'mysql:8.0')

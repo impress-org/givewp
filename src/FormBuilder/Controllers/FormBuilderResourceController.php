@@ -132,13 +132,24 @@ class FormBuilderResourceController
         }
 
         if (!empty($missingBlockLabels)) {
-            $requiredBlockLabels = implode("', '", $missingBlockLabels);
+            $requiredBlockList = implode(
+                '',
+                array_map(static function ($label) {
+                    return "<li>$label</li>";
+                }, $missingBlockLabels)
+            );
 
+            // return a WP_Error with a list of missing blocks using __() and sprintf()
             return new WP_Error(
-                404,
-                __(
-                    "The following required block(s) were not found: '$requiredBlockLabels'. Please add these missing block(s) and try again.",
-                    'give'
+                400,
+                sprintf(
+                    _n(
+                        "<p>The following block was not found and is required for the form to work:</p>%s<p>Please add the missing block and try again.</p>",
+                        "<p>The following blocks were not found and are required for the form to work:</p>%s<p>Please add these missing blocks and try again.</p>",
+                        count($missingBlockLabels),
+                        'give'
+                    ),
+                    "<ul>$requiredBlockList</ul>"
                 )
             );
         }

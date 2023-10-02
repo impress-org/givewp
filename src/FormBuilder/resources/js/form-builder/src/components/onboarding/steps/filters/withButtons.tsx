@@ -29,7 +29,7 @@ const withButtons = (steps) => {
 
         if(index === steps.length - 1) {
             return {...step, ...{
-                buttons: [complete]
+                buttons: [previous, complete]
             }}
         }
 

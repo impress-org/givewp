@@ -182,7 +182,7 @@ function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayO
                         window.location.reload();
                     }}
                 >
-                    <gateway.Fields />
+                    {isActive && <gateway.Fields />}
                 </ErrorBoundary>
             </div>
         </li>
