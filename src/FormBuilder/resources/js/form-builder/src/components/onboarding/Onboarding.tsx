@@ -97,9 +97,9 @@ function TourEffectsAndEvents() {
 }
 
 const Onboarding = () => {
-    const {transfer} = useFormState();
+    const {transfer, settings: {designId}} = useFormState();
     const {mode} = useEditorState();
-    const [showDesignSelector, setShowDesignSelector] = useState(!!window.onboardingTourData.autoStartDesignTour);
+    const [showDesignSelector, setShowDesignSelector] = useState(!designId);
     const [showSchemaWelcome, setShowSchemaWelcome] = useState(!!window.onboardingTourData.autoStartSchemaTour);
 
     if (transfer.showUpgradeModal) {

@@ -18,7 +18,7 @@ export default ({onContinue}) => {
 
     const onProceed = () => {
         onContinue()
-        tour.start()
+        window.onboardingTourData.autoStartDesignTour && tour.start()
     }
 
     const [selectedDesign, setSelectedDesign] = useState(null)

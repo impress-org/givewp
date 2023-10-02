@@ -40,6 +40,7 @@ class CreateFormRoute
                     'settings' => FormSettings::fromArray([
                         'enableDonationGoal' => true,
                         'goalAmount' => 1000,
+                        'designId' => null,
                     ]),
                     'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);
