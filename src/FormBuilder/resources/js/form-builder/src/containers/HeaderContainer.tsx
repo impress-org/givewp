@@ -9,7 +9,6 @@ import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
-import stripTags from '@givewp/form-builder/common/stripTags';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
@@ -110,10 +109,6 @@ const HeaderContainer = ({
                         className={'givewp-form-title'}
                         value={formTitle}
                         onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
-                        onBlur={(event) => {
-                            const cleanedFormTitle = stripTags(event.target.value);
-                            dispatch(setFormSettings({formTitle: cleanedFormTitle}));
-                        }}
                 />
                 }
                 contentRight={
