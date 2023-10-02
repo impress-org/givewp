@@ -113,7 +113,7 @@ class TestListDonationForms extends TestCase
             $expectedItem['permalink'] = get_permalink($donationForm->id);
 
             $expectedItem['v3form'] = false;
-            $expectedItem['status_raw'] = $donationForm->status;
+            $expectedItem['status_raw'] = $donationForm->status->getValue();
 
             $expectedItems[] = $expectedItem;
         }
