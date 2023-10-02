@@ -236,12 +236,22 @@ export default function DonationFormsListTable() {
                         }))}
                     />
                 </div>
-                <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
-                    {__('Add Form', 'give')}
-                </a>
-                <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
-                    {__('Switch to Legacy View')}
-                </button>
+                <div style={{display: 'flex', gap: 'var(--givewp-spacing-2)'}}>
+                    <button className={styles.addFormButton} onClick={showLegacyDonationForms} style={{
+                        color: 'var(--wp-blue-blue-50)',
+                        borderColor: 'var(--wp-blue-blue-50)',
+                        backgroundColor: 'white',
+                    }}>
+                        {__('Switch to Legacy View')}
+                    </button>
+                    <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton} style={{
+                        color: 'white',
+                        borderColor: 'var(--wp-blue-blue-50)',
+                        backgroundColor: 'var(--wp-blue-blue-50)',
+                    }}>
+                        {__('Add Form', 'give')}
+                    </a>
+                </div>
             </ListTablePage>
         </OnboardingContext.Provider>
     );
