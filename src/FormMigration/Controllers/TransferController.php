@@ -3,6 +3,7 @@
 namespace Give\FormMigration\Controllers;
 
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\FormMigration\Actions\TransferDonations;
 use Give\FormMigration\Actions\TransferFormUrl;
@@ -38,6 +39,7 @@ class TransferController
                 wp_trash_post($formV2->id);
             }
 
+            wp_update_post(['ID' => $v3FormId, 'post_status' => DonationFormStatus::PUBLISHED()->getValue()]);
             give_update_meta($v3FormId, 'transferredFormId', true);
         });
 
