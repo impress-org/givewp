@@ -40,10 +40,11 @@ class CreateFormRoute
                     'settings' => FormSettings::fromArray([
                         'enableDonationGoal' => true,
                         'goalAmount' => 1000,
-                        'designId' => null,
                     ]),
                     'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);
+
+                $form->settings->designId = null;
 
                 Hooks::doAction('givewp_form_builder_new_form', $form);
 

@@ -194,7 +194,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
         $self->goalType = !empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
-        $self->designId = $array['designId'];
+        $self->designId = $array['designId'] ?? ClassicFormDesign::id();
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
