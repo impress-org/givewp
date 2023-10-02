@@ -66,8 +66,8 @@ const HeaderContainer = ({
                 setSaving(null);
                 setErrorMessage(error.message);
             })
-            .then(({pageSlug}: FormSettings) => {
-                dispatch(setFormSettings({pageSlug}));
+            .then(({formTitle, pageSlug}: FormSettings) => {
+                dispatch(setFormSettings({formTitle, pageSlug}));
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 onSaveNotice();
