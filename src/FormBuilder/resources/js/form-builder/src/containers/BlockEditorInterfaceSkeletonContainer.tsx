@@ -16,6 +16,7 @@ import {Button} from "@wordpress/components";
 import {listView, plus} from "@wordpress/icons";
 import {useEditorState} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 export default function BlockEditorInterfaceSkeletonContainer() {
 
@@ -34,6 +35,7 @@ const DesignEditorSkeleton = () => {
     const {createSuccessNotice} = useDispatch('core/notices');
 
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
+    const {settings: formSettings} = useFormState();
 
     return (
         <InterfaceSkeleton
@@ -42,7 +44,11 @@ const DesignEditorSkeleton = () => {
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
                     onSaveNotice={() => {
-                        createSuccessNotice(__('Form updated.', 'give'), {
+                        const notice = 'publish' === formSettings.formStatus
+                            ? __('Form updated.', 'give')
+                            : __('Form published.', 'give')
+
+                        createSuccessNotice(notice, {
                             type: 'snackbar',
                         });
                     }}
@@ -61,6 +67,7 @@ const SchemaEditorSkeleton = () => {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const [selectedTab, setSelectedTab] = useState('form');
+    const {settings: formSettings} = useFormState();
 
     const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false)
 
@@ -101,7 +108,11 @@ const SchemaEditorSkeleton = () => {
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
                     onSaveNotice={() => {
-                        createSuccessNotice(__('Form updated.', 'give'), {
+                        const notice = 'publish' === formSettings.formStatus
+                            ? __('Form updated.', 'give')
+                            : __('Form published.', 'give')
+
+                        createSuccessNotice(notice, {
                             type: 'snackbar',
                         });
                     }}
