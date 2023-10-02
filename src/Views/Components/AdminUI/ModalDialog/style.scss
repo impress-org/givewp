@@ -22,6 +22,7 @@
         background-color: #fff;
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
+        color: var(--givewp-grey-700);
 
         .givewp-modal-header {
             display: flex;
@@ -34,6 +35,7 @@
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
             border-bottom: 1px solid var(--givewp-grey-50);
+            color: var(--givewp-grey-900);
         }
 
         .givewp-modal-icon-header {

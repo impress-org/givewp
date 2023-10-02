@@ -12,6 +12,7 @@
     margin-bottom: var(--givewp-spacing-3);
     display: flex;
     align-items: center;
+    color: var(--givewp-grey-900);
 
     svg {
         margin-right: var(--givewp-spacing-2);
@@ -58,6 +59,12 @@
         width: 80%;
         height: auto;
     }
+}
+
+.givewp-dialog-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: var(--givewp-spacing-6);
 }
 
 /**
