@@ -11,55 +11,13 @@ import {
 import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
-const {isRecurringEnabled} = getFormBuilderWindowData();
-
-const oneTimeGoalOptions = [
-    {
-        value: 'amount',
-        label: __('Amount Raised', 'give'),
-        description: __('The total amount raised for the form', 'give'),
-    },
-    {
-        value: 'donations',
-        label: __('Number of Donations', 'give'),
-        description: __('The total number of donations made for the form', 'give'),
-    },
-    {
-        value: 'donors',
-        label: __('Number of Donors', 'give'),
-        description: __('The total number of unique donors who have donated to the form', 'give'),
-    },
-];
-
-const recurringGoalTypeOptions = [
-    {
-        value: 'amountFromSubscriptions',
-        label: __('Subscription Amount Raised', 'give'),
-        description: __('The total amount raised for the form through subscriptions', 'give'),
-    },
-    {
-        value: 'subscriptions',
-        label: __('Number of Subscriptions', 'give'),
-        description: __('The total number of subscriptions made for the form', 'give'),
-    },
-    {
-        value: 'donorsFromSubscriptions',
-        label: __('Number of Subscribers', 'give'),
-        description: __('The total number of unique donors who have donated to the form through subscriptions', 'give'),
-    },
-];
-
-const goalTypeOptions = isRecurringEnabled ? oneTimeGoalOptions.concat(recurringGoalTypeOptions) : oneTimeGoalOptions;
+const {goalTypeOptions} = getFormBuilderWindowData();
 
 const DonationGoalSettings = () => {
     const {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-
-    if (isRecurringEnabled) {
-        goalTypeOptions.concat(recurringGoalTypeOptions);
-    }
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
