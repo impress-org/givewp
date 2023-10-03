@@ -146,6 +146,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     function give_sendwp_disconnect() {
                         var data = {
                             'action': 'give_sendwp_disconnect',
+                            '_ajax_nonce': '<?php echo wp_create_nonce( 'give_sendwp_disconnect' ); ?>
                         };
 
                         jQuery.post(ajaxurl, data, function( response ) {

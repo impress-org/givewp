@@ -328,9 +328,12 @@ add_action( 'wp_ajax_give_sendwp_remote_install', 'give_sendwp_remote_install_ha
 /**
  * Handle deactivation of SendWP via ajax
  *
+ * @unreleased add nonce check
  * @since 2.9.15
  */
 function give_sendwp_disconnect () {
+
+  check_ajax_referer( 'give_sendwp_disconnect');
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_send_json_error( array(
