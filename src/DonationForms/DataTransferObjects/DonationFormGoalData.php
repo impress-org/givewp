@@ -109,11 +109,12 @@ class DonationFormGoalData implements Arrayable
     {
         $currentAmount = $this->getCurrentAmount();
         $progressPercentage = !$currentAmount || !$this->targetAmount ? 0 : ($currentAmount / $this->targetAmount) * 100;
+        $goalTypeIsAmount = $this->goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS());
 
         return [
             'type' => $this->goalType->getValue(),
-            'typeIsCount' => !$this->goalType->isAmount() && !$this->goalType->isAmountFromSubscriptions(),
-            'typeIsMoney' => $this->goalType->isAmount() || $this->goalType->isAmountFromSubscriptions(),
+            'typeIsCount' => !$goalTypeIsAmount,
+            'typeIsMoney' => $goalTypeIsAmount,
             'enabled' => $this->isEnabled,
             'show' => $this->isEnabled,
             'currentAmount' => $currentAmount,
