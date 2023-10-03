@@ -16,7 +16,6 @@ import {Button} from "@wordpress/components";
 import {listView, plus} from "@wordpress/icons";
 import {useEditorState} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
-import {useFormState} from "@givewp/form-builder/stores/form-state";
 
 export default function BlockEditorInterfaceSkeletonContainer() {
 
@@ -32,10 +31,7 @@ export default function BlockEditorInterfaceSkeletonContainer() {
 }
 
 const DesignEditorSkeleton = () => {
-    const {createSuccessNotice} = useDispatch('core/notices');
-
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
-    const {settings: formSettings} = useFormState();
 
     return (
         <InterfaceSkeleton
@@ -43,15 +39,6 @@ const DesignEditorSkeleton = () => {
                 <HeaderContainer
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
-                    onSaveNotice={() => {
-                        const notice = 'publish' === formSettings.formStatus
-                            ? __('Form updated.', 'give')
-                            : __('Form published.', 'give')
-
-                        createSuccessNotice(notice, {
-                            type: 'snackbar',
-                        });
-                    }}
                 />
             }
             content={<DesignPreview />}
@@ -62,12 +49,9 @@ const DesignEditorSkeleton = () => {
 }
 
 const SchemaEditorSkeleton = () => {
-    const {createSuccessNotice} = useDispatch('core/notices');
-
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const [selectedTab, setSelectedTab] = useState('form');
-    const {settings: formSettings} = useFormState();
 
     const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false)
 
@@ -107,15 +91,6 @@ const SchemaEditorSkeleton = () => {
                     SecondarySidebarButtons={SecondarySidebarButtons}
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
-                    onSaveNotice={() => {
-                        const notice = 'publish' === formSettings.formStatus
-                            ? __('Form updated.', 'give')
-                            : __('Form published.', 'give')
-
-                        createSuccessNotice(notice, {
-                            type: 'snackbar',
-                        });
-                    }}
                 />
             }
             content={<FormBlocks />}
