@@ -48,38 +48,28 @@ class DonationFormGoalData implements Arrayable
     /**
      * @since 3.0.0
      *
-     * @return int|float|null
+     * @return int|float
      */
     public function getCurrentAmount()
     {
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
 
-        if ($this->goalType->isAmount()) {
-            return $donationFormRepository->getTotalRevenue($this->formId);
-        }
-
-        if ($this->goalType->isDonors()) {
-            return $donationFormRepository->getTotalNumberOfDonors($this->formId);
-        }
-
-        if ($this->goalType->isDonations()) {
-            return $donationFormRepository->getTotalNumberOfDonations($this->formId);
-        }
-
-        if ($this->goalType->isSubscriptions()) {
-            return $donationFormRepository->getTotalNumberOfSubscriptions($this->formId);
-        }
-
-        if ($this->goalType->isAmountFromSubscriptions()) {
-            return $donationFormRepository->getTotalInitialAmountFromSubscriptions($this->formId);
-        }
-
-        if ($this->goalType->isDonorsFromSubscriptions()) {
-            return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
-        }
-
-        return null;
+        switch ($this->goalType):
+            case GoalType::DONORS():
+                return $donationFormRepository->getTotalNumberOfDonors($this->formId);
+            case GoalType::DONATIONS():
+                return $donationFormRepository->getTotalNumberOfDonations($this->formId);
+            case GoalType::SUBSCRIPTIONS():
+                return $donationFormRepository->getTotalNumberOfSubscriptions($this->formId);
+            case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
+                return $donationFormRepository->getTotalInitialAmountFromSubscriptions($this->formId);
+            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
+                return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
+            case GoalType::AMOUNT():
+            default:
+                return $donationFormRepository->getTotalRevenue($this->formId);
+        endswitch;
     }
 
     /**
@@ -87,7 +77,7 @@ class DonationFormGoalData implements Arrayable
      */
     public function getLabel(): string
     {
-        if ($this->goalType->isDonors() || $this->goalType->isDonorsFromSubscriptions()){
+        if ($this->goalType->isDonors() || $this->goalType->isDonorsFromSubscriptions()) {
             return __('donors', 'give');
         }
 
