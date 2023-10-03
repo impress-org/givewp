@@ -381,22 +381,9 @@ class DonationFormRepository
      */
     public function getTotalNumberOfDonorsFromSubscriptions(int $formId): int
     {
-        return DB::table('give_donationmeta')
-            ->where('meta_key', DonationMetaKeys::DONOR_ID)
-            ->whereIn('donation_id', function ($builder) {
-                $builder
-                    ->select('donation_id')
-                    ->from('give_donationmeta')
-                    ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION)
-                    ->where('meta_value', 1);
-            })
-            ->whereIn('donation_id', function ($builder) use ($formId) {
-                $builder
-                    ->select('donation_id')
-                    ->from('give_donationmeta')
-                    ->where('meta_key', DonationMetaKeys::FORM_ID)
-                    ->where('meta_value', $formId);
-            })->count('DISTINCT meta_value');
+        return DB::table('give_subscriptions')
+            ->where('product_id', $formId)
+            ->count('DISTINCT customer_id');
     }
 
     /**

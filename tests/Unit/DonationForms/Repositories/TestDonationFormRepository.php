@@ -9,6 +9,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Database\DB;
@@ -18,6 +19,7 @@ use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -310,5 +312,46 @@ final class TestDonationFormRepository extends TestCase
         );
 
         $this->assertEquals($formSchema, $form);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldGetTotalNumberOfSubscriptions(): void
+    {
+        $form = DonationForm::factory()->create();
+
+        Subscription::factory()->count(2)->createWithDonation([
+            'donationFormId' => $form->id,
+        ]);
+
+        $this->assertSame(2, $this->repository->getTotalNumberOfSubscriptions($form->id));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldGetTotalNumberOfDonorsFromSubscriptions(): void
+    {
+        $donor1 = Donor::factory()->create();
+        $donor2 = Donor::factory()->create();
+        $form = DonationForm::factory()->create();
+
+        $subscription1 = Subscription::factory()->createWithDonation([
+            'donationFormId' => $form->id,
+            'donorId' => $donor1->id,
+        ]);
+
+        $subscription2 = Subscription::factory()->createWithDonation([
+            'donationFormId' => $form->id,
+            'donorId' => $donor2->id,
+        ]);
+
+        $subscription3WithDonor2 = Subscription::factory()->createWithDonation([
+            'donationFormId' => $form->id,
+            'donorId' => $donor2->id,
+        ]);
+
+        $this->assertSame(2, $this->repository->getTotalNumberOfDonorsFromSubscriptions($form->id));
     }
 }
