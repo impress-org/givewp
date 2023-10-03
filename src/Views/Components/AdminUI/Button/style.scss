@@ -24,14 +24,14 @@
 
     &.primary {
         color: var(--givewp-shades-white);
-        background: var(--givewp-blue-500);
+        background: var(--wp-blue-blue-50, #2271b1);
 
         &:hover {
-            background-color: var(--givewp-blue-600);
+            background-color: var(--wp-blue-blue-60, #135e96);
         }
 
         &:active {
-            background-color: var(--givewp-blue-500);
+            background-color: var(--wp-blue-blue-50, #2271b1);
         }
     }
 
