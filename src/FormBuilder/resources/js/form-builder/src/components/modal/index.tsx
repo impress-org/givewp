@@ -1,5 +1,5 @@
 import {Button, Icon, Modal as GutenbergModal} from '@wordpress/components';
-import GutenbergModalProps from './types'
+import type GutenbergModalProps from './types'
 import {info, warning} from '@wordpress/icons';
 import cx from 'classnames';
 import './styles.scss';
