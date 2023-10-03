@@ -241,6 +241,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->multiStepFirstButtonText = $array['multiStepFirstButtonText'] ?? __('Donate now', 'give');
 
         $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
+
         $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
 
         return $self;
