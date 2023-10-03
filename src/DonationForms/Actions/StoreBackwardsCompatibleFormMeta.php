@@ -93,7 +93,11 @@ class StoreBackwardsCompatibleFormMeta
 
         $this->saveSingleFormMeta($donationForm->id, $metaLookup[$legacyGoalType], $goalAmount);
 
-        if ($goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())) {
+        if ($goalType->isOneOf(
+            GoalType::SUBSCRIPTIONS(),
+            GoalType::DONORS_FROM_SUBSCRIPTIONS(),
+            GoalType::AMOUNT_FROM_SUBSCRIPTIONS()
+        )) {
             $this->saveSingleFormMeta($donationForm->id, '_give_recurring_goal_format', 1);
         }
     }
@@ -108,7 +112,7 @@ class StoreBackwardsCompatibleFormMeta
                 return 'donors';
             default:
                 return 'amount';
-                endswitch;
+        endswitch;
     }
 
     /**
