@@ -34,8 +34,8 @@ const oneTimeGoalOptions = [
 const recurringGoalTypeOptions = [
     {
         value: 'amountFromSubscriptions',
-        label: __('Amount Raised (from subscriptions)', 'give'),
-        description: __('The total amount raised for the form (from subscriptions)', 'give'),
+        label: __('Subscription Amount Raised', 'give'),
+        description: __('The total amount raised for the form through subscriptions', 'give'),
     },
     {
         value: 'subscriptions',
@@ -44,8 +44,8 @@ const recurringGoalTypeOptions = [
     },
     {
         value: 'donorsFromSubscriptions',
-        label: __('Number of Donors (from subscriptions)', 'give'),
-        description: __('The total number of unique donors who have donated to the form (from subscriptions)', 'give'),
+        label: __('Number of Subscribers', 'give'),
+        description: __('The total number of unique donors who have donated to the form through subscriptions', 'give'),
     },
 ];
 
