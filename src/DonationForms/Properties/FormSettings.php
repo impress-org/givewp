@@ -8,8 +8,6 @@ use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
-use const FILTER_VALIDATE_BOOLEAN;
-
 class FormSettings implements Arrayable, Jsonable
 {
     /**
@@ -195,7 +193,9 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = !empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
+        $self->goalType = !empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
+            $array['goalType']
+        ) : GoalType::AMOUNT();
         $self->designId = $array['designId'] ?? ClassicFormDesign::id();
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
@@ -244,7 +244,9 @@ class FormSettings implements Arrayable, Jsonable
 
         $self->multiStepNextButtonText = $array['multiStepNextButtonText'] ?? __('Continue', 'give');
 
-        $self->pdfSettings = isset($array['pdfSettings']) && is_array($array['pdfSettings']) ? $array['pdfSettings'] : [];
+        $self->pdfSettings = isset($array['pdfSettings']) && is_array(
+            $array['pdfSettings']
+        ) ? $array['pdfSettings'] : [];
 
         return $self;
     }
