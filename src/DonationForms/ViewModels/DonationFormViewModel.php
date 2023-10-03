@@ -162,7 +162,7 @@ class DonationFormViewModel
     private function getTotalRevenue(GoalType $goalType)
     {
       if ($goalType->isAmountFromSubscriptions()){
-        return $this->donationFormRepository->getTotalRevenueFromSubscriptions($this->donationFormId);
+        return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
       }
 
       return $this->donationFormRepository->getTotalRevenue($this->donationFormId);

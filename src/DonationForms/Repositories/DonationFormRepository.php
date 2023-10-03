@@ -18,11 +18,9 @@ use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 /**
  * @since 3.0.0
@@ -428,8 +426,9 @@ class DonationFormRepository
 
     /**
      * @since 3.0.0
+     * @return int|float
      */
-    public function getTotalRevenueFromSubscriptions(int $formId): float
+    public function getTotalInitialAmountFromSubscriptions(int $formId)
     {
         return DB::table('give_subscriptions')
             ->where('product_id', $formId)

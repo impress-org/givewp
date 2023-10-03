@@ -354,4 +354,24 @@ final class TestDonationFormRepository extends TestCase
 
         $this->assertSame(2, $this->repository->getTotalNumberOfDonorsFromSubscriptions($form->id));
     }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldGetTotalRevenueFromSubscriptions(): void
+    {
+        $form = DonationForm::factory()->create();
+
+        $subscription1 = Subscription::factory()->createWithDonation([
+            'donationFormId' => $form->id,
+        ]);
+
+        $subscription2 = Subscription::factory()->createWithDonation([
+            'donationFormId' => $form->id,
+        ]);
+
+        $amount = $subscription1->amount->add($subscription2->amount);
+
+        $this->assertEquals($amount->formatToDecimal(), $this->repository->getTotalInitialAmountFromSubscriptions($form->id));
+    }
 }

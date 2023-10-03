@@ -72,7 +72,7 @@ class DonationFormGoalData implements Arrayable
         }
 
         if ($this->goalType->isAmountFromSubscriptions()) {
-            return $donationFormRepository->getTotalRevenueFromSubscriptions($this->formId);
+            return $donationFormRepository->getTotalInitialAmountFromSubscriptions($this->formId);
         }
 
         if ($this->goalType->isDonorsFromSubscriptions()) {
