@@ -305,11 +305,8 @@ class Give_Notices {
             return;
         }
 
-        if ($errors) {
-            self::print_frontend_errors($errors);
-
-            give_clear_errors();
-        }
+        self::print_frontend_errors($errors);
+        give_clear_errors();
     }
 
 	/**
