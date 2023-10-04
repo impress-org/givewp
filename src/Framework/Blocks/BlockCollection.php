@@ -98,6 +98,21 @@ class BlockCollection implements Arrayable
     }
 
     /**
+     * @unreleased
+     *
+     * @return BlockModel|void
+     */
+    public function findParentByBlockCollection(BlockCollection $blockCollection)
+    {
+        foreach ($this->blocks as $block) {
+            if ($block->innerBlocks === $blockCollection) {
+                return $block;
+            }
+        }
+        // @todo Throw exception if not found.
+    }
+
+    /**
      * @since 3.0.0
      *
      * @return BlockModel|BlockCollection|null
