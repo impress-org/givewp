@@ -184,32 +184,70 @@
         }
     }
 
-
     .tooltip {
         display: none;
-        position: absolute;
         width: 230px;
         bottom: 25px;
         left: -10px;
+    }
+
+    .tooltip::after {
+        top: 100%;
+        left: 14px;
+    }
+
+    .tooltipContainer:hover .tooltip {
+        display: unset;
+    }
+}
+
+.upgradedForm {
+    width: max(7.5rem, 120px);
+    position: relative;
+
+    .tooltip {
+        width: 18rem;
+        bottom: calc(100% + 10px);
+        right: 0;
+    }
+
+    .tooltip::after {
+        top: 100%;
+        right: 55px;
+    }
+
+    .tooltipContainer {
+        position: relative;
+    }
+}
+
+.migratedForm,
+.upgradedForm {
+    .tooltip {
+        position: absolute;
         background-color: #19661c;
         color: #fff;
         padding: 1rem;
         border-radius: 4px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+        font-size: 0.75rem;
+        font-weight: 500;
     }
 
     .tooltip::after {
         content: " ";
         position: absolute;
-        top: 100%;
-        left: 14px;
         border-width: 5px;
         border-style: solid;
         border-color: #19661c transparent transparent transparent;
     }
 
-    .tooltipContainer:hover .tooltip {
-        display: unset;
+    .link {
+        cursor: pointer;
+        margin-top: 2rem;
+        margin-bottom: -0.4rem;
+        font-weight: bold;
+        float: right;
     }
 }
 

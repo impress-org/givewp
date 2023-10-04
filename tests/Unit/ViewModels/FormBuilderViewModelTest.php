@@ -81,6 +81,7 @@ class FormBuilderViewModelTest extends TestCase
                     'checkboxLabel' => give_get_option('agree_to_terms_label'),
                     'agreementText' => give_get_option('agreement_text'),
                 ],
+                'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
             ],
             $viewModel->storageData($formId)
         );
