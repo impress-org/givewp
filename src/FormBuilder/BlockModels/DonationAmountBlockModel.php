@@ -64,7 +64,7 @@ class DonationAmountBlockModel
      */
     public function getLevels(): array
     {
-        return array_map('absint', $this->block->getAttribute('levels'));
+        return array_map('give_format_amount', $this->block->getAttribute('levels'));
     }
 
     /**
