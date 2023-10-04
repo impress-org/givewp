@@ -218,39 +218,6 @@ class FormFieldManager extends FormMigrationStep
         $this->inserter = [$block->innerBlocks, 'append'];
     }
 
-    private function applyCommonAttributes($block, $field): BlockModel
-    {
-        $block->setAttribute('fieldName', $field['name']);
-
-        if (array_key_exists('required', $field)) {
-            $block->setAttribute('required', $field['required'] === 'yes');
-        }
-
-        if (array_key_exists('label', $field)) {
-            $block->setAttribute('label', $field['label']);
-        }
-
-        if (array_key_exists('placeholder', $field)) {
-            $block->setAttribute('placeholder', $field['placeholder']);
-        }
-
-        if (array_key_exists('help', $field)) {
-            $block->setAttribute('description', $field['help']);
-        }
-
-        if (array_key_exists('default', $field)) {
-            $block->setAttribute('defaultValue', $field['default']);
-        }
-
-        return $block;
-    }
-
-    private function insertBlock($block): void
-    {
-        list($blockCollection, $method, $target) = array_pad($this->inserter, 3, null);
-        call_user_func_array([$blockCollection, $method], array_filter([$target, $block]));
-    }
-
     private function getInitialInserter(): array
     {
         $placement = $this->formV2->getFormFieldsPlacement();
@@ -283,5 +250,38 @@ class FormFieldManager extends FormMigrationStep
                 $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/donation-amount');
                 return [$parentBlock->innerBlocks, 'append'];
         }
+    }
+
+    private function applyCommonAttributes($block, $field): BlockModel
+    {
+        $block->setAttribute('fieldName', $field['name']);
+
+        if (array_key_exists('required', $field)) {
+            $block->setAttribute('required', $field['required'] === 'yes');
+        }
+
+        if (array_key_exists('label', $field)) {
+            $block->setAttribute('label', $field['label']);
+        }
+
+        if (array_key_exists('placeholder', $field)) {
+            $block->setAttribute('placeholder', $field['placeholder']);
+        }
+
+        if (array_key_exists('help', $field)) {
+            $block->setAttribute('description', $field['help']);
+        }
+
+        if (array_key_exists('default', $field)) {
+            $block->setAttribute('defaultValue', $field['default']);
+        }
+
+        return $block;
+    }
+
+    private function insertBlock($block): void
+    {
+        list($blockCollection, $method, $target) = array_pad($this->inserter, 3, null);
+        call_user_func_array([$blockCollection, $method], array_filter([$target, $block]));
     }
 }
