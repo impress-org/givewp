@@ -353,7 +353,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                 3
             );
 
-            // Add legacy payment gateways to v2 gateways if they exists.
+            // Add legacy payment gateways to v2 gateways if they exist.
             if ($legacyPaymentGateways = array_diff_key($gateways, $v2Gateways, $v3Gateways)) {
                 $v2Gateways = array_merge($v2Gateways, $legacyPaymentGateways);
             }
