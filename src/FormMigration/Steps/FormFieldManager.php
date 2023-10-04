@@ -111,7 +111,7 @@ class FormFieldManager extends FormMigrationStep
         }, $field['extension']);
 
         return BlockModel::make([
-            'name' => 'givewp-form-field-manager/fileUpload',
+            'name' => 'givewp-form-field-manager/file-upload',
             'attributes' => [
                 'maxFileSize' => $field['max_size'],
                 'allowedFileTypes' => $allowedFileTypes,
@@ -163,7 +163,7 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/phone',
             'attributes' => [
-                'format' => $phoneFormat,
+                'phoneFormat' => $phoneFormat,
             ]
         ]);
     }
@@ -189,7 +189,7 @@ class FormFieldManager extends FormMigrationStep
     private function addTextField($field): BlockModel
     {
         return BlockModel::make([
-            'name' => 'givewp-form-field-manager/text',
+            'name' => 'givewp/text',
         ]);
     }
 
@@ -205,7 +205,8 @@ class FormFieldManager extends FormMigrationStep
         $block = BlockModel::make([
             'name' => 'givewp/section',
             'attributes' => [
-                'label' => $field['label'],
+                'title' => $field['label'],
+                'description' => ''
             ]
         ]);
 
@@ -264,10 +265,23 @@ class FormFieldManager extends FormMigrationStep
 
     private function applyCommonAttributes($block, $field): BlockModel
     {
+        $protectedFieldNames = [
+            'donation-amount',
+            'donor-name',
+            'email',
+        ];
+
+        if (in_array($field['name'], $protectedFieldNames, true)) {
+            $field['name'] .= '_2';
+        }
+
         $block->setAttribute('fieldName', $field['name']);
 
+        $block->setAttribute('displayInAdmin', true);
+        $block->setAttribute('displayInReceipt', true);
+
         if (array_key_exists('required', $field)) {
-            $block->setAttribute('required', $field['required'] === 'yes');
+            $block->setAttribute('isRequired', $field['required'] === 'yes');
         }
 
         if (array_key_exists('label', $field)) {
