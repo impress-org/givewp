@@ -9,8 +9,11 @@ use Give\Framework\Blocks\BlockModel;
 class FormFieldManager extends FormMigrationStep
 {
 
-    /** @var array{0: BlockCollection, 1: string, 2: string|null} $inserter */
+    /** @var array {0: BlockCollection, 1: string, 2: string|null} */
     private $inserter;
+
+    /** @var array {fieldName: {field: array, block: BlockModel}} */
+    private $fieldBlockRelationships = [];
 
     public function process()
     {
@@ -45,8 +48,14 @@ class FormFieldManager extends FormMigrationStep
             $method = $map[$field['input_type']];
 
             $block = $this->applyCommonAttributes($method($field), $field);
+            $this->fieldBlockRelationships[$field['name']] = [
+                'field' => $field,
+                'block' => $block
+            ];
             $this->insertBlock($block);
         }
+
+        $this->mapConditionalLogicToBlocks();
     }
 
     private function addDateField($field): BlockModel
@@ -284,5 +293,35 @@ class FormFieldManager extends FormMigrationStep
     {
         list($blockCollection, $method, $target) = array_pad($this->inserter, 3, null);
         call_user_func_array([$blockCollection, $method], array_filter([$target, $block]));
+    }
+
+    private function mapConditionalLogicToBlocks(): void
+    {
+        foreach ($this->fieldBlockRelationships as $item) {
+            ['field' => $field, 'block' => $block] = $item;
+
+            if (!array_key_exists('control_field_visibility', $field) || $field['control_field_visibility'] !== 'on') {
+                continue;
+            }
+
+            if (!array_key_exists($field['controller_field_name'], $this->fieldBlockRelationships)) {
+                continue;
+            }
+
+            $clientId = $this->fieldBlockRelationships[$field['controller_field_name']]['block']->clientId;
+
+            $block->setAttribute('conditionalLogic', [
+                'enabled' => true,
+                'action' => 'show',
+                'boolean' => 'and',
+                'rules' => [
+                    [
+                        'field' => $clientId,
+                        'operator' => $field['controller_field_operator'],
+                        'value' => $field['controller_field_value'],
+                    ],
+                ],
+            ]);
+        }
     }
 }
