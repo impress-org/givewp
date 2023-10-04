@@ -43,12 +43,10 @@ function Confirmation({handleTransferConfirmation}) {
                 {__('Transferring donation data to the upgraded form', 'give')}
             </div>
 
-            <div>
+            <div className="givewp-dialog-content">
                 <Interweave
                     content={__('Type <strong>transfer</strong> to confirm transfer of donation data for the form selected. This means all blocks, shortcodes, and the form URL will automatically redirect to the upgraded form.', 'give')} />
             </div>
-
-            <br />
 
             <div>
                 <Input
@@ -133,12 +131,10 @@ export default function TransferSuccessDialog() {
                 {__('Transferring donation data cannot be undone', 'give')}
             </div>
 
-            <div>
+            <div className="givewp-dialog-content">
                 <Interweave
                     content={__(sprintf('Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="givewp-dialog-form-name">[${settings.formTitle}]</span>`), 'give')} />
             </div>
-
-            <br /><br />
 
             <Button
                 size="large"
@@ -159,15 +155,13 @@ export default function TransferSuccessDialog() {
 
     const Completed = () => (
         <>
-            <div className={cx('givewp-dialog-title', 'givewp-dialog-center')}>
+            <div className={cx('givewp-dialog-title-small', 'givewp-dialog-center')}>
                 {__('Transfer completed successfully', 'give')}
             </div>
 
-            <div className="givewp-dialog-center">
+            <div className={cx('givewp-dialog-content-small', 'givewp-dialog-center')}>
                 {__('Your donation data was successfully transferred to the upgraded form.', 'give')}
             </div>
-
-            <br /><br />
 
             <Button
                 size="large"
@@ -185,11 +179,9 @@ export default function TransferSuccessDialog() {
                 {__('Transfer not completed!', 'give')}
             </div>
 
-            <div className="givewp-dialog-center">
+            <div className={cx('givewp-dialog-content', 'givewp-dialog-center')}>
                 {__('Something went wrong with the transfer.', 'give')}
             </div>
-
-            <br /><br />
 
             <Button
                 size="large"
