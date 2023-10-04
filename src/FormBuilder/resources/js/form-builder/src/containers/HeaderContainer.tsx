@@ -14,6 +14,7 @@ import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {useDispatch} from "@wordpress/data";
 
 const Logo = () => (
     <div
@@ -41,7 +42,6 @@ const HeaderContainer = ({
                              SecondarySidebarButtons = null,
                              showSidebar,
                              toggleShowSidebar,
-                             onSaveNotice,
                          }) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
@@ -53,6 +53,7 @@ const HeaderContainer = ({
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
+    const {createSuccessNotice} = useDispatch('core/notices');
 
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
@@ -67,21 +68,31 @@ const HeaderContainer = ({
                 setSaving(null);
                 setErrorMessage(error.message);
             })
-            .then(({pageSlug}: FormSettings) => {
+            .then(({pageSlug, formStatus}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
                 dispatch(setIsDirty(false));
                 setSaving(null);
-                onSaveNotice();
+                showOnSaveNotice(formStatus);
             });
     };
+
+    const showOnSaveNotice = formStatus => {
+        const notice = 'publish' === formStatus
+            ? __('Form updated.', 'give')
+            : __('Form published.', 'give')
+
+        createSuccessNotice(notice, {
+            type: 'snackbar',
+        });
+    }
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
     const toggleEditorMode = () => {
-        if(EditorMode.schema === mode) {
+        if (EditorMode.schema === mode) {
             dispatchEditorState(setEditorMode(EditorMode.design));
         }
-        if(EditorMode.design === mode) {
+        if (EditorMode.design === mode) {
             dispatchEditorState(setEditorMode(EditorMode.schema));
         }
     }
