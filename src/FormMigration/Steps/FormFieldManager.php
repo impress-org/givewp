@@ -32,6 +32,7 @@ class FormFieldManager extends FormMigrationStep
             'phone' => [$this, 'addPhoneField'],
             'radio' => [$this, 'addRadioField'],
             'text' => [$this, 'addTextField'],
+            'textarea' => [$this, 'addTextareaField'],
             'url' => [$this, 'addUrlField'],
         ];
 
@@ -190,6 +191,16 @@ class FormFieldManager extends FormMigrationStep
     {
         return BlockModel::make([
             'name' => 'givewp/text',
+        ]);
+    }
+
+    private function addTextareaField($field): BlockModel
+    {
+        return BlockModel::make([
+            'name' => 'givewp-form-field-manager/textarea',
+            'attributes' => [
+                'rows' => $field['rows'],
+            ],
         ]);
     }
 
