@@ -3,7 +3,8 @@
     flex: 1;
     align-items: center;
     background-color: var(--givewp-blue-500);
-    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-6);
+    height: 3.5rem;
     color: #fff;
     font-size: 0.875rem;
 
@@ -37,13 +38,19 @@
         border-radius: 0.5rem;
         color: #000;
         background-color: var(--givewp-blue-25);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
     }
 }
 
 .message {
     font-size: 0.875rem;
-    margin: 0 0 var(--givewp-spacing-5);
+    margin: 0 0 var(--givewp-spacing-6);
     color: var(--givewp-grey-900);
+    line-height: 1.375;
 
     strong {
         color: var(--givewp-grey-700);
@@ -87,6 +94,7 @@
         flex-basis: 50%;
         margin-bottom: var(--givewp-spacing-2);
         align-items: center;
+        line-height: 1.5;
 
         svg {
             margin-right: var(--givewp-spacing-2);
@@ -128,10 +136,20 @@
     font-family: 'Open Sans', sans-serif;
     background-color: #fffaf2;
     font-size: 16px;
+    transition: 0.3s;
 
     svg {
         margin-right: 10px;
         fill: #f29718;
+    }
+
+    &:hover {
+        background-color: #f29718;
+        color: #fff;
+
+        svg {
+            fill: #fff;
+        }
     }
 }
 
@@ -171,4 +189,13 @@
     .migrationGuideContent {
         margin-bottom: 10px;
     }
+}
+
+.proceedButton {
+    width: 100%;
+    margin-top: var(--givewp-spacing-6);
+}
+
+.link {
+    margin-top: var(--givewp-spacing-6);
 }

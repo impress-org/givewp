@@ -4,11 +4,15 @@
 @import '@givewp/components/AdminUI/Input/style.scss';
 
 .givewp-dialog-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    margin-bottom: var(--givewp-spacing-3);
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    margin-bottom: var(--givewp-spacing-2);
     display: flex;
     align-items: center;
+    color: var(--givewp-grey-900);
 
     svg {
         margin-right: var(--givewp-spacing-2);
@@ -18,6 +22,17 @@
         margin-top: var(--givewp-spacing-5);
     }
 }
+.givewp-dialog-title-small {
+    text-align: center;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin-bottom: var(--givewp-spacing-2);
+    color: var(--givewp-grey-900);
+}
+
 
 .givewp-dialog-center {
     text-align: center;
@@ -25,6 +40,7 @@
 }
 
 .givewp-dialog-info {
+    line-height: 1.57;
     margin-bottom: var(--givewp-spacing-5);
 }
 
@@ -51,9 +67,21 @@
     border-bottom: 1px solid var(--givewp-grey-50);
 
     img {
-        width: 90%;
+        width: 80%;
         height: auto;
     }
+}
+
+.givewp-dialog-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: var(--givewp-spacing-6);
+}
+
+.givewp-dialog-content-small {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin-bottom: var(--givewp-spacing-6);
 }
 
 /**
@@ -72,19 +100,29 @@
     justify-content: center;
     background-color: var(--givewp-blue-500);
     color: #fff;
-    padding: var(--givewp-spacing-2) var(--givewp-spacing-6);
+    padding: 0 var(--givewp-spacing-6);
     font-weight: 500;
     font-size: 0.875rem;
     gap: 10px;
+    height: 3.5rem;
 
     .givewp-transfer-button {
         all: unset;
-        font-weight: bold;
-        color: var(--givewp-grey-900);
-        background-color: #fff;
         cursor: pointer;
-        border-radius: 4px;
+        font-weight: 500;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        border-radius: 0.5rem;
+        color: #000;
+        background-color: var(--givewp-blue-25);
+        font-size: 0.875rem;
+        line-height: 1.71;
+        letter-spacing: normal;
+        margin-right: var(--givewp-spacing-3);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
     }
 
     .givewp-transfer-close-icon-container {
