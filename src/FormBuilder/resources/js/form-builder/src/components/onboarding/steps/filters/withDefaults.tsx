@@ -1,3 +1,5 @@
+import {offset} from '@floating-ui/dom';
+
 const withDefaults = (steps) => {
     return steps.map((step) => {
         return {...step,...{
@@ -7,6 +9,9 @@ const withDefaults = (steps) => {
                     enabled: false,
                 },
                 arrow: false,
+                floatingUIOptions: {
+                    middleware: [offset(20)],
+                }
             }}
     })
 }
