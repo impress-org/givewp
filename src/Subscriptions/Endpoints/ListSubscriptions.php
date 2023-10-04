@@ -2,6 +2,7 @@
 
 namespace Give\Subscriptions\Endpoints;
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
@@ -232,12 +233,12 @@ class ListSubscriptions extends Endpoint
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
-                        ->where('meta_key', '_give_payment_subscription_id')
+                        ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
                         ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
-                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_key', DonationMetaKeys::FORM_ID)
                                 ->where('meta_value', $form);
                         });
                 });

@@ -13,16 +13,17 @@ export type ButtonProps = {
     children: ReactNode;
     onClick?: MouseEventHandler;
     disabled?: boolean;
+    className?: string;
     [x: string]: any;
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({children, type = 'button', variant = 'primary', size = 'small', disabled = false, ...props}, ref) => (
+    ({children, type = 'button', variant = 'primary', size = 'small', disabled = false, className, ...props}, ref) => (
         <button
             ref={ref}
             disabled={disabled}
             type={type}
-            className={cx('givewp-button', variant, size)}
+            className={cx('givewp-button', variant, size, className)}
             {...props}
         >
             {children}

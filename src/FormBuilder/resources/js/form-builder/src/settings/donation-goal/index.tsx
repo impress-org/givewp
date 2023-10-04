@@ -4,34 +4,20 @@ import {
     __experimentalNumberControl as NumberControl,
     PanelBody,
     PanelRow,
-    SelectControl, TextareaControl,
+    SelectControl,
+    TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+
+const {goalTypeOptions} = getFormBuilderWindowData();
 
 const DonationGoalSettings = () => {
     const {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-
-    const goalTypeOptions = [
-        {
-            value: 'amount',
-            label: __('Amount Raised', 'give'),
-            description: __('The total amount raised for the form', 'give'),
-        },
-        {
-            value: 'donations',
-            label: __('Number of Donations', 'give'),
-            description: __('The total number of donations made for the form', 'give'),
-        },
-        {
-            value: 'donors',
-            label: __('Number of Donors', 'give'),
-            description: __('The total number of unique donors who have donated to the form', 'give'),
-        },
-    ];
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
