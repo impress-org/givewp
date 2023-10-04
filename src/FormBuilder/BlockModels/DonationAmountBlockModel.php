@@ -62,9 +62,19 @@ class DonationAmountBlockModel
     /**
      * @since 3.0.0
      */
-    public function getLevels(): array
+    public function getLevels(string $currency = ''): array
     {
-        return array_map('give_format_amount', $this->block->getAttribute('levels'));
+        $currency = ! empty($currency) ? $currency : give_get_currency();
+        $levels = $this->block->getAttribute('levels');
+        foreach ($levels as $key => $level) {
+            //$levels[$key] = give_sanitize_amount_for_db($level, $currency);
+            give_format_amount($level, ['currency' => $currency]);;
+        }
+
+        return $levels;
+        //return array_map('give_format_amount', $this->block->getAttribute('levels'));
+
+        //return $this->block->getAttribute('levels');
     }
 
     /**

@@ -59,7 +59,7 @@ class ConvertDonationAmountBlockToFieldsApi
             $defaultLevel = (float)$block->getDefaultLevel() > 0 ? (float)$block->getDefaultLevel() : 10;
             $amountNode
                 ->label($block->getLabel())
-                ->levels(...$block->getLevels())
+                ->levels(...$block->getLevels($currency))
                 ->allowLevels($block->getPriceOption() === 'multi')
                 ->allowCustomAmount($block->isCustomAmountEnabled())
                 ->fixedAmountValue($block->getSetPrice())

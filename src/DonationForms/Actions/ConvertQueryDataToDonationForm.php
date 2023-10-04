@@ -28,13 +28,13 @@ class ConvertQueryDataToDonationForm
             'blocks' => BlockCollection::fromJson($queryObject->{DonationFormMetaKeys::FIELDS()->getKeyAsCamelCase()}),
         ]);
 
-        $amountBlock = $donationForm->blocks->findByName('givewp/donation-amount');
+        /*$amountBlock = $donationForm->blocks->findByName('givewp/donation-amount');
         $amountLevels = $amountBlock ? $amountBlock->getAttribute('levels') : [];
 
         if ($amountBlock && count($amountLevels) > 0) {
             $formattedLevels = array_map('give_format_amount', $amountLevels);
             $amountBlock->setAttribute('levels', $formattedLevels);
-        }
+        }*/
 
 
         return $donationForm;
