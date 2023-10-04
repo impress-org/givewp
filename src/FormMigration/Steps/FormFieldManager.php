@@ -283,13 +283,13 @@ class FormFieldManager extends FormMigrationStep
         ];
 
         if (in_array($field['name'], $protectedFieldNames, true)) {
-            $field['name'] .= '_2';
+            $field['name'] .= '_1';
         }
 
         $block->setAttribute('fieldName', $field['name']);
-
         $block->setAttribute('displayInAdmin', true);
         $block->setAttribute('displayInReceipt', true);
+        $block->setAttribute('metaUUID', $block->clientId);
 
         if (array_key_exists('required', $field)) {
             $block->setAttribute('isRequired', $field['required'] === 'yes');
