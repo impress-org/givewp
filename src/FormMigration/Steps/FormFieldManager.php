@@ -3,6 +3,7 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 
 class FormFieldManager extends FormMigrationStep
@@ -32,6 +33,11 @@ class FormFieldManager extends FormMigrationStep
         ];
 
         foreach ($formFields as $field) {
+            if ($field['input_type'] === 'section') {
+                $this->addSection($field);
+                continue;
+            }
+
             if (!array_key_exists($field['input_type'], $map) || !$field['name']) {
                 continue;
             }
@@ -183,6 +189,33 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/url',
         ]);
+    }
+
+    private function addSection($field): void
+    {
+        $block = BlockModel::make([
+            'name' => 'givewp/section',
+            'attributes' => [
+                'label' => $field['label'],
+            ]
+        ]);
+
+        /** @var BlockCollection $blockCollection */
+        list($blockCollection, $method) = $this->inserter;
+
+        if ($method === 'insertBefore') {
+            $this->fieldBlocks->insertBefore(
+                $this->fieldBlocks->findParentByBlockCollection($blockCollection)->name,
+                $block
+            );
+        } else {
+            $this->fieldBlocks->insertAfter(
+                $this->fieldBlocks->findParentByBlockCollection($blockCollection)->name,
+                $block
+            );
+        }
+
+        $this->inserter = [$block->innerBlocks, 'append'];
     }
 
     private function applyCommonAttributes($block, $field): BlockModel
