@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
-import {RichText} from '@wordpress/block-editor';
-import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
+import {drawerRight, moreVertical} from '@wordpress/icons';
+import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
@@ -68,8 +67,8 @@ const HeaderContainer = ({
                 setSaving(null);
                 setErrorMessage(error.message);
             })
-            .then(({pageSlug, formStatus}: FormSettings) => {
-                dispatch(setFormSettings({pageSlug}));
+            .then(({formTitle, pageSlug}: FormSettings) => {
+                dispatch(setFormSettings({formTitle, pageSlug}));
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 showOnSaveNotice(formStatus);
@@ -117,12 +116,11 @@ const HeaderContainer = ({
                     </>
                 }
                 contentMiddle={
-                    <RichText
-                        tagName="div"
+                    <TextControl
+                        className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(value) => dispatch(setFormSettings({formTitle: value}))}
-                        style={{fontSize: '16px'}}
-                    />
+                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
+                />
                 }
                 contentRight={
                     <>
