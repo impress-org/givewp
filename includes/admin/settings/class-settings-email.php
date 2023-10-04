@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
         /**
 		 * Render give_currency_code_preview field type
 		 *
-		 * @unreleased added nonce to give_sendwp_remote_install
+		 * @since 2.33.4 added nonce to give_sendwp_remote_install
 		 * @since  2.3.0
 		 * @access public
 		 *

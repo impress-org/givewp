@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 2.33.3
+Stable tag: 2.33.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.33.4: October 4th, 2023 =
+* Fix: Update old sendwp buttons and remove unused Stripe disconnect function.
+
 = 2.33.3: September 29th, 2023 =
 * Fix: Multi-site installations no longer produce an error on subsites.
 

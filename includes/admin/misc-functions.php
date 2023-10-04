@@ -253,7 +253,7 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 /**
  * Handle installation and connection for SendWP via ajax
  *
- * @unreleased added nonce check
+ * @since 2.33.4 added nonce check
  * @since 2.9.15
  */
 function give_sendwp_remote_install_handler () {
@@ -331,7 +331,7 @@ add_action( 'wp_ajax_give_sendwp_remote_install', 'give_sendwp_remote_install_ha
 /**
  * Handle deactivation of SendWP via ajax
  *
- * @unreleased add nonce check
+ * @since 2.33.4 add nonce check
  * @since 2.9.15
  */
 function give_sendwp_disconnect () {
