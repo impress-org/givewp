@@ -241,6 +241,7 @@ class FormFieldManager extends FormMigrationStep
                 return [$parentBlock->innerBlocks, 'append'];
             case 'give_donation_form_before_cc_form':
                 return [$this->fieldBlocks, 'insertBefore', 'givewp/payment-gateways'];
+            case 'give_donation_form_bottom':
             case 'give_donation_form_after_cc_form':
                 $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/payment-gateways');
                 return [$parentBlock->innerBlocks, 'append'];
