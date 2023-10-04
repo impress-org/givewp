@@ -71,6 +71,7 @@ class FormBuilderResourceController
         }
 
         $updatedSettings = FormSettings::fromJson($formBuilderSettings);
+        $updatedSettings->formTitle = wp_strip_all_tags($updatedSettings->formTitle);
 
         $form->settings = $updatedSettings;
         $form->title = $updatedSettings->formTitle;
