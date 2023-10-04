@@ -275,6 +275,7 @@ final class TestDonationFormRepository extends TestCase
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',
                         'label' => 'GiveWP Custom Block',
+                        'description' => 'GiveWP Custom Block description',
                     ],
                 ],
             ],
@@ -297,6 +298,7 @@ final class TestDonationFormRepository extends TestCase
                 ->append(
                     Text::make('givewp-custom-field-name')
                         ->label('GiveWP Custom Block')
+                        ->description('GiveWP Custom Block description')
                         ->storeAsDonorMeta(false),
                     Hidden::make('formId')
                         ->defaultValue($formId)
