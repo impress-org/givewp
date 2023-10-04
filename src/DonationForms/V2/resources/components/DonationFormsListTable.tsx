@@ -7,6 +7,7 @@ import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.mod
 import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
+import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
@@ -16,12 +17,14 @@ declare global {
         GiveDonationForms: {
             apiNonce: string;
             bannerActionUrl: string;
+            tooltipActionUrl: string;
             migrationApiRoot: string;
             apiRoot: string;
             authors: Array<{ id: string | number; name: string }>;
             table: { columns: Array<object> };
             pluginUrl: string;
             showBanner: boolean;
+            showUpgradedTooltip: boolean;
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
@@ -97,6 +100,33 @@ const columnFilters: Array<ColumnFilterConfig> = [
             }
 
             return <Interweave attributes={{className: 'interweave'}} content={item?.title} />;
+        },
+    },
+    {
+        column: 'status',
+        filter: (item, column) => {
+            if (window.GiveDonationForms.showUpgradedTooltip && item?.status_raw === 'upgraded') {
+                return (
+                    <div className={styles.upgradedForm}>
+                        <div className={styles.tooltipContainer}>
+                            <div className={styles.tooltip}>
+                                {__('The name of this form is already associated with an upgraded form. You can safely delete this form', 'give')}.
+                                <div
+                                    className={styles.link}
+                                    onClick={(e) => {
+                                        e.currentTarget.parentElement.remove();
+                                        fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
+                                    }}>
+                                    {__('Got it', 'give')}
+                                </div>
+                            </div>
+                        </div>
+                        <InterweaveSSR column={column} item={item} />
+                    </div>
+                );
+            }
+
+            return <InterweaveSSR column={column} item={item} />;
         },
     }
 ];
