@@ -64,11 +64,7 @@ class DonationAmountBlockModel
      */
     public function getLevels(): array
     {
-        $levels = $this->block->getAttribute('levels');
-        foreach ($levels as $key => $level) {
-            $levels[$key] = round((float)$level, 2);
-        }
-        return $levels;
+        return array_map('sanitize_text_field', $this->block->getAttribute('levels'));
     }
 
     /**

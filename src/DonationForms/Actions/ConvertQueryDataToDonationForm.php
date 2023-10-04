@@ -18,7 +18,7 @@ class ConvertQueryDataToDonationForm
      */
     public function __invoke($queryObject): DonationForm
     {
-        $donationForm = new DonationForm([
+        return new DonationForm([
             'id' => (int)$queryObject->id,
             'title' => $queryObject->title,
             'createdAt' => Temporal::toDateTime($queryObject->createdAt),
@@ -27,19 +27,5 @@ class ConvertQueryDataToDonationForm
             'settings' => FormSettings::fromjson($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}),
             'blocks' => BlockCollection::fromJson($queryObject->{DonationFormMetaKeys::FIELDS()->getKeyAsCamelCase()}),
         ]);
-
-        $amountBlock = $donationForm->blocks->findByName('givewp/donation-amount');
-        $amountLevels = $amountBlock ? $amountBlock->getAttribute('levels') : [];
-
-        if ($amountBlock && count($amountLevels) > 0) {
-            $roundedLevels = [];
-            foreach ($amountLevels as $key => $level) {
-                $roundedLevels[$key] = (string)round((float)$level, 2);
-            }
-            $amountBlock->setAttribute('levels', $roundedLevels);
-        }
-
-
-        return $donationForm;
     }
 }
