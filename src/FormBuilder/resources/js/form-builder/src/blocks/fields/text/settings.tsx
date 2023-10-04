@@ -17,6 +17,7 @@ const settings: FieldBlock['settings'] = {
                 label: {
                     default: __('Text field', 'give'),
                 },
+                description: true,
                 placeholder: true,
                 defaultValue: true,
                 emailTag: true,
