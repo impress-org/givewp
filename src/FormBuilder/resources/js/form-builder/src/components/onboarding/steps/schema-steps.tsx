@@ -3,11 +3,6 @@ import Placement from "@givewp/form-builder/components/onboarding/steps/types/pl
 
 export default [
     {
-        id: 'schema-welcome',
-        title: __('Welcome to the visual donation form builder!', 'give'),
-        text: __('The following is a quick (less than a minute) tour of the visual donation form builder, to introduce the tools for creating engaging donation forms.', 'give'),
-    },
-    {
         id: 'schema-canvas',
         attachTo: { element: '#form-blocks-canvas', on: 'right-start' as Placement },
         title: __('Canvas', 'give'),
@@ -22,7 +17,7 @@ export default [
     },
     {
         id: 'schema-add-button',
-        attachTo: { element: '#AddBlockButtonContainer', on: 'bottom' as Placement },
+        attachTo: { element: '#AddBlockButtonContainer', on: 'bottom-end' as Placement },
         title: __('Sidebar Toggles', 'give'),
         text: __('These two buttons give you the ability to add and reorder sections and blocks to the canvas, with drag-and-drop ease.', 'give'),
     },
