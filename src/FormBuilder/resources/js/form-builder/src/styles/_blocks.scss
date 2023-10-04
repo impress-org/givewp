@@ -37,3 +37,19 @@
         }
     }
 }
+
+[data-type="givewp/text"] {
+    .give-text-block {
+        &__label {
+            display: inline-block;
+            margin-bottom: var(--givewp-spacing-2);
+            padding: 0;
+        }
+
+        &__description {
+            font-size: 0.875rem;
+            line-height: 1rem;
+            margin: var(--givewp-spacing-1) 0 var(--givewp-spacing-2);
+        }
+    }
+}
