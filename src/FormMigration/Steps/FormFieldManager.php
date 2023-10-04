@@ -9,7 +9,7 @@ use Give\Framework\Blocks\BlockModel;
 class FormFieldManager extends FormMigrationStep
 {
 
-    /** @var string $inserter */
+    /** @var array{0: BlockCollection, 1: string, 2: string|null} $inserter */
     private $inserter;
 
     public function process()
@@ -222,23 +222,23 @@ class FormFieldManager extends FormMigrationStep
     {
         $block->setAttribute('fieldName', $field['name']);
 
-        if ($field['required']) {
+        if (array_key_exists('required', $field)) {
             $block->setAttribute('required', $field['required'] === 'yes');
         }
 
-        if ($field['label']) {
+        if (array_key_exists('label', $field)) {
             $block->setAttribute('label', $field['label']);
         }
 
-        if ($field['placeholder']) {
+        if (array_key_exists('placeholder', $field)) {
             $block->setAttribute('placeholder', $field['placeholder']);
         }
 
-        if ($field['help']) {
+        if (array_key_exists('help', $field)) {
             $block->setAttribute('description', $field['help']);
         }
 
-        if ($field['default']) {
+        if (array_key_exists('default', $field)) {
             $block->setAttribute('defaultValue', $field['default']);
         }
 
@@ -247,8 +247,8 @@ class FormFieldManager extends FormMigrationStep
 
     private function insertBlock($block): void
     {
-        list($object, $method, $target) = $this->inserter;
-        call_user_func_array([$object, $method], array_filter([$target, $block]));
+        list($blockCollection, $method, $target) = array_pad($this->inserter, 3, null);
+        call_user_func_array([$blockCollection, $method], array_filter([$target, $block]));
     }
 
     private function getInitialInserter(): array
