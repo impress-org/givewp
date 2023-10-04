@@ -56,8 +56,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/date',
             'attributes' => [
-                'label' => $field['label'],
-                'description' => $field['help'],
                 'dateFormat' => $dateFormat,
             ]
         ]);
@@ -76,8 +74,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/dropdown',
             'attributes' => [
-                'label' => $field['label'],
-                'description' => $field['help'],
                 'options' => $options,
             ]
         ]);
@@ -87,12 +83,6 @@ class FormFieldManager extends FormMigrationStep
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/email',
-            'attributes' => [
-                'label' => $field['label'],
-                'placeholder' => $field['placeholder'],
-                'description' => $field['help'],
-                'defaultValue' => $field['default'],
-            ]
         ]);
     }
 
@@ -108,8 +98,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/fileUpload',
             'attributes' => [
-                'label' => $field['label'],
-                'description' => $field['help'],
                 'maxFileSize' => $field['max_size'],
                 'allowedFileTypes' => $allowedFileTypes,
             ]
@@ -120,10 +108,6 @@ class FormFieldManager extends FormMigrationStep
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/hidden',
-            'attributes' => [
-                'label' => $field['label'],
-                'defaultValue' => $field['default'],
-            ]
         ]);
     }
 
@@ -132,7 +116,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/html',
             'attributes' => [
-                'label' => $field['label'],
                 'htmlCode' => $field['html'],
             ]
         ]);
@@ -152,8 +135,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/multi-select',
             'attributes' => [
-                'label' => $field['label'],
-                'description' => $field['help'],
                 'fieldType' => $fieldType,
                 'options' => $options,
             ]
@@ -167,10 +148,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/phone',
             'attributes' => [
-                'label' => $field['label'],
-                'placeholder' => $field['placeholder'],
-                'description' => $field['help'],
-                'defaultValue' => $field['default'],
                 'format' => $phoneFormat,
             ]
         ]);
@@ -189,8 +166,6 @@ class FormFieldManager extends FormMigrationStep
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/radio',
             'attributes' => [
-                'label' => $field['label'],
-                'description' => $field['help'],
                 'options' => $options,
             ]
         ]);
@@ -200,12 +175,6 @@ class FormFieldManager extends FormMigrationStep
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/text',
-            'attributes' => [
-                'label' => $field['label'],
-                'placeholder' => $field['placeholder'],
-                'description' => $field['help'],
-                'defaultValue' => $field['default'],
-            ]
         ]);
     }
 
@@ -213,12 +182,6 @@ class FormFieldManager extends FormMigrationStep
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/url',
-            'attributes' => [
-                'label' => $field['label'],
-                'placeholder' => $field['placeholder'],
-                'description' => $field['help'],
-                'defaultValue' => $field['default'],
-            ]
         ]);
     }
 
@@ -228,6 +191,22 @@ class FormFieldManager extends FormMigrationStep
 
         if ($field['required']) {
             $block->setAttribute('required', $field['required'] === 'yes');
+        }
+
+        if ($field['label']) {
+            $block->setAttribute('label', $field['label']);
+        }
+
+        if ($field['placeholder']) {
+            $block->setAttribute('placeholder', $field['placeholder']);
+        }
+
+        if ($field['help']) {
+            $block->setAttribute('description', $field['help']);
+        }
+
+        if ($field['default']) {
+            $block->setAttribute('defaultValue', $field['default']);
         }
 
         return $block;
