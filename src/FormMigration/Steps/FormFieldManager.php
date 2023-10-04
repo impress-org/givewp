@@ -8,13 +8,13 @@ use Give\Framework\Blocks\BlockModel;
 class FormFieldManager extends FormMigrationStep
 {
 
-    /** @var string $placement */
-    private $placement;
+    /** @var string $inserter */
+    private $inserter;
 
     public function process()
     {
         $formFields = $this->formV2->getFormFields();
-        $this->placement = $this->formV2->getFormFieldsPlacement();
+        $this->inserter = $this->getInitialInserter();
 
         $map = [
             'checkbox' => [$this, 'addMultiSelectField'],
@@ -39,7 +39,8 @@ class FormFieldManager extends FormMigrationStep
             $method = $map[$field['input_type']];
 
             $block = $this->applyCommonAttributes($method($field), $field);
-            $this->fieldBlocks->insertAfter($this->placement, $block);
+            list($object, $method, $target) = $this->inserter;
+            call_user_func_array([$object, $method], array_filter([$target, $block]));
         }
     }
 
@@ -210,5 +211,39 @@ class FormFieldManager extends FormMigrationStep
         }
 
         return $block;
+    }
+
+    private function getInitialInserter(): array
+    {
+        $placement = $this->formV2->getFormFieldsPlacement();
+
+        switch ($placement) {
+            case 'give_before_donation_levels':
+                $parentBlock = BlockModel::make([
+                    'name' => 'givewp/section',
+                ]);
+                $this->fieldBlocks->prepend($parentBlock);
+                return [$parentBlock->innerBlocks, 'append'];
+            case 'give_payment_mode_top':
+                return [$this->fieldBlocks, 'insertBefore', 'givewp/donation-summary'];
+            case 'give_payment_mode_bottom':
+                $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/donation-summary');
+                return [$parentBlock->innerBlocks, 'append'];
+            case 'give_donation_form_before_personal_info':
+                return [$this->fieldBlocks, 'insertBefore', 'givewp/donor-name'];
+            case 'give_donation_form_after_personal_info':
+                $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/donor-name');
+                return [$parentBlock->innerBlocks, 'append'];
+            case 'give_donation_form_before_cc_form':
+                return [$this->fieldBlocks, 'insertBefore', 'givewp/payment-gateways'];
+            case 'give_donation_form_after_cc_form':
+                $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/payment-gateways');
+                return [$parentBlock->innerBlocks, 'append'];
+            case 'give_donation_form_top':
+            case 'give_after_donation_levels':
+            default:
+                $parentBlock = $this->fieldBlocks->findParentByChildName('givewp/donation-amount');
+                return [$parentBlock->innerBlocks, 'append'];
+        }
     }
 }
