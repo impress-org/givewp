@@ -39,8 +39,7 @@ class FormFieldManager extends FormMigrationStep
             $method = $map[$field['input_type']];
 
             $block = $this->applyCommonAttributes($method($field), $field);
-            list($object, $method, $target) = $this->inserter;
-            call_user_func_array([$object, $method], array_filter([$target, $block]));
+            $this->insertBlock($block);
         }
     }
 
@@ -211,6 +210,12 @@ class FormFieldManager extends FormMigrationStep
         }
 
         return $block;
+    }
+
+    private function insertBlock($block): void
+    {
+        list($object, $method, $target) = $this->inserter;
+        call_user_func_array([$object, $method], array_filter([$target, $block]));
     }
 
     private function getInitialInserter(): array
