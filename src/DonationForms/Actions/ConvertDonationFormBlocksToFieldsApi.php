@@ -189,7 +189,8 @@ class ConvertDonationFormBlocksToFieldsApi
                         $block->getShortName() . '-' . $blockIndex
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
-                );
+                )->description($block->getAttribute('description'))
+                    ->defaultValue($block->getAttribute('defaultValue'));
 
             case "givewp/terms-and-conditions":
                 return $this->createNodeFromConsentBlock($block, $blockIndex)
