@@ -121,8 +121,8 @@ const Inspector = ({attributes, setAttributes}) => {
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level) => ({
-            label: formatCurrencyAmount(level),
-            value: level,
+            label: formatCurrencyAmount(level.toString()),
+            value: level.toString(),
             checked: defaultLevel === level,
         }))
     );
@@ -138,13 +138,14 @@ const Inspector = ({attributes, setAttributes}) => {
         const checkedLevel = options.filter((option) => option.checked);
 
         if (!!checkedLevel && checkedLevel.length === 1) {
-            setAttributes({defaultLevel: checkedLevel[0].value});
+            setAttributes({defaultLevel: Number(checkedLevel[0].value)});
         } else if (options.length > 0) {
             options[0].checked = true;
         }
 
         setDonationLevels(options);
-        const newLevels = options.filter((option) => option.value).map((option) => option.value);
+        const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
+
         setAttributes({levels: newLevels});
     };
 
