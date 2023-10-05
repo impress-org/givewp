@@ -14,6 +14,13 @@ class FormFieldManager extends FormMigrationStep
     /** @var array {fieldName: {field: array, block: BlockModel}} */
     private $fieldBlockRelationships = [];
 
+    /**
+     * Suppressed settings for all fields:
+     * - "field_width" (Field Width)
+     * - "css" (CSS Class Name)
+     *
+     * @unreleased
+     */
     public function process()
     {
         $formFields = $this->formV2->getFormFields();
@@ -58,6 +65,13 @@ class FormFieldManager extends FormMigrationStep
         $this->mapConditionalLogicToBlocks();
     }
 
+    /**
+     * Suppressed settings for the Date field:
+     * - "time" (Enable time input)
+     * - "format_time" (Time Format)
+     *
+     * @unreleased
+     */
     private function addDateField($field): BlockModel
     {
         $dateFormatOrder = [
@@ -76,6 +90,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Dropdown field:
+     * - "first" (Select Text)
+     *
+     * @unreleased
+     */
     private function addDropdownField($field): BlockModel
     {
         $options = array_map(function ($option) use ($field) {
@@ -94,6 +114,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Email field:
+     * - "maxlength" (Max Length)
+     *
+     * @unreleased
+     */
     private function addEmailField($field): BlockModel
     {
         return BlockModel::make([
@@ -101,6 +127,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the File Upload field:
+     * - "count" (Max. files)
+     *
+     * @unreleased
+     */
     private function addFileUploadField($field): BlockModel
     {
         $allowedFileTypes = array_map(function ($type) {
@@ -119,12 +151,19 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * @unreleased
+     */
     private function addHiddenField($field): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/hidden',
         ]);
     }
+
+    /**
+     * @unreleased
+     */
 
     private function addHtmlField($field): BlockModel
     {
@@ -136,6 +175,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Dropdown field:
+     * - "first" (Select Text)
+     *
+     * @unreleased
+     */
     private function addMultiSelectField($field): BlockModel
     {
         $fieldType = $field['template'] === 'checkbox_field' ? 'checkbox' : 'dropdown';
@@ -156,6 +201,10 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * @unreleased
+     */
+
     private function addPhoneField($field): BlockModel
     {
         $phoneFormat = $field['format'] === 'domestic' ? 'domestic' : 'unformatted';
@@ -167,6 +216,10 @@ class FormFieldManager extends FormMigrationStep
             ]
         ]);
     }
+
+    /**
+     * @unreleased
+     */
 
     private function addRadioField($field): BlockModel
     {
@@ -186,6 +239,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Text field:
+     * - "maxlength" (Max Length)
+     *
+     * @unreleased
+     */
     private function addTextField($field): BlockModel
     {
         return BlockModel::make([
@@ -193,6 +252,12 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Textarea field:
+     * - "cols" (Columns)
+     *
+     * @unreleased
+     */
     private function addTextareaField($field): BlockModel
     {
         return BlockModel::make([
@@ -203,12 +268,22 @@ class FormFieldManager extends FormMigrationStep
         ]);
     }
 
+    /**
+     * Suppressed settings for the Text field:
+     * - "maxlength" (Max Length)
+     *
+     * @unreleased
+     */
     private function addUrlField($field): BlockModel
     {
         return BlockModel::make([
             'name' => 'givewp-form-field-manager/url',
         ]);
     }
+
+    /**
+     * @unreleased
+     */
 
     private function addSection($field): void
     {
@@ -246,6 +321,10 @@ class FormFieldManager extends FormMigrationStep
         }
     }
 
+    /**
+     * @unreleased
+     */
+
     private function getInitialInserter(): array
     {
         $placement = $this->formV2->getFormFieldsPlacement();
@@ -280,6 +359,10 @@ class FormFieldManager extends FormMigrationStep
                 return [$parentBlock->innerBlocks, 'append'];
         }
     }
+
+    /**
+     * @unreleased
+     */
 
     private function applyCommonAttributes($block, $field): BlockModel
     {
@@ -322,11 +405,19 @@ class FormFieldManager extends FormMigrationStep
         return $block;
     }
 
+    /**
+     * @unreleased
+     */
+
     private function insertBlock($block): void
     {
         list($blockCollection, $method, $target) = array_pad($this->inserter, 3, null);
         call_user_func_array([$blockCollection, $method], array_filter([$target, $block]));
     }
+
+    /**
+     * @unreleased
+     */
 
     private function mapConditionalLogicToBlocks(): void
     {
