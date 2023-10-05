@@ -289,6 +289,7 @@ class FormFieldManager extends FormMigrationStep
         $block->setAttribute('fieldName', $field['name']);
         $block->setAttribute('displayInAdmin', true);
         $block->setAttribute('displayInReceipt', true);
+        $block->setAttribute('emailTag', "meta_donation_{$field['name']}");
         $block->setAttribute('metaUUID', $block->clientId);
 
         if (array_key_exists('required', $field)) {
