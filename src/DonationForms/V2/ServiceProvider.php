@@ -59,5 +59,9 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('wp_ajax_givewp_show_onboarding_banner', static function () {
             add_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', time(), true);
         });
+
+        add_action('wp_ajax_givewp_show_upgraded_tooltip', static function () {
+            add_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', time(), true);
+        });
     }
 }

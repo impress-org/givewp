@@ -31,8 +31,6 @@ export default function BlockEditorInterfaceSkeletonContainer() {
 }
 
 const DesignEditorSkeleton = () => {
-    const {createSuccessNotice} = useDispatch('core/notices');
-
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
 
     return (
@@ -41,11 +39,6 @@ const DesignEditorSkeleton = () => {
                 <HeaderContainer
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
-                    onSaveNotice={() => {
-                        createSuccessNotice(__('Form updated.', 'give'), {
-                            type: 'snackbar',
-                        });
-                    }}
                 />
             }
             content={<DesignPreview />}
@@ -56,8 +49,6 @@ const DesignEditorSkeleton = () => {
 }
 
 const SchemaEditorSkeleton = () => {
-    const {createSuccessNotice} = useDispatch('core/notices');
-
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
     const [selectedTab, setSelectedTab] = useState('form');
@@ -100,11 +91,6 @@ const SchemaEditorSkeleton = () => {
                     SecondarySidebarButtons={SecondarySidebarButtons}
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
-                    onSaveNotice={() => {
-                        createSuccessNotice(__('Form updated.', 'give'), {
-                            type: 'snackbar',
-                        });
-                    }}
                 />
             }
             content={<FormBlocks />}
