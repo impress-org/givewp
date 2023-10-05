@@ -3,7 +3,6 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
-use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 
 class FormFieldManager extends FormMigrationStep
@@ -221,22 +220,30 @@ class FormFieldManager extends FormMigrationStep
             ]
         ]);
 
-        /** @var BlockCollection $blockCollection */
         list($blockCollection, $method) = $this->inserter;
+        $this->inserter = [$block->innerBlocks, 'append'];
+        $found = $this->fieldBlocks->findParentByBlockCollection($blockCollection);
+
+        if (!$found) {
+            $this->fieldBlocks->append($block);
+            return;
+        }
+
+        list($parentBlock, $parentBlockIndex) = $found;
 
         if ($method === 'insertBefore') {
             $this->fieldBlocks->insertBefore(
-                $this->fieldBlocks->findParentByBlockCollection($blockCollection)->name,
-                $block
+                $parentBlock->name,
+                $block,
+                $parentBlockIndex
             );
         } else {
             $this->fieldBlocks->insertAfter(
-                $this->fieldBlocks->findParentByBlockCollection($blockCollection)->name,
-                $block
+                $parentBlock->name,
+                $block,
+                $parentBlockIndex
             );
         }
-
-        $this->inserter = [$block->innerBlocks, 'append'];
     }
 
     private function getInitialInserter(): array
