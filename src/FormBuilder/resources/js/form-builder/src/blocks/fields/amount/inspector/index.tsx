@@ -121,7 +121,7 @@ const Inspector = ({attributes, setAttributes}) => {
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level) => ({
-            label: formatCurrencyAmount(level),
+            label: formatCurrencyAmount(level.toString()),
             value: level,
             checked: defaultLevel === level,
         }))

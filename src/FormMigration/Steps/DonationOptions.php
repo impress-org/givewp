@@ -41,8 +41,8 @@ class DonationOptions extends FormMigrationStep
     /**
      * @unreleased
      */
-    private function roundAmount($amount): string
+    private function roundAmount($amount): float
     {
-        return (string)round((float)$amount, 2);
+        return round((float)$amount, 2);
     }
 }

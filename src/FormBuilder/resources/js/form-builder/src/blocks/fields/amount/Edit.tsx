@@ -14,7 +14,7 @@ import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amoun
 const DonationLevels = ({levels, defaultLevel}: {levels: DonationAmountAttributes['levels']; defaultLevel: string}) => (
     <LevelGrid>
         {levels.map((level: string, index: number) => {
-            const levelAmount = formatCurrencyAmount(level);
+            const levelAmount = formatCurrencyAmount(level.toString());
 
             return (
                 <LevelButton selected={level === defaultLevel} key={index}>
@@ -35,7 +35,7 @@ const FixedPriceMessage = ({amount}: {amount: string}) => (
     </Notice>
 );
 
-const BillingPeriodControl = ({options, defaultSelected}: {options: string[], defaultSelected?: string}) => {
+const BillingPeriodControl = ({options, defaultSelected}: {options: string[]; defaultSelected?: string}) => {
     return (
         <RadioControl
             className={'give-billing-period-control'}
