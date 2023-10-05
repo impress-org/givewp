@@ -48,7 +48,10 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
         <div className={styles.container}>
             <RowAction
                 className={styles.action}
-                href={`/wp-admin/edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`}
+                href={
+                    window.GiveDonors.adminUrl +
+                    `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`
+                }
                 displayText={__('Edit', 'give')}
             />
             <RowAction

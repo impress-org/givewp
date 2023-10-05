@@ -15,6 +15,7 @@ declare global {
             apiRoot: string;
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
+            adminUrl: string;
             pluginUrl: string;
             dissedRecommendations: Array<string>;
         };
