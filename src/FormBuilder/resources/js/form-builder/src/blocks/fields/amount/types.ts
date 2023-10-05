@@ -2,8 +2,8 @@ import type {subscriptionPeriod} from "@givewp/forms/registrars/templates/groups
 
 export interface DonationAmountAttributes {
     label: string;
-    levels: string[];
-    defaultLevel: string;
+    levels: number[];
+    defaultLevel: number;
     priceOption: string;
     setPrice: number;
     customAmount: boolean;

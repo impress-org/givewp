@@ -61,20 +61,22 @@ class DonationAmountBlockModel
 
     /**
      * @since 3.0.0
+     *
+     * @return float[]
      */
     public function getLevels(): array
     {
-        return array_map('sanitize_text_field', $this->block->getAttribute('levels'));
+        return array_map(static function($level) {
+            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+        }, $this->block->getAttribute('levels'));
     }
 
     /**
      * @since 3.0.0
-     *
-     * @return string|null
      */
-    public function getDefaultLevel()
+    public function getDefaultLevel(): ?float
     {
-        return $this->block->getAttribute('defaultLevel');
+        return (float)filter_var($this->block->getAttribute('defaultLevel'), FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
     }
 
     /**
