@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.0.0-rc.6
  */
 class FormMeta extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     public function process()
     {
