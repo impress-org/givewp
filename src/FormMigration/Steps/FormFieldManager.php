@@ -326,6 +326,15 @@ class FormFieldManager extends FormMigrationStep
             ['field' => $field, 'block' => $block] = $item;
 
             if (!array_key_exists('control_field_visibility', $field) || $field['control_field_visibility'] !== 'on') {
+                if ($block->name !== 'givewp/section') {
+                    $block->setAttribute('conditionalLogic', [
+                        'enabled' => false,
+                        'action' => 'show',
+                        'boolean' => 'and',
+                        'rules' => [],
+                    ]);
+                }
+
                 continue;
             }
 
