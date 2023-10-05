@@ -177,7 +177,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     protected function registerPostStatus()
     {

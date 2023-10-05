@@ -317,7 +317,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     public function testShouldGetTotalNumberOfSubscriptions(): void
     {
@@ -331,7 +331,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     public function testShouldGetTotalNumberOfDonorsFromSubscriptions(): void
     {
@@ -358,7 +358,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     public function testShouldGetTotalRevenueFromSubscriptions(): void
     {

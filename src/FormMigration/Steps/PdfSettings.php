@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.0.0-rc.6
  */
 class PdfSettings extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     public function process()
     {
@@ -43,7 +43,7 @@ class PdfSettings extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.6
      */
     private function getMetaValue(int $formId, string $metaKey, $defaultValue)
     {
