@@ -347,18 +347,36 @@ if (! class_exists('Give_Settings_Gateways')) :
             $current_tab = give_get_current_setting_tab();
             $current_section = give_get_current_setting_section();
 
-            $v2Gateways = array_intersect_key($gateways, give()->gateways->getPaymentGateways(2));
+            // Legacy gateways are gateways that are not registered with updated gateway registration API.
+            // For example: Razorpay, Paytm, Mollie etc.
+            // These payment gateways support donation processing only with v2 donation forms.
+            $legacyGateways = array_filter(
+                $gateways,
+                static function ($value, $key) {
+                    return ! give()->gateways->hasPaymentGateway($key);
+                },
+                ARRAY_FILTER_USE_BOTH
+            );
+
+            // v2 gateways are gateways that are registered with updated gateway registration API.
+            // These payment gateways support donation processing with v2 donation forms.
+            // Legacy payment gateways will display with v2 gateways.
+            $v2Gateways = give_get_ordered_payment_gateways(
+                array_merge(
+                    $legacyGateways,
+                    array_intersect_key(
+                        $gateways,
+                        give()->gateways->getPaymentGateways(2)
+                    )
+                )
+            );
+
+            // v3 gateways are gateways that are registered with updated gateway registration API.
+            // These payment gateways support donation processing with v3 donation forms.
             $v3Gateways = give_get_ordered_payment_gateways(
                 array_intersect_key($gateways, give()->gateways->getPaymentGateways(3)),
                 3
             );
-
-            // Add legacy payment gateways to v2 gateways if they exist.
-            if ($legacyPaymentGateways = array_diff_key($gateways, $v2Gateways, $v3Gateways)) {
-                $v2Gateways = array_merge($v2Gateways, $legacyPaymentGateways);
-            }
-
-            $v2Gateways = give_get_ordered_payment_gateways($v2Gateways, 2);
 
             $groups = [
                 'v2' => [
