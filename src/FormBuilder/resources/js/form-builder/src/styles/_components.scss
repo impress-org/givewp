@@ -1,3 +1,20 @@
+.givewp-form-title {
+    .components-base-control__field {
+        margin-bottom: 0;
+
+        input {
+            background: var(--givewp-gray-5);
+            border-color: var(--givewp-gray-10);
+            font-size: 1rem;
+            height: 2.25rem;
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+            max-width: 100%;
+            text-align: center;
+            width: 25rem;
+        }
+    }
+}
+
 .components-toolbar__control.components-button {
     width: 100px;
 }

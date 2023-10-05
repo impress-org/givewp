@@ -46,7 +46,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param PaymentGatewayRegister $paymentGatewayRegister
+     * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -147,7 +147,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -246,7 +246,7 @@ class DonationFormRepository
     /**
      * @since 3.0.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      */
@@ -311,7 +311,7 @@ class DonationFormRepository
             }
 
             $defaultGateway = give_get_default_gateway($formId, 3);
-            
+
             if (array_key_exists($defaultGateway, $gateways)) {
                 $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
             }
@@ -374,6 +374,17 @@ class DonationFormRepository
     }
 
     /**
+     *
+     * @since 3.0.0
+     */
+    public function getTotalNumberOfDonorsFromSubscriptions(int $formId): int
+    {
+        return DB::table('give_subscriptions')
+            ->where('product_id', $formId)
+            ->count('DISTINCT customer_id');
+    }
+
+    /**
      * @since 3.0.0
      */
     public function getTotalNumberOfDonations(int $formId): int
@@ -382,6 +393,16 @@ class DonationFormRepository
             ->leftJoin('give_donationmeta', 'ID', 'donation_id')
             ->where('meta_key', DonationMetaKeys::FORM_ID)
             ->where('meta_value', $formId)
+            ->count();
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function getTotalNumberOfSubscriptions(int $formId): int
+    {
+        return DB::table('give_subscriptions')
+            ->where('product_id', $formId)
             ->count();
     }
 
@@ -401,6 +422,17 @@ class DonationFormRepository
         }
 
         return (int)$query->totalRevenue;
+    }
+
+    /**
+     * @since 3.0.0
+     * @return int|float
+     */
+    public function getTotalInitialAmountFromSubscriptions(int $formId)
+    {
+        return DB::table('give_subscriptions')
+            ->where('product_id', $formId)
+            ->sum('initial_amount');
     }
 
     /**

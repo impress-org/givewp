@@ -16,12 +16,13 @@
     .givewp-modal-dialog {
         position: relative;
         font-family: 'Open Sans', sans-serif;
-        max-width: 35rem;
+        max-width: 32rem;
         width: 100%;
         border-radius: var(--givewp-rounded-4);
         background-color: #fff;
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
+        color: var(--givewp-grey-700);
 
         .givewp-modal-header {
             display: flex;
@@ -34,6 +35,7 @@
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
             border-bottom: 1px solid var(--givewp-grey-50);
+            color: var(--givewp-grey-900);
         }
 
         .givewp-modal-icon-header {
@@ -56,9 +58,12 @@
             position: absolute;
             cursor: pointer;
             z-index: 999;
+            fill: var(--givewp-grey-500);
+        }
+
+        .givewp-modal-close {
             top: var(--givewp-spacing-4);
             right: var(--givewp-spacing-5);
-            fill: var(--givewp-grey-500);
         }
 
         .givewp-modal-close-headless {
@@ -68,11 +73,18 @@
             padding: var(--givewp-spacing-1);
             background-color: var(--givewp-grey-50);
             border-radius: 50%;
+            top: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-2);
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
         }
 
         .givewp-modal-content {
             font-size: 0.875rem;
-            padding: var(--givewp-spacing-5);
+            padding: var(--givewp-spacing-6);
         }
     }
 }
