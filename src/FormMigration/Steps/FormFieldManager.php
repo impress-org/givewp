@@ -102,7 +102,7 @@ class FormFieldManager extends FormMigrationStep
             return [
                 'label' => $option,
                 'value' => '',
-                'checked' => $option === $field['selected'],
+                'checked' => array_key_exists('selected', $field) && $option === $field['selected'],
             ];
         }, array_filter($field['options']));
 
@@ -137,8 +137,10 @@ class FormFieldManager extends FormMigrationStep
     {
         $allowedFileTypes = array_map(function ($type) {
             switch ($type) {
-                case 'images': return 'image';
-                default: return $type;
+                case 'images':
+                    return 'image';
+                default:
+                    return $type;
             }
         }, $field['extension']);
 
@@ -188,7 +190,7 @@ class FormFieldManager extends FormMigrationStep
             return [
                 'label' => $option,
                 'value' => '',
-                'checked' => in_array($option, $field['selected'], true),
+                'checked' => array_key_exists('selected', $field) && in_array($option, (array)$field['selected'], true),
             ];
         }, array_filter($field['options']));
 
@@ -227,7 +229,7 @@ class FormFieldManager extends FormMigrationStep
             return [
                 'label' => $option,
                 'value' => '',
-                'checked' => $option === $field['selected'],
+                'checked' => array_key_exists('selected', $field) && $option === $field['selected'],
             ];
         }, array_filter($field['options']));
 
