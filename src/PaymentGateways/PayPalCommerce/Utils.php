@@ -44,6 +44,9 @@ class Utils
      */
     public static function isDonationTransactionTypeSupported(string $country): bool
     {
+        // Set fallback country.
+        $country = $country ?: give_get_country();
+
         $countries = [
             'AD', // Andorra
             'AR', // Argentina

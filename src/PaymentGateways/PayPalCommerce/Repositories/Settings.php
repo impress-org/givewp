@@ -48,12 +48,10 @@ class Settings
      * Returns the country for the account
      *
      * @since 2.9.0
-     *
-     * @return string|null
      */
-    public function getAccountCountry()
+    public function getAccountCountry(): string
     {
-        return get_option(self::COUNTRY_KEY, give_get_country());
+        return get_option(self::COUNTRY_KEY, give_get_country()) ?? '';
     }
 
     /**
@@ -76,7 +74,7 @@ class Settings
      */
     public function getTransactionType(): string
     {
-        return Utils::isDonationTransactionTypeSupported(give_get_country())
+        return Utils::isDonationTransactionTypeSupported($this->getAccountCountry())
             ? give_get_option(self::TRANSACTION_TYPE, 'donation')
             : 'standard';
     }
