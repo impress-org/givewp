@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
-import {FormTokenField, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
 import Options from '@givewp/form-builder/components/OptionsPanel';
