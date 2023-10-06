@@ -80,7 +80,7 @@ final class MerchantDetail
      *
      * @since 2.9.0
      *
-     * @var bool
+     * @var string|null
      */
     public $accountCountry;
 

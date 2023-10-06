@@ -1,9 +1,4 @@
 const withButtons = (steps) => {
-    const start = {
-        classes: 'shepherd-button-primary',
-        text: 'Get started',
-        type: 'next'
-    }
     const previous = {
         classes: 'shepherd-button-secondary',
         text: 'Previous',
@@ -23,7 +18,7 @@ const withButtons = (steps) => {
 
         if(index === 0) {
             return {...step, ...{
-                buttons: [start]
+                buttons: [next]
             }}
         }
 

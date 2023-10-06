@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
-import {RichText} from '@wordpress/block-editor';
-import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
+import {drawerRight, moreVertical} from '@wordpress/icons';
+import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
@@ -14,6 +13,7 @@ import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {useDispatch} from "@wordpress/data";
 
 const Logo = () => (
     <div
@@ -41,7 +41,6 @@ const HeaderContainer = ({
                              SecondarySidebarButtons = null,
                              showSidebar,
                              toggleShowSidebar,
-                             onSaveNotice,
                          }) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
@@ -53,6 +52,7 @@ const HeaderContainer = ({
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
+    const {createSuccessNotice} = useDispatch('core/notices');
 
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
@@ -67,21 +67,31 @@ const HeaderContainer = ({
                 setSaving(null);
                 setErrorMessage(error.message);
             })
-            .then(({pageSlug}: FormSettings) => {
-                dispatch(setFormSettings({pageSlug}));
+            .then(({formTitle, pageSlug}: FormSettings) => {
+                dispatch(setFormSettings({formTitle, pageSlug}));
                 dispatch(setIsDirty(false));
                 setSaving(null);
-                onSaveNotice();
+                showOnSaveNotice(formStatus);
             });
     };
+
+    const showOnSaveNotice = formStatus => {
+        const notice = 'publish' === formStatus
+            ? __('Form updated.', 'give')
+            : __('Form published.', 'give')
+
+        createSuccessNotice(notice, {
+            type: 'snackbar',
+        });
+    }
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
     const toggleEditorMode = () => {
-        if(EditorMode.schema === mode) {
+        if (EditorMode.schema === mode) {
             dispatchEditorState(setEditorMode(EditorMode.design));
         }
-        if(EditorMode.design === mode) {
+        if (EditorMode.design === mode) {
             dispatchEditorState(setEditorMode(EditorMode.schema));
         }
     }
@@ -106,12 +116,11 @@ const HeaderContainer = ({
                     </>
                 }
                 contentMiddle={
-                    <RichText
-                        tagName="div"
+                    <TextControl
+                        className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(value) => dispatch(setFormSettings({formTitle: value}))}
-                        style={{fontSize: '16px'}}
-                    />
+                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
+                />
                 }
                 contentRight={
                     <>

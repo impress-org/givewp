@@ -51,7 +51,7 @@ class SubscriptionFactory extends ModelFactory
      * @return Subscription|Subscription[]
      * @throws Exception
      */
-    public function createWithDonation(array $attributes = []): Subscription
+    public function createWithDonation(array $attributes = [])
     {
         $subscriptions = $this->create($attributes);
 

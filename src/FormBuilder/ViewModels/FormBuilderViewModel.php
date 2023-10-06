@@ -4,6 +4,7 @@ namespace Give\FormBuilder\ViewModels;
 
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
@@ -70,7 +71,74 @@ class FormBuilderViewModel
                 'checkboxLabel' => give_get_option('agree_to_terms_label'),
                 'agreementText' => give_get_option('agreement_text'),
             ],
+            'goalTypeOptions' => $this->getGoalTypeOptions(),
         ];
+    }
+
+    /**
+     * @since 3.0.0-rc.6
+     */
+    public function isRecurringEnabled(): bool
+    {
+        return defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION;
+    }
+
+    /**
+     * @since 3.0.0-rc.6
+     */
+    public function getGoalTypeOption(string $value, string $label, string $description): array
+    {
+        return [
+            'value' => $value,
+            'label' => $label,
+            'description' => $description,
+        ];
+    }
+
+    /**
+     * @since 3.0.0-rc.6
+     */
+    public function getGoalTypeOptions(): array
+    {
+        $options = [
+            $this->getGoalTypeOption(
+                GoalType::AMOUNT,
+                __('Amount Raised', 'give'),
+                __('The total amount raised for the form', 'give')
+            ),
+            $this->getGoalTypeOption(
+                GoalType::DONATIONS,
+                __('Number of Donations', 'give'),
+                __('The total number of donations made for the form', 'give')
+            ),
+            $this->getGoalTypeOption(
+                GoalType::DONORS,
+                __('Number of Donors', 'give'),
+                __('The total number of unique donors who have donated to the form', 'give')
+            ),
+        ];
+
+        if ($this->isRecurringEnabled()) {
+            return array_merge($options, [
+                $this->getGoalTypeOption(
+                    GoalType::AMOUNT_FROM_SUBSCRIPTIONS,
+                    __('Subscription Amount Raised', 'give'),
+                    __('The total amount raised for the form through subscriptions', 'give')
+                ),
+                $this->getGoalTypeOption(
+                    GoalType::SUBSCRIPTIONS,
+                    __('Number of Subscriptions', 'give'),
+                    __('The total number of subscriptions made for the form', 'give')
+                ),
+                $this->getGoalTypeOption(
+                    GoalType::DONORS_FROM_SUBSCRIPTIONS,
+                    __('Number of Subscribers', 'give'),
+                    __('The total number of unique donors who have donated to the form through subscriptions', 'give')
+                ),
+            ]);
+        }
+
+        return $options;
     }
 
     /**
@@ -128,7 +196,7 @@ class FormBuilderViewModel
 
         return array_values(
             array_filter($templateTags, static function ($tag) use ($supportedContexts) {
-                return ! empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
+                return !empty($tag['description']) && in_array((string)$tag['context'], $supportedContexts, true);
             })
         );
     }

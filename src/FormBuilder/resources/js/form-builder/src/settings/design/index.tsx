@@ -113,7 +113,7 @@ const FormDesignSettings = () => {
                     </>
                 )}
             </PanelBody>
-            {design.isMultiStep && (
+            {design?.isMultiStep && (
                 <PanelBody title={__('Multi-Step', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl

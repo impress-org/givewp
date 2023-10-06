@@ -113,22 +113,76 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 3.0.0-rc.6
+     */
+    private function getTotalCountValue(GoalType $goalType): ?int
+    {
+      if ($goalType->isDonors()){
+        return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
+      }
+
+      if ($goalType->isDonations() || $goalType->isAmount()){
+        return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
+      }
+
+      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
+        return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
+      }
+
+      if ($goalType->isDonorsFromSubscriptions()){
+        return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
+      }
+
+      return 0;
+    }
+
+    /**
+     * @since 3.0.0-rc.6
+     */
+    private function getCountLabel(GoalType $goalType): ?string
+    {
+      if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()){
+        return __('Donors', 'give');
+      }
+
+      if ($goalType->isDonations() || $goalType->isAmount()){
+        return __('Donations', 'give');
+      }
+
+      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
+        return __('Recurring Donations', 'give');
+      }
+
+      return __('Counted', 'give');
+    }
+
+    /**
+     * @since 3.0.0-rc.6
+     */
+    private function getTotalRevenue(GoalType $goalType)
+    {
+      if ($goalType->isAmountFromSubscriptions()){
+        return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
+      }
+
+      return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+    }
+
+    /**
      * @since 3.0.0
      */
     private function formStatsData(): array
     {
-        $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
         $goalType = $this->goalType();
+
+        $totalRevenue = $this->getTotalRevenue($goalType);
+        $totalCountValue = $this->getTotalCountValue($goalType);
+        $totalCountLabel = $this->getCountLabel($goalType);
 
         return [
             'totalRevenue' => $totalRevenue,
-            'totalCountValue' => $goalType->isDonors() ?
-                $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
-                $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalCountLabel' => $goalType->isDonors() ? __('Donors', 'give') : __(
-                'Donations',
-                'give'
-            ),
+            'totalCountValue' => $totalCountValue,
+            'totalCountLabel' => $totalCountLabel,
         ];
     }
 
