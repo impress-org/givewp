@@ -189,31 +189,30 @@ class PayPalCommerce extends PaymentGateway
             ],
         ];
 
+        if (Utils::isDonationTransactionTypeSupported($merchantDetails->accountCountry ?: '')) {
+            $settings = give_settings_array_insert(
+                $settings,
+                'paypal_commerce_accept_venmo',
+                [
+                    [
+                        'name' => esc_html__('Transaction Type', 'give'),
+                        'desc' => esc_html__(
+                            'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
+                            'give'
+                        ),
+                        'id' => 'paypal_commerce_transaction_type',
+                        'type' => 'radio_inline',
+                        'options' => [
+                            'donation' => esc_html__('Donation', 'give'),
+                            'standard' => esc_html__('Standard Transaction', 'give'),
+                        ],
+                        'default' => 'donation',
+                    ]
+                ]
+            );
+        }
 
         if ($merchantDetails->accountIsReady) {
-            if (Utils::isDonationTransactionTypeSupported($merchantDetails->accountCountry)) {
-                $settings = give_settings_array_insert(
-                    $settings,
-                    'paypal_commerce_accept_venmo',
-                    [
-                        [
-                            'name' => esc_html__('Transaction Type', 'give'),
-                            'desc' => esc_html__(
-                                'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
-                                'give'
-                            ),
-                            'id' => 'paypal_commerce_transaction_type',
-                            'type' => 'radio_inline',
-                            'options' => [
-                                'donation' => esc_html__('Donation', 'give'),
-                                'standard' => esc_html__('Standard Transaction', 'give'),
-                            ],
-                            'default' => 'donation',
-                        ]
-                    ]
-                );
-            }
-
             $settings = give_settings_array_insert(
                 $settings,
                 'paypal_commerce_gateway_settings_docs_link',
