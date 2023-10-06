@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, moreVertical} from '@wordpress/icons';
+import {drawerRight, moreVertical, undo as undoIcon, redo as redoIcon} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -42,7 +42,7 @@ const HeaderContainer = ({
                              showSidebar,
                              toggleShowSidebar,
                          }) => {
-    const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
+    const {blocks, settings: formSettings, isDirty, transfer, canUndo, canRedo} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
@@ -104,6 +104,10 @@ const HeaderContainer = ({
                     <>
                         <Logo />
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
+                        {EditorMode.schema === mode && (<>
+                            <Button id={'undo'} disabled={!canUndo} icon={undoIcon} onClick={() => dispatch({type: 'undo'})} label={__('Undo', 'give')}/>
+                            <Button id={'redo'} disabled={!canRedo} icon={redoIcon} onClick={() => dispatch({type: 'redo'})} label={__('Redo', 'give')}/>
+                        </>)}
                         <Button
                             id={'editor-state-toggle'}
                             style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}

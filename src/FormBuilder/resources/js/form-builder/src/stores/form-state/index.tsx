@@ -1,6 +1,7 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings, setTransferState} from './reducer';
 import {FormState} from '@givewp/form-builder/types';
+import {useUndoableReducer} from 'use-undoable-reducer';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'FormState';
@@ -19,7 +20,18 @@ StoreContextDispatch.displayName = 'FormStateDispatch';
  * @since 3.0.0
  */
 const FormStateProvider = ({initialState, children}: { initialState: FormState; children: ReactNode }) => {
-    const [state, dispatch] = useReducer(formSettingsReducer, initialState);
+    const {
+        state,
+        dispatch,
+        canUndo,
+        canRedo,
+    } = useUndoableReducer(formSettingsReducer, initialState, {
+        ignoreInitialState: true,
+        filterActionTypes: (action) => action === 'update_blocks',
+    });
+
+    state.canUndo = canUndo;
+    state.canRedo = canRedo;
 
     return (
         <StoreContext.Provider value={state}>

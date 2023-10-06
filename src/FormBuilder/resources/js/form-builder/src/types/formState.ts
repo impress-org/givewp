@@ -10,4 +10,6 @@ export type FormState = {
     settings: FormSettings;
     transfer: TransferState
     isDirty?: boolean;
+    canUndo?: boolean;
+    canRedo?: boolean;
 };
