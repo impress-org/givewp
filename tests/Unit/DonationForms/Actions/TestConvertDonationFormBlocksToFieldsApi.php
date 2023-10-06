@@ -41,6 +41,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                     'attributes' => [
                         'fieldName' => 'givewp-custom-field-name',
                         'label' => 'GiveWP Custom Block',
+                        'description' => 'GiveWP Custom Block Description',
                     ],
                 ],
             ],
@@ -62,6 +63,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                 ->append(
                     Text::make('givewp-custom-field-name')
                         ->label('GiveWP Custom Block')
+                        ->description('GiveWP Custom Block Description')
                         ->storeAsDonorMeta(false)
                 )
         );

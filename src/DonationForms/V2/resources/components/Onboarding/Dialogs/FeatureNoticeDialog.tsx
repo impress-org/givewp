@@ -88,7 +88,7 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     <Button
                         size="large"
                         onClick={handleUpgrade}
-                        style={upgradeButtonStyles}
+                        className={styles.proceedButton}
                     >
                         {__('Proceed with upgrade', 'give')}
                     </Button>
@@ -101,15 +101,17 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                             }
                             window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'
                         }}
-                        style={upgradeButtonStyles}
+                        className={styles.proceedButton}
                     >
                         {__('Proceed with the new form builder', 'give')}
                     </Button>
                 )}
 
-                <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank">
-                    {__('Read more on Add-ons and Gateways compatibility', 'give')}
-                </a>
+                <div className={styles.link}>
+                    <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank">
+                        {__('Read more on Add-ons and Gateways compatibility', 'give')}
+                    </a>
+                </div>
             </>
         </ModalDialog>
     )

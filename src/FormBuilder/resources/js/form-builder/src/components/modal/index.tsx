@@ -1,10 +1,10 @@
-import {Button, Icon} from '@wordpress/components';
-import GutenbergModal from '@wordpress/components/modal';
+import {Button, Icon, Modal as GutenbergModal} from '@wordpress/components';
+import type GutenbergModalProps from './types'
 import {info, warning} from '@wordpress/icons';
 import cx from 'classnames';
 import './styles.scss';
 
-interface ModalProps extends GutenbergModal.Props {
+interface ModalProps extends GutenbergModalProps {
     closeButtonCaption?: string;
 }
 

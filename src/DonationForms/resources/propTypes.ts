@@ -35,7 +35,8 @@ export interface CheckboxProps extends FieldProps {
 }
 
 export interface TextareaProps extends FieldProps {
-    helpText?: string;
+    description?: string;
+    rows: number;
 }
 
 export interface FieldHasDescriptionProps extends FieldProps {

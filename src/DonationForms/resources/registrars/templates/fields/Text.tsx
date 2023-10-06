@@ -1,9 +1,19 @@
-import type {FieldProps} from '@givewp/forms/propTypes';
+import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 
-export default function Text({Label, ErrorMessage, fieldError, placeholder, inputProps}: FieldProps) {
+export default function Text({
+    Label,
+    ErrorMessage,
+    fieldError,
+    description,
+    placeholder,
+    inputProps,
+}: FieldHasDescriptionProps) {
+    const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
+
     return (
         <label>
             <Label />
+            {description && <FieldDescription description={description} />}
             <input type="text" aria-invalid={fieldError ? 'true' : 'false'} placeholder={placeholder} {...inputProps} />
 
             <ErrorMessage />
