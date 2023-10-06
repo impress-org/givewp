@@ -1,12 +1,11 @@
 import {Button, Tooltip} from '@wordpress/components';
 import {Inserter} from '@wordpress/block-editor';
-import {forwardRef} from '@wordpress/element';
 import {_x, sprintf} from '@wordpress/i18n';
 
 /**
  * The inserter used in sections for dragging and dropping blocks or clicking to add a block.
  */
-function EmptyBlockInserter({rootClientId}, ref) {
+export default function EmptyBlockInserter({rootClientId}) {
     return (
         <Inserter
             position="bottom center"
@@ -18,17 +17,16 @@ function EmptyBlockInserter({rootClientId}, ref) {
                 if (hasSingleBlockType) {
                     label = sprintf(
                         // translators: %s: the name of the block when there is only one
-                        _x('Add %s', 'directly add the only allowed block'),
+                        _x('Add %s', 'directly add the only allowed block', 'give'),
                         blockTitle
                     );
                 } else {
-                    label = _x('Add block', 'Generic label for block inserter button');
+                    label = _x('Add block', 'Generic label for block inserter button', 'give');
                 }
                 const isToggleButton = !hasSingleBlockType;
 
                 let inserterButton = (
                     <Button
-                        ref={ref}
                         className="block-editor-button-block-appender"
                         onClick={onToggle}
                         aria-haspopup={isToggleButton ? 'true' : undefined}
@@ -49,8 +47,3 @@ function EmptyBlockInserter({rootClientId}, ref) {
         />
     );
 }
-
-/**
- * @see https://github.com/WordPress/gutenberg/blob/HEAD/packages/block-editor/src/components/button-block-appender/README.md
- */
-export default forwardRef(EmptyBlockInserter);
