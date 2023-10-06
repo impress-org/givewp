@@ -436,7 +436,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getFormFields(): array
     {
-        return give_get_meta($this->form->id, 'give-form-fields', true);
+        return array_filter((array)give_get_meta($this->form->id, 'give-form-fields', true));
     }
 
     /**

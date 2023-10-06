@@ -24,6 +24,11 @@ class FormFieldManager extends FormMigrationStep
     public function process()
     {
         $formFields = $this->formV2->getFormFields();
+
+        if (!$formFields) {
+            return;
+        }
+        
         $this->inserter = $this->getInitialInserter();
 
         $map = [
