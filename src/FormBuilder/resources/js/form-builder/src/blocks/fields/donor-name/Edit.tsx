@@ -1,42 +1,43 @@
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
-import {FormTokenField, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
-
-const HonorificSelect = ({honorifics}) => {
-    const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
-    const honorificOptions = honorifics.map((token) => {
-        return {
-            label: titleLabelTransform(token),
-            value: titleValueTransform(token),
-        };
-    });
-    return (
-        <SelectControl
-            label={__('Title', 'give')}
-            options={honorificOptions}
-            value={selectedTitle}
-            onChange={setSelectedTitle}
-        />
-    );
-};
+import Options from '@givewp/form-builder/components/OptionsPanel';
+import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
 
 const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
 const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
 export default function Edit({
-    attributes: {
-        showHonorific,
-        honorifics,
-        firstNameLabel,
-        firstNamePlaceholder,
-        lastNameLabel,
-        lastNamePlaceholder,
-        requireLastName,
-    },
-    setAttributes,
-}: BlockEditProps<any>) {
+                                 attributes: {
+                                     showHonorific,
+                                     honorifics,
+                                     firstNameLabel,
+                                     firstNamePlaceholder,
+                                     lastNameLabel,
+                                     lastNamePlaceholder,
+                                     requireLastName,
+                                 },
+                                 setAttributes,
+                             }: BlockEditProps<any>) {
+
+    const [selectedTitle, setSelectedTitle] = useState<string>(Object.values(honorifics)[0] as string ?? '');
+    const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(Object.keys(honorifics).map((token) => {
+        return {
+            label: titleLabelTransform(token),
+            value: titleValueTransform(token),
+            checked: selectedTitle === token,
+        } as OptionProps;
+    }));
+
+    const setOptions = (options: OptionProps[]) => {
+        setHonorificOptions(options);
+        // Filter options to only include labela so that block can be converted on the server side
+        const filtered = Object.values(options).map((option) => option.label);
+        setAttributes({honorifics: {...filtered}})
+    }
+
     return (
         <>
             <div
@@ -46,7 +47,14 @@ export default function Edit({
                     gap: '15px',
                 }}
             >
-                {!!showHonorific && <HonorificSelect honorifics={honorifics} />}
+                {!!showHonorific && (
+                    <SelectControl
+                        label={__('Title', 'give')}
+                        options={honorificOptions}
+                        value={selectedTitle}
+                        onChange={setSelectedTitle}
+                    />
+                )}
                 <TextControl
                     label={firstNameLabel}
                     placeholder={firstNamePlaceholder}
@@ -84,15 +92,12 @@ export default function Edit({
                                 />
                             </div>
                             {!!showHonorific && (
-                                <FormTokenField
-                                    tokenizeOnSpace={true}
-                                    label={__('Title Prefixes', 'give')}
-                                    value={honorifics}
-                                    suggestions={['Mr', 'Ms', 'Mrs']}
-                                    // placeholder={__('Select some options', 'give')}
-                                    onChange={(tokens) => setAttributes({honorifics: tokens})}
-                                    displayTransform={titleLabelTransform}
-                                    saveTransform={titleValueTransform}
+                                <Options
+                                    currency={false}
+                                    multiple={false}
+                                    options={honorificOptions}
+                                    setOptions={setOptions}
+                                    defaultControlsTooltip={__('Title Prefixes', 'give')}
                                 />
                             )}
                         </div>
