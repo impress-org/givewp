@@ -7,11 +7,10 @@ import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
-import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import {setEditorModeDesign, setEditorModeSchema, setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
-import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
 import {useDispatch} from "@wordpress/data";
 
@@ -42,7 +41,7 @@ const HeaderContainer = ({
                              showSidebar,
                              toggleShowSidebar,
                          }) => {
-    const {blocks, settings: formSettings, isDirty, transfer, canUndo, canRedo} = useFormState();
+    const {blocks, settings: formSettings, isDirty, transfer, canUndo, canRedo, editorMode} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
@@ -85,14 +84,17 @@ const HeaderContainer = ({
         });
     }
 
-    const {mode} = useEditorState();
-    const dispatchEditorState = useEditorStateDispatch();
     const toggleEditorMode = () => {
-        if (EditorMode.schema === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.design));
+        console.log({
+            editorMode,
+            schema: EditorMode.schema === editorMode,
+            design: EditorMode.design === editorMode,
+        })
+        if (EditorMode.schema === editorMode) {
+            dispatch(setEditorModeDesign());
         }
-        if (EditorMode.design === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.schema));
+        if (EditorMode.design === editorMode) {
+            dispatch(setEditorModeSchema());
         }
     }
 
@@ -104,18 +106,16 @@ const HeaderContainer = ({
                     <>
                         <Logo />
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
-                        {EditorMode.schema === mode && (<>
-                            <Button id={'undo'} disabled={!canUndo} icon={undoIcon} onClick={() => dispatch({type: 'undo'})} label={__('Undo', 'give')}/>
-                            <Button id={'redo'} disabled={!canRedo} icon={redoIcon} onClick={() => dispatch({type: 'redo'})} label={__('Redo', 'give')}/>
-                        </>)}
+                        <Button id={'undo'} disabled={!canUndo} icon={undoIcon} onClick={() => dispatch({type: 'undo'})} label={__('Undo', 'give')}/>
+                        <Button id={'redo'} disabled={!canRedo} icon={redoIcon} onClick={() => dispatch({type: 'redo'})} label={__('Redo', 'give')}/>
                         <Button
                             id={'editor-state-toggle'}
                             style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
                             onClick={() => toggleEditorMode()}
                             icon={EditIcon}
                         >
-                            {EditorMode.schema === mode && __('Edit form design', 'give')}
-                            {EditorMode.design === mode && __('Edit form', 'give')}
+                            {EditorMode.schema === editorMode && __('Edit form design', 'give')}
+                            {EditorMode.design === editorMode && __('Edit form', 'give')}
                         </Button>
                     </>
                 }

@@ -8,7 +8,7 @@ import {BlockInstance} from '@wordpress/blocks';
 import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 import Transfer from '@givewp/form-builder/components/onboarding/transfer';
-import {EditorStateProvider} from "@givewp/form-builder/stores/editor-state";
+import EditorMode from "@givewp/form-builder/types/editorMode";
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -22,7 +22,8 @@ const initialState = {
         showUpgradeModal: Boolean(window.migrationOnboardingData.showUpgradeDialog),
         showTransferModal: false,
         showTooltip: false,
-    }
+    },
+    editorMode: EditorMode.design,
 };
 
 if (initialBlocks instanceof Error) {
@@ -37,15 +38,13 @@ if (ShortcutProvider === undefined) {
 export default function App() {
     return (
         <FormBuilderErrorBoundary>
-            <EditorStateProvider initialState={{mode: 'design'}}>
-                <FormStateProvider initialState={initialState}>
-                    <ShortcutProvider>
-                        <BlockEditorContainer />
-                        <Feedback />
-                        <Transfer />
-                    </ShortcutProvider>
-                </FormStateProvider>
-            </EditorStateProvider>
+            <FormStateProvider initialState={initialState}>
+                <ShortcutProvider>
+                    <BlockEditorContainer />
+                    <Feedback />
+                    <Transfer />
+                </ShortcutProvider>
+            </FormStateProvider>
         </FormBuilderErrorBoundary>
     );
 }

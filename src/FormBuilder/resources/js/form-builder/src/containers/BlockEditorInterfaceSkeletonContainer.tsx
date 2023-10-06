@@ -7,25 +7,23 @@ import HeaderContainer from './HeaderContainer';
 import {SecondarySidebar} from '../components';
 
 import {DesignPreview, FormBlocks} from '../components/canvas';
-import {useDispatch} from '@wordpress/data';
-import {__} from '@wordpress/i18n';
 import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
 import {Sidebar} from '@givewp/form-builder/components';
 import DesignSidebar from '../components/sidebar/Design'
 import {Button} from "@wordpress/components";
 import {listView, plus} from "@wordpress/icons";
-import {useEditorState} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {useFormState} from '@givewp/form-builder/stores/form-state';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
 
-    const {mode} = useEditorState();
+    const {editorMode} = useFormState();
 
-    if(EditorMode.design === mode) {
+    if(EditorMode.design === editorMode) {
         return <DesignEditorSkeleton />;
     }
 
-    if(EditorMode.schema === mode) {
+    if(EditorMode.schema === editorMode) {
         return <SchemaEditorSkeleton />;
     }
 }

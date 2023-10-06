@@ -25,10 +25,7 @@ const FormStateProvider = ({initialState, children}: { initialState: FormState; 
         dispatch,
         canUndo,
         canRedo,
-    } = useUndoableReducer(formSettingsReducer, initialState, {
-        ignoreInitialState: true,
-        filterActionTypes: (action) => action === 'update_blocks',
-    });
+    } = useUndoableReducer(formSettingsReducer, initialState);
 
     state.canUndo = canUndo;
     state.canRedo = canRedo;

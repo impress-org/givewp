@@ -4,12 +4,11 @@ import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
 import {designSteps, schemaSteps} from './steps';
-import {useEditorState} from "@givewp/form-builder/stores/editor-state";
-import {setFormSettings, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 import 'shepherd.js/dist/css/shepherd.css';
 import DesignSelector from "@givewp/form-builder/components/onboarding/DesignSelector";
 import SchemaWelcome from "@givewp/form-builder/components/onboarding/SchemaWelcome";
+import EditorMode from "@givewp/form-builder/types/editorMode";
 
 declare global {
     interface Window {
@@ -37,8 +36,7 @@ function TourEffectsAndEvents() {
     // @ts-ignore
     const tour = window.tour = useContext(ShepherdTourContext);
 
-    const {mode} = useEditorState();
-    const dispatch = useFormStateDispatch();
+    const {editorMode} = useFormState();
     const {selectBlock} = useDispatch('core/block-editor');
 
     useEffect(() => {
@@ -53,7 +51,7 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('selectAmountBlock', selectAmountBlockCallback);
         }
-    }, [mode])
+    }, [editorMode])
 
     useEffect(() => {
 
@@ -69,13 +67,13 @@ function TourEffectsAndEvents() {
         return () => {
             window.removeEventListener('click', clickExitTourCallback);
         }
-    }, [mode])
+    }, [editorMode])
 
     useEffect(() => {
         const onTourComplete = () => {
 
             const data = new FormData();
-            data.append('mode', mode);
+            data.append('mode', editorMode);
 
             fetch(window.onboardingTourData.actionUrl, {
                 method: 'POST',
@@ -91,14 +89,14 @@ function TourEffectsAndEvents() {
         return () => {
             tour.off('complete', onTourComplete);
         }
-    }, [mode])
+    }, [editorMode])
 
     return <></>
 }
 
 const Onboarding = () => {
     const {transfer, settings: {designId}} = useFormState();
-    const {mode} = useEditorState();
+    const {editorMode} = useFormState();
     const [showDesignSelector, setShowDesignSelector] = useState(!designId);
     const [showSchemaWelcome, setShowSchemaWelcome] = useState(!!window.onboardingTourData.autoStartSchemaTour);
 
@@ -106,13 +104,13 @@ const Onboarding = () => {
         return null;
     }
 
-    const steps = mode === 'schema' ? schemaSteps : designSteps;
+    const steps = editorMode === 'schema' ? schemaSteps : designSteps;
 
     return <>
         <ShepherdTour steps={steps} tourOptions={options}>
             <TourEffectsAndEvents />
-            {mode === 'design' && showDesignSelector && <DesignSelector onContinue={() => setShowDesignSelector(false)} />}
-            {mode === 'schema' && showSchemaWelcome && <SchemaWelcome onContinue={() => setShowSchemaWelcome(false)} />}
+            {editorMode === EditorMode.design && showDesignSelector && <DesignSelector onContinue={() => setShowDesignSelector(false)} />}
+            {editorMode === EditorMode.schema && showSchemaWelcome && <SchemaWelcome onContinue={() => setShowSchemaWelcome(false)} />}
         </ShepherdTour>
     </>
 }

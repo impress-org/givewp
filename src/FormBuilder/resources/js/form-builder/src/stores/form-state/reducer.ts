@@ -1,7 +1,10 @@
+import EditorMode from "@givewp/form-builder/types/editorMode";
+
 const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
 const UPDATE_DIRTY = 'update_dirty';
 const UPDATE_TRANSFER_STATE = 'update_transfer_state';
+const UPDATE_EDITOR_MODE = 'update_editor_mode';
 
 /**
  * This reducer is used within the FormStateProvider for state management
@@ -40,6 +43,12 @@ export default function reducer(state, action) {
                     ...state.transfer,
                     ...action.transfer,
                 },
+            };
+
+        case UPDATE_EDITOR_MODE:
+            return {
+                ...state,
+                editorMode: action.mode,
             };
 
         default:
@@ -84,5 +93,34 @@ export function setTransferState(transfer) {
     return {
         type: UPDATE_TRANSFER_STATE,
         transfer,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function setEditorMode(mode: EditorMode) {
+    return {
+        type: UPDATE_EDITOR_MODE,
+        mode,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function setEditorModeDesign() {
+    return {
+        type: UPDATE_EDITOR_MODE,
+        mode: EditorMode.design,
+    };
+}
+/**
+ * @unreleased
+ */
+export function setEditorModeSchema() {
+    return {
+        type: UPDATE_EDITOR_MODE,
+        mode: EditorMode.schema,
     };
 }
