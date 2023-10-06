@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
-import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
+import {FormTokenField, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
 import Options from '@givewp/form-builder/components/OptionsPanel';
@@ -33,9 +33,14 @@ export default function Edit({
 
     const setOptions = (options: OptionProps[]) => {
         setHonorificOptions(options);
-        // Filter options to only include labela so that block can be converted on the server side
-        const filtered = Object.values(options).map((option) => option.label);
-        setAttributes({honorifics: {...filtered}})
+
+        const filtered = {};
+        // Filter options
+       Object.values(options).forEach((option) => {
+            Object.assign(filtered, {[option.label]: option.label})
+        });
+
+        setAttributes({honorifics: filtered})
     }
 
     return (
