@@ -199,10 +199,8 @@ class AdminSettingFields
 
     /**
      * Return whether or not country is in North America
-     *
-     * @return boolean
      */
-    private function isCountryInNorthAmerica()
+    private function isCountryInNorthAmerica(): bool
     {
         // Countries list: https://en.wikipedia.org/wiki/List_of_North_American_countries_by_area#Countries
         $northAmericaCountryList = [
