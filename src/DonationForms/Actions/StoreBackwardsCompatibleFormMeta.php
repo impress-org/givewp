@@ -4,6 +4,7 @@ namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\DonationAmount;
@@ -70,9 +71,15 @@ class StoreBackwardsCompatibleFormMeta
             $donationForm->settings->enableDonationGoal ? 'enabled' : 'disabled'
         );
 
-        $goalType = $donationForm->settings->goalType->getValue();
-        $goalType = ($goalType === 'donations') ? 'donation' : $goalType; // @todo Mismatch. Legacy uses "donation" instead of "donations".
-        $this->saveSingleFormMeta($donationForm->id, '_give_goal_format', $goalType);
+        $goalType = $donationForm->settings->goalType;
+
+        if (!$goalType) {
+            return;
+        }
+
+        $legacyGoalType = $this->getLegacyGoalTypeValue($goalType);
+
+        $this->saveSingleFormMeta($donationForm->id, '_give_goal_format', $legacyGoalType);
 
         $metaLookup = [
             'donation' => '_give_number_of_donation_goal',
@@ -80,10 +87,32 @@ class StoreBackwardsCompatibleFormMeta
             'amount' => '_give_set_goal',
         ];
 
-        $goalAmount = ('amount' === $goalType) ? give_sanitize_amount_for_db(
+        $goalAmount = ('amount' === $legacyGoalType) ? give_sanitize_amount_for_db(
             $donationForm->settings->goalAmount
         ) : $donationForm->settings->goalAmount;
-        $this->saveSingleFormMeta($donationForm->id, $metaLookup[$goalType], $goalAmount);
+
+        $this->saveSingleFormMeta($donationForm->id, $metaLookup[$legacyGoalType], $goalAmount);
+
+        if ($goalType->isOneOf(
+            GoalType::SUBSCRIPTIONS(),
+            GoalType::DONORS_FROM_SUBSCRIPTIONS(),
+            GoalType::AMOUNT_FROM_SUBSCRIPTIONS()
+        )) {
+            $this->saveSingleFormMeta($donationForm->id, '_give_recurring_goal_format', 1);
+        }
+    }
+
+    protected function getLegacyGoalTypeValue(GoalType $goalType): string
+    {
+        switch ($goalType):
+            case GoalType::DONATIONS():
+                // Legacy uses "donation" instead of "donations".
+                return 'donation';
+            case GoalType::DONORS():
+                return 'donors';
+            default:
+                return 'amount';
+        endswitch;
     }
 
     /**

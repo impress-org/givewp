@@ -10,6 +10,12 @@ import type {
 
 import BlockRegistrar from '@givewp/form-builder/registrars/blocks';
 
+type GoalTypeOption = {
+    value: string;
+    label: string;
+    description: string;
+}
+
 /**
  * @since 3.0.0
  */
@@ -30,6 +36,7 @@ interface FormBuilderWindowData {
     recurringAddonData?: {
         isInstalled: boolean;
     };
+    isRecurringEnabled: boolean;
     gatewaySettingsUrl: string;
     emailPreviewURL: string;
     emailTemplateTags: TemplateTag[];
@@ -38,6 +45,7 @@ interface FormBuilderWindowData {
     disallowedFieldNames: string[];
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
+    goalTypeOptions: GoalTypeOption[];
 }
 
 /**

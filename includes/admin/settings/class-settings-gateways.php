@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Give Settings Page/Tab
  *
@@ -13,92 +14,94 @@ use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
+if (! class_exists('Give_Settings_Gateways')) :
 
-	/**
-	 * Give_Settings_Gateways.
-	 *
-	 * @sine 1.8
-	 */
-	class Give_Settings_Gateways extends Give_Settings_Page {
+    /**
+     * Give_Settings_Gateways.
+     *
+     * @sine 1.8
+     */
+    class Give_Settings_Gateways extends Give_Settings_Page
+    {
+        /**
+         * Constructor.
+         */
+        public function __construct()
+        {
+            $this->id    = 'gateways';
+            $this->label = esc_html__('Payment Gateways', 'give');
 
-		/**
-		 * Constructor.
-		 */
-		public function __construct() {
-			$this->id    = 'gateways';
-			$this->label = esc_html__( 'Payment Gateways', 'give' );
+            $this->default_tab = 'gateways-settings';
 
-			$this->default_tab = 'gateways-settings';
+            parent::__construct();
 
-			parent::__construct();
-
-			// Do not use main form for this tab.
-			if ( give_get_current_setting_tab() === $this->id ) {
+            // Do not use main form for this tab.
+            if (give_get_current_setting_tab() === $this->id) {
                 add_action('give_admin_field_gateway_notice', [$this, 'render_gateway_notice'], 10, 2);
                 add_action('give_admin_field_enabled_gateways', [$this, 'render_enabled_gateways'], 10, 2);
             }
-		}
+        }
 
-		/**
-		 * Get settings array.
-		 *
-		 * @since  1.8
-		 * @return array
-		 */
-		public function get_settings() {
-			$settings        = [];
-			$current_section = give_get_current_setting_section();
+        /**
+         * Get settings array.
+         *
+         * @since  1.8
+         * @return array
+         */
+        public function get_settings()
+        {
+            $settings        = [];
+            $current_section = give_get_current_setting_section();
 
-			switch ( $current_section ) {
-				case 'offline-donations':
-					$settings = [
-						// Section 3: Offline gateway.
-						[
-							'type' => 'title',
-							'id'   => 'give_title_gateway_settings_3',
-						],
-						[
-							'name'    => __( 'Collect Billing Details', 'give' ),
-							'desc'    => __( 'If enabled, required billing address fields are added to Offline Donation forms. These fields are not required to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP. ', 'give' ),
-							'id'      => 'give_offline_donation_enable_billing_fields',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => [
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							],
-						],
-						[
-							'name'    => __( 'Offline Donation Instructions', 'give' ),
-							'desc'    => __( 'The Offline Donation Instructions are a chance for you to educate the donor on how to best submit offline donations. These instructions appear directly on the form, and after submission of the form. Note: You may also customize the instructions on individual forms as needed.', 'give' ),
-							'id'      => 'global_offline_donation_content',
-							'default' => give_get_default_offline_donation_content(),
-							'type'    => 'wysiwyg',
-							'options' => [
-								'textarea_rows' => 6,
-							],
-						],
-						[
-							'name'  => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
-							'id'    => 'offline_gateway_settings_docs_link',
-							'url'   => esc_url( 'http://docs.givewp.com/offlinegateway' ),
-							'title' => __( 'Offline Gateway Settings', 'give' ),
-							'type'  => 'give_docs_link',
-						],
-						[
-							'type' => 'sectionend',
-							'id'   => 'give_title_gateway_settings_3',
-						],
-					];
-					break;
+            switch ($current_section) {
+                case 'offline-donations':
+                    $settings = [
+                        // Section 3: Offline gateway.
+                        [
+                            'type' => 'title',
+                            'id'   => 'give_title_gateway_settings_3',
+                        ],
+                        [
+                            'name'    => __('Collect Billing Details', 'give'),
+                            'desc'    => __('If enabled, required billing address fields are added to Offline Donation forms. These fields are not required to process the transaction, but you may have a need to collect the data. Billing address details are added to both the donation and donor record in GiveWP. ', 'give'),
+                            'id'      => 'give_offline_donation_enable_billing_fields',
+                            'type'    => 'radio_inline',
+                            'default' => 'disabled',
+                            'options' => [
+                                'enabled'  => __('Enabled', 'give'),
+                                'disabled' => __('Disabled', 'give'),
+                            ],
+                        ],
+                        [
+                            'name'    => __('Offline Donation Instructions', 'give'),
+                            'desc'    => __('The Offline Donation Instructions are a chance for you to educate the donor on how to best submit offline donations. These instructions appear directly on the form, and after submission of the form. Note: You may also customize the instructions on individual forms as needed.', 'give'),
+                            'id'      => 'global_offline_donation_content',
+                            'default' => give_get_default_offline_donation_content(),
+                            'type'    => 'wysiwyg',
+                            'options' => [
+                                'textarea_rows' => 6,
+                            ],
+                        ],
+                        [
+                            'name'  => esc_html__('Offline Donations Settings Docs Link', 'give'),
+                            'id'    => 'offline_gateway_settings_docs_link',
+                            'url'   => esc_url('http://docs.givewp.com/offlinegateway'),
+                            'title' => __('Offline Gateway Settings', 'give'),
+                            'type'  => 'give_docs_link',
+                        ],
+                        [
+                            'type' => 'sectionend',
+                            'id'   => 'give_title_gateway_settings_3',
+                        ],
+                    ];
+                    break;
 
-				case 'gateways-settings':
-					$settings = [
+                case 'gateways-settings':
+                    $settings = [
                         // Section 1: Gateways.
                         [
                             'id' => 'give_title_gateway_settings_1',
@@ -263,7 +266,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
          */
         public function render_gateway_notice($field, $settings)
         {
-            if ( ! $this->hasPremiumPaymentGateway() && ! $this->canAcceptCreditCard()) {
+            if (! $this->hasPremiumPaymentGateway() && ! $this->canAcceptCreditCard()) {
                 ?>
                 <div class="give-gateways-notice">
                     <div class="give-gateways-cc-icon">
@@ -323,18 +326,18 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                 </div>
                 <?php
             }
-		}
+        }
 
-		/**
-		 * Render enabled gateways
-		 *
+        /**
+         * Render enabled gateways
+         *
          * @since 3.0.0 split gateways into separated tabs for v2 and v3 settings
-		 * @since  2.0.5
-		 * @access public
-		 *
-		 * @param $field
-		 * @param $settings
-		 */
+         * @since  2.0.5
+         * @access public
+         *
+         * @param $field
+         * @param $settings
+         */
         public function render_enabled_gateways($field, $settings)
         {
             $id = $field['id'];
@@ -344,10 +347,32 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
             $current_tab = give_get_current_setting_tab();
             $current_section = give_get_current_setting_section();
 
-            $v2Gateways = give_get_ordered_payment_gateways(
-                array_intersect_key($gateways, give()->gateways->getPaymentGateways(2)),
-                2
+            // Legacy gateways are gateways that are not registered with updated gateway registration API.
+            // For example: Razorpay, Paytm, Mollie etc.
+            // These payment gateways support donation processing only with v2 donation forms.
+            $legacyGateways = array_filter(
+                $gateways,
+                static function ($value, $key) {
+                    return ! give()->gateways->hasPaymentGateway($key);
+                },
+                ARRAY_FILTER_USE_BOTH
             );
+
+            // v2 gateways are gateways that are registered with updated gateway registration API.
+            // These payment gateways support donation processing with v2 donation forms.
+            // Legacy payment gateways will display with v2 gateways.
+            $v2Gateways = give_get_ordered_payment_gateways(
+                array_merge(
+                    $legacyGateways,
+                    array_intersect_key(
+                        $gateways,
+                        give()->gateways->getPaymentGateways(2)
+                    )
+                )
+            );
+
+            // v3 gateways are gateways that are registered with updated gateway registration API.
+            // These payment gateways support donation processing with v3 donation forms.
             $v3Gateways = give_get_ordered_payment_gateways(
                 array_intersect_key($gateways, give()->gateways->getPaymentGateways(3)),
                 3
@@ -595,10 +620,10 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                                     <?php
                                     echo $gateway; ?>
                                 </div>
-                            <?php
+                                <?php
                             endforeach; ?>
                         </div>
-                    <?php
+                        <?php
                     endif; ?>
                     <button class="give-payment-gateway-settings-dialog__content-button"><?php
                         esc_html_e('Got it', 'give'); ?></button>
@@ -610,7 +635,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
             <?php
         }
-	}
+    }
 
 endif;
 
