@@ -13,35 +13,22 @@ export default function EmptyBlockInserter({rootClientId}) {
             __experimentalIsQuick
             className="give-section__empty-block-inserter"
             renderToggle={({onToggle, disabled, isOpen, blockTitle, hasSingleBlockType}) => {
-                let label;
-                if (hasSingleBlockType) {
-                    label = sprintf(
-                        // translators: %s: the name of the block when there is only one
-                        _x('Add %s', 'directly add the only allowed block', 'give'),
-                        blockTitle
-                    );
-                } else {
-                    label = _x('Add block', 'Generic label for block inserter button', 'give');
-                }
-                const isToggleButton = !hasSingleBlockType;
+                const label = _x('Add block', 'Generic label for block inserter button', 'give');
 
-                let inserterButton = (
-                    <Button
-                        className="block-editor-button-block-appender"
-                        onClick={onToggle}
-                        aria-haspopup={isToggleButton ? 'true' : undefined}
-                        aria-expanded={isToggleButton ? isOpen : undefined}
-                        disabled={disabled}
-                        label={label}
-                    >
-                        {__('Drag a block here or click to add a block', 'give')}
-                    </Button>
+                return (
+                    <Tooltip text={label}>
+                        <Button
+                            className="block-editor-button-block-appender"
+                            onClick={onToggle}
+                            aria-haspopup="true" // attribute wants a true value, not a boolean
+                            aria-expanded={isOpen}
+                            disabled={disabled}
+                            label={label}
+                        >
+                            {__('Drag a block here or click to add a block', 'give')}
+                        </Button>
+                    </Tooltip>
                 );
-
-                if (isToggleButton || hasSingleBlockType) {
-                    inserterButton = <Tooltip text={label}>{inserterButton}</Tooltip>;
-                }
-                return inserterButton;
             }}
             isAppender
         />
