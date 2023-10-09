@@ -11,10 +11,10 @@ import Notice from './notice';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 
-const DonationLevels = ({levels, defaultLevel}: {levels: DonationAmountAttributes['levels']; defaultLevel: string}) => (
+const DonationLevels = ({levels, defaultLevel}: {levels: DonationAmountAttributes['levels']; defaultLevel: DonationAmountAttributes['defaultLevel']}) => (
     <LevelGrid>
-        {levels.map((level: string, index: number) => {
-            const levelAmount = formatCurrencyAmount(level);
+        {levels.map((level, index) => {
+            const levelAmount = formatCurrencyAmount(level.toString());
 
             return (
                 <LevelButton selected={level === defaultLevel} key={index}>
@@ -35,7 +35,7 @@ const FixedPriceMessage = ({amount}: {amount: string}) => (
     </Notice>
 );
 
-const BillingPeriodControl = ({options, defaultSelected}: {options: string[], defaultSelected?: string}) => {
+const BillingPeriodControl = ({options, defaultSelected}: {options: string[]; defaultSelected?: string}) => {
     return (
         <RadioControl
             className={'give-billing-period-control'}

@@ -40,7 +40,7 @@ class Amount extends Field
      *
      * @since 3.0.0
      */
-    public function levels(int ...$levels): self
+    public function levels(float ...$levels): self
     {
         $this->levels = $levels;
 
