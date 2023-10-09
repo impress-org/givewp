@@ -19,7 +19,7 @@ class FormFieldManager extends FormMigrationStep
      * - "field_width" (Field Width)
      * - "css" (CSS Class Name)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     public function process()
     {
@@ -75,7 +75,7 @@ class FormFieldManager extends FormMigrationStep
      * - "time" (Enable time input)
      * - "format_time" (Time Format)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addDateField($field): BlockModel
     {
@@ -99,7 +99,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Dropdown field:
      * - "first" (Select Text)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addDropdownField($field): BlockModel
     {
@@ -123,7 +123,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Email field:
      * - "maxlength" (Max Length)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addEmailField($field): BlockModel
     {
@@ -136,7 +136,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the File Upload field:
      * - "count" (Max. files)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addFileUploadField($field): BlockModel
     {
@@ -159,7 +159,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addHiddenField($field): BlockModel
     {
@@ -169,7 +169,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function addHtmlField($field): BlockModel
@@ -186,7 +186,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Dropdown field:
      * - "first" (Select Text)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addMultiSelectField($field): BlockModel
     {
@@ -209,7 +209,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function addPhoneField($field): BlockModel
@@ -225,7 +225,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function addRadioField($field): BlockModel
@@ -250,7 +250,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Text field:
      * - "maxlength" (Max Length)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addTextField($field): BlockModel
     {
@@ -263,7 +263,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Textarea field:
      * - "cols" (Columns)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addTextareaField($field): BlockModel
     {
@@ -279,7 +279,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Text field:
      * - "maxlength" (Max Length)
      *
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     private function addUrlField($field): BlockModel
     {
@@ -289,7 +289,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function addSection($field): void
@@ -329,7 +329,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function getInitialInserter(): array
@@ -368,7 +368,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function applyCommonAttributes($block, $field): BlockModel
@@ -413,7 +413,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function insertBlock($block): void
@@ -423,7 +423,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
 
     private function mapConditionalLogicToBlocks(): void

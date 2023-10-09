@@ -432,7 +432,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     public function getFormFields(): array
     {
@@ -440,7 +440,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.7
      */
     public function getFormFieldsPlacement(): string
     {
