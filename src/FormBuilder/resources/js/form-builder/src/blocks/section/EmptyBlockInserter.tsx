@@ -34,7 +34,7 @@ export default function EmptyBlockInserter({rootClientId}) {
                         disabled={disabled}
                         label={label}
                     >
-                        Drag a block here or click to add a block
+                        {__('Drag a block here or click to add a block', 'give')}
                     </Button>
                 );
 
