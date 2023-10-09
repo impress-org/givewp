@@ -18,6 +18,7 @@ export default function Edit(props: BlockEditProps<any>) {
 
     const hasChildBlocks = useSelect(
         (select) => {
+            // @ts-ignore
             const {getBlockOrder} = select(blockEditorStore);
 
             return getBlockOrder(clientId).length > 0;

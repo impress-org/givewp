@@ -1,6 +1,6 @@
 import {Button, Tooltip} from '@wordpress/components';
 import {Inserter} from '@wordpress/block-editor';
-import {_x, sprintf} from '@wordpress/i18n';
+import {__, _x} from '@wordpress/i18n';
 
 /**
  * The inserter used in sections for dragging and dropping blocks or clicking to add a block.
@@ -12,7 +12,7 @@ export default function EmptyBlockInserter({rootClientId}) {
             rootClientId={rootClientId}
             __experimentalIsQuick
             className="give-section__empty-block-inserter"
-            renderToggle={({onToggle, disabled, isOpen, blockTitle, hasSingleBlockType}) => {
+            renderToggle={({onToggle, disabled, isOpen}) => {
                 const label = _x('Add block', 'Generic label for block inserter button', 'give');
 
                 return (
