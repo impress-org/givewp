@@ -34,6 +34,15 @@ if (ShortcutProvider === undefined) {
     console.error('ShortcutProvider is undefined.');
 }
 
+/**
+ * This is a workaround for a bug in Gutenberg where the drag cursor gets stuck.
+ *
+ * @unreleased
+ */
+document.addEventListener('dragend', () => {
+    document.body.classList.remove('is-dragging-components-draggable')
+});
+
 export default function App() {
     return (
         <FormBuilderErrorBoundary>
