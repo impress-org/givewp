@@ -8,6 +8,7 @@ import Heading from './Heading';
 import Description from '@givewp/form-builder/settings/design/Description';
 import MultiStepFirstButtonText from '@givewp/form-builder/settings/design/MultiStepFirstButtonText';
 import MultiStepNextButtonText from '@givewp/form-builder/settings/design/MultiStepNextButtonText';
+import DonateButton from '@givewp/form-builder/settings/design/DonateButton';
 
 const {formDesigns} = getWindowData();
 
@@ -27,6 +28,7 @@ const FormDesignSettings = () => {
             secondaryColor,
             multiStepNextButtonText,
             multiStepFirstButtonText,
+            donateButtonCaption,
         },
     } = useFormState();
     const dispatch = useFormStateDispatch();
@@ -64,6 +66,11 @@ const FormDesignSettings = () => {
                         },
                     ]}
                 />
+            </PanelBody>
+            <PanelBody title={__('Donate Button', 'give')} initialOpen={false}>
+                <PanelRow>
+                    <DonateButton text={donateButtonCaption} />
+                </PanelRow>
             </PanelBody>
             <PanelBody title={__('Header', 'give')} initialOpen={false}>
                 <PanelRow>
