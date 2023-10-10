@@ -21,17 +21,21 @@ class FormMeta extends FormMigrationStep
         $formMetaTable = DB::prefix('give_formmeta');
 
         DB::query(
-            "
-                INSERT INTO $formMetaTable (form_id, meta_key, meta_value)
-                SELECT
-                    $newFormId,
-                    meta_key,
-                    meta_value
-                FROM
-                    $formMetaTable
-                WHERE
-                    form_id = $oldFormId
+            DB::prepare(
                 "
+                    INSERT INTO $formMetaTable (form_id, meta_key, meta_value)
+                    SELECT
+                        %d,
+                        meta_key,
+                        meta_value
+                    FROM
+                        $formMetaTable
+                    WHERE
+                        form_id = %d
+                    ",
+                $newFormId,
+                $oldFormId
+            )
         );
     }
 }
