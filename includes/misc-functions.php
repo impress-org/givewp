@@ -171,10 +171,10 @@ function give_get_ip($single = true)
 	/**
 	 * Filter the IP
 	 *
-     * @unreleased Add $header_type param.
+     * @unreleased Add $single and $header_type params.
      * @since      1.0
 	 */
-    $ip_addresses = apply_filters('give_get_ip', $ip_addresses, $header_type);
+    $ip_addresses = apply_filters('give_get_ip', $ip_addresses, $single, $header_type);
 
 	// Filter empty values.
     if (false !== strpos($ip_addresses, ',')) {
