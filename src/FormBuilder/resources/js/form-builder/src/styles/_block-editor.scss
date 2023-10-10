@@ -127,7 +127,7 @@
     }
 
     &:not(.is-selected) {
-        .block-list-appender {
+        .block-editor-default-block-appender {
             display: none;
         }
     }
