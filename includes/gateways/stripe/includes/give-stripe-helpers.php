@@ -10,9 +10,7 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-use Give\Log\Log;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
-use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
 
@@ -1475,15 +1473,14 @@ function give_stripe_get_account_options() {
 /**
  * This function is used to get single ip address for Stripe.
  *
- * @since 2.7.0
+ * @since      2.7.0
  *
  * @return string
+ *
+ * @deprecated 2.33.5 Use give_get_ip method to get the single IP address.
  */
 function give_stripe_get_ip_address() {
-
-	$ip_address_details = explode( ',', give_get_ip() );
-
-	return $ip_address_details[0];
+    return give_get_ip();
 }
 
 /**
