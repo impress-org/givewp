@@ -4,6 +4,10 @@ import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores
 import {FormSettings} from '@givewp/form-builder/types';
 
 /**
+ * This hook is used to manage the state of a form design setting.
+ * It is intended to be used with controlled inputs, to track the internal state of the input,
+ * while debouncing the form design setting value.
+ *
  * @unreleased
  */
 const useFormDesignSetting = (initialValue: any, wait = 500) => {
