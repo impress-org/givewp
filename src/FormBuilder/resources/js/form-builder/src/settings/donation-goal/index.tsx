@@ -10,6 +10,7 @@ import {
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
 
@@ -69,11 +70,11 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <NumberControl
+                        <CurrencyControl
                             label={__('Goal Amount', 'give')}
                             min={0}
                             value={goalAmount}
-                            onChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 100)}
+                            onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
                         />
                     </PanelRow>
                 </>
