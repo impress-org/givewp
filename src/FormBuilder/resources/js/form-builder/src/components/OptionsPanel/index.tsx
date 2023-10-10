@@ -14,8 +14,6 @@ export default function Options({
     defaultControlsTooltip,
     onAddOption,
     onRemoveOption,
-    onReorderOptions,
-    onDefaultOptionChange,
 }: OptionsPanelProps) {
     const [showValues, setShowValues] = useState<boolean>(false);
 
@@ -50,8 +48,6 @@ export default function Options({
                         setOptions={setOptions}
                         defaultControlsTooltip={defaultControlsTooltip}
                         onRemoveOption={onRemoveOption}
-                        onReorderOptions={onReorderOptions}
-                        onDefaultOptionChange={onDefaultOptionChange}
                     />
                 </BaseControl>
             </PanelRow>
