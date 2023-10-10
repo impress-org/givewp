@@ -131,6 +131,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const handleLevelAdded = () => {
         const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
         const newLevel = {
+            id: String(Math.floor(Math.random() * 1000000)),
             label: formatCurrencyAmount(newLevelValue),
             value: newLevelValue,
             checked: false,
