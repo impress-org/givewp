@@ -3,6 +3,9 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Log\Log;
 
 /**
  * @since 3.0.0-rc.6
@@ -17,13 +20,33 @@ class FormMeta extends FormMigrationStep
         $oldFormId = $this->formV2->id;
         $newFormId = $this->formV3->id;
 
-        $oldFormMeta = give()->form_meta->get_meta($oldFormId);
+        $formMetaTable = DB::prefix('give_formmeta');
 
-        if ($oldFormMeta && is_array($oldFormMeta)) {
-            foreach ($oldFormMeta as $oldFormMetaKey => $oldFormMetaValue) {
-                $oldFormMetaValue = is_array($oldFormMetaValue) && count($oldFormMetaValue) === 1 ? $oldFormMetaValue[0] : $oldFormMetaValue;
-                give()->form_meta->update_meta($newFormId, $oldFormMetaKey, $oldFormMetaValue);
+        DB::beginTransaction();
+
+        try {
+            $insertQuery = DB::query(
+                "
+                INSERT INTO $formMetaTable (form_id, meta_key, meta_value)
+                SELECT
+                    $newFormId,
+                    meta_key,
+                    meta_value
+                FROM
+                    $formMetaTable
+                WHERE
+                    form_id = $oldFormId
+                "
+            );
+
+            if (!$insertQuery) {
+                throw new Exception('Failed running form meta migration.');
             }
+        } catch (Exception $exception) {
+            DB::rollback();
+            Log::error($exception->getMessage());
         }
+
+        DB::commit();
     }
 }
