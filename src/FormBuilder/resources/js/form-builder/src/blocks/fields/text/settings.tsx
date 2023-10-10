@@ -7,7 +7,7 @@ import {Path, SVG} from '@wordpress/components';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Text Field', 'custom-block-editor'),
+    title: __('Text Field', 'give'),
     category: 'custom',
     description: __('A custom text field that donors can use.', 'give'),
     supports: {
