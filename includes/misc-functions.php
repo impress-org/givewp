@@ -145,7 +145,7 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
- * @unreleased  Add $single param.
+ * @since 2.33.5  Add $single param.
  * @since       1.0
  *
  * @return string $ip User's IP address
@@ -171,7 +171,7 @@ function give_get_ip($single = true)
 	/**
 	 * Filter the IP
 	 *
-     * @unreleased Add $single and $header_type params.
+     * @since 2.33.5 Add $single and $header_type params.
      * @since      1.0
 	 */
     $ip_addresses = apply_filters('give_get_ip', $ip_addresses, $single, $header_type);

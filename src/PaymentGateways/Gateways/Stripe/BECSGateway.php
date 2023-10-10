@@ -113,7 +113,7 @@ class BECSGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased Use give_get_ip() instead of give_stripe_get_ip_address()
+     * @since 2.33.5 Use give_get_ip() instead of give_stripe_get_ip_address()
      * @since 2.19.0
      * @return array
      */
