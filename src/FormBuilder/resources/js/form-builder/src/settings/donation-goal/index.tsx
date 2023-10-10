@@ -1,6 +1,7 @@
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {__} from '@wordpress/i18n';
 import {
+    __experimentalNumberControl as NumberControl,
     PanelBody,
     PanelRow,
     SelectControl,
@@ -69,12 +70,21 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <CurrencyControl
-                            label={__('Goal Amount', 'give')}
-                            min={0}
-                            value={goalAmount}
-                            onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
-                        />
+                        {selectedGoalType.isCurrency ? (
+                            <CurrencyControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
+                            />
+                        ) : (
+                            <NumberControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
+                            />
+                        )}
                     </PanelRow>
                 </>
             )}
