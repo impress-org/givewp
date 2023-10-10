@@ -32,9 +32,13 @@ class FormMeta extends FormMigrationStep
                         $formMetaTable
                     WHERE
                         form_id = %d
+                        AND meta_key NOT IN (
+                            SELECT meta_key FROM $formMetaTable WHERE form_id = %d
+                        )
                     ",
                 $newFormId,
-                $oldFormId
+                $oldFormId,
+                $newFormId
             )
         );
     }
