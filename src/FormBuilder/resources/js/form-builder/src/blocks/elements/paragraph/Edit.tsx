@@ -13,7 +13,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                 value={content}
                 allowedFormats={['core/bold', 'core/italic', 'core/link']}
                 onChange={(content) => setAttributes({content})}
-                placeholder={__('Enter some text', 'custom-block-editor')}
+                placeholder={__('Enter some text', 'give')}
             />
             <InspectorControls>
                 <PanelBody title={__('Attributes', 'give')} initialOpen={true}>
