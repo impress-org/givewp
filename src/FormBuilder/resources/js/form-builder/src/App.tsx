@@ -36,7 +36,7 @@ if (ShortcutProvider === undefined) {
 }
 
 /**
- * This is a workaround for a bug in Gutenberg where the drag cursor gets stuck.
+ * This is a workaround for a bug where the draggable cursor does not reset.
  *
  * @unreleased
  */
