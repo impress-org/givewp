@@ -9,6 +9,7 @@ import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import UndoRedoShortcuts from "@givewp/form-builder/shortcuts/UndoRedoShortcuts";
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -43,6 +44,7 @@ export default function App() {
                     <BlockEditorContainer />
                     <Feedback />
                     <Transfer />
+                    <UndoRedoShortcuts />
                 </ShortcutProvider>
             </FormStateProvider>
         </FormBuilderErrorBoundary>
