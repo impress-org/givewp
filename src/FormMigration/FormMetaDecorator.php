@@ -460,23 +460,32 @@ class FormMetaDecorator extends FormModelDecorator
 
         return [
             'useGlobalSettings' => $feeRecoveryStatus === 'global',
-            'feeSupportForAllGateways' => give_get_meta(
-                    $this->form->id,
-                    '_form_give_fee_configuration',
-                    true
-                ) === 'all_gateways',
+            'feeSupportForAllGateways' => $this->getMeta('_form_give_fee_configuration') === 'all_gateways',
             'perGatewaySettings' => [],
-            'feePercentage' => (float)give_get_meta($this->form->id, '_form_give_fee_percentage', true),
-            'feeBaseAmount' => (float)give_get_meta($this->form->id, '_form_give_fee_base_amount', true),
-            'maxFeeAmount' => (float)give_get_meta($this->form->id, '_form_give_fee_maximum_fee_amount', true),
-            'includeInDonationSummary' => give_get_meta(
-                    $this->form->id,
-                    '_form_breakdown',
-                    true
-                ) === 'enabled',
-            'donorOptIn' => give_get_meta($this->form->id, '_form_give_fee_mode', true) === 'donor_opt_in',
-            'feeCheckboxLabel' => give_get_meta($this->form->id, '_form_give_fee_checkbox_label', true),
-            'feeMessage' => give_get_meta($this->form->id, '_form_give_fee_explanation', true),
+            'feePercentage' => (float)$this->getMeta('_form_give_fee_percentage'),
+            'feeBaseAmount' => (float)$this->getMeta('_form_give_fee_base_amount'),
+            'maxFeeAmount' => (float)$this->getMeta('_form_give_fee_maximum_fee_amount'),
+            'includeInDonationSummary' => $this->getMeta('_form_breakdown') === 'enabled',
+            'donorOptIn' => $this->getMeta('_form_give_fee_mode') === 'donor_opt_in',
+            'feeCheckboxLabel' => $this->getMeta('_form_give_fee_checkbox_label'),
+            'feeMessage' => $this->getMeta('_form_give_fee_explanation'),
         ];
+    }
+
+    /**
+     * Retrieves metadata for the current form.
+     *
+     * This method acts as a wrapper for the give_get_meta function, reducing redundancy
+     * and improving code readability when fetching metadata related to the current form.
+     *
+     * @unreleased
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    private function getMeta(string $key, $default = null)
+    {
+        return give_get_meta($this->form->id, $key, true, $default);
     }
 }
