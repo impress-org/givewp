@@ -28,7 +28,7 @@ const login: FieldBlock = {
             },
             loginNotice: {
                 type: 'string',
-                default: __('Already have an account?', 'givewp'),
+                default: __('Already have an account? Log in.', 'givewp'),
             },
             loginConfirmation: {
                 type: 'string',
