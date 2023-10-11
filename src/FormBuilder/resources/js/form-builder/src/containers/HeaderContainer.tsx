@@ -85,11 +85,6 @@ const HeaderContainer = ({
     }
 
     const toggleEditorMode = () => {
-        console.log({
-            editorMode,
-            schema: EditorMode.schema === editorMode,
-            design: EditorMode.design === editorMode,
-        })
         if (EditorMode.schema === editorMode) {
             dispatch(setEditorModeDesign());
         }
