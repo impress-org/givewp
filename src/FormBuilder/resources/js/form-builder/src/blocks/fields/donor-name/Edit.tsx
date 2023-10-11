@@ -100,6 +100,7 @@ export default function Edit({
                                 <Options
                                     currency={false}
                                     multiple={false}
+                                    selectable={false}
                                     options={honorificOptions}
                                     setOptions={setOptions}
                                     defaultControlsTooltip={__('Title Prefixes', 'give')}
