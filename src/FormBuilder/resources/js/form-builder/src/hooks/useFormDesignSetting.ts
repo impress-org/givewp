@@ -8,7 +8,7 @@ import {FormSettings} from '@givewp/form-builder/types';
  * It is intended to be used with controlled inputs, to track the internal state of the input,
  * while debouncing the form design setting value.
  *
- * @unreleased
+ * @since 3.0.0-rc.8
  */
 const useFormDesignSetting = (initialValue: any, wait = 500) => {
     const [inputValue, setInputValue] = useState(initialValue);

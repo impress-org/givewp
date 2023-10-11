@@ -449,7 +449,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0-rc.8
      */
     public function getFeeRecoverySettings(): array
     {
@@ -510,7 +510,7 @@ class FormMetaDecorator extends FormModelDecorator
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
      * and improving code readability when fetching metadata related to the current form.
      *
-     * @unreleased
+     * @since 3.0.0-rc.8
      *
      * @param string $key
      * @param mixed $default

@@ -38,7 +38,7 @@ if (ShortcutProvider === undefined) {
 /**
  * This is a workaround for a bug where the draggable cursor does not reset.
  *
- * @unreleased
+ * @since 3.0.0-rc.8
  */
 document.addEventListener('dragend', () => {
     // Reset the drag cursor.

@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {useFormDesignSetting} from '@givewp/form-builder/hooks';
 
 /**
- * @unreleased
+ * @since 3.0.0-rc.8
  */
 export default function Heading({heading}: {heading: string}) {
     const {
