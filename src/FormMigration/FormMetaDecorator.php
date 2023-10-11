@@ -455,7 +455,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $feeRecoveryStatus = $this->getMeta('_form_give_fee_recovery');
 
-        if ($feeRecoveryStatus === 'disabled') {
+        if (empty($feeRecoveryStatus) || $feeRecoveryStatus === 'disabled') {
             return [];
         }
 
