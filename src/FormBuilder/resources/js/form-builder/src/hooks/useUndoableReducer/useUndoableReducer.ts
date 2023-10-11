@@ -1,9 +1,3 @@
-/**
- * Fork of use-undoable-reducer
- * @link https://www.npmjs.com/package/use-undoable-reducer
- * @link https://github.com/alexknipfer/use-undoable-reducer
- */
-
 import { useReducer, useCallback, Reducer } from 'react';
 
 export enum UndoableHistoryTypes {
