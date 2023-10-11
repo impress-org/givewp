@@ -73,4 +73,4 @@ function give_stripe_form_add_data_tag_keys( $form_html_tags, $form ) {
 	return $form_html_tags;
 }
 
-add_filter('give_form_html_tags', 'give_stripe_form_add_data_tag_keys', 1, 2);
+add_filter('give_form_html_tags', 'give_stripe_form_add_data_tag_keys', 0, 2);
