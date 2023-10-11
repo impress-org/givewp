@@ -21,7 +21,7 @@ class EmailSettings extends FormMigrationStep
                 'email_subject' => $notification->get_email_subject($this->formV2->id),
                 'email_header' => $notification->get_email_header($this->formV2->id),
                 'email_message' => str_replace(
-                    ['"“', '“"', '“'],
+                    ['"“', '"”', '“"', '”"', '“', '”'],
                     '"',
                     $notification->get_email_message($this->formV2->id)
                 ),
