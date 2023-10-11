@@ -15,7 +15,10 @@ class FeeRecovery extends FormMigrationStep
     {
         $feeRecoverySettings = $this->formV2->getFeeRecoverySettings();
 
-        if (empty($feeRecoverySettings)) {
+        if (empty($feeRecoverySettings) || (
+                $feeRecoverySettings['useGlobalSettings'] === true &&
+                !give_is_setting_enabled(give_get_option('give_fee_recovery', 'disabled'))
+            )) {
             return;
         }
 

@@ -459,6 +459,12 @@ class FormMetaDecorator extends FormModelDecorator
             return [];
         }
 
+        if ($feeRecoveryStatus === 'global') {
+            return [
+                'useGlobalSettings' => true,
+            ];
+        }
+
         $perGatewaySettings = [];
         $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
         $gatewaysMap = [
