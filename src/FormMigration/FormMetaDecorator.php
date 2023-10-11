@@ -446,4 +446,37 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return give_get_meta($this->form->id, '_give_ffm_placement', true);
     }
+
+    /**
+     * @unreleased
+     */
+    public function getFeeRecoverySettings(): array
+    {
+        $feeRecoveryStatus = give_get_meta($this->form->id, '_form_give_fee_recovery', true);
+
+        if ($feeRecoveryStatus === 'disabled') {
+            return [];
+        }
+
+        return [
+            'useGlobalSettings' => $feeRecoveryStatus === 'global',
+            'feeSupportForAllGateways' => give_get_meta(
+                    $this->form->id,
+                    '_form_give_fee_configuration',
+                    true
+                ) === 'all_gateways',
+            'perGatewaySettings' => [],
+            'feePercentage' => (float)give_get_meta($this->form->id, '_form_give_fee_percentage', true),
+            'feeBaseAmount' => (float)give_get_meta($this->form->id, '_form_give_fee_base_amount', true),
+            'maxFeeAmount' => (float)give_get_meta($this->form->id, '_form_give_fee_maximum_fee_amount', true),
+            'includeInDonationSummary' => give_get_meta(
+                    $this->form->id,
+                    '_form_breakdown',
+                    true
+                ) === 'enabled',
+            'donorOptIn' => give_get_meta($this->form->id, '_form_give_fee_mode', true) === 'donor_opt_in',
+            'feeCheckboxLabel' => give_get_meta($this->form->id, '_form_give_fee_checkbox_label', true),
+            'feeMessage' => give_get_meta($this->form->id, '_form_give_fee_explanation', true),
+        ];
+    }
 }
