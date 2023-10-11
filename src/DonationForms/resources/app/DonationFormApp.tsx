@@ -12,6 +12,8 @@ import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/Donat
 import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 import getDonationFormNodeSettings from '@givewp/forms/app/utilities/getDonationFormNodeSettings';
 import {DonationFormSettingsProvider} from '@givewp/forms/app/store/form-settings';
+import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
+import {useState} from 'react';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -38,12 +40,31 @@ const initialState = {
     validationSchema: schema,
 };
 
-const formSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
+const formInitialSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
 
 /**
  * @since 3.0.0
  */
-function App() {
+function App({preview}) {
+
+    const {subscribe} = useIframeMessages();
+    const [formSettings, setFormSettings] = useState(formInitialSettings);
+
+
+    if (preview) {
+        subscribe('designPreview', data => {
+            setFormSettings(prevState => {
+                return {
+                    ...prevState,
+                    settings: {
+                        ...prevState.settings,
+                        ...data
+                    }
+                }
+            })
+        })
+    }
+
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
@@ -73,9 +94,10 @@ function App() {
 }
 
 const root = document.getElementById('root-givewp-donation-form');
+const preview = root.classList.contains('givewp-donation-form--preview');
 
 if (createRoot) {
-    createRoot(root).render(<App />);
+    createRoot(root).render(<App preview={preview} />);
 } else {
-    render(<App />, root);
+    render(<App preview={preview} />, root);
 }

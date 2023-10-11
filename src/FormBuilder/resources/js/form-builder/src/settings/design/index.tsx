@@ -1,16 +1,11 @@
-import {
-    PanelBody,
-    PanelRow,
-    SelectControl,
-    TextareaControl,
-    TextControl,
-    ToggleControl
-} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
 import debounce from 'lodash.debounce';
+
+import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
 
 const {formDesigns} = getWindowData();
 
@@ -34,6 +29,8 @@ const FormDesignSettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const design = getDesign(designId);
+    const {sendToIframe} = useIframeMessages();
+
 
     return (
         <>
@@ -53,7 +50,10 @@ const FormDesignSettings = () => {
                     colorSettings={[
                         {
                             value: primaryColor,
-                            onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
+                            onChange: debounce((primaryColor) => {
+                                sendToIframe('iFrameResizer0', 'designPreview', {primaryColor});
+                                dispatch(setFormSettings({primaryColor}))
+                            }, 100),
                             label: __('Primary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
