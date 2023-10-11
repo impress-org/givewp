@@ -461,7 +461,7 @@ class FormMetaDecorator extends FormModelDecorator
         $perGatewaySettings = [];
         $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
         $gatewaysMap = [
-            'stripe' => 'stripe_payment_element',
+            'stripe' => StripePaymentElementGateway::id(),
         ];
 
         if ($gateways) {
