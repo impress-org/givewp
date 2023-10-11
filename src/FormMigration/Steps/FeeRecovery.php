@@ -42,11 +42,8 @@ class FeeRecovery extends FormMigrationStep
             'useGlobalSettings' => true,
             'feeSupportForAllGateways' => give_get_option('give_fee_configuration', 'all_gateways') === 'all_gateways',
             'perGatewaySettings' => [],
-            'feePercentage' => (float)give_get_option('give_fee_percentage', give_fee_get_default_percentage()),
-            'feeBaseAmount' => (float)give_get_option(
-                'give_fee_base_amount',
-                give_fee_get_default_additional_amount()
-            ),
+            'feePercentage' => (float)give_get_option('give_fee_percentage', 2.9),
+            'feeBaseAmount' => (float)give_get_option('give_fee_base_amount', 0.30),
             'maxFeeAmount' => (float)give_get_option(
                 'give_fee_maximum_fee_amount',
                 give_format_decimal(['amount' => '0.00'])
