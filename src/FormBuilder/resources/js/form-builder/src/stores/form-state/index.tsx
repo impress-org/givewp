@@ -1,7 +1,7 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings, setTransferState} from './reducer';
 import {FormState} from '@givewp/form-builder/types';
-import {useUndoableReducer} from 'use-undoable-reducer';
+import {useUndoableReducer} from '../../hooks/useUndoableReducer';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'FormState';

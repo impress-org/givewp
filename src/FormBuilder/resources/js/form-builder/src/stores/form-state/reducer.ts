@@ -1,4 +1,5 @@
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {UndoableHistoryTypes} from "../../hooks/useUndoableReducer";
 
 const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
@@ -130,12 +131,12 @@ export function setEditorModeSchema() {
  * @unreleased
  */
 export function undo() {
-    return {type: 'undo'};
+    return {type: UndoableHistoryTypes.UNDO};
 }
 
 /**
  * @unreleased
  */
 export function redo() {
-    return {type: 'redo'};
+    return {type: UndoableHistoryTypes.REDO};
 }
