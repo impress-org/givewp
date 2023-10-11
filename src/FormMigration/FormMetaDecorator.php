@@ -452,16 +452,34 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getFeeRecoverySettings(): array
     {
-        $feeRecoveryStatus = give_get_meta($this->form->id, '_form_give_fee_recovery', true);
+        $feeRecoveryStatus = $this->getMeta('_form_give_fee_recovery');
 
         if ($feeRecoveryStatus === 'disabled') {
             return [];
         }
 
+        $perGatewaySettings = [];
+        $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
+
+        if ($gateways) {
+            foreach (array_keys($gateways) as $gatewayId) {
+                if ($gatewayId === 'stripe') {
+                    $gatewayId = 'stripe_payment_element';
+                }
+                
+                $perGatewaySettings[$gatewayId] = [
+                    'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
+                    'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId),
+                    'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId),
+                    'maxFeeAmount' => (float)$this->getMeta('_form_gateway_fee_maximum_fee_amount_' . $gatewayId),
+                ];
+            }
+        }
+
         return [
             'useGlobalSettings' => $feeRecoveryStatus === 'global',
             'feeSupportForAllGateways' => $this->getMeta('_form_give_fee_configuration') === 'all_gateways',
-            'perGatewaySettings' => [],
+            'perGatewaySettings' => $perGatewaySettings,
             'feePercentage' => (float)$this->getMeta('_form_give_fee_percentage'),
             'feeBaseAmount' => (float)$this->getMeta('_form_give_fee_base_amount'),
             'maxFeeAmount' => (float)$this->getMeta('_form_give_fee_maximum_fee_amount'),
