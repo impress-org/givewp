@@ -41,7 +41,6 @@ function give_stripe_supported_payment_methods()
 /**
  * This function is used to check whether a payment method supported by Stripe with Give is active or not.
  *
- * @unreleased Add filter to the return value
  * @since 2.5.5
  *
  * @return bool
