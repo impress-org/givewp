@@ -39,7 +39,6 @@ class PdfSettings extends FormMigrationStep
         ];
 
         $newForm->settings->pdfSettings = $pdfSettings;
-        $newForm->save();
     }
 
     /**
