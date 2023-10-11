@@ -22,10 +22,48 @@ class FeeRecovery extends FormMigrationStep
             return;
         }
 
+        if ($feeRecoverySettings['useGlobalSettings']) {
+            $feeRecoverySettings = $this->getGlobalSettings();
+        }
+
         $feeRecoveryBlock = BlockModel::make([
             'name' => 'givewp-fee-recovery/fee-recovery',
             'attributes' => $feeRecoverySettings,
         ]);
         $this->fieldBlocks->insertAfter('givewp/donation-amount', $feeRecoveryBlock);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getGlobalSettings(): array
+    {
+        return [
+            'useGlobalSettings' => true,
+            'feeSupportForAllGateways' => give_get_option('give_fee_configuration', 'all_gateways') === 'all_gateways',
+            'perGatewaySettings' => [],
+            'feePercentage' => (float)give_get_option('give_fee_percentage', give_fee_get_default_percentage()),
+            'feeBaseAmount' => (float)give_get_option(
+                'give_fee_base_amount',
+                give_fee_get_default_additional_amount()
+            ),
+            'maxFeeAmount' => (float)give_get_option(
+                'give_fee_maximum_fee_amount',
+                give_format_decimal(['amount' => '0.00'])
+            ),
+            'includeInDonationSummary' => give_get_option('give_fee_breakdown', 'enabled') === 'enabled',
+            'donorOptIn' => give_get_option('give_fee_mode', 'donor_opt_in') === 'donor_opt_in',
+            'feeCheckboxLabel' => give_get_option(
+                'give_fee_checkbox_label',
+                __(
+                    'I\'d like to help cover the transaction fees of {fee_amount} for my donation.',
+                    'give-fee-recovery'
+                )
+            ),
+            'feeMessage' => give_get_option(
+                'give_fee_explanation',
+                __('Plus an additional {fee_amount} to cover gateway fees.', 'give-fee-recovery')
+            ),
+        ];
     }
 }
