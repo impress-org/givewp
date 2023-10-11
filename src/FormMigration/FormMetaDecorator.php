@@ -460,13 +460,16 @@ class FormMetaDecorator extends FormModelDecorator
 
         $perGatewaySettings = [];
         $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
+        $gatewaysMap = [
+            'stripe' => 'stripe_payment_element',
+        ];
 
         if ($gateways) {
             foreach (array_keys($gateways) as $gatewayId) {
-                if ($gatewayId === 'stripe') {
-                    $gatewayId = 'stripe_payment_element';
+                if (array_key_exists($gatewayId, $gatewaysMap)) {
+                    $gatewayId = $gatewaysMap[$gatewayId];
                 }
-                
+
                 $perGatewaySettings[$gatewayId] = [
                     'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
                     'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId),
