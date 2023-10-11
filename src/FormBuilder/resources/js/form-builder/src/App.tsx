@@ -10,22 +10,24 @@ import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErr
 import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 import EditorMode from "@givewp/form-builder/types/editorMode";
 import UndoRedoShortcuts from "@givewp/form-builder/shortcuts/UndoRedoShortcuts";
+import {TransferStateProvider} from "@givewp/form-builder/stores/transfer-state";
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
-const initialState = {
+const initialFormState = {
     blocks: initialBlocks || (defaultBlocks as BlockInstance[]),
     settings: {
         ...initialFormSettings,
     },
-    transfer: {
-        showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
+    editorMode: EditorMode.design,
+};
+
+const initialStateTransfer = {
+    showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
         showUpgradeModal: Boolean(window.migrationOnboardingData.showUpgradeDialog),
         showTransferModal: false,
         showTooltip: false,
-    },
-    editorMode: EditorMode.design,
-};
+}
 
 if (initialBlocks instanceof Error) {
     alert('Unable to load initial blocks.');
@@ -39,13 +41,15 @@ if (ShortcutProvider === undefined) {
 export default function App() {
     return (
         <FormBuilderErrorBoundary>
-            <FormStateProvider initialState={initialState}>
-                <ShortcutProvider>
-                    <BlockEditorContainer />
-                    <Feedback />
-                    <Transfer />
-                    <UndoRedoShortcuts />
-                </ShortcutProvider>
+            <FormStateProvider initialState={initialFormState}>
+                <TransferStateProvider initialState={initialStateTransfer}>
+                    <ShortcutProvider>
+                        <BlockEditorContainer />
+                        <Feedback />
+                        <Transfer />
+                        <UndoRedoShortcuts />
+                    </ShortcutProvider>
+                </TransferStateProvider>
             </FormStateProvider>
         </FormBuilderErrorBoundary>
     );

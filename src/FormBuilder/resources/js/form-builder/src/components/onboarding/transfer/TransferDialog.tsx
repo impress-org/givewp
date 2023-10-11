@@ -2,7 +2,8 @@ import {useState} from 'react';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 import {Interweave} from 'interweave';
-import {setTransferState, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setTransferState, useTransferState, useTransferStateDispatch} from '@givewp/form-builder/stores/transfer-state';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
@@ -83,8 +84,9 @@ function Confirmation({handleTransferConfirmation}) {
 }
 
 export default function TransferSuccessDialog() {
-    const {transfer, settings} = useFormState();
-    const dispatch = useFormStateDispatch();
+    const transfer = useTransferState();
+    const {settings} = useFormState();
+    const dispatch = useTransferStateDispatch();
 
     const initialState: DialogStateProps = {
         isOpen: transfer.showTransferModal,

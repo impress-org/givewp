@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
-import formSettingsReducer, {setFormBlocks, setFormSettings, setTransferState} from './reducer';
+import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer';
 import {FormState} from '@givewp/form-builder/types';
 import {useUndoableReducer} from '../../hooks/useUndoableReducer';
 
@@ -61,4 +61,4 @@ const useFormState = () => useContext<FormState>(StoreContext);
  */
 const useFormStateDispatch = () => useContext(StoreContextDispatch);
 
-export {FormStateProvider, useFormState, useFormStateDispatch, setFormSettings, setFormBlocks, setTransferState};
+export {FormStateProvider, useFormState, useFormStateDispatch, setFormSettings, setFormBlocks};

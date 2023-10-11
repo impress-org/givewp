@@ -9,6 +9,7 @@ import 'shepherd.js/dist/css/shepherd.css';
 import DesignSelector from "@givewp/form-builder/components/onboarding/DesignSelector";
 import SchemaWelcome from "@givewp/form-builder/components/onboarding/SchemaWelcome";
 import EditorMode from "@givewp/form-builder/types/editorMode";
+import {useTransferState} from "@givewp/form-builder/stores/transfer-state";
 
 declare global {
     interface Window {
@@ -95,7 +96,8 @@ function TourEffectsAndEvents() {
 }
 
 const Onboarding = () => {
-    const {transfer, settings: {designId}} = useFormState();
+    const transfer = useTransferState();
+    const {settings: {designId}} = useFormState();
     const {editorMode} = useFormState();
     const [showDesignSelector, setShowDesignSelector] = useState(!designId);
     const [showSchemaWelcome, setShowSchemaWelcome] = useState(!!window.onboardingTourData.autoStartSchemaTour);

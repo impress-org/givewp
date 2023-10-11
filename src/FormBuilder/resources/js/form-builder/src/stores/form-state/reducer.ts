@@ -4,7 +4,6 @@ import {UndoableHistoryTypes} from "../../hooks/useUndoableReducer";
 const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
 const UPDATE_DIRTY = 'update_dirty';
-const UPDATE_TRANSFER_STATE = 'update_transfer_state';
 const UPDATE_EDITOR_MODE = 'update_editor_mode';
 
 /**
@@ -34,16 +33,6 @@ export default function reducer(state, action) {
             return {
                 ...state,
                 isDirty: action.isDirty,
-            };
-
-        case UPDATE_TRANSFER_STATE:
-            return {
-                ...state,
-                isDirty: action.isDirty,
-                transfer: {
-                    ...state.transfer,
-                    ...action.transfer,
-                },
             };
 
         case UPDATE_EDITOR_MODE:
@@ -84,16 +73,6 @@ export function setIsDirty(isDirty: boolean) {
     return {
         type: UPDATE_DIRTY,
         isDirty,
-    };
-}
-
-/**
- * @since 3.0.0
- */
-export function setTransferState(transfer) {
-    return {
-        type: UPDATE_TRANSFER_STATE,
-        transfer,
     };
 }
 

@@ -1,10 +1,10 @@
 import {__} from '@wordpress/i18n';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons'
-import {setTransferState, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setTransferState, useTransferState, useTransferStateDispatch} from '@givewp/form-builder/stores/transfer-state';
 
 export default function TransferNotice() {
-    const {transfer} = useFormState();
-    const dispatch = useFormStateDispatch();
+    const transfer = useTransferState();
+    const dispatch = useTransferStateDispatch();
 
     const {transferActionUrl, formId} = window.migrationOnboardingData;
 

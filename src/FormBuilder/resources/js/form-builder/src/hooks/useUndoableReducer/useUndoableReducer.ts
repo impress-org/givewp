@@ -24,7 +24,10 @@ export type UndoRedoActions<Base> = Base | UndoAction | RedoAction;
 const DEFAULT_MAX_HISTORY = 20;
 
 export const excludeActionTypes = (actionTypes: string[]) => (action: string) =>
-    actionTypes.indexOf(action) < 0;
+{
+    console.log('excludeActionTypes', actionTypes, action)
+    return actionTypes.indexOf(action) < 0;
+}
 
 export const useUndoableReducer = <State, Action>(
     reducer: Reducer<State, UndoRedoActions<Action>>,

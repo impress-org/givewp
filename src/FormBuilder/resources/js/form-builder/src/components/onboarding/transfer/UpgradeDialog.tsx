@@ -1,13 +1,15 @@
 import {__} from '@wordpress/i18n';
-import {setTransferState, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setTransferState, useTransferStateDispatch} from '@givewp/form-builder/stores/transfer-state';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import ButtonGroup from '@givewp/components/AdminUI/ButtonGroup';
 import Button from '@givewp/components/AdminUI/Button';
+import {useTransferState} from "@givewp/form-builder/stores/transfer-state";
 
 export default function UpgradeSuccessDialog() {
 
-    const {transfer, settings} = useFormState();
-    const dispatch = useFormStateDispatch();
+    const transfer = useTransferState();
+    const dispatch = useTransferStateDispatch();
 
     const {migrationActionUrl, formId} = window.migrationOnboardingData;
 

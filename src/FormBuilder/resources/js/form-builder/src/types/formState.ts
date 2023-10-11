@@ -1,5 +1,4 @@
 import type {FormSettings} from './formSettings';
-import type {TransferState} from './transferState';
 import {BlockInstance} from '@wordpress/blocks';
 import EditorMode from "@givewp/form-builder/types/editorMode";
 
@@ -9,7 +8,6 @@ import EditorMode from "@givewp/form-builder/types/editorMode";
 export type FormState = {
     blocks: BlockInstance[];
     settings: FormSettings;
-    transfer: TransferState
     isDirty?: boolean;
     canUndo?: boolean;
     canRedo?: boolean;
