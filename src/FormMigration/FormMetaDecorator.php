@@ -487,7 +487,7 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return [
-            'useGlobalSettings' => $feeRecoveryStatus === 'global',
+            'useGlobalSettings' => false,
             'feeSupportForAllGateways' => $this->getMeta('_form_give_fee_configuration') === 'all_gateways',
             'perGatewaySettings' => $perGatewaySettings,
             'feePercentage' => (float)$this->getMeta('_form_give_fee_percentage'),
