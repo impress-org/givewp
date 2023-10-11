@@ -115,6 +115,7 @@ export function setEditorModeDesign() {
         mode: EditorMode.design,
     };
 }
+
 /**
  * @unreleased
  */
@@ -123,4 +124,18 @@ export function setEditorModeSchema() {
         type: UPDATE_EDITOR_MODE,
         mode: EditorMode.schema,
     };
+}
+
+/**
+ * @unreleased
+ */
+export function undo() {
+    return {type: 'undo'};
+}
+
+/**
+ * @unreleased
+ */
+export function redo() {
+    return {type: 'redo'};
 }

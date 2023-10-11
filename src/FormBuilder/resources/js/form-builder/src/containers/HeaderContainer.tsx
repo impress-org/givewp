@@ -7,7 +7,7 @@ import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
-import {setEditorModeDesign, setEditorModeSchema, setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import {setEditorModeDesign, setEditorModeSchema, setIsDirty, undo, redo} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
@@ -101,8 +101,8 @@ const HeaderContainer = ({
                     <>
                         <Logo />
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
-                        <Button id={'undo'} disabled={!canUndo} icon={undoIcon} onClick={() => dispatch({type: 'undo'})} label={__('Undo', 'give')}/>
-                        <Button id={'redo'} disabled={!canRedo} icon={redoIcon} onClick={() => dispatch({type: 'redo'})} label={__('Redo', 'give')}/>
+                        <Button id={'undo'} disabled={!canUndo} icon={undoIcon} onClick={() => dispatch(undo())} label={__('Undo', 'give')}/>
+                        <Button id={'redo'} disabled={!canRedo} icon={redoIcon} onClick={() => dispatch(redo())} label={__('Redo', 'give')}/>
                         <Button
                             id={'editor-state-toggle'}
                             style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
