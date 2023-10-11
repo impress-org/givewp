@@ -465,6 +465,10 @@ class FormMetaDecorator extends FormModelDecorator
             ];
         }
 
+        if ($feeRecoveryStatus !== 'enabled') {
+            return [];
+        }
+
         $perGatewaySettings = [];
         $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
         $gatewaysMap = [
