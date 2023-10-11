@@ -76,9 +76,15 @@ const HeaderContainer = ({
     };
 
     const showOnSaveNotice = formStatus => {
-        const notice = 'publish' === formStatus
-            ? __('Form updated.', 'give')
-            : __('Form published.', 'give')
+        let notice;
+
+        if ('draft' === formStatus) {
+            notice = __('Draft saved.', 'give')
+        } else {
+            notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
+                ? __('Form updated.', 'give')
+                : __('Form published.', 'give')
+        }
 
         createSuccessNotice(notice, {
             type: 'snackbar',
