@@ -5,23 +5,25 @@ namespace Give\Framework\FieldsAPI\Concerns;
 trait HasDefaultValue
 {
 
-    /** @var string */
+    /** @var mixed|null */
     protected $defaultValue;
 
     /**
-     * @param string|array $defaultValue
-     *
-     * @return $this
+     * @param mixed $defaultValue
      */
-    public function defaultValue($defaultValue)
+    public function defaultValue($defaultValue): self
     {
-        $this->defaultValue = $defaultValue;
+        if (is_string($defaultValue) && empty($defaultValue)) {
+            $this->defaultValue = null;
+        } else {
+            $this->defaultValue = $defaultValue;
+        }
 
         return $this;
     }
 
     /**
-     * @return string|array
+     * @return mixed|null
      */
     public function getDefaultValue()
     {
@@ -29,7 +31,7 @@ trait HasDefaultValue
     }
 
     /**
-     * @return string|array
+     * @return mixed|null
      */
     public function getSelected()
     {
