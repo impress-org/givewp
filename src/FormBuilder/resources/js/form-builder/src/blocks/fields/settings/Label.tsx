@@ -1,7 +1,6 @@
 import {TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
-import {noop} from 'lodash';
 import {FocusEventHandler} from 'react';
 
 type Props = {
@@ -10,6 +9,8 @@ type Props = {
 
     onBlur?: FocusEventHandler<HTMLInputElement>;
 };
+
+const noop = () => {};
 
 export default function Label({label, setAttributes, onBlur = noop}: Props) {
     return (
