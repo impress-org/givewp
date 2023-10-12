@@ -3,13 +3,12 @@ import {BlockEditProps} from '@wordpress/blocks';
 
 export default function Edit({attributes}: BlockEditProps<any>) {
     const {label, isRequired, description, placeholder, defaultValue} = attributes;
-    const requiredClass = isRequired ? 'give-is-required' : '';
 
     return (
         <>
-            <div>
+            <div className={classnames({'give-is-required': isRequired})}>
                 <span
-                    className={classnames('components-input-control__label', 'give-text-block__label', requiredClass)}
+                    className='components-input-control__label give-text-block__label'
                 >
                     {label}
                 </span>
