@@ -19,7 +19,7 @@ class FormFieldManager extends FormMigrationStep
      * - "field_width" (Field Width)
      * - "css" (CSS Class Name)
      *
-     * @unreleased @Added support for conditions based on Donation Amount.
+     * @unreleased added support for conditions based on Donation Amount.
      * @since 3.0.0-rc.7
      */
     public function process()
