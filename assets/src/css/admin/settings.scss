@@ -285,17 +285,169 @@ div.give-field-description {
 //--------------------------------------------------------------
 // Payment Gateways
 //--------------------------------------------------------------
+.give-payment-gateway-settings-dialog {
+    animation: appear 112ms ease-in 0s;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
+    padding: 0;
+    max-width: 35rem;
+    width: 100%;
+
+    &::backdrop {
+        backdrop-filter: blur(2px);
+    }
+
+    &__header {
+        display: flex;
+        align-self: stretch;
+        font-size: 1rem;
+        font-weight: 700;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background-color: #fff;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+        border-bottom: 1px solid #e6e6e6;
+
+        button {
+            all: unset;
+            position: absolute;
+            cursor: pointer;
+            z-index: 999;
+            top: 1rem;
+            right: 1.25rem;
+            fill: #737373;
+        }
+    }
+
+    &__content {
+        font-size: 0.875rem;
+        padding: 1.25rem;
+
+        svg {
+            margin-right: 0.5rem;
+        }
+
+        &-title {
+            align-items: center;
+            display: flex;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+
+            &:not(:first-child) {
+                margin-top: 1.25rem;
+            }
+        }
+
+        &-itemsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        &-item {
+            align-items: center;
+            display: flex;
+            flex-basis: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        &-button {
+            background-color: #0857a6;
+            border-radius: 0.25rem;
+            border: 1px solid transparent;
+            color: #fff;
+            cursor: pointer;
+            display: block;
+            font-size: 0.875rem;
+            font-stretch: normal;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: normal;
+            padding: 1rem 5rem;
+            width: 100%;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+
+            &:hover {
+                background-color: #074a8c;
+            }
+        }
+    }
+}
+
+.give-payment-gateways-settings {
+    &.give-settings-section-content {
+        .give-settings-section-group-menu {
+            width: 22rem;
+
+            ul li a {
+                display: flex;
+                gap: 1rem;
+                justify-content: space-between;
+                padding: 1.25rem 1rem;
+                position: relative;
+
+                .give-settings-section-group-helper {
+                    --popout-display: none;
+                    display: flex;
+
+                    &:hover {
+                        --popout-display: block;
+                    }
+
+                    &__popout {
+                        background-color: #fff;
+                        border: 1px solid #e6e6e6;
+                        border-radius: 4px;
+                        box-shadow: 0 4px 8px 0 #0000000D;
+                        color: #404040;
+                        display: var(--popout-display, none);
+                        left: 100%;
+                        overflow: hidden;
+                        position: absolute;
+                        top: 0;
+                        transform: translateX(10px);
+
+                        img {
+                            display: block;
+                        }
+
+                        h5 {
+                            font-size: 0.875rem;
+                            font-weight: 700;
+                            line-height: 1.5;
+                            margin: 0;
+                            padding: 1rem 1.5rem 0.5rem;
+                        }
+
+                        p {
+                            font-size: 0.75rem;
+                            font-weight: 500;
+                            line-height: 1.5;
+                            margin: 0;
+                            padding: 0 1.5rem 1.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 .gateway-enabled-wrap {
-	background-color: #f7f7f7;
-	border: 1px solid #e5e5e5;
 
 	.gateway-enabled-settings-title {
 		display: grid;
 		grid-template-columns: 0.5fr 2.5fr 5fr 1fr 1fr;
 		grid-gap: 20px;
-		border-bottom: 1px solid #e5e5e5;
-		padding: 1rem;
+        padding: 1rem 0;
 		font-weight: 600;
 	}
 
@@ -315,7 +467,7 @@ div.give-field-description {
 
 .give-payment-gatways-list {
 	margin: 0;
-	padding: 1rem;
+    padding: 1rem 0;
 }
 
 .give-payment-gatways-list li {

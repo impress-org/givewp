@@ -1,0 +1,222 @@
+.givewp__component {
+
+    &-DesignPreview {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &-spinner {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+
+            svg {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        &-container {
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border: solid 1px var(--givewp-gray-10);
+            background-color: var(--givewp-shades-white);
+            overflow: hidden;
+
+            &-classic {
+                width: 720px;
+
+                &-header,
+                &-image,
+                &-donation-levels,
+                &-progressbar {
+                    background-color: var(--givewp-gray-10);
+                    border-radius: 4px;
+                }
+
+                &-headerwrap {
+                    padding: 2.5rem 4rem;
+                    background-color: var(--givewp-gray-5);
+                }
+
+                &-header {
+                    height: 4rem;
+                }
+
+                &-title {
+                    padding: 1rem;
+                    display: flex;
+                    justify-content: center;
+
+                    div {
+                        height: 1.5rem;
+                        width: 30%;
+                        background-color: var(--givewp-gray-10);
+                    }
+                }
+
+                &-wrap {
+                    padding: 1.5rem 4rem;
+                }
+
+                &-bar {
+                    height: 1.5rem;
+                    background-color: var(--givewp-gray-10);
+                    margin-bottom: 1.5rem;
+                }
+
+                &-barshort {
+                    height: 1.5rem;
+                    background-color: var(--givewp-gray-10);
+                    margin-top: 1.5rem;
+                    margin-bottom: 0.6rem;
+                    width: 40%;
+                }
+
+                &-doublebar {
+                    height: 2.5rem;
+                    display: flex;
+                    flex-direction: row;
+                    align-content: space-between;
+                    gap: 0.3rem;
+
+                    div {
+                        flex: 1;
+                        background-color: var(--givewp-gray-20);
+                        border-radius: 2px;
+                    }
+                }
+
+                &-doublebar-small {
+                    display: flex;
+                    flex-direction: row;
+
+                    div {
+                        flex: 1;
+                        div {
+                            height: 1.5rem;
+                            width: 7.5rem;
+                            background-color: var(--givewp-gray-10);
+                        }
+                    }
+                }
+
+                &-grid {
+                    display: grid;
+                    gap: 0.6rem;
+                    grid-template-columns: repeat(3, 1fr);
+                    margin-bottom: 4rem;
+
+                    div {
+                        background-color: var(--givewp-gray-10);
+                        height: 4rem;
+                    }
+
+                    div:last-child {
+                        grid-column-start: 1;
+                        grid-column-end: 4;
+                    }
+                }
+
+            }
+
+            &-multistep {
+                width: 35rem;
+                padding: 1.5rem;
+
+                &-header,
+                &-image,
+                &-donation-levels,
+                &-progressbar {
+                    background-color: var(--givewp-gray-10);
+                    border-radius: 4px;
+                }
+
+                &-header {
+                    height: 4rem;
+                    margin-bottom: 2rem;
+                }
+
+                &-image {
+                    height: 20rem;
+                }
+
+                &-button {
+                    padding: 1.5rem 2rem;
+
+                    div {
+                        background-color: var(--givewp-gray-10);
+                        height: 4rem;
+                    }
+                }
+
+                &-footer {
+                    padding: 0 1rem;
+                    display: flex;
+                    justify-content: center;
+
+                    div {
+                        background-color: var(--givewp-gray-10);
+                        height: 1rem;
+                        width: 30%;
+                    }
+                }
+            }
+
+
+            &-classic,
+            &-multistep {
+                &-donation-levels {
+                    display: flex;
+                    flex-direction: row;
+                    align-content: space-between;
+                    margin-top: 5px;
+                    border-bottom: solid 1px var(--givewp-gray-20);
+                    border-radius: 4px 4px 0 0;
+
+                    div {
+                        border-radius: 4px 4px 0 0;
+                        flex: 1;
+                        padding: 1.2rem;
+                        background-color: var(--givewp-gray-10);
+                    }
+
+                    div:nth-child(2) {
+                        border-left: solid 1px var(--givewp-gray-20);
+                        border-right: solid 1px var(--givewp-gray-20);
+                    }
+
+                    div > div {
+                        background-color: var(--givewp-gray-20);
+                        border-radius: 4px;
+                        height: 1rem;
+                    }
+                }
+
+                &-progressbar {
+                    border-radius: 0 0 4px 4px;
+                    padding: 1rem 1.5rem;
+
+                    div {
+                        background-color: var(--givewp-gray-20);
+                        border-radius: 10px;
+                        height: 1.5rem;
+                    }
+                }
+            }
+
+
+        }
+
+    }
+
+
+}

@@ -6,7 +6,7 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -45,6 +45,10 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
         };
     }
 
+    function columnGetFilter(columnId) {
+        return columnFilters.filter(definition => definition.column === columnId)
+    }
+
     if (!data) {
         return null;
     }
@@ -62,14 +66,20 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     id={item.id}
                     name={item?.donor ?? item?.title ?? item?.donorInformation}
                     singleName={singleName}
-                    data={data}
                 />
             </TableCell>
             <>
                 {columns?.map((column) => {
+                    const columnFilter = columnGetFilter(column.id);
+
                     return (
                         <TableCell key={column.id} heading={columns[0].id === column.id}>
-                            <InterweaveSSR column={column} item={item} />
+                            {columnFilter.length > 0 ? (
+                                columnFilter[0].filter(item, column)
+                            ) : (
+                                <InterweaveSSR column={column} item={item} />
+                            )}
+
                             {columns[0].id === column.id && !isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                                     {rowActions({

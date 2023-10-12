@@ -1,0 +1,171 @@
+@import '@givewp/components/AdminUI/ModalDialog/style.scss';
+@import '@givewp/components/AdminUI/Button/style.scss';
+@import '@givewp/components/AdminUI/ButtonGroup/style.scss';
+@import '@givewp/components/AdminUI/Input/style.scss';
+
+.givewp-dialog-title {
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    margin-bottom: var(--givewp-spacing-2);
+    display: flex;
+    align-items: center;
+    color: var(--givewp-grey-900);
+
+    svg {
+        margin-right: var(--givewp-spacing-2);
+    }
+
+    &:not(:first-child)  {
+        margin-top: var(--givewp-spacing-5);
+    }
+}
+.givewp-dialog-title-small {
+    text-align: center;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin-bottom: var(--givewp-spacing-2);
+    color: var(--givewp-grey-900);
+}
+
+
+.givewp-dialog-center {
+    text-align: center;
+    justify-content: center;
+}
+
+.givewp-dialog-info {
+    line-height: 1.57;
+    margin-bottom: var(--givewp-spacing-5);
+}
+
+.givewp-dialog-form-name {
+    color: #459948;
+}
+
+.givewp-dialog-checkbox {
+    padding-bottom: 5px;
+}
+
+.givewp-dialog-image-container {
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: var(--givewp-rounded-4);
+    border-top-right-radius: var(--givewp-rounded-4);
+    height: 305px;
+    margin-top: calc(var(--givewp-spacing-5) * -1);
+    margin-left: calc(var(--givewp-spacing-5) * -1);
+    margin-right: calc(var(--givewp-spacing-5) * -1);
+    padding: var(--givewp-spacing-3);
+
+    background-color: var(--givewp-grey-5);
+    border-bottom: 1px solid var(--givewp-grey-50);
+
+    img {
+        width: 80%;
+        height: auto;
+    }
+}
+
+.givewp-dialog-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: var(--givewp-spacing-6);
+}
+
+.givewp-dialog-content-small {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin-bottom: var(--givewp-spacing-6);
+}
+
+/**
+ + Transfer notice
+ */
+
+.givewp-transfer-notice-container {
+    z-index: 99999999;
+    position: fixed;
+    bottom: 0;
+    left: 15%;
+    right: 15%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--givewp-blue-500);
+    color: #fff;
+    padding: 0 var(--givewp-spacing-6);
+    font-weight: 500;
+    font-size: 0.875rem;
+    gap: 10px;
+    height: 3.5rem;
+
+    .givewp-transfer-button {
+        all: unset;
+        cursor: pointer;
+        font-weight: 500;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        border-radius: 0.5rem;
+        color: #000;
+        background-color: var(--givewp-blue-25);
+        font-size: 0.875rem;
+        line-height: 1.71;
+        letter-spacing: normal;
+        margin-right: var(--givewp-spacing-3);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
+    }
+
+    .givewp-transfer-close-icon-container {
+        display: flex;
+        align-items: center;
+
+        svg {
+            fill: #fff;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+    }
+}
+
+/**
+ * Tooltip
+ */
+
+.givewp-transfer-tooltip {
+    position: absolute;
+    bottom: -90px;
+    left: 0;
+    background-color: #19661c;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+}
+
+.givewp-transfer-tooltip::after {
+    content: " ";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color:  transparent transparent #19661c transparent;
+}
+
+.givewp-transfer-selected-menuitem {
+    border: 2px solid #19661c !important;
+    border-radius: 4px;
+}
+

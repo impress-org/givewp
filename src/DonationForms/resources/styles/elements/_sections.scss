@@ -1,0 +1,32 @@
+// add a little styling to section legends
+.givewp-layouts-section {
+    &__fieldset {
+        gap: var(--givewp-spacing-6);
+
+        &__legend {
+            legend {
+                font-size: clamp(var(--givewp-spacing-5), 1.28205vw, var(--givewp-spacing-6));
+                font-weight: bold;
+                color: var(--givewp-grey-900);
+                line-height: 1.6;
+                margin-block-end: var(--givewp-spacing-3);
+            }
+
+            p {
+                margin: 0;
+                color: var(--givewp-grey-700);
+                line-height: 1.5;
+            }
+        }
+    }
+
+    button:focus {
+        box-shadow: none;
+    }
+}
+
+.givewp-section-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+}

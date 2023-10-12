@@ -4,16 +4,15 @@ namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
-use Give\Promotions\FreeAddonModal\Controllers\DisplaySettingsButton;
-use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
-use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
-use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
+use Give\Promotions\InPluginUpsells\SummerSalesBanner;
+use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
+use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -39,7 +38,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @since 2.27.1 Removed Recurring donations tab app.
+     * @since      2.27.1 Removed Recurring donations tab app.
      *
      * Boots the Plugin Upsell promotional page
      *
@@ -50,6 +49,7 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
@@ -58,6 +58,10 @@ class ServiceProvider implements ServiceProviderContract
         if (SaleBanners::isShowing()) {
             Hooks::addAction('admin_notices', SaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
+        }
+        if (SummerSalesBanner::isShowing()) {
+            Hooks::addAction('admin_notices', SummerSalesBanner::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', SummerSalesBanner::class, 'loadScripts');
         }
 
         if (PaymentGateways::isShowing()) {
@@ -76,6 +80,11 @@ class ServiceProvider implements ServiceProviderContract
                 LegacyFormEditor::class,
                 'renderDonationOptionsRecurringRecommendation'
             );
+        }
+
+        if (WelcomeBanner::isShowing()) {
+            Hooks::addAction('admin_notices', WelcomeBanner::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
     }
 

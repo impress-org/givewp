@@ -1,0 +1,107 @@
+.givewp-fields-gateways {
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
+        list-style: none;
+    }
+
+    &__gateway {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        background-color: var(--givewp-shades-white);
+        transition: background-color var(--tab-transition);
+        border-radius: var(--givewp-rounded-4);
+        border-color: var(--givewp-grey-400);
+        list-style: none;
+        margin: 0;
+
+        label {
+            display: flex;
+            flex-direction: row;
+            gap: var(--givewp-spacing-4);
+            align-items: center;
+            padding: var(--givewp-spacing-6) var(--givewp-spacing-4);
+            border-style: solid;
+            border-width: 1px;
+            border-color: inherit;
+            border-radius: var(--givewp-rounded-4);
+            cursor: pointer;
+        }
+
+        &--active {
+            border-color: var(--givewp-primary-color);
+        }
+
+        &__label {
+            flex-grow: 1;
+        }
+
+        &__icon {
+            font-size: 1.25rem;
+            color: var(--givewp-grey-500);
+        }
+
+        &__fields {
+            display: none;
+            border-style: solid;
+            border-width: 1px;
+            border-color: inherit;
+            padding: var(--givewp-spacing-8) var(--givewp-spacing-12);
+            border-radius: var(--givewp-rounded-4);
+            font-size: var(--givewp-font-weight-paragraph-md);
+        }
+
+        &--active &__fields {
+            display: block;
+        }
+
+        &--test-gateway {
+            .no-fields {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: var(--givewp-spacing-4);
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.givewp-test-mode-notice {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0.25rem;
+    border-top: 1px solid var(--orange-400, #F29718);
+    border-right: 1px solid var(--orange-400, #F29718);
+    border-bottom: 1px solid var(--orange-400, #F29718);
+    border-left: 4px solid var(--orange-400, #F29718);
+    background: var(--shades-white, #FFF);
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.25rem;
+        color: var(--grey-900, #0E0E0E);
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+    }
+}
+

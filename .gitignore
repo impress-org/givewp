@@ -50,10 +50,12 @@ node_modules
 assets/dist/
 .storybook-static
 release
+public
+.storybook-static
+languages
 
 # Composer
 vendor
-
 # PHPCS
 .phpcs.xml
 phpcs.xml
@@ -61,3 +63,15 @@ phpcs.xml
 # POT File
 languages/*
 !languages/README.md
+
+# @wordpress/scripts build directory
+build
+**/build.*
+**/build.asset.*
+# Assert directory
+assets/dist
+build
+**/build.*
+**/build.asset.*
+
+.phpunit.result.cache

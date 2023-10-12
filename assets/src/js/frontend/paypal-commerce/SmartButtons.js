@@ -1,4 +1,4 @@
-/* globals paypal, Give, FormData */
+/* globals paypal, Give, FormData, givePayPalCommerce */
 import DonationForm from './DonationForm';
 import PaymentMethod from './PaymentMethod';
 import CustomCardFields from './CustomCardFields';
@@ -18,6 +18,15 @@ class SmartButtons extends PaymentMethod {
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
 		this.smartButton = null;
 	}
+
+    /**
+     * Check if smart buttons can be shown.
+     * @since 2.33.0
+     * @return {boolean}
+     */
+    static canShow() {
+        return givePayPalCommerce.payPalSdkQueryParameters.components.indexOf('buttons') !== -1;
+    }
 
 	/**
 	 * Get smart button container.

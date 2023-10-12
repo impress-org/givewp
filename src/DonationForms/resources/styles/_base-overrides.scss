@@ -1,0 +1,79 @@
+@use 'variables';
+
+:root,
+[data-theme=light],
+[data-theme=dark] {
+    // pico variables
+    --font-size: 16px;
+    --typography-spacing-vertical: 1rem;
+    --background-color: transparent;
+
+    // map pico variables to givewp variables
+    --primary: var(--givewp-primary-color);
+    --primary-hover: var(--givewp-primary-color);
+    --primary-focus: var(--givewp-primary-color);
+    --progress-color: var(--givewp-secondary-color);
+
+    --secondary: var(--givewp-secondary-color);
+    --secondary-hover: var(--givewp-secondary-color);
+    --secondary-focus: var(--givewp-secondary-color);
+
+    --outline-width: 0.125rem;
+    --border-color: var(--givewp-grey-400);
+    --form-element-invalid-active-border-color: var(--givewp-red-400);
+    --form-element-invalid-border-color: var(--givewp-red-500);
+    --form-element-invalid-focus-color: var(--givewp-red-50);
+
+    --icon-invalid: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm1 7a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0V8zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12z' fill='%23D92D0B'/%3E%3C/svg%3E%0A");
+
+    // custom givewp variables
+    --givewp-breakpoint-xs: variables.$givewp-breakpoint-xs;
+    --givewp-breakpoint-sm: variables.$givewp-breakpoint-sm;
+    --givewp-breakpoint-md: variables.$givewp-breakpoint-md;
+    --givewp-breakpoint-lg: variables.$givewp-breakpoint-lg;
+    --givewp-breakpoint-xl: variables.$givewp-breakpoint-xl;
+}
+
+// remove the green checkbox in inputs
+input[aria-invalid="false"],
+textarea[aria-invalid="false"] {
+    &:not([type="checkbox"]) {
+        background-image: none;
+    }
+}
+
+input, select, textarea {
+    margin-bottom: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    --typography-spacing-vertical: 1rem;
+}
+
+ol > li {
+    list-style-type: decimal;
+}
+
+pre {
+    white-space: break-spaces;
+}
+
+label, fieldset {
+    margin: 0;
+}
+
+:where(input, select, textarea):not([type=checkbox], [type=radio], [type=date], [type=datetime-local], [type=month], [type=time], [type=week])[aria-invalid=false] {
+    background-image: var(--icon-chevron);
+}
+
+:where(input, select, textarea):not([type=checkbox], [type=radio], [type=date], [type=datetime-local], [type=month], [type=time], [type=week])[aria-invalid] {
+    background-size: auto 1.5rem;
+}
+
+:where(input, select, textarea)[aria-invalid=false] {
+    --border-color: var(--givewp-grey-400);
+}
+
+input[type="file"] {
+    padding: 0;
+}

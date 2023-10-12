@@ -1,0 +1,27 @@
+.givewp-stripe-payment-element__panel {
+    .components-notice {
+        color: var(--givewp-grey-700);
+        margin-left: 0;
+        margin-right: 0;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+        .components-notice__content {
+            margin: 0;
+
+            * {
+                font-size: 0.75rem;
+                line-height: 1rem;
+            }
+        }
+
+        h4 {
+            color: var(--givewp-grey-900);
+            margin: 0 0 var(--givewp-spacing-2);
+        }
+
+        .components-notice__action.is-link {
+            color: var(--givewp-grey-900);
+            margin-left: 0;
+        }
+    }
+}

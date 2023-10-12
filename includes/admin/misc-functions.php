@@ -253,9 +253,12 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 /**
  * Handle installation and connection for SendWP via ajax
  *
+ * @since 2.33.4 added nonce check
  * @since 2.9.15
  */
 function give_sendwp_remote_install_handler () {
+
+  check_ajax_referer( 'give_sendwp_remote_install');
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_send_json_error( array(
@@ -328,9 +331,12 @@ add_action( 'wp_ajax_give_sendwp_remote_install', 'give_sendwp_remote_install_ha
 /**
  * Handle deactivation of SendWP via ajax
  *
+ * @since 2.33.4 add nonce check
  * @since 2.9.15
  */
 function give_sendwp_disconnect () {
+
+  check_ajax_referer( 'give_sendwp_disconnect');
 
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_send_json_error( array(

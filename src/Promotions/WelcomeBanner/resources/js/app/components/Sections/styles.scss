@@ -1,0 +1,53 @@
+.givewp-welcome-banner-left-content {
+    flex: .55;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-9);
+    align-self: stretch;
+}
+
+.givewp-welcome-banner-right-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+
+
+    > h2 {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.4;
+        margin: 0 0 .5rem 0;
+        letter-spacing: normal;
+        text-align: left;
+    }
+
+    &__media-container {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 1.375rem;
+        height: 100%;
+    }
+}
+
+@media (max-width: 1280px) {
+    .givewp-welcome-banner-left-content {
+        flex: 1;
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 1140px) {
+    .givewp-welcome-banner-left-content {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 750px) {
+    .givewp-welcome-banner-right-content__media-container {
+        flex-direction: column;
+    }
+}

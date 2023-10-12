@@ -2,6 +2,7 @@
 
 namespace Give\Tracking\Events;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Tracking\Contracts\TrackEvent;
 use Give\Tracking\Enum\EventType;
 use Give\Tracking\Repositories\TrackEvents;
@@ -52,6 +53,15 @@ class EditedDonationFormsTracking extends TrackEvent
     public function savePostHookHandler($formId)
     {
         $this->trackEvents->saveRecentlyEditedDonationForm($formId);
+        $this->record();
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function formBuilderUpdatedHookHandler(DonationForm $form)
+    {
+        $this->trackEvents->saveRecentlyEditedDonationForm($form->id);
         $this->record();
     }
 }

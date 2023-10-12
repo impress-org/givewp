@@ -1,0 +1,344 @@
+@use "@picocss/pico/scss/variables";
+
+.givewp-donation-confirmation-receipt {
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+.givewp-layouts-receipt {
+    border-radius: 0.5rem;
+    max-width: min(100%,51.5rem);
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: var(--givewp-shadow-sm);
+
+   @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
+       border-radius: 0.5rem;
+   }
+
+    .receipt-heading {
+        position: relative;
+        margin-block: 2rem;
+        font-size: 1.625rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        color: currentColor;
+    }
+
+    .social-sharing {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 1.25rem;
+        background: #fbfbfb;
+        border-block: 0.0625rem solid #f2f2f2;
+        padding-block: 1.5rem;
+        padding-inline: 1.25rem;
+
+        .instruction {
+            line-height: 1.5;
+            grid-column: span 2;
+            font-size: 0.9375rem;
+            color: #555;
+            text-align: center;
+            max-inline-size: 60ch;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            column-gap: 1.75rem;
+            row-gap: 1rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            column-gap: 0.75em;
+            font-size: 1rem;
+            padding: 0.875em 1.6875em;
+            border: none;
+            transition: background-color 0.2s ease;
+
+            > i {
+                font-size: 1.375em;
+            }
+
+            &.facebook-btn {
+                background-color: #3b5998;
+
+                &:hover {
+                    background-color: #4668b1;
+                }
+            }
+
+            &.twitter-btn {
+                background-color: #00acee;
+
+                &:hover {
+                    background-color: #00b7ff;
+                }
+            }
+        }
+    }
+
+    .receipt-body {
+        .details {
+            .headline {
+                color: var(--givewp-grey-700);
+                font-weight: 600;
+                font-size: 1.25rem;
+            }
+            .details-table {
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+
+                .details-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: flex-start;
+                    column-gap: 0.625rem;
+                    row-gap: 0.5rem;
+                    font-size: 1.125rem;
+                    font-weight: 500;
+
+                    > i {
+                        align-self: center;
+                        color: var(--givewp-grey-300);
+                    }
+
+                    .detail {
+                        align-self: center;
+                        white-space: nowrap;
+                        color: var(--givewp-grey-500);
+                        margin-inline-end: auto;
+                    }
+
+                    .value {
+                        margin-inline-start: 0;
+                        white-space: pre-wrap;
+                        text-align: right;
+                    }
+                }
+
+                .details-row--payment-status .value {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 0.5rem;
+
+                    &::before {
+                        content: '';
+                        --diameter: 0.8125rem;
+                        block-size: var(--diameter);
+                        aspect-ratio: 1;
+                        // Until Safari 14 usage drops off
+                        @supports not (aspect-ratio: 1) {
+                            inline-size: var(--diameter);
+                        }
+                        flex-shrink: 0;
+                        background-color: var(--status-color, #ccc);
+                        clip-path: circle();
+                    }
+
+                    &[data-value='Complete'], &[data-value='Completed'] {
+                        --status-color: var(--givewp-emerald-500);
+                    }
+
+                    &[data-value='Pending'] {
+                        --status-color: var(--givewp-orange-300);
+                    }
+
+                    &[data-value='Failed'] {
+                        --status-color: var(--givewp-red-400);
+                    }
+                }
+
+                .details-row--donation-total {
+                    font-weight: 700;
+                }
+
+                &.payment-details {
+                    border-bottom: 0.125rem solid #f2f2f2;
+                }
+            }
+
+            .details-table:empty {
+                display: none !important;
+            }
+        }
+    }
+
+    .receipt-footer {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        margin-block-start: 2rem;
+        padding-block-end: 1.5rem;
+        padding-inline: 1.25rem;
+
+        #give-pdf-receipt-link,
+        #give-pdf-receipt-link:visited {
+            display: flex;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            width: fit-content;
+            padding: 0.75rem 2rem 0.75rem 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.75rem;
+            border-radius: 0.2rem;
+            border: thin solid var(--givewp-primary-color);
+            background-color: #fff;
+            color: var(--givewp-primary-color);
+
+
+            &::before {
+                display: inline-block;
+                content: '\f1c1';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                font-size: 1.25rem;
+                line-height: 1;
+                margin-right: 0.5rem;
+            }
+        }
+
+        #give-pdf-receipt-link:hover {
+            background-color: var(--givewp-primary-color);
+            color: #fff;
+        }
+
+        .donor-dashboard-link {
+            color: var(--givewp-primary-color);
+            text-decoration: underline;
+            font-weight: 400;
+        }
+
+        .download-btn {
+            font-size: inherit;
+            padding-block: 0.75rem;
+            padding-inline: 1.6875rem;
+        }
+    }
+}
+
+.givewp-layouts-receipt {
+    .receipt-body {
+        padding-block-start: 2.375rem;
+        padding-inline: 1.25rem;
+    }
+
+    .details + .details {
+        margin-block-start: 2.375rem;
+    }
+
+    .headline {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        padding-block-end: 1.25rem;
+
+        &::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.875rem;
+        }
+    }
+
+    // Margins between rows
+
+    .headline,
+    .details-row {
+        border-block-end: 0.0625rem solid #f2f2f2;
+    }
+
+    .details-row {
+        padding-block: 0.9375rem;
+    }
+
+    // Donor Details
+    .details-donor-details .headline::before {
+        content: '\f007';
+    }
+
+    // Donation Details
+    .details-donation-details .headline::before {
+        content: '\f004';
+    }
+}
+
+.receipt-header {
+    &-top-wrap {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: var(--givewp-primary-color);
+        max-width: min(100%, 51.5rem);
+        margin: 0 auto;
+        display: grid;
+        justify-items: center;
+        row-gap: 1.5rem;
+        padding: 3rem;
+        color: #fff;
+        text-align: center;
+
+      @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
+         padding: 3rem;
+      }
+    }
+
+    &-heading {
+        position: relative;
+        margin-block-end: 1rem;
+        font-size: 1.75rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        color: currentColor;
+
+        &::after {
+            position: absolute;
+            content: '';
+            display: block;
+            border-radius: 9999px;
+            inline-size: 4.375rem;
+            block-size: 0.3125rem;
+            background-color: #fff;
+            inset-inline-start: 50%;
+            inset-block-start: calc(100% + 1.25rem);
+            transform: translate(-50%);
+        }
+    }
+
+    &-description {
+        font-size:1.125rem;
+        line-height: 1.45;
+        margin: 0 auto;
+        max-inline-size: 42ch;
+        color: currentColor;
+    }
+}
+
+.givewp-form-secure-badge {
+    display: inline-flex;
+    column-gap: 0.5rem;
+    align-items: center;
+    padding-block: 0.5rem;
+    padding-inline: 0.9rem;
+    border-radius: 9999px;
+    background-color: #fff;
+    box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.givewp-form-secure-badge-icon {
+    color: var(--givewp-secondary-color);
+}

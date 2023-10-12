@@ -1,0 +1,53 @@
+.givewp-welcome-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: auto;
+    width: auto;
+    gap: 1rem;
+    margin: 1.5rem 0 1.625rem;
+    padding: 1.5rem 3rem 2.25rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px var(--givewp-green-800);
+    background-color: var(--givewp-shades-white);
+    box-sizing: border-box;
+
+    &__dismiss-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        svg {
+            cursor: pointer;
+        }
+    }
+
+    &__content-container {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-18);
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 1280px) {
+    .givewp-welcome-banner__content-container {
+        flex-direction: column;
+        gap: var(--givewp-spacing-12);
+    }
+}
+
+
+

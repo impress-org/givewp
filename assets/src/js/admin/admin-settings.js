@@ -333,8 +333,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	const allContent = Array.prototype.slice.call( mainContentWrap.querySelectorAll( '.give-settings-section-group' ) );
 
-	const menuButtons = Array.from( menuContentWrap.querySelectorAll( 'ul li a' ) )
-		.concat( Array.from( mainContentWrap.querySelectorAll( 'ul.give-subsubsub li a' ) ) );
+    const menuButtons = Array.from(menuContentWrap.querySelectorAll('ul li a')).concat(
+        Array.from(mainContentWrap.querySelectorAll('ul.give-subsubsub li a'))
+    );
 
 	// Bailout, if menu content wrap not exists.
 	if ( null === menuButtons ) {
@@ -343,13 +344,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	menuButtons.forEach( ( element ) => {
 		element.addEventListener( 'click', ( e ) => {
-			const hasSubGroup = e.target.hasAttribute( 'data-subgroup' );
+            let targetElement = e.target;
+
+            if (targetElement.tagName !== 'A') {
+                targetElement = targetElement.closest('a');
+
+                if (!targetElement) {
+                    return;
+                }
+            }
+            const hasSubGroup = targetElement.hasAttribute('data-subgroup');
 			let selectedGroup, selectedContent;
 
 			if ( hasSubGroup ) {
-				const menuContainer = e.target.parentElement.parentElement;
+                const menuContainer = targetElement.parentElement.parentElement;
 				const sectionGroup = menuContainer.parentElement;
-				selectedGroup = e.target.getAttribute( 'data-subgroup' );
+                selectedGroup = targetElement.getAttribute('data-subgroup');
 				selectedContent = mainContentWrap.querySelector( `#give-settings-section-subgroup-${ selectedGroup }` );
 
 				// Loop through menu button and remove `current` class.
@@ -361,9 +371,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				sectionGroup.querySelectorAll( '.give-settings-section-subgroup ' ).forEach( contentElement => contentElement.classList.add( 'give-hidden' ) );
 
 				// Add `active` class to menu buttons of selected element.
-				e.target.classList.add( 'current' );
+                targetElement.classList.add('current');
 			} else {
-				selectedGroup = e.target.getAttribute( 'data-group' );
+                selectedGroup = targetElement.getAttribute('data-group');
 				selectedContent = mainContentWrap.querySelector( `#give-settings-section-group-${ selectedGroup }` );
 
 				// Loop through menu button and remove `active` class.
@@ -375,14 +385,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				allContent.map( contentElement => contentElement.classList.add( 'give-hidden' ) );
 
 				// Add `active` class to menu buttons of selected element.
-				e.target.classList.add( 'active' );
+                targetElement.classList.add('active');
 			}
 
 			// Remove `give-hidden` class from content section of selected element.
 			selectedContent.classList.remove( 'give-hidden' );
 
 			// Update URL in browser address without reloading the page.
-			history.pushState( { urlPath: e.target.getAttribute( 'href' ) }, '', e.target.getAttribute( 'href' ) );
+            history.pushState({urlPath: targetElement.getAttribute('href')}, '', targetElement.getAttribute('href'));
 
 			// Don't redirect the page.
 			e.preventDefault();
@@ -390,3 +400,25 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	} );
 } );
+
+// Payment Gateways Settings dialog
+document.addEventListener('DOMContentLoaded', () => {
+    const dialog = document.getElementById('give-payment-gateway-settings-dialog');
+
+    if (dialog === null) {
+        return;
+    }
+
+    Array.from(
+        dialog.querySelectorAll(
+            '#give-payment-gateway-settings-dialog__close, .give-payment-gateway-settings-dialog__content-button'
+        )
+    ).forEach((element) => {
+        element.addEventListener('click', (e) => {
+            e.preventDefault();
+            dialog.close();
+        });
+    });
+
+    dialog.showModal();
+});

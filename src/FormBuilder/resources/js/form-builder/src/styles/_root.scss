@@ -1,0 +1,70 @@
+#root {
+    --wp-blue-blue-50: #2271b1;
+
+    // Gutenberg color mappings
+    --wp-admin-border-width-focus: 2px;
+
+    // Layout
+    --givewp-sidebar-width: 320px;
+
+    @media screen and (max-width: 782px) {
+        --givewp-sidebar-width: 100%;
+    }
+
+    // Primary
+    --givewp-primary-200: #e6ffe6;
+    --givewp-primary-300: #c2f2c3;
+    --givewp-primary-400: #aaf2ac;
+    --givewp-primary-500: #68bf6b;
+    --givewp-primary-600: #15ae56;
+    --givewp-primary-700: #5ba65e;
+    --givewp-primary-800: #3f7341;
+
+    // Primary RGB
+    --givewp-primary-500--rgb: 104, 191, 107;
+    --givewp-primary-700--rgb: 91, 166, 94;
+    --givewp-primary-800--rgb: 653, 115, 65;
+
+    // Gray
+    --givewp-gray-5: #fafafa;
+    --givewp-gray-10: #f2f2f2;
+    --givewp-gray-20: #e6e6e6;
+    --givewp-gray-30: #d9d9d9;
+    --givewp-gray-40: #bfbfbf;
+    --givewp-gray-60: #8c8c8c;
+    --givewp-gray-80: #595959;
+    --givewp-gray-100: #1e1e1e;
+
+    // Neutral
+    --givewp-neutral-70: #b8c6cc;
+    --givewp-neutral-80: #8fa8b3;
+    --givewp-neutral-90: #6b8b99;
+    --givewp-neutral-100: #3d5a66;
+    --givewp-neutral-110: #233740;
+    --givewp-neutral-120: #0d161a;
+
+    // Alert
+    --givewp-alert-10: #dc1e1e;
+    --givewp-alert-20: #ffe6e6;
+    --givewp-alert-40: #f5bebe;
+    --givewp-alert-60: #e99090;
+    --givewp-alert-80: #db5454;
+    --givewp-alert-100: #dc1e1e;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+// remove default browser outline when selecting elements
+:focus-visible {
+    outline: 0;
+}

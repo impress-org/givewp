@@ -1,0 +1,107 @@
+.givewp-modal-wrapper {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    z-index: 99999999999999;
+    animation: appear 112ms ease-in 0s;
+
+    .givewp-modal-dialog {
+        position: relative;
+        font-family: 'Open Sans', sans-serif;
+        max-width: 32rem;
+        width: 100%;
+        border-radius: var(--givewp-rounded-4);
+        background-color: #fff;
+        box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
+        animation: appear 112ms ease-in 0s;
+        color: var(--givewp-grey-700);
+
+        .givewp-modal-header {
+            display: flex;
+            align-self: stretch;
+            font-size: 1rem;
+            font-weight: 700;
+            align-items: center;
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
+            background-color: #fff;
+            border-top-left-radius: var(--givewp-rounded-6);
+            border-top-right-radius: var(--givewp-rounded-6);
+            border-bottom: 1px solid var(--givewp-grey-50);
+            color: var(--givewp-grey-900);
+        }
+
+        .givewp-modal-icon-header {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .givewp-modal-icon-center {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            padding-top: var(--givewp-spacing-5);
+        }
+
+        .givewp-modal-close,
+        .givewp-modal-close-headless {
+            all: unset;
+            position: absolute;
+            cursor: pointer;
+            z-index: 999;
+            fill: var(--givewp-grey-500);
+        }
+
+        .givewp-modal-close {
+            top: var(--givewp-spacing-4);
+            right: var(--givewp-spacing-5);
+        }
+
+        .givewp-modal-close-headless {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--givewp-spacing-1);
+            background-color: var(--givewp-grey-50);
+            border-radius: 50%;
+            top: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-2);
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        .givewp-modal-content {
+            font-size: 0.875rem;
+            padding: var(--givewp-spacing-6);
+        }
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .givewp-modal-dialog {
+        position: sticky;
+        max-width: 100% !important;
+    }
+}
+
