@@ -169,7 +169,7 @@ const HeaderContainer = ({
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
-                                    <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuGroup label={__('Support', 'give')}>
                                         <MenuItem
                                             onClick={() => {
                                                 // @ts-ignore
