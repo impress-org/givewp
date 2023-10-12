@@ -1,17 +1,17 @@
 .give-sale-banners-container {
-    height: auto;
-    width: auto;
-    background-size: cover;
-    background-position: center;
+    position: relative;
+    padding: 2.25rem 0 1.4375rem 5.5rem;
+    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     background-repeat: no-repeat;
-    background-origin: border-box;
+    background-size: cover;
+    background-position: center center;
 
     /* Box-sizing reset */
     &,
     & *,
     & ::before,
     & ::after {
-        //box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     font-family: 'Open Sans', system-ui, sans-serif;
@@ -38,7 +38,6 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
-    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     z-index: 999;
 
     &__content {
@@ -50,6 +49,7 @@
             font-weight: 700;
             margin: 0;
             color: #022603;
+            line-height: 1;
 
             & strong {
                 color: #459948;
@@ -75,35 +75,20 @@
             font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
+
+            &:hover {
+                background: #2D802F;
+            }
         }
     }
 
     &__dismiss {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
         background: none;
         border: none;
-    }
-}
-
-.give-sale-banner-dismiss {
-    appearance: none;
-    background: red;
-    display: grid;
-    place-content: center;
-    padding: 0;
-    border: 0;
-    border-radius: 9999px;
-    outline-offset: 0.25rem;
-    color: inherit;
-    cursor: pointer;
-    font-size: inherit;
-    transition: color 0.2s, transform 0.2s;
-
-    &:hover {
-        transform: scale(1.15);
-    }
-
-    &:active {
-        transform: scale(0.95);
+        cursor: pointer;
     }
 }
 
