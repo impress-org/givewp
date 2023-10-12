@@ -19,6 +19,7 @@ class FormFieldManager extends FormMigrationStep
      * - "field_width" (Field Width)
      * - "css" (CSS Class Name)
      *
+     * @unreleased @Added support for conditions based on Donation Amount.
      * @since 3.0.0-rc.7
      */
     public function process()
@@ -28,6 +29,11 @@ class FormFieldManager extends FormMigrationStep
         if (!$formFields) {
             return;
         }
+
+        $this->fieldBlockRelationships['give-amount'] = [
+            'field' => [], // This property intentionally left empty.
+            'block' => $this->fieldBlocks->findByName('givewp/donation-amount'),
+        ];
 
         $this->inserter = $this->getInitialInserter();
 
@@ -409,17 +415,6 @@ class FormFieldManager extends FormMigrationStep
             $block->setAttribute('defaultValue', $field['default']);
         }
 
-//        $block->setAttribute('conditionalLogic', [
-//            'enabled' => give_is_setting_enabled($field['control_field_visibility']),
-//            'action' => 'show',
-//            'boolean' => 'and',
-//            'rules' => [[
-//                'field' => $field['controller_field_name'],
-//                'operator' => $field['controller_field_operator'],
-//                'value' => $field['controller_field_value'],
-//            ]]
-//        ]);
-
         return $block;
     }
 
@@ -434,7 +429,6 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased Added support for conditions based on Donation Amount.
      * @unreleased Fixed missing conditionalLogic attribute on custom fields.
      * @since 3.0.0-rc.7
      */
@@ -455,19 +449,11 @@ class FormFieldManager extends FormMigrationStep
                 continue;
             }
 
-            if(isset($this->fieldBlockRelationships[$field['controller_field_name']])) {
-                $referenceBlock = $this->fieldBlockRelationships[$field['controller_field_name']]['block'];
-            }
-
-            if(!isset($referenceBlock)) {
-                $referenceBlock = $this->fieldBlocks->findByName([
-                     'give-amount' => 'givewp/donation-amount',
-                 ][$field['controller_field_name']]);
-            }
-
-            if(!isset($referenceBlock)) {
+            if(!isset($this->fieldBlockRelationships[$field['controller_field_name']])) {
                 continue;
             }
+
+            $referenceBlock = $this->fieldBlockRelationships[$field['controller_field_name']]['block'];
 
             $block->setAttribute('conditionalLogic', [
                 'enabled' => true,
