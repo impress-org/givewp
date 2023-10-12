@@ -28,7 +28,7 @@ class FormFieldManager extends FormMigrationStep
         if (!$formFields) {
             return;
         }
-        
+
         $this->inserter = $this->getInitialInserter();
 
         $map = [
@@ -409,6 +409,17 @@ class FormFieldManager extends FormMigrationStep
             $block->setAttribute('defaultValue', $field['default']);
         }
 
+//        $block->setAttribute('conditionalLogic', [
+//            'enabled' => give_is_setting_enabled($field['control_field_visibility']),
+//            'action' => 'show',
+//            'boolean' => 'and',
+//            'rules' => [[
+//                'field' => $field['controller_field_name'],
+//                'operator' => $field['controller_field_operator'],
+//                'value' => $field['controller_field_value'],
+//            ]]
+//        ]);
+
         return $block;
     }
 
@@ -423,32 +434,40 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
+     * @unreleased Added support for conditions based on Donation Amount.
+     * @unreleased Fixed missing conditionalLogic attribute on custom fields.
      * @since 3.0.0-rc.7
      */
-
     private function mapConditionalLogicToBlocks(): void
     {
         foreach ($this->fieldBlockRelationships as $item) {
             ['field' => $field, 'block' => $block] = $item;
 
-            if (!array_key_exists('control_field_visibility', $field) || $field['control_field_visibility'] !== 'on') {
-                if ($block->name !== 'givewp/section') {
-                    $block->setAttribute('conditionalLogic', [
-                        'enabled' => false,
-                        'action' => 'show',
-                        'boolean' => 'and',
-                        'rules' => [],
-                    ]);
-                }
+            // Initialize conditional logic support for custom fields.
+            $block->setAttribute('conditionalLogic', [
+                'enabled' => give_is_setting_enabled($field['control_field_visibility']),
+                'action' => 'show',
+                'boolean' => 'and',
+                'rules' => [],
+            ]);
 
+            if (!array_key_exists('control_field_visibility', $field)) {
                 continue;
             }
 
-            if (!array_key_exists($field['controller_field_name'], $this->fieldBlockRelationships)) {
-                continue;
+            if(isset($this->fieldBlockRelationships[$field['controller_field_name']])) {
+                $referenceBlock = $this->fieldBlockRelationships[$field['controller_field_name']]['block'];
             }
 
-            $clientId = $this->fieldBlockRelationships[$field['controller_field_name']]['block']->clientId;
+            if(!isset($referenceBlock)) {
+                $referenceBlock = $this->fieldBlocks->findByName([
+                     'give-amount' => 'givewp/donation-amount',
+                 ][$field['controller_field_name']]);
+            }
+
+            if(!isset($referenceBlock)) {
+                continue;
+            }
 
             $block->setAttribute('conditionalLogic', [
                 'enabled' => true,
@@ -456,7 +475,7 @@ class FormFieldManager extends FormMigrationStep
                 'boolean' => 'and',
                 'rules' => [
                     [
-                        'field' => $clientId,
+                        'field' => $referenceBlock->clientId,
                         'operator' => $field['controller_field_operator'],
                         'value' => $field['controller_field_value'],
                     ],
