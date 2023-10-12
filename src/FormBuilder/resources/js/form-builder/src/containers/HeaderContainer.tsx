@@ -14,6 +14,7 @@ import {InfoModal, ModalType} from '../components/modal';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
 import EditorMode from "@givewp/form-builder/types/editorMode";
 import {useDispatch} from "@wordpress/data";
+import FormPrepublishPanel from "@givewp/form-builder/components/sidebar/panels/FormPrepublishPanel";
 
 const Logo = () => (
     <div
@@ -48,9 +49,11 @@ const HeaderContainer = ({
     const dispatch = useFormStateDispatch();
     const [isSaving, setSaving] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [showPublishConfirmation, setShowPublishConfirmation] = useState(false);
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
+    const isPublished = 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
 
@@ -75,8 +78,8 @@ const HeaderContainer = ({
             });
     };
 
-    const showOnSaveNotice = formStatus => {
-        let notice;
+    const showOnSaveNotice = (formStatus: string) => {
+        let notice: string;
 
         if ('draft' === formStatus) {
             notice = __('Draft saved.', 'give')
@@ -112,7 +115,14 @@ const HeaderContainer = ({
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
                         <Button
                             id={'editor-state-toggle'}
-                            style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
+                            style={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                borderRadius: '4px',
+                                display: 'flex',
+                                gap: 'var(--givewp-spacing-2)',
+                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'
+                            }}
                             onClick={() => toggleEditorMode()}
                             icon={EditIcon}
                         >
@@ -126,7 +136,7 @@ const HeaderContainer = ({
                         className={'givewp-form-title'}
                         value={formTitle}
                         onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
-                />
+                    />
                 }
                 contentRight={
                     <>
@@ -143,7 +153,7 @@ const HeaderContainer = ({
                                     : __('Switch to Draft', 'give')}
                         </Button>
                         <Button
-                            onClick={() => onSave('publish')}
+                            onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
                             aria-disabled={isPublishDisabled}
                             disabled={isPublishDisabled}
                             variant="primary"
@@ -223,6 +233,12 @@ const HeaderContainer = ({
                 >
                     <Markup content={errorMessage} />
                 </InfoModal>
+            )}
+            {showPublishConfirmation && (
+                <FormPrepublishPanel
+                    handleSave={() => onSave('publish')}
+                    handleClose={() => setShowPublishConfirmation(false)}
+                />
             )}
         </>
     );
