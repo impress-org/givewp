@@ -1,6 +1,7 @@
 import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
+import {noop} from 'lodash';
 import {BlockEditProps} from '@wordpress/blocks';
 import {FocusEventHandler, PropsWithChildren} from 'react';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
@@ -27,8 +28,6 @@ const SettingsInspectorControlPanel = ({title, children}: PropsWithChildren<Sett
         </InspectorControls>
     );
 };
-
-const noop = () => {};
 
 export default function FieldSettings({
     attributes,
