@@ -63,6 +63,26 @@ class SaleBanners
                 'startDate' => '2022-11-01 00:00',
                 'endDate' => '2022-11-29 23:59',
             ],
+            [
+                'id' => 'bfgt2023',
+                'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
+                'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
+                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
+                'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
+                'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
+                'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
+                'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
+                'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
+                'leadText' => __(
+                    'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                    'give'
+                ),
+                'actionText' => __('Shop Now', 'give'),
+                'actionURL' => 'https://go.givewp.com/bf22',
+//               ToDo: update dates
+                'startDate' => '2023-10-01 00:00',
+                'endDate' => '2024-11-29 23:59',
+            ],
         ];
     }
 
@@ -85,7 +105,7 @@ class SaleBanners
                 try {
                     $isFuture = $currentDateTime < new DateTimeImmutable($banner['startDate'], $giveWPWebsiteTimezone);
                     $isPast = $currentDateTime > new DateTimeImmutable($banner['endDate'], $giveWPWebsiteTimezone);
-                } catch(Exception $exception) {
+                } catch (Exception $exception) {
                     return false;
                 }
 
