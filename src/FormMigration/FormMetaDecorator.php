@@ -430,4 +430,20 @@ class FormMetaDecorator extends FormModelDecorator
             'offlineDonationInstructions' => $instructions,
         ];
     }
+
+    /**
+     * @since 3.0.0-rc.7
+     */
+    public function getFormFields(): array
+    {
+        return array_filter((array)give_get_meta($this->form->id, 'give-form-fields', true));
+    }
+
+    /**
+     * @since 3.0.0-rc.7
+     */
+    public function getFormFieldsPlacement(): string
+    {
+        return give_get_meta($this->form->id, '_give_ffm_placement', true);
+    }
 }

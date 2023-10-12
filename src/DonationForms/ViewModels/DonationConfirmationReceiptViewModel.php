@@ -102,10 +102,7 @@ class DonationConfirmationReceiptViewModel
 
         $this->enqueueGlobalStyles($primaryColor, $secondaryColor);
 
-        $this->enqueueFormScripts(
-            $this->donation->formId,
-            $formDesignId
-        );
+        $this->enqueueFormScripts($formDesignId);
 
         ob_start();
         wp_print_styles();
@@ -166,7 +163,7 @@ class DonationConfirmationReceiptViewModel
      *
      * @return void
      */
-    private function enqueueFormScripts(int $formId, string $formDesignId)
+    private function enqueueFormScripts(?string $formDesignId)
     {
         $handle = 'givewp-donation-form-registrars';
         wp_enqueue_script(
@@ -196,7 +193,7 @@ class DonationConfirmationReceiptViewModel
         $formDesignRegistrar = give(FormDesignRegistrar::class);
 
         // silently fail if design is missing for some reason
-        if ($formDesignRegistrar->hasDesign($formDesignId)) {
+        if (!empty($formDesignId) && $formDesignRegistrar->hasDesign($formDesignId)) {
             $design = $formDesignRegistrar->getDesign($formDesignId);
 
             if ($design->css()) {
