@@ -12,7 +12,7 @@ const login: FieldBlock = {
     settings: {
         ...defaultSettings,
         icon: BlockIcon,
-        title: __('User Login', 'custom-block-editor'),
+        title: __('User Login', 'give'),
         description: __('...', 'give'),
         supports: {
             multiple: false,
@@ -28,7 +28,7 @@ const login: FieldBlock = {
             },
             loginNotice: {
                 type: 'string',
-                default: __('Already have an account?', 'givewp'),
+                default: __('Already have an account? Log in.', 'givewp'),
             },
             loginConfirmation: {
                 type: 'string',

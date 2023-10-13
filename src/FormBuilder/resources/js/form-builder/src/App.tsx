@@ -9,6 +9,7 @@ import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 import {EditorStateProvider} from "@givewp/form-builder/stores/editor-state";
+import scrollIntoView from 'dom-scroll-into-view';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -33,6 +34,19 @@ if (initialBlocks instanceof Error) {
 if (ShortcutProvider === undefined) {
     console.error('ShortcutProvider is undefined.');
 }
+
+/**
+ * This is a workaround for a bug where the draggable cursor does not reset.
+ *
+ * @since 3.0.0
+ */
+document.addEventListener('dragend', () => {
+    // Reset the drag cursor.
+    document.body.classList.remove('is-dragging-components-draggable');
+
+    // Scroll the interface down by 1px to force a repaint and reset the popover position.
+    document.getElementsByClassName('interface-interface-skeleton__body')[0].scrollBy(0,1);
+});
 
 export default function App() {
     return (
