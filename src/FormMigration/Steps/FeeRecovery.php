@@ -9,7 +9,7 @@ class FeeRecovery extends FormMigrationStep
 {
 
     /**
-     * @since 3.0.0-rc.8
+     * @since 3.0.0
      */
     public function process()
     {
@@ -34,7 +34,7 @@ class FeeRecovery extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.8
+     * @since 3.0.0
      */
     private function getGlobalSettings(): array
     {

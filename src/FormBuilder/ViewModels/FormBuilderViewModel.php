@@ -77,7 +77,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function isRecurringEnabled(): bool
     {
@@ -85,7 +85,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function getGoalTypeOption(string $value, string $label, string $description): array
     {
@@ -97,7 +97,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function getGoalTypeOptions(): array
     {
