@@ -49,6 +49,14 @@ interface FormBuilderWindowData {
 }
 
 /**
+ * @unreleased
+ */
+interface FormBuilderSiteData {
+    siteName: string;
+    siteUrl: string;
+}
+
+/**
  * @since 3.0.0
  */
 declare const window: {
@@ -60,7 +68,8 @@ declare const window: {
                 [key: string]: Component;
             };
         };
-    };
+    },
+    siteData: FormBuilderSiteData;
 } & Window;
 
 /**
@@ -82,4 +91,11 @@ export function getFormBuilderWindowData(): FormBuilderWindowData {
  */
 export function getBlockRegistrar(): BlockRegistrar {
     return window.givewp.form.blocks;
+}
+
+/**
+ * @unreleased
+ */
+export function getSiteData(): FormBuilderSiteData {
+    return window.siteData;
 }

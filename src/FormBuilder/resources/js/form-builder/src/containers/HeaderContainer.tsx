@@ -69,6 +69,7 @@ const HeaderContainer = ({
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 setErrorMessage(error.message);
+                setShowPublishConfirmation(false);
             })
             .then(({formTitle, pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({formTitle, pageSlug}));
@@ -236,6 +237,8 @@ const HeaderContainer = ({
             )}
             {showPublishConfirmation && (
                 <FormPrepublishPanel
+                    isSaving={isSaving}
+                    isPublished={isPublished}
                     handleSave={() => onSave('publish')}
                     handleClose={() => setShowPublishConfirmation(false)}
                 />
