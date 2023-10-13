@@ -113,7 +113,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getTotalCountValue(GoalType $goalType): ?int
     {
@@ -137,7 +137,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getCountLabel(GoalType $goalType): ?string
     {
@@ -157,7 +157,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getTotalRevenue(GoalType $goalType)
     {

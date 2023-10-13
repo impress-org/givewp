@@ -13,8 +13,10 @@ export default function getDefaultValuesFromSections(sections: Section[]) {
     return reduceFields(
         sections,
         (values, field) => {
-            if (field.defaultValue !== null) {
-                values[field.name] = field.defaultValue;
+            const defaultValue = field.defaultValue;
+
+            if (defaultValue !== null && defaultValue !== '') {
+                values[field.name] = defaultValue;
             }
 
             return values;

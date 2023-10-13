@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {useFormDesignSetting} from '@givewp/form-builder/hooks';
 
 /**
- * @unreleased
+ * @since 3.0.0
  */
 export default function MultiStepNextButtonText({text}: {text: string}) {
     const {inputValue, setInputValue, updateSetting} = useFormDesignSetting(text);
