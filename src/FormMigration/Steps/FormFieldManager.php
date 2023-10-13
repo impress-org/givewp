@@ -438,6 +438,7 @@ class FormFieldManager extends FormMigrationStep
             ['field' => $field, 'block' => $block] = $item;
 
             // Initialize conditional logic support for custom fields.
+            // The `conditionalLogic` attribute is used to signal support for conditional logic.
             $block->setAttribute('conditionalLogic', [
                 'enabled' => give_is_setting_enabled($field['control_field_visibility']),
                 'action' => 'show',
