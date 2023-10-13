@@ -244,7 +244,7 @@ jQuery( document ).ready( function( $ ) {
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), this_form.serialize() + '&action=give_process_donation&give_ajax=true', function( data ) {
 			if ( $.trim( data ) == 'success' ) {
 				//Remove any errors
-				this_form.find( '.give_errors' ).remove();
+                this_form.parent().find( '.give_errors' ).remove();
 				//Submit form for normal processing
 				$( give_purchase_form ).submit();
 
@@ -263,7 +263,7 @@ jQuery( document ).ready( function( $ ) {
                 } else if ($giveFormHeader.length > 0) { // Classic Form
                     $giveFormHeader.after(data);
                 } else { // Legacy Form
-                    this_form.parent().find('.give-form-title').after(data);
+                    this_form.parent().prepend(data);
                 }
 
                 this_form.parent()[0].scrollIntoView({behavior: 'smooth'});
