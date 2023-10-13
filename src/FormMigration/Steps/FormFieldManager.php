@@ -31,7 +31,7 @@ class FormFieldManager extends FormMigrationStep
         }
 
         $this->fieldBlockRelationships['give-amount'] = [
-            'field' => [], // This property intentionally left empty.
+            'field' => [], // This is a core field and doesn't have any FFM settings.
             'block' => $this->fieldBlocks->findByName('givewp/donation-amount'),
         ];
 
