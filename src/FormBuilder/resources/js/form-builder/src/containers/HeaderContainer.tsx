@@ -158,7 +158,8 @@ const HeaderContainer = ({
                         </Button>
                         <Button
                             label={__('View form', 'give')}
-                            onClick={() => window.location.href = permalink}
+                            href={permalink}
+                            target="_blank"
                             icon={external}
                         />
                         <Button
