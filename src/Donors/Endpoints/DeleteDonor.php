@@ -54,6 +54,7 @@ class DeleteDonor extends Endpoint
     }
 
     /**
+     * @unreleased update capability being checked
      * @since 2.25.2
      *
      * @inheritDoc
