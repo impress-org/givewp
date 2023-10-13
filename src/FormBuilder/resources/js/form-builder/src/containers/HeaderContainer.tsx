@@ -51,6 +51,7 @@ const HeaderContainer = ({
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
+    const isPublished = 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
     const {
@@ -79,23 +80,23 @@ const HeaderContainer = ({
     };
 
     const showOnSaveNotice = (formStatus: string) => {
-        let notice: string;
-
         if ('draft' === formStatus) {
-            notice = __('Draft saved.', 'give');
+            createSuccessNotice(__('Draft saved.', 'give'), {
+                type: 'snackbar'
+            });
         } else {
-            notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
+            const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
                 ? __('Form updated.', 'give')
                 : __('Form published.', 'give')
-        }
 
-        createSuccessNotice(notice, {
-            type: 'snackbar',
-            actions: [{
-                label: __('View form', 'give'),
-                url: permalink
-            }]
-        });
+            createSuccessNotice(notice, {
+                type: 'snackbar',
+                actions: [{
+                    label: __('View form', 'give'),
+                    url: permalink
+                }]
+            });
+        }
     }
 
     const {mode} = useEditorState();
@@ -156,12 +157,14 @@ const HeaderContainer = ({
                                     ? __('Save as Draft', 'give')
                                     : __('Switch to Draft', 'give')}
                         </Button>
-                        <Button
-                            label={__('View form', 'give')}
-                            href={permalink}
-                            target="_blank"
-                            icon={external}
-                        />
+                        {isPublished && (
+                            <Button
+                                label={__('View form', 'give')}
+                                href={permalink}
+                                target="_blank"
+                                icon={external}
+                            />
+                        )}
                         <Button
                             onClick={() => onSave('publish')}
                             aria-disabled={isPublishDisabled}
