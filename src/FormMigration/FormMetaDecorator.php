@@ -347,9 +347,8 @@ class FormMetaDecorator extends FormModelDecorator
 
     /**
      * @since 3.0.0
-     * @return string 'enabled', 'disabled'
      */
-    public function isCustomAmountOptionEnabled(): string
+    public function isCustomAmountOptionEnabled(): bool
     {
         return 'enabled' === $this->getCustomAmountOption();
     }
