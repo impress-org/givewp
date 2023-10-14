@@ -367,11 +367,17 @@ class AjaxRequestHandler
     }
 
     /**
+     * This function should return address array in PayPal rest api accepted format.
+     *
+     * @unreleased Return address only if setting enabled and has valida country in PayPal accepted formatted.
      * @since 2.11.1
      */
     private function getDonorAddressFromPostedDataForPaypalOrder(array $postedData): array
     {
-        if (! $this->settings->canCollectBillingInformation()) {
+        if (
+            empty($postedData['billing_country'])
+            || ! $this->settings->canCollectBillingInformation()
+        ) {
             return [];
         }
 
