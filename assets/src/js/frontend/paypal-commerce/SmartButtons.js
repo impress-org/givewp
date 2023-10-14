@@ -190,11 +190,6 @@ class SmartButtons extends PaymentMethod {
             };
         }
 
-        console.log({
-            "plan_id": responseJson.data.id,
-            "subscriber": subscriberData
-        });
-
         return actions.subscription.create({
                 "plan_id": responseJson.data.id,
                 "subscriber": subscriberData
