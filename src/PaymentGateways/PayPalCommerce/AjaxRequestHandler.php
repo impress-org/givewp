@@ -374,10 +374,7 @@ class AjaxRequestHandler
      */
     private function getDonorAddressFromPostedDataForPaypalOrder(array $postedData): array
     {
-        if (
-            empty($postedData['billing_country'])
-            || ! $this->settings->canCollectBillingInformation()
-        ) {
+        if (empty($postedData['billing_country'])) {
             return [];
         }
 
