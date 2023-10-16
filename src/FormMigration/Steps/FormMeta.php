@@ -6,12 +6,12 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Database\DB;
 
 /**
- * @since 3.0.0-rc.6
+ * @since 3.0.0
  */
 class FormMeta extends FormMigrationStep
 {
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function process()
     {

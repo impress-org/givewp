@@ -179,7 +179,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     protected function registerPostStatus()
     {

@@ -347,9 +347,8 @@ class FormMetaDecorator extends FormModelDecorator
 
     /**
      * @since 3.0.0
-     * @return string 'enabled', 'disabled'
      */
-    public function isCustomAmountOptionEnabled(): string
+    public function isCustomAmountOptionEnabled(): bool
     {
         return 'enabled' === $this->getCustomAmountOption();
     }
@@ -433,7 +432,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     public function getFormFields(): array
     {
@@ -441,7 +440,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     public function getFormFieldsPlacement(): string
     {
@@ -449,7 +448,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @since 3.0.0-rc.8
+     * @since 3.0.0
      */
     public function getFeeRecoverySettings(): array
     {
@@ -510,7 +509,7 @@ class FormMetaDecorator extends FormModelDecorator
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
      * and improving code readability when fetching metadata related to the current form.
      *
-     * @since 3.0.0-rc.8
+     * @since 3.0.0
      *
      * @param string $key
      * @param mixed $default
