@@ -1,0 +1,35 @@
+.givewp-welcome-banner-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0;
+    gap: .5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    border: solid 1px var(--givewp-green-500);
+    text-decoration: none;
+    margin-top: auto;
+
+    &--external {
+        background-color: var(--givewp-shades-white);
+        color: var(--givewp-green-600);
+
+        &:hover {
+            color: var(--givewp-green-600);
+            border: 1px solid var(--green-500, #459948);
+            background: var(--green-25, #F2FFF3);
+        }
+    }
+
+    &--internal {
+        background-color: var(--givewp-green-500);
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            color: var(--givewp-shades-white);
+            border: 1px solid var(--givewp-green-600, #2D802F);
+            background: var(--givewp-green-600, #2D802F);
+        }
+    }
+}

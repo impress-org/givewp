@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json.schemastore.org/block.json",
+    "apiVersion": 2,
+    "name": "givewp/donation-form",
+    "version": "1.0.0",
+    "title": "Donation Form",
+    "category": "give",
+    "icon": "superhero",
+    "description": "The GiveWP Donation Form block inserts an existing donation form into the page.",
+    "supports": {
+        "html": false,
+        "inserter": false
+    },
+    "attributes": {
+        "formId": {
+            "type": "string"
+        },
+        "blockId": {
+            "type": "string"
+        },
+        "formFormat": {
+            "type": "string",
+            "default": "full"
+        },
+        "openFormButton": {
+            "type": "string",
+            "default": "Donate now"
+        }
+    },
+    "textdomain": "give",
+    "editorStyle": "file:../../../../build/donationFormBlock.css",
+    "editorScript": "file:../../../../build/donationFormBlock.js"
+}

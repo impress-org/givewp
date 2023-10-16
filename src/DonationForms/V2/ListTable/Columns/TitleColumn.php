@@ -38,6 +38,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
+     * @since 3.0.0 remove html tags from title
      * @since 2.24.0
      *
      * @inheritDoc
@@ -49,7 +50,7 @@ class TitleColumn extends ModelColumn
         return sprintf(
             '<a href="%s" class="giveDonationFormsLink">%s</a>',
             get_edit_post_link( $model->id ),
-            $model->title
+            wp_strip_all_tags($model->title)
         );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways;
 
-use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Routes\GatewayRoute;
@@ -15,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\RemovePaymentIntentSecretMeta;
+use Give\PaymentGateways\Migrations\CopyV2GatewaysSettingsToV3;
 use Give\PaymentGateways\PayPalCommerce\Banners\GatewaySettingPageBanner;
 use Give\PaymentGateways\PayPalCommerce\Banners\PayPalStandardToDonationsMigrationGlobalBanner;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
@@ -49,13 +49,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
-        Hooks::addFilter(
-            'give_payment_gateways_admin_label',
-            LegacyPaymentGatewayRegisterAdapter::class,
-            'updatePaymentGatewayAdminLabelsWithSupportedFormVersions',
-            10,
-            2
-        );
 
         Hooks::addAction('template_redirect', GatewayRoute::class);
         Hooks::addAction(
@@ -73,6 +66,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 3.0.0 add CopyV2GatewaysSettingsToV3 migration
      * @since 2.33.0 add RemovePaymentIntentSecretMeta migration
      * @since 2.19.6
      */
@@ -84,6 +78,7 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveLogWithCardInfo::class,
             RemovePaymentIntentSecretMeta::class,
             RegisterPayPalDonationsRefreshTokenCronJobByMode::class,
+            CopyV2GatewaysSettingsToV3::class,
         ]);
     }
 

@@ -1,0 +1,199 @@
+.givewp-fields-checkbox {
+    &__description {
+        margin-left: calc(1.25em + 0.375em);
+    }
+}
+
+.givewp-fields-amount {
+
+}
+
+.givewp-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+    width: 100%;
+
+    legend {
+        font-size: var(--givewp-font-size-paragraph-lg);
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-grey-700);
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        font-size: var(--givewp-font-size-paragraph-lg);
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-grey-700);
+
+        &:has(> input[type="checkbox"]) {
+            flex-direction: row;
+            gap: var(--givewp-spacing-2);
+            align-items: center;
+        }
+    }
+
+    &__description {
+        margin: 0;
+        color: var(--givewp-grey-700);
+        line-height: 1.43;
+        font-size: 0.875rem;
+    }
+}
+
+.givewp-field-required {
+    color: var(--givewp-red-500);
+}
+
+.givewp-field-error-message {
+    margin-top: var(--givewp-spacing-1);
+
+    > * {
+        font-size: 0.875rem;
+        color: var(--givewp-red-500);
+        font-weight: normal;
+        margin: 0;
+    }
+}
+
+.givewp-fields-consent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-4);
+        line-height: 150%;
+        max-height: 17.5rem;
+        min-height: 6.5rem;
+        overflow-y: auto;
+        border: 1px solid var(--givewp-grey-200);
+        border-radius: var(--givewp-rounded-4);
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        background: var(--givewp-shades-white);
+
+        > * {
+            margin: 0;
+        }
+    }
+}
+
+.givewp-fields-radio,
+.givewp-fields-checkbox {
+    &__options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
+    }
+
+    &__option-container {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--givewp-spacing-2);
+
+        label {
+            font-weight: 400;
+        }
+    }
+}
+
+input[type="checkbox"], input[type="radio"] {
+    appearance: none;
+    background-color: transparent;
+    margin: 0;
+    color: var(--givewp-primary-color);
+    width: 1.25rem;
+    height: 1.25rem;
+    border: solid 1px var(--givewp-grey-400);
+    font-size: inherit;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &:checked::before {
+        transform: scale(1);
+    }
+
+    &:focus {
+        border-color: var(--givewp-primary-color);
+        box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
+    }
+
+    &[aria-invalid="false"] {
+        --border-color: var(--form-element-valid-border-color);
+    }
+
+    &[aria-invalid="true"] {
+        --border-color: var(--form-element-invalid-border-color);
+    }
+}
+
+select {
+    &:focus {
+        box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
+    }
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+    transform: translateY(-0.075em);
+
+    display: grid;
+    place-content: center;
+
+    &::before {
+        content: "";
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--givewp-primary-color);
+        vertical-align: middle;
+        cursor: pointer;
+    }
+}
+
+input[type="checkbox"] {
+    &:checked,
+    &:checked:active,
+    &:checked:focus {
+        background-color: var(--givewp-primary-color);
+        background-image: var(--icon-checkbox);
+        background-position: center;
+        background-size: 0.75em auto;
+        background-repeat: no-repeat;
+    }
+
+    &:indeterminate {
+        --background-color: var(--primary);
+        --border-color: var(--primary);
+        background-image: var(--icon-minus);
+        background-position: center;
+        background-size: 0.75em auto;
+        background-repeat: no-repeat;
+    }
+}
+
+input[type="file"] {
+    border: 0.078rem solid transparent;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    height: auto;
+
+    &::file-selector-button {
+        background-color: var(--givewp-primary-color);
+        border-color: var(--givewp-primary-color);
+        font-size: 0.875rem;
+    }
+
+    &[aria-invalid="true"],
+    &:invalid {
+        border-color: var(--form-element-invalid-border-color);
+    }
+}

@@ -1,0 +1,13 @@
+@layer form-design {
+    @import 'variables';
+    @import 'utilities';
+    @import 'header';
+    @import 'inputs';
+    @import 'sections';
+    @import 'layouts';
+
+    body,
+    .givewp-donation-form {
+        font-family: 'system-ui', sans-serif;
+    }
+}

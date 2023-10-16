@@ -3,7 +3,7 @@
 namespace Give\Framework\Http\Response\Types;
 
 use Give\Framework\Http\Response\Traits\ResponseTrait;
-use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
+use Give\Vendors\Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
 /**
  * @since 2.18.0

@@ -31,6 +31,8 @@ class TrackingServiceProvider implements ServiceProvider
 
     /**
      * @inheritdoc
+     *
+     * @since 3.0.0 Enable tracking if request is made by form builder
      */
     public function boot()
     {
@@ -40,10 +42,22 @@ class TrackingServiceProvider implements ServiceProvider
             Hooks::addAction(TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send');
         }
 
+        // Enable telemetry for Visual Form Builder
+        add_action('rest_api_init', function () use ($isTrackingEnabled) {
+            $restRoute = $GLOBALS['wp']->query_vars['rest_route'] ?? '';
+            if (empty($restRoute)) {
+                return;
+            }
+
+            $isV3FormRoute = strpos($restRoute, 'givewp/v3/form') !== false;
+            if ($isTrackingEnabled && $isV3FormRoute) {
+                $this->enableTracking();
+            }
+        });
+
         if (is_admin()) {
             if ($isTrackingEnabled) {
-                $this->registerTrackEvents();
-                Hooks::addAction('shutdown', TrackJobScheduler::class, 'schedule', 999);
+                $this->enableTracking();
             }
 
             if (Track::checkEnvironment()) {
@@ -73,14 +87,25 @@ class TrackingServiceProvider implements ServiceProvider
     }
 
     /**
+     * @since 3.0.0
+     */
+    private function enableTracking()
+    {
+        $this->registerTrackEvents();
+        Hooks::addAction('shutdown', TrackJobScheduler::class, 'schedule', 999);
+    }
+
+    /**
      * Register track events.
      *
      * 'give_send_tracking_data' action hook that will be triggered track routine cron job.
      *
+     * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      */
     private function registerTrackEvents()
     {
+        Hooks::addAction('givewp_form_builder_updated', EditedDonationFormsTracking::class, 'formBuilderUpdatedHookHandler');
         Hooks::addAction('save_post_give_forms', EditedDonationFormsTracking::class, 'savePostHookHandler');
         Hooks::addAction('save_post_give_payment', DonationFormsTracking::class, 'record');
         Hooks::addAction('save_post_give_payment', DonationMetricsTracking::class, 'record');

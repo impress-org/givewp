@@ -132,12 +132,17 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
+     * @since 3.0.0 Add support for accountType. This param is required to get partner link.
      * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
      */
     public function onGetPartnerUrlAjaxRequestHandler()
     {
         $this->validateAdminRequest();
+
+        if (empty($accountType = $_GET['accountType']) || ! in_array($accountType, ScriptLoader::$accountTypes, true)) {
+            wp_send_json_error('Must include valid account type');
+        }
 
         if (empty($country = $_GET['countryCode']) || ! isset(give_get_country_list()[$country])) {
             wp_send_json_error('Must include valid 2-character country code');
@@ -148,6 +153,7 @@ class AjaxRequestHandler
         }
 
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
+        $accountType = sanitize_text_field(wp_unslash($_GET['accountType']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
         $redirectUrl = add_query_arg(
             [
@@ -162,7 +168,7 @@ class AjaxRequestHandler
         // Set PayPal client mode.
         give(PayPalClient::class)->setMode($mode);
 
-        $data = $this->payPalAuth->getSellerPartnerLink($redirectUrl, $country);
+        $data = $this->payPalAuth->getSellerPartnerLink($redirectUrl, $accountType);
 
         if (! $data) {
             wp_send_json_error();

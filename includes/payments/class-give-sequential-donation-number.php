@@ -1,5 +1,7 @@
 <?php
 // Exit if access directly.
+use Give\Framework\Database\DB;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -64,6 +66,7 @@ class Give_Sequential_Donation_Number {
 	 * Set serialize donation number as donation title.
 	 * Note: only for internal use
 	 *
+     * @since 3.0.0 replace wp_update_post with DB::update to avoid affecting the post update date and invalidating the donation model's updatedAt date
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -115,18 +118,13 @@ class Give_Sequential_Donation_Number {
 		);
 
 		try {
-			/* @var WP_Error $wp_error */
-			$wp_error = wp_update_post(
-				array(
-					'ID'         => $donation_id,
-					'post_name'  => "{$this->donation_title_prefix}-{$serial_number}",
-					'post_title' => trim( $serial_code ),
-				)
-			);
-
-			if ( is_wp_error( $wp_error ) ) {
-				throw new Exception( $wp_error->get_error_message() );
-			}
+            DB::table('posts')
+                ->where('ID', $donation_id)
+                ->update([
+                    'post_title' => trim($serial_code),
+                    'post_name' => "{$this->donation_title_prefix}-{$serial_number}",
+                ]);
+            clean_post_cache($donation_id);
 
 			give_update_option( 'sequential-ordering_number', ( $serial_number + 1 ) );
 		} catch ( Exception $e ) {

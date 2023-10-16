@@ -2,9 +2,11 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
+use Give\Helpers\Form\Utils;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
 use Give\Tracking\Repositories\TrackEvents;
@@ -45,7 +47,7 @@ class DonationFormsData implements TrackData
     {
         $this->setFormIds();
 
-        if ( ! $this->formIds) {
+        if (! $this->formIds) {
             return [];
         }
 
@@ -58,30 +60,28 @@ class DonationFormsData implements TrackData
     /**
      * Get forms data.
      *
+     * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      * @return array
      */
     protected function getData()
     {
-        if ( ! $this->formIds) {
+        if (! $this->formIds) {
             return [];
         }
 
         $data = [];
 
         foreach ($this->formIds as $formId) {
-            $formTemplate = Template::getActiveID($formId);
-
             $temp = [
                 'form_id' => (int)$formId,
                 'form_url' => untrailingslashit(get_permalink($formId)),
                 'form_name' => get_post_field('post_name', $formId, 'db'),
                 'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
+                'form_template' => $this->getFormTemplate($formId),
                 'donor_count' => $this->formDonorCounts[$formId],
                 'revenue' => $this->formRevenues[$formId],
             ];
-
             $this->addAddonsInformation($temp, $formId);
             $data[] = $temp;
         }
@@ -239,5 +239,25 @@ class DonationFormsData implements TrackData
                 ),
             ]
         );
+    }
+
+    /**
+     * This function is used to get the form template.
+     *
+     * @since 3.0.0
+     */
+    private function getFormTemplate(int $formId): string
+    {
+        if (Utils::isV3Form($formId)) {
+            /* @var DonationForm $form */
+            $form = DonationForm::find($formId);
+
+            return $form->settings->designId . ' (V3)';
+        }
+
+        $formTemplate = Template::getActiveID($formId);
+        return ( ! $formTemplate || 'legacy' === $formTemplate )
+            ? 'legacy'
+            : $formTemplate;
     }
 }

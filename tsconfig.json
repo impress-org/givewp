@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "allowJs": true,
@@ -11,17 +14,46 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "plugins": [
-      {"name": "typescript-plugin-css-modules"}
+      {
+        "name": "typescript-plugin-css-modules"
+      }
     ],
     "baseUrl": ".",
     "paths": {
-      "@givewp/components": ["./src/Views/Components/index.js"],
-      "@givewp/components/*": ["./src/Views/Components/*"],
-      "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
+      "@givewp/components": [
+        "./src/Views/Components/index.js"
+      ],
+      "@givewp/components/*": [
+        "./src/Views/Components/*"
+      ],
+      "@givewp/promotions/*": [
+        "./src/Promotions/sharedResources/*"
+      ],
+      "@givewp/forms/types": [
+        "./src/DonationForms/resources/types.ts"
+      ],
+      "@givewp/forms/propTypes": [
+        "./src/DonationForms/resources/propTypes.ts"
+      ],
+      "@givewp/forms/app/*": [
+        "./src/DonationForms/resources/app/*"
+      ],
+      "@givewp/forms/registrars/*": [
+        "./src/DonationForms/resources/registrars/*"
+      ],
+      "@givewp/forms/shared/*": [
+          "./src/DonationForms/resources/shared/*"
+      ],
+      "@givewp/form-builder/*": [
+        "./src/FormBuilder/resources/js/form-builder/src/*"
+      ],
+      "@givewp/form-builder/registrars/*": [
+        "./src/FormBuilder/resources/js/registrars/*"
+      ]
     }
   },
   "include": [
-    "./src",
+    "./src/**/*",
     "./globals.d.ts"
   ]
 }

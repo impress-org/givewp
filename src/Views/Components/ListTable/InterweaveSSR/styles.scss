@@ -39,7 +39,8 @@
         }
 
         &--pending,
-        &--processing {
+        &--processing,
+        &--upgraded {
             background: #0878b0;
         }
 

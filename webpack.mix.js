@@ -45,12 +45,15 @@ mix.setPublicPath('assets/dist')
     .js('src/Promotions/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
 
     .ts('src/DonationForms/V2/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
+    .ts('src/DonationForms/V2/resources/edit-v2form.tsx', 'js/give-edit-v2form.js')
+    .ts('src/DonationForms/V2/resources/add-v2form.tsx', 'js/give-add-v2form.js')
     .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js')
     .ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js')
     .ts('src/Subscriptions/resources/admin-subscriptions.tsx', 'js/give-admin-subscriptions.js')
     .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
+    .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
 
     .react()
     .sourceMaps(false, 'source-map')
@@ -61,7 +64,11 @@ mix.setPublicPath('assets/dist')
         const packageJson = require('./node_modules/@givewp/design-system-foundation/package.json');
         const version = packageJson.version;
 
-        fs.writeFileSync('./assets/dist/css/design-system/version', version);
+        if (!fs.existsSync(__dirname + '/assets/dist/css/design-system')) {
+            fs.mkdirSync(__dirname + '/assets/dist/css/design-system');
+        }
+
+        fs.writeFileSync(__dirname + '/assets/dist/css/design-system/version', version);
     })
 
     .copyDirectory('assets/src/images', 'assets/dist/images')

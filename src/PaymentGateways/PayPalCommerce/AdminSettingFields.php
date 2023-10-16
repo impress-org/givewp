@@ -105,8 +105,9 @@ class AdminSettingFields
     }
 
     /**
-     * Paypal Checkout account manager custom field
+     * PayPal Checkout account manager custom field
      *
+     * @since 3.0.0 Update PayPal sandbox connection button description.
      * @since 2.9.0
      */
     public function payPalCommerceAccountManagerField()
@@ -128,9 +129,12 @@ class AdminSettingFields
         $paypalSandboxSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
         $paypalSandboxSetting->mode = 'sandbox';
         $paypalSandboxSetting->connectButtonLabel = esc_html__('Connect with PayPal Sandbox', 'give');
-        $paypalSandboxSetting->description = esc_html__(
-            'PayPal sandbox is currently NOT connected. This is a separate PayPal Sandbox account, used for testing. Live PayPal accounts will not work.',
-            'give'
+        $paypalSandboxSetting->description = sprintf(
+            '%1$s <a href="%2$s" target="_blank">%3$s</a> <strong>%4$s</strong>',
+            esc_html__('PayPal sandbox is currently NOT connected.', 'give'),
+            esc_url('https://docs.givewp.com/paypal-sandbox-setup'),
+            esc_html__('Set up a separate PayPal Sandbox account for testing.', 'give'),
+            esc_html__('Live PayPal accounts will not work.', 'give')
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
 
@@ -195,10 +199,8 @@ class AdminSettingFields
 
     /**
      * Return whether or not country is in North America
-     *
-     * @return boolean
      */
-    private function isCountryInNorthAmerica()
+    private function isCountryInNorthAmerica(): bool
     {
         // Countries list: https://en.wikipedia.org/wiki/List_of_North_American_countries_by_area#Countries
         $northAmericaCountryList = [
@@ -451,9 +453,17 @@ class AdminSettingFields
                                 <span class="give-field-description">
                                     <i class="fa fa-check"></i>
                                     <?php
+                                    if ($merchantDetail->accountIsReady) {
+                                        $connectedAccountTypeMessage = $merchantDetail->supportsCustomPayments
+                                            ? esc_html__('Connected as Advanced for payments as', 'give')
+                                            : esc_html__('Connected as Standard for payments as', 'give');
+                                    } else {
+                                        $connectedAccountTypeMessage = esc_html__('Connected for payments as', 'give');
+                                    }
+
                                     printf(
                                         '%1$s <span class="paypal-account-email">%2$s</span>',
-                                        esc_html__('Connected for payments as', 'give'),
+                                        $connectedAccountTypeMessage,
                                         $merchantDetail->merchantId
                                     );
                                     ?>
@@ -465,16 +475,6 @@ class AdminSettingFields
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>
-                            </div>
-                            <div class="api-access-feature-list-wrap">
-                                <p><?php esc_html_e('APIs Connected:', 'give'); ?></p>
-                                <ul>
-                                    <li><?php esc_html_e('Payments', 'give'); ?></li>
-                                    <?php if ($paypalSetting->isRecurringAddonActive) : ?>
-                                        <li><?php esc_html_e('Subscriptions', 'give'); ?></li>
-                                    <?php endif; ?>
-                                    <li><?php esc_html_e('Refunds', 'give'); ?></li>
-                                </ul>
                             </div>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>

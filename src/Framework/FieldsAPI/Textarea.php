@@ -18,4 +18,29 @@ class Textarea extends Field
     use Concerns\HasDescription;
 
     const TYPE = 'textarea';
+
+    /** @var int */
+    protected $rows = 5;
+
+    /**
+     * Set the number of rows for the element.
+     *
+     * @since 3.0.0
+     */
+    public function rows(int $rows): self
+    {
+        $this->rows = $rows;
+
+        return $this;
+    }
+
+    /**
+     * Get the number of rows for the element.
+     *
+     * @since 3.0.0
+     */
+    public function getRows(): string
+    {
+        return $this->rows;
+    }
 }

@@ -6,9 +6,9 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.33.5
- * Requires at least: 5.0
- * Requires PHP: 7.0
+ * Version: 3.0.0
+ * Requires at least: 6.0
+ * Requires PHP: 7.2
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -43,8 +43,9 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
-use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProviderV2;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -55,20 +56,25 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
+use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
+use Give\FormMigration\ServiceProvider as FormMigrationServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
+use Give\Helpers\Language;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
@@ -172,7 +178,7 @@ final class Give
     private $container;
 
     /**
-     * @since 2.25.0 added HttpServiceProvider
+     * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
      *
@@ -202,7 +208,7 @@ final class Give
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
-        DonationFormsServiceProvider::class,
+        DonationFormsServiceProviderV2::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
@@ -213,6 +219,13 @@ final class Give
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
         FieldConditionsServiceProvider::class,
+        FormBuilderServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        FormDesignServiceProvider::class,
+        FormMigrationServiceProvider::class,
+        //TODO: merge this service provider
+        Give\PaymentGateways\Gateways\ServiceProvider::class,
+
     ];
 
     /**
@@ -232,25 +245,6 @@ final class Give
     public function __construct()
     {
         $this->container = new Container();
-    }
-
-    /**
-     * Bootstraps the Give Plugin
-     *
-     * @since 2.8.0
-     */
-    public function boot()
-    {
-        $this->setup_constants();
-
-        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
-        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
-
-        add_action('plugins_loaded', [$this, 'init'], 0);
-
-        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
-
-        do_action('give_loaded');
     }
 
     /**
@@ -294,6 +288,20 @@ final class Give
     }
 
     /**
+     * Loads the plugin language files.
+     *
+     * @since 3.0.0 Use Language class
+     * @since  1.0
+     * @access public
+     *
+     * @return void
+     */
+    public function load_textdomain()
+    {
+        Language::load();
+    }
+
+    /**
      * Binds the initial classes to the service provider.
      *
      * @since 2.8.0
@@ -302,6 +310,73 @@ final class Give
     {
         $this->container->singleton('templates', Templates::class);
         $this->container->singleton('routeForm', FormRoute::class);
+    }
+
+    /**
+     * Sets up the Exception Handler to catch and handle uncaught exceptions
+     *
+     * @since 2.11.1
+     */
+    private function setupExceptionHandler()
+    {
+        $handler = new UncaughtExceptionLogger();
+        $handler->setupExceptionHandler();
+    }
+
+    /**
+     * Load all the service providers to bootstrap the various parts of the application.
+     *
+     * @since 2.8.0
+     */
+    private function loadServiceProviders()
+    {
+        if ($this->providersLoaded) {
+            return;
+        }
+
+        $providers = [];
+
+        foreach ($this->serviceProviders as $serviceProvider) {
+            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
+                throw new InvalidArgumentException(
+                    "$serviceProvider class must implement the ServiceProvider interface"
+                );
+            }
+
+            /** @var ServiceProvider $serviceProvider */
+            $serviceProvider = new $serviceProvider();
+
+            $serviceProvider->register();
+
+            $providers[] = $serviceProvider;
+        }
+
+        foreach ($providers as $serviceProvider) {
+            $serviceProvider->boot();
+        }
+
+        $this->providersLoaded = true;
+    }
+
+    /**
+     * Bootstraps the Give Plugin
+     *
+     * @since 2.8.0
+     */
+    public function boot()
+    {
+        $this->setup_constants();
+
+        $this->disableVisualDonationFormBuilderFeaturePlugin();
+
+        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
+        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
+
+        add_action('plugins_loaded', [$this, 'init'], 0);
+
+        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
+
+        do_action('give_loaded');
     }
 
     /**
@@ -316,7 +391,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.33.5');
+            define('GIVE_VERSION', '3.0.0');
         }
 
         // Plugin Root File.
@@ -345,27 +420,28 @@ final class Give
         }
     }
 
-    /**
-     * Loads the plugin language files.
-     *
-     * @since  1.0
-     * @access public
-     *
-     * @return void
-     */
-    public function load_textdomain()
+    protected function disableVisualDonationFormBuilderFeaturePlugin()
     {
-        // Set filter for Give's languages directory
-        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
-        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
+        // Include plugin.php to use is_plugin_active() below.
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        // Traditional WordPress plugin locale filter.
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'give');
+        // Prevent fatal error due to a renamed class.
+        class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
 
-        unload_textdomain('give');
-        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
-        load_plugin_textdomain('give', false, $give_lang_dir);
+        if (is_plugin_active('givewp-next-gen/give-visual-form-builder.php')) {
+            deactivate_plugins(['givewp-next-gen/give-visual-form-builder.php']);
+
+            add_action('admin_notices', function () {
+                Give()->notices->register_notice([
+                    'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
+                    'description' => __(
+                        'The Visual Form Builder Beta plugin is no longer needed, since the form builder is included in your current version of GiveWP. To prevent conflicts, the Beta plugin has been deactivated and can be safely deleted.',
+                        'give'
+                    ),
+                    'type' => 'info',
+                ]);
+            });
+        }
     }
 
     /**
@@ -419,41 +495,6 @@ final class Give
     }
 
     /**
-     * Load all the service providers to bootstrap the various parts of the application.
-     *
-     * @since 2.8.0
-     */
-    private function loadServiceProviders()
-    {
-        if ($this->providersLoaded) {
-            return;
-        }
-
-        $providers = [];
-
-        foreach ($this->serviceProviders as $serviceProvider) {
-            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
-                throw new InvalidArgumentException(
-                    "$serviceProvider class must implement the ServiceProvider interface"
-                );
-            }
-
-            /** @var ServiceProvider $serviceProvider */
-            $serviceProvider = new $serviceProvider();
-
-            $serviceProvider->register();
-
-            $providers[] = $serviceProvider;
-        }
-
-        foreach ($providers as $serviceProvider) {
-            $serviceProvider->boot();
-        }
-
-        $this->providersLoaded = true;
-    }
-
-    /**
      * Register a Service Provider for bootstrapping
      *
      * @since 2.8.0
@@ -468,9 +509,9 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @since 2.8.0 retrieve from the service container
      * @since 2.7.0
      *
+     * @since 2.8.0 retrieve from the service container
      * @param string $propertyName
      *
      * @return mixed
@@ -486,9 +527,9 @@ final class Give
      *
      * @since 2.8.0
      *
-     * @param $arguments
-     *
      * @param $name
+     *
+     * @param $arguments
      *
      * @return mixed
      */
@@ -507,17 +548,6 @@ final class Give
     {
         return $this->container;
     }
-
-    /**
-     * Sets up the Exception Handler to catch and handle uncaught exceptions
-     *
-     * @since 2.11.1
-     */
-    private function setupExceptionHandler()
-    {
-        $handler = new UncaughtExceptionLogger();
-        $handler->setupExceptionHandler();
-    }
 }
 
 /**
@@ -530,8 +560,8 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
- * @since 2.8.0 add parameter for quick retrieval from container
- * @since 1.0
+ * @since    2.8.0 add parameter for quick retrieval from container
+ * @since    1.0
  *
  * @template T
  *

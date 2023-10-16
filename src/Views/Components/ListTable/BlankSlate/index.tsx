@@ -14,7 +14,10 @@ export default function BlankSlate({imagePath, description, href, linkText}: Bla
             <img src={imagePath} alt={description} />
             <h3>{description}</h3>
             <p className={styles.helpMessage}>
-                {__('Need help? Learn more about', 'give')} <a href={href}>{linkText}</a>
+                {__('Need help? Learn more about', 'give')}{' '}
+                <a target="_blank" href={href}>
+                    {linkText}
+                </a>
             </p>
         </div>
     );

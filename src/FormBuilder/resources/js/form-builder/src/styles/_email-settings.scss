@@ -1,0 +1,269 @@
+.radio-control--email-options {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--givewp-spacing-2);
+
+    .components-radio-control__option {
+        margin: .15rem 0;
+    }
+
+    .components-base-control__help {
+        margin: 0;
+    }
+}
+
+.select-control--email-options {
+    .components-input-control__label {
+        color: rgb(60, 67, 74);
+        font-size: 0.813rem;
+    }
+
+    .components-base-control__help {
+        color: var(--givewp-grey-500);
+        font-size: 0.75rem;
+        margin: 0;
+
+    }
+
+    .components-input-control__container {
+        min-height: 2.25rem !important;
+    }
+}
+
+.base-control--email-options {
+    .components-base-control, .components-base-control__field {
+        margin-bottom: 0;
+    }
+}
+
+[id^='__wp-uploader'] {
+    z-index: 9999999999;
+}
+
+.media-frame {
+    z-index: 1 !important;
+}
+
+.components-modal__content {
+    display: flex;
+
+    > div {
+        width: 100%;
+    }
+}
+
+.email-preview__back-btn {
+    z-index: 11; /* Above the modal header */
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: var(--givewp-spacing-5) var(--givewp-spacing-8);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+}
+
+.email-settings-preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.email-settings-preview-generating {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.email-settings {
+    display: flex;
+    gap: var(--givewp-spacing-10);
+    height: 100%;
+    overflow: hidden;
+    flex: 1;
+    margin-top: 1.5rem;
+    .components-text-control__input {
+        height: 2.25rem;
+    }
+
+    .givewp-ql-text-editor, #toolbar, .ql-container .ql-snow, .ql-editor {
+        border-radius: 2px;
+    }
+
+    &__email-btn {
+        height: 2.5rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    &__close-btn {
+        z-index: 11;
+        position: absolute;
+        top: -0.4rem;
+        right: 0;
+        display: flex;
+        gap: var(--givewp-spacing-3);
+        margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-12);
+    }
+
+    &__header {
+        font-size: .875rem;
+        line-height: 1.25rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    &__description {
+        color: var(--givewp-grey-500);
+        font-size: 0.75rem;
+        line-height: 1.5;
+        margin: 0 0 .5rem 0;
+    }
+
+    &__col-left {
+        flex: 2;
+        overflow-y: Scroll;
+
+    }
+
+    &__col-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-10);
+        padding-right: 10px;
+        overflow-y: Scroll;
+    }
+}
+
+.email-settings-modal-tabs {
+    display: flex;
+    gap: var(--givewp-spacing-10);
+    height: 100%;
+
+    .components-tab-panel__tabs {
+        flex: 2;
+        border-bottom: 0;
+    }
+
+    .components-tab-panel__tab-content {
+        flex: 3;
+    }
+
+    .components-tab-panel__tabs-item {
+        &.is-active {
+            background-color: var(--givewp-grey-25);
+        }
+
+        &:after {
+            background: initial; // Remove the underline.
+        }
+    }
+
+    .components-button {
+        text-align: left;
+    }
+}
+
+.email-settings-template {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+        margin-bottom: 20px;
+
+        li {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+    }
+
+    &__recipient {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-3);
+
+        &-delete-btn {
+            padding: 0;
+
+            svg {
+                display: block;
+                transform: scale(1.2);
+                stroke: var(--givewp-grey-500);
+                fill: var(--givewp-grey-500);
+
+                :hover {
+                    fill: var(--givewp-red-500);
+                    stroke: var(--givewp-red-500);
+                }
+            }
+        }
+
+        &-add-email-btn {
+            height: 2.5rem;
+            width: 100%;
+            justify-content: center;
+            gap: .25rem;
+        }
+    }
+}
+
+.email-settings-template-tags {
+    height: 25rem;
+    overflow: scroll;
+    border: 1px solid var(--givewp-grey-100);
+    border-radius: 2px;
+    scroll-snap-type: y mandatory;
+
+    &__copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        height: fit-content;
+        padding-block: 0.5rem;
+        font-size: 12px;
+    }
+
+    & > li {
+        scroll-snap-align: start;
+    }
+
+    li {
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-2) var(--givewp-spacing-4) var(--givewp-spacing-2);
+        margin: 0;
+        position: relative;
+
+        &:hover button {
+            visibility: visible;
+        }
+
+        button {
+            visibility: hidden;
+            position: absolute;
+            top: 2px;
+            right: var(--givewp-spacing-2);
+        }
+    }
+
+    li:nth-child(even) {
+        background-color: var(--givewp-grey-5);
+    }
+
+    strong {
+        font-size: 13px;
+        background-color: var(--givewp-blue-25);
+        display: inline-block;
+        margin-bottom: var(--givewp-spacing-3);
+        line-height: 1.137rem;
+    }
+
+    p {
+        margin: 0; // Override the default margin.
+    }
+}

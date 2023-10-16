@@ -1,0 +1,201 @@
+.banner {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    background-color: var(--givewp-blue-500);
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-6);
+    height: 3.5rem;
+    color: #fff;
+    font-size: 0.875rem;
+
+    .icon,
+    .closeIcon {
+        flex: 0 0 40px;
+    }
+
+    .closeIcon {
+        cursor: pointer;
+        justify-content: flex-end;
+        svg {
+            fill: #fff;
+        }
+    }
+
+    .text {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        padding-right: 35px;
+    }
+
+    .button {
+        all: unset;
+        cursor: pointer;
+        justify-content: flex-end;
+        font-weight: 500;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        border-radius: 0.5rem;
+        color: #000;
+        background-color: var(--givewp-blue-25);
+
+        &:hover {
+            background-color: var(--givewp-blue-50);
+            color: var(--givewp-blue-500);
+        }
+    }
+}
+
+.message {
+    font-size: 0.875rem;
+    margin: 0 0 var(--givewp-spacing-6);
+    color: var(--givewp-grey-900);
+    line-height: 1.375;
+
+    strong {
+        color: var(--givewp-grey-700);
+    }
+}
+
+.title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--givewp-spacing-3);
+    display: flex;
+    align-items: center;
+    color: var(--givewp-grey-900);
+
+    svg {
+        margin-right: var(--givewp-spacing-2);
+    }
+
+    &:not(:first-child)  {
+        margin-top: var(--givewp-spacing-5);
+    }
+}
+
+.center {
+    text-align: center;
+    justify-content: center;
+}
+
+.info {
+    margin-bottom: var(--givewp-spacing-5);
+}
+
+.itemsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: var(--givewp-spacing-3);
+    margin-bottom: var(--givewp-spacing-3);
+
+    .item {
+        display: flex;
+        flex-basis: 50%;
+        margin-bottom: var(--givewp-spacing-2);
+        align-items: center;
+        line-height: 1.5;
+
+        svg {
+            margin-right: var(--givewp-spacing-2);
+        }
+    }
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: var(--givewp-rounded-4);
+    border-top-right-radius: var(--givewp-rounded-4);
+    height: 305px;
+    margin-top: calc(var(--givewp-spacing-5) * -1);
+    margin-left: calc(var(--givewp-spacing-5) * -1);
+    margin-right: calc(var(--givewp-spacing-5) * -1);
+    padding: var(--givewp-spacing-3);
+
+    background-color: var(--givewp-grey-5);
+    border-bottom: 1px solid var(--givewp-grey-50);
+
+    img {
+        width: 90%;
+        height: auto;
+    }
+}
+
+.tryNewFormBuilderButton {
+    all: unset;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 16px;
+    border: solid 1px #f29718;
+    color: #f29718;
+    font-weight: 500;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #fffaf2;
+    font-size: 16px;
+    transition: 0.3s;
+
+    svg {
+        margin-right: 10px;
+        fill: #f29718;
+    }
+
+    &:hover {
+        background-color: #f29718;
+        color: #fff;
+
+        svg {
+            fill: #fff;
+        }
+    }
+}
+
+.tryNewFormBuilderBtnContainer {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.formName {
+    color: #459948;
+}
+
+.checkbox {
+    padding-bottom: 5px;
+}
+
+.migrationGuideBox {
+    padding: 20px;
+    background-color: #f2f9ff;
+    border-left: 2px solid #0b72d9;
+    margin-bottom: 20px;
+
+    .migrationGuideTitle {
+        display: flex;
+        font-weight: bold;
+        align-items: center;
+
+        svg {
+            margin-right: 5px;
+            fill: var(--givewp-blue-500);
+        }
+    }
+
+    .migrationGuideTitle,
+    .migrationGuideContent {
+        margin-bottom: 10px;
+    }
+}
+
+.proceedButton {
+    width: 100%;
+    margin-top: var(--givewp-spacing-6);
+}
+
+.link {
+    margin-top: var(--givewp-spacing-6);
+}

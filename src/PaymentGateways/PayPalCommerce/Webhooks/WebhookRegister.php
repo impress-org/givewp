@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Webhooks;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\EventListener;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\CustomerMerchantIntegrationProductSubscriptionUpdated;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureCompleted;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureDenied;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\Listeners\PayPalCommerce\PaymentCaptureRefunded;
@@ -16,6 +17,7 @@ class WebhookRegister
      *
      * Structure: PayPalEventName => EventHandlerClass
      *
+     * @since 3.0.0 Register new events and handlers.
      * @since 2.9.0
      *
      * @var string[]
@@ -24,6 +26,7 @@ class WebhookRegister
         'PAYMENT.CAPTURE.REFUNDED' => PaymentCaptureRefunded::class,
         'PAYMENT.CAPTURE.COMPLETED' => PaymentCaptureCompleted::class,
         'PAYMENT.CAPTURE.DENIED' => PaymentCaptureDenied::class,
+        'CUSTOMER.MERCHANT-INTEGRATION.PRODUCT-SUBSCRIPTION-UPDATED' => CustomerMerchantIntegrationProductSubscriptionUpdated::class,
     ];
 
     /**
