@@ -1,6 +1,7 @@
 export interface OptionsPanelProps {
     currency: boolean;
     multiple: boolean;
+    selectable?: boolean;
     options: OptionProps[];
     setOptions: (options: OptionProps[]) => void;
     defaultControlsTooltip?: string;
@@ -11,6 +12,7 @@ export interface OptionsListProps {
     options: OptionProps[];
     showValues: boolean;
     multiple: boolean;
+    selectable: boolean;
     setOptions: (options: OptionProps[]) => void;
     defaultControlsTooltip?: string;
 }
@@ -21,6 +23,7 @@ export interface OptionsItemProps {
     option: OptionProps;
     showValues: boolean;
     multiple: boolean;
+    selectable: boolean;
     defaultTooltip?: string;
     handleUpdateOptionLabel: (label: string) => void;
     handleUpdateOptionValue: (value: string) => void;
