@@ -148,39 +148,43 @@ const HeaderContainer = ({
                 }
                 contentRight={
                     <>
-                        <Button
-                            onClick={() => onSave('draft')}
-                            aria-disabled={isDraftDisabled}
-                            disabled={isDraftDisabled}
-                            variant="tertiary"
-                        >
-                            {isSaving && 'draft' === isSaving
-                                ? __('Saving...', 'give')
-                                : 'draft' === formSettings.formStatus
-                                    ? __('Save as Draft', 'give')
-                                    : __('Switch to Draft', 'give')}
-                        </Button>
-                        {isPublished && (
-                            <Button
-                                label={__('View form', 'give')}
-                                href={permalink}
-                                target="_blank"
-                                icon={external}
-                            />
+                        {!showPublishConfirmation && (
+                            <>
+                                <Button
+                                    onClick={() => onSave('draft')}
+                                    aria-disabled={isDraftDisabled}
+                                    disabled={isDraftDisabled}
+                                    variant="tertiary"
+                                >
+                                    {isSaving && 'draft' === isSaving
+                                        ? __('Saving...', 'give')
+                                        : 'draft' === formSettings.formStatus
+                                            ? __('Save as Draft', 'give')
+                                            : __('Switch to Draft', 'give')}
+                                </Button>
+                                {isPublished && (
+                                    <Button
+                                        label={__('View form', 'give')}
+                                        href={permalink}
+                                        target="_blank"
+                                        icon={external}
+                                    />
+                                )}
+                                <Button
+                                    onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
+                                    aria-disabled={isPublishDisabled}
+                                    disabled={isPublishDisabled}
+                                    variant="primary"
+                                >
+                                    {isSaving && 'publish' === isSaving
+                                        ? __('Updating...', 'give')
+                                        : 'publish' === formSettings.formStatus
+                                            ? __('Update', 'give')
+                                            : __('Publish', 'give')}
+                                </Button>
+                                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                            </>
                         )}
-                        <Button
-                            onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
-                            aria-disabled={isPublishDisabled}
-                            disabled={isPublishDisabled}
-                            variant="primary"
-                        >
-                            {isSaving && 'publish' === isSaving
-                                ? __('Updating...', 'give')
-                                : 'publish' === formSettings.formStatus
-                                    ? __('Update', 'give')
-                                    : __('Publish', 'give')}
-                        </Button>
-                        <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                         <Dropdown
                             popoverProps={{placement: 'bottom-start'}}
                             // @ts-ignore

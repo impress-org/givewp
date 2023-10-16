@@ -6,7 +6,7 @@ import {decodeEntities} from '@wordpress/html-entities';
 import {Button, PanelBody, PanelRow, TextControl, Spinner} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {GiveIcon} from '@givewp/form-builder/components/icons';
-import {getSiteData} from '@givewp/form-builder/common/getWindowData';
+import {getWindowData, getSiteData} from '@givewp/form-builder/common';
 
 export default function FormPrepublishPanel({isSaving, isPublished, handleSave, handleClose}) {
 
@@ -15,6 +15,9 @@ export default function FormPrepublishPanel({isSaving, isPublished, handleSave, 
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const {siteName, siteUrl} = getSiteData()
+    const {
+        formPage: {permalink},
+    } = getWindowData();
 
     const Panel = () => (
         <div
@@ -115,23 +118,22 @@ export default function FormPrepublishPanel({isSaving, isPublished, handleSave, 
             </div>
 
             <div className="givewp-next-gen-prepublish-panel__content">
-                <div>
-                    <strong>{__('Are you ready to publish?', 'give')}</strong>
-                </div>
-                <p>{__('Double-check your settings before publishing', 'give')}</p>
-                <div className="givewp-next-gen-prepublish-panel__site-card">
-                    <div className="givewp-next-gen-prepublish-panel__site-icon">
-                        <GiveIcon />
-                    </div>
-                </div>
+                <p>{__('New Generation Form is now live', 'give')}.</p>
             </div>
 
-            <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
+            <PanelBody className={'givewp-panel-body--summary'} title={__("What's next?", 'give')} initialOpen={true}>
+                <PanelRow>
+                    <div>
+                        {__('PAGE ADDRESS', 'give')}
+                    </div>
+                    <div>
+                        {__('Copy', 'give')}
+                    </div>
+                </PanelRow>
                 <PanelRow>
                     <TextControl
-                        label={__('Title')}
-                        value={formTitle}
-                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
+                        value={permalink}
+                        onChange={null}
                     />
                 </PanelRow>
             </PanelBody>
