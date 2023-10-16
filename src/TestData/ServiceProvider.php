@@ -2,8 +2,8 @@
 
 namespace Give\TestData;
 
-use Faker\Factory as FakerFactory;
-use Faker\Generator as FakerGenerator;
+use Give\Vendors\Faker\Factory as FakerFactory;
+use Give\Vendors\Faker\Generator as FakerGenerator;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\ServiceProviders\ServiceProvider as GiveServiceProvider;
 use Give\TestData\Commands\DonationSeedCommand;
