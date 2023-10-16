@@ -19,7 +19,7 @@ class FormFieldManager extends FormMigrationStep
      * - "field_width" (Field Width)
      * - "css" (CSS Class Name)
      *
-     * @unreleased added support for conditions based on Donation Amount.
+     * @since 3.0.0 added support for conditions based on Donation Amount.
      * @since 3.0.0
      */
     public function process()
@@ -429,7 +429,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @unreleased Fixed missing conditionalLogic attribute on custom fields.
+     * @since 3.0.0 Fixed missing conditionalLogic attribute on custom fields.
      * @since 3.0.0
      */
     private function mapConditionalLogicToBlocks(): void

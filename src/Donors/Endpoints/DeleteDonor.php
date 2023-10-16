@@ -54,7 +54,7 @@ class DeleteDonor extends Endpoint
     }
 
     /**
-     * @unreleased update validation to align with legacy view
+     * @since 3.0.0 update validation to align with legacy view
      * @since 2.25.2
      *
      * @inheritDoc
