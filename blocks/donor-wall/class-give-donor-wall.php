@@ -213,7 +213,7 @@ class Give_Donor_Wall_Block {
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-            'form_id' => implode(',', $ids),
+            'form_id'           => implode(',', $ids),
 			'ids'               => implode(',', $this->getAsArray($attributes['ids'] ) ),
             'cats'              => implode(',', $this->getAsArray($attributes['categories'] ) ),
             'tags'              => implode(',', $this->getAsArray($attributes['tags'] ) ),

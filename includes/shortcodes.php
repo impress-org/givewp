@@ -809,7 +809,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type bool   $show_title          Whether to display form title. Default 'true'.
  * @type bool   $show_goal           Whether to display form goal. Default 'true'.
  * @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
- * @type bool $show_featured_image Whether to display featured image. Default 'true'.
+ * @type bool   $show_featured_image Whether to display featured image. Default 'true'.
  * @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
  * @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
  * @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.

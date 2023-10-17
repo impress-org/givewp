@@ -212,7 +212,7 @@ class Give_Donation_Form_Grid_Block {
 
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-            'ids' => implode(',', $ids),
+            'ids'                 => implode(',', $ids),
 			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
