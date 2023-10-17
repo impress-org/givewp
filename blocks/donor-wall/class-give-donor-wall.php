@@ -198,6 +198,8 @@ class Give_Donor_Wall_Block {
 
 	/**
 	 * Block render callback
+     *
+     * @unreleased Make sure all ids passed to the shortcode are migrated
 	 *
 	 * @param array $attributes Block parameters.
 	 *

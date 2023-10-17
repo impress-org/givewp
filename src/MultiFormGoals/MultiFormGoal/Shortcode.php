@@ -26,6 +26,7 @@ class Shortcode
     /**
      * Returns Shortcode markup
      *
+     * @unreleased Make sure all ids passed to the shortcode are migrated
      * @since 2.9.0
      **/
     public function renderCallback($attributes)
