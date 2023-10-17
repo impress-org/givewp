@@ -113,7 +113,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getTotalCountValue(GoalType $goalType): ?int
     {
@@ -137,7 +137,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getCountLabel(GoalType $goalType): ?string
     {
@@ -157,7 +157,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     private function getTotalRevenue(GoalType $goalType)
     {
@@ -394,8 +394,9 @@ class DonationFormViewModel
     private function enqueueFormApp()
     {
         // load block - since this is using render_callback viewScript in blocks.json will not work.
+        $handle = 'givewp-donation-form-app';
         wp_enqueue_script(
-            'givewp-donation-form-app',
+            $handle,
             GIVE_PLUGIN_URL . 'build/donationFormApp.js',
             array_merge(
                 $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormApp.asset.php'),
@@ -405,17 +406,22 @@ class DonationFormViewModel
             true
         );
 
+        Language::setScriptTranslations($handle);
+
         /**
          * Load iframeResizer.contentWindow.min.js inside iframe
          *
          * @see https://github.com/davidjbradshaw/iframe-resizer
          */
+        $handle = 'givewp-donation-form-embed-inside';
         wp_enqueue_script(
-            'givewp-donation-form-embed-inside',
+            $handle,
             GIVE_PLUGIN_URL . 'build/donationFormEmbedInside.js',
             [],
             GIVE_VERSION,
             true
         );
+
+        Language::setScriptTranslations($handle);
     }
 }

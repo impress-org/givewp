@@ -8,7 +8,7 @@ import defaultSettings from '../settings';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Terms and conditions', 'custom-block-editor'),
+    title: __('Terms and conditions', 'give'),
     description: __('Donors can accept the terms and conditions', 'give'),
     supports: {
         multiple: false,

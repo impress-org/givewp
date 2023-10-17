@@ -48,18 +48,20 @@ add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payme
 /**
  * This function is used to add Stripe credentials to GiveWP form.
  *
- * @param array  $form_html_tags Form HTML tags.
+ * @since 3.0.0 Return $form_html_tags instead of false when Stripe gateway isn't enabled
+ * @since 2.7.0
+ *
  * @param object $form           Form Object.
  *
- * @since 2.7.0
+ * @param array  $form_html_tags Form HTML tags.
  *
  * @return array|bool
  */
 function give_stripe_form_add_data_tag_keys( $form_html_tags, $form ) {
 
 	// Must have a Stripe payment gateway active.
-	if ( ! give_stripe_is_any_payment_method_active() ) {
-		return false;
+    if ( ! give_stripe_is_any_payment_method_active()) {
+        return $form_html_tags;
 	}
 
 	$publishable_key = give_stripe_get_publishable_key( $form->ID );
@@ -71,4 +73,4 @@ function give_stripe_form_add_data_tag_keys( $form_html_tags, $form ) {
 	return $form_html_tags;
 }
 
-add_filter( 'give_form_html_tags', 'give_stripe_form_add_data_tag_keys', 0, 2 );
+add_filter('give_form_html_tags', 'give_stripe_form_add_data_tag_keys', 0, 2);

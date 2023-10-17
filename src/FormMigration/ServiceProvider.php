@@ -44,6 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\EmailSettings::class,
                 Steps\FormMeta::class,
                 Steps\PdfSettings::class,
+                Steps\FeeRecovery::class,
             ]);
         });
     }

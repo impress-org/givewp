@@ -27,6 +27,7 @@ class DonationConfirmationReceiptViewController
             return '';
         }
 
+        ob_clean();
         return (new DonationConfirmationReceiptViewModel($donation))->render();
     }
 

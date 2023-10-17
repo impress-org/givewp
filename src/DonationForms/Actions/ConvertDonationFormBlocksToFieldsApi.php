@@ -174,7 +174,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->testMode(give_is_test_mode())
                     ->rules(new GatewayRule())
                     ->required()
-                    ->defaultValue($defaultGatewayId);
+                    ->defaultValue(!empty($defaultGatewayId) ? $defaultGatewayId : null);
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
