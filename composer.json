@@ -93,12 +93,18 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
+                "fakerphp/faker",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
                 "symfony/polyfill-mbstring",
                 "symfony/http-foundation"
             ],
+            "exclude_from_copy": {
+                "packages": [
+                    "symfony/deprecation-contracts"
+                ]
+            },
             "delete_vendor_packages": true,
             "override_autoload": {
                 "symfony/polyfill-ctype": {},
