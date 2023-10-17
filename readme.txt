@@ -262,16 +262,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-<<<<<<<<< Temporary merge branch 1
-= 2.33.5: October 10th, 2023 =
-* Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
-
 = 3.0.0: October 16th, 2023 =
 * New: Try out the all new Visual Donation Form Builder!
 * New: All new form infrastructure for forms using the Form Builder!
 * New: Stripe Payment Element gateway for Stripe with support for many types of payment methods
 * New: Existing forms can be migrated and upgrade to use the Form Builder
->>>>>>>>> Temporary merge branch 2
+
+= 2.33.5: October 10th, 2023 =
+* Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
 
 = 2.33.3: September 29th, 2023 =
 * Fix: Multi-site installations no longer produce an error on subsites.
