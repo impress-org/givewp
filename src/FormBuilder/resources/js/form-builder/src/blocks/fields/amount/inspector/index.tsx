@@ -137,6 +137,12 @@ const Inspector = ({attributes, setAttributes}) => {
             checked: false,
         };
 
+        // If there are no levels, set the new level as the default.
+        if (!levels.length) {
+            newLevel.checked = true;
+            setAttributes({defaultLevel: Number(newLevelValue)});
+        }
+
         setDonationLevels([...donationLevels, newLevel]);
         setAttributes({levels: [...levels, Number(newLevelValue)]});
     };
