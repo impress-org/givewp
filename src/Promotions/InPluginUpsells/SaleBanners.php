@@ -90,8 +90,7 @@ class SaleBanners
                 ]),
                 'actionText' => __('Shop Now', 'give'),
                 'actionURL' => 'https://go.givewp.com/bf22',
-//               ToDo: update dates
-                'startDate' => '2023-10-01 00:00',
+                'startDate' => '2023-11-20 00:00',
                 'endDate' => '2024-11-29 23:59',
             ],
         ];
@@ -100,10 +99,15 @@ class SaleBanners
     /**
      * Get the banners that should be displayed.
      *
+     * @unreleased hide banners for users with Pro tier accounts.
      * @since 2.17.0
      */
     public function getVisibleBanners(): array
     {
+        if (self::getUserPricingPlan() === 'Pro') {
+            return [];
+        }
+
         $currentDateTime = current_datetime();
         $currentUserId = get_current_user_id();
         $giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');
@@ -253,7 +257,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased determine selected data by user pricing plan.
+     * @unreleased return data by user pricing plan.
      */
     public static function getDataByPricingPlan($data): string
     {
