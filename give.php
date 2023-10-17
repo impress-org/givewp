@@ -391,11 +391,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-<<<<<<<<< Temporary merge branch 1
-            define('GIVE_VERSION', '2.33.5');
-=========
             define('GIVE_VERSION', '3.0.0');
->>>>>>>>> Temporary merge branch 2
         }
 
         // Plugin Root File.
