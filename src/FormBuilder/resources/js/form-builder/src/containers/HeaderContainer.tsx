@@ -202,15 +202,15 @@ const HeaderContainer = ({
                                             </>
                                         )}
                                     </MenuGroup>
-                                    <MenuItem className="givewp-support-link" icon={external}>
-                                        <ExternalLink
-                                            href="https://docs.givewp.com/nextgenfeedback"
-                                            rel="noopener noreferrer"
-                                            style={{textDecoration: 'none', color: 'inherit'}}
-                                        >
-                                            {__('Submit Feedback', 'give')}
-                                        </ExternalLink>
-                                    </MenuItem>
+                                    <ExternalLink
+                                        className="givewp-support-link"
+                                        href="https://docs.givewp.com/nextgenfeedback"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <MenuItem icon={external}>
+                                                {__('Submit Feedback', 'give')}
+                                        </MenuItem>
+                                    </ExternalLink>
                                 </div>
                             )}
                         />
