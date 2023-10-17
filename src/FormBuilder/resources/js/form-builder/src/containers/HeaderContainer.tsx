@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, moreVertical} from '@wordpress/icons';
+import {drawerRight, moreVertical, external} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
-import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
+import {Button, Dropdown, ExternalLink, Icon, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
@@ -202,7 +202,7 @@ const HeaderContainer = ({
                                             </>
                                         )}
                                     </MenuGroup>
-                                    <MenuItem>
+                                    <MenuItem className="givewp-support-link" icon={external}>
                                         <ExternalLink
                                             href="https://docs.givewp.com/nextgenfeedback"
                                             rel="noopener noreferrer"
