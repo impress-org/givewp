@@ -12,6 +12,7 @@ export default function OptionsItem({
     option,
     showValues,
     multiple,
+    selectable,
     defaultTooltip,
     handleUpdateOptionLabel,
     handleUpdateOptionValue,
@@ -31,12 +32,14 @@ export default function OptionsItem({
             >
                 {/* div is required (for some reason) for the Tooltip to work, do not remove */}
                 <div>
-                    <input
-                        type={multiple ? 'checkbox' : 'radio'}
-                        checked={option.checked}
-                        className={'givewp-options-list--item--checked'}
-                        onClick={() => handleUpdateOptionChecked(!option.checked)}
-                    />
+                    {selectable && (
+                        <input
+                            type={multiple ? 'checkbox' : 'radio'}
+                            checked={option.checked}
+                            className={'givewp-options-list--item--checked'}
+                            onClick={() => handleUpdateOptionChecked(!option.checked)}
+                        />
+                    )}
                 </div>
             </Tooltip>
             <div

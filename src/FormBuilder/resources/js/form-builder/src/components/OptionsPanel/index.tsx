@@ -9,6 +9,7 @@ import {OptionsPanelProps} from './types';
 export default function Options({
     currency,
     multiple,
+    selectable = true,
     options,
     setOptions,
     defaultControlsTooltip,
@@ -45,6 +46,7 @@ export default function Options({
                         options={options}
                         showValues={showValues}
                         multiple={multiple}
+                        selectable={selectable}
                         setOptions={setOptions}
                         defaultControlsTooltip={defaultControlsTooltip}
                         onRemoveOption={onRemoveOption}

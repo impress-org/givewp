@@ -8,6 +8,7 @@ export default function OptionsList({
     options,
     showValues,
     multiple,
+    selectable,
     setOptions,
     defaultControlsTooltip,
     onRemoveOption,
@@ -87,6 +88,7 @@ export default function OptionsList({
                                             option={option}
                                             showValues={showValues}
                                             multiple={multiple}
+                                            selectable={selectable}
                                             defaultTooltip={defaultControlsTooltip}
                                             handleRemoveOption={handleRemoveOption(index)}
                                             handleUpdateOptionLabel={handleUpdateOptionLabel(index)}

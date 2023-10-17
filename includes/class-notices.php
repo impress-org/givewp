@@ -282,36 +282,32 @@ class Give_Notices {
 	}
 
 
-	/**
-	 * Render give frontend notices.
-	 *
+    /**
+     * Render give frontend notices.
+     *
+     * @unreleased Render errors on Ajax request (Donation form validation - v2 forms)
      * @since 2.32.0 Display registered error on donation form.
-	 * @since  1.8.9
-	 * @access public
-	 *
-	 * @param int $form_id
-	 */
-	public function render_frontend_notices( $form_id = 0 ) {
-		$errors = give_get_errors();
+     * @since  1.8.9
+     * @access public
+     *
+     * @param int $form_id
+     */
+    public function render_frontend_notices($form_id = 0)
+    {
+        $errors = give_get_errors();
 
-		$request_form_id = isset( $_REQUEST['form-id'] ) ? absint( $_REQUEST['form-id'] ) : 0;
+        $request_form_id = isset($_REQUEST['form-id']) ? absint($_REQUEST['form-id']) : 0;
 
-		// Sanity checks first:
+        // Sanity checks first:
         // - Ensure that gateway returned errors display on the appropriate form.
-        // - Error should not display on AJAX request.
-		if (
-            isset( $_POST['give_ajax'] )
-            || ( $request_form_id && $request_form_id !== $form_id )
-        ) {
-			return;
-		}
+        // - Error should exist.
+        if (! $errors || ($request_form_id && $request_form_id !== $form_id)) {
+            return;
+        }
 
-		if ( $errors ) {
-			self::print_frontend_errors( $errors );
-
-			give_clear_errors();
-		}
-	}
+        self::print_frontend_errors($errors);
+        give_clear_errors();
+    }
 
 	/**
 	 * Renders notices for different actions depending on

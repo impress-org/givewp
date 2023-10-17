@@ -7,7 +7,7 @@ import {Path, SVG} from '@wordpress/components';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Email', 'custom-block-editor'),
+    title: __('Email', 'give'),
     description: __('The required email field for donors to enter their email address.', 'give'),
     supports: {
         multiple: false,
