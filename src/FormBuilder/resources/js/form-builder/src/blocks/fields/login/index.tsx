@@ -12,7 +12,7 @@ const login: FieldBlock = {
     settings: {
         ...defaultSettings,
         icon: BlockIcon,
-        title: __('User Login', 'custom-block-editor'),
+        title: __('User Login', 'give'),
         description: __('...', 'give'),
         supports: {
             multiple: false,
