@@ -33,6 +33,7 @@ class SaleBanners
     /**
      * Get banners definitions
      *
+     * @unreleased add Giving Tuesday 2023 banner
      * @since 2.23.2 add Giving Tuesday 2022 banner
      * @since 2.17.0
      *
@@ -73,10 +74,20 @@ class SaleBanners
                 'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
                 'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
                 'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => __(
-                    'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
-                    'give'
-                ),
+                'leadText' => self::getDataByPricingPlan([
+                    'Free' => __(
+                        'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                        'give'
+                    ),
+                    'Basic' => __(
+                        'Upgrade to a Plus Plan to get all must-have add-ons.',
+                        'give'
+                    ),
+                    'Plus' => __(
+                        'Upgrade to Pro and get Peer-to-Peer fundraising.',
+                        'give'
+                    )
+                ]),
                 'actionText' => __('Shop Now', 'give'),
                 'actionURL' => 'https://go.givewp.com/bf22',
 //               ToDo: update dates
@@ -181,4 +192,78 @@ class SaleBanners
     {
         return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
+
+    /**
+     * @unreleased retrieve licensed plugin slugs.
+     */
+    public static function getLicensedPluginSlugs(): array
+    {
+        $pluginSlugs = [];
+        $licenses = get_option("give_licenses", []);
+
+        foreach ($licenses as $license) {
+            if (isset($license['is_all_access_pass']) && $license['is_all_access_pass'] && !empty($license['download'])) {
+                $pluginSlugs = ['is_all_access_pass'];
+            } else {
+                $pluginSlugs[] = $license['plugin_slug'];
+            }
+        }
+
+        return $pluginSlugs;
+    }
+
+    /**
+     * @unreleased determines user pricing plan from licensed plugin slugs.
+     */
+    public static function getUserPricingPlan(): string
+    {
+        $plan = 'Free';
+
+        $basic = [
+            'pdf' => 'give-pdf-receipts',
+        ];
+
+        $plus = [
+            'pdf_receipts' => 'give-pdf-receipts',
+            'recurring_donations' => 'give-recurring',
+            'fee_recovery' => 'give-fee-recovery',
+            'form_field_manager' => 'give-form-field-manager',
+            'tributes' => 'give-tributes',
+            'annual_receipts' => 'give-annual-receipts',
+            'peer_to_peer' => 'give-peer-to-peer',
+        ];
+
+        $pro = ['is_all_access_pass'];
+
+        $licensedPluginSlugs = self::getLicensedPluginSlugs();
+
+        sort($licensedPluginSlugs);
+        sort($basic);
+        sort($plus);
+
+        if ($licensedPluginSlugs === $basic) {
+            $plan = 'Basic';
+        } elseif ($licensedPluginSlugs === $plus) {
+            $plan = 'Plus';
+        } elseif ($licensedPluginSlugs === $pro) {
+            $plan = 'Pro';
+        }
+
+        return $plan;
+    }
+
+    /**
+     * @unreleased determine selected data by user pricing plan.
+     */
+    public static function getDataByPricingPlan($data): string
+    {
+        $userPricingPlan = self::getUserPricingPlan();
+
+        if (array_key_exists($userPricingPlan, $data)) {
+            return $data[$userPricingPlan];
+        }
+
+        return '';
+    }
 }
+
