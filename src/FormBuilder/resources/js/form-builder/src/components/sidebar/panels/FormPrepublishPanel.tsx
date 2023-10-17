@@ -5,7 +5,7 @@ import {filterURLForDisplay} from '@wordpress/url';
 import {decodeEntities} from '@wordpress/html-entities';
 import {Button, PanelBody, PanelRow, TextControl, Spinner} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {GiveIcon} from '@givewp/form-builder/components/icons';
+import {GiveIcon, CopyIcon} from '@givewp/form-builder/components/icons';
 import {getWindowData, getSiteData} from '@givewp/form-builder/common';
 
 export default function FormPrepublishPanel({isSaving, isPublished, handleSave, handleClose}) {
@@ -87,12 +87,13 @@ export default function FormPrepublishPanel({isSaving, isPublished, handleSave, 
                         <span className="givewp-next-gen-prepublish-panel__site-card-info-name">
                             {decodeEntities(siteName)}
                         </span>
-                        <span className="givewp-next-gen-prepublish-panel__site-card-info-url">{filterURLForDisplay(siteUrl || '')}</span>
+                        <span
+                            className="givewp-next-gen-prepublish-panel__site-card-info-url">{filterURLForDisplay(siteUrl || '')}</span>
                     </div>
                 </div>
             </div>
 
-            <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
+            <PanelBody title={__('Summary', 'give')} initialOpen={true}>
                 <PanelRow>
                     <TextControl
                         label={__('Title')}
@@ -117,30 +118,50 @@ export default function FormPrepublishPanel({isSaving, isPublished, handleSave, 
                 </div>
             </div>
 
-            <div className="givewp-next-gen-prepublish-panel__content">
-                <p>{__('New Generation Form is now live', 'give')}.</p>
+            <div className="givewp-next-gen-prepublish-panel__content_publish">
+                <strong>
+                    <a href={permalink}
+                       target="_blank">{__('New Generation Form', 'give')}
+                    </a> {__('is now live', 'give')}.
+                </strong>
             </div>
 
-            <PanelBody className={'givewp-panel-body--summary'} title={__("What's next?", 'give')} initialOpen={true}>
-                <PanelRow>
-                    <div>
+            <PanelBody title={__("What's next?", 'give')} initialOpen={true}>
+                <PanelRow className="givewp-next-gen-prepublish-panel_link">
+                    <span>
                         {__('PAGE ADDRESS', 'give')}
-                    </div>
-                    <div>
-                        {__('Copy', 'give')}
-                    </div>
+                    </span>
+                    <span>
+                        <a
+                            href="#"
+                            onClick={async () => await navigator.clipboard.writeText(permalink)}
+                            className="givewp-next-gen-prepublish-panel_copy_link"
+                        >
+                            <CopyIcon />{__('Copy', 'give')}
+                        </a>
+                    </span>
                 </PanelRow>
-                <PanelRow>
+                <PanelRow className="givewp-next-gen-prepublish-panel_input">
                     <TextControl
                         value={permalink}
                         onChange={null}
                     />
                 </PanelRow>
+                <PanelRow className="givewp-next-gen-prepublish-panel_view">
+                    <Button
+                        className="givewp-next-gen-prepublish-panel_view_button"
+                        variant="primary"
+                        href={permalink}
+                        target="_blank"
+                    >
+                        {__('View form', 'give')}
+                    </Button>
+                </PanelRow>
             </PanelBody>
         </>
     )
 
-    if(!siteName || !siteUrl) {
+    if (!siteName || !siteUrl) {
         return null;
     }
 
