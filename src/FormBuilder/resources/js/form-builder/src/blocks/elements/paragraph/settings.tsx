@@ -4,7 +4,7 @@ import {ElementBlock} from '@givewp/form-builder/types/block';
 import Edit from './Edit';
 
 const settings: ElementBlock['settings'] = {
-    title: __('Paragraph', 'custom-block-editor'),
+    title: __('Paragraph', 'give'),
     description: 'Place a styled paragraph in your form.',
     category: 'content',
     supports: {

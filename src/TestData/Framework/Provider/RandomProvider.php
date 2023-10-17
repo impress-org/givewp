@@ -2,7 +2,8 @@
 
 namespace Give\TestData\Framework\Provider;
 
-use Faker\Generator;
+
+use Give\Vendors\Faker\Generator;
 
 abstract class RandomProvider implements ProviderContract
 {

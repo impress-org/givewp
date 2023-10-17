@@ -20,7 +20,11 @@ class EmailSettings extends FormMigrationStep
                 'status' => $notification->get_notification_status($this->formV2->id),
                 'email_subject' => $notification->get_email_subject($this->formV2->id),
                 'email_header' => $notification->get_email_header($this->formV2->id),
-                'email_message' => $notification->get_email_message($this->formV2->id),
+                'email_message' => str_replace(
+                    ['"“', '"”', '“"', '”"', '“', '”'],
+                    '"',
+                    $notification->get_email_message($this->formV2->id)
+                ),
                 'email_content_type' => $notification->get_email_content_type($this->formV2->id),
                 'recipient' => (array) $notification->get_recipient($this->formV2->id)
             ];

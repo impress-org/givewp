@@ -3,9 +3,8 @@
 namespace Give\Framework\Models\Factories;
 
 use Exception;
-use Faker\Generator;
+use Give\Vendors\Faker\Generator;
 use Give\Framework\Database\DB;
-use Give\Framework\Models\Contracts\ModelCrud;
 
 /**
  * @template M
