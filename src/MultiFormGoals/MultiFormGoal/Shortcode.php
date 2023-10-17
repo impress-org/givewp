@@ -47,9 +47,11 @@ class Shortcode
             'give_multi_form_goal'
         );
 
+        array_walk($attributes['ids'], '_give_redirect_form_id');
+
         $multiFormGoal = new MultiFormGoal(
             [
-                'ids' => array_map('_give_redirect_form_id', $attributes['ids']),
+                'ids' => $attributes['ids'],
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],

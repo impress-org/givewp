@@ -205,11 +205,12 @@ class Give_Donation_Form_Grid_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
+        $ids = $this->getAsArray($attributes['formIDs']);
+        array_walk($ids, '_give_redirect_form_id');
+
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-			'ids'                 => implode(',',
-                array_map('_give_redirect_form_id', $this->getAsArray($attributes['formIDs']))
-            ),
+            'ids' => implode(',', $ids),
 			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
