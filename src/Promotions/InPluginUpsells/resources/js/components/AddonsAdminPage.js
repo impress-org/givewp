@@ -56,8 +56,8 @@ export function AddonsAdminPage({startingTab = 0}) {
                         }}
                     />
                     <TabList className={styles.tabs}>
-                        <Tab id="tab-1">{__('Must Have Add-ons', 'give')}</Tab>
-                        <Tab id="tab-2">{__('View Pricing Plans', 'give')}</Tab>
+                        <Tab id="tab-1">{__('View Pricing Plans', 'give')}</Tab>
+                        <Tab id="tab-2">{__('Must Have Add-ons', 'give')}</Tab>
                         <Tab id="tab-3">{__('Additional Add-ons', 'give')}</Tab>
                         <Tab id="tab-4">{__('Get a Free Add-on!', 'give')}</Tab>
                     </TabList>
@@ -65,10 +65,10 @@ export function AddonsAdminPage({startingTab = 0}) {
             </div>
             <div className={styles.container}>
                 <TabPanel id="tab-1">
-                    <MustHaveAddons />
+                    <PricingPlans />
                 </TabPanel>
                 <TabPanel id="tab-2">
-                    <PricingPlans />
+                    <MustHaveAddons />
                 </TabPanel>
                 <TabPanel id="tab-3">
                     <AdditionalAddons />
