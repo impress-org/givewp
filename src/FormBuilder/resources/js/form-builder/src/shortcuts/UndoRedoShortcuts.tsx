@@ -1,13 +1,14 @@
-import { KeyboardShortcuts } from "@wordpress/components";
+import {KeyboardShortcuts} from "@wordpress/components";
 import {undo, redo} from '@givewp/form-builder/stores/form-state/reducer';
-import {useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
+import {useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
 
 export default function UndoRedoShortcuts() {
 
     const dispatch = useFormStateDispatch();
+    const {canUndo, canRedo} = useFormState();
 
-    const onUndo = () => dispatch(undo())
-    const onRedo = () => dispatch(redo())
+    const onUndo = () => canUndo && dispatch(undo())
+    const onRedo = () => canRedo && dispatch(redo())
 
     return <KeyboardShortcuts
         bindGlobal={true}
