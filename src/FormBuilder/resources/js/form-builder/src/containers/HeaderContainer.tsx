@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, moreVertical, undo as undoIcon, redo as redoIcon} from '@wordpress/icons';
-import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {setTransferState, useTransferState} from '../stores/transfer-state';
 import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
@@ -41,7 +42,8 @@ const HeaderContainer = ({
                              showSidebar,
                              toggleShowSidebar,
                          }) => {
-    const {blocks, settings: formSettings, isDirty, transfer, canUndo, canRedo, editorMode} = useFormState();
+    const {blocks, settings: formSettings, isDirty, canUndo, canRedo, editorMode} = useFormState();
+    const transfer = useTransferState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
