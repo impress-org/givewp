@@ -1,18 +1,19 @@
-import {createRef, MouseEventHandler, RefObject} from 'react';
+import {useState, createRef, MouseEventHandler, RefObject} from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {filterURLForDisplay} from '@wordpress/url';
 import {decodeEntities} from '@wordpress/html-entities';
-import {Button, PanelBody, PanelRow, Spinner, TextControl} from '@wordpress/components';
+import {Button, PanelBody, PanelRow, SelectControl, Spinner, TextControl} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {CopyIcon, GiveIcon} from '@givewp/form-builder/components/icons';
 import {getSiteData, getWindowData} from '@givewp/form-builder/common';
+import {FormStatus} from "@givewp/form-builder/types";
 
 interface FormPrepublishPanelProps {
     isSaving: boolean;
     isPublished: boolean;
-    handleSave: MouseEventHandler<HTMLButtonElement>;
+    handleSave: Function;
     handleClose: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -25,13 +26,15 @@ export default function FormPrepublishPanel
  }: FormPrepublishPanelProps) {
 
     const {
-        settings: {formTitle},
+        settings: {formTitle, formStatus},
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const {siteName, siteUrl} = getSiteData()
     const {
         formPage: {permalink},
     } = getWindowData();
+
+    const [status, setStatus] = useState('publish');
 
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
@@ -120,7 +123,7 @@ export default function FormPrepublishPanel
                                 <div className="givewp-next-gen-prepublish-panel__header-actions">
                                     <Button
                                         variant="primary"
-                                        onClick={handleSave}
+                                        onClick={() => handleSave(status)}
                                     >
                                         {__('Publish', 'give')}
                                     </Button>
@@ -161,6 +164,24 @@ export default function FormPrepublishPanel
                                         value={formTitle}
                                         onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
                                     />
+                                </PanelRow>
+                                <PanelRow>
+                                    <div>
+                                        {__('Visibility', 'give')}
+                                    </div>
+                                    <div>
+                                        <SelectControl
+                                            value={status}
+                                            options={[
+                                                {label: __('Public', 'give'), value: 'publish'},
+                                                {label: __('Private', 'give'), value: 'private'},
+                                            ]}
+                                            onChange={(status: FormStatus) => setStatus(status)}
+                                        />
+                                    </div>
+                                </PanelRow>
+                                <PanelRow className="givewp-next-gen-prepublish-panel_visibility">
+                                    {'publish' === status ? __('Visible to everyone', 'give') : __('Only visible to site admins and editors', 'give')}
                                 </PanelRow>
                             </PanelBody>
                         </>
