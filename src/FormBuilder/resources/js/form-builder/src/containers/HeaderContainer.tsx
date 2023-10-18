@@ -53,7 +53,7 @@ const HeaderContainer = ({
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
-    const isPublished = 'publish' === formSettings.formStatus;
+    const isPublished = ['publish', 'private'].includes(formSettings.formStatus);
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
     const {
@@ -171,14 +171,14 @@ const HeaderContainer = ({
                                     />
                                 )}
                                 <Button
-                                    onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
+                                    onClick={() => isPublished ? onSave(formSettings.formStatus) : setShowPublishConfirmation(true)}
                                     aria-disabled={isPublishDisabled}
                                     disabled={isPublishDisabled}
                                     variant="primary"
                                 >
-                                    {isSaving && 'publish' === isSaving
+                                    {isSaving && ['publish', 'private'].includes(isSaving)
                                         ? __('Updating...', 'give')
-                                        : 'publish' === formSettings.formStatus
+                                        : isPublished
                                             ? __('Update', 'give')
                                             : __('Publish', 'give')}
                                 </Button>
@@ -258,7 +258,7 @@ const HeaderContainer = ({
                 <FormPrepublishPanel
                     isSaving={isSaving}
                     isPublished={isPublished}
-                    handleSave={() => onSave('publish')}
+                    handleSave={(status:FormStatus) => onSave(status)}
                     handleClose={() => setShowPublishConfirmation(false)}
                 />
             )}
