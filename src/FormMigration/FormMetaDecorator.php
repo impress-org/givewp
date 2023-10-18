@@ -483,9 +483,12 @@ class FormMetaDecorator extends FormModelDecorator
 
                 $perGatewaySettings[$v3GatewayId] = [
                     'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
-                    'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId),
-                    'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId),
-                    'maxFeeAmount' => (float)$this->getMeta('_form_gateway_fee_maximum_fee_amount_' . $gatewayId),
+                    'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId, 2.9),
+                    'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId, 0.30),
+                    'maxFeeAmount' => (float)$this->getMeta(
+                        '_form_gateway_fee_maximum_fee_amount_' . $gatewayId,
+                        give_format_decimal(['amount' => '0.00'])
+                    ),
                 ];
             }
         }
