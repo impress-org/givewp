@@ -107,7 +107,7 @@ class AdminSettingFields
     /**
      * PayPal Checkout account manager custom field
      *
-     * @since 3.0.0-rc.6 Update PayPal sandbox connection button description.
+     * @since 3.0.0 Update PayPal sandbox connection button description.
      * @since 2.9.0
      */
     public function payPalCommerceAccountManagerField()

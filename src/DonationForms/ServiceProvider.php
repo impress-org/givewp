@@ -94,6 +94,7 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::get('donation-form-view', static function (array $request) {
+            ini_set('display_errors', 0);
             $routeData = DonationFormViewRouteData::fromRequest($request);
 
             return give(DonationFormViewController::class)->show($routeData);
@@ -103,16 +104,17 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
+            ini_set('display_errors', 0);
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
 
             return give(DonationConfirmationReceiptViewController::class)->show($routeData);
         });
 
-
         /**
          * @since 3.0.0
          */
         Route::post('donation-form-view-preview', static function () {
+            ini_set('display_errors', 0);
             $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
@@ -177,7 +179,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     protected function registerPostStatus()
     {

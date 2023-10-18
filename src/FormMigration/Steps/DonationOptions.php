@@ -25,21 +25,27 @@ class DonationOptions extends FormMigrationStep
                 array_map([$this, 'roundAmount'], wp_list_pluck($donationLevels, '_give_amount')));
         }
 
-        if($this->formV2->isCustomAmountOptionEnabled()) {
-            $amountField->setAttribute('customAmount', true);
-            $amountField->setAttribute('customAmountMin',
-                $this->roundAmount($this->getMetaV2('_give_custom_amount_range_minimum')));
-            $amountField->setAttribute('customAmountMax',
-                $this->roundAmount($this->getMetaV2('_give_custom_amount_range_maximum')));
-        } else {
-            $amountField->setAttribute('customAmount', false);
+        $isCustomAmountEnabled = $this->formV2->isCustomAmountOptionEnabled();
+        $amountField->setAttribute('customAmount', $isCustomAmountEnabled);
+
+        if ($isCustomAmountEnabled) {
+            $customAmountMin = $this->getMetaV2('_give_custom_amount_range_minimum');
+            $customAmountMax = $this->getMetaV2('_give_custom_amount_range_maximum');
+
+            if ($customAmountMin) {
+                $amountField->setAttribute('customAmountMin', $this->roundAmount($customAmountMin));
+            }
+
+            if ($customAmountMax) {
+                $amountField->setAttribute('customAmountMax', $this->roundAmount($customAmountMax));
+            }
         }
 
         // @note No corresponding setting in v3 for "Custom Amount Text"
     }
 
     /**
-     * @unreleased
+     * @since 3.0.0
      */
     private function roundAmount($amount): float
     {
