@@ -368,7 +368,8 @@ if (! class_exists('Give_Settings_Gateways')) :
                         $gateways,
                         give()->gateways->getPaymentGateways(2)
                     )
-                )
+                ),
+                2
             );
 
             // v3 gateways are gateways that are registered with updated gateway registration API.
