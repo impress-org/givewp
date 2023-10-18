@@ -476,11 +476,12 @@ class FormMetaDecorator extends FormModelDecorator
 
         if ($gateways) {
             foreach (array_keys($gateways) as $gatewayId) {
+                $v3GatewayId = $gatewayId;
                 if (array_key_exists($gatewayId, $gatewaysMap)) {
-                    $gatewayId = $gatewaysMap[$gatewayId];
+                    $v3GatewayId = $gatewaysMap[$gatewayId];
                 }
 
-                $perGatewaySettings[$gatewayId] = [
+                $perGatewaySettings[$v3GatewayId] = [
                     'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
                     'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId),
                     'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId),
