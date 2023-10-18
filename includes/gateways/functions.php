@@ -78,11 +78,13 @@ function give_get_enabled_payment_gateways($form_id = 0, $version = null)
 
     $enabled = [];
     if (!$version || $version === 2) {
-        $enabled = array_merge($enabled, $_POST['gateways'] ?? (array)give_get_option('gateways', []));
+        $gatewaysFromPostRequest = isset($_POST['gateways']) ? (array)$_POST['gateways'] : null;
+        $enabled = array_merge($enabled, $gatewaysFromPostRequest ?? (array)give_get_option('gateways', []));
     }
 
     if (!$version || $version === 3) {
-        $enabled = array_merge($enabled, $_POST['gateways_v3'] ?? (array)give_get_option('gateways_v3', []));
+        $gatewaysFromPostRequest = isset($_POST['gateways_v3']) ? (array)$_POST['gateways_v3'] : null;
+        $enabled = array_merge($enabled, $gatewaysFromPostRequest ?? (array)give_get_option('gateways_v3', []));
     }
 
 	$gateway_list = [];
@@ -368,16 +370,18 @@ function give_get_ordered_payment_gateways($gateways, $version = null)
 	// Get gateways setting.
     $gateways_setting = [];
     if (!$version || $version === 2) {
+        $gatewaysFromPostRequest = isset($_POST['gateways']) ? (array)$_POST['gateways'] : null;
         $gateways_setting = array_merge(
             $gateways_setting,
-            $_POST['gateways'] ?? (array)give_get_option('gateways', [])
+            $gatewaysFromPostRequest ?? (array)give_get_option('gateways', [])
         );
     }
 
     if (!$version || $version === 3) {
+        $gatewaysFromPostRequest = isset($_POST['gateways_v3']) ? (array)$_POST['gateways_v3'] : null;
         $gateways_setting = array_merge(
             $gateways_setting,
-            $_POST['gateways_v3'] ?? (array)give_get_option('gateways_v3', [])
+            $gatewaysFromPostRequest ?? (array)give_get_option('gateways_v3', [])
         );
     }
 
