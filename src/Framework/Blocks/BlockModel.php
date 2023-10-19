@@ -46,7 +46,27 @@ class BlockModel implements Arrayable
         $this->clientId = $clientId ?? wp_generate_uuid4();
         $this->isValid = $isValid;
         $this->attributes = $attributes;
-        $this->innerBlocks = $innerBlocks ?: new BlockCollection([]);
+        $this->innerBlocks = $this->sanitizeInnerBlocks($innerBlocks);
+    }
+
+    /**
+     * @param  array|BlockCollection|null  $innerBlocks
+     * @unreleased
+     */
+    public function sanitizeInnerBlocks($innerBlocks): BlockCollection
+    {
+        if (empty($innerBlocks)) {
+            return new BlockCollection([]);
+        }
+
+        if (is_a($innerBlocks, BlockCollection::class)) {
+            return $innerBlocks;
+        }
+
+        return new BlockCollection(
+            array_map([__CLASS__, 'make'],
+                $innerBlocks)
+        );
     }
 
     /**
@@ -101,17 +121,12 @@ class BlockModel implements Arrayable
      */
     public static function make( array $blockData ): BlockModel
     {
-        $innerBlocks = !empty($blockData['innerBlocks']) ? new BlockCollection(
-            array_map([__CLASS__, 'make'],
-                $blockData['innerBlocks'])
-        ) : new BlockCollection([]);
-
         return new BlockModel(
             $blockData['name'],
             !empty($blockData['clientId']) ? $blockData['clientId'] : wp_generate_uuid4(),
             !empty($blockData['isValid']) ? $blockData['isValid'] : true,
             !empty($blockData['attributes']) ? $blockData['attributes'] : [],
-            $innerBlocks
+            $blockData['innerBlocks'] ?? []
         );
     }
 
