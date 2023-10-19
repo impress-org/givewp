@@ -60,7 +60,7 @@ function give_stripe_is_any_payment_method_active()
 	}
 
     /**
-     * @since 3.0.0-rc.8
+     * @since 3.0.0
      */
     return apply_filters('give_stripe_is_any_payment_method_active', $active, $gateways, $stripePaymentMethods);
 }

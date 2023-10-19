@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -135,13 +135,6 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
 
-=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms ===
-Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means!
-
-Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area.
-
-Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
-
 === 💚 About the GiveWP Team ===
 
 GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
@@ -269,8 +262,17 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 2.33.4: October 4th, 2023 =
-* Fix: Update old sendwp buttons and remove unused Stripe disconnect function.
+= 3.0.1: October 17th, 2023 =
+* Fix: Resolved a conflict with Matomo plugin that was causing a fatal error
+
+= 3.0.0: October 16th, 2023 =
+* New: Try out the all new Visual Donation Form Builder!
+* New: All new form infrastructure for forms using the Form Builder!
+* New: Stripe Payment Element gateway for Stripe with support for many types of payment methods
+* New: Existing forms can be migrated and upgrade to use the Form Builder
+
+= 2.33.5: October 10th, 2023 =
+* Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
 
 = 2.33.3: September 29th, 2023 =
 * Fix: Multi-site installations no longer produce an error on subsites.

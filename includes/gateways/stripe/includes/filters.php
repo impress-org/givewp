@@ -48,7 +48,7 @@ add_filter( 'give_get_payment_transaction_id-stripe_ach', 'give_stripe_get_payme
 /**
  * This function is used to add Stripe credentials to GiveWP form.
  *
- * @since 3.0.0-rc.8 Return $form_html_tags instead of false when Stripe gateway isn't enabled
+ * @since 3.0.0 Return $form_html_tags instead of false when Stripe gateway isn't enabled
  * @since 2.7.0
  *
  * @param object $form           Form Object.

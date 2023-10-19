@@ -75,7 +75,7 @@ trait HasVisibilityConditions
     /**
      * Set a condition for showing the node.
      *
-     * @unreleased Fixed a bug with encoded HTML entities in the operator, ie > (greater than), < (less than)
+     * @since 3.0.0 Fixed a bug with encoded HTML entities in the operator, ie > (greater than), < (less than)
      * @since 2.27.3 update to use SimpleConditionSet
      * @since 2.13.0
      */

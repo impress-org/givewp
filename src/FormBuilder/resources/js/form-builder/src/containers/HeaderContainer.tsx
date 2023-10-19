@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, moreVertical, external} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
-import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
+import {Button, Dropdown, ExternalLink, Icon, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {getWindowData, Storage} from '../common';
@@ -207,7 +207,7 @@ const HeaderContainer = ({
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
-                                    <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuGroup label={__('Support', 'give')}>
                                         <MenuItem
                                             onClick={() => {
                                                 // @ts-ignore
@@ -240,6 +240,15 @@ const HeaderContainer = ({
                                             </>
                                         )}
                                     </MenuGroup>
+                                    <ExternalLink
+                                        className="givewp-support-link"
+                                        href="https://docs.givewp.com/nextgenfeedback"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <MenuItem icon={external}>
+                                                {__('Submit Feedback', 'give')}
+                                        </MenuItem>
+                                    </ExternalLink>
                                 </div>
                             )}
                         />
