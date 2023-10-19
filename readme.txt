@@ -264,6 +264,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.0.2: October 19th, 2023 =
 * Fix: Stripe per-form settings are included when migrating a form to the Visual Donation Form Builder
+* Fix: Gateways are properly separated in the settings page and Global Settings for Fee Recovery shows all gateways when you select per gateway
+
 = 3.0.1: October 17th, 2023 =
 * Fix: Resolved a conflict with Matomo plugin that was causing a fatal error
 
