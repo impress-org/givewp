@@ -138,22 +138,35 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                     </>
                 }
                 contentMiddle={
-                    <Button
-                        id={'editor-state-toggle'}
-                        style={{
-                            backgroundColor: 'black',
-                            color: 'white',
-                            borderRadius: '4px',
-                            display: 'flex',
-                            gap: 'var(--givewp-spacing-2)',
-                            padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
-                        }}
-                        onClick={() => toggleEditorMode()}
-                        icon={EditIcon}
-                    >
-                        {EditorMode.schema === mode && __('Edit form design', 'give')}
-                        {EditorMode.design === mode && __('Edit form', 'give')}
-                    </Button>
+                    <div className={'interface-interface-skeleton__header-tabs'}>
+                        <Button
+                            id={'editor-state-switch-schema'}
+                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                                'is-active': mode === EditorMode.schema,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.schema)}
+                        >
+                            {__('Build', 'give')}
+                        </Button>
+                        <Button
+                            id={'editor-state-switch-design'}
+                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                                'is-active': mode === EditorMode.design,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.design)}
+                        >
+                            {__('Design', 'give')}
+                        </Button>
+                        <Button
+                            id={'editor-state-switch-settings'}
+                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                                'is-active': mode === EditorMode.settings,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.settings)}
+                        >
+                            {__('Settings', 'give')}
+                        </Button>
+                    </div>
                 }
                 contentRight={
                     <>

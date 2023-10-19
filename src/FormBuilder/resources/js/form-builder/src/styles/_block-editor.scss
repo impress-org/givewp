@@ -12,6 +12,36 @@
     z-index: 30; // Below the components-popover, which is at index 31.
 }
 
+.interface-interface-skeleton__header-tabs {
+    display: flex;
+    height: 3.75rem;
+    justify-content: center;
+}
+
+.interface-interface-skeleton__header-tabs__tab {
+    border-radius: 0;
+    font-size: 1rem;
+    height: 3.25rem;
+    justify-content: center;
+    line-height: 1.5rem;
+    margin: 0.25rem 0;
+    min-width: 5.5rem;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+    &:hover {
+        background-color: var(--givewp-gray-5);
+        color: var(--wp-components-color-foreground, #1e1e1e);
+    }
+
+    &.is-active {
+        background-color: transparent;
+        border-bottom: 0.25rem solid var(--wp-admin-theme-color);
+        height: 3.5rem;
+        color: var(--wp-admin-theme-color);
+        font-weight: 600;
+    }
+}
+
 .interface-interface-skeleton__body {
     width: 100%;
     background-color: var(--givewp-gray-10);
