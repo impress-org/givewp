@@ -1,5 +1,5 @@
 /**
- * PayPal Commerce Platform: standard address.
+ * PayPal Commerce Platform: Standard address.
  *
  * @unreleased
  */
@@ -26,7 +26,7 @@ export type PayPalShippingAddress = {
 };
 
 /**
- * PayPal Commerce Platform: subscriber
+ * PayPal Commerce Platform: Subscriber
  *
  * @see https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_create!path=subscriber&t=request
  * @unreleased
