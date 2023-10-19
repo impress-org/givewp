@@ -6,9 +6,17 @@ import {isFormPageEnabled, PageSlugControl} from './page-slug';
 
 const FormSummarySettings = () => {
     const {
-        settings: {formTitle, formStatus},
+        settings: {formTitle, formStatus, newFormStatus},
     } = useFormState();
     const dispatch = useFormStateDispatch();
+
+    const isPrivate = () => {
+        if (newFormStatus) {
+            return 'private' === newFormStatus;
+        }
+
+        return 'private' === formStatus;
+    }
 
     return (
         <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
@@ -27,16 +35,16 @@ const FormSummarySettings = () => {
             <PanelRow>
                 <SelectControl
                     label={__('Visibility', 'give')}
-                    value={formStatus}
+                    value={newFormStatus ?? ('draft' === formStatus ? 'publish' : formStatus)}
                     options={[
                         {label: __('Public', 'give'), value: 'publish'},
                         {label: __('Private', 'give'), value: 'private'},
                     ]}
-                    onChange={(formStatus) => dispatch(setFormSettings({formStatus}))}
+                    onChange={(newFormStatus) => dispatch(setFormSettings({newFormStatus}))}
                 />
             </PanelRow>
             <PanelRow className="givewp-next-gen-prepublish-panel_visibility">
-                {['publish', 'draft'].includes(formStatus) ? __('Visible to everyone', 'give') : __('Only visible to site admins and editors', 'give')}
+                {isPrivate() ? __('Only visible to site admins and editors', 'give') : __('Visible to everyone', 'give')}
             </PanelRow>
         </PanelBody>
     );
