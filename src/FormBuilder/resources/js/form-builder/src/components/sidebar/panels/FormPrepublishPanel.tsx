@@ -45,7 +45,7 @@ export default function FormPrepublishPanel
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
     return createPortal(
-        <div className={cx('givewp-next-gen-prepublish-panel', {'givewp-next-gen-prepublish-panel__animate': false})}>
+        <div className={cx('givewp-next-gen-prepublish-panel', {'givewp-next-gen-prepublish-panel__animate': !isPublished})}>
             {isSaving ? (
                 <>
                     <div className="givewp-next-gen-prepublish-panel__header">
