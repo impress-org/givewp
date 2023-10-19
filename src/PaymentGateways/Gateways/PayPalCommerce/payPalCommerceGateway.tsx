@@ -316,7 +316,7 @@ import {CSSProperties, useEffect, useState} from 'react';
                             hostedFieldType="expirationDate"
                             options={{
                                 selector: '#expiration-date',
-                                placeholder: 'MM/YYYY',
+                                placeholder: __('MM/YYYY', 'give'),
                             }}
                         />
                         <PayPalHostedField
@@ -326,7 +326,7 @@ import {CSSProperties, useEffect, useState} from 'react';
                             hostedFieldType="cvv"
                             options={{
                                 selector: '#cvv',
-                                placeholder: 'CVV',
+                                placeholder: __('CVV', 'give'),
                                 maskInput: true,
                             }}
                         />
