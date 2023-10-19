@@ -7,7 +7,7 @@ import {Path, SVG} from '@wordpress/components';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Donor Name', 'custom-block-editor'),
+    title: __('Donor Name', 'give'),
     description: __('Collects the donor name with display options.', 'give'),
     supports: {
         multiple: false,

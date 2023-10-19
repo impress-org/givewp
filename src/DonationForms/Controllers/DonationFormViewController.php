@@ -25,6 +25,7 @@ class DonationFormViewController
             $donationForm->settings
         );
 
+        ob_clean();
         return $viewModel->render();
     }
 
@@ -44,6 +45,7 @@ class DonationFormViewController
             $data->formSettings ?: $donationForm->settings
         );
 
+        ob_clean();
         return $viewModel->render(true);
     }
 }

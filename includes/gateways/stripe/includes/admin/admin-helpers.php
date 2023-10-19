@@ -11,6 +11,7 @@
  */
 
 // Exit, if accessed directly.
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -44,23 +45,24 @@ function give_stripe_supported_payment_methods()
  *
  * @return bool
  */
-function give_stripe_is_any_payment_method_active() {
-
-	// Get settings.
+function give_stripe_is_any_payment_method_active()
+{
 	$settings             = give_get_settings();
-	$gateways             = isset( $settings['gateways'] ) ? $settings['gateways'] : [];
-	$stripePaymentMethods = give_stripe_supported_payment_methods();
+    $gateways = $settings['gateways'] ?? [];
+    $stripePaymentMethods = give_stripe_supported_payment_methods();
 
-	// Loop through gateways list.
-	foreach ( array_keys( $gateways ) as $gateway ) {
-
+    $active = false;
+    foreach (array_keys($gateways) as $gateway) {
 		// Return true, if even single payment method is active.
 		if ( in_array( $gateway, $stripePaymentMethods, true ) ) {
-			return true;
+            $active = true;
 		}
 	}
 
-	return false;
+    /**
+     * @since 3.0.0
+     */
+    return apply_filters('give_stripe_is_any_payment_method_active', $active, $gateways, $stripePaymentMethods);
 }
 
 /**

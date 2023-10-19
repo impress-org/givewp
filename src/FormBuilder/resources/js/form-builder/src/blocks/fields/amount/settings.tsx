@@ -23,7 +23,7 @@ const {
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Donation Amount and Levels', 'custom-block-editor'),
+    title: __('Donation Amount and Levels', 'give'),
     description: __('The interface for donors to specify the amount they want to donate.', 'give'),
     supports: {
         multiple: false,

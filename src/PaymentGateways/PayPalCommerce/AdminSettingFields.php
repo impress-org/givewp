@@ -107,7 +107,7 @@ class AdminSettingFields
     /**
      * PayPal Checkout account manager custom field
      *
-     * @since 3.0.0-rc.6 Update PayPal sandbox connection button description.
+     * @since 3.0.0 Update PayPal sandbox connection button description.
      * @since 2.9.0
      */
     public function payPalCommerceAccountManagerField()
@@ -199,10 +199,8 @@ class AdminSettingFields
 
     /**
      * Return whether or not country is in North America
-     *
-     * @return boolean
      */
-    private function isCountryInNorthAmerica()
+    private function isCountryInNorthAmerica(): bool
     {
         // Countries list: https://en.wikipedia.org/wiki/List_of_North_American_countries_by_area#Countries
         $northAmericaCountryList = [

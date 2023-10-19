@@ -6,7 +6,7 @@ import Icon from './Icon';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Payment Gateways', 'custom-block-editor'),
+    title: __('Payment Gateways', 'give'),
     description: __('Display payment gateway options for donors to process their donation.', 'give'),
     supports: {
         multiple: false,

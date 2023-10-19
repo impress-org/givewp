@@ -3,27 +3,43 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\Framework\Database\DB;
 
 /**
- * @since 3.0.0-rc.6
+ * @since 3.0.0
  */
 class FormMeta extends FormMigrationStep
 {
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function process()
     {
         $oldFormId = $this->formV2->id;
         $newFormId = $this->formV3->id;
 
-        $oldFormMeta = give()->form_meta->get_meta($oldFormId);
+        $formMetaTable = DB::prefix('give_formmeta');
 
-        if ($oldFormMeta && is_array($oldFormMeta)) {
-            foreach ($oldFormMeta as $oldFormMetaKey => $oldFormMetaValue) {
-                $oldFormMetaValue = is_array($oldFormMetaValue) && count($oldFormMetaValue) === 1 ? $oldFormMetaValue[0] : $oldFormMetaValue;
-                give()->form_meta->update_meta($newFormId, $oldFormMetaKey, $oldFormMetaValue);
-            }
-        }
+        DB::query(
+            DB::prepare(
+                "
+                    INSERT INTO $formMetaTable (form_id, meta_key, meta_value)
+                    SELECT
+                        %d,
+                        meta_key,
+                        meta_value
+                    FROM
+                        $formMetaTable
+                    WHERE
+                        form_id = %d
+                        AND meta_key NOT IN (
+                            SELECT meta_key FROM $formMetaTable WHERE form_id = %d
+                        )
+                    ",
+                $newFormId,
+                $oldFormId,
+                $newFormId
+            )
+        );
     }
 }

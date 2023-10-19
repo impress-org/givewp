@@ -14,6 +14,7 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
@@ -76,7 +77,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function isRecurringEnabled(): bool
     {
@@ -84,7 +85,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function getGoalTypeOption(string $value, string $label, string $description): array
     {
@@ -96,7 +97,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 3.0.0-rc.6
+     * @since 3.0.0
      */
     public function getGoalTypeOptions(): array
     {
@@ -220,11 +221,19 @@ class FormBuilderViewModel
     /**
      * @since 3.0.0
      */
+    public function jsRegistrarsDependencies(): array
+    {
+        return ScriptAsset::getDependencies(GIVE_PLUGIN_DIR . 'build/formBuilderRegistrars.asset.php');
+    }
+
+    /**
+     * @since 3.0.0
+     */
     public function jsDependencies(): array
     {
-        $scriptAsset = require GIVE_PLUGIN_DIR . 'build/formBuilderApp.asset.php';
+        $dependencies = ScriptAsset::getDependencies(GIVE_PLUGIN_DIR . 'build/formBuilderApp.asset.php');
 
-        return array_merge($scriptAsset['dependencies'], ['@givewp/form-builder/registrars']);
+        return array_merge($dependencies, ['@givewp/form-builder/registrars']);
     }
 
     /**

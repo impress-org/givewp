@@ -6,7 +6,7 @@ import OptionsList from './OptionsList';
 
 import {OptionsPanelProps} from './types';
 
-export default function Options({currency, multiple, options, setOptions, defaultControlsTooltip}: OptionsPanelProps) {
+export default function Options({currency, multiple, selectable = true, options, setOptions, defaultControlsTooltip}: OptionsPanelProps) {
     const [showValues, setShowValues] = useState<boolean>(false);
 
     const handleAddOption = (): void => {
@@ -33,6 +33,7 @@ export default function Options({currency, multiple, options, setOptions, defaul
                             options,
                             showValues,
                             multiple,
+                            selectable,
                             setOptions,
                             defaultControlsTooltip,
                         }}

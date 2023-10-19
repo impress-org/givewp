@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
 class FormMetaDecorator extends FormModelDecorator
@@ -346,9 +347,8 @@ class FormMetaDecorator extends FormModelDecorator
 
     /**
      * @since 3.0.0
-     * @return string 'enabled', 'disabled'
      */
-    public function isCustomAmountOptionEnabled(): string
+    public function isCustomAmountOptionEnabled(): bool
     {
         return 'enabled' === $this->getCustomAmountOption();
     }
@@ -429,5 +429,94 @@ class FormMetaDecorator extends FormModelDecorator
             'offlineUseGlobalInstructions' => $customization === 'global',
             'offlineDonationInstructions' => $instructions,
         ];
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function getFormFields(): array
+    {
+        return array_filter((array)give_get_meta($this->form->id, 'give-form-fields', true));
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function getFormFieldsPlacement(): string
+    {
+        return give_get_meta($this->form->id, '_give_ffm_placement', true);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function getFeeRecoverySettings(): array
+    {
+        $feeRecoveryStatus = $this->getMeta('_form_give_fee_recovery');
+
+        if (empty($feeRecoveryStatus) || $feeRecoveryStatus === 'disabled') {
+            return [];
+        }
+
+        if ($feeRecoveryStatus === 'global') {
+            return [
+                'useGlobalSettings' => true,
+            ];
+        }
+
+        if ($feeRecoveryStatus !== 'enabled') {
+            return [];
+        }
+
+        $perGatewaySettings = [];
+        $gateways = give_get_ordered_payment_gateways(give_get_enabled_payment_gateways());
+        $gatewaysMap = [
+            'stripe' => StripePaymentElementGateway::id(),
+        ];
+
+        if ($gateways) {
+            foreach (array_keys($gateways) as $gatewayId) {
+                if (array_key_exists($gatewayId, $gatewaysMap)) {
+                    $gatewayId = $gatewaysMap[$gatewayId];
+                }
+
+                $perGatewaySettings[$gatewayId] = [
+                    'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
+                    'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId),
+                    'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId),
+                    'maxFeeAmount' => (float)$this->getMeta('_form_gateway_fee_maximum_fee_amount_' . $gatewayId),
+                ];
+            }
+        }
+
+        return [
+            'useGlobalSettings' => false,
+            'feeSupportForAllGateways' => $this->getMeta('_form_give_fee_configuration') === 'all_gateways',
+            'perGatewaySettings' => $perGatewaySettings,
+            'feePercentage' => (float)$this->getMeta('_form_give_fee_percentage'),
+            'feeBaseAmount' => (float)$this->getMeta('_form_give_fee_base_amount'),
+            'maxFeeAmount' => (float)$this->getMeta('_form_give_fee_maximum_fee_amount'),
+            'includeInDonationSummary' => $this->getMeta('_form_breakdown') === 'enabled',
+            'donorOptIn' => $this->getMeta('_form_give_fee_mode') === 'donor_opt_in',
+            'feeCheckboxLabel' => $this->getMeta('_form_give_fee_checkbox_label'),
+            'feeMessage' => $this->getMeta('_form_give_fee_explanation'),
+        ];
+    }
+
+    /**
+     * Retrieves metadata for the current form.
+     *
+     * This method acts as a wrapper for the give_get_meta function, reducing redundancy
+     * and improving code readability when fetching metadata related to the current form.
+     *
+     * @since 3.0.0
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    private function getMeta(string $key, $default = null)
+    {
+        return give_get_meta($this->form->id, $key, true, $default);
     }
 }

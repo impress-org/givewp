@@ -39,6 +39,6 @@ export default function normalizeFieldSettings(settings: FieldSettingsSupport | 
         displayInAdmin: getSupportSetting('displayInAdmin', true, true),
         displayInReceipt: getSupportSetting('displayInReceipt', true, true),
         defaultValue: getSupportSetting('defaultValue', false, ''),
-        emailTag: getSupportSetting('emailTag', false, ''),
+        emailTag: getSupportSetting('emailTag', true, ''),
     };
 }

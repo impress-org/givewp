@@ -100,6 +100,21 @@ class BlockCollection implements Arrayable
     /**
      * @since 3.0.0
      *
+     * @return array{0: BlockModel, 1: int}|void
+     */
+    public function findParentByBlockCollection(BlockCollection $blockCollection)
+    {
+        foreach ($this->blocks as $index => $block) {
+            if ($block->innerBlocks === $blockCollection) {
+                return [$block, $index];
+            }
+        }
+        // @todo Throw exception if not found.
+    }
+
+    /**
+     * @since 3.0.0
+     *
      * @return BlockModel|BlockCollection|null
      */
     private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
@@ -142,7 +157,11 @@ class BlockCollection implements Arrayable
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        $blockIndex = array_keys(
+            array_filter(array_column($innerBlocks, 'name'), function ($name) use ($blockName) {
+                return $name === $blockName;
+            })
+        )[$blockIndex];
         array_splice($innerBlocks, $blockIndex, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 
@@ -161,7 +180,11 @@ class BlockCollection implements Arrayable
         }
 
         $innerBlocks = $blockCollection->blocks;
-        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        $blockIndex = array_keys(
+            array_filter(array_column($innerBlocks, 'name'), function ($name) use ($blockName) {
+                return $name === $blockName;
+            })
+        )[$blockIndex];
         array_splice($innerBlocks, $blockIndex + 1, 0, [$block]);
         $blockCollection->blocks = $innerBlocks;
 

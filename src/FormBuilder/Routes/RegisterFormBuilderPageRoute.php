@@ -5,6 +5,7 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Framework\Views\View;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -81,7 +82,9 @@ class RegisterFormBuilderPageRoute
         wp_enqueue_script(
             '@givewp/form-builder/registrars',
             $formBuilderViewModel->jsPathToRegistrars(),
-            [],
+            $this->getRegisteredFormBuilderJsDependencies(
+                $formBuilderViewModel->jsRegistrarsDependencies()
+            ),
             GIVE_VERSION,
             true
         );

@@ -38,11 +38,13 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\DonationGoal::class,
                 Steps\TermsAndConditions::class,
                 Steps\FormGrid::class,
+                Steps\FormFieldManager::class,
                 Steps\OfflineDonations::class,
                 Steps\PaymentGateways::class,
                 Steps\EmailSettings::class,
                 Steps\FormMeta::class,
                 Steps\PdfSettings::class,
+                Steps\FeeRecovery::class,
             ]);
         });
     }

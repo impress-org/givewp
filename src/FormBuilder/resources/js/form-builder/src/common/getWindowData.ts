@@ -1,4 +1,4 @@
-import {WPComponent} from '@wordpress/element';
+import {Component} from '@wordpress/element';
 import type {
     EmailNotification,
     FormDesign,
@@ -14,7 +14,7 @@ type GoalTypeOption = {
     value: string;
     label: string;
     description: string;
-}
+};
 
 /**
  * @since 3.0.0
@@ -57,7 +57,7 @@ declare const window: {
         form: {
             blocks: BlockRegistrar;
             components: {
-                [key: string]: WPComponent;
+                [key: string]: Component;
             };
         };
     };

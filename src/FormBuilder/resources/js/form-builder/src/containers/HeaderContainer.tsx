@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, moreVertical} from '@wordpress/icons';
+import {drawerRight, moreVertical, external} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
-import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
+import {Button, Dropdown, ExternalLink, Icon, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
-import {Storage} from '../common';
+import {getWindowData, Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
@@ -51,8 +51,12 @@ const HeaderContainer = ({
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
+    const isPublished = 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
+    const {
+        formPage: {permalink},
+    } = getWindowData();
 
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
@@ -75,14 +79,24 @@ const HeaderContainer = ({
             });
     };
 
-    const showOnSaveNotice = formStatus => {
-        const notice = 'publish' === formStatus
-            ? __('Form updated.', 'give')
-            : __('Form published.', 'give')
+    const showOnSaveNotice = (formStatus: string) => {
+        if ('draft' === formStatus) {
+            createSuccessNotice(__('Draft saved.', 'give'), {
+                type: 'snackbar'
+            });
+        } else {
+            const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
+                ? __('Form updated.', 'give')
+                : __('Form published.', 'give')
 
-        createSuccessNotice(notice, {
-            type: 'snackbar',
-        });
+            createSuccessNotice(notice, {
+                type: 'snackbar',
+                actions: [{
+                    label: __('View form', 'give'),
+                    url: permalink
+                }]
+            });
+        }
     }
 
     const {mode} = useEditorState();
@@ -106,7 +120,14 @@ const HeaderContainer = ({
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
                         <Button
                             id={'editor-state-toggle'}
-                            style={{backgroundColor: 'black', color: 'white', borderRadius: '4px', display: 'flex', gap: 'var(--givewp-spacing-2)', padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'}}
+                            style={{
+                                backgroundColor: 'black',
+                                color: 'white',
+                                borderRadius: '4px',
+                                display: 'flex',
+                                gap: 'var(--givewp-spacing-2)',
+                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'
+                            }}
                             onClick={() => toggleEditorMode()}
                             icon={EditIcon}
                         >
@@ -120,7 +141,7 @@ const HeaderContainer = ({
                         className={'givewp-form-title'}
                         value={formTitle}
                         onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
-                />
+                    />
                 }
                 contentRight={
                     <>
@@ -136,6 +157,14 @@ const HeaderContainer = ({
                                     ? __('Save as Draft', 'give')
                                     : __('Switch to Draft', 'give')}
                         </Button>
+                        {isPublished && (
+                            <Button
+                                label={__('View form', 'give')}
+                                href={permalink}
+                                target="_blank"
+                                icon={external}
+                            />
+                        )}
                         <Button
                             onClick={() => onSave('publish')}
                             aria-disabled={isPublishDisabled}
@@ -169,7 +198,7 @@ const HeaderContainer = ({
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
-                                    <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuGroup label={__('Support', 'give')}>
                                         <MenuItem
                                             onClick={() => {
                                                 // @ts-ignore
@@ -202,6 +231,15 @@ const HeaderContainer = ({
                                             </>
                                         )}
                                     </MenuGroup>
+                                    <ExternalLink
+                                        className="givewp-support-link"
+                                        href="https://docs.givewp.com/nextgenfeedback"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <MenuItem icon={external}>
+                                                {__('Submit Feedback', 'give')}
+                                        </MenuItem>
+                                    </ExternalLink>
                                 </div>
                             )}
                         />
