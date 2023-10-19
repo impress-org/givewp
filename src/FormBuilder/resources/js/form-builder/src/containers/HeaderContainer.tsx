@@ -15,6 +15,7 @@ import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/for
 import EditorMode from '@givewp/form-builder/types/editorMode';
 import {useDispatch} from '@wordpress/data';
 import {cleanForSlug} from '@wordpress/url';
+import cn from 'classnames';
 
 const Logo = () => (
     <div
@@ -110,12 +111,9 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
-    const toggleEditorMode = () => {
-        if (EditorMode.schema === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.design));
-        }
-        if (EditorMode.design === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.schema));
+    const switchEditorMode = (newMode: EditorMode) => {
+        if (newMode && Object.keys(EditorMode).includes(newMode)) {
+            dispatchEditorState(setEditorMode(newMode));
         }
     };
 
@@ -138,10 +136,10 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                     </>
                 }
                 contentMiddle={
-                    <div className={'interface-interface-skeleton__header-tabs'}>
+                    <div className={'givewp-header-tabs'}>
                         <Button
                             id={'editor-state-switch-schema'}
-                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                            className={cn('givewp-header-tabs__tab', {
                                 'is-active': mode === EditorMode.schema,
                             })}
                             onClick={() => switchEditorMode(EditorMode.schema)}
@@ -150,7 +148,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                         </Button>
                         <Button
                             id={'editor-state-switch-design'}
-                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                            className={cn('givewp-header-tabs__tab', {
                                 'is-active': mode === EditorMode.design,
                             })}
                             onClick={() => switchEditorMode(EditorMode.design)}
@@ -159,7 +157,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                         </Button>
                         <Button
                             id={'editor-state-switch-settings'}
-                            className={cn('interface-interface-skeleton__header-tabs__tab', {
+                            className={cn('givewp-header-tabs__tab', {
                                 'is-active': mode === EditorMode.settings,
                             })}
                             onClick={() => switchEditorMode(EditorMode.settings)}
