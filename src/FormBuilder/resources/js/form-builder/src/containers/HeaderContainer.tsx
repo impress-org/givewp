@@ -127,33 +127,33 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                     <>
                         <Logo />
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
-                        <Button
-                            id={'editor-state-toggle'}
-                            style={{
-                                backgroundColor: 'black',
-                                color: 'white',
-                                borderRadius: '4px',
-                                display: 'flex',
-                                gap: 'var(--givewp-spacing-2)',
-                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
+                        <TextControl
+                            className={'givewp-form-title'}
+                            value={formTitle}
+                            onChange={(formTitle) => {
+                                !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                                dispatch(setFormSettings({formTitle}));
                             }}
-                            onClick={() => toggleEditorMode()}
-                            icon={EditIcon}
-                        >
-                            {EditorMode.schema === mode && __('Edit form design', 'give')}
-                            {EditorMode.design === mode && __('Edit form', 'give')}
-                        </Button>
+                        />
                     </>
                 }
                 contentMiddle={
-                    <TextControl
-                        className={'givewp-form-title'}
-                        value={formTitle}
-                        onChange={(formTitle) => {
-                            !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
-                            dispatch(setFormSettings({formTitle}));
+                    <Button
+                        id={'editor-state-toggle'}
+                        style={{
+                            backgroundColor: 'black',
+                            color: 'white',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            gap: 'var(--givewp-spacing-2)',
+                            padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
                         }}
-                    />
+                        onClick={() => toggleEditorMode()}
+                        icon={EditIcon}
+                    >
+                        {EditorMode.schema === mode && __('Edit form design', 'give')}
+                        {EditorMode.design === mode && __('Edit form', 'give')}
+                    </Button>
                 }
                 contentRight={
                     <>
