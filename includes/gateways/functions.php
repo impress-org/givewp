@@ -104,7 +104,7 @@ function give_get_enabled_payment_gateways($form_id = 0, $version = null)
 /**
  * Checks whether a specified gateway is activated.
  *
- * @unreleased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.0
  *
  * @param string $gateway Name of the gateway to check for
@@ -123,7 +123,7 @@ function give_is_gateway_active($gateway, $version = 2)
 /**
  * Gets the default payment gateway selected from the Give Settings
  *
- * @unreleased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.0
  *
  * @param int|null $form_id int ID of the Give Form
@@ -358,7 +358,7 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 /**
  * Returns a ordered list of all available gateways.
  *
- * @unreleased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.4.5
  *
  * @param array $gateways List of payment gateways
@@ -406,7 +406,7 @@ function give_get_ordered_payment_gateways($gateways, $version = null)
 	/**
 	 * Filter payment gateways order.
 	 *
-     * @unreleased add $version param
+     * @since 3.0.2 add $version param
 	 * @since 1.7
 	 *
 	 * @param array $gateways All the available gateways
