@@ -7,6 +7,7 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
@@ -56,14 +57,17 @@ class StripePaymentElementGateway extends PaymentGateway
     public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/stripePaymentElementGateway.asset.php');
+        $handle = $this::id();
 
         wp_enqueue_script(
-            self::id(),
+            $handle,
             GIVE_PLUGIN_URL . 'build/stripePaymentElementGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true
         );
+
+        Language::setScriptTranslations($handle);
     }
 
     /**
