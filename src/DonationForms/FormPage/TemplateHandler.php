@@ -5,6 +5,9 @@ namespace Give\DonationForms\FormPage;
 use Give\Helpers\Form\Utils;
 use WP_Post as Post;
 
+/**
+ * @since 3.0.0
+ */
 class TemplateHandler
 {
     /**
@@ -23,6 +26,9 @@ class TemplateHandler
         $this->formPageTemplatePath = $formPageTemplatePath;
     }
 
+    /**
+     * @since 3.0.0
+     */
     public function handle($template)
     {
         return $this->isNextGenForm()
@@ -32,6 +38,7 @@ class TemplateHandler
 
     /**
      * @unreleased Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
+     * @since      3.0.0
      */
     protected function isNextGenForm(): bool
     {
