@@ -51,24 +51,19 @@ function App({preview}) {
     const [formSettings, setFormSettings] = useState(formInitialSettings);
 
 
-    if (preview) {
-        subscribe('designPreview', data => {
-            setFormSettings(prevState => {
-                return {
-                    ...prevState,
-                    settings: {
-                        ...prevState.settings,
-                        ...data
-                    }
-                }
-            })
+    subscribe('designPreview', data => {
+        setFormSettings(prevState => {
+            return {
+                ...prevState,
+                ...data
+            }
         })
-    }
+    })
 
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
-                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage}/>
+                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />
             </DonationFormErrorBoundary>
         );
     }
