@@ -13,10 +13,10 @@ type RightContentSectionProps = {
 export default function RightContentSection({assets}: RightContentSectionProps) {
     return (
         <section className={'givewp-welcome-banner-right-content'}>
-            <h2>{__('Spotlight on awesome features', 'givewp')}</h2>
+            <h2>{__('Spotlight on awesome features', 'give')}</h2>
             <div className={'givewp-welcome-banner-right-content__media-container'}>
                 <SpotLight
-                    title={__('Design mode', 'givewp')}
+                    title={__('Design mode', 'give')}
                     description={__(
                         'See exactly what your form looks like for potential donors using the “Design” tab of the builder. Changes are visible immediately.',
                         'givewp'
@@ -26,7 +26,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                 </SpotLight>
 
                 <SpotLight
-                    title={__('Custom Paragraph and Sections', 'givewp')}
+                    title={__('Custom Paragraph and Sections', 'give')}
                     description={__(
                         'Add custom paragraphs or add whole sections anywhere in your form, no code required.',
                         'givewp'

@@ -12,13 +12,13 @@ export default () => {
 
     return (
         <>
-            <PanelBody title={__('Email Settings', 'givewp')} initialOpen={false}>
+            <PanelBody title={__('Email Settings', 'give')} initialOpen={false}>
                 <PanelRow>
                     <SelectControl
-                        label={__('Email Options', 'givewp')}
+                        label={__('Email Options', 'give')}
                         options={[
-                            {label: __('Global', 'givewp'), value: 'global'},
-                            {label: __('Customize', 'givewp'), value: 'enabled'},
+                            {label: __('Global', 'give'), value: 'global'},
+                            {label: __('Customize', 'give'), value: 'enabled'},
                         ]}
                         value={emailOptionsStatus}
                         onChange={(emailOptionsStatus) => dispatch(setFormSettings({emailOptionsStatus}))}
@@ -28,11 +28,11 @@ export default () => {
                     <>
                         <PanelRow>
                             <SelectControl
-                                label={__('Email Template', 'givewp')}
-                                help={__('Choose your template from the available registered template types', 'givewp')}
+                                label={__('Email Template', 'give')}
+                                help={__('Choose your template from the available registered template types', 'give')}
                                 options={[
-                                    {label: __('Default template', 'givewp'), value: 'default'},
-                                    {label: __('No template, plain text only', 'givewp'), value: 'none'},
+                                    {label: __('Default template', 'give'), value: 'default'},
+                                    {label: __('No template, plain text only', 'give'), value: 'none'},
                                 ]}
                                 value={emailTemplate}
                                 onChange={(emailTemplate) => dispatch(setFormSettings({emailTemplate}))}
@@ -46,7 +46,7 @@ export default () => {
                         </PanelRow>
                         <PanelRow>
                             <TextControl
-                                label={__('From Name', 'givewp')}
+                                label={__('From Name', 'give')}
                                 help={__(
                                     'The name which appears in the "From" field in all GiveWP donation emails.',
                                     'givewp'
@@ -57,7 +57,7 @@ export default () => {
                         </PanelRow>
                         <PanelRow>
                             <TextControl
-                                label={__('From Email', 'givewp')}
+                                label={__('From Email', 'give')}
                                 help={__(
                                     'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.',
                                     'givewp'

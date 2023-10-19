@@ -50,7 +50,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
         <div className={'email-settings-template__container'}>
             <RadioControl
                 className="radio-control--email-options"
-                label={__('Email options', 'givewp')}
+                label={__('Email options', 'give')}
                 hideLabelFromVision={true}
                 help={__(
                     'Global options are set in GiveWP settings. You may override them for this form here',
@@ -64,15 +64,15 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
             {'enabled' === option.status && (
                 <>
                     <TextControl
-                        label={__('Email Subject', 'givewp')}
-                        help={__('Enter the email subject line', 'givewp')}
+                        label={__('Email Subject', 'give')}
+                        help={__('Enter the email subject line', 'give')}
                         onChange={(value) => updateEmailTemplateOption('email_subject', value)}
                         value={option.email_subject || config.defaultValues.email_subject}
                     />
 
                     <TextControl
-                        label={__('Email Header', 'givewp')}
-                        help={__('Enter the email header that appears at the top of the email', 'givewp')}
+                        label={__('Email Header', 'give')}
+                        help={__('Enter the email header that appears at the top of the email', 'give')}
                         onChange={(value) => updateEmailTemplateOption('email_header', value)}
                         // @ts-ignore
                         value={option.email_header || config.defaultValues.email_header}
@@ -86,24 +86,24 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                     <SelectControl
                         className={'select-control--email-options'}
                         onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
-                        label={__('Email content type', 'givewp')}
-                        help={__('Choose email type', 'givewp')}
+                        label={__('Email content type', 'give')}
+                        help={__('Choose email type', 'give')}
                         value={option.email_content_type || config.defaultValues.email_content_type}
                         options={[
-                            {label: __('HTML', 'givewp'), value: 'text/html'},
-                            {label: __('Plain', 'givewp'), value: 'text/plain'},
+                            {label: __('HTML', 'give'), value: 'text/html'},
+                            {label: __('Plain', 'give'), value: 'text/plain'},
                         ]}
                     />
 
                     {config.supportsRecipients && (
                         <div className={'email-settings-template__recipient'}>
                             <div>
-                                <h2 className={'email-settings__header'}>{__('Email recipient', 'givewp')}</h2>
+                                <h2 className={'email-settings__header'}>{__('Email recipient', 'give')}</h2>
                                 <p className={'email-settings__description'}>
-                                    {__('Email address that should receive a notification', 'givewp')}
+                                    {__('Email address that should receive a notification', 'give')}
                                 </p>
                             </div>
-                            <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
+                            <BaseControl id={'give-email-template-recipient'} label={__('Email', 'give')}>
                                 {recipients.map((recipientEmail, index) => {
                                     return (
                                         <li
@@ -138,7 +138,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                                     variant={'secondary'}
                                     onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}
                                 >
-                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'givewp')}
+                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'give')}
                                 </Button>
                             </BaseControl>
                         </div>
@@ -146,7 +146,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                     {!config.supportsRecipients && (
                         <TextControl
                             disabled={true}
-                            label={__('Email', 'givewp')}
+                            label={__('Email', 'give')}
                             help={__(
                                 'This email is automatically sent to the individual fundraiser and the recipient cannot be customized.',
                                 'givewp'

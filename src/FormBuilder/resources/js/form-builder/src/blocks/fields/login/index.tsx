@@ -1,11 +1,11 @@
 import {FieldBlock} from '@givewp/form-builder/types';
 import defaultSettings from '../settings';
-import {__} from "@wordpress/i18n";
-import BlockIcon from "./icon";
+import {__} from '@wordpress/i18n';
+import BlockIcon from './icon';
 import {Button, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
-import {BlockEditProps} from "@wordpress/blocks";
-import {Icon, external} from "@wordpress/icons";
+import {BlockEditProps} from '@wordpress/blocks';
+import {external, Icon} from '@wordpress/icons';
 
 const login: FieldBlock = {
     name: 'givewp/login',
@@ -28,44 +28,50 @@ const login: FieldBlock = {
             },
             loginNotice: {
                 type: 'string',
-                default: __('Already have an account? Log in.', 'givewp'),
+                default: __('Already have an account? Log in.', 'give'),
             },
             loginConfirmation: {
                 type: 'string',
                 default: __('Thank you for your continued support.', 'give'),
-            }
+            },
         },
         edit: ({attributes, setAttributes}: BlockEditProps<any>) => {
             const {required, loginRedirect, loginNotice, loginConfirmation} = attributes;
 
             return (
                 <>
-
                     {!!required && (
                         <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
                             <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
                                 <TextControl
-                                    label={__('Login', 'givewp')}
+                                    label={__('Login', 'give')}
                                     onChange={() => null}
                                     value={''}
-                                    placeholder={__('Username or Email Address', 'givewp')}
+                                    placeholder={__('Username or Email Address', 'give')}
                                 />
                                 <TextControl
                                     type="password"
-                                    label={__('Password', 'givewp')}
+                                    label={__('Password', 'give')}
                                     onChange={() => null}
                                     value={'password123'}
                                 />
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row-reverse', gap: '15px', justifyContent: 'space-between'}}>
-                                <Button variant={'primary'}>{__('Log In', 'givewp')}</Button>
-                                <Button variant={'link'}>{__('Reset Password', 'givewp')}</Button>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row-reverse',
+                                    gap: '15px',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Button variant={'primary'}>{__('Log In', 'give')}</Button>
+                                <Button variant={'link'}>{__('Reset Password', 'give')}</Button>
                             </div>
                         </div>
                     )}
 
                     {!required && (
-                        <div style={{display: 'flex', flexDirection: "row-reverse"}}>
+                        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
                             <Button
                                 variant={'link'}
                                 icon={!!loginRedirect ? <Icon icon={external} /> : undefined}
@@ -110,9 +116,9 @@ const login: FieldBlock = {
                         </PanelBody>
                     </InspectorControls>
                 </>
-            )
+            );
         },
-    }
+    },
 };
 
 export default login;
