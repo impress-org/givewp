@@ -1,4 +1,4 @@
-import {useState, createRef, MouseEventHandler, RefObject} from 'react';
+import {createRef, MouseEventHandler, RefObject} from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
@@ -8,7 +8,6 @@ import {Button, PanelBody, PanelRow, SelectControl, Spinner, TextControl} from '
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {CopyIcon, GiveIcon} from '@givewp/form-builder/components/icons';
 import {getSiteData, getWindowData} from '@givewp/form-builder/common';
-import {FormStatus} from "@givewp/form-builder/types";
 
 interface FormPrepublishPanelProps {
     isSaving: boolean;
@@ -45,7 +44,8 @@ export default function FormPrepublishPanel
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
     return createPortal(
-        <div className={cx('givewp-next-gen-prepublish-panel', {'givewp-next-gen-prepublish-panel__animate': !isPublished})}>
+        <div
+            className={cx('givewp-next-gen-prepublish-panel', {'givewp-next-gen-prepublish-panel__animate': !isPublished})}>
             {isSaving ? (
                 <>
                     <div className="givewp-next-gen-prepublish-panel__header">
