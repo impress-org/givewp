@@ -1,1 +1,1 @@
-export type FormStatus = "draft" | "publish";
+export type FormStatus = "draft" | "publish" | "private";
