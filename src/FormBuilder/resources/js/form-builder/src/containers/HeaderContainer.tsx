@@ -52,7 +52,7 @@ const HeaderContainer = ({
     const [showPublishConfirmation, setShowPublishConfirmation] = useState(false);
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
-    const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
+    const isPublishDisabled = (isSaving || !isDirty) && ['publish', 'private'].includes(formSettings.formStatus);
     const isPublished = ['publish', 'private'].includes(formSettings.formStatus);
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
@@ -63,11 +63,13 @@ const HeaderContainer = ({
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
 
-        dispatch(setFormSettings({formStatus}));
+        const status = 'draft' === formStatus ? formStatus : formSettings.newFormStatus ?? formStatus;
+
+        dispatch(setFormSettings({formStatus: status, newFormStatus: null}));
 
         revertMissingBlocks(blocks);
 
-        Storage.save({blocks, formSettings: {...formSettings, formStatus}})
+        Storage.save({blocks, formSettings: {...formSettings, formStatus: status}})
             .catch((error) => {
                 dispatch(setIsDirty(false));
                 setSaving(null);
@@ -171,12 +173,12 @@ const HeaderContainer = ({
                                     />
                                 )}
                                 <Button
-                                    onClick={() => isPublished ? onSave(formSettings.formStatus) : setShowPublishConfirmation(true)}
+                                    onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
                                     aria-disabled={isPublishDisabled}
                                     disabled={isPublishDisabled}
                                     variant="primary"
                                 >
-                                    {isSaving && ['publish', 'private'].includes(isSaving)
+                                    {isSaving && 'publish' === isSaving
                                         ? __('Updating...', 'give')
                                         : isPublished
                                             ? __('Update', 'give')
@@ -258,7 +260,7 @@ const HeaderContainer = ({
                 <FormPrepublishPanel
                     isSaving={isSaving}
                     isPublished={isPublished}
-                    handleSave={(status:FormStatus) => onSave(status)}
+                    handleSave={() => onSave('publish')}
                     handleClose={() => setShowPublishConfirmation(false)}
                 />
             )}
