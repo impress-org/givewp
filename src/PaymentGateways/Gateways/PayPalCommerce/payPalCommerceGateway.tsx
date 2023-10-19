@@ -11,6 +11,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
+import {PayPalSubscriber} from "./types";
 
 (() => {
     /**
@@ -155,12 +156,12 @@ import {CSSProperties, useEffect, useState} from 'react';
             throw responseJson.data.error;
         }
 
-        const subscriberData = {
+        const subscriberData: PayPalSubscriber = {
             "name": {
                 "given_name": firstName,
                 "surname": lastName
             },
-            "email_address": email
+            "email_address": email,
         };
 
         if (country) {
@@ -180,7 +181,7 @@ import {CSSProperties, useEffect, useState} from 'react';
         }
 
         return actions.subscription.create({
-            plan_id: responseJson.data.id,
+            "plan_id": responseJson.data.id,
             "subscriber": subscriberData
         }).then((orderId) => {
             return payPalSubscriptionId = orderId;
