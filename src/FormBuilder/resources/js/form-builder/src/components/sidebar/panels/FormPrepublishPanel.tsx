@@ -13,7 +13,7 @@ import {FormStatus} from "@givewp/form-builder/types";
 interface FormPrepublishPanelProps {
     isSaving: boolean;
     isPublished: boolean;
-    handleSave: Function;
+    handleSave: MouseEventHandler<HTMLButtonElement>;
     handleClose: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -26,7 +26,7 @@ export default function FormPrepublishPanel
  }: FormPrepublishPanelProps) {
 
     const {
-        settings: {formTitle, formStatus},
+        settings: {formTitle, formStatus, newFormStatus},
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const {siteName, siteUrl} = getSiteData()
@@ -34,7 +34,13 @@ export default function FormPrepublishPanel
         formPage: {permalink},
     } = getWindowData();
 
-    const [status, setStatus] = useState('publish');
+    const isPrivate = () => {
+        if (newFormStatus) {
+            return 'private' === newFormStatus;
+        }
+
+        return 'private' === formStatus;
+    }
 
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
@@ -123,7 +129,7 @@ export default function FormPrepublishPanel
                                 <div className="givewp-next-gen-prepublish-panel__header-actions">
                                     <Button
                                         variant="primary"
-                                        onClick={() => handleSave(status)}
+                                        onClick={handleSave}
                                     >
                                         {__('Publish', 'give')}
                                     </Button>
@@ -171,17 +177,17 @@ export default function FormPrepublishPanel
                                     </div>
                                     <div>
                                         <SelectControl
-                                            value={status}
+                                            value={newFormStatus ?? ('draft' === formStatus ? 'publish' : formStatus)}
                                             options={[
                                                 {label: __('Public', 'give'), value: 'publish'},
                                                 {label: __('Private', 'give'), value: 'private'},
                                             ]}
-                                            onChange={(status: FormStatus) => setStatus(status)}
+                                            onChange={(newFormStatus) => dispatch(setFormSettings({newFormStatus}))}
                                         />
                                     </div>
                                 </PanelRow>
                                 <PanelRow className="givewp-next-gen-prepublish-panel_visibility">
-                                    {'publish' === status ? __('Visible to everyone', 'give') : __('Only visible to site admins and editors', 'give')}
+                                    {isPrivate() ? __('Only visible to site admins and editors', 'give') : __('Visible to everyone', 'give')}
                                 </PanelRow>
                             </PanelBody>
                         </>
