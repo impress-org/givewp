@@ -448,7 +448,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased set correct $gatewayId to be used in getMeta calls
+     * @since 3.0.2 set correct $gatewayId to be used in getMeta calls
      * @since 3.0.0
      */
     public function getFeeRecoverySettings(): array
