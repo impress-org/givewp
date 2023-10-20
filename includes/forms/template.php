@@ -1700,8 +1700,7 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  * @since  1.0
  */
 function give_payment_mode_select( $form_id, $args ) {
-
-	$gateways  = give_get_enabled_payment_gateways( $form_id );
+    $gateways = give_get_enabled_payment_gateways($form_id, 2);
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 	/**
