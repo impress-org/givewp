@@ -64,6 +64,19 @@ function App({preview}) {
                 }
             })
         })
+
+        subscribe('previewColors', data => {
+            const [key, value] = Object.entries<string>(data).flat();
+
+            switch (key) {
+                case 'primaryColor':
+                    root.style.setProperty('--givewp-primary-color', value);
+                    break;
+                case 'secondaryColor':
+                    root.style.setProperty('--givewp-secondary-color', value);
+                    break;
+            }
+        })
     }
 
     if (form.goal.isAchieved) {

@@ -37,9 +37,9 @@ const FormDesignSettings = () => {
     const design = getDesign(designId);
     const {sendToIframe} = useIframeMessages();
 
-    const dispatchSettings = (data: { [s: string]: any } | ArrayLike<string>) => {
+    const dispatchSettings = (data: { [s: string]: any } | ArrayLike<string>, type = 'previewSettings') => {
         const [key, value] = Object.entries<string>(data).flat();
-        sendToIframe('iFrameResizer0', 'previewSettings', {[key]: value});
+        sendToIframe('iFrameResizer0', type, {[key]: value});
         dispatch(setFormSettings({[key]: value}))
     }
 
@@ -62,14 +62,14 @@ const FormDesignSettings = () => {
                     colorSettings={[
                         {
                             value: primaryColor,
-                            onChange: debounce((primaryColor) => dispatchSettings({primaryColor}), 100),
+                            onChange: debounce((primaryColor) => dispatchSettings({primaryColor}, 'previewColors'), 100),
                             label: __('Primary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
                         },
                         {
                             value: secondaryColor,
-                            onChange: debounce((secondaryColor) => dispatchSettings({secondaryColor}), 100),
+                            onChange: debounce((secondaryColor) => dispatchSettings({secondaryColor}, 'previewColors'), 100),
                             label: __('Secondary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
