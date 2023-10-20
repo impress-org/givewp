@@ -52,9 +52,8 @@ function App({preview}) {
 
     console.log(form)
 
-
-    if(preview) {
-        subscribe('designPreview', data => {
+    if (preview) {
+        subscribe('previewSettings', data => {
             setForm(prevState => {
                 return {
                     ...prevState,
@@ -62,6 +61,15 @@ function App({preview}) {
                         ...prevState.settings,
                         ...data
                     }
+                }
+            })
+        })
+
+        subscribe('previewDesign', design => {
+            setForm(prevState => {
+                return {
+                    ...prevState,
+                    design
                 }
             })
         })

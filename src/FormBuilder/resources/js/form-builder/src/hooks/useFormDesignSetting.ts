@@ -18,7 +18,7 @@ const useFormDesignSetting = (initialValue: any, wait = 500) => {
 
     const updateSetting = useCallback((key: keyof FormSettings, value: any) => {
         dispatch(setFormSettings({[key]: value}));
-        sendToIframe('iFrameResizer0', 'designPreview', {[key]: value});
+        sendToIframe('iFrameResizer0', 'previewSettings', {[key]: value});
     }, []);
 
     return {
