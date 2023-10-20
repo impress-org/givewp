@@ -38,7 +38,7 @@ class Model
     /**
      * Get forms associated with Progress Bar
      *
-     * @unreleased Return empty array instead of false
+     * @since 3.0.3 Return empty array instead of false
      * @since 2.9.0
      */
     public function getForms(): array
