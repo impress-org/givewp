@@ -9,6 +9,7 @@ import parseMissingBlocks from '@givewp/form-builder/common/parseMissingBlocks';
 import {compose} from "@wordpress/compose";
 import enforceTopLevelSections from "@givewp/form-builder/middleware/enforceTopLevelSections";
 import updatesForNewFields from "@givewp/form-builder/middleware/updatesForNewFields";
+import duplicatedFields from "@givewp/form-builder/middleware/duplicatedFields";
 
 
 /**
@@ -19,8 +20,10 @@ export default function BlockEditorContainer() {
     const dispatch = useFormStateDispatch();
 
     const dispatchFormBlocks = (blocks) => dispatch(setFormBlocks(compose(
-        enforceTopLevelSections,
+        // Note: compose runs in reverse order (bottom to top).
         updatesForNewFields,
+        duplicatedFields,
+        enforceTopLevelSections,
     )(blocks)));
 
     parseMissingBlocks(blocks);

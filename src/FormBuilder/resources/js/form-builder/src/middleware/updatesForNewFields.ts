@@ -4,7 +4,6 @@ import {getBlockNames, getFieldNameValidator} from "@givewp/form-builder/hooks/u
 import {useState} from "react";
 
 export default (blocks) => {
-
     return blocks.map((section) => {
         return {
             ...section,
@@ -13,7 +12,13 @@ export default (blocks) => {
                 // Only Text Field blocks, for now.
                 if(block.name !== 'givewp/text') return block;
 
-                const isNewField = block.attributes.metaUUID !== block.clientId;
+                const isNewField = typeof block.attributes.metaUUID === 'undefined';
+
+                // console.log([
+                //     isNewField,
+                //     block.clientId,
+                //     block.attributes.metaUUID
+                // ])
 
                 const fieldNames = getBlockNames(blocks);
                 const validateFieldName = getFieldNameValidator(fieldNames);
@@ -21,7 +26,7 @@ export default (blocks) => {
                 const slugifiedLabel = slugifyMeta(block.attributes.label);
                 let slugifiedName = block.attributes.fieldName ?? slugifiedLabel;
 
-                if(!slugifiedName.startsWith(slugifiedLabel)) {
+                if(!slugifiedName.startsWith(slugifiedLabel)) { // slugifiedName.replace(/^_+\d+/g, '') !== slugifiedLabel
                     // The label has changed, so reset the field name.
                     slugifiedName = slugifiedLabel;
                 }
