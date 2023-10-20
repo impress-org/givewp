@@ -50,6 +50,24 @@
 
     &.givewp-next-gen-sidebar-primary {
         right: 0;
+
+        .block-editor-block-inspector {
+            > h2 {
+                border-bottom: 1px solid #e0e0e0;
+                font-size: 0.875rem;
+                line-height: 1rem;
+                margin: 0;
+                padding: var(--givewp-spacing-4);
+                text-align: center;
+            }
+
+            &__no-blocks {
+                border-bottom: 1px solid #e0e0e0;
+                color: var(--givewp-gray-60);
+                line-height: 1rem;
+                padding: var(--givewp-spacing-4);
+            }
+        }
     }
 
     &.givewp-next-gen-sidebar-secondary {

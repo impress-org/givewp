@@ -6,27 +6,28 @@ import HeaderContainer from './HeaderContainer';
 
 import {SecondarySidebar} from '../components';
 
-import {DesignPreview, FormBlocks} from '../components/canvas';
-import {useDispatch} from '@wordpress/data';
-import {__} from '@wordpress/i18n';
+import {DesignPreview, FormBlocks, FormSettings} from '../components/canvas';
 import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
 import {Sidebar} from '@givewp/form-builder/components';
-import DesignSidebar from '../components/sidebar/Design'
-import {Button} from "@wordpress/components";
-import {listView, plus} from "@wordpress/icons";
-import {useEditorState} from "@givewp/form-builder/stores/editor-state";
-import EditorMode from "@givewp/form-builder/types/editorMode";
+import DesignSidebar from '../components/sidebar/Design';
+import {Button} from '@wordpress/components';
+import {listView, plus} from '@wordpress/icons';
+import {useEditorState} from '@givewp/form-builder/stores/editor-state';
+import EditorMode from '@givewp/form-builder/types/editorMode';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
-
     const {mode} = useEditorState();
 
-    if(EditorMode.design === mode) {
+    if (EditorMode.schema === mode) {
+        return <SchemaEditorSkeleton />;
+    }
+
+    if (EditorMode.design === mode) {
         return <DesignEditorSkeleton />;
     }
 
-    if(EditorMode.schema === mode) {
-        return <SchemaEditorSkeleton />;
+    if (EditorMode.settings === mode) {
+        return <SettingsEditorSkeleton />;
     }
 }
 
@@ -51,9 +52,9 @@ const DesignEditorSkeleton = () => {
 const SchemaEditorSkeleton = () => {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
     const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
-    const [selectedTab, setSelectedTab] = useState('form');
 
-    const toggleSelectedSecondarySidebar = (name) => setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false)
+    const toggleSelectedSecondarySidebar = (name) =>
+        setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false);
 
     const SecondarySidebarButtons = () => {
         return (
@@ -81,8 +82,8 @@ const SchemaEditorSkeleton = () => {
                     icon={listView}
                 />
             </>
-        )
-    }
+        );
+    };
 
     return (
         <InterfaceSkeleton
@@ -94,9 +95,21 @@ const SchemaEditorSkeleton = () => {
                 />
             }
             content={<FormBlocks />}
-            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
+            sidebar={!!showSidebar && <Sidebar />}
             secondarySidebar={!!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />}
             notices={<NoticesContainer />}
         />
     );
-}
+};
+
+const SettingsEditorSkeleton = () => {
+    const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
+
+    return (
+        <InterfaceSkeleton
+            header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
+            content={<FormSettings />}
+            notices={<NoticesContainer />}
+        />
+    );
+};
