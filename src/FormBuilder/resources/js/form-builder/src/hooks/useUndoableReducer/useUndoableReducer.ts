@@ -1,4 +1,5 @@
 import { useReducer, useCallback, Reducer } from 'react';
+import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
 
 export enum UndoableHistoryTypes {
     REDO = 'redo',
@@ -94,6 +95,9 @@ const undoable = <State, Action>(
         case UndoableHistoryTypes.UNDO: {
             const previous = past[past.length - 1];
             const newPast = past.slice(0, past.length - 1);
+
+            // @ts-ignore
+            console.log(detailedDiff(previous, present))
 
             return {
                 past: newPast,
