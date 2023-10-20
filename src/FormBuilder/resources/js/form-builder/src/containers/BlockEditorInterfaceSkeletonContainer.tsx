@@ -36,14 +36,9 @@ const DesignEditorSkeleton = () => {
 
     return (
         <InterfaceSkeleton
-            header={
-                <HeaderContainer
-                    showSidebar={showSidebar}
-                    toggleShowSidebar={toggleShowSidebar}
-                />
-            }
+            header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
             content={<DesignPreview />}
-            sidebar={<DesignSidebar />}
+            sidebar={!!showSidebar && <DesignSidebar />}
             notices={<NoticesContainer />}
         />
     );
