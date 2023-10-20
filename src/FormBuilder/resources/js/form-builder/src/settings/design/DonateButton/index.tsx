@@ -14,7 +14,7 @@ export default function DonateButton({text}: {text: string}) {
             value={inputValue}
             onChange={(value) => {
                 setInputValue(value);
-                updateSetting('donateButtonCaption', value);
+                updateSetting('donateButtonCaption', value, 'previewFormSettings');
             }}
             help={__('Enter the text you want to display on the donation button.', 'give')}
         />

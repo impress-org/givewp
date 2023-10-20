@@ -16,9 +16,9 @@ const useFormDesignSetting = (initialValue: any, wait = 500) => {
     const dispatch = useFormStateDispatch();
     const {sendToIframe} = useIframeMessages();
 
-    const updateSetting = useCallback((key: keyof FormSettings, value: any) => {
+    const updateSetting = useCallback((key: keyof FormSettings, value: any, type = 'previewSettings') => {
         dispatch(setFormSettings({[key]: value}));
-        sendToIframe('iFrameResizer0', 'previewSettings', {[key]: value});
+        sendToIframe('iFrameResizer0', type, {[key]: value});
     }, []);
 
     return {

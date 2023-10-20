@@ -40,7 +40,7 @@ const initialState = {
     validationSchema: schema,
 };
 
-const formSettings = {...initialForm.settings, ...getDonationFormNodeSettings(initialForm)};
+const formInitialSettings = {...initialForm.settings, ...getDonationFormNodeSettings(initialForm)};
 
 /**
  * @since 3.0.0
@@ -49,8 +49,9 @@ function App({preview}) {
 
     const {subscribe} = useIframeMessages();
     const [form, setForm] = useState(initialForm);
+    const [formSettings, setFormSettings] = useState(formInitialSettings);
 
-    console.log(form)
+    console.log(formSettings)
 
     if (preview) {
         subscribe('previewSettings', data => {
@@ -76,6 +77,15 @@ function App({preview}) {
                     root.style.setProperty('--givewp-secondary-color', value);
                     break;
             }
+        })
+
+        subscribe('previewFormSettings', data => {
+            setFormSettings(prevState => {
+                return {
+                    ...prevState,
+                    ...data
+                }
+            })
         })
     }
 
