@@ -132,6 +132,26 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                 !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
                                 dispatch(setFormSettings({formTitle}));
                             }}
+                            label={
+                                <>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 16 16"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M6.02157 10.1075L12.666 3.39785L11.2216 2L4.57713 8.70968L3.99935 10.6667L6.02157 10.1075Z"
+                                            fill="currentColor"
+                                        />
+                                        <path
+                                            d="M2.66602 13.3333H7.99935M12.666 3.39785L6.02157 10.1075L3.99935 10.6667L4.57713 8.70968L11.2216 2L12.666 3.39785Z"
+                                            stroke="currentColor"
+                                        />
+                                    </svg>
+                                </>
+                            }
                         />
                     </>
                 }
