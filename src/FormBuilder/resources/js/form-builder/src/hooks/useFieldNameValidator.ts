@@ -31,6 +31,7 @@ export const getFieldNameSuggestion = (name, names) => {
         0,
     ];
     const nextIncrement = increments.length ? Math.max(...increments) + 1 : 1;
+
     return `${prefix}_${nextIncrement}`;
 };
 
@@ -80,17 +81,21 @@ const useFieldNameValidator = () => {
     // @ts-ignore
     const blocks = useSelect((select) => select('core/block-editor').getBlocks(), []);
 
-    const fieldNames = blocks
-        .flatMap(flattenBlocks)
-        .map((block) => block.attributes.fieldName)
-        .filter((name) => name);
-
     /**
      * Returns a function that validates a given name against other field names.
      *
      * @param {string} n The name to validate
      * @param {boolean} allowOne Whether to allow a single instance of the name — useful for when a field name is being edited
      */
+    return getFieldNameValidator(getBlockNames(blocks));
+};
+
+export const getBlockNames = (blocks) => blocks
+    .flatMap(flattenBlocks)
+    .map((block) => block.attributes.fieldName)
+    .filter((name) => name);
+
+export const getFieldNameValidator = (fieldNames: string[]) => {
     return (n, allowOne = false): ValidationSet => {
         if (disallowedFieldNames.includes(n)) {
             return [false, getFieldNameSuggestion(n, fieldNames ?? [])];
@@ -100,8 +105,8 @@ const useFieldNameValidator = () => {
         const isUnique = allowOne ? frequency <= 1 : frequency === 0;
 
         return [isUnique, isUnique ? null : getFieldNameSuggestion(n, fieldNames ?? [])];
-    };
-};
+    }
+}
 
 type ValidationSet = [
     boolean, // validated name is unique

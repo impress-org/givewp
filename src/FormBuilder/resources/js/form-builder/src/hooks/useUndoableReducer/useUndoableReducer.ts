@@ -96,9 +96,6 @@ const undoable = <State, Action>(
             const previous = past[past.length - 1];
             const newPast = past.slice(0, past.length - 1);
 
-            // @ts-ignore
-            console.log(detailedDiff(previous, present))
-
             return {
                 past: newPast,
                 present: previous,

@@ -60,63 +60,7 @@ const generateEmailTag = (fieldName, storeAsDonorMeta) => {
  * @since 3.0.0
  */
 function FieldSettingsEdit({attributes, setAttributes, fieldSettings, clientId}) {
-    const validateFieldName = useFieldNameValidator();
-    const [hasFieldNameAttribute, setHasFieldNameAttribute] = useState<boolean>(attributes.hasOwnProperty('fieldName'));
     const [isNewField] = useState<boolean>(attributes.metaUUID !== clientId);
-
-    const updateFieldName = useCallback(
-        (newFieldName = null, bumpUniqueness = false) => {
-            let slugifiedName = newFieldName ? slugifyMeta(newFieldName) : null;
-
-            if (!slugifiedName) {
-                slugifiedName = slugifyMeta(attributes.label);
-            }
-
-            const [isUnique, suggestedName] = validateFieldName(slugifiedName, bumpUniqueness);
-
-            if (!isUnique) {
-                slugifiedName = suggestedName;
-            }
-
-            setAttributes({
-                fieldName: slugifiedName,
-                emailTag: generateEmailTag(slugifiedName, attributes.storeAsDonorMeta),
-            });
-        },
-        [setAttributes, attributes.label]
-    );
-
-    const handleLabelBlur = useCallback(
-        (event) => {
-            if (!hasFieldNameAttribute) {
-                updateFieldName(event.target.value);
-                setHasFieldNameAttribute(true);
-            }
-        },
-        [hasFieldNameAttribute, updateFieldName]
-    );
-
-    const enforceFieldName = useCallback(() => {
-        if (!attributes.fieldName) {
-            updateFieldName();
-        } else {
-            updateFieldName(attributes.fieldName, true);
-        }
-    }, [attributes.fieldName, updateFieldName]);
-
-    useEffect(() => {
-        // The first time the field is rendered set the field name to make sure the default meta key doesn't conflict
-        // with any existing meta keys.
-        if (isNewField) {
-            updateFieldName();
-            setHasFieldNameAttribute(false);
-            setAttributes({metaUUID: clientId});
-        }
-    }, []);
-
-    if (!attributes.hasOwnProperty('fieldName')) {
-        updateFieldName();
-    }
 
     return (
         <>
@@ -131,7 +75,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings, clientId})
                                 <Label
                                     label={attributes.label}
                                     setAttributes={setAttributes}
-                                    onBlur={handleLabelBlur}
+                                    // onBlur={handleLabelBlur}
                                 />
                             </PanelRow>
                         )}
@@ -225,7 +169,7 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings, clientId})
                             <MetaKeyTextControl
                                 value={attributes.fieldName}
                                 onChange={(newName) => setAttributes({fieldName: newName})}
-                                onBlur={enforceFieldName}
+                                onBlur={() => null} // On blur callback replaced by middleware.
                                 lockValue={!isNewField}
                             />
                         </PanelRow>
