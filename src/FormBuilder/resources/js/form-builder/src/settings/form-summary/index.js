@@ -19,7 +19,9 @@ const FormSummarySettings = () => {
                     label={__('Title')}
                     value={formTitle}
                     onChange={(formTitle) => {
-                        !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                        !isPublished &&
+                            formTitle !== 'Donation Form' &&
+                            dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
                         dispatch(setFormSettings({formTitle}));
                     }}
                 />
