@@ -4,7 +4,7 @@ import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 
-const {form} = getWindowData();
+//const {form} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const HeaderTemplate = withTemplateWrapper(formTemplates.layouts.header);
@@ -12,19 +12,19 @@ const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitl
 const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
-/**
- * @since 3.0.0
- */
-const formatGoalAmount = (amount: number) => {
-    return amountFormatter(form.currency, {
-        maximumFractionDigits: 0,
-    }).format(amount);
-};
+
 
 /**
  * @since 3.0.0
  */
-export default function Header() {
+export default function Header({form}) {
+
+    const formatGoalAmount = (amount: number) => {
+        return amountFormatter(form.currency, {
+            maximumFractionDigits: 0,
+        }).format(amount);
+    };
+
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
