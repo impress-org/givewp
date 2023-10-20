@@ -21,18 +21,18 @@ const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchie
 /**
  * Get data from the server
  */
-const {form} = getWindowData();
+const {form: initialForm} = getWindowData();
 
-prepareFormData(form);
+prepareFormData(initialForm);
 
 mountWindowData();
 
 /**
  * Prepare default values for form
  */
-const defaultValues = getDefaultValuesFromSections(form.nodes);
+const defaultValues = getDefaultValuesFromSections(initialForm.nodes);
 
-const schema = getJoiRulesForForm(form);
+const schema = getJoiRulesForForm(initialForm);
 
 const initialState = {
     defaultValues,
@@ -40,7 +40,7 @@ const initialState = {
     validationSchema: schema,
 };
 
-const formInitialSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
+const formSettings = {...initialForm.settings, ...getDonationFormNodeSettings(initialForm)};
 
 /**
  * @since 3.0.0
@@ -48,17 +48,24 @@ const formInitialSettings = {...form.settings, ...getDonationFormNodeSettings(fo
 function App({preview}) {
 
     const {subscribe} = useIframeMessages();
-    const [formSettings, setFormSettings] = useState(formInitialSettings);
+    const [form, setForm] = useState(initialForm);
+
+    console.log(form)
 
 
-    subscribe('designPreview', data => {
-        setFormSettings(prevState => {
-            return {
-                ...prevState,
-                ...data
-            }
+    if(preview) {
+        subscribe('designPreview', data => {
+            setForm(prevState => {
+                return {
+                    ...prevState,
+                    settings: {
+                        ...prevState.settings,
+                        ...data
+                    }
+                }
+            })
         })
-    })
+    }
 
     if (form.goal.isAchieved) {
         return (
@@ -81,7 +88,7 @@ function App({preview}) {
     return (
         <DonationFormSettingsProvider value={formSettings}>
             <DonationFormStateProvider initialState={initialState}>
-                {form.settings?.showHeader && <Header />}
+                {form.settings?.showHeader && <Header form={form} />}
                 <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
             </DonationFormStateProvider>
         </DonationFormSettingsProvider>
