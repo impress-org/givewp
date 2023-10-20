@@ -13,7 +13,7 @@ export default (blocks) => {
                 // Only Text Field blocks, for now.
                 if(block.name !== 'givewp/text') return block;
 
-                const isNewField = block.attributes.metaUUID === block.clientId;
+                const isNewField = block.attributes.metaUUID !== block.clientId;
 
                 const fieldNames = getBlockNames(blocks);
                 const validateFieldName = getFieldNameValidator(fieldNames);
@@ -26,7 +26,7 @@ export default (blocks) => {
                     slugifiedName = slugifiedLabel;
                 }
 
-                const [isUnique, suggestedName] = validateFieldName(slugifiedName, isNewField);
+                const [isUnique, suggestedName] = validateFieldName(slugifiedName, !isNewField);
                 const fieldName = isUnique ? slugifiedName : suggestedName;
 
                 // console.log(
