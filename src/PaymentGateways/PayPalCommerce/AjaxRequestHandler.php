@@ -225,6 +225,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment create error on frontend.
      *
+     * @unreleased Remove unused variable from createOrder argument.
      * @since 2.9.0
      */
     public function createOrder()
