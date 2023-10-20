@@ -18,7 +18,14 @@ export default (blocks) => {
                 const fieldNames = getBlockNames(blocks);
                 const validateFieldName = getFieldNameValidator(fieldNames);
 
-                let slugifiedName = block.attributes.fieldName ?? slugifyMeta(block.attributes.label);
+                const slugifiedLabel = slugifyMeta(block.attributes.label);
+                let slugifiedName = block.attributes.fieldName ?? slugifiedLabel;
+
+                if(!slugifiedName.startsWith(slugifiedLabel)) {
+                    // The label has changed, so reset the field name.
+                    slugifiedName = slugifiedLabel;
+                }
+
                 const [isUnique, suggestedName] = validateFieldName(slugifiedName, isNewField);
                 const fieldName = isUnique ? slugifiedName : suggestedName;
 
