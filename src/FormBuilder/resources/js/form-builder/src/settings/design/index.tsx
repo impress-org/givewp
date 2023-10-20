@@ -37,6 +37,12 @@ const FormDesignSettings = () => {
     const design = getDesign(designId);
     const {sendToIframe} = useIframeMessages();
 
+    const dispatchSettings = (prop) => {
+        const [key, value] = Object.entries<string>(prop).flat();
+        sendToIframe('iFrameResizer0', 'designPreview', {[key]: value});
+        dispatch(setFormSettings({[key]: value}))
+    }
+
 
     return (
         <>
@@ -56,17 +62,14 @@ const FormDesignSettings = () => {
                     colorSettings={[
                         {
                             value: primaryColor,
-                            onChange: debounce((primaryColor) => {
-                                sendToIframe('iFrameResizer0', 'designPreview', {primaryColor});
-                                dispatch(setFormSettings({primaryColor}))
-                            }, 100),
+                            onChange: debounce((primaryColor) => dispatchSettings({primaryColor}), 100),
                             label: __('Primary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
                         },
                         {
                             value: secondaryColor,
-                            onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
+                            onChange: debounce((secondaryColor) => dispatchSettings({secondaryColor}), 100),
                             label: __('Secondary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
@@ -84,7 +87,7 @@ const FormDesignSettings = () => {
                     <ToggleControl
                         label={__('Show Header', 'give')}
                         checked={showHeader}
-                        onChange={() => dispatch(setFormSettings({showHeader: !showHeader}))}
+                        onChange={() => dispatchSettings({showHeader: !showHeader})}
                     />
                 </PanelRow>
                 {showHeader && (
@@ -93,14 +96,14 @@ const FormDesignSettings = () => {
                             <ToggleControl
                                 label={__('Show Heading', 'give')}
                                 checked={showHeading}
-                                onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
+                                onChange={() => dispatchSettings({showHeading: !showHeading})}
                             />
                         </PanelRow>
                         <PanelRow>
                             <ToggleControl
                                 label={__('Show Description', 'give')}
                                 checked={showDescription}
-                                onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
+                                onChange={() => dispatchSettings({showDescription: !showDescription})}
                             />
                         </PanelRow>
                         {showHeading && (
