@@ -11,7 +11,7 @@ use Give\Helpers\Form\Utils;
 class EditFormRoute
 {
     /**
-     * @unreleased Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
+     * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
      * @since 3.0.0
      *
      * @return void
