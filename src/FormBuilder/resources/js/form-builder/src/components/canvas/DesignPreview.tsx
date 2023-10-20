@@ -20,7 +20,7 @@ const DesignPreview = () => {
             setSourceDocument(document);
         });
     }, [
-        //JSON.stringify(formSettings),
+        JSON.stringify(formSettings.designId),
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 

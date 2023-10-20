@@ -64,15 +64,6 @@ function App({preview}) {
                 }
             })
         })
-
-        subscribe('previewDesign', design => {
-            setForm(prevState => {
-                return {
-                    ...prevState,
-                    design
-                }
-            })
-        })
     }
 
     if (form.goal.isAchieved) {

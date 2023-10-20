@@ -51,16 +51,7 @@ const FormDesignSettings = () => {
                     <SelectControl
                         label={__('Form design', 'give')}
                         value={designId}
-                        onChange={(designId) => {
-                            const template = designOptions.find( option => option.value === designId)
-                            sendToIframe('iFrameResizer0', 'previewDesign', {
-                                id: designId,
-                                name: template.label,
-                                isMultiStep: designId === 'multi-step'
-                            })
-
-                            dispatch(setFormSettings({designId}))
-                        }}
+                        onChange={(designId) => dispatch(setFormSettings({designId}))}
                         options={designOptions}
                     />
                 </PanelRow>
