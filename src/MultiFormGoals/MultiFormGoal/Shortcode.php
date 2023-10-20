@@ -26,6 +26,7 @@ class Shortcode
     /**
      * Returns Shortcode markup
      *
+     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
      * @since 2.9.0
      **/
     public function renderCallback($attributes)
@@ -49,7 +50,12 @@ class Shortcode
 
         $multiFormGoal = new MultiFormGoal(
             [
-                'ids' => array_map('_give_redirect_form_id', $attributes['ids']),
+                'ids' => array_map(
+                    static function ($id) {
+                        _give_redirect_form_id($id);
+                    },
+                    $attributes['ids']
+                ),
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],
