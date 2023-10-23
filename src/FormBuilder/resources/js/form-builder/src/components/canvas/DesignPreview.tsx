@@ -1,10 +1,12 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, createRef} from 'react';
 
 import Storage from '@givewp/form-builder/common/storage';
 
 import IframeResizer from 'iframe-resizer-react';
 import {useFormState} from '../../stores/form-state';
 import DesignPreviewLoading from '@givewp/form-builder/components/canvas/DesignPreviewLoading';
+
+export const iframeRef = createRef();
 
 const DesignPreview = () => {
     const {blocks, settings: formSettings} = useFormState();
@@ -20,7 +22,7 @@ const DesignPreview = () => {
             setSourceDocument(document);
         });
     }, [
-        JSON.stringify(formSettings.designId),
+        formSettings.designId,
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
@@ -32,6 +34,7 @@ const DesignPreview = () => {
         <>
             {isLoading && <DesignPreviewLoading design={formSettings.designId} editing={isEditing} designUpdated={designUpdated} />}
             <IframeResizer
+                forwardRef={iframeRef}
                 srcDoc={previewHTML}
                 checkOrigin={
                     false
