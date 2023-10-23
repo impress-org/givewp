@@ -31,7 +31,9 @@ const FormSummarySettings = () => {
             </PanelRow>
             {!!isFormPageEnabled && (
                 <PanelRow>
-                    <PageSlugControl pageSlug={!isPublished && formTitle !== 'Donation Form' ? cleanForSlug(formTitle):pageSlug} />
+                    <PageSlugControl
+                        pageSlug={!isPublished && formTitle !== 'Donation Form' ? cleanForSlug(formTitle) : pageSlug}
+                    />
                 </PanelRow>
             )}
         </PanelBody>
