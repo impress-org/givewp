@@ -29,6 +29,8 @@ class BlockModel implements Arrayable
     public $innerBlocks;
 
     /**
+     * @unreleased added innerBlocks sanitization
+     * @since 3.0.0
      * @param string $name
      * @param string $clientId
      * @param bool $isValid
@@ -50,8 +52,9 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @param  array|BlockCollection|null  $innerBlocks
      * @unreleased
+     *
+     * @param  array|BlockCollection|null  $innerBlocks
      */
     public function sanitizeInnerBlocks($innerBlocks): BlockCollection
     {
@@ -114,6 +117,7 @@ class BlockModel implements Arrayable
     }
 
     /**
+     * @unreleased simplified innerBlocks param
      * @since 3.0.0
      *
      * @param  array  $blockData
