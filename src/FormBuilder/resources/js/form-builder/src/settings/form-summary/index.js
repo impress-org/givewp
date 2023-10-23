@@ -5,6 +5,9 @@ import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-
 import {isFormPageEnabled, PageSlugControl} from './page-slug';
 import {cleanForSlug} from '@wordpress/url';
 
+/**
+ * @unreleased dispatch page slug from form title on initial publish.
+ */
 const FormSummarySettings = () => {
     const {
         settings: {formTitle, pageSlug, formStatus},

@@ -38,6 +38,9 @@ const Logo = () => (
     </div>
 );
 
+/**
+ * @unreleased dispatch page slug from form title on initial publish.
+ */
 const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleShowSidebar}) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
