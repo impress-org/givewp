@@ -39,29 +39,22 @@
         <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>"
                class="givewp-sale-banner">
             <div class="givewp-sale-banner__content">
-                <h2> <?php
-                    echo $header ?>
-                </h2>
+                <h2> <?php echo $header ?> </h2>
 
-                <p>
-                    <?php
-                    echo $leadText ?> </p>
+                <p> <?php echo $leadText ?> </p>
 
-                <button>
-                    <img src="<?php
-                    echo $shoppingCartIconURL
-                    ?>" alt="cart"/>
+                <a href="<?php echo $actionURL ?>" target="_blank" rel="noopener noreferrer">
+                    <img src="<?php echo $shoppingCartIconURL ?>" alt="cart"/>
 
-                    <?php
-                    echo __('Shop now', 'give') ?></button>
+                    <?php echo __('Shop now', 'give') ?>
+                </a>
             </div>
 
             <button type="button" aria-label="<?= __('Dismiss', 'give') ?> <?= $accessibleLabel ?>"
                     aria-controls="<?= $dismissableElementId ?>" class="givewp-sale-banner__dismiss"
                     data-id="<?= $id ?>">
-                <img src="<?php
-                echo $dismissIconURL
-                ?>" alt="dismiss"/>
+
+                <img src="<?php echo $dismissIconURL ?>" alt="dismiss"/>
             </button>
         </aside>
 
@@ -87,5 +80,4 @@
         </style>
     <?php
     endforeach; ?>
-
 </div>
