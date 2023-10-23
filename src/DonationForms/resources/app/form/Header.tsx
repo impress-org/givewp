@@ -1,10 +1,8 @@
 import {withTemplateWrapper} from '../templates';
-import getWindowData from '../utilities/getWindowData';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 
-//const {form} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const HeaderTemplate = withTemplateWrapper(formTemplates.layouts.header);
