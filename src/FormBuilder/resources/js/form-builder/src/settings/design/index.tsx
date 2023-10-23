@@ -4,11 +4,6 @@ import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
 import debounce from 'lodash.debounce';
-import Heading from './Heading';
-import Description from '@givewp/form-builder/settings/design/Description';
-import MultiStepFirstButtonText from '@givewp/form-builder/settings/design/MultiStepFirstButtonText';
-import MultiStepNextButtonText from '@givewp/form-builder/settings/design/MultiStepNextButtonText';
-import DonateButton from '@givewp/form-builder/settings/design/DonateButton';
 
 import usePubSub from '@givewp/forms/app/utilities/usePubSub';
 import {iframeRef} from '@givewp/form-builder/components/canvas/DesignPreview';
@@ -80,7 +75,12 @@ const FormDesignSettings = () => {
             </PanelBody>
             <PanelBody title={__('Donate Button', 'give')} initialOpen={false}>
                 <PanelRow>
-                    <DonateButton text={donateButtonCaption} />
+                    <TextControl
+                        label={__('Button caption', 'give')}
+                        value={donateButtonCaption}
+                        onChange={(donateButtonCaption) => dispatchSettings({donateButtonCaption})}
+                        help={__('Enter the text you want to display on the donation button.', 'give')}
+                    />
                 </PanelRow>
             </PanelBody>
             <PanelBody title={__('Header', 'give')} initialOpen={false}>
@@ -109,12 +109,20 @@ const FormDesignSettings = () => {
                         </PanelRow>
                         {showHeading && (
                             <PanelRow>
-                                <Heading heading={heading} />
+                                <TextControl
+                                    label={__('Heading', 'give')}
+                                    value={heading}
+                                    onChange={(heading) => dispatchSettings({heading})}
+                                />
                             </PanelRow>
                         )}
                         {showDescription && (
                             <PanelRow>
-                                <Description description={description} />
+                                <TextareaControl
+                                    label={__('Description', 'give')}
+                                    value={description}
+                                    onChange={(description) => dispatchSettings({description})}
+                                />
                             </PanelRow>
                         )}
                     </>
@@ -123,10 +131,20 @@ const FormDesignSettings = () => {
             {design?.isMultiStep && (
                 <PanelBody title={__('Multi-Step', 'give')} initialOpen={false}>
                     <PanelRow>
-                        <MultiStepFirstButtonText text={multiStepFirstButtonText} />
+                        <TextControl
+                            label={__('First Step Button Text', 'give')}
+                            value={multiStepFirstButtonText}
+                            onChange={(multiStepFirstButtonText) => dispatchSettings({multiStepFirstButtonText})}
+                            help={__('Customize the text that appears in the first step, prompting the user to go to the next step.')}
+                        />
                     </PanelRow>
                     <PanelRow>
-                        <MultiStepNextButtonText text={multiStepNextButtonText} />
+                        <TextControl
+                            label={__('Next Step Button Text', 'give')}
+                            value={multiStepNextButtonText}
+                            onChange={(multiStepNextButtonText) => dispatchSettings({multiStepNextButtonText})}
+                            help={__('Customize the text that appears prompting the user to go to the next step.')}
+                        />
                     </PanelRow>
                 </PanelBody>
             )}
