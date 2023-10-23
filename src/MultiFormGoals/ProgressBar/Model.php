@@ -38,6 +38,7 @@ class Model
     /**
      * Get forms associated with Progress Bar
      *
+     * @since 3.0.3 Return empty array instead of false
      * @since 2.9.0
      */
     public function getForms(): array
@@ -78,7 +79,7 @@ class Model
 
             return $query->posts;
         } else {
-            return false;
+            return [];
         }
     }
 

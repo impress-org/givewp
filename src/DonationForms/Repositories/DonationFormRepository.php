@@ -19,6 +19,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -477,13 +478,12 @@ class DonationFormRepository
     }
 
     /**
+     * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if it's a legacy form
      * @since 3.0.0
      */
     public function isLegacyForm(int $formId): bool
     {
-        $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
-
-        return empty($form->data);
+        return ! Utils::isV3Form($formId);
     }
 
     /**
