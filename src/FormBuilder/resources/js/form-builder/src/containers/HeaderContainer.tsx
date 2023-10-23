@@ -76,7 +76,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 dispatch(
                     setFormSettings({
                         formTitle,
-                        pageSlug: pageSlug,
+                        pageSlug,
                     })
                 );
                 dispatch(setIsDirty(false));
