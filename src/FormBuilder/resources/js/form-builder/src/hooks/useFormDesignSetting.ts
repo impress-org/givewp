@@ -2,7 +2,8 @@ import {useCallback, useState} from 'react';
 import {useDebounce} from '@wordpress/compose';
 import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {FormSettings} from '@givewp/form-builder/types';
-import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
+import usePubSub from '@givewp/forms/app/utilities/usePubSub';
+import {iframeRef} from '@givewp/form-builder/components/canvas/DesignPreview';
 
 /**
  * This hook is used to manage the state of a form design setting.
@@ -14,11 +15,11 @@ import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
 const useFormDesignSetting = (initialValue: any, wait = 500) => {
     const [inputValue, setInputValue] = useState(initialValue);
     const dispatch = useFormStateDispatch();
-    const {sendToIframe} = useIframeMessages();
+    const {publish} = usePubSub();
 
     const updateSetting = useCallback((key: keyof FormSettings, value: any) => {
         dispatch(setFormSettings({[key]: value}));
-        sendToIframe('iFrameResizer0', 'previewSettings', {[key]: value});
+        publish( 'preview:settings', {[key]: value}, iframeRef);
     }, []);
 
     return {
