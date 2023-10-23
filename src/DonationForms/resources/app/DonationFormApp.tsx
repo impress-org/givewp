@@ -12,8 +12,9 @@ import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/Donat
 import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 import getDonationFormNodeSettings from '@givewp/forms/app/utilities/getDonationFormNodeSettings';
 import {DonationFormSettingsProvider} from '@givewp/forms/app/store/form-settings';
-import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
-import {useState} from 'react';
+import usePubSub from '@givewp/forms/app/utilities/usePubSub';
+import {useState, useEffect} from 'react';
+import {FormSettings} from '@givewp/form-builder/types';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -22,6 +23,7 @@ const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchie
  * Get data from the server
  */
 const {form: initialFormState} = getWindowData();
+const donationFormNodeSettings = getDonationFormNodeSettings(initialFormState);
 
 prepareFormData(initialFormState);
 
@@ -45,35 +47,49 @@ const initialState = {
  */
 function App({preview}) {
 
-    const {subscribe} = useIframeMessages();
-    const [form, setForm] = useState(initialFormState);
+    const {subscribe} = usePubSub();
+    const [form, setFormState] = useState(initialFormState);
 
-    if (preview) {
-        subscribe('previewSettings', data => {
-            setForm(prevState => {
-                return {
-                    ...prevState,
-                    settings: {
-                        ...prevState.settings,
-                        ...data
+    useEffect(() => {
+        if (preview) {
+            subscribe('preview:settings', (data: FormSettings) => {
+                setFormState(prevState => {
+                    return {
+                        ...prevState,
+                        settings: {
+                            ...prevState.settings,
+                            ...data
+                        }
                     }
+                })
+            })
+
+            subscribe('preview:goal', (data: { [s: string]: string }) => {
+                setFormState(prevState => {
+                    return {
+                        ...prevState,
+                        goal: {
+                            ...prevState.goal,
+                            ...data
+                        }
+                    }
+                })
+            })
+
+            subscribe('preview:colors', (data: { [s: string]: string }) => {
+                const [key, value] = Object.entries<string>(data).flat();
+
+                switch (key) {
+                    case 'primaryColor':
+                        root.style.setProperty('--givewp-primary-color', value);
+                        break;
+                    case 'secondaryColor':
+                        root.style.setProperty('--givewp-secondary-color', value);
+                        break;
                 }
             })
-        })
-
-        subscribe('previewColors', data => {
-            const [key, value] = Object.entries<string>(data).flat();
-
-            switch (key) {
-                case 'primaryColor':
-                    root.style.setProperty('--givewp-primary-color', value);
-                    break;
-                case 'secondaryColor':
-                    root.style.setProperty('--givewp-secondary-color', value);
-                    break;
-            }
-        })
-    }
+        }
+    }, []);
 
     if (form.goal.isAchieved) {
         return (
@@ -85,16 +101,16 @@ function App({preview}) {
 
     if (form.design?.isMultiStep) {
         return (
-            <DonationFormSettingsProvider value={{...form.settings, ...getDonationFormNodeSettings(form)}}>
+            <DonationFormSettingsProvider value={{...form.settings, ...donationFormNodeSettings}}>
                 <DonationFormStateProvider initialState={initialState}>
-                    <MultiStepForm sections={form.nodes} showHeader={form.settings?.showHeader} />
+                    <MultiStepForm form={form} />
                 </DonationFormStateProvider>
             </DonationFormSettingsProvider>
         );
     }
 
     return (
-        <DonationFormSettingsProvider value={{...form.settings, ...getDonationFormNodeSettings(form)}}>
+        <DonationFormSettingsProvider value={{...form.settings, ...donationFormNodeSettings}}>
             <DonationFormStateProvider initialState={initialState}>
                 {form.settings?.showHeader && <Header form={form} />}
                 <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
