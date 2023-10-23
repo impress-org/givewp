@@ -30,7 +30,7 @@ export default () => {
     const templateTagsDescription = createInterpolateElement(
         __(
             'Available template tags for this email. HTML is accepted. <a>See our documentation</a> for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
-            'givewp'
+            'give'
         ),
         {
             a: <a href="https://make.wordpress.org" target="_blank" />,

@@ -54,7 +54,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                 hideLabelFromVision={true}
                 help={__(
                     'Global options are set in GiveWP settings. You may override them for this form here',
-                    'givewp'
+                    'give'
                 )}
                 selected={option.status ?? 'global'}
                 options={config.statusOptions}
@@ -149,7 +149,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                             label={__('Email', 'give')}
                             help={__(
                                 'This email is automatically sent to the individual fundraiser and the recipient cannot be customized.',
-                                'givewp'
+                                'give'
                             )}
                             onChange={() => null}
                             value="{donor_email}"

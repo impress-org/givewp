@@ -20,7 +20,7 @@ export default function LeftContentSection({assets}: LeftContentSectionProps) {
                     <p>
                         {__(
                             'GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donations Form Builder.',
-                            'givewp'
+                            'give'
                         )}
                     </p>
                 </header>
@@ -47,7 +47,7 @@ export default function LeftContentSection({assets}: LeftContentSectionProps) {
                 <p>
                     {__(
                         'The team is still working on some new features, add-on and payment gateway compatibility to make your form experience better.',
-                        'givewp'
+                        'give'
                     )}
                 </p>
                 <ExternalLink href={'https://docs.givewp.com/welcome-docs'}>

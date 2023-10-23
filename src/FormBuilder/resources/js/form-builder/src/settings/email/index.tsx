@@ -49,7 +49,7 @@ export default () => {
                                 label={__('From Name', 'give')}
                                 help={__(
                                     'The name which appears in the "From" field in all GiveWP donation emails.',
-                                    'givewp'
+                                    'give'
                                 )}
                                 value={emailFromName}
                                 onChange={(emailFromName) => dispatch(setFormSettings({emailFromName}))}
@@ -60,7 +60,7 @@ export default () => {
                                 label={__('From Email', 'give')}
                                 help={__(
                                     'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.',
-                                    'givewp'
+                                    'give'
                                 )}
                                 value={emailFromEmail}
                                 onChange={(emailFromEmail) => dispatch(setFormSettings({emailFromEmail}))}

@@ -19,7 +19,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                     title={__('Design mode', 'give')}
                     description={__(
                         'See exactly what your form looks like for potential donors using the “Design” tab of the builder. Changes are visible immediately.',
-                        'givewp'
+                        'give'
                     )}
                 >
                     <VideoPlayer src={`${assets}/design-mode.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
@@ -29,7 +29,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                     title={__('Custom Paragraph and Sections', 'give')}
                     description={__(
                         'Add custom paragraphs or add whole sections anywhere in your form, no code required.',
-                        'givewp'
+                        'give'
                     )}
                 >
                     <VideoPlayer
