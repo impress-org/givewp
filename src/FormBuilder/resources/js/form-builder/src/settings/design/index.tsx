@@ -10,7 +10,8 @@ import MultiStepFirstButtonText from '@givewp/form-builder/settings/design/Multi
 import MultiStepNextButtonText from '@givewp/form-builder/settings/design/MultiStepNextButtonText';
 import DonateButton from '@givewp/form-builder/settings/design/DonateButton';
 
-import useIframeMessages from '@givewp/forms/app/utilities/IframeMessages';
+import usePubSub from '@givewp/forms/app/utilities/usePubSub';
+import {iframeRef} from '@givewp/form-builder/components/canvas/DesignPreview';
 
 const {formDesigns} = getWindowData();
 
@@ -35,11 +36,11 @@ const FormDesignSettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const design = getDesign(designId);
-    const {sendToIframe} = useIframeMessages();
+    const {publish} = usePubSub();
 
-    const dispatchSettings = (data: { [s: string]: any } | ArrayLike<string>, type = 'previewSettings') => {
+    const dispatchSettings = (data: { [s: string]: any } | ArrayLike<string>, event = 'preview:settings') => {
         const [key, value] = Object.entries<string>(data).flat();
-        sendToIframe('iFrameResizer0', type, {[key]: value});
+        publish(event, {[key]: value}, iframeRef);
         dispatch(setFormSettings({[key]: value}))
     }
 
@@ -51,7 +52,7 @@ const FormDesignSettings = () => {
                     <SelectControl
                         label={__('Form design', 'give')}
                         value={designId}
-                        onChange={(designId) => dispatch(setFormSettings({designId}))}
+                        onChange={(designId: string) => dispatch(setFormSettings({designId}))}
                         options={designOptions}
                     />
                 </PanelRow>
@@ -62,14 +63,14 @@ const FormDesignSettings = () => {
                     colorSettings={[
                         {
                             value: primaryColor,
-                            onChange: debounce((primaryColor) => dispatchSettings({primaryColor}, 'previewColors'), 100),
+                            onChange: debounce((primaryColor: string) => dispatchSettings({primaryColor}, 'preview:colors'), 100),
                             label: __('Primary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
                         },
                         {
                             value: secondaryColor,
-                            onChange: debounce((secondaryColor) => dispatchSettings({secondaryColor}, 'previewColors'), 100),
+                            onChange: debounce((secondaryColor: string) => dispatchSettings({secondaryColor}, 'preview:colors'), 100),
                             label: __('Secondary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
