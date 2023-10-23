@@ -89,7 +89,13 @@ class SaleBanners
                     )
                 ]),
                 'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://go.givewp.com/bf22',
+                'actionURL' => self::getDataByPricingPlan(
+                    [
+                        'Free' => 'https://go.givewp.com/bf23',
+                        'Basic' => 'https://go.givewp.com/bfup23',
+                        'Plus' => 'https://go.givewp.com/bfup23'
+                    ]
+                ),
                 'startDate' => '2023-11-20 00:00',
                 'endDate' => '2024-11-29 23:59',
             ],
