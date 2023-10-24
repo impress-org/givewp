@@ -9,6 +9,7 @@ import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import Steps from '@givewp/forms/app/form/MultiStepForm/components/Steps';
 import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
 import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
+import type {Form} from '@givewp/forms/types';
 
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
@@ -55,7 +56,7 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
 /**
  * @since 3.0.0
  */
-export default function MultiStepForm({form}) {
+export default function MultiStepForm({form}: {form: Form}) {
     const steps = convertSectionsToSteps(form.nodes, form.settings?.showHeader);
 
     if (form.settings?.showHeader) {
