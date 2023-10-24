@@ -1,0 +1,74 @@
+.givewp-terms-and-conditions {
+    display: block;
+
+    &-container {
+        justify-content: flex-start;
+        align-Items: center;
+        gap: .5rem;
+
+        &__form-display {
+            margin-top: 1rem;
+            line-height: 150%;
+            max-height: 17.5rem;
+            min-height: 6.5rem;
+            overflow-y: scroll;
+            border: 1px solid var(--givewp-grey-200, #BFBFBF);
+            border-radius: 5px;
+            padding: 0 1rem;
+            background: var(--givewp-shades-white, #fff);
+        }
+
+        &__link-display {
+            display: inline-block;
+            min-width: fit-content;
+            color: var(--givewp-grey-80, #595959);
+            font-size: 1rem;
+        }
+    }
+
+    .components-checkbox-control__label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--givewp-grey-700);
+    }
+}
+
+.givewp-styled-popover-content-settings {
+    top: 20rem !important;
+    left: -2rem !important;
+    background: var(--givewp-shades-white, #FFF);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem 0 #E6E6E6;
+
+    .components-popover__content {
+        min-width: 25rem;
+    }
+
+    &__header {
+        align-items: center;
+        border-bottom: 1px solid #DDD;
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+
+        > h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5rem;
+            margin: 0;
+        }
+
+        > button {
+            height: 1.5rem;
+            min-width: auto;
+            padding: 0;
+            width: 1.5rem;
+        }
+
+    }
+
+    &__content {
+        max-height: 50vh;
+        overflow: auto;
+    }
+}

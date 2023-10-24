@@ -7,7 +7,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 use InvalidArgumentException;
 use JsonSerializable;
-use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
+use Give\Vendors\Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 /**
  * @since 2.18.0

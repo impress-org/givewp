@@ -82,10 +82,26 @@ class onBoardingRedirectHandler
     {
         if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true)) {
             $mode = $_GET['mode'];
-            $this->webhooksRepository->setMode($mode);
-            $this->merchantRepository->setMode($mode);
-            give(PayPalClient::class)->setMode($mode);
+
+            $this->setModeForServices($mode);
         }
+    }
+
+    /**
+     * Set mode for services.
+     *
+     * Use this function to manually set connection mode. Values can be 'live' or 'sandbox'.
+     * Services are classes which depends upon connection mode and used to interact with PayPal API or core logic.
+     *
+     * @since 3.0.0
+     *
+     * @return void
+     */
+    public function setModeForServices(string $mode)
+    {
+        $this->webhooksRepository->setMode($mode);
+        $this->merchantRepository->setMode($mode);
+        give(PayPalClient::class)->setMode($mode);
     }
 
     /**
@@ -352,9 +368,10 @@ class onBoardingRedirectHandler
     /**
      * Handles the request for refreshing the account status
      *
+     * @since 3.0.0 Make function publicly accessible.
      * @since 2.9.0
      */
-    private function refreshAccountStatus()
+    public function refreshAccountStatus()
     {
         $merchantDetails = $this->merchantRepository->getDetails();
 

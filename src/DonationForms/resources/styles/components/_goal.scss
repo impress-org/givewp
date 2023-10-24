@@ -1,0 +1,93 @@
+.givewp-layouts-goal {
+    width: 100%;
+    background-color: var(--givewp-shades-white);
+    border: solid 1px var(--givewp-grey-100);
+    border-radius: var(--givewp-rounded-4);
+
+    &__stats-panel {
+
+        &__list {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        &__list-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+            border-bottom: solid 1px var(--givewp-grey-100);
+
+            &:nth-child(2) {
+                border: solid 1px var(--givewp-grey-100);
+                border-top: none;
+            }
+        }
+
+        &__stat-value {
+            color: var(--givewp-grey-700);
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.56;
+        }
+
+        &__stat-label {
+            color: var(--givewp-grey-400);
+            font-size: var(--givewp-font-size-paragraph-lg);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+    }
+
+    &__progress {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+
+        &__description {
+            /** Screen reader only */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        &__meter {
+            position: relative;
+            height: 1.25rem;
+            border-radius: var(--givewp-rounded-full);
+            background-color: var(--givewp-grey-25);
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+            margin-bottom: 0;
+
+            /** Add a vertical linear gradient to apply a slight shade over the accent color */
+            &[value]::-webkit-progress-value {
+                position: absolute;
+                border-radius: var(--givewp-rounded-full);
+                background-color: var(--secondary);
+                background-image: linear-gradient(
+                                to bottom,
+                                rgba(0, 0, 0, 0),
+                                rgba(0, 0, 0, 0.1)
+                );
+            }
+        }
+
+        &__markers {
+            display: flex;
+            justify-content: space-between;
+            color: var(--givewp-grey-700);
+            font-size: var(--givewp-font-size-paragraph-md);
+            font-weight: 600;
+        }
+    }
+}

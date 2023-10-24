@@ -1,0 +1,32 @@
+.give-modal {
+    ul {
+        list-style: disc;
+        padding-inline-start: 1rem;
+    }
+
+    &__dismiss-button {
+        float: right;
+    }
+
+    &--has-icon {
+        .components-modal__icon-container {
+            fill: var(--givewp-blue-500);
+        }
+
+        .components-modal__header-heading-container {
+            gap: var(--givewp-spacing-1);
+        }
+    }
+
+    &--error {
+        .components-modal__icon-container {
+            fill: var(--givewp-red-500);
+        }
+    }
+
+    &--warning {
+        .components-modal__icon-container {
+            fill: var(--givewp-yellow-500);
+        }
+    }
+}

@@ -11,11 +11,13 @@ use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionSyncedHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
+use Give\Framework\PaymentGateways\Commands\SubscriptionSynced;
 use Give\Subscriptions\Models\Subscription;
 
 
@@ -60,6 +62,10 @@ class HandleGatewaySubscriptionCommand
 
         if ($command instanceof RespondToBrowser) {
             return (new RespondToBrowserHandler())($command);
+        }
+
+        if ($command instanceof SubscriptionSynced) {
+            return (new SubscriptionSyncedHandler())($command);
         }
 
         throw new TypeNotSupported(

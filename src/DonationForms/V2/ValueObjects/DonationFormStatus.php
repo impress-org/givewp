@@ -12,11 +12,13 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static DonationFormStatus PRIVATE ()
  * @method static DonationFormStatus DRAFT()
  * @method static DonationFormStatus TRASH()
+ * @method static DonationFormStatus UPGRADED()
  * @method bool isPending()
  * @method bool isPublished()
  * @method bool isPrivate()
  * @method bool isDraft()
- * @method bool isTrashed()
+ * @method bool isTrash()
+ * @method bool isUpgraded()
  */
 class DonationFormStatus extends Enum
 {
@@ -25,6 +27,7 @@ class DonationFormStatus extends Enum
     const PRIVATE = 'private';
     const DRAFT = 'draft';
     const TRASH = 'trash';
+    const UPGRADED = 'upgraded';
 
     /**
      * @since 2.24.0
@@ -39,6 +42,7 @@ class DonationFormStatus extends Enum
             self::PRIVATE => __( 'Private', 'give' ),
             self::DRAFT => __( 'Draft', 'give' ),
             self::TRASH => __( 'Trash', 'give' ),
+            self::UPGRADED => __( 'Upgraded', 'give' ),
         ];
     }
 

@@ -361,7 +361,12 @@ function give_get_default_settings()
             'manual' => 1,
             'offline' => 1,
         ],
+        'gateways_v3' => [
+            'manual' => 1,
+            'offline' => 1,
+        ],
         'default_gateway' => 'manual',
+        'default_gateway_v3' => 'manual',
 
         // Offline gateway setup.
         'global_offline_donation_content' => give_get_default_offline_donation_content(),

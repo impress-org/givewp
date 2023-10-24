@@ -1,0 +1,108 @@
+[
+    {
+        "clientId": "8371d4c7-0e8d-4aff-a1a1-b4520f008132",
+        "name": "givewp/section",
+        "isValid": true,
+        "attributes": {
+            "title": "How much would you like to donate today?",
+            "description": "All donations directly impact our organization and help us further our mission."
+        },
+        "innerBlocks": [
+            {
+                "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
+                "name": "givewp/donation-amount",
+                "isValid": true,
+                "attributes": {
+                    "label": "Donation Amount",
+                    "levels": [
+                        10,
+                        25,
+                        50,
+                        100,
+                        250,
+                        500
+                    ],
+                    "defaultLevel": 10,
+                    "priceOption": "multi",
+                    "setPrice": 25,
+                    "customAmount": true,
+                    "customAmountMin": 1,
+                    "recurringBillingPeriodOptions": [
+                        "month"
+                    ],
+                    "recurringBillingInterval": 1,
+                    "recurringEnabled": false,
+                    "recurringLengthOfTime": "0",
+                    "recurringOptInDefaultBillingPeriod": "month",
+                    "recurringEnableOneTimeDonations": true
+                },
+                "innerBlocks": []
+            }
+        ]
+    },
+    {
+        "clientId": "2d74bf4b-4b82-4bea-aed7-431801709351",
+        "name": "givewp/section",
+        "isValid": true,
+        "attributes": {
+            "title": "Who's Giving Today?",
+            "description": "We'll never share this information with anyone."
+        },
+        "innerBlocks": [
+            {
+                "clientId": "1dc9cc78-698b-443a-8679-572d0667b7d8",
+                "name": "givewp/donor-name",
+                "isValid": true,
+                "attributes": {
+                    "showHonorific": false,
+                    "honorifics": [
+                        "Mr",
+                        "Ms",
+                        "Mrs"
+                    ],
+                    "firstNameLabel": "First name",
+                    "firstNamePlaceholder": "First name",
+                    "lastNameLabel": "Last name",
+                    "lastNamePlaceholder": "Last name",
+                    "requireLastName": false
+                },
+                "innerBlocks": []
+            },
+            {
+                "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
+                "name": "givewp/email",
+                "isValid": true,
+                "attributes": {
+                    "label": "Email Address",
+                    "isRequired": true
+                },
+                "innerBlocks": []
+            }
+        ]
+    },
+    {
+        "clientId": "52596cc5-ab49-433e-b8e9-23fb4871fb5c",
+        "name": "givewp/section",
+        "isValid": true,
+        "attributes": {
+            "title": "Payment Details",
+            "description": "How would you like to pay for your donation?"
+        },
+        "innerBlocks": [
+            {
+                "name": "givewp/donation-summary",
+                "clientId": "b7114360-8542-4043-8296-26d2ae995d24",
+                "isValid": true,
+                "attributes": [],
+                "innerBlocks": []
+            },
+            {
+                "clientId": "145d8b8a-1870-4516-b0d5-fa7848578819",
+                "name": "givewp/payment-gateways",
+                "isValid": true,
+                "attributes": {},
+                "innerBlocks": []
+            }
+        ]
+    }
+]

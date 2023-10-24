@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Collection;
 trait RemoveNode
 {
     /**
+     * @since 3.0.0 preserve array numeric keys
      * @since 2.10.2
      *
      * @return static
@@ -16,6 +17,7 @@ trait RemoveNode
         foreach ($this->nodes as $index => $node) {
             if ($node->getName() === $name) {
                 unset($this->nodes[$index]);
+                $this->nodes = array_values($this->nodes);
 
                 return $this;
             }

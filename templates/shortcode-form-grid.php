@@ -7,7 +7,7 @@
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
-if ( ! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -32,17 +32,17 @@ $activeTemplate = FormUtils::isLegacyForm($form_id) ? 'legacy' : Template::getAc
 $formTemplate = Give()->templates->getTemplate($activeTemplate);
 
 $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_id, $atts) {
-    if ( ! taxonomy_exists('give_forms_tag')) {
+    if (!taxonomy_exists('give_forms_tag')) {
         return '';
     }
 
     $tags = wp_get_post_terms($form_id, 'give_forms_tag');
 
-    $tag_bg_color = ! empty($atts['tag_background_color'])
+    $tag_bg_color = !empty($atts['tag_background_color'])
         ? $atts['tag_background_color']
         : '#69b86b';
 
-    $tag_text_color = ! empty($atts['tag_text_color'])
+    $tag_text_color = !empty($atts['tag_text_color'])
         ? $atts['tag_text_color']
         : '#ffffff';
 
@@ -75,7 +75,6 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
          </div>
     ";
 };
-
 ?>
 
 <div class="give-grid__item">
@@ -101,7 +100,8 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
         );
     }
     ?>
-    <div class="give-form-grid" style="flex-direction:<?php echo esc_attr($flex_direction) ?>">
+    <div class="give-form-grid" style="flex-direction:<?php
+    echo esc_attr($flex_direction) ?>">
         <?php
         // Maybe display the featured image.
         if (
@@ -153,7 +153,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
         <div class="give-form-grid-container">
             <div class="give-form-grid-content">
                 <?php
-                if ( ! $atts['show_featured_image']) {
+                if (!$atts['show_featured_image']) {
                     echo "
                                  <div class='give-form-grid-media'>
                                         {$renderTags('give-form-grid-media__tags_no_image', false)}
@@ -182,7 +182,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         // Get content from the form post's content field.
                         $raw_content = give_get_meta($form_id, '_give_form_content', true);
 
-                        if ( ! empty($raw_content)) {
+                        if (!empty($raw_content)) {
                             $stripped_content = wp_strip_all_tags(
                                 strip_shortcodes($raw_content)
                             );
@@ -202,14 +202,14 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 }
 
                 if ($atts['show_donate_button']):
-                    $button_text = ! empty($atts['donate_button_text'])
+                    $button_text = !empty($atts['donate_button_text'])
                         ? $atts['donate_button_text']
                         : give_get_meta($form_id, '_give_form_grid_donate_button_text', true);
 
                     /**
                      * @since 2.23.1 Updated the default text color for the donate button, see #6591.
                      */
-                    $button_text_color = ! empty($atts['donate_button_text_color'])
+                    $button_text_color = !empty($atts['donate_button_text_color'])
                         ? $atts['donate_button_text_color']
                         : '#000000';
                     ?>
@@ -221,7 +221,8 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         echo esc_html($button_text) ?: __('Donate', 'give'); ?>
                                     </span>
                     </button>
-                <?php endif; ?>
+                <?php
+                endif; ?>
 
             </div>
             <?php
@@ -229,14 +230,14 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             $goal_option = give_get_meta($form->ID, '_give_goal_option', true);
 
             // Sanity check - ensure form has pass all condition to show goal.
-            $hide_goal = (isset($atts['show_goal']) && ! filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN))
-                         || empty($form->ID)
-                         || (is_singular('give_forms') && ! give_is_setting_enabled($goal_option))
-                         || ! give_is_setting_enabled($goal_option) || 0 === $form->goal;
+            $hide_goal = (isset($atts['show_goal']) && !filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN))
+                || empty($form->ID)
+                || (is_singular('give_forms') && !give_is_setting_enabled($goal_option))
+                || !give_is_setting_enabled($goal_option) || 0 === $form->goal;
 
             // Maybe display the goal progress bar.
 
-            if ( ! $hide_goal) :
+            if (!$hide_goal) :
                 $goal_progress_stats = give_goal_progress_stats($form);
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];
@@ -343,7 +344,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                  * @since 2.5.4
                                  *
                                  * @param array $amounts List of goal amounts.
-                                 * @param int   $form_id Donation Form ID.
+                                 * @param int $form_id Donation Form ID.
                                  */
                                 $goal_amounts = apply_filters(
                                     'give_goal_amounts',
@@ -359,7 +360,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                  * @since 2.5.4
                                  *
                                  * @param array $amounts List of goal amounts.
-                                 * @param int   $form_id Donation Form ID.
+                                 * @param int $form_id Donation Form ID.
                                  */
                                 $income_amounts = apply_filters(
                                     'give_goal_raised_amounts',
@@ -420,38 +421,47 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                             elseif ('donation' === $goal_format) :?>
 
                                 <span class="amount">
-                                    <?php echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
+                                    <?php
+                                    echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
                                 </span>
 
                                 <span class="goal">
-                                    <?php echo sprintf(
+                                    <?php
+                                    echo sprintf(
                                         _n('of %s donation', 'of %s donations', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ); ?>
                                 </span>
 
-                            <?php elseif ('donors' === $goal_format) : ?>
+                            <?php
+                            elseif ('donors' === $goal_format) : ?>
 
-                                <span class="amount"> <?php echo give_get_form_donor_count($form->ID) ?> </span>
+                                <span class="amount"> <?php
+                                    echo give_get_form_donor_count($form->ID) ?> </span>
                                 <span class="goal">
-                                    <?php echo sprintf(
+                                    <?php
+                                    echo sprintf(
                                         _n('of %s donor', 'of %s donors', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
                                     ); ?>
                                 </span>
-                            <?php endif ?>
+                            <?php
+                            endif ?>
                         </div>
 
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
-                                <?php echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
+                                <?php
+                                echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
                             </span>
                             <span class="goal">
-                                <?php echo _n('donation', 'donations', $goal, 'give') ?> </span>
+                                <?php
+                                echo _n('donation', 'donations', $goal, 'give') ?> </span>
                         </div>
                     </div>
                 </div>
-            <?php endif ?>
+            <?php
+            endif ?>
         </div>
     </div>
     </a>
@@ -459,8 +469,8 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
     // If modal, print form in hidden container until it is time to be revealed.
     if ('modal_reveal' === $atts['display_style']) {
         if (
-            ! isset($_GET['context']) // check if we are in block editor
-            && ! FormUtils::isLegacyForm($form_id)
+            !isset($_GET['context']) // check if we are in block editor
+            && !FormUtils::isLegacyForm($form_id)
         ) {
             echo give_form_shortcode(
                 [
@@ -473,7 +483,14 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 '<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
                 $form_id
             );
-            give_get_donation_form($form_id);
+
+            echo give_form_shortcode(
+                [
+                    'id' => $form_id,
+                    'display_style' => 'button',
+                ]
+            );
+
             echo '</div>';
         }
     }

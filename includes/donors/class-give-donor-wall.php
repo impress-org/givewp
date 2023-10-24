@@ -118,6 +118,9 @@ class Give_Donor_Wall {
 		$give_settings = give_get_settings();
 
 		$atts      = $this->parse_atts( $atts );
+
+        _give_redirect_form_id($atts['form_id']);
+
 		$donations = $this->get_donation_data( $atts );
 		$html      = '';
 

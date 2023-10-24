@@ -1,0 +1,9 @@
+.givewp-layouts-section {
+    margin-bottom: 0;
+
+    &__fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+    }
+}

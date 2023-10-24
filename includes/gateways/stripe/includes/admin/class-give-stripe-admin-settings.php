@@ -301,7 +301,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'desc'          => sprintf(
 							'%1$s <a href="%2$s" target="_blank">%3$s</a> %4$s',
 							esc_html__( 'This option allows you to select from the two types of Stripe Checkout methods available for processing donations. The "Modal" option uses Stripe elements in a popup modal which does not take the donor off your website. The "Redirect" option uses Stripe\'s new off-site', 'give' ),
-							esc_url( 'https://stripe.com/docs/payments/checkout' ),
+							esc_url( 'https://docs.givewp.com/stripe-checkout-docs' ),
 							esc_html__( 'Checkout', 'give' ),
 							esc_html__( 'interface that provides donors an easy way to pay with Credit or Debit Cards, Apple, and Google Pay.', 'give' )
 						),
@@ -575,7 +575,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 
 					$settings[] = [
 						'name'    => __( 'Stripe Fonts', 'give' ),
-						'desc'    => __( 'Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href="https://stripe.com/docs/stripe-js/reference#stripe-elements" target="_blank">article</a>.', 'give' ),
+						'desc'    => __( 'Select the type of font you want to load in Stripe Credit Card fields including Card Number, CVC and Expiration. For more information on Styling Stripe CC fields please see this <a href="https://docs.givewp.com/stripe-styles" target="_blank">article</a>.', 'give' ),
 						'id'      => 'stripe_fonts',
 						'type'    => 'radio_inline',
 						'default' => 'google_fonts',
@@ -667,7 +667,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							echo sprintf(
 								/* translators: 1. Webhook settings page. */
 								__( ' You can  visit your <a href="%1$s" target="_blank">Stripe Account Dashboard</a> to add a new webhook. ', 'give' ),
-								esc_url_raw( 'https://dashboard.stripe.com/account/webhooks' )
+								esc_url_raw( 'https://docs.givewp.com/stripe-dashboard-webhooks' )
 							);
 							esc_html_e( 'Please add a new webhook endpoint for the following URL:', 'give' );
 							?>

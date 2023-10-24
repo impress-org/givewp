@@ -8,7 +8,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 use Give\Framework\Support\Contracts\Renderable;
 use JsonSerializable;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Give\Vendors\Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * @since 2.18.0

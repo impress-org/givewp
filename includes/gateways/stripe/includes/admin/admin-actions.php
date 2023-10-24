@@ -352,26 +352,6 @@ function give_stripe_show_currency_notice() {
 add_action( 'admin_notices', 'give_stripe_show_currency_notice' );
 
 /**
- * Disconnect Stripe Account.
- *
- * @since 2.7.0
- *
- * @return void
- */
-function give_stripe_disconnect_connect_stripe_account() {
-	$get_data = give_clean( $_GET );
-
-	if ( current_user_can( 'manage_options' ) && isset( $get_data['stripe_disconnected'] ) ) {
-		$account_name = ! empty( $get_data['account_name'] ) ? $get_data['account_name'] : false;
-
-		// Disconnect Stripe Account.
-		give_stripe_disconnect_account( $account_name );
-	}
-}
-
-add_action( 'admin_init', 'give_stripe_disconnect_connect_stripe_account' );
-
-/**
  * Show Stripe Account Used under donation details.
  *
  * @param  int  $donationId  Donation ID.

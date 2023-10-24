@@ -23,12 +23,15 @@
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
+        "phpcompatibility/php-compatibility": "^9.3",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "^5",
         "kjohnson/since-unreleased": "^1.0.0",
         "wp-cli/wp-cli-bundle": "^2.5",
         "yoast/phpunit-polyfills": "^1.0",
-        "wordpress/wordpress": "dev-trunk"
+        "wordpress/wordpress": "dev-trunk",
+        "squizlabs/php_codesniffer": "^3.5",
+        "php-stubs/wp-cli-stubs": "^2.8"
     },
     "keywords": [
         "wordpress",
@@ -64,7 +67,8 @@
             "Give\\": "src/"
         },
         "files": [
-            "src/Framework/Http/Response/functions.php"
+            "src/Framework/Http/Response/functions.php",
+            "src/FormMigration/functions.php"
         ]
     },
     "autoload-dev": {
@@ -75,7 +79,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.0.8"
+            "php": "7.2"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -89,11 +93,18 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
+                "fakerphp/faker",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
-                "symfony/polyfill-mbstring"
+                "symfony/polyfill-mbstring",
+                "symfony/http-foundation"
             ],
+            "exclude_from_copy": {
+                "packages": [
+                    "symfony/deprecation-contracts"
+                ]
+            },
             "delete_vendor_packages": true,
             "override_autoload": {
                 "symfony/polyfill-ctype": {},
@@ -106,10 +117,10 @@
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/wordpress/wordpress-develop.git"
-        }
-    ]
+     "repositories": [
+            {
+                "type": "git",
+                "url": "https://github.com/wordpress/wordpress-develop.git"
+            }
+        ]
 }

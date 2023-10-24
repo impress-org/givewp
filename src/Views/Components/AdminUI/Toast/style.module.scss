@@ -1,0 +1,99 @@
+.toastContainer {
+    display: flex;
+    position: fixed;
+    font-family: 'Open Sans', sans-serif;
+    max-width: 42rem;
+    border-radius: var(--givewp-rounded-4);
+    box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
+    background-color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--grey-900, #0E0E0E);
+    z-index: 999;
+
+    > div {
+        padding: var(--givewp-spacing-3);
+    }
+
+    .icon {
+        > * {
+            margin-bottom: -3px;
+        }
+    }
+
+    &.success {
+        border: 1px solid #08A657;
+        background: linear-gradient(0deg, #F2FFF9, #F2FFF9),
+        linear-gradient(0deg, #08A657, #08A657);
+    }
+
+    &.error {
+
+    }
+
+    &.warning {
+
+    }
+
+    &.info {
+
+    }
+
+    &.topLeft {
+        top: var(--givewp-spacing-15);
+        left: var(--givewp-spacing-6);
+        animation: slideRight 300ms ease-in;
+    }
+
+    &.topRight {
+        top: var(--givewp-spacing-15);
+        right: var(--givewp-spacing-6);
+        animation: slideLeft 300ms ease-in;
+    }
+
+    &.bottomLeft {
+        bottom: var(--givewp-spacing-15);
+        left: var(--givewp-spacing-6);
+        animation: slideRight 300ms ease-in;
+    }
+
+    &.bottomRight {
+        bottom: var(--givewp-spacing-15);
+        right: var(--givewp-spacing-6);
+        animation: slideLeft 300ms ease-in;
+    }
+
+
+    .content {
+        flex-grow: 4;
+    }
+
+    .closeIconSize {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .close {
+        all: unset;
+        cursor: pointer;
+        padding-top: 4px;
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        left: -500px;
+    }
+    100% {
+        left: var(--givewp-spacing-10);
+    }
+}
+
+@keyframes slideLeft {
+    0% {
+        right: -500px;
+    }
+    100% {
+        right: var(--givewp-spacing-10);
+    }
+}

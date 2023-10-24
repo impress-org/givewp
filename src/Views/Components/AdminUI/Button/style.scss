@@ -1,0 +1,86 @@
+.givewp-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    border-radius: var(--givewp-rounded-4);
+    cursor: pointer;
+    border: 1px solid transparent;
+
+    > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 1rem;
+
+        > svg {
+            display: block;
+        }
+    }
+
+    &.primary {
+        color: var(--givewp-shades-white);
+        background: var(--wp-blue-blue-50, #2271b1);
+
+        &:hover {
+            background-color: var(--wp-blue-blue-60, #135e96);
+        }
+
+        &:active {
+            background-color: var(--wp-blue-blue-50, #2271b1);
+        }
+    }
+
+    &.secondary {
+        background: var(--givewp-shades-white);
+        color: var(--givewp-grey-900);
+        border-color: var(--givewp-grey-900);
+
+        &:hover {
+            color: var(--givewp-blue-700);
+            border-color: var(--givewp-blue-700);
+        }
+
+        &:active {
+            color: var(--givewp-blue-700);
+            border-color: var(--givewp-blue-700);
+        }
+    }
+
+    &.danger {
+        background-color: var(--givewp-red-500);
+        color: var(--givewp-shades-white);
+        border-color: var(--givewp-red-500);
+
+        &:hover {
+            background-color: var(--givewp-red-400);
+        }
+
+        &:active {
+            background-color: var(--givewp-red-600);
+        }
+    }
+
+    &.small {
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+    }
+
+    &.large {
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-20);
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.5;
+        height: 3rem;
+    }
+
+    &:disabled {
+        background-color: var(--givewp-grey-300) !important;
+        color: var(--givewp-shades-white);
+        border-color: var(--givewp-grey-300);
+    }
+
+}

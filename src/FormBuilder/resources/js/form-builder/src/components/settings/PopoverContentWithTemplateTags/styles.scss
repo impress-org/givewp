@@ -1,0 +1,122 @@
+.givewp-popover-content-settings {
+    border-radius: 2px;
+    box-shadow: 0px 2px 4px 0px #EBEBEB;
+
+    .components-popover__content {
+        min-width: 24rem;
+        border-radius: 5px;
+
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: solid 1px var(--givewp-grey-100);
+        padding: .375rem 1rem;
+        border-radius: 2px 2px 0 0;
+    }
+
+    &__heading {
+        font-size: 0.812rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.137rem;
+        color: var(--givewp-grey-900);
+
+        button svg {
+            height: 1rem;
+            width: 1rem;
+        }
+    }
+
+    &__textarea, &__editor {
+        .components-base-control__field {
+            margin-bottom: 0;
+        }
+
+        textarea,
+        .ql-editor {
+            font-size: 0.813rem;
+            line-height: 1.7;
+            color: var(--givewp-grey-900);
+            padding: 1rem 1rem 0;
+            border: 0;
+            min-height: 11.625rem;
+        }
+
+        .ql-container,
+        .ql-toolbar {
+            border: none !important;
+        }
+
+        .ql-toolbar {
+            border-bottom: 1px solid #ccc !important;
+        }
+    }
+
+    &__template-tags-heading {
+        font-size: 0.812rem;
+        font-weight: 500;
+        padding: .725rem 1rem;
+        color: var(--givewp-grey-900);
+        border-top: solid 1px var(--givewp-grey-100);
+        border-bottom: solid 1px var(--givewp-grey-100);
+    }
+
+    &__template-tags-list {
+        max-height: 22.5rem;
+        overflow: scroll;
+        margin: 0 auto;
+        scroll-snap-type: y mandatory;
+
+        & > li {
+            scroll-snap-align: start;
+        }
+    }
+
+    &__template-tag-list-item {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 1rem;
+
+        &:nth-child(even) {
+            background-color: var(--givewp-grey-5);
+        }
+
+        .givewp-popover-content-settings__copy-button {
+            opacity: 0;
+            font-size: 0.75rem;
+        }
+
+        &:hover {
+            .givewp-popover-content-settings__copy-button {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__template-tag {
+        background-color: var(--givewp-blue-25);
+        color: var(--givewp-blue-900);
+        font-weight: 500;
+        font-size: .812rem;
+        line-height: 1.137rem;
+        height: 100%;
+    }
+
+    &__template-tag-list-item-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 0 0.5rem 0;
+    }
+
+    &__template-tag-list-item-bottom {
+        font-size: 0.75rem;
+        line-height: 1.125rem;
+        color: var(--givewp-gray-700, #404040);
+    }
+}

@@ -1,0 +1,235 @@
+@use '../variables';
+
+$borderColor: #9A9A9A;
+
+.givewp-groups-donationAmount {
+    display: grid;
+    gap: var(--givewp-spacing-8);
+}
+
+.givewp-fields-amount {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+
+    & > *:not(:first-child) {
+        margin-bottom: var(--givewp-spacing-2);
+    }
+
+    & > *:last-child {
+        margin-bottom: 0;
+    }
+
+    &__fixed-message {
+        background-color: var(--givewp-grey-25);
+
+        // TODO: Replace with oklch when oklch(from) is supported
+        //@supports (background-color: oklch(from var(--givewp-primary-color) 98% 5% h)) {
+        //    background-color: oklch(from var(--givewp-primary-color) 98% 5% h);
+        //}
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+        }
+
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    &__currency-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: var(--givewp-grey-50);
+        padding: 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__currency-select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 2rem 0.25rem 0.75rem;
+        background-color: var(--givewp-grey-50);
+        border-radius: 5px;
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+        }
+    }
+
+    &__input-label {
+        color: var(--givewp-grey-900);
+    }
+
+    &__input-label-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__input-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--givewp-shades-white);
+        border: solid 1px var(--givewp-grey-400);
+        border-radius: var(--givewp-rounded-4);
+        padding: var(--givewp-spacing-4) 0;
+
+        &.invalid {
+            border-color: red;
+        }
+
+        &:focus-within {
+            border-color: var(--givewp-primary-color);
+        }
+    }
+
+    &__input {
+        height: fit-content;
+        background-color: rgb(255, 255, 255);
+        font-size: var(--givewp-font-size-headline-md);
+        font-weight: normal;
+        line-height: 1.5;
+        color: var(--givewp-grey-900);
+        border: none;
+        outline: none;
+        box-shadow: none;
+        width: 100%;
+        text-align: center;
+        padding: 0;
+
+        &::placeholder {
+            opacity: 0.6;
+            font-weight: 300;
+            color: var(--givewp-grey-400);
+        }
+    }
+
+    &__levels-container {
+        display: grid;
+        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--givewp-spacing-2);
+        inline-size: 100%;
+        list-style: none;
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    &__level {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $borderColor;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: var(--givewp-grey-900);
+        text-align: center;
+        line-height: 1.2;
+        padding: var(--givewp-spacing-3);
+        transition-property: background-color, color, filter, box-shadow, transform, border;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in;
+        width: 100%;
+        margin-bottom: 0;
+        box-shadow: none;
+
+        &:hover {
+            border-color: var(--givewp-primary-color);
+        }
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            padding: var(--givewp-spacing-4);
+        }
+
+        &--selected {
+            background-color: var(--givewp-primary-color);
+            border-color: var(--givewp-primary-color);
+            color: #fff;
+        }
+    }
+
+    .givewp-field-error-message {
+        margin: 0;
+    }
+}
+
+.givewp-fields-radio-subscriptionPeriod {
+    legend {
+        color: var(--givewp-grey-900);
+
+        /**
+         * Applying the margin here as the parent, a fieldset, cannot be a flexbox
+         */
+        margin-bottom: var(--givewp-spacing-2);
+    }
+
+    .givewp-fields-radio__options {
+        display: flex;
+        padding: var(--givewp-spacing-1);
+        gap: var(--givewp-spacing-1);
+        grid-auto-rows: 1fr;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        width: 100%;
+        border: 1px solid var(--givewp-primary-color);
+        border-radius: var(--givewp-rounded-4);
+
+        @media screen and (max-width: variables.$givewp-breakpoint-md) {
+            &:has(> :nth-child(4)) {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .givewp-fields-radio__option-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            border-radius: var(--givewp-rounded-2);
+            transition: background-color 100ms ease-in-out;
+
+            &:has(> input[type="radio"]:checked) {
+                background-color: var(--givewp-primary-color);
+
+                label {
+                    color: var(--givewp-shades-white);
+                }
+            }
+        }
+
+        label {
+            width: 100%;
+            padding: var(--givewp-spacing-2) 0;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        input[type="radio"] {
+            display: none;
+
+            &:focus {
+                box-shadow: none;
+                outline: none;
+            }
+        }
+    }
+}

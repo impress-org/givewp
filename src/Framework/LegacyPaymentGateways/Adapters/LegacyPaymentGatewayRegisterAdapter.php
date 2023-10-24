@@ -98,39 +98,4 @@ class LegacyPaymentGatewayRegisterAdapter
     {
         return in_array(2, $gateway->supportsFormVersions(), true);
     }
-
-    /**
-     * @since 2.30.0
-     */
-    public function getRegisteredGatewayAdminLabelWithSupportedFormVersion(PaymentGateway $gateway): string
-    {
-        $name = $gateway->getName();
-        $version = in_array(2, $gateway->supportsFormVersions(), true) && !in_array(
-            3,
-            $gateway->supportsFormVersions(),
-            true
-        ) ? "*(v2)" : '';
-
-        return trim("$name $version");
-    }
-
-    /**
-     * Update the admin label for gateways to display version compatibility
-     *
-     * @since 2.30.0
-     */
-    public function updatePaymentGatewayAdminLabelsWithSupportedFormVersions(string $label, string $gatewayId): string
-    {
-        $version = "*(v2)";
-
-        $gateway = give()->gateways->hasPaymentGateway($gatewayId) ? give()->gateways->getPaymentGateway(
-            $gatewayId
-        ) : false;
-
-        if (!$gateway) {
-            return trim("$label $version");
-        }
-
-        return $this->getRegisteredGatewayAdminLabelWithSupportedFormVersion($gateway);
-    }
 }

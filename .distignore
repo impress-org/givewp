@@ -21,6 +21,19 @@
 .travis.yml
 .editorconfig
 .babelrc
+
+
+/tests
+/node_modules
+/packages/form-builder/node_modules
+/assets/src
+/vendor/bin
+/vendor/composer/installers
+
+.travis.yml
+.editorconfig
+.babelrc
+.babelrc.json
 .jscrsrc
 .jshintrc
 .eslintignore
@@ -28,6 +41,7 @@
 .eslintrc.json
 .prettierrc.json
 .prettierignore
+.phpcs.xml
 .stylelintrc.json
 .huskyrc.json
 .lintstagedrc.json
@@ -41,6 +55,7 @@ phpstan.neon
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
 bower.json
+build.php
 composer.json
 composer.lock
 package.json
@@ -65,3 +80,5 @@ wp-textdomain.js
 DOCKER_ENV
 docker_tag
 output.log
+docker-compose.yml
+wp-textdomain.js

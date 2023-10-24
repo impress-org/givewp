@@ -7,6 +7,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\PaymentGateways\Actions\HandleGatewaySubscriptionCommand;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
@@ -33,25 +34,38 @@ class GatewaySubscriptionController
     }
 
     /**
+     * @since 3.0.0 Catch and handle errors from the gateway upstream
      * @since 2.27.0
+     *
+     * @throws Exception|TypeNotSupported|PaymentGatewayException
      */
     public function create(Donation $donation, Subscription $subscription, array $gatewayData = [])
     {
+        $command = $this->gateway->createSubscription($donation, $subscription, $gatewayData);
+
+        $this->handleGatewayCommand($command, $donation, $subscription);
+    }
+
+    /**
+     * @since 2.33.0
+     */
+    public function synchronizeSubscription(Subscription $subscription)
+    {
         try {
-            $command = $this->gateway->createSubscription($donation, $subscription, $gatewayData);
-            $this->handleGatewayCommand($command, $donation, $subscription);
+            $command = $this->gateway->synchronizeSubscription($subscription);
+            $this->handleGatewayCommand($command, $subscription->initialDonation(), $subscription);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => $this->gateway::id(),
-                    'Donation' => $donation->toArray(),
+                    'Donation' => $subscription->initialDonation()->toArray(),
                     'Subscription' => $subscription->toArray(),
                 ]
             );
 
             $message = __(
-                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
+                'An unexpected error occurred while synchronizing the subscription.  Please try again or contact the site administrator.',
                 'give'
             );
 

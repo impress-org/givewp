@@ -1,0 +1,17 @@
+.givewp-control-popover-setting-button {
+    transition: all 0.2s;
+
+    &:hover,
+    &--active {
+        svg > path {
+            fill: #007cba;
+        }
+
+        &:not([aria-disabled='true']):active {
+            svg > path {
+                fill: #007cba;
+            }
+        }
+    }
+}
+

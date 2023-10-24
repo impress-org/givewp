@@ -5,12 +5,13 @@ namespace Give\Framework\ValidationRules\Rules;
 
 use Closure;
 use Give\Framework\Http\Types\UploadedFile;
+use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
  * @since 2.32.0
  */
-class File implements ValidationRule
+class File implements ValidationRule, ValidatesOnFrontEnd
 {
     /**
      * The size, in bytes, of the uploaded file
@@ -109,5 +110,10 @@ class File implements ValidationRule
     public static function fromString(string $options = null): ValidationRule
     {
         return new self();
+    }
+
+    public function serializeOption()
+    {
+        return null;
     }
 }

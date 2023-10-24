@@ -57,6 +57,8 @@ class ModelQueryBuilder extends QueryBuilder
      * @since 2.19.6
      *
      * @return M|null
+     *
+     * @param int $output For inheritance compatibility only, unused.
      */
     public function get($output = OBJECT)
     {
@@ -75,6 +77,8 @@ class ModelQueryBuilder extends QueryBuilder
      * @since 2.19.6
      *
      * @return M[]|null
+     *
+     * @param int $output For inheritance compatibility only, unused.
      */
     public function getAll($output = OBJECT)
     {

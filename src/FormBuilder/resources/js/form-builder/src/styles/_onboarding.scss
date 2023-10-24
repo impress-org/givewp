@@ -1,0 +1,239 @@
+.shepherd-element,
+.shepherd-modal-overlay-container {
+    z-index: 9999999999 !important;
+}
+.shepherd-element {
+    padding: var(--givewp-spacing-6);
+    padding-top: var(--givewp-spacing-4);
+}
+.shepherd-text {
+    padding: 0;
+
+    .js-exit-tour {
+        height: auto;
+        padding: 0;
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+.shepherd-target {
+    outline: solid 2px var(--wp-blue-blue-50);
+}
+#form-blocks-canvas.shepherd-target {
+    padding: 58px;
+    margin: -58px;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    opacity: .3 !important;
+}
+.shepherd-header {
+    display: none !important;
+}
+.shepherd-footer {
+    margin-top: var(--givewp-spacing-5);
+    padding: 0;
+}
+.shepherd-button {
+    flex: 1;
+    font-size: 14px;
+    padding: var(--givewp-spacing-3);
+    border-radius: 2px;
+
+    &.shepherd-button-primary {
+        color: var(--givewp-shades-white);
+        background-color: var(--wp-admin-theme-color);
+        &:hover {
+            color: var(--givewp-shades-white) !important;
+            background-color: var(--wp-admin-theme-color-darker-10);
+        }
+    }
+    &.shepherd-button-secondary {
+        color: var(--wp-admin-theme-color) !important;
+        border: solid 1px var(--wp-admin-theme-color);
+        background-color: var(--givewp-shades-white);
+        &:hover {
+            color: var(--wp-admin-theme-color-darker-10) !important;
+            border: solid 1px var(--wp-admin-theme-color-darker-10);
+            background-color: var(--givewp-shades-white) !important;
+        }
+    }
+}
+
+.show-design-selector-modal {
+    .components-modal__header {
+        display: none;
+    }
+
+    .components-modal__content {
+        margin: 0;
+        width: 45rem;
+        padding: var(--givewp-spacing-6);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .givewp-design-selector--container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-10);
+    }
+
+    .givewp-design-selector--header {
+        font-size: 1rem;
+
+        h3 {
+            font-size: 1.5rem;
+            margin: var(--givewp-spacing-3) 0 var(--givewp-spacing-2) 0;
+        }
+    }
+
+    .givewp-design-selector--cards {
+        display: grid;
+        grid-auto-flow: column;
+        column-gap: var(--givewp-spacing-10);
+    }
+
+    .givewp-design-selector--card {
+
+        position: relative;
+
+        height: 100%;
+        border-radius: 2px;
+        border: solid 1px var(--givewp-grey-50);
+
+        font-size: 0.875rem;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.57;
+
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
+
+        img {
+            height: 12.5rem;
+            width: 17.25rem;
+            margin-bottom: var(--givewp-spacing-4);
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        svg {
+            position: absolute;
+            bottom: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-1);
+        }
+
+        &:hover,
+        &.selected {
+            border-color: var(--givewp-green-500);
+        }
+
+        &.selected {
+            outline: 1px solid var(--givewp-green-500);
+        }
+    }
+
+    .givewp-design-selector--button {
+        width: 100%;
+        justify-content: center;
+        padding: var(--givewp-spacing-3);
+
+        font-size: 1rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+
+        &:disabled,
+        &[disabled] {
+            background-color: var(--givewp-grey-300) !important;
+        }
+    }
+}
+
+.show-design-selector-modal {
+    // Hack to hide the rendered for design on the first step of onboarding.
+    // This prevents the user from seeing the design change when they select a design,
+    // which can be confusing because the multi-step design is fully hidden by the modal.
+    // This also covers up the initial render of the form design when launching the form builder.
+    .interface-interface-skeleton__content {
+        visibility: hidden;
+    }
+}
+
+.show-schema-welcome-modal {
+
+    .components-modal__header {
+        display: none;
+    }
+
+    .components-modal__content {
+        margin: 0;
+        width: 27.5rem;
+        padding: var(--givewp-spacing-6);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .givewp-schema-welcome--container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
+        svg {
+            height: 1.867rem;
+            width: 1.867rem;
+        }
+
+        h3 {
+            margin: 0;
+            margin-bottom: var(--givewp-spacing-2);
+            font-size: 1.25rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.4;
+        }
+
+        p {
+            font-size: 0.875rem;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+        }
+    }
+
+    .givewp-schema-welcome--button {
+        width: 100%;
+        justify-content: center;
+        padding: var(--givewp-spacing-3);
+
+        font-size: 1rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+    }
+}
+
+// Guided tour overrides for the design tour.
+[data-shepherd-step-id^="design"] {
+    .js-exit-tour, // Hide "Exit Tour" for the design tour.
+    .shepherd-button-secondary // Hide the "previous" button for the design tour.
+    {
+        display: none;
+    }
+}

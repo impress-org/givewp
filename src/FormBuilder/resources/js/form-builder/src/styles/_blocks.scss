@@ -1,0 +1,55 @@
+/**
+ * Amount Block
+ */
+[data-type='givewp/donation-amount'] {
+    .give-donation-block {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
+        &__levels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--givewp-spacing-4);
+            text-align: center;
+        }
+
+        &__level {
+            font-size: 18px;
+            font-weight: 500;
+            padding: var(--givewp-spacing-4);
+            border-radius: var(--givewp-rounded-4);
+            background-color: var(--givewp-neutral-70);
+            cursor: pointer;
+
+            &--selected {
+                background-color: var(--givewp-neutral-90);
+                color: var(--givewp-shades-white);
+            }
+        }
+    }
+}
+
+[data-type="givewp/billing-address"] {
+    .give-billing-address-block {
+        &__group-label {
+            color: var(--givewp-gray-100);
+        }
+    }
+}
+
+[data-type="givewp/text"] {
+    .give-text-block {
+        &__label {
+            display: inline-block;
+            margin-bottom: var(--givewp-spacing-2);
+            padding: 0;
+        }
+
+        &__description {
+            font-size: 0.875rem;
+            line-height: 1rem;
+            margin: var(--givewp-spacing-1) 0 var(--givewp-spacing-2);
+        }
+    }
+}

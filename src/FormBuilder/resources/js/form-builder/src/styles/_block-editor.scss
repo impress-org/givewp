@@ -1,0 +1,219 @@
+
+.interface-interface-skeleton__editor {
+    background-color: white;
+}
+
+.interface-interface-skeleton__header {
+    top: 0;
+    right: 0;
+    left: 0;
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+    z-index: 30; // Below the components-popover, which is at index 31.
+}
+
+.interface-interface-skeleton__body {
+    width: 100%;
+    background-color: var(--givewp-gray-10);
+}
+
+.interface-interface-skeleton__secondary-sidebar {
+    position: relative;
+}
+
+
+.interface-interface-skeleton__content {
+    width: 720px;
+    margin: auto;
+    padding: 100px 0; /* Leave room for toolbar above first block. */
+    flex-grow: unset;
+    box-sizing: border-box;
+
+    @media screen and (max-width: 782px) {
+        padding: 1rem 0;
+    }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+    }
+
+    input:not([type=radio]):not([type=checkbox]),
+    select,
+    .components-text-control__input,
+    .components-select-control__input {
+        inline-size: 100%;
+        padding: 16px;
+
+        border: 1px solid var(--givewp-neutral-110) !important;
+        border-radius: 5px;
+
+        background-color: #fff;
+        color: var(--givewp-gray-60) !important;
+        font-size: 16px !important;
+        font-weight: normal;
+        line-height: 20px;
+    }
+
+    .components-select-control__input {
+        height: 52px !important;
+
+        & ~ .components-input-control__suffix {
+            & > div {
+                padding: 0 10px;
+            }
+
+            svg {
+                height: 24px;
+                width: 24px;
+                fill: var(--givewp-gray-60);
+            }
+        }
+    }
+
+    .components-input-control__backdrop {
+        display: none !important;
+    }
+
+    .components-base-control__label,
+    .components-input-control__label {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        color: var(--givewp-gray-100);
+        text-transform: none !important;
+    }
+
+    .give-is-required .components-base-control__label::after,
+    .give-is-required .components-input-control__label::after {
+        content: ' *';
+        color: var(--givewp-alert-100);
+    }
+}
+
+[data-type='givewp/section'],
+[data-type='givewp/donor-info'],
+[data-type='givewp/donation-amount'],
+[data-type='givewp/payment-details'] {
+    & > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+    }
+}
+
+[data-type='givewp/paragraph'] .rich-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.block-editor-list-view-leaf.is-selected,
+.block-editor-list-view-leaf.is-selected td {
+    background: var(--wp-admin-theme-color);
+}
+
+.block-editor-block-list__block {
+    position: relative;
+
+    .wp-block {
+
+        &.is-selected, &.is-selected:focus {
+            // Outline doesn't seem to respect border-radius directly,
+            // but adding a 1px border-radius seems to get it close.
+            border-radius: 1px;
+            outline: 1px solid var(--wp-admin-theme-color);
+            outline-offset: 0.5rem;
+        }
+    }
+
+    &:not(.is-selected) {
+        .block-editor-default-block-appender {
+            display: none;
+        }
+    }
+
+    &.is-selected {
+        .block-editor-block-list__layout-section {
+            border-color: var(--wp-admin-theme-color);
+        }
+    }
+
+    .block-editor-default-block-appender .block-editor-inserter {
+        position: relative;
+    }
+
+    .block-list-appender {
+        position: absolute;
+        bottom: -36px;
+        width: 100%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:only-child {
+            bottom: 0;
+
+            .block-editor-default-block-appender__content {
+                display: none;
+            }
+        }
+    }
+
+    .components-base-control__field {
+        margin-bottom: 0;
+    }
+}
+
+.popover-slot {
+    position: fixed;
+}
+
+.block-editor-inserter__main-area {
+    width: 100%;
+}
+
+.components-popover.block-editor-block-popover .components-popover__content {
+    top: -0.5rem;
+    position: relative;
+}
+
+.interface-interface-skeleton {
+    left: 0 !important;
+    top: 0;
+}
+
+.block-editor-block-list__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .block-editor-block-list__block {
+        &:not([contenteditable]):focus::after {
+            box-shadow: none;
+        }
+
+        &.is-highlighted {
+            box-shadow: none;
+
+            &::after {
+                box-shadow: none;
+                outline: none;
+            }
+        }
+    }
+}
+
+.block-editor-block-list__layout-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    padding: 36px 40px 46px 40px;
+    background-color: white;
+}
+
+.givewp-support-link.components-external-link > svg {
+    display: none; /* Hide included icon, in favor of menu item icon. */
+}

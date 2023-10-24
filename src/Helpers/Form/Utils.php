@@ -242,4 +242,12 @@ class Utils
     {
         return ! empty($_GET['giveDisableDonateNowButton']);
     }
+
+    /**
+     * @since 3.0.0
+     */
+    public static function isV3Form(int $formId): bool
+    {
+        return (bool)give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
+    }
 }

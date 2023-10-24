@@ -3,13 +3,16 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Form\Utils;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\PaymentGateways\DataTransferObjects\FormData;
@@ -26,6 +29,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class LegacyPaymentGatewayAdapter
 {
+    use HandleHttpResponses;
 
     /**
      * Get legacy form field markup to display gateway specific payment fields
@@ -44,6 +48,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
      * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
@@ -58,6 +63,9 @@ class LegacyPaymentGatewayAdapter
         $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
+
+        $this->validateDonationFormStatus($formData->formId);
+
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
@@ -70,9 +78,11 @@ class LegacyPaymentGatewayAdapter
         if (give_recurring_is_donation_recurring($legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
-            $paymentMode = !empty($legacyDonationData['payment_mode']) ? new SubscriptionMode($legacyDonationData['payment_mode']) : null;
+            $paymentMode = !empty($legacyDonationData['payment_mode']) ? new SubscriptionMode(
+                $legacyDonationData['payment_mode']
+            ) : null;
 
-            if ( $paymentMode === null ) {
+            if ($paymentMode === null) {
                 $paymentMode = give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE();
             }
 
@@ -110,7 +120,25 @@ class LegacyPaymentGatewayAdapter
             $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
 
             $controller = new GatewaySubscriptionController($registeredGateway);
-            $controller->create($donation, $subscription, $gatewayData);
+             try {
+                $controller->create($donation, $subscription, $gatewayData);
+            } catch (Exception $exception) {
+                PaymentGatewayLog::error(
+                    $exception->getMessage(),
+                    [
+                        'Payment Gateway' => $registeredGateway::id(),
+                        'Donation' => $donation->toArray(),
+                        'Subscription' => $subscription->toArray(),
+                    ]
+                );
+
+                $message = __(
+                    'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
+                    'give'
+                );
+
+                $this->handleExceptionResponse($exception, $message);
+            }
         } else {
             $donation->type = DonationType::SINGLE();
             $donation->save();
@@ -131,7 +159,25 @@ class LegacyPaymentGatewayAdapter
             $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
 
             $controller = new GatewayPaymentController($registeredGateway);
-            $controller->create($donation, $gatewayData);
+
+            try {
+                $controller->create($donation, $gatewayData);
+            } catch (Exception $exception) {
+                PaymentGatewayLog::error(
+                    $exception->getMessage(),
+                    [
+                        'Payment Gateway' => $registeredGateway::id(),
+                        'Donation' => $donation->toArray(),
+                    ]
+                );
+
+                $message = __(
+                    'An unexpected error occurred while processing the donation.  Please try again or contact the site administrator.',
+                    'give'
+                );
+
+                $this->handleExceptionResponse($exception, $message);
+            }
         }
     }
 
@@ -193,6 +239,27 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * Validate Donation Form Status
+     *
+     * @since 2.33.2
+     */
+    private function validateDonationFormStatus(int $formId)
+    {
+        $donationForm = DonationForm::find($formId);
+
+        if (!$donationForm || $donationForm->status->isTrash()) {
+            wp_die(
+                esc_html__(
+                    'This donation form is not accepting donations.',
+                    'give'
+                ),
+                esc_html__('Error', 'give'),
+                ['response' => 403]
+            );
+        }
+    }
+
+    /**
      * Set donation id to purchase session for use in the donation receipt.
      *
      * @since 2.21.0
@@ -214,10 +281,10 @@ class LegacyPaymentGatewayAdapter
     /**
      * @since 2.21.0
      *
-     * @param int|null $userId
-     * @param string $donorEmail
-     * @param string $firstName
-     * @param string $lastName
+     * @param  int|null  $userId
+     * @param  string  $donorEmail
+     * @param  string  $firstName
+     * @param  string  $lastName
      *
      * @return Donor
      * @throws Exception
@@ -264,38 +331,38 @@ class LegacyPaymentGatewayAdapter
         $donation = Donation::find($donationId);
         if ($donation->gatewayId === $registeredGateway::id()) {
             ?>
-            <div id="give-gateway-opt-refund-wrap"
-                 class="give-gateway-opt-refund give-admin-box-inside give-hidden">
-                <p>
-                    <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
-                    <label for="give-gateway-opt-refund">
-                        <?php
-                        esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway->getName()), 'give');
-                        ?>
-                    </label>
-                </p>
-            </div>
-            <script>
-                if (!!document.getElementById('give-payment-status') &&
-                    1 === document.querySelectorAll('div.give-admin-box > div.give-hidden[id*="opt-refund"] input[type="checkbox"]').length
-                ) {
-                    document.getElementById('give-payment-status').addEventListener('change', function (event) {
-                        const refundCheckbox = document.getElementById('give-gateway-opt-refund');
+          <div id="give-gateway-opt-refund-wrap"
+               class="give-gateway-opt-refund give-admin-box-inside give-hidden">
+            <p>
+              <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
+              <label for="give-gateway-opt-refund">
+                  <?php
+                  esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway->getName()), 'give');
+                  ?>
+              </label>
+            </p>
+          </div>
+          <script>
+            if (!!document.getElementById("give-payment-status") &&
+              1 === document.querySelectorAll("div.give-admin-box > div.give-hidden[id*=\"opt-refund\"] input[type=\"checkbox\"]").length
+            ) {
+              document.getElementById("give-payment-status").addEventListener("change", function(event) {
+                const refundCheckbox = document.getElementById("give-gateway-opt-refund");
 
-                        if (null === refundCheckbox) {
-                            return;
-                        }
-
-                        refundCheckbox.checked = false;
-
-                        if ('refunded' === event.target.value) {
-                            document.getElementById('give-gateway-opt-refund-wrap').style.display = 'block';
-                        } else {
-                            document.getElementById('give-gateway-opt-refund-wrap').style.display = 'none';
-                        }
-                    });
+                if (null === refundCheckbox) {
+                  return;
                 }
-            </script>
+
+                refundCheckbox.checked = false;
+
+                if ("refunded" === event.target.value) {
+                  document.getElementById("give-gateway-opt-refund-wrap").style.display = "block";
+                } else {
+                  document.getElementById("give-gateway-opt-refund-wrap").style.display = "none";
+                }
+              });
+            }
+          </script>
             <?php
         }
     }
@@ -309,11 +376,13 @@ class LegacyPaymentGatewayAdapter
         string $oldStatus,
         PaymentGateway $registeredGateway
     ) {
-        $gatewayOptRefund = ! empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : '';
-        $canProcessRefund = ! empty($gatewayOptRefund) ? $gatewayOptRefund : false;
+        $gatewayOptRefund = !empty($_POST['give_gateway_opt_refund']) ? give_clean(
+            $_POST['give_gateway_opt_refund']
+        ) : '';
+        $canProcessRefund = !empty($gatewayOptRefund) ? $gatewayOptRefund : false;
 
         // Only move forward if refund requested.
-        if ( ! $canProcessRefund) {
+        if (!$canProcessRefund) {
             return;
         }
 

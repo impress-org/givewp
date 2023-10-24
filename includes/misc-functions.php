@@ -145,40 +145,51 @@ function give_get_timezone_id() {
  *
  * Returns the IP address of the current visitor
  *
+ * @since 2.33.5  Add $single param.
+ * @since       1.0
+ *
  * @return string $ip User's IP address
- * @since 1.0
  */
-function give_get_ip() {
-
-	$ip = '127.0.0.1';
+function give_get_ip($single = true)
+{
+    $ip_addresses = '127.0.0.1';
+    $header_type = '';
 
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 		// check ip from share internet
-		$ip = $_SERVER['HTTP_CLIENT_IP'];
+        $ip_addresses = $_SERVER['HTTP_CLIENT_IP'];
+        $header_type = 'HTTP_CLIENT_IP';
 	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 		// to check ip is pass from proxy
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ip_addresses = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $header_type = 'HTTP_X_FORWARDED_FOR';
 	} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-		$ip = $_SERVER['REMOTE_ADDR'];
+        $ip_addresses = $_SERVER['REMOTE_ADDR'];
+        $header_type = 'REMOTE_ADDR';
 	}
 
 	/**
 	 * Filter the IP
 	 *
-	 * @since 1.0
+     * @since 2.33.5 Add $single and $header_type params.
+     * @since      1.0
 	 */
-	$ip = apply_filters( 'give_get_ip', $ip );
+    $ip_addresses = apply_filters('give_get_ip', $ip_addresses, $single, $header_type);
 
 	// Filter empty values.
-	if ( false !== strpos( $ip, ',' ) ) {
-		$ip = give_clean( explode( ',', $ip ) );
-		$ip = array_filter( $ip );
-		$ip = implode( ',', $ip );
+    if (false !== strpos($ip_addresses, ',')) {
+        $ip_addresses = give_clean(explode(',', $ip_addresses));
+        $ip_addresses = array_filter($ip_addresses);
+        $ip_addresses = implode(',', $ip_addresses);
 	} else {
-		$ip = give_clean( $ip );
+        $ip_addresses = give_clean($ip_addresses);
 	}
 
-	return $ip;
+    if ($single && false !== strpos($ip_addresses, ',')) {
+        return explode(',', $ip_addresses)[0];
+    }
+
+    return $ip_addresses;
 }
 
 

@@ -1,0 +1,28 @@
+.givewp-donation-form__steps-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  &-button {
+    background-color: #e4e4e4;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 12px;
+    width: 12px;
+    margin: 7.5px;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+    &:focus {
+      border: 1px solid #959595;
+      outline: none;
+      box-shadow: none;
+    }
+
+    &--current {
+      background-color: #747474;
+    }
+  }
+}

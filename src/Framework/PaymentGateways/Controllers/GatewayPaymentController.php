@@ -7,6 +7,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\PaymentGateways\Actions\HandleGatewayPaymentCommand;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
@@ -32,29 +33,16 @@ class GatewayPaymentController
     }
 
     /**
+     * @since 3.0.0 Catch and handle errors from the gateway upstream
      * @since 2.27.0
+     *
+     * @throws Exception|TypeNotSupported|PaymentGatewayException
      */
     public function create(Donation $donation, array $gatewayData = [])
     {
-        try {
-            $command = $this->gateway->createPayment($donation, $gatewayData);
-            $this->handleGatewayCommand($command, $donation);
-        } catch (\Exception $exception) {
-            PaymentGatewayLog::error(
-                $exception->getMessage(),
-                [
-                    'Payment Gateway' => $this->gateway::id(),
-                    'Donation' => $donation->toArray(),
-                ]
-            );
+        $command = $this->gateway->createPayment($donation, $gatewayData);
 
-            $message = __(
-                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
-                'give'
-            );
-
-            $this->handleExceptionResponse($exception, $message);
-        }
+        $this->handleGatewayCommand($command, $donation);
     }
 
     /**

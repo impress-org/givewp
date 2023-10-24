@@ -19,10 +19,11 @@ class File extends Field
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
-    use Concerns\AllowMultiple;
     use Concerns\HasDescription;
 
     const TYPE = 'file';
+
+    protected $allowedMimeTypes = [];
 
     /**
      * Set the maximum file size.
@@ -113,6 +114,7 @@ class File extends Field
             $this->rules((new FileRule())->allowedMimeTypes($allowedMimeTypes));
         }
 
+        $this->allowedMimeTypes = $allowedMimeTypes;
 
         return $this;
     }

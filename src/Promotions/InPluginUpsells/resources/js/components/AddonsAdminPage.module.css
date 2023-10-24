@@ -91,7 +91,8 @@
     gap: 2.25rem;
 }
 
-.tabs [data-reach-tab] {
+.tabs [data-reach-tab],
+.tabs [role='tab'] {
     position: relative;
     appearance: none;
     padding: 1em;
@@ -104,12 +105,14 @@
 }
 
 @media screen and (min-width: 48rem) {
-    .tabs [data-reach-tab] {
+    .tabs [data-reach-tab],
+    .tabs [role='tab'] {
         font-size: 1rem;
     }
 }
 
-.tabs [data-reach-tab]::after {
+.tabs [data-reach-tab]::after,
+.tabs [role='tab']:after {
     content: '';
     display: block;
     position: absolute;
@@ -120,6 +123,7 @@
     transition: background-color 100ms ease-in-out;
 }
 
-.tabs [data-reach-tab][aria-selected='true']::after {
+.tabs [data-reach-tab][aria-selected='true']::after,
+.tabs [role='tab'][aria-selected='true']::after {
     background-color: #66bb6a;
 }

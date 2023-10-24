@@ -6,9 +6,9 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.32.0
- * Requires at least: 5.0
- * Requires PHP: 7.0
+ * Version: 3.0.3
+ * Requires at least: 6.0
+ * Requires PHP: 7.2
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -43,8 +43,9 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
-use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProviderV2;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -55,20 +56,25 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
+use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
+use Give\FormMigration\ServiceProvider as FormMigrationServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
+use Give\Helpers\Language;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
@@ -172,7 +178,7 @@ final class Give
     private $container;
 
     /**
-     * @since 2.25.0 added HttpServiceProvider
+     * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
      *
@@ -202,7 +208,7 @@ final class Give
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
-        DonationFormsServiceProvider::class,
+        DonationFormsServiceProviderV2::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
@@ -213,6 +219,13 @@ final class Give
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
         FieldConditionsServiceProvider::class,
+        FormBuilderServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        FormDesignServiceProvider::class,
+        FormMigrationServiceProvider::class,
+        //TODO: merge this service provider
+        Give\PaymentGateways\Gateways\ServiceProvider::class,
+
     ];
 
     /**
@@ -232,25 +245,6 @@ final class Give
     public function __construct()
     {
         $this->container = new Container();
-    }
-
-    /**
-     * Bootstraps the Give Plugin
-     *
-     * @since 2.8.0
-     */
-    public function boot()
-    {
-        $this->setup_constants();
-
-        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
-        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
-
-        add_action('plugins_loaded', [$this, 'init'], 0);
-
-        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
-
-        do_action('give_loaded');
     }
 
     /**
@@ -294,6 +288,20 @@ final class Give
     }
 
     /**
+     * Loads the plugin language files.
+     *
+     * @since 3.0.0 Use Language class
+     * @since  1.0
+     * @access public
+     *
+     * @return void
+     */
+    public function load_textdomain()
+    {
+        Language::load();
+    }
+
+    /**
      * Binds the initial classes to the service provider.
      *
      * @since 2.8.0
@@ -305,109 +313,14 @@ final class Give
     }
 
     /**
-     * Setup plugin constants
+     * Sets up the Exception Handler to catch and handle uncaught exceptions
      *
-     * @since  1.0
-     * @access private
-     *
-     * @return void
+     * @since 2.11.1
      */
-    private function setup_constants()
+    private function setupExceptionHandler()
     {
-        // Plugin version.
-        if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.32.0');
-        }
-
-        // Plugin Root File.
-        if (!defined('GIVE_PLUGIN_FILE')) {
-            define('GIVE_PLUGIN_FILE', __FILE__);
-        }
-
-        // Plugin Folder Path.
-        if (!defined('GIVE_PLUGIN_DIR')) {
-            define('GIVE_PLUGIN_DIR', plugin_dir_path(GIVE_PLUGIN_FILE));
-        }
-
-        // Plugin Folder URL.
-        if (!defined('GIVE_PLUGIN_URL')) {
-            define('GIVE_PLUGIN_URL', plugin_dir_url(GIVE_PLUGIN_FILE));
-        }
-
-        // Plugin Basename aka: "give/give.php".
-        if (!defined('GIVE_PLUGIN_BASENAME')) {
-            define('GIVE_PLUGIN_BASENAME', plugin_basename(GIVE_PLUGIN_FILE));
-        }
-
-        // Make sure CAL_GREGORIAN is defined.
-        if (!defined('CAL_GREGORIAN')) {
-            define('CAL_GREGORIAN', 1);
-        }
-    }
-
-    /**
-     * Loads the plugin language files.
-     *
-     * @since  1.0
-     * @access public
-     *
-     * @return void
-     */
-    public function load_textdomain()
-    {
-        // Set filter for Give's languages directory
-        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
-        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
-
-        // Traditional WordPress plugin locale filter.
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'give');
-
-        unload_textdomain('give');
-        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
-        load_plugin_textdomain('give', false, $give_lang_dir);
-    }
-
-    /**
-     * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
-     *
-     * @since 2.5.0
-     *
-     * @return void
-     */
-    public function display_old_recurring_compatibility_notice()
-    {
-        // Show notice, if incompatibility found.
-        if (
-            defined('GIVE_RECURRING_VERSION')
-            && version_compare(GIVE_RECURRING_VERSION, '1.9.0', '<')
-            && defined('GIVE_STRIPE_VERSION')
-            && version_compare(GIVE_STRIPE_VERSION, '2.2.0', '<')
-        ) {
-            $message = sprintf(
-                __(
-                    '<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
-                    'give'
-                ),
-                esc_url('https://givewp.com/wp-login.php'),
-                esc_url('https://givewp.com/my-account/#tab_downloads')
-            );
-
-            Give()->notices->register_notice(
-                [
-                    'id' => 'give-compatibility-with-old-recurring',
-                    'description' => $message,
-                    'dismissible_type' => 'user',
-                    'dismiss_interval' => 'shortly',
-                ]
-            );
-        }
-    }
-
-    public function install()
-    {
-        $this->loadServiceProviders();
-        give_install();
+        $handler = new UncaughtExceptionLogger();
+        $handler->setupExceptionHandler();
     }
 
     /**
@@ -446,6 +359,142 @@ final class Give
     }
 
     /**
+     * Bootstraps the Give Plugin
+     *
+     * @since 2.8.0
+     */
+    public function boot()
+    {
+        $this->setup_constants();
+
+        $this->disableVisualDonationFormBuilderFeaturePlugin();
+
+        // Add compatibility notice for recurring and stripe support with Give 2.5.0.
+        add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
+
+        add_action('plugins_loaded', [$this, 'init'], 0);
+
+        register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
+
+        do_action('give_loaded');
+    }
+
+    /**
+     * Setup plugin constants
+     *
+     * @since  1.0
+     * @access private
+     *
+     * @return void
+     */
+    private function setup_constants()
+    {
+        // Plugin version.
+        if (!defined('GIVE_VERSION')) {
+            define('GIVE_VERSION', '3.0.2');
+        }
+
+        // Plugin Root File.
+        if (!defined('GIVE_PLUGIN_FILE')) {
+            define('GIVE_PLUGIN_FILE', __FILE__);
+        }
+
+        // Plugin Folder Path.
+        if (!defined('GIVE_PLUGIN_DIR')) {
+            define('GIVE_PLUGIN_DIR', plugin_dir_path(GIVE_PLUGIN_FILE));
+        }
+
+        // Plugin Folder URL.
+        if (!defined('GIVE_PLUGIN_URL')) {
+            define('GIVE_PLUGIN_URL', plugin_dir_url(GIVE_PLUGIN_FILE));
+        }
+
+        // Plugin Basename aka: "give/give.php".
+        if (!defined('GIVE_PLUGIN_BASENAME')) {
+            define('GIVE_PLUGIN_BASENAME', plugin_basename(GIVE_PLUGIN_FILE));
+        }
+
+        // Make sure CAL_GREGORIAN is defined.
+        if (!defined('CAL_GREGORIAN')) {
+            define('CAL_GREGORIAN', 1);
+        }
+    }
+
+    protected function disableVisualDonationFormBuilderFeaturePlugin()
+    {
+        // Include plugin.php to use is_plugin_active() below.
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        // Prevent fatal error due to a renamed class.
+        class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
+
+        if (is_plugin_active('givewp-next-gen/give-visual-form-builder.php')) {
+            deactivate_plugins(['givewp-next-gen/give-visual-form-builder.php']);
+
+            add_action('admin_notices', function () {
+                Give()->notices->register_notice([
+                    'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
+                    'description' => __(
+                        'The Visual Form Builder Beta plugin is no longer needed, since the form builder is included in your current version of GiveWP. To prevent conflicts, the Beta plugin has been deactivated and can be safely deleted.',
+                        'give'
+                    ),
+                    'type' => 'info',
+                ]);
+            });
+        }
+    }
+
+    /**
+     * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
+     *
+     * @since 2.5.0
+     *
+     * @return void
+     */
+    public function display_old_recurring_compatibility_notice()
+    {
+        // Show notice, if incompatibility found.
+        if (
+            defined('GIVE_RECURRING_VERSION')
+            && version_compare(GIVE_RECURRING_VERSION, '1.9.0', '<')
+            && defined('GIVE_STRIPE_VERSION')
+            && version_compare(GIVE_STRIPE_VERSION, '2.2.0', '<')
+        ) {
+            $message = sprintf(
+                __(
+                    '<strong>Attention:</strong> GiveWP 2.5.0+ requires the latest version of the Recurring Donations add-on to process payments properly with Stripe. Please update to the latest version add-on to resolve compatibility issues. If your license is active, you should see the update available in WordPress. Otherwise, you can access the latest version by <a href="%1$s" target="_blank">logging into your account</a> and visiting <a href="%1$s" target="_blank">your downloads</a> page on the GiveWP website.',
+                    'give'
+                ),
+                esc_url('https://givewp.com/wp-login.php'),
+                esc_url('https://givewp.com/my-account/#tab_downloads')
+            );
+
+            Give()->notices->register_notice(
+                [
+                    'id' => 'give-compatibility-with-old-recurring',
+                    'description' => $message,
+                    'dismissible_type' => 'user',
+                    'dismiss_interval' => 'shortly',
+                ]
+            );
+        }
+    }
+
+    /**
+     * Install Give
+     *
+     * Runs on plugin activation and performs initial setup.
+     *
+     * @since 2.33.3 set network_wide parameter to true, enabling installing in WP multisite
+     * @since 1.0.0
+     */
+    public function install()
+    {
+        $this->loadServiceProviders();
+        give_install(true);
+    }
+
+    /**
      * Register a Service Provider for bootstrapping
      *
      * @since 2.8.0
@@ -460,9 +509,9 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @since 2.8.0 retrieve from the service container
      * @since 2.7.0
      *
+     * @since 2.8.0 retrieve from the service container
      * @param string $propertyName
      *
      * @return mixed
@@ -478,9 +527,9 @@ final class Give
      *
      * @since 2.8.0
      *
-     * @param $arguments
-     *
      * @param $name
+     *
+     * @param $arguments
      *
      * @return mixed
      */
@@ -499,17 +548,6 @@ final class Give
     {
         return $this->container;
     }
-
-    /**
-     * Sets up the Exception Handler to catch and handle uncaught exceptions
-     *
-     * @since 2.11.1
-     */
-    private function setupExceptionHandler()
-    {
-        $handler = new UncaughtExceptionLogger();
-        $handler->setupExceptionHandler();
-    }
 }
 
 /**
@@ -522,8 +560,8 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
- * @since 2.8.0 add parameter for quick retrieval from container
- * @since 1.0
+ * @since    2.8.0 add parameter for quick retrieval from container
+ * @since    1.0
  *
  * @template T
  *

@@ -1,0 +1,106 @@
+/**
+ * Add space to avoid overlap with elements fixed to the bottom right of the editor.
+ */
+
+.sidebar-panel {
+    padding-bottom: 80px;
+}
+
+
+/**
+ * Add box-sizing so that input do not expand outside of the container
+ */
+
+.givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
+    input:not([type=radio]):not([type=checkbox]),
+    textarea,
+    .components-form-token-field__input-container {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .block-editor-panel-color-gradient-settings {
+        padding: 1rem 0;
+    }
+}
+
+/** ------------------------------- */
+
+/**
+ * Force full width on textareas
+ */
+
+.givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary textarea {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.givewp-next-gen-sidebar {
+    max-width: 100%;
+    width: var(--givewp-sidebar-width);
+    background: white;
+    border: 1px solid lightgray;
+    bottom: 0;
+    //color: slategray;
+    height: calc(100vh - 60px); // Account for header height above sidebar
+    //overflow: hidden; // The Inspector Popout needs to be visible.
+    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
+    top: 60px; // Account for header @todo move this to layout, not in the component.
+    overflow-y: scroll;
+
+    &.givewp-next-gen-sidebar-primary {
+        right: 0;
+    }
+
+    &.givewp-next-gen-sidebar-secondary {
+        left: 0;
+    }
+
+    &__inner {
+        padding: 1rem;
+    }
+
+    &__heading {
+        color: var(--givewp-gray-50);
+        padding: 1rem 0;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        font-weight: 500;
+    }
+
+    > .components-panel {
+        border-left: 0;
+        border-right: 0;
+        margin-bottom: -1px;
+        margin-top: -1px;
+
+        > .components-panel__header {
+            background: white;
+        }
+    }
+
+    .block-editor-block-inspector__card {
+        margin: 0;
+    }
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
+}

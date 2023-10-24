@@ -10,9 +10,7 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-use Give\Log\Log;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
-use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
 
@@ -631,36 +629,6 @@ function give_stripe_get_application_fee_amount( $amount ) {
 }
 
 /**
- * This function is used to fetch the donation id by meta key.
- *
- * @param string $id   Any String.
- * @param string $type intent_id/client_secret
- *
- * @since 2.5.0
- *
- * @return void
- */
-function give_stripe_get_donation_id_by( $id, $type ) {
-
-	global $wpdb;
-
-	$donation_id = 0;
-
-	switch ( $type ) {
-		case 'intent_id':
-			$donation_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_stripe_payment_intent_id' AND meta_value = %s LIMIT 1", $id ) );
-			break;
-
-		case 'client_secret':
-			$donation_id = $wpdb->get_var( $wpdb->prepare( "SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = '_give_stripe_payment_intent_client_secret' AND meta_value = %s LIMIT 1", $id ) );
-			break;
-	}
-
-	return $donation_id;
-
-}
-
-/**
  * This function is used to set Stripe API Key.
  *
  * @param int $form_id Form ID.
@@ -874,10 +842,11 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
 /**
  * This helper function is used to process Stripe payments.
  *
- * @param array  $donation_data  Donation form data.
- * @param object $stripe_gateway $this data.
- *
+ * @since 2.33.0 no longer store the payment intent secret
  * @since 2.5.0
+ *
+ * @param array $donation_data Donation form data.
+ * @param object $stripe_gateway $this data.
  *
  * @return void
  */
@@ -977,10 +946,6 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 			}
 
 			$intent = $stripe_gateway->payment_intent->create( $intent_args );
-
-			// Save Payment Intent Client Secret to donation note and DB.
-			give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
-			give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
 
 			// Set Payment Intent ID as transaction ID for the donation.
 			give_set_payment_transaction_id( $donation_id, $intent->id );
@@ -1508,15 +1473,14 @@ function give_stripe_get_account_options() {
 /**
  * This function is used to get single ip address for Stripe.
  *
- * @since 2.7.0
+ * @since      2.7.0
  *
  * @return string
+ *
+ * @deprecated 2.33.5 Use give_get_ip method to get the single IP address.
  */
 function give_stripe_get_ip_address() {
-
-	$ip_address_details = explode( ',', give_get_ip() );
-
-	return $ip_address_details[0];
+    return give_get_ip();
 }
 
 /**

@@ -28,7 +28,7 @@
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
                         <?= $goalStats[ 'raised' ]; ?>
-                    </span> <?= __('raised', 'give'); ?>
+                    </span> <?= __('Raised', 'give'); ?>
                 </li>
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
@@ -38,7 +38,7 @@
                 <li class="give-form-stats-panel-stat">
                     <span class="give-form-stats-panel-stat-number">
                         <?= $goalStats[ 'goal' ]; ?>
-                    </span> <?= __('goal', 'give'); ?>
+                    </span> <?= __('Goal', 'give'); ?>
                 </li>
                 <li class="give-form-goal-progress">
                     <div

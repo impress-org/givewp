@@ -1,0 +1,69 @@
+
+.givewp-fields-consent {
+    > span {
+        font-size: 1rem;
+        color: var(--givewp-grey-700);
+        font-weight: 500;
+    }
+
+    &-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        backdrop-filter: blur(2px);
+        z-index: 999;
+
+        &-content {
+            background: var(--givep-shades-white, #fff);
+            padding: 2.5rem 3.5rem;
+            width: calc(min(100%, 51.5rem) + 2rem);
+            box-shadow: 0 0.25rem 0.5rem 0 rgba(230, 230, 230, 1);
+            border-radius: 0.25rem;
+
+            > h2 {
+                font-size: 1.25rem;
+                color: var(--givewp-primary-color);
+            }
+
+            &__agreement-text {
+                max-height: 24rem;
+                margin-bottom: 1.5rem;
+                overflow-y: scroll;
+            }
+
+            &__actions {
+                display: flex;
+                gap: 1rem;
+
+                > button {
+                    margin: 0;
+                    background: transparent;
+                    color: var(--givewp-primary-color);
+                    border: 1px solid var(--givewp-primary-color);
+                }
+            }
+        }
+    }
+
+    &__checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+
+        > button {
+            border: 0;
+            color: var(--givewp-primary-color);
+            width: fit-content;
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+    }
+}
+

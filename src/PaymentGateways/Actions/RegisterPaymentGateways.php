@@ -7,12 +7,14 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\Actions\GetPaymentMethodFromRequest;
 use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderException;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
@@ -38,11 +40,9 @@ class RegisterPaymentGateways
      * @var string[]
      */
     public $gateways = [
-        // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-        //TestGateway::class,
-        //TestGatewayOffsite::class,
+        TestGateway::class,
         PayPalStandard::class,
-        PayPalCommerce::class,
+        OfflineGateway::class,
     ];
 
     /**

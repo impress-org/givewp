@@ -133,11 +133,12 @@ class PayPalAuth
     /**
      * Retrieves a Partner Link for on-boarding
      *
+     * @since 3.0.0 Implement $accountType. This parameter is required by GiveWP gateway server.
      * @since 2.9.0
      *
      * @return array|null
      */
-    public function getSellerPartnerLink($returnUrl, $country)
+    public function getSellerPartnerLink($returnUrl, $accountType)
     {
         $response = wp_remote_retrieve_body(
             wp_remote_post(
@@ -148,7 +149,7 @@ class PayPalAuth
                 [
                     'body' => [
                         'return_url' => $returnUrl,
-                        'country_code' => $country,
+                        'account_type' => $accountType,
                     ],
                 ]
             )

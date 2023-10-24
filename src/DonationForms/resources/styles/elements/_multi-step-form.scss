@@ -1,0 +1,179 @@
+.givewp-donation-form {
+    &__steps {
+        display: flex;
+        flex-direction: column;
+        max-width: 35rem;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        padding: 0;
+        margin: 0 auto;
+        border-radius: var(--givewp-rounded-8);
+        color: var(--givewp-grey-700);
+        background-color: var(--givewp-shades-white);
+        box-shadow: var(--givewp-shadow-sm);
+
+        &-header {
+            position: relative;
+            display: grid;
+            align-items: center;
+            grid-template-columns: 10% 1fr 10%;
+            width: 100%;
+            background: #fbfbfb;
+            border-bottom: 1px solid #f2f2f2;
+            z-index: 99;
+
+            button,
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        &-header-title {
+            position: absolute;
+            width: 80%;
+            text-align: center;
+            z-index: -1;
+            text-overflow: ellipsis;
+            margin-left: 10%;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        &-header-title-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--givewp-grey-900);
+            font-weight: 600;
+        }
+
+        &-header-previous-button {
+            padding: 0 20px;
+            height: 50px;
+            background-image: var(--givewp-icon-arrow-left);
+            background-color: transparent;
+            background-position: center;
+            border: none;
+            color: transparent;
+            font-size: 12px;
+            border-radius: 6px 0 0 0;
+            overflow: hidden;
+            cursor: pointer;
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        &-progress {
+            border-radius: 0;
+            height: 0.5rem;
+        }
+
+        &-body {
+            padding: 2rem 2rem 0 2rem;
+        }
+
+        &-footer {
+            padding-bottom: var(--givewp-spacing-4);
+        }
+
+        &-footer-secure {
+            display: flex;
+            column-gap: 0.5rem;
+            width: 100%;
+            padding: var(--givewp-spacing-4);
+            font-size: var(--givewp-font-size-paragraph-md);
+            color: var(--givewp-grey-900);
+            align-items: center;
+            justify-content: center;
+        }
+
+        &-footer-secure-icon,
+        &-footer-secure-text {
+            color: var(--givewp-secondary-color);
+        }
+    }
+
+    &__steps-button-next {
+        display: flex;
+        justify-content: center;
+        gap: var(--givewp-spacing-4);
+        background-color: var(--givewp-primary-color);
+        color: var(--givewp-grey-5);
+        line-height: 1.5;
+        font-weight: 600;
+
+        &:after {
+            content: "";
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: inherit;
+            background-image: var(--givewp-icon-arrow-right);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+            &:hover {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+            }
+        }
+    }
+
+    &__step {
+        @keyframes fadeInRight {
+            from {
+                opacity: 0.25;
+                transform: translate3d(2rem, 0, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0.25;
+                transform: translate3d(-2rem, 0, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        &--hidden {
+            display: none;
+        }
+
+        &--visible {
+            visibility: visible;
+        }
+
+        &--ascending {
+            animation: forwards 0.3s fadeInRight;
+        }
+
+        &--descending {
+            animation: forwards 0.3s fadeInLeft;
+        }
+    }
+}
+
+.givewp-layouts-multiStepForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-10);
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-10);
+    }
+}

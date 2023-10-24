@@ -1,0 +1,17 @@
+.give-section {
+    &__empty-block-inserter {
+        width: 100%;
+
+        .block-editor-inserter {
+            width: 100%;
+        }
+
+        .block-editor-button-block-appender {
+            width: 100%;
+            box-shadow: none;
+            border: dashed var(--givewp-gray-60) 2px;
+            padding: 3rem 0 !important;
+            font-size: var(--givewp-font-weight-paragraph-lg);
+        }
+    }
+}

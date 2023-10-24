@@ -105,11 +105,16 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @since 3.0.0 Conditionally add "Transaction Type" setting.
+     * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
     {
+        /* @var MerchantDetail $merchantDetails */
+        $merchantDetails = give(MerchantDetail::class);
+
         $settings = [
             [
                 'type' => 'title',
@@ -140,25 +145,11 @@ class PayPalCommerce extends PaymentGateway
                 'type' => 'paypal_commerce_account_manger',
             ],
             [
-                'name' => esc_html__('Transaction Type', 'give'),
-                'desc' => esc_html__(
-                    'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
-                    'give'
-                ),
-                'id' => 'paypal_commerce_transaction_type',
-                'type' => 'radio_inline',
-                'options' => [
-                    'donation' => esc_html__('Donation', 'give'),
-                    'standard' => esc_html__('Standard Transaction', 'give'),
-                ],
-                'default' => 'donation',
-            ],
-            [
                 'name' => esc_html__('Accept Venmo', 'give'),
                 'id' => 'paypal_commerce_accept_venmo',
                 'type' => 'radio_inline',
                 'desc' => esc_html__(
-                    'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                    'Displays a button allowing Donors to pay with Venmo (US-only). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
                     'give'
                 ),
                 'default' => 'enabled',
@@ -166,6 +157,24 @@ class PayPalCommerce extends PaymentGateway
                     'enabled' => esc_html__('Enabled', 'give'),
                     'disabled' => esc_html__('Disabled', 'give'),
                 ],
+            ],
+            [
+                'name' => esc_html__('Payment Field Type', 'give'),
+                'desc' => sprintf(
+                    esc_html__(
+                        '"Auto" provides the most payment options to the donor as possible, based on your account. "Smart Buttons Only" shows only the payment buttons. There is no "Hosted Only" option at this time due to limitations with PayPal\'s hosted fields. Not sure what this means? %1$sRead here%2$s.',
+                        'give'
+                    ),
+                    '<a href="https://docs.givewp.com/paypal-settings" target="_blank">',
+                    '</a>'
+                ),
+                'id' => 'paypal_payment_field_type',
+                'type' => 'radio_inline',
+                'options' => [
+                    'auto' => esc_html__('Auto', 'give'),
+                    'smart-buttons' => esc_html__('Smart Buttons Only', 'give'),
+                ],
+                'default' => 'auto',
             ],
             [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
@@ -180,7 +189,30 @@ class PayPalCommerce extends PaymentGateway
             ],
         ];
 
-        if (give(MerchantDetail::class)->accountIsReady) {
+        if (Utils::isDonationTransactionTypeSupported($merchantDetails->accountCountry ?: '')) {
+            $settings = give_settings_array_insert(
+                $settings,
+                'paypal_commerce_accept_venmo',
+                [
+                    [
+                        'name' => esc_html__('Transaction Type', 'give'),
+                        'desc' => esc_html__(
+                            'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, GiveWP transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.',
+                            'give'
+                        ),
+                        'id' => 'paypal_commerce_transaction_type',
+                        'type' => 'radio_inline',
+                        'options' => [
+                            'donation' => esc_html__('Donation', 'give'),
+                            'standard' => esc_html__('Standard Transaction', 'give'),
+                        ],
+                        'default' => 'donation',
+                    ]
+                ]
+            );
+        }
+
+        if ($merchantDetails->accountIsReady) {
             $settings = give_settings_array_insert(
                 $settings,
                 'paypal_commerce_gateway_settings_docs_link',

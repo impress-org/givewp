@@ -1,18 +1,15 @@
 import {__, sprintf} from '@wordpress/i18n';
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {CheckboxContext} from '@givewp/components/ListTable/ListTablePage';
 
-export const BulkActionCheckbox = ({id, name, singleName, data}) => {
-    const checkboxRefs = useContext(CheckboxContext);
-    // add this element's ref to the list of checkboxes so we can access them imperatively
-    const updateCheckboxRefs = useCallback(
-        (node) => {
-            if (node !== null && ! checkboxRefs?.current.includes(node)) {
-                checkboxRefs?.current.push(node);
-            }
-        },
-        [data]
-    );
+export const BulkActionCheckbox = ({id, name, singleName}) => {
+    const checkboxRefs = useContext<CheckboxContextProps>(CheckboxContext);
+    // add this element's ref to the list of checkboxes, so we can access them imperatively
+    const updateCheckboxRefs = (node: HTMLInputElement) => {
+        if (node !== null && !checkboxRefs?.current.includes(node)) {
+            checkboxRefs?.current.push(node);
+        }
+    };
 
     useEffect(() => {
         // cleanup function to remove the ref checked value when the component unmounts
@@ -46,7 +43,7 @@ export const BulkActionCheckbox = ({id, name, singleName, data}) => {
 };
 
 export const BulkActionCheckboxAll = ({pluralName, data}) => {
-    const checkboxRefs = useContext(CheckboxContext);
+    const checkboxRefs = useContext<CheckboxContextProps>(CheckboxContext);
     const [checked, setChecked] = useState(false);
     // reset the 'Select all' checkbox when table contents change
     useEffect(() => {
@@ -69,9 +66,22 @@ export const BulkActionCheckboxAll = ({pluralName, data}) => {
     );
 };
 
-const toggleAllRowCheckboxes = (event, checkboxRefs, setChecked, checked) => {
+const toggleAllRowCheckboxes: ToggleAllRowCheckboxesProps = (_event, checkboxRefs, setChecked, checked) => {
     checkboxRefs.current.forEach((checkbox) => {
         checkbox.checked = !checked;
     });
     setChecked(!checked);
 };
+
+type CheckboxContextProps = {
+    current: HTMLInputElement[];
+};
+
+interface ToggleAllRowCheckboxesProps {
+    (
+        event: React.ChangeEvent<HTMLInputElement>,
+        checkboxRefs: CheckboxContextProps,
+        setChecked: React.Dispatch<React.SetStateAction<boolean>>,
+        checked: boolean
+    ): void;
+}

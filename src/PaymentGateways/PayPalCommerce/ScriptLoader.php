@@ -2,35 +2,87 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
 /**
  * Class ScriptLoader
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @since 3.0.0 Implement on-demand PayPal connection. Admin can select Advance or standard card processing.
  * @since 2.9.0
  */
 class ScriptLoader
 {
     /**
+     * List of connection account type.
+     *
+     * @since 3.0.0
+     * @var string[]
+     */
+    public static $accountTypes = [
+        'PPCP',
+        'EXPRESS_CHECKOUT'
+    ];
+
+    /**
+     * List of countries that support custom payment accounts
+     *
+     * @since 3.0.0
+     * @var string[]
+     */
+    private $countriesAvailableForAdvanceConnection = [
+        'AU',
+        'AT',
+        'BE',
+        'BG',
+        'CY',
+        'CZ',
+        'DK',
+        'EE',
+        'FI',
+        'FR',
+        'GR',
+        'HU',
+        'IT',
+        'LV',
+        'LI',
+        'LT',
+        'LU',
+        'MT',
+        'NL',
+        'NO',
+        'PL',
+        'PT',
+        'RO',
+        'SK',
+        'SI',
+        'ES',
+        'SE',
+        'GB',
+        'US',
+    ];
+
+    /**
      * @since 2.9.0
      *
-     * @var MerchantDetails
+     * @var PayPalCommerceGateway
      */
-    private $merchantRepository;
+    private $payPalCommerceGateway;
 
     /**
      * ScriptLoader constructor.
      *
+     * @since 3.0.0 Remove $merchantRepository parameter and add $payPalCommerceGateway parameter.
      * @since 2.9.0
      *
-     * @param MerchantDetails $merchantRepository
+     * @param PayPalCommerceGateway $payPalCommerceGateway
      */
-    public function __construct(MerchantDetails $merchantRepository)
+    public function __construct(PayPalCommerceGateway $payPalCommerceGateway)
     {
-        $this->merchantRepository = $merchantRepository;
+        $this->payPalCommerceGateway = $payPalCommerceGateway;
     }
 
     /**
@@ -63,6 +115,8 @@ class ScriptLoader
             'give-paypal-partner-js',
             'givePayPalCommerce',
             [
+                'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
+                'accountTypes' => self::$accountTypes,
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
@@ -73,9 +127,9 @@ class ScriptLoader
                     'pciWarning' => sprintf(
                         __(
                             'PayPal allows you to accept credit or debit cards directly on your website. Because of
-							this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
-							GiveWP never stores sensitive information like card details to your server and works
-							seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
+                            this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
+                            GiveWP never stores sensitive information like card details to your server and works
+                            seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
                             'give'
                         ),
                         'https://givewp.com/documentation/resources/pci-compliance/'
@@ -91,7 +145,7 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ]
+                    ],
                 ],
             ]
         );
@@ -138,18 +192,24 @@ EOT;
      */
     public function loadPublicAssets()
     {
-        if (!Utils::gatewayIsActive() || !Utils::isAccountReadyToAcceptPayment()) {
+        $formId = FrontendFormTemplateUtils::getFormId();
+
+        if (
+            ! $formId
+            || \Give\Helpers\Form\Utils::isV3Form($formId)
+            || !Utils::gatewayIsActive()
+            || !Utils::isAccountReadyToAcceptPayment()
+        ) {
             return;
         }
 
-        /* @var MerchantDetail $merchant */
-        $merchant = give(MerchantDetail::class);
-        $scriptId = 'give-paypal-commerce-js';
-        $clientToken = '';
+        try {
+            $formSettings = $this->payPalCommerceGateway->formSettings($formId);
+            $paypalSDKOptions = $formSettings['sdkOptions'];
 
-        try{
-            $clientToken = $this->merchantRepository->getClientToken();
-        } catch ( \Exception $exception ) {
+            // Remove v3 donation form related param.
+            unset($paypalSDKOptions['data-namespace']);
+        } catch (\Exception $e) {
             give_set_error(
                 'give-paypal-commerce-client-token-error',
                 sprintf(
@@ -157,28 +217,16 @@ EOT;
                         'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
                         'give'
                     ),
-                    $exception->getMessage()
+                    $e->getMessage()
                 )
             );
+            return;
         }
 
-        /**
-         * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
-         * @since 2.27.1 Removed locale query parameter.
-         */
-        $payPalSdkQueryParameters = [
-            'client-id' => $merchant->clientId,
-            'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => 'hosted-fields,buttons',
-            'disable-funding' => 'credit',
-            'vault' => true,
-            'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $clientToken,
-        ];
+        /* @var MerchantDetail $merchant */
+        $merchant = give(MerchantDetail::class);
 
-        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
-            $payPalSdkQueryParameters['enable-funding'] = 'venmo';
-        }
+        $scriptId = 'give-paypal-commerce-js';
 
         wp_enqueue_script(
             $scriptId,
@@ -214,15 +262,14 @@ EOT;
                 // List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
                 'hostedCardFieldStyles' => apply_filters('give_paypal_commerce_hosted_field_style', []),
                 'supportsCustomPayments' => $merchant->supportsCustomPayments ? 1 : '',
-                'accountCountry' => $merchant->accountCountry,
                 'separatorLabel' => esc_html__('Or pay with card', 'give'),
-                'payPalSdkQueryParameters' => $payPalSdkQueryParameters,
+                'payPalSdkQueryParameters' => $paypalSDKOptions,
                 'textForOverlayScreen' => sprintf(
                     '<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
                     esc_html__('Donation Processing...', 'give'),
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
-                ),
+                )
             ]
         );
     }

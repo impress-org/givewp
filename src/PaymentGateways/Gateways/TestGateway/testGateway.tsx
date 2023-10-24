@@ -1,10 +1,9 @@
 import {__} from '@wordpress/i18n';
-//import type {FormData, Gateway} from '@givewp/forms/types';
+import type {FormData, Gateway} from '@givewp/forms/types';
 
-//TODO: update with types when they are available
-const gateway = {
-    id: 'test-gateway',
-    async beforeCreatePayment(values) {
+const gateway: Gateway = {
+    id: 'manual',
+    async beforeCreatePayment(values: FormData) {
         // To test out a gateway error, you can fill in the donation form with "error" as the first name.
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');
@@ -17,7 +16,7 @@ const gateway = {
     Fields() {
         return (
             <fieldset className="no-fields">
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: 20 + 'px'}}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <svg width="84" height="67" viewBox="0 0 84 67" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clipPath="url(#clip0)">
                             <path
@@ -47,5 +46,4 @@ const gateway = {
     },
 };
 
-// @ts-ignore
 window.givewp.gateways.register(gateway);

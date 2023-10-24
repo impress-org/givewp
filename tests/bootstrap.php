@@ -41,4 +41,3 @@ require_once __DIR__ . '/includes/legacy/framework/class-give-unit-test-case.php
 require_once __DIR__ . '/includes/legacy/framework/helpers/shims.php';
 require_once __DIR__ . '/includes/legacy/framework/helpers/class-helper-form.php';
 require_once __DIR__ . '/includes/legacy/framework/helpers/class-helper-payment.php';
-

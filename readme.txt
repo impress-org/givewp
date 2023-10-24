@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.0
-Stable tag: 2.32.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.2
+Stable tag: 3.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,10 +27,15 @@ Free donor tools also help keep your donors happy. The donor dashboard helps you
 
 **[Powerful Donation Forms](https://go.givewp.com/features-forms "See how powerful our fundraising forms can be")**
 
+GiveWP has taken inspiration from Gutenberg blocks to create an even better form-building experience. The Visual Donation Form Builder uses sections and blocks to provide a more intuitive way to build and configure your donation forms. 
+
+In this builder, you’ll see your design in real time. Watch as your form takes shape as you select custom colors, fields, elements, and more. For those with a flair for customization, you can add Custom CSS directly into the builder. 
+
 * Build custom donation forms in your WordPress admin
 * Customize donation form templates without any code
 * Add goals, multiple giving amounts, custom amounts, terms and conditions and more with just a couple clicks
 
+Never used blocks before? No worries - [we’ve got you covered with our guide](https://go.givewp.com/visual-builder). 
 
 **[Actionable Fundraising Reporting](https://go.givewp.com/features-reports "See our gorgeous and helpful reports dashboards")**
 
@@ -49,9 +54,9 @@ Free donor tools also help keep your donors happy. The donor dashboard helps you
 Find out more:
 
 * **[Visit the GiveWP website](https://go.givewp.com/home "Visit the GiveWP website")**
+* **[Read our Docs on How to Use the Visual Form Builder](https://go.givewp.com/visual-builder).**
 * **[View GiveWP Premium Add-ons](https://go.givewp.com/addons "See all GiveWP Add-ons")**
 * **[View GiveWP Free Add-ons](https://go.givewp.com/freeadds "See our free Add-ons")**
-* **[View our GiveWP Live Demo site](https://go.givewp.com/demosite "See the Live Demo Site")**
 * **[Book a Live Demo with our Team](https://go.givewp.com/csdemo "Book a demo with our team")**
 
 === 🧑🏿‍🤝‍🧑🏿 Who Uses GiveWP? ===
@@ -59,13 +64,15 @@ Find out more:
 With more than 100,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations. Causes are using GiveWP to raise millions of dollars per year. Check out some of our GiveWP Stories and Case Studies for details about their success.
 
 * [The City Mission used GiveWP](https://go.givewp.com/cmstory) for Giving Tuesday and a competition fundraiser with a neighboring organization, where they raised $45K in 16 hours.
-* [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser. 
-* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name. 
-* [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic. 
+* [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser.
+* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name.
+* [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic.
+* [Quiltlove](https://go.givewp.com/quiltlove), which provides personalized quilts for different life events (like new babies, extended hospital stays, and more), uses GiveWP to create a sustainable business model. 
+* [Niels Vink, a Dutch wheelchair tennis player](https://go.givewp.com/niels-vink), uses GiveWP to raise money to train, travel, and participate in competitions. At the 2021 Tokyo Paralympics, Vink earned a gold medal in doubles and a bronze medal in singles. 
 
 In addition to nonprofit organizations, GiveWP is widely used for individual or creative purposes. We’ve seen tip jars for blogs or musicians, live streams, and more. Our [Donation Upsells for WooCommerce Add-on](https://go.givewp.com/wooread) is even used in some eCommerce stores to collect donations for a cause, or ask for tips in the cart or checkout.
 
-We’ve even seen GiveWP used to collect gifts for birthdays and weddings! 
+We’ve even seen GiveWP used to collect gifts for birthdays and weddings!
 
 === 💝 Simple and Pain-Free Giving ===
 
@@ -87,16 +94,16 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations](https://go.givewp.com/addon-stripe).
+* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts. Upgrade to the [Premium Stripe](https://go.givewp.com/addon-stripe) add-on to remove the 2% fee for one-time donations processed through Stripe.
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
-* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account. 
+* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 * **And many more Gateways** - View additional payment gateways on our website. These include Authorize.net, Bitpay, Square, Razorpay, Paytm, and more.
 
 === ⚙️ Extend GiveWP with Powerful Add-ons ===
 
-GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online. 
+GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online.
 
 In addition to our free donation plugin, we have [premium GiveWP add-ons](https://go.givewp.com/addons "View all of GiveWP's Premium Add-ons") available to extend the functionality of GiveWP. Ultimately, these tools allow you to raise more money and give you a better relationship with your donors.
 
@@ -104,12 +111,12 @@ Must-Have Add-ons for GiveWP:
 
 * [WordPress Recurring Donations](https://go.givewp.com/addon-recurring)
 * [Peer-to-Peer Fundraising](https://go.givewp.com/p2pread)
-* Text-to-Give
-* Form Field Manager
-* Fee Recovery
-* Tributes
-* PDF Receipts
-* Funds & Designations
+* [Text-to-Give](https://go.givewp.com/text-to-give)
+* [Form Field Manager](https://go.givewp.com/form-field)
+* [Fee Recovery](https://go.givewp.com/fee-recovery)
+* [Tributes](https://go.givewp.com/tributes)
+* [PDF Receipts](https://givewp.com/addons/pdf-receipts/)
+* [Funds & Designations](https://go.givewp.com/read-funds-des)
 
 [View all of GiveWP's Add-ons](https://go.givewp.com/addons "View all GiveWP add-ons") to discover all the ways you can further enhance and extend GiveWP.
 
@@ -127,13 +134,6 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [How to Style Your GiveWP Forms](https://go.givewp.com/styledoc)
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
-
-=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms === 
-Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means! 
-
-Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area. 
-
-Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
 
 === 💚 About the GiveWP Team ===
 
@@ -203,7 +203,7 @@ We work hard to the best support possible for GiveWP. The [WordPress.org Support
 
 = Do you have any demos? =
 
-Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out our [live demo](https://go.givewp.com/demosite), where you can see what your donors would see. 
+Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out our [live demo](https://go.givewp.com/demosite), where you can see what your donors would see.
 
 GiveWP Plus, Pro, and Agency Plan customers will also get a free 30-minute website audit with our Customer Success Team after they purchase. In this meeting, we’ll cover everything you need to know about GiveWP to fit your needs.
 
@@ -215,7 +215,7 @@ Yes! We have two different types of studies that highlight nonprofits in differe
 
 = How is GiveWP better than a simple PayPal donate button? =
 
-PayPal donate buttons take your users off-site, which can cause you to lose some in the process. With GiveWP, your donors can stay on-site and you get the benefit of gathering donor data, viewing free fundraising reports, and creating unlimited donation forms. On the other hand, you can always use GiveWP as a simple customized PayPal donate button if you prefer. 
+PayPal donate buttons take your users off-site, which can cause you to lose some in the process. With GiveWP, your donors can stay on-site and you get the benefit of gathering donor data, viewing free fundraising reports, and creating unlimited donation forms. On the other hand, you can always use GiveWP as a simple customized PayPal donate button if you prefer.
 
 = How is GiveWP better than a form plugin for accepting donations through WordPress? =
 
@@ -257,18 +257,56 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
+9. Customize your forms with design mode.
+
+10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
+
 == Changelog ==
-= 2.32.0: August 10th, 2023 =
+= 3.0.2: October 19th, 2023 =
+<<<<<<<<< Temporary merge branch 1
+* Fix: Stripe per-form settings are included when migrating a form to the Visual Donation Form Builder
+=========
+* Fix: Gateways are properly separated in the settings page and Global Settings for Fee Recovery shows all gateways when you select per gateway
+
+>>>>>>>>> Temporary merge branch 2
+= 3.0.1: October 17th, 2023 =
+* Fix: Resolved a conflict with Matomo plugin that was causing a fatal error
+
+= 3.0.0: October 16th, 2023 =
+* New: Try out the all new Visual Donation Form Builder!
+* New: All new form infrastructure for forms using the Form Builder!
+* New: Stripe Payment Element gateway for Stripe with support for many types of payment methods
+* New: Existing forms can be migrated and upgrade to use the Form Builder
+
+= 2.33.5: October 10th, 2023 =
+* Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
+
+= 2.33.3: September 29th, 2023 =
+* Fix: Multi-site installations no longer produce an error on subsites.
+
+= 2.33.2: September 18th, 2023 =
+* Fix: Add validation for form status to prevent donations to donation forms with the status of "Trash"
+
+= 2.33.1: August 31st, 2023 =
+* Security: The donor default user role has been sanitized to prevent privilege escalation
+
+= 2.33.0: August 28th, 2023 =
+* New: Admins can now select standard or advanced connection type during setup
+* New: Added a new SubscriptionSynced command class 
+* New: Added PayPal Standard to PayPal Donations migration information banners 
+* Security: Remove uses of payment intent secret and existing meta
+
+= 2.32.0: August 11th, 2023 =
 * Feature: Scroll Stripe modal into view for Legacy + Multi-step forms
-* Feature: Added check for application/json in form headers accept 
-* Feature: Added a `$nodeNameCollision` property on `NameCollisionException` for flexibility in throwing exception messages 
-* Feature: Added a file validation rule for validating file uploads 
+* Feature: Added check for application/json in form headers accept
+* Feature: Added a `$nodeNameCollision` property on `NameCollisionException` for flexibility in throwing exception messages
+* Feature: Added a file validation rule for validating file uploads
 * Feature: Added a `@wordpress/scripts` build process for building forms in GiveWP 3.0
 * Feature: Added persistence scoping to Fields
-* Feature: Added WordPressLibraries to manage WP_Background_Process more efficiently and address potential conflicts with other plugins 
-* Feature: Added the hasDescription concern to Fields API 
-* Enhancement: Use PayPal client to handle API requests to avoid issues with expired merchant tokens 
-* Fix: Increase specificity when hiding the Form Token Field label 
+* Feature: Added WordPressLibraries to manage WP_Background_Process more efficiently and address potential conflicts with other plugins
+* Feature: Added the hasDescription concern to Fields API
+* Enhancement: Use PayPal client to handle API requests to avoid issues with expired merchant tokens
+* Fix: Increase specificity when hiding the Form Token Field label
 
 = 2.31.0: July 21st, 2023 =
 * Feature: New banner added to the plugin page for annual summer discounts

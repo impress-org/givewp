@@ -1,0 +1,85 @@
+// Pico Lib
+// https://picocss.com
+
+// Set the root element
+// thi
+//$semantic-root-element: "#root-givewp-donation-form";
+
+// Enable <header>, <main>, <footer> inside $semantic-root-element as containers
+$enable-semantic-container: true;
+
+// Enable .classes
+$enable-classes: true;
+$enable-important: false;
+
+// Config
+@import "@picocss/pico/scss/variables";
+
+/**
+ * Theme: default - hand-pick imports from default theme.
+ * Only support light theme for now.
+ */
+
+// Theming
+//@import "@picocss/pico/scss/themes/default";
+
+// Variables
+@import "@picocss/pico/scss/themes/default/colors";
+
+// Commons styles
+@import "@picocss/pico/scss/themes/default/styles";
+
+// Light theme (Default)
+// Can be forced with data-theme="light"
+@import "@picocss/pico/scss/themes/default/light";
+
+// Layout
+@import "@picocss/pico/scss/layout/document"; // html
+@import "@picocss/pico/scss/layout/sectioning"; // body, header, main, footer
+@import "@picocss/pico/scss/layout/container"; // .container, .container-fluid
+@import "@picocss/pico/scss/layout/section"; // section
+@import "@picocss/pico/scss/layout/grid"; // .grid
+@import "@picocss/pico/scss/layout/scroller"; // figure
+
+// Content
+@import "@picocss/pico/scss/content/typography"; // a, headings, p, ul, blockquote, ...
+@import "@picocss/pico/scss/content/embedded"; // audio, canvas, iframe, img, svg, video
+@import "@picocss/pico/scss/content/button"; // button, a[role=button], type=button, type=submit ...
+@import "@picocss/pico/scss/content/form"; // input, select, textarea, label, fieldset, legend
+@import "@picocss/pico/scss/content/form-alt-input-types"; // type=color, type=date, type=file, type=search, ...
+@import "@picocss/pico/scss/content/table"; // table, tr, td, ...
+@import "@picocss/pico/scss/content/code"; // pre, code, ...
+@import "@picocss/pico/scss/content/miscs"; // hr, template, [hidden], dialog, canvas
+
+// Components
+@import "@picocss/pico/scss/components/accordion"; // details, summary
+//@import "@picocss/pico/scss/components/card"; // article
+@import "@picocss/pico/scss/components/modal"; // dialog
+@import "@picocss/pico/scss/components/nav"; // nav
+@import "@picocss/pico/scss/components/progress"; // progress
+@import "@picocss/pico/scss/components/dropdown"; // dropdown
+
+// Utilities
+@import "@picocss/pico/scss/utilities/loading"; // aria-busy=true
+@import "@picocss/pico/scss/utilities/tooltip"; // data-tooltip
+@import "@picocss/pico/scss/utilities/accessibility"; // -ms-touch-action, aria-*
+@import "@picocss/pico/scss/utilities/reduce-motion"; // prefers-reduced-motion
+
+label {
+  color: var(--color);
+}
+
+// Accent-color
+[type="checkbox"],
+[type="radio"],
+[type="range"] {
+  accent-color: var(--primary);
+}
+
+a:focus, [role=link]:focus {
+  --background-color: transparent;
+}
+
+ul li {
+  list-style: disc;
+}

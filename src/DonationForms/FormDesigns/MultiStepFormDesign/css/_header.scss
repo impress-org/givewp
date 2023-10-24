@@ -1,0 +1,13 @@
+.givewp-layouts {
+    &-header {
+        text-align: center;
+    }
+
+    &-headerTitle {
+        margin-bottom: var(--givewp-spacing-3);
+    }
+
+    &-headerDescription {
+        margin-bottom: var(--givewp-spacing-10);
+    }
+}

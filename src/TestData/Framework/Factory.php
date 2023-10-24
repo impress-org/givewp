@@ -2,7 +2,7 @@
 
 namespace Give\TestData\Framework;
 
-use Faker\Generator;
+use Give\Vendors\Faker\Generator;
 
 abstract class Factory implements FactoryContract
 {

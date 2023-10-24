@@ -4,8 +4,8 @@ namespace Give\Framework\Http\Response\Traits;
 
 use Exception;
 use Give\Framework\Http\Exceptions\HttpResponseException;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\HeaderBag;
+use Give\Vendors\Symfony\Component\HttpFoundation\Cookie;
+use Give\Vendors\Symfony\Component\HttpFoundation\HeaderBag;
 
 /**
  * @since 2.18.0
