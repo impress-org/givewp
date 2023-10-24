@@ -19,7 +19,7 @@ const {
  */
 const PageSlugControl = ({pageSlug}) => {
     const dispatch = useFormStateDispatch();
-    const [editedSlug, setEditedSlug] = useState();
+    const [editedSlug, setEditedSlug] = useState(safeDecodeURIComponent(pageSlug));
 
     useEffect(() => {
         setEditedSlug(safeDecodeURIComponent(pageSlug));
