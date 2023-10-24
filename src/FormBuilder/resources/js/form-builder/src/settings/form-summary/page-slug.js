@@ -4,8 +4,9 @@ import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores
 
 import {getWindowData} from '@givewp/form-builder/common';
 import {cleanForSlug, safeDecodeURIComponent} from '@wordpress/url';
-import {useCallback, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
+
+import {useCallback, useEffect, useState} from 'react';
 
 const {
     formPage: {isEnabled, permalink, rewriteSlug},
@@ -18,7 +19,11 @@ const {
  */
 const PageSlugControl = ({pageSlug}) => {
     const dispatch = useFormStateDispatch();
-    const [editedSlug, setEditedSlug] = useState(safeDecodeURIComponent(pageSlug));
+    const [editedSlug, setEditedSlug] = useState();
+
+    useEffect(() => {
+        setEditedSlug(safeDecodeURIComponent(pageSlug));
+    }, [pageSlug]);
 
     const updateSlug = useCallback(() => {
         const cleanEditedSlug = cleanForSlug(editedSlug);
