@@ -14,7 +14,7 @@ const FormSummarySettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const isPublished = 'publish' === formStatus;
-    const isTitleSlug = isPublished && cleanForSlug(formTitle) === pageSlug;
+    const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
     return (
         <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
