@@ -1,3 +1,4 @@
+import {useCallback} from 'react';
 import {withTemplateWrapper} from '../templates';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
@@ -17,11 +18,11 @@ const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
  */
 export default function Header({form}) {
 
-    const formatGoalAmount = (amount: number) => {
+    const formatGoalAmount = useCallback((amount: number) => {
         return amountFormatter(form.currency, {
             maximumFractionDigits: 0,
         }).format(amount);
-    };
+    }, []);
 
     return (
         <DonationFormErrorBoundary>
