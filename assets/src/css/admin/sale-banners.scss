@@ -1,6 +1,6 @@
 .give-sale-banners-container {
     position: relative;
-    padding: 2.25rem 0 1.4375rem 5.5rem;
+    padding: 1.75rem 0 1.5rem 2.75rem;
     box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     background-repeat: no-repeat;
     background-size: cover;
@@ -34,12 +34,6 @@
 }
 
 .givewp-sale-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    z-index: 999;
-
     &__content {
         line-height: normal;
         font-style: normal;
@@ -62,8 +56,8 @@
             font-weight: 500;
         }
 
-        & button {
-            display: flex;
+        & a {
+            display: inline-flex;
             padding: .75rem 1rem;
             justify-content: center;
             align-items: center;
@@ -75,6 +69,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
 
             &:hover {
                 background: #2D802F;
@@ -94,47 +89,40 @@
 
 /* Media query for small screens */
 @media screen and (max-width: 768px) {
-    .givewp-sale-banner {
-        gap: 0;
+    .givewp-sale-banner__content {
+        & h2 {
+            font-size: 1.125rem;
+        }
 
-        &-sale-banner__content {
-            & h2 {
-                font-size: 1.125rem;
-            }
+        & p {
+            margin: .5rem 0 1rem 0;
+            font-size: 0.875rem;
+            line-height: 1.75rem;
 
-            & p {
-                margin: .5rem 0 1rem 0;
-                font-size: 0.875rem;
-                line-height: 1.75rem;
+        }
 
-            }
-
-            & button {
-                font-size: 1rem;
-            }
+        & a {
+            font-size: 1rem;
         }
     }
 }
 
+
 /* Media query for medium screens */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-    .givewp-sale-banner {
-        gap: 0;
+    .givewp-sale-banner__content {
+        & h2 {
+            font-size: 1.125rem;
+        }
 
-        &-sale-banner__content {
-            & h2 {
-                font-size: 1.125rem;
-            }
+        & p {
+            font-size: 1.125rem;
+            line-height: 1.5rem;
+            margin: .75rem 0 1rem 0;
+        }
 
-            & p {
-                font-size: 1.125rem;
-                line-height: 1.5rem;
-                margin: .75rem 0 1rem 0;
-            }
-
-            & button {
-                font-size: 0.875rem;
-            }
+        & a {
+            font-size: 0.875rem;
         }
     }
 }
