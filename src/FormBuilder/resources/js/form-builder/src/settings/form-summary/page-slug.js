@@ -5,6 +5,7 @@ import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores
 import {getWindowData} from '@givewp/form-builder/common';
 import {cleanForSlug, safeDecodeURIComponent} from '@wordpress/url';
 import {useCallback, useState} from '@wordpress/element';
+import {__} from '@wordpress/i18n';
 
 const {
     formPage: {isEnabled, permalink, rewriteSlug},
@@ -37,7 +38,7 @@ const PageSlugControl = ({pageSlug}) => {
                 focusOnMount={'container'}
                 renderToggle={({isOpen, onToggle}) => (
                     <TextControl
-                        label={'URL'}
+                        label={__('URL', 'give')}
                         value={'/donations/' + editedSlug}
                         onChange={() => null}
                         onClick={onToggle}
@@ -47,20 +48,20 @@ const PageSlugControl = ({pageSlug}) => {
                 renderContent={({onClose}) => (
                     <div style={{minWidth: 'calc(var(--givewp-sidebar-width) - 48px)'}}>
                         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <strong style={{fontSize: '14px'}}>{'URL'}</strong>
+                            <strong style={{fontSize: '14px'}}>{__('URL', 'give')}</strong>
                             <Button onClick={onClose}>
                                 <Icon icon={close} size={14}></Icon>
                             </Button>
                         </div>
                         <TextControl
-                            label={'Permalink'}
+                            label={__('Permalink', 'give')}
                             value={editedSlug}
                             autoComplete="off"
                             spellCheck="false"
                             onChange={(newPageSlug) => {
                                 setEditedSlug(newPageSlug);
                             }}
-                            help={'The last part of the URL.'}
+                            help={__('The last part of the URL.', 'give')}
                             onBlur={() => updateSlug()}
                         />
                         <div>
