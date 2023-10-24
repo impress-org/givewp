@@ -10,8 +10,7 @@ import {
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import usePubSub from '@givewp/forms/app/utilities/usePubSub';
-import {iframeRef} from '@givewp/form-builder/components/canvas/DesignPreview';
+import useDonationFormPubSub, {setGoalType} from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
 
@@ -20,7 +19,7 @@ const DonationGoalSettings = () => {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-    const {publish} = usePubSub();
+    const {publishGoal} = useDonationFormPubSub();
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
@@ -34,7 +33,7 @@ const DonationGoalSettings = () => {
                     checked={enableDonationGoal}
                     onChange={() => {
                         dispatch(setFormSettings({enableDonationGoal: !enableDonationGoal}));
-                        publish('preview:goal', {show: !enableDonationGoal}, iframeRef);
+                        publishGoal({show: !enableDonationGoal});
                     }}
                 />
             </PanelRow>
@@ -70,12 +69,7 @@ const DonationGoalSettings = () => {
                             options={goalTypeOptions}
                             onChange={(goalType: string) => {
                                 dispatch(setFormSettings({goalType}))
-                                publish('preview:goal', {
-                                    type: goalType,
-                                    label: goalType,
-                                    typeIsCount: 'amount' !== goalType,
-                                    typeIsMoney: 'amount' === goalType
-                                }, iframeRef);
+                                publishGoal(setGoalType(goalType));
                             }}
                             help={selectedGoalDescription}
                         />
@@ -85,9 +79,9 @@ const DonationGoalSettings = () => {
                             label={__('Goal Amount', 'give')}
                             min={0}
                             value={goalAmount}
-                            onChange={debounce((goalAmount: string) => {
+                            onChange={debounce((goalAmount: number) => {
                                 dispatch(setFormSettings({goalAmount}))
-                                publish('preview:goal', {targetAmount: goalAmount}, iframeRef);
+                                publishGoal({targetAmount: goalAmount});
                             }, 100)}
                         />
                     </PanelRow>
