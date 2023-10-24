@@ -66,14 +66,15 @@ export default function useDonationFormPubSub() {
 
     const publishSettings = (data: RequireAtLeastOne<FormSettings>) => {
         publish(PREVIEW_EVENTS.SETTINGS, data, iframeRef)
-    };
+    }
+
     const publishGoal = (data: RequireAtLeastOne<FormGoal>) => {
         publish(PREVIEW_EVENTS.GOAL, data, iframeRef)
-    };
+    }
 
     const publishColors = (data: RequireAtLeastOne<FormColors>) => {
         publish(PREVIEW_EVENTS.COLORS, data, iframeRef)
-    };
+    }
 
     const subscribeToSettings = (callback: (data: FormSettings) => void) => {
         subscribe(PREVIEW_EVENTS.SETTINGS, callback)
@@ -82,6 +83,7 @@ export default function useDonationFormPubSub() {
     const subscribeToGoal = (callback: (data: FormGoal) => void) => {
         subscribe(PREVIEW_EVENTS.GOAL, callback)
     }
+
     const subscribeToColors = (callback: (data: FormColors) => void) => {
         subscribe(PREVIEW_EVENTS.COLORS, callback)
     }
