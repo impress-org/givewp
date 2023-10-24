@@ -86,14 +86,19 @@ class SaleBanners
                     'Plus' => __(
                         'Upgrade to Pro and get Peer-to-Peer fundraising.',
                         'give'
-                    )
+                    ),
+                    'default' => __(
+                        'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                        'give'
+                    ),
                 ]),
                 'actionText' => __('Shop Now', 'give'),
                 'actionURL' => self::getDataByPricingPlan(
                     [
                         'Free' => 'https://go.givewp.com/bf23',
                         'Basic' => 'https://go.givewp.com/bfup23',
-                        'Plus' => 'https://go.givewp.com/bfup23'
+                        'Plus' => 'https://go.givewp.com/bfup23',
+                        'Default' => 'https://go.givewp.com/bfup23',
                     ]
                 ),
                 'startDate' => '2023-11-20 00:00',
@@ -273,7 +278,7 @@ class SaleBanners
             return $data[$userPricingPlan];
         }
 
-        return '';
+        return $data['default'];
     }
 }
 
