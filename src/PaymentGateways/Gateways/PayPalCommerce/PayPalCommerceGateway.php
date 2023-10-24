@@ -31,6 +31,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     }
 
     /**
+     * @unreleased set translations for script
      * @since 3.0.0
      */
     public function enqueueScript(int $formId)

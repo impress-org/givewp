@@ -74,6 +74,7 @@ class TestOffsiteGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased set translations for script
      * @since 2.30.0
      */
     public function enqueueScript(int $formId)
