@@ -14,6 +14,7 @@ const FormSummarySettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const isPublished = 'publish' === formStatus;
+    const isTitleSlug = isPublished && cleanForSlug(formTitle) === pageSlug;
 
     return (
         <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
@@ -22,18 +23,14 @@ const FormSummarySettings = () => {
                     label={__('Title')}
                     value={formTitle}
                     onChange={(formTitle) => {
-                        !isPublished &&
-                            formTitle !== 'Donation Form' &&
-                            dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                        !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
                         dispatch(setFormSettings({formTitle}));
                     }}
                 />
             </PanelRow>
             {!!isFormPageEnabled && (
                 <PanelRow>
-                    <PageSlugControl
-                        pageSlug={!isPublished && formTitle !== 'Donation Form' ? cleanForSlug(formTitle) : pageSlug}
-                    />
+                    <PageSlugControl pageSlug={isTitleSlug ? cleanForSlug(formTitle) : pageSlug} />
                 </PanelRow>
             )}
         </PanelBody>

@@ -150,9 +150,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                         className={'givewp-form-title'}
                         value={formTitle}
                         onChange={(formTitle) => {
-                            !isPublished &&
-                                formTitle !== 'Donation Form' &&
-                                dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                            !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
                             dispatch(setFormSettings({formTitle}));
                         }}
                     />
