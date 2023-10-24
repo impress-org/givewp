@@ -12,9 +12,9 @@ import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/Donat
 import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 import getDonationFormNodeSettings from '@givewp/forms/app/utilities/getDonationFormNodeSettings';
 import {DonationFormSettingsProvider} from '@givewp/forms/app/store/form-settings';
-import usePubSub from '@givewp/forms/app/utilities/usePubSub';
-import {useState, useEffect} from 'react';
-import {FormSettings} from '@givewp/form-builder/types';
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
+import {useEffect, useState} from 'react';
+import type {Form as DonationForm} from '@givewp/forms/types';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -22,19 +22,19 @@ const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchie
 /**
  * Get data from the server
  */
-const {form: initialFormState} = getWindowData();
-const donationFormNodeSettings = getDonationFormNodeSettings(initialFormState);
+const {form} = getWindowData();
+const donationFormNodeSettings = getDonationFormNodeSettings(form);
 
-prepareFormData(initialFormState);
+prepareFormData(form);
 
 mountWindowData();
 
 /**
  * Prepare default values for form
  */
-const defaultValues = getDefaultValuesFromSections(initialFormState.nodes);
+const defaultValues = getDefaultValuesFromSections(form.nodes);
 
-const schema = getJoiRulesForForm(initialFormState);
+const schema = getJoiRulesForForm(form);
 
 const initialState = {
     defaultValues,
@@ -45,51 +45,7 @@ const initialState = {
 /**
  * @since 3.0.0
  */
-function App({preview}) {
-
-    const {subscribe} = usePubSub();
-    const [form, setFormState] = useState(initialFormState);
-
-    useEffect(() => {
-        if (preview) {
-            subscribe('preview:settings', (data: FormSettings) => {
-                setFormState(prevState => {
-                    return {
-                        ...prevState,
-                        settings: {
-                            ...prevState.settings,
-                            ...data
-                        }
-                    }
-                })
-            })
-
-            subscribe('preview:goal', (data: { [s: string]: string }) => {
-                setFormState(prevState => {
-                    return {
-                        ...prevState,
-                        goal: {
-                            ...prevState.goal,
-                            ...data
-                        }
-                    }
-                })
-            })
-
-            subscribe('preview:colors', (data: { [s: string]: string }) => {
-                const [key, value] = Object.entries<string>(data).flat();
-
-                switch (key) {
-                    case 'primaryColor':
-                        root.style.setProperty('--givewp-primary-color', value);
-                        break;
-                    case 'secondaryColor':
-                        root.style.setProperty('--givewp-secondary-color', value);
-                        break;
-                }
-            })
-        }
-    }, []);
+function App({form}: { form: DonationForm }) {
 
     if (form.goal.isAchieved) {
         return (
@@ -119,11 +75,67 @@ function App({preview}) {
     );
 }
 
+/**
+ * @unreleased
+ */
+function AppPreview() {
+
+    const {
+        subscribeToGoal,
+        subscribeToColors,
+        subscribeToSettings,
+        unsubscribeAll
+    } = useDonationFormPubSub();
+
+    const [formState, setFormState] = useState<DonationForm>(form);
+
+    useEffect(() => {
+        subscribeToSettings((settings) => {
+            setFormState(prevState => {
+                return {
+                    ...prevState,
+                    settings: {
+                        ...prevState.settings,
+                        ...settings
+                    }
+                }
+            })
+        })
+
+        subscribeToGoal((goal) => {
+            setFormState(prevState => {
+                return {
+                    ...prevState,
+                    goal: {
+                        ...prevState.goal,
+                        ...goal
+                    }
+                }
+            })
+        })
+
+        subscribeToColors((data) => {
+            if (data['primaryColor']) {
+                root.style.setProperty('--givewp-primary-color', data['primaryColor']);
+            }
+
+            if (data['secondaryColor']) {
+                root.style.setProperty('--givewp-secondary-color', data['secondaryColor']);
+            }
+        })
+
+        return () => unsubscribeAll();
+
+    }, []);
+
+    return <App form={formState} />
+}
+
 const root = document.getElementById('root-givewp-donation-form');
 const preview = root.classList.contains('givewp-donation-form--preview');
 
 if (createRoot) {
-    createRoot(root).render(<App preview={preview} />);
+    createRoot(root).render(preview ? <AppPreview /> : <App form={form} />);
 } else {
-    render(<App preview={preview} />, root);
+    render(preview ? <AppPreview /> : <App form={form} />, root);
 }
