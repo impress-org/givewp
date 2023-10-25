@@ -1,7 +1,7 @@
 import {RefObject, useEffect} from 'react';
 import {iframeRef} from '@givewp/form-builder/components/canvas/DesignPreview';
 import {FormSettings} from '@givewp/form-builder/types';
-import {RequireAtLeastOne, FormGoal, FormColors} from '@givewp/forms/types';
+import {FormColors, FormGoal, RequireAtLeastOne} from '@givewp/forms/types';
 
 /**
  * Events used in design mode
@@ -56,10 +56,20 @@ export default function useDonationFormPubSub() {
     }
 
     const publish = (event: string, data: any, iframeRef: RefObject<any>) => {
+
+        const filtered = {};
+
+        // Allow only primitive values
+        Object.entries(data).forEach(([key, value]) => {
+            if (typeof value !== 'function' && typeof value !== 'object') {
+                filtered[key] = value;
+            }
+        });
+
         if (iframeRef.current?.sendMessage) {
             iframeRef.current.sendMessage({
                 event,
-                data
+                data: filtered
             });
         }
     }
