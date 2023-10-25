@@ -107,11 +107,14 @@ class Block
             ],
         ];
         $editorColorPalette = get_theme_support('editor-color-palette'); // Return value is in a nested array.
+
         wp_localize_script(
             'give-blocks-js',
             'giveProgressBarThemeSupport',
             [
-                'editorColorPalette' => $editorColorPalette ? array_shift($editorColorPalette) : $defaultColorPalette,
+                'editorColorPalette' => is_array($editorColorPalette) ? array_shift(
+                    $editorColorPalette
+                ) : $defaultColorPalette,
             ]
         );
     }
