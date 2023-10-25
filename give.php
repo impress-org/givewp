@@ -391,7 +391,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.0.2');
+            define('GIVE_VERSION', '3.0.3');
         }
 
         // Plugin Root File.

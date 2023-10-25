@@ -52,16 +52,21 @@ class Block
     /**
      * Returns Progress Bar block markup
      *
-     * @unreleased Make sure all ids passed to the shortcode are migrated
+     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
      * @since 2.9.0
      **/
     public function renderCallback($attributes)
     {
-        array_walk($attributes['ids'], '_give_redirect_form_id');
-
         $progressBar = new ProgressBar(
             [
-                'ids' => $attributes['ids'],
+                'ids' => array_map(
+                    static function ($id) {
+                        _give_redirect_form_id($id);
+
+                        return $id;
+                    },
+                    $attributes['ids']
+                ),
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],
