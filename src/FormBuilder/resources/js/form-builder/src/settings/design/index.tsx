@@ -90,7 +90,7 @@ const FormDesignSettings = () => {
                         checked={showHeader}
                         onChange={() => {
                             dispatch(setFormSettings({showHeader: !showHeader}));
-                            publishSettings({showHeading: !showHeader});
+                            publishSettings({showHeader: !showHeader});
                         }}
                     />
                 </PanelRow>
