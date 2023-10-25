@@ -198,6 +198,8 @@ class Give_Donor_Wall_Block {
 
 	/**
 	 * Block render callback
+     *
+     * @unreleased Make sure all ids passed to the shortcode are migrated
 	 *
 	 * @param array $attributes Block parameters.
 	 *
@@ -206,12 +208,12 @@ class Give_Donor_Wall_Block {
 	 */
 	public function render_block( $attributes ) {
 		$avatarSize = absint( $attributes['avatarSize'] );
+        $ids = $this->getAsArray($attributes['formID']);
+        array_walk($ids, '_give_redirect_form_id');
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-			'form_id'           => implode(',',
-                array_map('_give_redirect_form_id', $this->getAsArray($attributes['formID']))
-            ),
+            'form_id'           => implode(',', $ids),
 			'ids'               => implode(',', $this->getAsArray($attributes['ids'] ) ),
             'cats'              => implode(',', $this->getAsArray($attributes['categories'] ) ),
             'tags'              => implode(',', $this->getAsArray($attributes['tags'] ) ),

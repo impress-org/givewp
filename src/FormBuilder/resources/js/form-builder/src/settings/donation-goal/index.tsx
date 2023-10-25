@@ -11,6 +11,7 @@ import {
 import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
 
@@ -75,15 +76,24 @@ const DonationGoalSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <NumberControl
-                            label={__('Goal Amount', 'give')}
-                            min={0}
-                            value={goalAmount}
-                            onChange={debounce((goalAmount: number) => {
-                                dispatch(setFormSettings({goalAmount}))
-                                publishGoal({targetAmount: goalAmount});
-                            }, 100)}
-                        />
+                        {selectedGoalType.isCurrency ? (
+                            <CurrencyControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
+                            />
+                        ) : (
+                            <NumberControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onChange={debounce((goalAmount: number) => {
+                                    dispatch(setFormSettings({goalAmount}))
+                                    publishGoal({targetAmount: goalAmount});
+                                }, 100)}
+                            />
+                        )}
                     </PanelRow>
                 </>
             )}

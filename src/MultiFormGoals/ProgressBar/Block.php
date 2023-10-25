@@ -52,13 +52,16 @@ class Block
     /**
      * Returns Progress Bar block markup
      *
+     * @unreleased Make sure all ids passed to the shortcode are migrated
      * @since 2.9.0
      **/
     public function renderCallback($attributes)
     {
+        array_walk($attributes['ids'], '_give_redirect_form_id');
+
         $progressBar = new ProgressBar(
             [
-                'ids' => array_map('_give_redirect_form_id', $attributes['ids']),
+                'ids' => $attributes['ids'],
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],
