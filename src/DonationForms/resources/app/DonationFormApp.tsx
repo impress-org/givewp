@@ -87,7 +87,7 @@ function AppPreview() {
         unsubscribeAll
     } = useDonationFormPubSub();
 
-    const [formState, setFormState] = useState<DonationForm>(form);
+    const [formState, setFormState] = useState<DonationForm>({...form, preview: true});
 
     useEffect(() => {
         subscribeToSettings((settings) => {
