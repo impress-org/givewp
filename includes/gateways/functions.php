@@ -23,10 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_payment_gateways($version = 2)
+function give_get_payment_gateways($version = null)
 {
-    $suffix = $version === 3 ? '_v3' : '';
-
     // Default, built-in gateways
     $gateways = apply_filters(
         'give_payment_gateways',
@@ -43,7 +41,14 @@ function give_get_payment_gateways($version = 2)
         }
     });
 
-    $gatewayLabels = give_get_option('gateways_label' . $suffix, []);
+    $gatewayLabels = [];
+    if (!$version || $version === 2) {
+        $gatewayLabels = array_merge($gatewayLabels, (array)give_get_option('gateways_label', []));
+    }
+
+    if (!$version || $version === 3) {
+        $gatewayLabels = array_merge($gatewayLabels, (array)give_get_option('gateways_label_v3', []));
+    }
 
     // Replace payment gateway checkout label with admin defined checkout label.
     if ($gatewayLabels) {
@@ -67,12 +72,20 @@ function give_get_payment_gateways($version = 2)
  * @param int|null $version
  * @return array $gateway_list All the available gateways
  */
-function give_get_enabled_payment_gateways($form_id = 0, $version = 2)
+function give_get_enabled_payment_gateways($form_id = 0, $version = null)
 {
-    $suffix = $version === 3 ? '_v3' : '';
     $gateways = give_get_payment_gateways($version);
 
-    $enabled = $_POST['gateways' . $suffix] ?? give_get_option('gateways' . $suffix);
+    $enabled = [];
+    if (!$version || $version === 2) {
+        $gatewaysFromPostRequest = isset($_POST['gateways']) ? (array)$_POST['gateways'] : null;
+        $enabled = array_merge($enabled, $gatewaysFromPostRequest ?? (array)give_get_option('gateways', []));
+    }
+
+    if (!$version || $version === 3) {
+        $gatewaysFromPostRequest = isset($_POST['gateways_v3']) ? (array)$_POST['gateways_v3'] : null;
+        $enabled = array_merge($enabled, $gatewaysFromPostRequest ?? (array)give_get_option('gateways_v3', []));
+    }
 
 	$gateway_list = [];
 
@@ -91,7 +104,7 @@ function give_get_enabled_payment_gateways($form_id = 0, $version = 2)
 /**
  * Checks whether a specified gateway is activated.
  *
- * @unlreased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.0
  *
  * @param string $gateway Name of the gateway to check for
@@ -110,7 +123,7 @@ function give_is_gateway_active($gateway, $version = 2)
 /**
  * Gets the default payment gateway selected from the Give Settings
  *
- * @unlreased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.0
  *
  * @param int|null $form_id int ID of the Give Form
@@ -345,19 +358,32 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 /**
  * Returns a ordered list of all available gateways.
  *
- * @unlreased add $version param
+ * @since 3.0.2 add $version param
  * @since 1.4.5
  *
  * @param array $gateways List of payment gateways
  * @param int|null $version
  * @return array $gateways All the available gateways
  */
-function give_get_ordered_payment_gateways($gateways, $version = 2)
+function give_get_ordered_payment_gateways($gateways, $version = null)
 {
-    $suffix = $version === 3 ? '_v3' : '';
-
 	// Get gateways setting.
-    $gateways_setting = $_POST['gateways' . $suffix] ?? give_get_option('gateways' . $suffix);
+    $gateways_setting = [];
+    if (!$version || $version === 2) {
+        $gatewaysFromPostRequest = isset($_POST['gateways']) ? (array)$_POST['gateways'] : null;
+        $gateways_setting = array_merge(
+            $gateways_setting,
+            $gatewaysFromPostRequest ?? (array)give_get_option('gateways', [])
+        );
+    }
+
+    if (!$version || $version === 3) {
+        $gatewaysFromPostRequest = isset($_POST['gateways_v3']) ? (array)$_POST['gateways_v3'] : null;
+        $gateways_setting = array_merge(
+            $gateways_setting,
+            $gatewaysFromPostRequest ?? (array)give_get_option('gateways_v3', [])
+        );
+    }
 
 	// Return from here if we do not have gateways setting.
 	if ( empty( $gateways_setting ) ) {
@@ -369,8 +395,7 @@ function give_get_ordered_payment_gateways($gateways, $version = 2)
 
 	// Reorder gateways array
 	foreach ( $gateways_setting as $gateway_key => $value ) {
-
-		$new_gateway_value = isset( $gateways[ $gateway_key ] ) ? $gateways[ $gateway_key ] : '';
+        $new_gateway_value = $gateways[$gateway_key] ?? '';
 		unset( $gateways[ $gateway_key ] );
 
 		if ( ! empty( $new_gateway_value ) ) {
@@ -381,9 +406,10 @@ function give_get_ordered_payment_gateways($gateways, $version = 2)
 	/**
 	 * Filter payment gateways order.
 	 *
+     * @since 3.0.2 add $version param
 	 * @since 1.7
 	 *
 	 * @param array $gateways All the available gateways
 	 */
-    return apply_filters('give_payment_gateways_order' . $suffix, $gateways);
+    return apply_filters('give_payment_gateways_order', $gateways, $version);
 }
