@@ -6,7 +6,7 @@ import {isFormPageEnabled, PageSlugControl} from './page-slug';
 import {cleanForSlug} from '@wordpress/url';
 
 /**
- * @unreleased dispatch page slug from form title on initial publish.
+ * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const FormSummarySettings = () => {
     const {

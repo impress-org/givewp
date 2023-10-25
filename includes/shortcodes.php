@@ -785,7 +785,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  *
  * @since  2.1.0
  *
- * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
+ * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
  * @since      2.23.1 Updated the default text color for the donate button, see #6591.
  * @since      2.21.2 change tag_background_color, progress_bar_color to official green color #69b868.
  *             change tag_text_color color to #333333.

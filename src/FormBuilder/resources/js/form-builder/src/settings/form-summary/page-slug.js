@@ -13,7 +13,7 @@ const {
 } = getWindowData();
 
 /**
- * @unreleased pass page slug from parent component to support form title as initial slug.
+ * @since 3.1.0 pass page slug from parent component to support form title as initial slug.
  * @since 3.0.0
  * @see https://github.com/WordPress/gutenberg/blob/a8c5605f5dd077a601aefce6f58409f54d7d4447/packages/editor/src/components/post-slug/index.js
  */
