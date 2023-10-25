@@ -1,7 +1,5 @@
 import {slugifyMeta} from "@givewp/form-builder/supports/field-settings/MetaKeyTextControl";
-import {useFieldNameValidator} from "@givewp/form-builder/hooks";
 import {getBlockNames, getFieldNameValidator} from "@givewp/form-builder/hooks/useFieldNameValidator";
-import {useState} from "react";
 
 export default (blocks) => {
     return blocks.map((section) => {
@@ -14,8 +12,7 @@ export default (blocks) => {
 
                 const isNewField = typeof block.attributes.metaUUID === 'undefined';
                 const isDuplicatedField = !isNewField && block.attributes.metaUUID !== block.clientId;
-
-                if(isDuplicatedField) console.log('DUPLICATED')
+                if(!isDuplicatedField) return block;
 
                 const fieldNames = getBlockNames(blocks);
                 const validateFieldName = getFieldNameValidator(fieldNames);
@@ -23,18 +20,17 @@ export default (blocks) => {
                 const slugifiedLabel = slugifyMeta(block.attributes.label);
                 let slugifiedName = block.attributes.fieldName ?? slugifiedLabel;
 
-                const [isUnique, suggestedName] = validateFieldName(slugifiedName, !isNewField);
+                const [isUnique, suggestedName] = validateFieldName(slugifiedName, false);
                 const fieldName = isUnique ? slugifiedName : suggestedName;
 
-                return isDuplicatedField
-                    ? {
-                        ...block,
-                        attributes: {
-                            ...block.attributes,
-                            metaUUID: block.clientId,
-                            fieldName: fieldName,
-                        }
-                    } : block;
+                return {
+                    ...block,
+                    attributes: {
+                        ...block.attributes,
+                        metaUUID: block.clientId,
+                        fieldName: fieldName,
+                    },
+                };
             })
         };
     });
