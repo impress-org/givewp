@@ -281,6 +281,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 = 2.33.5: October 10th, 2023 =
 * Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
 
+= 2.33.4: October 4th, 2023 =
+* Fix: Update old sendwp buttons and remove unused Stripe disconnect function.
+
 = 2.33.3: September 29th, 2023 =
 * Fix: Multi-site installations no longer produce an error on subsites.
 
