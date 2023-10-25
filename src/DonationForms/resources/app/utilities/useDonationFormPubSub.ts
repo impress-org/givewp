@@ -41,8 +41,17 @@ export default function useDonationFormPubSub() {
         const {event, data} = getMessage(message);
 
         if (events[event]) {
+
+            const filtered = {};
+            // Allow only primitive values
+            Object.entries(data).forEach(([key, value]) => {
+                if (typeof value !== 'function' && typeof value !== 'object') {
+                    filtered[key] = value;
+                }
+            });
+
             events[event].forEach((callback: (data: any) => void) => {
-                callback(data);
+                callback(filtered);
             });
         }
     }
@@ -56,20 +65,10 @@ export default function useDonationFormPubSub() {
     }
 
     const publish = (event: string, data: any, iframeRef: RefObject<any>) => {
-
-        const filtered = {};
-
-        // Allow only primitive values
-        Object.entries(data).forEach(([key, value]) => {
-            if (typeof value !== 'function' && typeof value !== 'object') {
-                filtered[key] = value;
-            }
-        });
-
         if (iframeRef.current?.sendMessage) {
             iframeRef.current.sendMessage({
                 event,
-                data: filtered
+                data
             });
         }
     }
