@@ -5,18 +5,12 @@ import defaultFormTemplates from './templates';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
-import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
-import Options from '@givewp/form-builder/components/OptionsPanel';
 
 declare global {
     interface Window {
         givewpDonationFormExports: FormServerExports;
         givewpDonationConfirmationReceiptExports: DonationConfirmationReceiptServerExports;
         givewp: {
-            components: {
-                CurrencyControl: typeof CurrencyControl;
-                DraggableOptionsControl: typeof Options;
-            };
             gateways: GatewayRegistrar;
             form: {
                 templates: typeof defaultFormTemplates;
