@@ -199,7 +199,7 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Block render callback
      *
-     * @unreleased Make sure all ids passed to the shortcode are migrated
+     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
 	 *
 	 * @param array $attributes Block parameters.
 	 *
@@ -207,12 +207,18 @@ class Give_Donation_Form_Grid_Block {
 	 * @return string;
 	 */
 	public function render_block( $attributes ) {
-        $ids = $this->getAsArray($attributes['formIDs']);
-        array_walk($ids, '_give_redirect_form_id');
-
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-            'ids'                 => implode(',', $ids),
+			'ids'                 => implode(',',
+                array_map(
+                    static function ($id) {
+                        _give_redirect_form_id($id);
+
+                        return $id;
+                    },
+                    $this->getAsArray($attributes['formIDs'])
+                )
+            ),
 			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],

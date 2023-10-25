@@ -264,6 +264,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.0.3: October 20th, 2023 =
 * Fix: Using the multi-form shortcode with the ids attribute no longer causes a fatal error
+* Fix: Forms no longer have fatal errors on Elementor websites when the Display Content option is enabled
 
 = 3.0.2: October 19th, 2023 =
 * Fix: Stripe per-form settings are included when migrating a form to the Visual Donation Form Builder
