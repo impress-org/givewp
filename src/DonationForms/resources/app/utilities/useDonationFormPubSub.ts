@@ -72,6 +72,15 @@ export default function useDonationFormPubSub() {
         publish(PREVIEW_EVENTS.GOAL, data, iframeRef)
     }
 
+    const publishGoalType = (type: string) => {
+        publish(PREVIEW_EVENTS.GOAL, {
+            type,
+            label: type,
+            typeIsCount: 'amount' !== type,
+            typeIsMoney: 'amount' === type
+        }, iframeRef)
+    }
+
     const publishColors = (data: RequireAtLeastOne<FormColors>) => {
         publish(PREVIEW_EVENTS.COLORS, data, iframeRef)
     }
@@ -112,24 +121,11 @@ export default function useDonationFormPubSub() {
         unsubscribe,
         unsubscribeAll,
         publishGoal,
+        publishGoalType,
         publishColors,
         publishSettings,
         subscribeToGoal,
         subscribeToColors,
         subscribeToSettings,
-    }
-}
-
-/**
- * Helper function for setting goal props in design mode
- *
- * @param type
- */
-export const setGoalType = (type: string) => {
-    return {
-        type,
-        label: type,
-        typeIsCount: 'amount' !== type,
-        typeIsMoney: 'amount' === type
     }
 }

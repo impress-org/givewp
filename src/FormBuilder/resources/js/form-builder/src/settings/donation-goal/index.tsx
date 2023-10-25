@@ -10,7 +10,7 @@ import {
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import useDonationFormPubSub, {setGoalType} from '@givewp/forms/app/utilities/useDonationFormPubSub';
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
 
@@ -19,7 +19,7 @@ const DonationGoalSettings = () => {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-    const {publishGoal} = useDonationFormPubSub();
+    const {publishGoal, publishGoalType} = useDonationFormPubSub();
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
@@ -69,7 +69,7 @@ const DonationGoalSettings = () => {
                             options={goalTypeOptions}
                             onChange={(goalType: string) => {
                                 dispatch(setFormSettings({goalType}))
-                                publishGoal(setGoalType(goalType));
+                                publishGoalType(goalType);
                             }}
                             help={selectedGoalDescription}
                         />
