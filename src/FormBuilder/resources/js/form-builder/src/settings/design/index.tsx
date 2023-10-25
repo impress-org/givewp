@@ -76,7 +76,7 @@ const FormDesignSettings = () => {
                         label={__('Button caption', 'give')}
                         value={donateButtonCaption}
                         onChange={(donateButtonCaption) => {
-                            dispatch(setFormSettings({primaryColor}));
+                            dispatch(setFormSettings({donateButtonCaption}));
                             publishSettings({donateButtonCaption});
                         }}
                         help={__('Enter the text you want to display on the donation button.', 'give')}
