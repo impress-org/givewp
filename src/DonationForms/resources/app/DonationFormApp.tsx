@@ -22,7 +22,7 @@ const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchie
 /**
  * Get data from the server
  */
-const {form} = getWindowData();
+const {form, previewMode} = getWindowData();
 const donationFormNodeSettings = getDonationFormNodeSettings(form);
 
 prepareFormData(form);
@@ -87,7 +87,7 @@ function AppPreview() {
         unsubscribeAll
     } = useDonationFormPubSub();
 
-    const [formState, setFormState] = useState<DonationForm>({...form, preview: true});
+    const [formState, setFormState] = useState<DonationForm>(form);
 
     useEffect(() => {
         subscribeToSettings((settings) => {
@@ -132,10 +132,9 @@ function AppPreview() {
 }
 
 const root = document.getElementById('root-givewp-donation-form');
-const preview = root.classList.contains('givewp-donation-form--preview');
 
 if (createRoot) {
-    createRoot(root).render(preview ? <AppPreview /> : <App form={form} />);
+    createRoot(root).render(previewMode ? <AppPreview /> : <App form={form} />);
 } else {
-    render(preview ? <AppPreview /> : <App form={form} />, root);
+    render(previewMode ? <AppPreview /> : <App form={form} />, root);
 }

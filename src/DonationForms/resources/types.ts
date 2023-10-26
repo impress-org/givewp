@@ -43,6 +43,7 @@ export interface FormServerExports {
     validateUrl: string;
     authUrl: string;
     inlineRedirectRoutes: string[];
+    previewMode: boolean;
 }
 
 export interface ReceiptDetail {
@@ -217,7 +218,6 @@ export type RequireAtLeastOne<T> = {
 }[keyof T]
 
 export interface Form extends Group {
-    preview?: boolean;
     currency: string;
     settings: FormSettings;
     stats: {
