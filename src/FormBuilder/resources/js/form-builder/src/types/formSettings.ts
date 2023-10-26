@@ -15,6 +15,7 @@ export type FormSettings = {
     registrationNotification: boolean;
     goalType: string;
     goalAmount: number;
+    currentAmount: number;
     designId: string;
     heading: string;
     description: string;

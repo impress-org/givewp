@@ -37,7 +37,7 @@ export default function Header({form}) {
                             currency={form.currency}
                             type={form.goal.type as GoalType}
                             goalLabel={form.goal.label}
-                            progressPercentage={form.goal.progressPercentage}
+                            progressPercentage={Math.round((form.goal.currentAmount / form.goal.targetAmount) * 100)}
                             currentAmount={form.goal.currentAmount}
                             currentAmountFormatted={
                                 form.goal.typeIsMoney
