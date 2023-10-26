@@ -1,10 +1,13 @@
 .give-sale-banners-container {
+    display: block;
+    width: 100%;
     position: relative;
     padding: 1.75rem 0 1.5rem 2.75rem;
     box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+    border-radius: 8px;
 
     /* Box-sizing reset */
     &,
@@ -35,6 +38,7 @@
 
 .givewp-sale-banner {
     &__content {
+        width: 70%;
         line-height: normal;
         font-style: normal;
 
@@ -58,7 +62,7 @@
 
         & a {
             display: inline-flex;
-            padding: .75rem 1rem;
+            padding: 1rem 1.5rem;
             justify-content: center;
             align-items: center;
             gap: .5rem;
@@ -67,7 +71,7 @@
             border: none;
             color: var(--shades-white, #FFF);
             font-size: 1.25rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
 
@@ -107,7 +111,7 @@
 
         & a {
             font-size: 0.875rem;
-            padding: .5rem .75rem;
+            padding: .75rem 1rem;
         }
     }
 }
