@@ -126,9 +126,17 @@ function AppPreview() {
         })
 
         subscribeToCss(({customCss}) => {
-            style.innerText = customCss;
-        })
+            let cssRules = '';
+            const stylesheet = new CSSStyleSheet();
 
+            stylesheet.replaceSync(customCss);
+
+            for (let i = 0; i < stylesheet.cssRules.length; i++) {
+                cssRules += stylesheet.cssRules[i].cssText + "\n";
+            }
+
+            style.innerText = cssRules;
+        })
 
         return () => unsubscribeAll();
 
