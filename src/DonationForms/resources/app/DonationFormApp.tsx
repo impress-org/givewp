@@ -126,7 +126,7 @@ function AppPreview() {
         })
 
         subscribeToCss(({customCss}) => {
-            style.innerHTML = customCss;
+            style.innerText = customCss;
         })
 
 
