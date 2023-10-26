@@ -49,13 +49,13 @@ export default ({emailType, defaultEmailAddress}: SendPreviewEmailProps) => {
 
     return (
         <>
-            <h2 className={'email-settings__header'}>{__('Send a test email', 'givewp')}</h2>
+            <h2 className={'email-settings__header'}>{__('Send a test email', 'give')}</h2>
             <p className={'email-settings__description'}>
-                {__('Specify below the email address you want to send a test email to', 'givewp')}
+                {__('Specify below the email address you want to send a test email to', 'give')}
             </p>
             {defaultEmailAddress !== null && <TextControl onChange={setEmailAddress} value={emailAddress} />}
             <Button className={'email-settings__email-btn'} variant={'secondary'} onClick={sendTestEmail}>
-                {__('Send test email', 'givewp')}
+                {__('Send test email', 'give')}
             </Button>
         </>
     );
