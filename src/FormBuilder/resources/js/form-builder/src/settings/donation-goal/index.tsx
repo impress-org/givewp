@@ -81,7 +81,10 @@ const DonationGoalSettings = () => {
                                 label={__('Goal Amount', 'give')}
                                 min={0}
                                 value={goalAmount}
-                                onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
+                                onValueChange={debounce((goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}));
+                                    publishGoal({targetAmount: goalAmount});
+                                }, 500)}
                             />
                         ) : (
                             <NumberControl
