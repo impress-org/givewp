@@ -84,6 +84,7 @@ function AppPreview() {
         subscribeToGoal,
         subscribeToColors,
         subscribeToSettings,
+        subscribeToCss,
         unsubscribeAll
     } = useDonationFormPubSub();
 
@@ -116,13 +117,18 @@ function AppPreview() {
 
         subscribeToColors((data) => {
             if (data['primaryColor']) {
-                root.style.setProperty('--givewp-primary-color', data['primaryColor']);
+                root.style;
             }
 
             if (data['secondaryColor']) {
                 root.style.setProperty('--givewp-secondary-color', data['secondaryColor']);
             }
         })
+
+        subscribeToCss(({customCss}) => {
+            root.style.cssText = `${root.style.cssText} ${customCss}`;
+        })
+
 
         return () => unsubscribeAll();
 
