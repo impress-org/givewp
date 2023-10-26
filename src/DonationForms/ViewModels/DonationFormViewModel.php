@@ -262,8 +262,8 @@ class DonationFormViewModel
         ?>
 
         <?php
-        if ($this->formSettings->customCss): ?>
-            <style><?php
+        if ($this->previewMode || $this->formSettings->customCss): ?>
+            <style id="root-givewp-donation-form-style"><?php
                 echo $this->formSettings->customCss; ?></style>
         <?php
         endif; ?>

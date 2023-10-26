@@ -126,7 +126,7 @@ function AppPreview() {
         })
 
         subscribeToCss(({customCss}) => {
-            root.style.cssText = `${root.style.cssText} ${customCss}`;
+            style.innerHTML = customCss;
         })
 
 
@@ -138,6 +138,7 @@ function AppPreview() {
 }
 
 const root = document.getElementById('root-givewp-donation-form');
+const style = document.getElementById('root-givewp-donation-form-style');
 
 if (createRoot) {
     createRoot(root).render(previewMode ? <AppPreview /> : <App form={form} />);
