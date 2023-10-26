@@ -8,7 +8,6 @@ import {
     TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
-import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
@@ -81,20 +80,20 @@ const DonationGoalSettings = () => {
                                 label={__('Goal Amount', 'give')}
                                 min={0}
                                 value={goalAmount}
-                                onValueChange={debounce((goalAmount) => {
-                                    dispatch(setFormSettings({goalAmount}));
-                                    publishGoal({targetAmount: goalAmount});
-                                }, 500)}
+                                onValueChange={(goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}))
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
                             />
                         ) : (
                             <NumberControl
                                 label={__('Goal Amount', 'give')}
                                 min={0}
                                 value={goalAmount}
-                                onChange={debounce((goalAmount: number) => {
+                                onChange={(goalAmount) => {
                                     dispatch(setFormSettings({goalAmount}))
-                                    publishGoal({targetAmount: goalAmount});
-                                }, 100)}
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
                             />
                         )}
                     </PanelRow>
