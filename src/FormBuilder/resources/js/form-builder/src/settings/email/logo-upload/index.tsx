@@ -23,9 +23,9 @@ export default ({value, onChange}) => {
         }
 
         frame = window.wp.media({
-            title: __('Add or upload file', 'givewp'),
+            title: __('Add or upload file', 'give'),
             button: {
-                text: __('Use this media', 'givewp'),
+                text: __('Use this media', 'gie'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
         });
@@ -45,7 +45,7 @@ export default ({value, onChange}) => {
             <div>
                 {' '}
                 {/* Wrapping the TextControl solves a spacing issue */}
-                <TextControl type={'url'} label={__('Logo URL', 'givewp')} value={value} onChange={onChange} />
+                <TextControl type={'url'} label={__('Logo URL', 'give')} value={value} onChange={onChange} />
             </div>
             <Button
                 icon={upload}
@@ -53,7 +53,7 @@ export default ({value, onChange}) => {
                 onClick={openMediaLibrary}
                 style={{width: '100%', justifyContent: 'center', marginBottom: '8px'}}
             >
-                {__('Add or upload file', 'givewp')}
+                {__('Add or upload file', 'give')}
             </Button>
         </div>
     );

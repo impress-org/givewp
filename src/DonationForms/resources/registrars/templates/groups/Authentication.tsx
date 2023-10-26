@@ -141,7 +141,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
             setErrorMessage(
                 'authentication_error' === responseData.type
                     ? responseData.message
-                    : __('Something went wrong. Please try or again or contact a site administrator.', 'givewp')
+                    : __('Something went wrong. Please try or again or contact a site administrator.', 'give')
             );
         }
     };
@@ -162,7 +162,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                 }}
             >
                 <button style={{width: 'auto'}} onClick={tryLogin}>
-                    {__('Log In', 'givewp')}
+                    {__('Log In', 'give')}
                 </button>
                 <a
                     onClick={(event) => {
@@ -172,7 +172,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                         window.top.location.assign(passwordResetUrl);
                     }}
                 >
-                    {__('Reset Password', 'givewp')}
+                    {__('Reset Password', 'give')}
                 </a>
             </div>
         </div>
