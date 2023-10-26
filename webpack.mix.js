@@ -34,7 +34,6 @@ mix.setPublicPath('assets/dist')
     .js('assets/src/js/admin/reports/widget.js', 'js/admin-reports-widget.js')
     .js('assets/src/js/admin/onboarding-wizard/index.js', 'js/admin-onboarding-wizard.js')
     .js('includes/admin/shortcodes/admin-shortcodes.js', 'js/')
-    .js('blocks/load.js', 'js/gutenberg.js')
     .js('src/Views/Form/Templates/Sequoia/assets/js/form.js', 'js/give-sequoia-template.js')
     .js('src/Views/Form/Templates/Classic/resources/js/form.js', 'js/give-classic-template.js')
     .js('src/DonorDashboards/resources/js/app/index.js', 'js/donor-dashboards-app.js')
@@ -81,10 +80,6 @@ mix.webpackConfig({
             '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
             '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
         },
-    },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
     },
     plugins: [
         /*
