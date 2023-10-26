@@ -7,7 +7,6 @@
          * @var string $id
          * @var string $giveIconURL
          * @var string $discountIconURL
-         * @var string $backgroundImageLargeURL
          * @var string $backgroundImageMediumURL
          * @var string $backgroundImageSmallURL
          * @var string $shoppingCartIconURL
