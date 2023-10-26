@@ -117,7 +117,7 @@ function AppPreview() {
 
         subscribeToColors((data) => {
             if (data['primaryColor']) {
-                root.style;
+                root.style.setProperty('--givewp-primary-color', data['primaryColor']);
             }
 
             if (data['secondaryColor']) {
