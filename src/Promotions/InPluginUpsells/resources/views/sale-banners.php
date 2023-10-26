@@ -52,20 +52,13 @@
         <style>
             /* Default background image */
             .give-sale-banners-container {
-                background-image: url('<?= $backgroundImageLargeURL ?>');
+                background-image: url('<?= $backgroundImageMediumURL ?>');
             }
 
             /* Media query for small screens */
             @media screen and (max-width: 768px) {
                 .give-sale-banners-container {
                     background-image: url('<?= $backgroundImageSmallURL ?>');
-                }
-            }
-
-            /* Media query for medium screens */
-            @media screen and (min-width: 769px) and (max-width: 1024px) {
-                .give-sale-banners-container {
-                    background-image: url('<?= $backgroundImageMediumURL ?>');
                 }
             }
         </style>
