@@ -618,13 +618,13 @@ class Give_Scripts {
             GIVE_VERSION
         );
 
-        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/gutenberg.asset.php');
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/adminBlocks.asset.php');
 
         $handle = 'give-blocks-js';
         wp_enqueue_script(
             $handle,
-            GIVE_PLUGIN_URL . 'build/gutenberg.js',
-            $scriptAsset['dependencies'],
+            GIVE_PLUGIN_URL . 'build/adminBlocks.js',
+            array_merge(['give-admin-scripts'], $scriptAsset['dependencies']),
             $scriptAsset['version'],
             true
         );
