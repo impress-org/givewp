@@ -83,11 +83,13 @@ export default function useDonationFormPubSub() {
     }
 
     const publishGoalType = (type: string) => {
+        const isMoney = ['amount', 'amountFromSubscriptions'].includes(type);
+
         publish(PREVIEW_EVENTS.GOAL, {
             type,
             label: type,
-            typeIsCount: 'amount' !== type,
-            typeIsMoney: 'amount' === type
+            typeIsCount: !isMoney,
+            typeIsMoney: isMoney,
         }, iframeRef)
     }
 
