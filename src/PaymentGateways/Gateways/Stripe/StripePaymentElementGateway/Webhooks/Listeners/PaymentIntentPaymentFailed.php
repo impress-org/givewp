@@ -22,6 +22,7 @@ class PaymentIntentPaymentFailed
      *
      * @see https://stripe.com/docs/api/events/types#event_types-payment_intent.payment_failed
      *
+     * @unreleased Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -30,18 +31,19 @@ class PaymentIntentPaymentFailed
     public function __invoke(Event $event)
     {
         try {
-            $this->processEvent($event);
+            if ($this->processEvent($event)) {
+                exit;
+            }
         } catch (Exception $exception) {
             $this->logWebhookError($event, $exception);
         }
-
-        exit;
     }
 
     /**
+     * @unreleased Return a bool value.
      * @since 3.0.0
      */
-    public function processEvent(Event $event)
+    public function processEvent(Event $event): bool
     {
         /* @var PaymentIntent $paymentIntent */
         $paymentIntent = $event->data->object;
@@ -49,7 +51,7 @@ class PaymentIntentPaymentFailed
         $donation = give()->donations->getByGatewayTransactionId($paymentIntent->id);
 
         if (!$donation || !$this->shouldProcessDonation($donation)) {
-            return;
+            return false;
         }
 
         if ($donation->type->isSingle() && !$donation->status->isFailed()) {
@@ -61,5 +63,7 @@ class PaymentIntentPaymentFailed
                 'content' => __('Payment failed in Stripe.', 'give'),
             ]);
         }
+
+        return true;
     }
 }
