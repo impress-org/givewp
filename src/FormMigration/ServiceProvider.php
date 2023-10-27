@@ -77,7 +77,7 @@ class ServiceProvider implements ServiceProviderInterface
                     'id' => [
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
-                        'description' => __('The ID of the form (v2) to migrate to v3.', 'givewp'),
+                        'description' => __('The ID of the form (v2) to migrate to v3.', 'give'),
                     ],
                 ],
             ]);
@@ -101,7 +101,7 @@ class ServiceProvider implements ServiceProviderInterface
                             return intval($value);
                             // return array_map('intval', explode(',', $value));
                         },
-                        'description' => __('The ID of the form (v3) to transfer donations (from v2).', 'givewp'),
+                        'description' => __('The ID of the form (v3) to transfer donations (from v2).', 'give'),
                     ],
                     'changeUrl' => [
                         'type' => 'boolean',

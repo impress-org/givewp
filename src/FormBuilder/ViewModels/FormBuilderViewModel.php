@@ -87,12 +87,18 @@ class FormBuilderViewModel
     /**
      * @since 3.0.0
      */
-    public function getGoalTypeOption(string $value, string $label, string $description): array
+    public function getGoalTypeOption(
+        string $value,
+        string $label,
+        string $description,
+        bool $isCurrency = false
+    ): array
     {
         return [
             'value' => $value,
             'label' => $label,
             'description' => $description,
+            'isCurrency' => $isCurrency,
         ];
     }
 
@@ -105,7 +111,8 @@ class FormBuilderViewModel
             $this->getGoalTypeOption(
                 GoalType::AMOUNT,
                 __('Amount Raised', 'give'),
-                __('The total amount raised for the form', 'give')
+                __('The total amount raised for the form', 'give'),
+                true
             ),
             $this->getGoalTypeOption(
                 GoalType::DONATIONS,
@@ -124,7 +131,8 @@ class FormBuilderViewModel
                 $this->getGoalTypeOption(
                     GoalType::AMOUNT_FROM_SUBSCRIPTIONS,
                     __('Subscription Amount Raised', 'give'),
-                    __('The total amount raised for the form through subscriptions', 'give')
+                    __('The total amount raised for the form through subscriptions', 'give'),
+                    true
                 ),
                 $this->getGoalTypeOption(
                     GoalType::SUBSCRIPTIONS,

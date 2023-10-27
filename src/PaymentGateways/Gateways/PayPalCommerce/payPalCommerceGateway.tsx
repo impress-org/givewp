@@ -343,7 +343,7 @@ import {PayPalSubscriber} from "./types";
                         className="givewp-fields"
                         label={__('Cardholder Name', 'give')}
                         hideLabelFromVision={true}
-                        placeholder={'Cardholder Name'}
+                        placeholder={__('Cardholder Name', 'give')}
                         value={_cardholderName ?? cardholderDefault}
                         onChange={(value) => setCardholderName(value)}
                     />
@@ -367,7 +367,7 @@ import {PayPalSubscriber} from "./types";
                             hostedFieldType="expirationDate"
                             options={{
                                 selector: '#expiration-date',
-                                placeholder: 'MM/YYYY',
+                                placeholder: __('MM/YYYY', 'give'),
                             }}
                         />
                         <PayPalHostedField
@@ -377,7 +377,7 @@ import {PayPalSubscriber} from "./types";
                             hostedFieldType="cvv"
                             options={{
                                 selector: '#cvv',
-                                placeholder: 'CVV',
+                                placeholder: __('CVV', 'give'),
                                 maskInput: true,
                             }}
                         />

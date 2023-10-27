@@ -35,9 +35,9 @@ export default function Editor ({onChange, value, className}: EditorProps) {
         }
 
         frame = window.wp.media({
-            title: __('Add or upload file', 'givewp'),
+            title: __('Add or upload file', 'give'),
             button: {
-                text: __('Use this media', 'givewp'),
+                text: __('Use this media', 'give'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
         });
