@@ -23,6 +23,7 @@ const DesignPreview = () => {
         });
     }, [
         formSettings.designId,
+        formSettings.goalType,
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
