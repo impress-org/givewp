@@ -6,8 +6,8 @@ use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 use Give\FormBuilder\FormBuilderRouteBuilder;
-use Give\Framework\Blocks\BlockCollection;
 use Give\Helpers\Hooks;
 
 /**
@@ -16,6 +16,7 @@ use Give\Helpers\Hooks;
 class CreateFormRoute
 {
     /**
+     * @unreleased updated default form blocks to be generated from block models instead of json
      * @since 3.0.0
      *
      * @return void
@@ -30,10 +31,6 @@ class CreateFormRoute
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
-                $blocksJson = file_get_contents(
-                    GIVE_PLUGIN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
-                );
-
                 $form = new DonationForm([
                     'title' => __('GiveWP Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
@@ -41,7 +38,7 @@ class CreateFormRoute
                         'enableDonationGoal' => true,
                         'goalAmount' => 1000,
                     ]),
-                    'blocks' => BlockCollection::fromJson($blocksJson)
+                    'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
                 ]);
 
                 Hooks::doAction('givewp_form_builder_new_form', $form);

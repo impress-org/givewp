@@ -30,7 +30,7 @@ export default () => {
     const templateTagsDescription = createInterpolateElement(
         __(
             'Available template tags for this email. HTML is accepted. <a>See our documentation</a> for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
-            'givewp'
+            'give'
         ),
         {
             a: <a href="https://make.wordpress.org" target="_blank" />,
@@ -45,11 +45,11 @@ export default () => {
                 variant={'secondary'}
                 style={{width: '100%', justifyContent: 'center'}}
             >
-                {__('Customize email templates', 'givewp')}
+                {__('Customize email templates', 'give')}
             </Button>
             {isOpen && (
                 <Modal
-                    title={showPreview ? __('Preview Email', 'givewp') : __('Email Settings', 'give')}
+                    title={showPreview ? __('Preview Email', 'give') : __('Email Settings', 'give')}
                     onRequestClose={closeModal}
                     isDismissible={false}
                     shouldCloseOnClickOutside={false}
@@ -69,7 +69,7 @@ export default () => {
                                 variant={'secondary'}
                                 onClick={() => setShowPreview(false)}
                             >
-                                {__('Back to template settings', 'givewp')}
+                                {__('Back to template settings', 'give')}
                             </Button>
                         </>
                     )}
@@ -82,7 +82,7 @@ export default () => {
                                     variant={'primary'}
                                     onClick={closeModal}
                                 >
-                                    {__('Close', 'givewp')}
+                                    {__('Close', 'give')}
                                 </Button>
                                 <div className={'email-settings__col-left'}>
                                     <TabPanel
@@ -120,16 +120,16 @@ export default () => {
                                     }}
                                 >
                                     <div>
-                                        <h2 className={'email-settings__header'}>{__('Preview email', 'givewp')}</h2>
+                                        <h2 className={'email-settings__header'}>{__('Preview email', 'give')}</h2>
                                         <p className={'email-settings__description'}>
-                                            {__('Preview the email message in your browser', 'givewp')}
+                                            {__('Preview the email message in your browser', 'give')}
                                         </p>
                                         <Button
                                             className={'email-settings__email-btn'}
                                             variant={'secondary'}
                                             onClick={() => setShowPreview(true)}
                                         >
-                                            {__('Preview email', 'givewp')}
+                                            {__('Preview email', 'give')}
                                         </Button>
                                     </div>
                                     <div>
@@ -139,7 +139,7 @@ export default () => {
                                         />
                                     </div>
                                     <div>
-                                        <h2 className={'email-settings__header'}>{__('Template tags', 'givewp')}</h2>
+                                        <h2 className={'email-settings__header'}>{__('Template tags', 'give')}</h2>
                                         <p className={'email-settings__description'}>{templateTagsDescription}</p>
                                         <ul className={'email-settings-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
