@@ -20,6 +20,7 @@ class CustomerSubscriptionCreated
      *
      * @see https://stripe.com/docs/api/events/types#event_types-customer.subscription.created
      *
+     * @since 3.0.4 Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -28,18 +29,19 @@ class CustomerSubscriptionCreated
     public function __invoke(Event $event)
     {
         try {
-            $this->processEvent($event);
+            if ($this->processEvent($event)) {
+                exit;
+            }
         } catch (Exception $exception) {
             $this->logWebhookError($event, $exception);
         }
-
-        exit;
     }
 
     /**
+     * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      */
-    public function processEvent(Event $event)
+    public function processEvent(Event $event): bool
     {
         /* @var StripeSubscription $stripeSubscription */
         $stripeSubscription = $event->data->object;
@@ -48,11 +50,11 @@ class CustomerSubscriptionCreated
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
-            return;
+            return false;
         }
 
         // exit early to prevent legacy webhook
         // we don't need to do anything here at the moment because the subscription is already created & active
-        exit;
+        return true;
     }
 }
