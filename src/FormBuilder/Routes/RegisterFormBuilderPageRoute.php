@@ -5,9 +5,9 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
-use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Framework\Views\View;
 use Give\Helpers\Hooks;
+use Give\Helpers\Language;
 use Give\Log\Log;
 
 use function wp_enqueue_style;
@@ -58,6 +58,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @unreleased set translations for scripts
      * @since 3.0.0
      *
      * @return void
@@ -79,8 +80,9 @@ class RegisterFormBuilderPageRoute
             GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css'
         );
 
+        $registrarsScriptHandle = '@givewp/form-builder/registrars';
         wp_enqueue_script(
-            '@givewp/form-builder/registrars',
+            $registrarsScriptHandle,
             $formBuilderViewModel->jsPathToRegistrars(),
             $this->getRegisteredFormBuilderJsDependencies(
                 $formBuilderViewModel->jsRegistrarsDependencies()
@@ -89,7 +91,10 @@ class RegisterFormBuilderPageRoute
             true
         );
 
+        Language::setScriptTranslations($registrarsScriptHandle);
+
         /**
+         * @unreleased set translations for scripts
          * @since 3.0.0
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
          * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
@@ -98,6 +103,7 @@ class RegisterFormBuilderPageRoute
          */
         Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
+        $formBuilderScriptPath = '@givewp/form-builder/script';
         wp_enqueue_script(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromPluginRoot(),
@@ -107,6 +113,8 @@ class RegisterFormBuilderPageRoute
             GIVE_VERSION,
             true
         );
+
+        Language::setScriptTranslations($formBuilderScriptPath);
 
         wp_add_inline_script(
             '@givewp/form-builder/script',

@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.0.1
+Stable tag: 3.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.0.3: October 20th, 2023 =
+* Fix: Using the multi-form shortcode with the ids attribute no longer causes a fatal error
+* Fix: Forms no longer have fatal errors on Elementor websites when the Display Content option is enabled
+
+= 3.0.2: October 19th, 2023 =
+* Fix: Stripe per-form settings are included when migrating a form to the Visual Donation Form Builder
+* Fix: Gateways are properly separated in the settings page and Global Settings for Fee Recovery shows all gateways when you select per gateway
+
 = 3.0.1: October 17th, 2023 =
 * Fix: Resolved a conflict with Matomo plugin that was causing a fatal error
 
@@ -273,6 +281,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 = 2.33.5: October 10th, 2023 =
 * Fix: Prevent failed donations in sites that use proxy services like Cloudflare and gateways that require the original IP address
+
+= 2.33.4: October 4th, 2023 =
+* Fix: Update old sendwp buttons and remove unused Stripe disconnect function.
 
 = 2.33.3: September 29th, 2023 =
 * Fix: Multi-site installations no longer produce an error on subsites.

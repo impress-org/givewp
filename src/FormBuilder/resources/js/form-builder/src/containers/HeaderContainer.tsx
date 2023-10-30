@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {EditIcon, GiveIcon} from '../components/icons';
-import {drawerRight, moreVertical, external} from '@wordpress/icons';
+import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
-import {Button, Dropdown, ExternalLink, Icon, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
+import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {getWindowData, Storage} from '../common';
@@ -11,10 +11,11 @@ import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
-import {setEditorMode, useEditorState, useEditorStateDispatch} from "@givewp/form-builder/stores/editor-state";
-import EditorMode from "@givewp/form-builder/types/editorMode";
-import {useDispatch} from "@wordpress/data";
 import FormPrepublishPanel from "@givewp/form-builder/components/sidebar/panels/FormPrepublishPanel";
+import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/form-builder/stores/editor-state';
+import EditorMode from '@givewp/form-builder/types/editorMode';
+import {useDispatch} from '@wordpress/data';
+import {cleanForSlug} from '@wordpress/url';
 
 const Logo = () => (
     <div
@@ -38,11 +39,10 @@ const Logo = () => (
     </div>
 );
 
-const HeaderContainer = ({
-                             SecondarySidebarButtons = null,
-                             showSidebar,
-                             toggleShowSidebar,
-                         }) => {
+/**
+ * @unreleased dispatch page slug from form title on initial publish.
+ */
+const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleShowSidebar}) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
@@ -56,6 +56,7 @@ const HeaderContainer = ({
     const isPublished = ['publish', 'private'].includes(formSettings.formStatus);
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
+
     const {
         formPage: {permalink},
     } = getWindowData();
@@ -87,7 +88,7 @@ const HeaderContainer = ({
     const showOnSaveNotice = (formStatus: string) => {
         if ('draft' === formStatus) {
             createSuccessNotice(__('Draft saved.', 'give'), {
-                type: 'snackbar'
+                type: 'snackbar',
             });
         } else {
             const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
@@ -96,10 +97,12 @@ const HeaderContainer = ({
 
             createSuccessNotice(notice, {
                 type: 'snackbar',
-                actions: [{
-                    label: __('View form', 'give'),
-                    url: permalink
-                }]
+                actions: [
+                    {
+                        label: __('View form', 'give'),
+                        url: permalink,
+                    },
+                ],
             });
         }
     }
@@ -131,7 +134,7 @@ const HeaderContainer = ({
                                 borderRadius: '4px',
                                 display: 'flex',
                                 gap: 'var(--givewp-spacing-2)',
-                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'
+                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
                             }}
                             onClick={() => toggleEditorMode()}
                             icon={EditIcon}
@@ -145,7 +148,10 @@ const HeaderContainer = ({
                     <TextControl
                         className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
+                        onChange={(formTitle) => {
+                            !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                            dispatch(setFormSettings({formTitle}));
+                        }}
                     />
                 }
                 contentRight={
@@ -198,7 +204,7 @@ const HeaderContainer = ({
                                         icon={moreVertical}
                                         onClick={() => {
                                             if (transfer.showTooltip) {
-                                                dispatch(setTransferState({showTooltip: false}))
+                                                dispatch(setTransferState({showTooltip: false}));
                                             }
                                             onToggle();
                                         }}
