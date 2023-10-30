@@ -92,10 +92,3 @@ export function getFormBuilderWindowData(): FormBuilderWindowData {
 export function getBlockRegistrar(): BlockRegistrar {
     return window.givewp.form.blocks;
 }
-
-/**
- * @unreleased
- */
-export function getSiteData(): FormBuilderSiteData {
-    return window.siteData;
-}
