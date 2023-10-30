@@ -263,7 +263,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.0.4: October 30th, 2023 =
-* Fix: Resolved issue with Stripe webhook not recording recurring donation renewals
+* Fix: Resolved issue with Stripe webhook not recording recurring donation renewals.  To recover missing renewals from Stripe in GiveWP, please use the "Sync Subscription" button on the individual subscription details page.  Click [here](https://givewp.com/recurring-donations-1-3/) to learn more about syncing subscriptions in GiveWP.
 
 = 3.0.3: October 20th, 2023 =
 * Fix: Using the multi-form shortcode with the ids attribute no longer causes a fatal error
