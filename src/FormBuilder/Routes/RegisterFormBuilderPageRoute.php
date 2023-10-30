@@ -152,11 +152,6 @@ class RegisterFormBuilderPageRoute
                 ),
         ]);
 
-        wp_localize_script('@givewp/form-builder/script', 'siteData', [
-            'siteUrl' => site_url(),
-            'siteName' => get_bloginfo('name'),
-        ]);
-
         View::render('FormBuilder.admin-form-builder');
     }
 
