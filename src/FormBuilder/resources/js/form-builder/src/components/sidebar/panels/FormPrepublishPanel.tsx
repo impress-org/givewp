@@ -6,8 +6,9 @@ import {filterURLForDisplay} from '@wordpress/url';
 import {decodeEntities} from '@wordpress/html-entities';
 import {Button, PanelBody, PanelRow, SelectControl, Spinner, TextControl} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {CopyIcon, GiveIcon} from '@givewp/form-builder/components/icons';
-import {getSiteData, getWindowData} from '@givewp/form-builder/common';
+import {CopyIcon} from '@givewp/form-builder/components/icons';
+import FormSummarySettings from '@givewp/form-builder/settings/form-summary';
+import {getWindowData} from '@givewp/form-builder/common';
 
 interface FormPrepublishPanelProps {
     isSaving: boolean;
@@ -28,7 +29,6 @@ export default function FormPrepublishPanel
         settings: {formTitle, formStatus, newFormStatus},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-    const {siteName, siteUrl} = getSiteData()
     const {
         formPage: {permalink},
     } = getWindowData();
@@ -143,53 +143,8 @@ export default function FormPrepublishPanel
                                 </div>
                             </div>
 
-                            <div className="givewp-next-gen-prepublish-panel__content">
-                                <div>
-                                    <strong>{__('Are you ready to publish?', 'give')}</strong>
-                                </div>
-                                <p>{__('Double-check your settings before publishing', 'give')}</p>
-                                <div className="givewp-next-gen-prepublish-panel__site-card">
-                                    <div className="givewp-next-gen-prepublish-panel__site-card-icon">
-                                        <GiveIcon />
-                                    </div>
+                            <FormSummarySettings />
 
-                                    <div className="givewp-next-gen-prepublish-panel__site-card-info">
-                                        <span className="givewp-next-gen-prepublish-panel__site-card-info-name">
-                                            {decodeEntities(siteName)}
-                                        </span>
-                                        <span
-                                            className="givewp-next-gen-prepublish-panel__site-card-info-url">{filterURLForDisplay(siteUrl || '')}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <PanelBody title={__('Summary', 'give')} initialOpen={true}>
-                                <PanelRow>
-                                    <TextControl
-                                        label={__('Title')}
-                                        value={formTitle}
-                                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
-                                    />
-                                </PanelRow>
-                                <PanelRow>
-                                    <div>
-                                        {__('Visibility', 'give')}
-                                    </div>
-                                    <div>
-                                        <SelectControl
-                                            value={newFormStatus ?? ('draft' === formStatus ? 'publish' : formStatus)}
-                                            options={[
-                                                {label: __('Public', 'give'), value: 'publish'},
-                                                {label: __('Private', 'give'), value: 'private'},
-                                            ]}
-                                            onChange={(newFormStatus) => dispatch(setFormSettings({newFormStatus}))}
-                                        />
-                                    </div>
-                                </PanelRow>
-                                <PanelRow className="givewp-next-gen-prepublish-panel_visibility">
-                                    {isPrivate() ? __('Only visible to site admins and editors', 'give') : __('Visible to everyone', 'give')}
-                                </PanelRow>
-                            </PanelBody>
                         </>
                     )}
                 </>
