@@ -21,7 +21,7 @@ class InvoicePaymentFailed
      *
      * @see https://stripe.com/docs/api/events/types#event_types-invoice.payment_failed
      *
-     * @unreleased Add exit statement only when the event is successfully processed.
+     * @since 3.0.4 Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -39,7 +39,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @unreleased Return a bool value.
+     * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *
      * @throws Exception

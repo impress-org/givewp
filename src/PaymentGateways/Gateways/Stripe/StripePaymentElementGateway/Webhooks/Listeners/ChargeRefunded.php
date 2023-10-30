@@ -22,7 +22,7 @@ class ChargeRefunded
      *
      * @see https://stripe.com/docs/api/events/types#event_types-charge.refunded
      *
-     * @unreleased Add exit statement only when the event is successfully processed.
+     * @since 3.0.4 Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -40,7 +40,7 @@ class ChargeRefunded
     }
 
     /**
-     * @unreleased Return a bool value.
+     * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *
      * @throws Exception
