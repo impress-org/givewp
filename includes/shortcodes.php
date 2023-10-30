@@ -632,7 +632,7 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
-        array_map(
+        $form_ids = array_map(
             static function ($id) {
                 _give_redirect_form_id($id);
 
