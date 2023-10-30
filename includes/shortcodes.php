@@ -631,8 +631,15 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
-        array_walk($form_ids, '_give_redirect_form_id');
+        array_map(
+            static function ($id) {
+                _give_redirect_form_id($id);
 
+                return $id;
+            },
+            $form_ids
+        );
+        
 		/**
 		 * Filter to modify WP Query for Total Goal.
 		 *
