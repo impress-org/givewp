@@ -13,7 +13,7 @@ const FormSummarySettings = () => {
         settings: {formTitle, pageSlug, formStatus, newFormStatus},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-    const isPublished = 'publish' === formStatus;
+    const isPublished = ['publish', 'private'].includes(formStatus);
     const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
     const isPrivate = () => {
