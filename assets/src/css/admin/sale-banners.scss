@@ -1,4 +1,4 @@
-.give-sale-banners-container {
+.givewp-sale-banners-container {
     display: block;
     width: 100%;
     position: relative;
@@ -27,7 +27,7 @@
 
 /* List Table pages */
 #give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root {
-    .give-sale-banners-container {
+    .givewp-sale-banners-container {
         width: auto;
         margin: 1rem;
     }
@@ -35,7 +35,7 @@
 
 /* Add Form page */
 .post-type-give_forms {
-    .give-sale-banners-container {
+    .givewp-sale-banners-container {
         width: 100%;
         margin: 1.55rem 0 0 0;
     }
@@ -43,7 +43,7 @@
 
 /* Settings & Tools page */
 .give_forms_page_give-settings, .give-tools-setting-page{
-    .give-sale-banners-container {
+    .givewp-sale-banners-container {
         width: 100%;
         margin: .5rem 0;
     }
@@ -51,7 +51,7 @@
 
 /* Reports page */
 .give_forms_page_give-reports {
-    .give-sale-banners-container {
+    .givewp-sale-banners-container {
         margin: .5rem 0 0 0;
     }
 }
@@ -76,14 +76,9 @@
         }
 
         & p {
-            font-size: 1.25rem;
+            font-size: 1.25rem !important;
             font-weight: 500;
         }
-
-        & .wp-die-message, p {
-            font-size: 1.25rem;
-        }
-
 
         & a {
             display: inline-flex;
@@ -118,7 +113,7 @@
 
 /* Media query for small screens */
 @media screen and (max-width: 768px) {
-    .give-sale-banners-container {
+    .givewp-sale-banners-container {
         padding: 1.25rem 0 1.5rem 1.5rem;
     }
 
@@ -129,7 +124,7 @@
 
         & p {
             margin: .5rem 0 1rem 0;
-            font-size: 0.875rem;
+            font-size: 0.875rem !important;
             line-height: 1.75rem;
 
         }
@@ -150,7 +145,7 @@
         }
 
         & p {
-            font-size: 1.125rem;
+            font-size: 1.125rem !important;
             line-height: 1.5rem;
             margin: .75rem 0 1rem 0;
         }

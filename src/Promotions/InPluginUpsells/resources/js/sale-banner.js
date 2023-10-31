@@ -1,5 +1,5 @@
-const bannersContainer = document.querySelector('.give-sale-banners-container');
-const dismissActions = document.querySelectorAll('.give-sale-banner-dismiss');
+const bannersContainer = document.querySelector('.givewp-sale-banners-container');
+const dismissActions = document.querySelectorAll('.givewp-sale-banner__dismiss');
 const pageTitle = document.querySelector('.page-title-action, .wp-heading-inline, #give-in-plugin-upsells h1');
 const listTable = document.querySelector('#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root');
 
@@ -20,7 +20,7 @@ const hideBanner = ({target: dismissAction}) => {
         body: formData,
     });
 
-    if (bannersContainer.querySelectorAll('.give-sale-banner').length === 0) {
+    if (bannersContainer.querySelectorAll('.givewp-sale-banner').length === 0) {
         bannersContainer.remove();
     }
 };

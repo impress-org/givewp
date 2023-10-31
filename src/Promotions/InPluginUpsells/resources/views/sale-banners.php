@@ -1,5 +1,5 @@
 <?php /** @var array[] $banners */?>
-<div class="give-sale-banners-container" style="display: none;">
+<div class="givewp-sale-banners-container" style="display: none;">
     <?php
     foreach ($banners as $banner): extract($banner);
         /**
@@ -26,12 +26,12 @@
         );
         ?>
 
-        <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>"
+        <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "givewp-sale-banner-{$id}" ?>"
                class="givewp-sale-banner">
             <div class="givewp-sale-banner__content">
                 <h2> <?php echo $header ?> </h2>
 
-                <p> <?php echo $leadText ?> </p>
+                <p> <?php echo  $leadText ?> </p>
 
                 <a href="<?php echo $actionURL ?>" target="_blank" rel="noopener noreferrer">
                     <img src="<?php echo $shoppingCartIconURL ?>" alt="cart"/>
@@ -40,36 +40,32 @@
                 </a>
             </div>
 
-            <button type="button" aria-label="<?= __('Dismiss', 'give') ?> <?= $accessibleLabel ?>"
-                    aria-controls="<?= $dismissableElementId ?>" class="givewp-sale-banner__dismiss"
-                    data-id="<?= $id ?>">
-
-                <img src="<?php echo $dismissIconURL ?>" alt="dismiss"/>
+            <button type="button" class="givewp-sale-banner__dismiss" aria-label="<?= __('Dismiss', 'give') ?> <?= $accessibleLabel ?>">
+                <img aria-controls="<?= $dismissableElementId ?>" data-id="<?= $id ?>" src="<?php echo $dismissIconURL ?>" alt="dismiss"/>
             </button>
         </aside>
 
         <style>
-
             /* Default background image for Admin pages */
-            .give-sale-banners-container {
+            .givewp-sale-banners-container {
                 background-image: url('<?= $backgroundImageLargeURL ?>');
             }
 
             /* Default background image Addons page */
-            #give-in-plugin-upsells .give-sale-banners-container {
+            #give-in-plugin-upsells .givewp-sale-banners-container {
                 background-image: url('<?= $backgroundImageMediumURL ?>');
             }
 
             /* Media query for small screens */
             @media screen and (max-width: 768px) {
-                .give-sale-banners-container {
+                .givewp-sale-banners-container {
                     background-image: url('<?= $backgroundImageSmallURL ?>')!important;
                 }
             }
 
             /* Media query for medium screens */
             @media screen and (min-width: 769px) and (max-width: 1278px) {
-               .give-sale-banners-container {
+               .givewp-sale-banners-container {
                     background-image: url('<?= $backgroundImageMediumURL ?>');
                 }
             }
