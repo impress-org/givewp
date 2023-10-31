@@ -17,7 +17,7 @@ interface StateProps {
     selected: string;
     isCopied: boolean;
     isInserting: boolean;
-    inserted: boolean;
+    inserted: Array<number | string>;
 }
 
 export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
@@ -28,7 +28,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         selected: '',
         isCopied: false,
         isInserting: false,
-        inserted: false
+        inserted: []
     });
 
     const {editEntityRecord, saveEditedEntityRecord} = useDispatch(store);
@@ -36,17 +36,16 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
     const shortcode = `[give_form id=${formId}]`;
 
     // Get posts/pages
-    const pages = useSelect((select) => {
+    const sitePages = useSelect((select) => {
         const pages = [];
-        const {getEntityRecords} = select(store);
 
         const query = {
             status: 'publish',
-            per_page: -1
+            per_page: -1 // do we want this?
         }
 
         // @ts-ignore
-        const data = getEntityRecords('postType', state.postType, query);
+        const data = select(store).getEntityRecords('postType', state.postType, query);
 
         const selectLabel = 'page' === state.postType
             ? __('Select a page', 'give')
@@ -65,7 +64,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
 
         return pages;
 
-    }, [state.postType]);
+    }, [state.postType, state.inserted]);
 
 
     const handleCopy = useCallback(() => {
@@ -88,12 +87,27 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         }, 2000);
     }, []);
 
-    const handleInsert = useCallback(async () => {
-        const content = pages?.find((page) => page.value == state.selected)?.content + `<!-- wp:shortcode -->${shortcode}<!-- /wp:shortcode -->`;
+    const handleInsert = async () => {
+        const content = sitePages?.find((page) => page.value == state.selected)?.content + `<!-- wp:shortcode -->${shortcode}<!-- /wp:shortcode -->`;
+
+        setState(prevState => {
+            return {
+                ...prevState,
+                isInserting: true
+            }
+        });
 
         await editEntityRecord('postType', state.postType, state.selected, {content});
         await saveEditedEntityRecord('postType', state.postType, state.selected, {content});
-    }, []);
+
+        setState(prevState => {
+            return {
+                ...prevState,
+                isInserting: false,
+                inserted: [...prevState.inserted, state.selected]
+            }
+        });
+    }
 
     return (
         <ModalDialog
@@ -152,7 +166,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                 <div className="give-embed-modal-row">
                     <SelectControl
                         value={state.selected}
-                        options={pages}
+                        options={sitePages}
                         onChange={value => setState(prevState => {
                             return {
                                 ...prevState,
@@ -163,15 +177,29 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                 </div>
 
                 <div className="give-embed-modal-row">
+                    {state.inserted.includes(state.selected) ? (
+                        <strong>
+                            {__('Form inserted!', 'give')}
+                        </strong>
+                    ) : (
+                        <Button
+                            variant="primary"
+                            disabled={!state.selected || state.isInserting}
+                            isBusy={state.isInserting}
+                            onClick={handleInsert}
+                        >
+                            {state.isInserting ? __('Inserting Form...', 'give') : __('Insert Form', 'give')}
+                        </Button>
+                    )}
+
                     <Button
                         variant="secondary"
-                        disabled={!state.selected}
-                        onClick={handleInsert}
+                        onClick={handleClose}
+                        disabled={state.isInserting}
                     >
-                        {__('Insert Form', 'give')}
+                        {__('Close', 'give')}
                     </Button>
                 </div>
-
             </div>
         </ModalDialog>
     )
