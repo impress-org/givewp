@@ -20,6 +20,9 @@ interface StateProps {
     inserted: Array<number | string>;
 }
 
+/**
+ * @unreleased
+ */
 export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
 
     const {formId} = getWindowData();
