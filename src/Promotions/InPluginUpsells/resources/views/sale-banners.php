@@ -1,5 +1,4 @@
-<?php
-/** @var array[] $banners */ ?>
+<?php /** @var array[] $banners */?>
 <div class="give-sale-banners-container" style="display: none;">
     <?php
     foreach ($banners as $banner): extract($banner);
@@ -7,6 +6,7 @@
          * @var string $id
          * @var string $giveIconURL
          * @var string $discountIconURL
+         * @var string $backgroundImageLargeURL
          * @var string $backgroundImageMediumURL
          * @var string $backgroundImageSmallURL
          * @var string $shoppingCartIconURL
@@ -49,15 +49,28 @@
         </aside>
 
         <style>
-            /* Default background image */
+            /* Default background image Addons-page*/
             .give-sale-banners-container {
                 background-image: url('<?= $backgroundImageMediumURL ?>');
             }
 
+            /* Default background image Settings-page*/
+            .give-settings-header > .give-sale-banners-container {
+                    background-image: url('<?= $backgroundImageLargeURL ?>');
+            }
+
+
             /* Media query for small screens */
             @media screen and (max-width: 768px) {
                 .give-sale-banners-container {
-                    background-image: url('<?= $backgroundImageSmallURL ?>');
+                    background-image: url('<?= $backgroundImageSmallURL ?>')!important;
+                }
+            }
+
+            /* Media query for medium screens */
+            @media screen and (min-width: 769px) and (max-width: 1278px) {
+                .give-settings-header > .give-sale-banners-container {
+                    background-image: url('<?= $backgroundImageMediumURL ?>');
                 }
             }
         </style>

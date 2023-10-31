@@ -68,6 +68,7 @@ class SaleBanners
                 'id' => 'bfgt2023',
                 'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
                 'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
+                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
                 'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
                 'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
                 'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
