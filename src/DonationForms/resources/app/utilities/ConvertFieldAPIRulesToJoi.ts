@@ -8,7 +8,7 @@ import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOpe
  */
 const requiredMessage = sprintf(
     /* translators: base error message */
-    __('This is a required field', 'give`'),
+    __('This is a required field', 'give'),
     `{#label}`
 );
 
