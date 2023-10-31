@@ -3,6 +3,9 @@ const dismissActions = document.querySelectorAll('.give-sale-banner-dismiss');
 const pageTitle = document.querySelector('.page-title-action, .wp-heading-inline, #give-in-plugin-upsells h1');
 const listTable = document.querySelector('#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root');
 
+/**
+ * @unreleased show banner on ListTable pages.
+ */
 const hideBanner = ({target: dismissAction}) => {
     const formData = new FormData();
     formData.append('id', dismissAction.dataset.id);
