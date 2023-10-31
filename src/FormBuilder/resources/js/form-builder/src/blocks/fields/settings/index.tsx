@@ -3,7 +3,7 @@ import {BlockAttributes, BlockConfiguration} from '@wordpress/blocks';
 import Edit from './Edit';
 
 const defaultSettings: BlockConfiguration = {
-    title: __('Field', 'custom-block-editor'),
+    title: __('Field', 'give'),
     category: 'input',
     supports: {
         html: false, // Removes support for an HTML mode.

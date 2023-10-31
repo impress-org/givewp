@@ -40,7 +40,7 @@ class Utils
     /**
      * this function should return true if country supports "Donation" transaction type.
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     public static function isDonationTransactionTypeSupported(string $country): bool
     {

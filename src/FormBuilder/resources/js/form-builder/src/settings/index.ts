@@ -6,10 +6,8 @@ import CustomStyleSettings from './styles';
 import DonationConfirmation from './donation-confirmation';
 import FormGridSettings from './form-grid';
 import EmailSettings from './email';
-import DonateButtonSettings from './donate-button';
 
 export {
-    DonateButtonSettings,
     DonationGoalSettings,
     RegistrationSettings,
     FormSummarySettings,

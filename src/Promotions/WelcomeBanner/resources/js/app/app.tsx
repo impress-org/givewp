@@ -22,7 +22,7 @@ export default function App() {
             <div className={'givewp-welcome-banner__dismiss-container'}>
                 <Badge
                     variant={'primary'}
-                    caption={__('UPDATED', 'givewp')}
+                    caption={__('UPDATED', 'give')}
                     iconSrc={`${assets}/green-circle-check-icon.svg`}
                     alt={'check-mark'}
                 />

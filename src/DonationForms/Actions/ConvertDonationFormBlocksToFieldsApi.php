@@ -174,7 +174,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->testMode(give_is_test_mode())
                     ->rules(new GatewayRule())
                     ->required()
-                    ->defaultValue($defaultGatewayId);
+                    ->defaultValue(!empty($defaultGatewayId) ? $defaultGatewayId : null);
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
@@ -283,7 +283,7 @@ class ConvertDonationFormBlocksToFieldsApi
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
                     ->label('Title')
-                    ->options(...$block->getAttribute('honorifics'));
+                    ->options(...array_values($block->getAttribute('honorifics')));
             } else {
                 $group->remove('honorific');
             }

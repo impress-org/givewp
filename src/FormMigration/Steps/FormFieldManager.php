@@ -19,7 +19,8 @@ class FormFieldManager extends FormMigrationStep
      * - "field_width" (Field Width)
      * - "css" (CSS Class Name)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0 added support for conditions based on Donation Amount.
+     * @since 3.0.0
      */
     public function process()
     {
@@ -28,7 +29,12 @@ class FormFieldManager extends FormMigrationStep
         if (!$formFields) {
             return;
         }
-        
+
+        $this->fieldBlockRelationships['give-amount'] = [
+            'field' => [], // This is a core field and doesn't have any FFM settings.
+            'block' => $this->fieldBlocks->findByName('givewp/donation-amount'),
+        ];
+
         $this->inserter = $this->getInitialInserter();
 
         $map = [
@@ -75,7 +81,7 @@ class FormFieldManager extends FormMigrationStep
      * - "time" (Enable time input)
      * - "format_time" (Time Format)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addDateField($field): BlockModel
     {
@@ -99,7 +105,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Dropdown field:
      * - "first" (Select Text)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addDropdownField($field): BlockModel
     {
@@ -123,7 +129,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Email field:
      * - "maxlength" (Max Length)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addEmailField($field): BlockModel
     {
@@ -136,7 +142,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the File Upload field:
      * - "count" (Max. files)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addFileUploadField($field): BlockModel
     {
@@ -159,7 +165,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addHiddenField($field): BlockModel
     {
@@ -169,7 +175,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function addHtmlField($field): BlockModel
@@ -186,7 +192,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Dropdown field:
      * - "first" (Select Text)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addMultiSelectField($field): BlockModel
     {
@@ -209,7 +215,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function addPhoneField($field): BlockModel
@@ -225,7 +231,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function addRadioField($field): BlockModel
@@ -250,7 +256,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Text field:
      * - "maxlength" (Max Length)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addTextField($field): BlockModel
     {
@@ -263,7 +269,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Textarea field:
      * - "cols" (Columns)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addTextareaField($field): BlockModel
     {
@@ -279,7 +285,7 @@ class FormFieldManager extends FormMigrationStep
      * Suppressed settings for the Text field:
      * - "maxlength" (Max Length)
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
     private function addUrlField($field): BlockModel
     {
@@ -289,7 +295,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function addSection($field): void
@@ -329,7 +335,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function getInitialInserter(): array
@@ -368,7 +374,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function applyCommonAttributes($block, $field): BlockModel
@@ -413,7 +419,7 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      */
 
     private function insertBlock($block): void
@@ -423,32 +429,32 @@ class FormFieldManager extends FormMigrationStep
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0 Fixed missing conditionalLogic attribute on custom fields.
+     * @since 3.0.0
      */
-
     private function mapConditionalLogicToBlocks(): void
     {
         foreach ($this->fieldBlockRelationships as $item) {
             ['field' => $field, 'block' => $block] = $item;
 
-            if (!array_key_exists('control_field_visibility', $field) || $field['control_field_visibility'] !== 'on') {
-                if ($block->name !== 'givewp/section') {
-                    $block->setAttribute('conditionalLogic', [
-                        'enabled' => false,
-                        'action' => 'show',
-                        'boolean' => 'and',
-                        'rules' => [],
-                    ]);
-                }
+            // Initialize conditional logic support for custom fields.
+            // The `conditionalLogic` attribute is used to signal support for conditional logic.
+            $block->setAttribute('conditionalLogic', [
+                'enabled' => give_is_setting_enabled($field['control_field_visibility']),
+                'action' => 'show',
+                'boolean' => 'and',
+                'rules' => [],
+            ]);
 
+            if (!array_key_exists('control_field_visibility', $field)) {
                 continue;
             }
 
-            if (!array_key_exists($field['controller_field_name'], $this->fieldBlockRelationships)) {
+            if(!isset($this->fieldBlockRelationships[$field['controller_field_name']])) {
                 continue;
             }
 
-            $clientId = $this->fieldBlockRelationships[$field['controller_field_name']]['block']->clientId;
+            $referenceBlock = $this->fieldBlockRelationships[$field['controller_field_name']]['block'];
 
             $block->setAttribute('conditionalLogic', [
                 'enabled' => true,
@@ -456,7 +462,7 @@ class FormFieldManager extends FormMigrationStep
                 'boolean' => 'and',
                 'rules' => [
                     [
-                        'field' => $clientId,
+                        'field' => $referenceBlock->clientId,
                         'operator' => $field['controller_field_operator'],
                         'value' => $field['controller_field_value'],
                     ],

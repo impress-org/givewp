@@ -52,15 +52,18 @@ class DeleteDonor extends Endpoint
             ]
         );
     }
-    
+
     /**
+     * @since 3.0.0 update validation to align with legacy view
      * @since 2.25.2
      *
      * @inheritDoc
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('edit_give_donors')) {
+        $donor_edit_role = apply_filters('give_edit_donors_role', 'edit_give_payments');
+
+        if (!current_user_can($donor_edit_role)) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to edit Donors', 'give'),

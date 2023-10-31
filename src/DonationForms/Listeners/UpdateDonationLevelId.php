@@ -15,7 +15,7 @@ class UpdateDonationLevelId
      * this will update the donation level ID meta with the level array key,
      * which is used in the donation details screen.
      *
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      *
      * @throws NameCollisionException|Exception
      */

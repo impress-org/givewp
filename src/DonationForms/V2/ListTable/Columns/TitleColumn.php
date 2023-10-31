@@ -38,7 +38,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
-     * @since 3.0.0-rc.6 remove html tags from title
+     * @since 3.0.0 remove html tags from title
      * @since 2.24.0
      *
      * @inheritDoc

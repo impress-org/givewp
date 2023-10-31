@@ -741,6 +741,7 @@ function give_add_button_open_form( $form_id, $args ) {
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
+ * @unreleased Add the give_user_info_fields_user_info filter
  * @since 2.25.0 add radio group to conditionally enable/disable company name field
  * @since      1.0
  *
@@ -752,7 +753,8 @@ function give_add_button_open_form( $form_id, $args ) {
 function give_user_info_fields( $form_id ) {
 
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$give_user_info = apply_filters('give_user_info_fields_user_info', _give_get_prefill_form_field_values( $form_id ), $form_id );
+
 	$title          = ! empty( $give_user_info['give_title'] ) ? $give_user_info['give_title'] : '';
 	$first_name     = ! empty( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : '';
 	$last_name      = ! empty( $give_user_info['give_last'] ) ? $give_user_info['give_last'] : '';
@@ -1193,6 +1195,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
+ * @unreleased Add the give_default_cc_address_fields_user_info filter
  * @since  1.0
  *
  * @param int $form_id The form ID.
@@ -1203,7 +1206,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 function give_default_cc_address_fields($form_id, $return = false)
 {
 	// Get user info.
-	$give_user_info = _give_get_prefill_form_field_values( $form_id );
+	$give_user_info = apply_filters('give_default_cc_address_fields_user_info', _give_get_prefill_form_field_values( $form_id ), $form_id);
 
 	ob_start();
 	?>
@@ -1700,8 +1703,7 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  * @since  1.0
  */
 function give_payment_mode_select( $form_id, $args ) {
-
-	$gateways  = give_get_enabled_payment_gateways( $form_id );
+    $gateways = give_get_enabled_payment_gateways($form_id, 2);
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
 	/**

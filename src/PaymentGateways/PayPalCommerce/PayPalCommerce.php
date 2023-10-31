@@ -105,7 +105,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @since 3.0.0-rc.7 Conditionally add "Transaction Type" setting.
+     * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".

@@ -85,7 +85,7 @@
     }
 
     .give-is-required .components-base-control__label::after,
-    .give-is-required .components-input-control__label::after, {
+    .give-is-required .components-input-control__label::after {
         content: ' *';
         color: var(--givewp-alert-100);
     }
@@ -214,4 +214,6 @@
     background-color: white;
 }
 
-
+.givewp-support-link.components-external-link > svg {
+    display: none; /* Hide included icon, in favor of menu item icon. */
+}

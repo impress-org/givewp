@@ -98,7 +98,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 3.0.0-rc.7
+     * @since 3.0.0
      *
      * @return array{0: BlockModel, 1: int}|void
      */

@@ -75,11 +75,15 @@ trait HasVisibilityConditions
     /**
      * Set a condition for showing the node.
      *
+     * @since 3.0.0 Fixed a bug with encoded HTML entities in the operator, ie > (greater than), < (less than)
      * @since 2.27.3 update to use SimpleConditionSet
      * @since 2.13.0
      */
     public function showIf(string $field, string $operator, $value, string $boolean = 'and'): self
     {
+        // Fixes a bug with encoded HTML entities in the operator, ie > (greater than), < (less than)
+        $operator = html_entity_decode($operator);
+
         if ($boolean === 'and') {
             $this->visibilityConditions->and($field, $operator, $value);
         } else {

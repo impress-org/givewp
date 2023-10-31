@@ -10,7 +10,7 @@ const CopyToClipboardButton = ({text}: CopyClipboardButtonProps) => {
         successDuration: 1000,
     });
 
-    const label = isCopied ? __('Copied!', 'givewp') : __('Copy tag', 'givewp');
+  const label = isCopied ? __('Copied!', 'give') : __('Copy tag', 'give');
 
     const CopyIcon = ({size}) => {
         return <Icon icon={copy} size={size} />;

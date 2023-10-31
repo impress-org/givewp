@@ -7,7 +7,7 @@ import {Path, SVG} from '@wordpress/components';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Billing Address', 'custom-block-editor'),
+    title: __('Billing Address', 'give'),
     description: __('Collects the donor billing address with display options.', 'give'),
     supports: {
         multiple: false,

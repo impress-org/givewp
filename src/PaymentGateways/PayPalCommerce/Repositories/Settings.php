@@ -69,7 +69,7 @@ class Settings
     /**
      * Returns the account access token
      *
-     * @since 3.0.0-rc.7 Set transaction type to "standard" if the country is not supported.
+     * @since 3.0.0 Set transaction type to "standard" if the country is not supported.
      * @since 2.9.0
      */
     public function getTransactionType(): string

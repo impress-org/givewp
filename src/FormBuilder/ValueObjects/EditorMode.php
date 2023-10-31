@@ -5,7 +5,7 @@ namespace Give\FormBuilder\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @since 3.0.0-rc.6
+ * @since 3.0.0
  *
  * @method static EditorMode DESIGN()
  * @method static EditorMode SCHEMA()
