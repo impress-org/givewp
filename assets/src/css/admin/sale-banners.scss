@@ -23,17 +23,37 @@
         margin-top: 2rem;
         margin-bottom: 0.5rem;
     }
+}
 
-    .give_forms_page_give-payment-history &,
-    .give_forms_page_give-donors &,
-    .post-type-give_forms.post-new-php &,
-    .post-type-give_forms.edit-php & {
-        background-color: #fff;
-        margin: -10px -20px 30px -20px;
-        border-bottom: 1px solid #dbdbdb;
-        padding: 30px 20px;
+/* List Table pages */
+#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root {
+    .give-sale-banners-container {
+        width: auto;
+        margin: 1rem;
     }
+}
 
+/* Add Form page */
+.post-type-give_forms {
+    .give-sale-banners-container {
+        width: 100%;
+        margin: 1.55rem 0 0 0;
+    }
+}
+
+/* Settings & Tools page */
+.give_forms_page_give-settings, .give-tools-setting-page{
+    .give-sale-banners-container {
+        width: 100%;
+        margin: .5rem 0;
+    }
+}
+
+/* Reports page */
+.give_forms_page_give-reports {
+    .give-sale-banners-container {
+        margin: .5rem 0 0 0;
+    }
 }
 
 .givewp-sale-banner {
@@ -59,6 +79,11 @@
             font-size: 1.25rem;
             font-weight: 500;
         }
+
+        & .wp-die-message, p {
+            font-size: 1.25rem !important;
+        }
+
 
         & a {
             display: inline-flex;

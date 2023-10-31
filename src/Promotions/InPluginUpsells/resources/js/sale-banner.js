@@ -1,6 +1,7 @@
 const bannersContainer = document.querySelector('.give-sale-banners-container');
 const dismissActions = document.querySelectorAll('.give-sale-banner-dismiss');
 const pageTitle = document.querySelector('.page-title-action, .wp-heading-inline, #give-in-plugin-upsells h1');
+const listTable = document.querySelector('#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root');
 
 const hideBanner = ({target: dismissAction}) => {
     const formData = new FormData();
@@ -21,10 +22,14 @@ const hideBanner = ({target: dismissAction}) => {
     }
 };
 
-if (pageTitle && bannersContainer) {
-    pageTitle.parentNode.insertBefore(bannersContainer, pageTitle.nextSibling);
-
+if((pageTitle || listTable) && bannersContainer ){
     bannersContainer.style.display = null;
+
+    if (pageTitle) {
+        pageTitle.parentNode.insertBefore(bannersContainer, pageTitle.nextSibling);
+    } else if (listTable){
+        listTable.querySelector('header').insertAdjacentElement('afterend', bannersContainer);
+    }
 }
 
 dismissActions.forEach((action) => {

@@ -49,16 +49,16 @@
         </aside>
 
         <style>
-            /* Default background image Addons-page*/
+
+            /* Default background image for Admin pages */
             .give-sale-banners-container {
+                background-image: url('<?= $backgroundImageLargeURL ?>');
+            }
+
+            /* Default background image Addons page */
+            #give-in-plugin-upsells .give-sale-banners-container {
                 background-image: url('<?= $backgroundImageMediumURL ?>');
             }
-
-            /* Default background image Settings-page*/
-            .give-settings-header > .give-sale-banners-container {
-                    background-image: url('<?= $backgroundImageLargeURL ?>');
-            }
-
 
             /* Media query for small screens */
             @media screen and (max-width: 768px) {
@@ -69,7 +69,7 @@
 
             /* Media query for medium screens */
             @media screen and (min-width: 769px) and (max-width: 1278px) {
-                .give-settings-header > .give-sale-banners-container {
+               .give-sale-banners-container {
                     background-image: url('<?= $backgroundImageMediumURL ?>');
                 }
             }
