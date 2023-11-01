@@ -74,24 +74,26 @@ class SaleBanners
                 'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
                 'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
                 'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => self::getDataByPricingPlan([
-                    'Free' => __(
-                        'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
-                        'give'
-                    ),
-                    'Basic' => __(
-                        'Upgrade to a Plus Plan to get all must-have add-ons.',
-                        'give'
-                    ),
-                    'Plus' => __(
-                        'Upgrade to Pro and get Peer-to-Peer fundraising.',
-                        'give'
-                    ),
-                    'default' => __(
-                        'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
-                        'give'
-                    ),
-                ]),
+                'leadText' => self::getDataByPricingPlan(
+                    [
+                        'Free' => __(
+                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                            'give'
+                        ),
+                        'Basic' => __(
+                            'Upgrade to a Plus Plan to get all must-have add-ons.',
+                            'give'
+                        ),
+                        'Plus' => __(
+                            'Upgrade to Pro and get Peer-to-Peer fundraising.',
+                            'give'
+                        ),
+                        'default' => __(
+                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                            'give'
+                        ),
+                    ]
+                ),
                 'actionText' => __('Shop Now', 'give'),
                 'actionURL' => self::getDataByPricingPlan(
                     [
