@@ -75,7 +75,6 @@ function FieldSettingsEdit({attributes, setAttributes, fieldSettings, clientId})
                                 <Label
                                     label={attributes.label}
                                     setAttributes={setAttributes}
-                                    // onBlur={handleLabelBlur}
                                 />
                             </PanelRow>
                         )}
