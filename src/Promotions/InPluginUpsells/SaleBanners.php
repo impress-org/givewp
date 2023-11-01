@@ -43,28 +43,6 @@ class SaleBanners
     {
         return [
             [
-                'id' => 'bfgt2021',
-                'iconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
-                'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => __('Save 40% on all Plans for a limited time.', 'give'),
-                'contentText' => __('Black Friday through Giving Tuesday.', 'give'),
-                'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://go.givewp.com/bfgt21',
-                'startDate' => '2021-11-26 00:00',
-                'endDate' => '2021-11-30 23:59',
-            ],
-            [
-                'id' => 'bfgt2022',
-                'iconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
-                'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => __('Save 40% on all Plans for a limited time.', 'give'),
-                'contentText' => __('Black Friday through Giving Tuesday.', 'give'),
-                'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://go.givewp.com/bf22',
-                'startDate' => '2022-11-01 00:00',
-                'endDate' => '2022-11-29 23:59',
-            ],
-            [
                 'id' => 'bfgt2023',
                 'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
                 'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
