@@ -3,7 +3,6 @@ import BlockEditorContainer from './containers/BlockEditorContainer';
 import {FormStateProvider} from './stores/form-state';
 import {Storage} from './common';
 import defaultBlocks from './blocks.json';
-import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
 import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
@@ -58,7 +57,6 @@ export default function App() {
                 <TransferStateProvider initialState={initialStateTransfer}>
                     <ShortcutProvider>
                         <BlockEditorContainer />
-                        <Feedback />
                         <Transfer />
                         <UndoRedoShortcuts />
                     </ShortcutProvider>

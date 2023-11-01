@@ -6,7 +6,6 @@ import TabPanel from '../TabPanel';
 
 import {
     DonationConfirmation,
-    DonationGoalSettings,
     EmailSettings,
     FormGridSettings,
     FormSummarySettings,
@@ -49,7 +48,6 @@ const tabs = [
                     )}
                 />
                 <FormSummarySettings />
-                <DonationGoalSettings />
                 <RegistrationSettings />
                 <DonationConfirmation />
                 <FormGridSettings />

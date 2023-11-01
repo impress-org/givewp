@@ -3,7 +3,7 @@ import {EditIcon, GiveIcon} from '../components/icons';
 import {drawerRight, moreVertical, external, undo as undoIcon, redo as redoIcon} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {setTransferState, useTransferState} from '../stores/transfer-state';
-import {Button, Dropdown, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
+import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {getWindowData, Storage} from '../common';
@@ -12,8 +12,10 @@ import {setEditorModeDesign, setEditorModeSchema, setIsDirty, undo, redo} from '
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
-import EditorMode from "@givewp/form-builder/types/editorMode";
-import {useDispatch} from "@wordpress/data";
+import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/form-builder/stores/editor-state';
+import EditorMode from '@givewp/form-builder/types/editorMode';
+import {useDispatch} from '@wordpress/data';
+import {cleanForSlug} from '@wordpress/url';
 
 const Logo = () => (
     <div
@@ -37,11 +39,11 @@ const Logo = () => (
     </div>
 );
 
-const HeaderContainer = ({
-                             SecondarySidebarButtons = null,
-                             showSidebar,
-                             toggleShowSidebar,
-                         }) => {
+
+/**
+ * @unreleased dispatch page slug from form title on initial publish.
+ */
+const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleShowSidebar}) => {
     const {blocks, settings: formSettings, isDirty, canUndo, canRedo, editorMode} = useFormState();
     const transfer = useTransferState();
 
@@ -55,6 +57,7 @@ const HeaderContainer = ({
     const isPublished = 'publish' === formSettings.formStatus;
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
+
     const {
         formPage: {permalink},
     } = getWindowData();
@@ -73,7 +76,12 @@ const HeaderContainer = ({
                 setErrorMessage(error.message);
             })
             .then(({formTitle, pageSlug}: FormSettings) => {
-                dispatch(setFormSettings({formTitle, pageSlug}));
+                dispatch(
+                    setFormSettings({
+                        formTitle,
+                        pageSlug,
+                    })
+                );
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 showOnSaveNotice(formStatus);
@@ -83,22 +91,25 @@ const HeaderContainer = ({
     const showOnSaveNotice = (formStatus: string) => {
         if ('draft' === formStatus) {
             createSuccessNotice(__('Draft saved.', 'give'), {
-                type: 'snackbar'
+                type: 'snackbar',
             });
         } else {
-            const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
-                ? __('Form updated.', 'give')
-                : __('Form published.', 'give')
+            const notice =
+                'publish' === formStatus && formSettings.formStatus !== 'draft'
+                    ? __('Form updated.', 'give')
+                    : __('Form published.', 'give');
 
             createSuccessNotice(notice, {
                 type: 'snackbar',
-                actions: [{
-                    label: __('View form', 'give'),
-                    url: permalink
-                }]
+                actions: [
+                    {
+                        label: __('View form', 'give'),
+                        url: permalink,
+                    },
+                ],
             });
         }
-    }
+    };
 
     const toggleEditorMode = () => {
         if (EditorMode.schema === editorMode) {
@@ -107,7 +118,7 @@ const HeaderContainer = ({
         if (EditorMode.design === editorMode) {
             dispatch(setEditorModeSchema());
         }
-    }
+    };
 
     // @ts-ignore
     return (
@@ -127,7 +138,7 @@ const HeaderContainer = ({
                                 borderRadius: '4px',
                                 display: 'flex',
                                 gap: 'var(--givewp-spacing-2)',
-                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)'
+                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
                             }}
                             onClick={() => toggleEditorMode()}
                             icon={EditIcon}
@@ -141,7 +152,10 @@ const HeaderContainer = ({
                     <TextControl
                         className={'givewp-form-title'}
                         value={formTitle}
-                        onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
+                        onChange={(formTitle) => {
+                            !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                            dispatch(setFormSettings({formTitle}));
+                        }}
                     />
                 }
                 contentRight={
@@ -155,16 +169,11 @@ const HeaderContainer = ({
                             {isSaving && 'draft' === isSaving
                                 ? __('Saving...', 'give')
                                 : 'draft' === formSettings.formStatus
-                                    ? __('Save as Draft', 'give')
-                                    : __('Switch to Draft', 'give')}
+                                ? __('Save as Draft', 'give')
+                                : __('Switch to Draft', 'give')}
                         </Button>
                         {isPublished && (
-                            <Button
-                                label={__('View form', 'give')}
-                                href={permalink}
-                                target="_blank"
-                                icon={external}
-                            />
+                            <Button label={__('View form', 'give')} href={permalink} target="_blank" icon={external} />
                         )}
                         <Button
                             onClick={() => onSave('publish')}
@@ -175,8 +184,8 @@ const HeaderContainer = ({
                             {isSaving && 'publish' === isSaving
                                 ? __('Updating...', 'give')
                                 : 'publish' === formSettings.formStatus
-                                    ? __('Update', 'give')
-                                    : __('Publish', 'give')}
+                                ? __('Update', 'give')
+                                : __('Publish', 'give')}
                         </Button>
                         <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                         <Dropdown
@@ -190,16 +199,16 @@ const HeaderContainer = ({
                                         icon={moreVertical}
                                         onClick={() => {
                                             if (transfer.showTooltip) {
-                                                dispatch(setTransferState({showTooltip: false}))
+                                                dispatch(setTransferState({showTooltip: false}));
                                             }
                                             onToggle();
                                         }}
                                     />
-                                )
+                                );
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
-                                    <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuGroup label={__('Support', 'give')}>
                                         <MenuItem
                                             onClick={() => {
                                                 // @ts-ignore
@@ -215,7 +224,9 @@ const HeaderContainer = ({
                                         {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                             <>
                                                 <MenuItem
-                                                    className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
+                                                    className={
+                                                        transfer.showTooltip && 'givewp-transfer-selected-menuitem'
+                                                    }
                                                     onClick={() => {
                                                         dispatch(setTransferState({showTransferModal: true}));
                                                         onClose();
@@ -226,12 +237,22 @@ const HeaderContainer = ({
 
                                                 {transfer.showTooltip && (
                                                     <div className="givewp-transfer-tooltip">
-                                                        {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
+                                                        {__(
+                                                            'Want to transfer donation data later? Access this option in the three dots menu above at any time.',
+                                                            'give'
+                                                        )}
                                                     </div>
                                                 )}
                                             </>
                                         )}
                                     </MenuGroup>
+                                    <ExternalLink
+                                        className="givewp-support-link"
+                                        href="https://docs.givewp.com/nextgenfeedback"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <MenuItem icon={external}>{__('Submit Feedback', 'give')}</MenuItem>
+                                    </ExternalLink>
                                 </div>
                             )}
                         />
