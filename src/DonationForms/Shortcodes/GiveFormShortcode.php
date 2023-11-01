@@ -8,6 +8,7 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 class GiveFormShortcode
 {
     /**
+     * @unreleased include form format attributes.
      * @since 3.0.0
      */
     public function __invoke(string $output, array $atts): string
@@ -26,7 +27,6 @@ class GiveFormShortcode
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . uniqid(),
-            'showTitle' => $atts['show_title'],
             'formFormat' => $formFormat,
             'openFormButton' => $openFormButton
         ];
