@@ -234,34 +234,27 @@ class SaleBanners
     {
         $plan = 'Free';
 
-        $basic = [
-            'pdf' => 'give-pdf-receipts',
+        $pricingPlans = [
+            'Basic' => ['pdf' => 'give-pdf-receipts'],
+            'Plus' => [
+                'pdf_receipts' => 'give-pdf-receipts',
+                'recurring_donations' => 'give-recurring',
+                'fee_recovery' => 'give-fee-recovery',
+                'form_field_manager' => 'give-form-field-manager',
+                'tributes' => 'give-tributes',
+                'annual_receipts' => 'give-annual-receipts',
+                'peer_to_peer' => 'give-peer-to-peer',
+            ],
+            'Pro' => ['is_all_access_pass'],
         ];
-
-        $plus = [
-            'pdf_receipts' => 'give-pdf-receipts',
-            'recurring_donations' => 'give-recurring',
-            'fee_recovery' => 'give-fee-recovery',
-            'form_field_manager' => 'give-form-field-manager',
-            'tributes' => 'give-tributes',
-            'annual_receipts' => 'give-annual-receipts',
-            'peer_to_peer' => 'give-peer-to-peer',
-        ];
-
-        $pro = ['is_all_access_pass'];
 
         $licensedPluginSlugs = self::getLicensedPluginSlugs();
 
-        sort($licensedPluginSlugs);
-        sort($basic);
-        sort($plus);
-
-        if ($licensedPluginSlugs === $basic) {
-            $plan = 'Basic';
-        } elseif ($licensedPluginSlugs === $plus) {
-            $plan = 'Plus';
-        } elseif ($licensedPluginSlugs === $pro) {
-            $plan = 'Pro';
+        foreach ($pricingPlans as $planName => $requiredLicenses) {
+            $missingLicenses = array_diff($requiredLicenses, $licensedPluginSlugs);
+            if (empty($missingLicenses)) {
+                $plan = $planName;
+            }
         }
 
         return $plan;
