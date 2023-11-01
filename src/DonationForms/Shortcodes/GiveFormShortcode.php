@@ -19,10 +19,16 @@ class GiveFormShortcode
             return $output;
         }
 
+        $formFormat = (isset($atts['display_style']) && !empty($atts['display_style'])) ? $atts['display_style'] : 'full';
+        $openFormButton = (isset($atts['continue_button_title']) && !empty($atts['continue_button_title'])) ? $atts['continue_button_title'] : __('Donate now','give');
+
         $controller = new BlockRenderController();
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . uniqid(),
+            'showTitle' => $atts['show_title'],
+            'formFormat' => $formFormat,
+            'openFormButton' => $openFormButton
         ];
 
         $output = $controller->render($blockAttributes);
