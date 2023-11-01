@@ -4,6 +4,7 @@ import {FieldSettings} from "@givewp/form-builder/supports/field-settings/types"
 import {getBlockSupport} from "@wordpress/blocks";
 import {GiveWPSupports} from "@givewp/form-builder/supports/types";
 import normalizeFieldSettings from "@givewp/form-builder/supports/field-settings/normalizeFieldSettings";
+import type {BlockInstance} from '@wordpress/blocks';
 
 const hasLabelChanged = (slugifiedName, slugifiedLabel) => {
     return slugifiedName !== slugifiedLabel &&
@@ -12,7 +13,7 @@ const hasLabelChanged = (slugifiedName, slugifiedLabel) => {
         !slugifiedName.startsWith(slugifiedLabel + '_' );
 }
 
-const doesBlockSupportFieldNames = (block) => {
+const doesBlockSupportFieldNames = (block: BlockInstance) => {
     // @ts-ignore
     const giveSupports = getBlockSupport(block.name, 'givewp') as GiveWPSupports;
 
@@ -21,7 +22,7 @@ const doesBlockSupportFieldNames = (block) => {
     return fieldSettings?.metaKey;
 }
 
-const getBlockNamesWithoutBlock = (blocks, block) => {
+const getBlockNamesWithoutBlock = (blocks: BlockInstance[], block: BlockInstance) => {
     return blocks
         .flatMap(flattenBlocks)
         .filter(b => b.clientId !== block.clientId)
@@ -29,7 +30,7 @@ const getBlockNamesWithoutBlock = (blocks, block) => {
         .filter((name) => name)
 }
 
-export default (blocks) => {
+export default (blocks: BlockInstance[]) => {
     return blocks.map((section) => {
         return {
             ...section,

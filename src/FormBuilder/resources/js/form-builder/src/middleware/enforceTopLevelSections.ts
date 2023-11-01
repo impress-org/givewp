@@ -1,9 +1,10 @@
 import {__} from "@wordpress/i18n";
+import type {BlockInstance} from '@wordpress/blocks';
 
 /*
  * Enforce top-level section block hierarchy.
  */
-export default (blocks) => {
+export default (blocks: BlockInstance[]) => {
     return blocks.map((block) => {
         return block.name == 'givewp/section'
             ? block

@@ -10,6 +10,7 @@ import {compose} from "@wordpress/compose";
 import enforceTopLevelSections from "@givewp/form-builder/middleware/enforceTopLevelSections";
 import duplicatedFields from "@givewp/form-builder/middleware/duplicatedFields";
 import uniqueFieldNames from "@givewp/form-builder/middleware/uniqueFieldNames";
+import type {BlockInstance} from '@wordpress/blocks';
 
 
 /**
@@ -19,7 +20,7 @@ export default function BlockEditorContainer() {
     const {blocks} = useFormState();
     const dispatch = useFormStateDispatch();
 
-    const dispatchFormBlocks = (blocks) => dispatch(setFormBlocks(compose(
+    const dispatchFormBlocks = (blocks: BlockInstance[]) => dispatch(setFormBlocks(compose(
         // Note: compose runs in reverse order (bottom to top).
         uniqueFieldNames,
         duplicatedFields,

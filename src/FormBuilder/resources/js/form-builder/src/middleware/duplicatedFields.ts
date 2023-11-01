@@ -1,7 +1,8 @@
 import {slugifyMeta} from "@givewp/form-builder/supports/field-settings/MetaKeyTextControl";
 import {getBlockNames, getFieldNameValidator} from "@givewp/form-builder/hooks/useFieldNameValidator";
+import type {BlockInstance} from '@wordpress/blocks';
 
-export default (blocks) => {
+export default (blocks: BlockInstance[]) => {
     return blocks.map((section) => {
         return {
             ...section,
