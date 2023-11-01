@@ -12,7 +12,6 @@ import {setEditorModeDesign, setEditorModeSchema, setIsDirty, undo, redo} from '
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
-import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/form-builder/stores/editor-state';
 import EditorMode from '@givewp/form-builder/types/editorMode';
 import {useDispatch} from '@wordpress/data';
 import {cleanForSlug} from '@wordpress/url';
