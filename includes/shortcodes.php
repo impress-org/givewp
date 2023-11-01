@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @unreleased pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
  * @param array       $atts
@@ -631,7 +632,14 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
-        array_walk($form_ids, '_give_redirect_form_id');
+        $form_ids = array_map(
+            static function ($id) {
+                _give_redirect_form_id($id);
+
+                return $id;
+            },
+            $form_ids
+        );
 
 		/**
 		 * Filter to modify WP Query for Total Goal.
