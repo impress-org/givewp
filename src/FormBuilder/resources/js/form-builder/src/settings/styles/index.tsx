@@ -101,6 +101,7 @@ const CustomStyleCodeControl = () => {
                 enableSnippets: true,
                 showLineNumbers: true,
                 tabSize: 2,
+                useWorker: false
             } }
         />
     )
