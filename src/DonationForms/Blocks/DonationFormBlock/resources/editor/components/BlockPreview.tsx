@@ -1,7 +1,8 @@
 import ModalPreview from './ModalPreview';
-import RevealPreview from './RevealPreview';
 import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
+
+import '../styles/index.scss';
 
 interface BlockPreviewProps {
     formId: number;
@@ -21,12 +22,19 @@ export default function BlockPreview({clientId, formId, formFormat, openFormButt
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
     const isModalDisplay = formFormat === 'modal';
-    const isRevealDisplay = formFormat === 'reveal';
+    const isLinkDisplay = formFormat === 'link';
 
-    return isModalDisplay ? (
+    return isLinkDisplay ? (
+        <a
+            className={'givewp-donation-form-link'}
+            href={`/?givewp-route=donation-form-view&form-id=${formId}`}
+            target={'_blank'}
+            rel={'noopener noreferrer'}
+        >
+            {openFormButton}
+        </a>
+    ) : isModalDisplay ? (
         <ModalPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
-    ) : isRevealDisplay ? (
-        <RevealPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
     ) : (
         <IframeResizer
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}

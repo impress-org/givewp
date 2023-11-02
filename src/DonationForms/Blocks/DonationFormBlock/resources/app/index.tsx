@@ -1,16 +1,28 @@
 import {createRoot, render} from '@wordpress/element';
-import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-import './styles/index.scss';
+import '../editor/styles/index.scss';
+
+type DonationFormBlockAppProps = {
+    formFormat: 'full' | 'link' | 'modal' | string;
+    dataSrc: string;
+    embedId: string;
+    openFormButton: string;
+    permalink: string;
+};
 
 /**
+ * @unreleased replace display style reveal with new tab link.
  * @since 3.0.0
  */
-function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
-    if (formFormat === 'reveal') {
-        return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, permalink}: DonationFormBlockAppProps) {
+    if (formFormat === 'link') {
+        return (
+            <a className={'givewp-donation-form-link'} href={permalink} target={'_blank'} rel={'noopener noreferrer'}>
+                {openFormButton}
+            </a>
+        );
     }
 
     if (formFormat === 'modal') {
@@ -38,6 +50,7 @@ roots.forEach((root) => {
     const embedId = root.getAttribute('data-givewp-embed-id');
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
+    const permalink = root.getAttribute('data-permalink');
 
     if (createRoot) {
         createRoot(root).render(
@@ -46,6 +59,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                permalink={permalink}
             />
         );
     } else {
@@ -55,6 +69,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                permalink={permalink}
             />,
             root
         );
