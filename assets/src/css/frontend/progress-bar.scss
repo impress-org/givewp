@@ -7,6 +7,10 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+.components-base-control__field input[type=text]:focus {
+    box-shadow: none !important;
+}
+
 .give-goal-progress {
     display: flex;
     flex-direction: column;
