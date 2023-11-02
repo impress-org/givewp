@@ -109,13 +109,13 @@ class AjaxRequestHandler
 
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
-        try{
+        try {
             $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
                 give_clean($_GET['authCode']),
                 give_clean($_GET['sharedId']),
                 $partnerLinkInfo['nonce']
             );
-        } catch ( \Exception $exception ) {
+        } catch (\Exception $exception) {
             wp_send_json_error();
         }
 
@@ -225,6 +225,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment create error on frontend.
      *
+     * @unreleased Remove unused variable from createOrder argument.
      * @since 2.9.0
      */
     public function createOrder()
@@ -233,6 +234,7 @@ class AjaxRequestHandler
 
         $postData = give_clean($_POST);
         $formId = absint($postData['give-form-id']);
+        $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
 
         $data = [
             'formId' => $formId,
@@ -250,11 +252,8 @@ class AjaxRequestHandler
                 'firstName' => $postData['give_first'],
                 'lastName' => $postData['give_last'],
                 'email' => $postData['give_email'],
-                'address' => $this->getDonorAddressFromPostedDataForPaypalOrder($postData),
-            ],
-            'application_context' => [
-                'shipping_preference' => 'NO_SHIPPING',
-            ],
+                'address' => $donorAddress,
+            ]
         ];
 
         try {
@@ -369,22 +368,21 @@ class AjaxRequestHandler
     }
 
     /**
+     * This function should return address array in PayPal rest api accepted format.
+     *
+     * @unreleased Return address only if setting enabled and has valida country in PayPal accepted formatted.
      * @since 2.11.1
-     *
-     * @param array $postedData
-     *
-     * @return array
      */
-    private function getDonorAddressFromPostedDataForPaypalOrder($postedData)
+    private function getDonorAddressFromPostedDataForPaypalOrder(array $postedData): array
     {
-        if (! $this->settings->canCollectBillingInformation()) {
+        if (empty($postedData['billing_country'])) {
             return [];
         }
 
-        $address['address_line1'] = ! empty($postedData['card_address']) ? $postedData['card_address'] : '';
+        $address['address_line_1'] = ! empty($postedData['card_address']) ? $postedData['card_address'] : '';
         $address['address_line_2'] = ! empty($postedData['card_address_2']) ? $postedData['card_address_2'] : '';
-        $address['admin_line_1'] = ! empty($postedData['card_city']) ? $postedData['card_city'] : '';
-        $address['admin_line_2'] = ! empty($postedData['card_state']) ? $postedData['card_state'] : '';
+        $address['admin_area_2'] = ! empty($postedData['card_city']) ? $postedData['card_city'] : '';
+        $address['admin_area_1'] = ! empty($postedData['card_state']) ? $postedData['card_state'] : '';
         $address['postal_code'] = ! empty($postedData['card_zip']) ? $postedData['card_zip'] : '';
         $address['country_code'] = ! empty($postedData['billing_country']) ? $postedData['billing_country'] : '';
 
