@@ -1,12 +1,13 @@
 import {createRef, MouseEventHandler, RefObject} from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {Button, PanelBody, PanelRow, Spinner, TextControl} from '@wordpress/components';
 import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {CopyIcon} from '@givewp/form-builder/components/icons';
 import FormSummarySettings from '@givewp/form-builder/settings/form-summary';
 import {getWindowData} from '@givewp/form-builder/common';
+import {Interweave} from 'interweave';
 
 interface FormPrepublishPanelProps {
     isSaving: boolean;
@@ -78,9 +79,12 @@ export default function FormPrepublishPanel
 
                             <div className="givewp-next-gen-prepublish-panel__content_publish">
                                 <strong>
-                                    <a href={permalink}
-                                       target="_blank">{formTitle}
-                                    </a> {__('is now live', 'give')}.
+                                    <Interweave
+                                        content={sprintf(
+                                            __('%s is now live.', 'give'),
+                                            `<a href="${permalink}" target="_blank">${formTitle}</a>`
+                                        )}
+                                    />
                                 </strong>
                             </div>
 
@@ -90,7 +94,7 @@ export default function FormPrepublishPanel
                                         {__('PAGE ADDRESS', 'give')}
                                     </span>
                                     <span>
-                                        <a
+                                        <Button
                                             href="#"
                                             onClick={async () => {
                                                 permalinkField.current.select();
