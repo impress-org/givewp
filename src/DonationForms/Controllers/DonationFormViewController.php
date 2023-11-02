@@ -42,10 +42,11 @@ class DonationFormViewController
         $viewModel = new DonationFormViewModel(
             $donationForm->id,
             $data->formBlocks ?: $donationForm->blocks,
-            $data->formSettings ?: $donationForm->settings
+            $data->formSettings ?: $donationForm->settings,
+            true
         );
 
         ob_clean();
-        return $viewModel->render(true);
+        return $viewModel->render();
     }
 }
