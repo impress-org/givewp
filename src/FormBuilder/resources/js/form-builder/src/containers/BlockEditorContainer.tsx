@@ -14,6 +14,7 @@ import type {BlockInstance} from '@wordpress/blocks';
 
 
 /**
+ * @unreleased Add middleware to dispatched form block changes.
  * @since 3.0.0
  */
 export default function BlockEditorContainer() {

@@ -3,6 +3,7 @@ import {BlockInstance} from '@wordpress/blocks';
 import EditorMode from "@givewp/form-builder/types/editorMode";
 
 /**
+ * @unreleased Add EditorMode type
  * @since 3.0.0
  */
 export type FormState = {

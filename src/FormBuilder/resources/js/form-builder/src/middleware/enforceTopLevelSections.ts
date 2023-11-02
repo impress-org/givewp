@@ -3,6 +3,7 @@ import type {BlockInstance} from '@wordpress/blocks';
 
 /*
  * Enforce top-level section block hierarchy.
+ * @unreleased Refactor to middleware function
  */
 export default (blocks: BlockInstance[]) => {
     return blocks.map((block) => {

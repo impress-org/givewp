@@ -2,6 +2,11 @@ import {slugifyMeta} from "@givewp/form-builder/supports/field-settings/MetaKeyT
 import {getBlockNames, getFieldNameValidator} from "@givewp/form-builder/hooks/useFieldNameValidator";
 import type {BlockInstance} from '@wordpress/blocks';
 
+/**
+ * The Duplicated Fields middleware ensure that each block has a unique metaUUID,
+ * which is derived form the client ID, and that the field name is unique from the original.
+ * @unreleased
+ */
 export default (blocks: BlockInstance[]) => {
     return blocks.map((section) => {
         return {
