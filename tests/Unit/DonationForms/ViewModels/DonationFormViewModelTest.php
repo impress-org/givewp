@@ -12,7 +12,6 @@ use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\DonationForms\ViewModels\DonationFormViewModel;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -77,6 +76,7 @@ class DonationFormViewModelTest extends TestCase
                     'isMultiStep' => $formDesign->isMultiStep(),
                 ],
             ]),
+            'previewMode' => false
         ]);
     }
 }

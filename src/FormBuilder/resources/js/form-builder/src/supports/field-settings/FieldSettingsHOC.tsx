@@ -25,7 +25,7 @@ const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
 
         const fieldSettings: FieldSettings = useMemo(() => {
             // @ts-ignore
-            const giveSupports = getBlockSupport(name, 'givewp') as GiveWPSupports;
+          const giveSupports = getBlockSupport(name, 'givewp') as GiveWPSupports;
 
             return normalizeFieldSettings(giveSupports?.fieldSettings);
         }, [name]);

@@ -41,6 +41,10 @@ class DonationFormViewModel
      * @var DonationFormRepository
      */
     private $donationFormRepository;
+    /**
+     * @var bool
+     */
+    private $previewMode;
 
     /**
      * @since 3.0.0
@@ -48,12 +52,14 @@ class DonationFormViewModel
     public function __construct(
         int $donationFormId,
         BlockCollection $formBlocks,
-        FormSettings $formSettings
+        FormSettings $formSettings,
+        bool $previewMode = false
     ) {
         $this->donationFormId = $donationFormId;
         $this->formBlocks = $formBlocks;
         $this->formSettings = $formSettings;
         $this->donationFormRepository = give(DonationFormRepository::class);
+        $this->previewMode = $previewMode;
     }
 
     /**
@@ -223,6 +229,7 @@ class DonationFormViewModel
                     'isMultiStep' => $formDesign->isMultiStep(),
                 ] : null,
             ]),
+            'previewMode' => $this->previewMode,
         ];
     }
 
@@ -240,7 +247,7 @@ class DonationFormViewModel
      *
      * @since 3.0.0
      */
-    public function render(bool $preview = false): string
+    public function render(): string
     {
         $this->enqueueGlobalStyles();
 
@@ -255,8 +262,8 @@ class DonationFormViewModel
         ?>
 
         <?php
-        if ($this->formSettings->customCss): ?>
-            <style><?php
+        if ($this->previewMode || $this->formSettings->customCss): ?>
+            <style id="root-givewp-donation-form-style"><?php
                 echo $this->formSettings->customCss; ?></style>
         <?php
         endif; ?>
@@ -264,7 +271,7 @@ class DonationFormViewModel
         <?php
         $classNames = ['givewp-donation-form'];
 
-        if ($preview) {
+        if ($this->previewMode) {
             $classNames[] = 'givewp-donation-form--preview';
         }
         ?>

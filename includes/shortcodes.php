@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @unreleased pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
  * @param array       $atts
@@ -617,7 +618,7 @@ function give_totals_shortcode( $atts ) {
 	/**
 	 * Give Action fire before the shortcode is rendering is started.
 	 *
-     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
 	 * @since 2.1.4
 	 *
 	 * @param array $atts shortcode attribute.
@@ -632,7 +633,7 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
-        array_map(
+        $form_ids = array_map(
             static function ($id) {
                 _give_redirect_form_id($id);
 
