@@ -1,36 +1,26 @@
-.givewp-form-block {
-    &--container {
-        display: grid;
-        row-gap: 1rem;
-        padding: 2rem 4rem;
-        background: #f6f6f6;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    }
-
-    &__option {
-        height: 48px;
-    }
-
-    &__select {
-        &__input {
-            &:focus {
-                box-shadow: none !important;
-            }
-        }
-
-        &--label {
-            color: #4f4f4f;
-        }
-    }
+.givewp-donation-form-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 4rem;
+    background: #f6f6f6;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
     &__logo {
-        &--container {
-            text-align: center;
-        }
+        align-self: center;
     }
 
-    &__submit-button {
+    &__open {
+        color: #fff;
+        background: #2271b1;
+        padding: .5rem 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+    }
+
+    &__submit {
         width: 100%;
         background-color: #27ae60;
         color: #fff;
@@ -50,23 +40,20 @@
             cursor: pointer;
             filter: brightness(1.2);
         }
-
-        &--container {
-            margin-top: 1rem;
-        }
-    }
-
-    &__display-button {
-        color: #fff;
-        background: #2271b1;
-        padding: .5rem 1rem;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
     }
 }
 
-.givewp-donation-form-modal {
+.givewp-donation-form-link {
+    color: var(--givewp-secondary-color, #ffffff);
+    background: var(--givewp-primary-color, #2271b1);
+    padding: .5rem 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none !important;
+}
+
+.givewp-form-block-modal {
     position: absolute;
     top: 25%;
     width: fit-content;
