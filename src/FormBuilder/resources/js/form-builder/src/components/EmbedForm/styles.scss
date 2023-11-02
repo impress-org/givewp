@@ -1,5 +1,33 @@
 .give-embed-modal {
-    &-row-radio {
+    width: 474px;
+    position: fixed;
+    top: 70px;
+    right: 10px;
+    z-index: 99999999999999;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px #e6e6e6;
+    font-size: 13px;
+
+    &-header {
+        font-weight: 500;
+        line-height: 1.4;
+        color: #0e0e0e;
+        border-bottom: solid 1px #e6e6e6;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+    }
+
+    &-badge {
+        font-size: 12px;
+        line-height: 1.33;
+        margin-left: 15px;
+        padding: 4px 10px;
+        border-radius: 5px;
+        background-color: #f0f6fc;
+    }
+
+    &-radio {
         .components-flex {
             flex-direction: row;
             justify-content: left;
@@ -11,7 +39,12 @@
     }
 
     &-row {
-        padding-bottom: 20px;
+        border-bottom: solid 0.5px #e6e6e6;
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+
+        > *:not(:last-child) {
+            margin-bottom: var(--givewp-spacing-4);
+        }
 
         button {
             margin-right: 10px;
@@ -33,10 +66,6 @@
         }
     }
 
-    &-divider {
-        margin-bottom: 30px;
-        border-bottom: 1px solid var(--givewp-grey-50);
-    }
 
     input:not([type="radio"]),
     select {
@@ -46,10 +75,11 @@
 
 
     strong {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: #0e0e0e;
         display: block;
-        font-size: 15px;
-        font-weight: 600;
-        margin-bottom: 15px;
     }
 
 }

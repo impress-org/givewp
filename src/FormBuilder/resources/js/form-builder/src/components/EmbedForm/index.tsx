@@ -1,10 +1,10 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
 import {__} from '@wordpress/i18n';
 import {Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 
 import './styles.scss';
 
@@ -13,10 +13,13 @@ interface EmbedFormModalProps {
 }
 
 interface StateProps {
-    postType: string;
+    insertPostType: string;
+    createPostType: string;
+    newPostName: string;
     selected: string;
     isCopied: boolean;
     isInserting: boolean;
+    isCreating: boolean;
     inserted: Array<number | string>;
 }
 
@@ -27,16 +30,39 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
 
     const {formId} = getWindowData();
     const [state, setState] = useState<StateProps>({
-        postType: 'page',
+        insertPostType: 'page',
+        createPostType: 'page',
+        newPostName: '',
         selected: '',
         isCopied: false,
         isInserting: false,
+        isCreating: false,
         inserted: []
     });
 
-    const {editEntityRecord, saveEditedEntityRecord} = useDispatch(store);
+    const {editEntityRecord, saveEditedEntityRecord, saveEntityRecord} = useDispatch(store);
 
+    const closeModal = useCallback(e => {
+        if (e.keyCode === 27 && typeof handleClose === 'function') {
+            handleClose(e);
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', closeModal, false);
+
+        return () => {
+            document.removeEventListener('keydown', closeModal, false);
+        };
+    }, []);
+
+    const block = `<!-- wp:give/donation-form {"id":${formId}} /-->`;
     const shortcode = `[give_form id=${formId}]`;
+
+    const postOptions = [
+        {label: 'Page', value: 'page'},
+        {label: 'Post', value: 'post'},
+    ]
 
     // Get posts/pages
     const sitePages = useSelect((select) => {
@@ -48,9 +74,9 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         }
 
         // @ts-ignore
-        const data = select(store).getEntityRecords('postType', state.postType, query);
+        const data = select(store).getEntityRecords('postType', state.insertPostType, query);
 
-        const selectLabel = 'page' === state.postType
+        const selectLabel = 'page' === state.insertPostType
             ? __('Select a page', 'give')
             : __('Select a post', 'give')
 
@@ -61,13 +87,13 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                 value: page.id,
                 label: page.title.rendered,
                 content: page.content.raw,
-                disabled: page.content.raw.includes(shortcode) // disable pages that already have shortcode in content
+                disabled: page.content.raw.includes(block) // disable pages that already have form block included
             })
         });
 
         return pages;
 
-    }, [state.postType, state.inserted]);
+    }, [state.insertPostType, state.inserted]);
 
 
     const handleCopy = useCallback(() => {
@@ -90,8 +116,8 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         }, 2000);
     }, []);
 
-    const handleInsert = async () => {
-        const content = sitePages?.find((page) => page.value == state.selected)?.content + `<!-- wp:shortcode -->${shortcode}<!-- /wp:shortcode -->`;
+    const handleInsertIntoExisting = async () => {
+        const content = sitePages?.find((page) => page.value == state.selected)?.content + block;
 
         setState(prevState => {
             return {
@@ -100,8 +126,8 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
             }
         });
 
-        await editEntityRecord('postType', state.postType, state.selected, {content});
-        await saveEditedEntityRecord('postType', state.postType, state.selected, {content});
+        await editEntityRecord('postType', state.insertPostType, state.selected, {content});
+        await saveEditedEntityRecord('postType', state.insertPostType, state.selected, {content});
 
         setState(prevState => {
             return {
@@ -112,98 +138,150 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         });
     }
 
-    return (
-        <ModalDialog
-            title={__('Embed Form', 'give')}
-            handleClose={handleClose}
-        >
-            <div className="give-embed-modal">
+    const handleCreateNew = async () => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                isCreating: true
+            }
+        });
 
-                <div className="give-embed-modal-row give-embed-modal-divider">
+        await saveEntityRecord('postType', state.createPostType, {
+            title: state.newPostName,
+            content: block
+        });
+
+        setState(prevState => {
+            return {
+                ...prevState,
+                isCreating: false
+            }
+        });
+    }
+
+    return createPortal(
+        <div className="give-embed-modal">
+
+            <div className="give-embed-modal-header">
+                {__('Embed Form', 'give')}
+
+                <span className="give-embed-modal-badge">
+                    {__('Form ID', 'give')}: {formId}
+                </span>
+            </div>
+
+            <div className="give-embed-modal-row">
+
+                <strong>
+                    {__('Add to existing content', 'give')}
+                </strong>
+
+                <RadioControl
+                    className="give-embed-modal-radio"
+                    selected={state.insertPostType}
+                    options={postOptions}
+                    onChange={value => setState(prevState => {
+                        return {
+                            ...prevState,
+                            insertPostType: value,
+                            selected: ''
+                        }
+                    })}
+                />
+
+                <SelectControl
+                    value={state.selected}
+                    options={sitePages}
+                    onChange={value => setState(prevState => {
+                        return {
+                            ...prevState,
+                            selected: value
+                        }
+                    })}
+                />
+
+                {state.inserted.includes(state.selected) ? (
                     <strong>
-                        {__('Shortcode', 'give')}
+                        {__('Form inserted!', 'give')}
                     </strong>
-
-                    <div className="give-embed-modal-items">
-                        <div>
-                            <TextControl
-                                readOnly
-                                value={shortcode}
-                                onChange={null}
-                            />
-                        </div>
-
-                        <div>
-                            <Button
-                                variant="secondary"
-                                onClick={handleCopy}
-                            >
-                                {state.isCopied ? __('Copied!', 'give') : __('Copy Shortcode', 'give')}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="give-embed-modal-row give-embed-modal-row-radio">
-
-                    <strong>
-                        {__('Add to existing content', 'give')}
-                    </strong>
-
-                    <RadioControl
-                        selected={state.postType}
-                        options={[
-                            {label: 'Page', value: 'page'},
-                            {label: 'Post', value: 'post'},
-                        ]}
-                        onChange={value => setState(prevState => {
-                            return {
-                                ...prevState,
-                                postType: value,
-                                selected: ''
-                            }
-                        })}
-                    />
-                </div>
-
-                <div className="give-embed-modal-row">
-                    <SelectControl
-                        value={state.selected}
-                        options={sitePages}
-                        onChange={value => setState(prevState => {
-                            return {
-                                ...prevState,
-                                selected: value
-                            }
-                        })}
-                    />
-                </div>
-
-                <div className="give-embed-modal-row">
-                    {state.inserted.includes(state.selected) ? (
-                        <strong>
-                            {__('Form inserted!', 'give')}
-                        </strong>
-                    ) : (
-                        <Button
-                            variant="primary"
-                            disabled={!state.selected || state.isInserting}
-                            isBusy={state.isInserting}
-                            onClick={handleInsert}
-                        >
-                            {state.isInserting ? __('Inserting Form...', 'give') : __('Insert Form', 'give')}
-                        </Button>
-                    )}
-
+                ) : (
                     <Button
                         variant="secondary"
-                        onClick={handleClose}
-                        disabled={state.isInserting}
+                        disabled={!state.selected || state.isInserting}
+                        isBusy={state.isInserting}
+                        onClick={handleInsertIntoExisting}
                     >
-                        {__('Close', 'give')}
+                        {state.isInserting ? __('Inserting form...', 'give') : __('Insert form', 'give')}
                     </Button>
+                )}
+
+            </div>
+
+            <div className="give-embed-modal-row">
+
+                <strong>
+                    {__('Create new', 'give')}
+                </strong>
+
+                <RadioControl
+                    className="give-embed-modal-radio"
+                    selected={state.createPostType}
+                    options={postOptions}
+                    onChange={value => setState(prevState => {
+                        return {
+                            ...prevState,
+                            createPostType: value,
+                        }
+                    })}
+                />
+
+                <TextControl
+                    required
+                    value={state.newPostName}
+                    onChange={value => setState(prevState => {
+                        return {
+                            ...prevState,
+                            newPostName: value
+                        }
+                    })}
+                />
+
+                <Button
+                    variant="secondary"
+                    disabled={state.isCreating}
+                    isBusy={state.isCreating}
+                    onClick={handleCreateNew}
+                >
+                    {state.isCreating ? __('Creating...', 'give') : __('Create', 'give')}
+                </Button>
+
+            </div>
+
+            <div className="give-embed-modal-row">
+                <strong>
+                    {__('Shortcode', 'give')}
+                </strong>
+
+                <div className="give-embed-modal-items">
+                    <div>
+                        <TextControl
+                            readOnly
+                            value={shortcode}
+                            onChange={null}
+                        />
+                    </div>
+
+                    <div>
+                        <Button
+                            variant="secondary"
+                            onClick={handleCopy}
+                        >
+                            {state.isCopied ? __('Copied!', 'give') : __('Copy Shortcode', 'give')}
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </ModalDialog>
+        </div>,
+        document.body
     )
 }
