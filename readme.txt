@@ -263,10 +263,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.1.0: October 25th, 2023 =
+* Feature: Design Mode changes in the Form Builder are now instant and awesome! Instant gratification!
 * Feature: Donor prefixes can now easily be reordered in the Donor Name block
 * Feature: The form goal is now changeable from the Design mode of the Form Builder
 * Enhancement: The form goal amount now better displays the currency amount
 * Enhancement: The first time a form (in the form builder) is saved, the title is used as the page slug
+* Enhancement: Improved translations in the form builder and gateways
+* Enhancement: Compatibility improvements in preparation of WordPress 6.4
+* Enhancement: Improved donor flow that passes along their name, email, and address to PayPal Donations
 * Fix: Minor wording improvement on the login block
 * Fix: Added a give_user_info_fields_user_info filter to allow for customizing the user info fields
 * Fix: Links on the donor list table now work properly on sub-directory WordPress instances
@@ -274,6 +278,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Multi-form, form grid, and totals shortcodes no longer throw a warning
 * Fix: Multi-form goal block no longer throws an error when filtering by form
 * Fix: Multi-form and progress bar goals no longer throw an error for themes that return false for get_theme_support
+* Fix: Resolved old GiveWP behavior that altered default WodPress behavior when retrieving GiveWP post type meta
 
 = 3.0.4: October 30th, 2023 =
 * Fix: Resolved issue with some Stripe gateways not recording incoming recurring donation renewals.  To recover missing renewals from Stripe in GiveWP, please use the "Sync Subscription" button on the individual subscription details page.  Click [here](https://docs.givewp.com/syncrecurring) to learn more about syncing subscriptions in GiveWP.
