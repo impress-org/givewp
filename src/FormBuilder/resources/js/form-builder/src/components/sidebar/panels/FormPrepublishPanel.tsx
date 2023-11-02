@@ -96,14 +96,16 @@ export default function FormPrepublishPanel
                                     <span>
                                         <Button
                                             href="#"
+                                            icon={CopyIcon}
+                                            variant="tertiary"
                                             onClick={async () => {
                                                 permalinkField.current.select();
                                                 await navigator.clipboard.writeText(permalink)
                                             }}
                                             className="givewp-next-gen-prepublish-panel_copy_link"
                                         >
-                                            <CopyIcon />{__('Copy', 'give')}
-                                        </a>
+                                            {__('Copy', 'give')}
+                                        </Button>
                                     </span>
                                 </PanelRow>
                                 <PanelRow className="givewp-next-gen-prepublish-panel_input">
