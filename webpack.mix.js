@@ -82,10 +82,6 @@ mix.webpackConfig({
             '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
         },
     },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-    },
     plugins: [
         /*
          * Transform script dependencies only for following external libraries:
