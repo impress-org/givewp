@@ -97,7 +97,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
-     * @unreleased "payer" argument is deprecated, using payment_source/paypal.
+     * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
      * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
      *

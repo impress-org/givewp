@@ -142,7 +142,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * Create subscription event handler for smart buttons.
      *
-     * @unreleased Pass subscriber details to subscription. These details will automatically fill in PayPal payment modal.
+     * @since 3.1.0 Pass subscriber details to subscription. These details will automatically fill in PayPal payment modal.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.

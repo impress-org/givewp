@@ -33,7 +33,7 @@ class SaleBanners
     /**
      * Get banners definitions
      *
-     * @unreleased add Giving Tuesday 2023 banner
+     * @since 3.1.0 add Giving Tuesday 2023 banner
      * @since 2.23.2 add Giving Tuesday 2022 banner
      * @since 2.17.0
      *
@@ -90,7 +90,7 @@ class SaleBanners
     /**
      * Get the banners that should be displayed.
      *
-     * @unreleased hide banners for users with Pro tier accounts.
+     * @since 3.1.0 hide banners for users with Pro tier accounts.
      * @since 2.17.0
      */
     public function getVisibleBanners(): array
@@ -189,7 +189,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased retrieve licensed plugin slugs.
+     * @since 3.1.0 retrieve licensed plugin slugs.
      */
     public static function getLicensedPluginSlugs(): array
     {
@@ -208,7 +208,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased determines user pricing plan from licensed plugin slugs.
+     * @since 3.1.0 determines user pricing plan from licensed plugin slugs.
      */
     public static function getUserPricingPlan(): string
     {
@@ -241,7 +241,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased return data by user pricing plan.
+     * @since 3.1.0 return data by user pricing plan.
      */
     public static function getDataByPricingPlan($data): string
     {

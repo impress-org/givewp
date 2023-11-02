@@ -126,7 +126,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Retrieve payment meta field for a payment.
 	 *
-	 * @unreleased Return empty array, when request raw metadata if $single is set to false and metadata does not exist.
+	 * @since 3.1.0 Return empty array, when request raw metadata if $single is set to false and metadata does not exist.
 	 * @since   2.0
 	 *
 	 * @param   int    $id       Pst Type  ID.

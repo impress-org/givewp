@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
- * @unreleased pass form id by reference in give_totals shortcode.
+ * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
  * @param array       $atts

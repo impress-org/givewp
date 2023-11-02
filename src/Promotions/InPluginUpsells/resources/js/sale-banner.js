@@ -4,7 +4,7 @@ const pageTitle = document.querySelector('.page-title-action, .wp-heading-inline
 const listTable = document.querySelector('#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root');
 
 /**
- * @unreleased show banner on ListTable pages.
+ * @since 3.1.0 show banner on ListTable pages.
  */
 const hideBanner = ({target: dismissAction}) => {
     const formData = new FormData();

@@ -18,7 +18,7 @@ class PaymentIntentFailedTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.1.0
      *
      * @throws Exception
      */

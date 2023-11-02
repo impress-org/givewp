@@ -76,7 +76,7 @@ function App({form}: { form: DonationForm }) {
 }
 
 /**
- * @unreleased
+ * @since 3.1.0
  */
 function AppPreview() {
 

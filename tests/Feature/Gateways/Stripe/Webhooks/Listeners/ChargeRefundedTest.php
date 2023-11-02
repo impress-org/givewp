@@ -18,7 +18,7 @@ class ChargeRefundedTest extends TestCase
     use RefreshDatabase, HasMockStripeAccounts;
 
     /**
-     * @unreleased
+     * @since 3.1.0
      *
      * @throws Exception
      */

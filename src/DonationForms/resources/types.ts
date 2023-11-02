@@ -193,7 +193,7 @@ export interface Section extends Group {
 }
 
 /**
- * @unreleased
+ * @since 3.1.0
  */
 export interface FormGoal {
     type: string;

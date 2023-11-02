@@ -6,12 +6,12 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.1.0
  */
 class GenerateDefaultDonationFormBlockCollection
 {
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function __invoke(): BlockCollection
     {
@@ -43,7 +43,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createSection(string $title, string $description, BlockModel ...$innerBlocks): BlockModel
     {
@@ -58,7 +58,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createAmountBlock(): BlockModel
     {
@@ -93,7 +93,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createDonorNameBlock(): BlockModel
     {
@@ -117,7 +117,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createEmailBlock(): BlockModel
     {
@@ -132,7 +132,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createDonationSummaryBlock(): BlockModel
     {
@@ -144,7 +144,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
      /**
-     * @unreleased
+     * @since 3.1.0
      */
     protected function createPaymentGatewaysBlock(): BlockModel
     {

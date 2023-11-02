@@ -58,7 +58,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased set translations for scripts
+     * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
      * @return void
@@ -94,7 +94,7 @@ class RegisterFormBuilderPageRoute
         Language::setScriptTranslations($registrarsScriptHandle);
 
         /**
-         * @unreleased set translations for scripts
+         * @since 3.1.0 set translations for scripts
          * @since 3.0.0
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
          * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,

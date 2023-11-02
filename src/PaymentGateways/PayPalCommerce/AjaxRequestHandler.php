@@ -225,7 +225,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment create error on frontend.
      *
-     * @unreleased Remove unused variable from createOrder argument.
+     * @since 3.1.0 Remove unused variable from createOrder argument.
      * @since 2.9.0
      */
     public function createOrder()
@@ -370,7 +370,7 @@ class AjaxRequestHandler
     /**
      * This function should return address array in PayPal rest api accepted format.
      *
-     * @unreleased Return address only if setting enabled and has valida country in PayPal accepted formatted.
+     * @since 3.1.0 Return address only if setting enabled and has valida country in PayPal accepted formatted.
      * @since 2.11.1
      */
     private function getDonorAddressFromPostedDataForPaypalOrder(array $postedData): array

@@ -604,7 +604,7 @@ class Give_Scripts {
     /**
      * Gutenberg admin scripts.
      *
-     * @unreleased Use wp scripts to compile blocks
+     * @since 3.1.0 Use wp scripts to compile blocks
      * @since 2.19.0 Remove undefined gutenberg.css
      * @since 2.19.6 Load script with EnqueueScript.
      * @since 2.19.6 Load missing block styles

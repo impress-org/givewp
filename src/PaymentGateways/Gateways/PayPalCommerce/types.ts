@@ -1,7 +1,7 @@
 /**
  * PayPal Commerce Platform: Standard address.
  *
- * @unreleased
+ * @since 3.1.0
  */
 export type PayPalAddress = {
     address_line_1: string,
@@ -16,7 +16,7 @@ export type PayPalAddress = {
  * PayPal Commerce Platform: Shipping address
  *
  * @see https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_revise!path=shipping_address&t=request
- * @unreleased
+ * @since 3.1.0
  */
 export type PayPalShippingAddress = {
     name: {
@@ -29,7 +29,7 @@ export type PayPalShippingAddress = {
  * PayPal Commerce Platform: Subscriber
  *
  * @see https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_create!path=subscriber&t=request
- * @unreleased
+ * @since 3.1.0
  */
 export type PayPalSubscriber = {
     name: {

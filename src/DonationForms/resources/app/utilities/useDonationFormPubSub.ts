@@ -16,7 +16,7 @@ export const PREVIEW_EVENTS = {
 /**
  * Simple Publish/Subscribe system used for handling form state in preview mode
  *
- * @unreleased
+ * @since 3.1.0
  */
 export default function useDonationFormPubSub() {
 
