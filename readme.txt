@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.1.1: November 3rd, 2023 =
+* Fix: Donor title prefixes are now formatted as strings (like Mr or Ms) instead of numbers.
+
 = 3.1.0: October 25th, 2023 =
 * Feature: Design Mode changes in the Form Builder are now instant and awesome! Instant gratification!
 * Feature: Donor prefixes can now easily be reordered in the Donor Name block
