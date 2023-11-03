@@ -43,7 +43,7 @@
     }
 }
 
-.givewp-donation-form-link {
+.givewp-donation-form-link, .givewp-donation-form-modal__open {
     color: var(--givewp-secondary-color, #ffffff);
     background: var(--givewp-primary-color, #2271b1);
     padding: .5rem 1rem;
@@ -51,41 +51,6 @@
     border: none;
     border-radius: 5px;
     text-decoration: none !important;
-}
-
-.givewp-form-block-modal {
-    position: absolute;
-    top: 25%;
-    width: fit-content;
-    min-width: 552px;
-    height: fit-content;
-    max-height: calc(100% - 5rem);
-    padding: 0;
-    border: none;
-    overflow-y: scroll;
-    z-index: 999;
-
-    &::backdrop {
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(3px);
-    }
-
-    &__close {
-        border-radius: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.8);
-        color: #555;
-        font-size: 1.5rem;
-        line-height: 1;
-        width: 2.5rem;
-        height: 2.5rem;
-        position: absolute;
-        top: .5rem;
-        right: .5rem;
-        cursor: pointer;
-    }
 }
 
 .components-input-control__label {
