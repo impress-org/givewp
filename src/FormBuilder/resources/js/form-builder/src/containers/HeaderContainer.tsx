@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {EditIcon, GiveIcon} from '../components/icons';
-import {code, drawerRight, external, moreVertical} from '@wordpress/icons';
+import {EditIcon, GiveIcon, CodeIcon} from '../components/icons';
+import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -160,13 +160,6 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 contentRight={
                     <>
                         <Button
-                            icon={code}
-                            onClick={() => setShowEmbedModal(true)}
-                            variant="secondary"
-                        >
-                            {__('Embed', 'give')}
-                        </Button>
-                        <Button
                             onClick={() => onSave('draft')}
                             aria-disabled={isDraftDisabled}
                             disabled={isDraftDisabled}
@@ -178,6 +171,12 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     ? __('Save as Draft', 'give')
                                     : __('Switch to Draft', 'give')}
                         </Button>
+                        <Button
+                            icon={CodeIcon}
+                            className="givewp-embed-button"
+                            onClick={() => setShowEmbedModal(!showEmbedModal)}
+                            variant="tertiary"
+                        />
                         {isPublished && (
                             <Button label={__('View form', 'give')} href={permalink} target="_blank" icon={external} />
                         )}
