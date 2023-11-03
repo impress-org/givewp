@@ -13,7 +13,7 @@ class GiveFormShortcode
     public static $instance = 0;
 
     /**
-     * @unreleased use static instance ID to simulate blockId attribute
+     * @since 3.1.1 use static instance ID to simulate blockId attribute
      * @since 3.0.0
      */
     public function __invoke(string $output, array $atts): string
