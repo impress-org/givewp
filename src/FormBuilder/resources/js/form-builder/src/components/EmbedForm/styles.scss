@@ -16,6 +16,15 @@
         color: #0e0e0e;
         border-bottom: solid 1px #e6e6e6;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+
+        button {
+            all: unset;
+            position: absolute;
+            cursor: pointer;
+            fill: var(--givewp-grey-500);
+            top: var(--givewp-spacing-2);
+            right: var(--givewp-spacing-6);
+        }
     }
 
     &-badge {
@@ -51,6 +60,17 @@
         }
     }
 
+    &-helptext {
+        font-size: 12px;
+        margin-bottom: var(--givewp-spacing-3);
+    }
+
+    &-input-error {
+        .components-base-control__help {
+            color: var(--givewp-red-500) !important;
+        }
+    }
+
     &-items {
         display: flex;
         flex-direction: row;
@@ -63,6 +83,12 @@
             }
 
             align-self: center;
+        }
+    }
+
+    &-copy {
+        svg {
+            fill: none;
         }
     }
 

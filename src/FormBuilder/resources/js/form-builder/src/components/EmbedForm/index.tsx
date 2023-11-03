@@ -1,10 +1,14 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
+import cx from 'classnames';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
+import {CopyIcon, ExitIcon} from '@givewp/components/AdminUI/Icons';
+import {Interweave} from 'interweave';
 
 import './styles.scss';
 
@@ -12,15 +16,27 @@ interface EmbedFormModalProps {
     handleClose: Function;
 }
 
+type Post = {
+    value: string,
+    label: string,
+    content: string,
+    disabled: boolean
+}
+
 interface StateProps {
+    posts: Array<Post>;
     insertPostType: string;
     createPostType: string;
+    currentPostType: string;
     newPostName: string;
-    selected: string;
+    selectedPost: string;
     isCopied: boolean;
     isInserting: boolean;
     isCreating: boolean;
-    inserted: Array<number | string>;
+    isInserted: boolean;
+    isCreated: boolean;
+    createdLink: string;
+    insertedLink: string;
 }
 
 /**
@@ -28,21 +44,27 @@ interface StateProps {
  */
 export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
 
+    const newPostNameRef = useRef<HTMLInputElement>(null);
     const {formId} = getWindowData();
     const [state, setState] = useState<StateProps>({
+        posts: [],
         insertPostType: 'page',
         createPostType: 'page',
-        newPostName: '',
-        selected: '',
+        currentPostType: 'page',
+        newPostName: null,
+        selectedPost: null,
         isCopied: false,
         isInserting: false,
         isCreating: false,
-        inserted: []
+        isInserted: false,
+        isCreated: false,
+        createdLink: null,
+        insertedLink: null,
     });
 
     const {editEntityRecord, saveEditedEntityRecord, saveEntityRecord} = useDispatch(store);
 
-    const closeModal = useCallback(e => {
+    const closeModal = useCallback((e) => {
         if (e.keyCode === 27 && typeof handleClose === 'function') {
             handleClose(e);
         }
@@ -51,9 +73,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
     useEffect(() => {
         document.addEventListener('keydown', closeModal, false);
 
-        return () => {
-            document.removeEventListener('keydown', closeModal, false);
-        };
+        return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
 
     const block = `<!-- wp:give/donation-form {"id":${formId}} /-->`;
@@ -62,102 +82,145 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
     const postOptions = [
         {label: 'Page', value: 'page'},
         {label: 'Post', value: 'post'},
-    ]
+    ];
 
     // Get posts/pages
-    const sitePages = useSelect((select) => {
-        const pages = [];
+    useSelect((select) => {
+        const filtered = [];
+        // @ts-ignore
+        const data = select(store).getEntityRecords('postType', state.currentPostType, {
+            status: ['publish', 'draft'],
+            per_page: -1, // do we want this?
+        });
 
-        const query = {
-            status: 'publish',
-            per_page: -1 // do we want this?
+        if (data) {
+            data?.forEach(page => {
+                filtered.push({
+                    value: page.id,
+                    label: page.title.rendered,
+                    content: page.content.raw,
+                    disabled: page.content.raw.includes(block), // disable pages that already have form block included
+                });
+            });
+
+            // Adding this to state so that we have both posts and pages available
+            // This is needed for post/page exist check
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    isInserting: false,
+                    posts: {
+                        ...prevState.posts,
+                        [state.currentPostType]: filtered,
+                    },
+                };
+            });
         }
 
-        // @ts-ignore
-        const data = select(store).getEntityRecords('postType', state.insertPostType, query);
+    }, [state.createPostType, state.insertPostType]);
+
+    const isPageAlreadyCreated = !state.isCreated && state.newPostName
+        && state.posts[state.createPostType]?.filter(post => post.label == state.newPostName).length > 0;
+
+    /**
+     * Get site posts/pages for select option
+     */
+    const sitePosts = useCallback(() => {
+        const pages = [];
 
         const selectLabel = 'page' === state.insertPostType
             ? __('Select a page', 'give')
-            : __('Select a post', 'give')
+            : __('Select a post', 'give');
 
         pages.push({value: '', label: selectLabel, disabled: true});
 
-        data?.forEach(page => {
-            pages.push({
-                value: page.id,
-                label: page.title.rendered,
-                content: page.content.raw,
-                disabled: page.content.raw.includes(block) // disable pages that already have form block included
-            })
-        });
+        if (state.posts[state.insertPostType]) {
+            pages.push(...state.posts[state.insertPostType]);
+        }
 
         return pages;
+    }, [state.posts]);
 
-    }, [state.insertPostType, state.inserted]);
-
-
-    const handleCopy = useCallback(() => {
-        navigator.clipboard.writeText(shortcode);
+    const handleCopy = useCallback(async () => {
+        await navigator.clipboard.writeText(shortcode);
 
         setState(prevState => {
             return {
                 ...prevState,
-                isCopied: true
-            }
+                isCopied: true,
+            };
         });
 
         setTimeout(() => {
             setState(prevState => {
                 return {
                     ...prevState,
-                    isCopied: false
-                }
+                    isCopied: false,
+                };
             });
         }, 2000);
     }, []);
 
-    const handleInsertIntoExisting = async () => {
-        const content = sitePages?.find((page) => page.value == state.selected)?.content + block;
-
+    /**
+     * Handle inserting form into existing post/page
+     */
+    const handleInsert = async () => {
         setState(prevState => {
             return {
                 ...prevState,
-                isInserting: true
-            }
+                isInserting: true,
+            };
         });
 
-        await editEntityRecord('postType', state.insertPostType, state.selected, {content});
-        await saveEditedEntityRecord('postType', state.insertPostType, state.selected, {content});
+        const content = state?.posts[state.insertPostType]?.find((page) => page.value == state.selectedPost)?.content + block;
+
+        await editEntityRecord('postType', state.insertPostType, state.selectedPost, {content});
+        const response = await saveEditedEntityRecord('postType', state.insertPostType, state.selectedPost, {content});
 
         setState(prevState => {
             return {
                 ...prevState,
                 isInserting: false,
-                inserted: [...prevState.inserted, state.selected]
-            }
+                isInserted: true,
+                insertedLink: response?.link,
+            };
         });
-    }
+    };
 
+    /**
+     * Handle creating a new post/page
+     */
     const handleCreateNew = async () => {
+        if (!state.newPostName) {
+            newPostNameRef.current?.focus();
+            return;
+        }
+
+        if (state.isCreating) {
+            return;
+        }
+
         setState(prevState => {
             return {
                 ...prevState,
-                isCreating: true
-            }
+                isCreating: true,
+            };
         });
 
-        await saveEntityRecord('postType', state.createPostType, {
+        const response = await saveEntityRecord('postType', state.createPostType, {
             title: state.newPostName,
-            content: block
+            content: block,
         });
 
         setState(prevState => {
             return {
                 ...prevState,
-                isCreating: false
-            }
+                isCreating: false,
+                isCreated: true,
+                createdLink: response?.link,
+            };
         });
-    }
+    };
 
     return createPortal(
         <div className="give-embed-modal">
@@ -168,6 +231,13 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                 <span className="give-embed-modal-badge">
                     {__('Form ID', 'give')}: {formId}
                 </span>
+
+                <button
+                    aria-label={__('Close Embed Form modal window', 'give')}
+                    onClick={handleClose}
+                >
+                    <ExitIcon />
+                </button>
             </div>
 
             <div className="give-embed-modal-row">
@@ -184,32 +254,61 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                         return {
                             ...prevState,
                             insertPostType: value,
-                            selected: ''
-                        }
+                            currentPostType: value,
+                            selectedPost: '',
+                        };
                     })}
                 />
 
                 <SelectControl
-                    value={state.selected}
-                    options={sitePages}
+                    value={state.selectedPost}
+                    options={sitePosts()}
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
-                            selected: value
-                        }
+                            selectedPost: value,
+                        };
                     })}
                 />
 
-                {state.inserted.includes(state.selected) ? (
-                    <strong>
-                        {__('Form inserted!', 'give')}
-                    </strong>
+                {state.isInserted ? (
+                    <div className="give-embed-modal-items">
+                        <div>
+                            <Button
+                                href={state.insertedLink}
+                                target="_blank"
+                                icon={external}
+                                variant="secondary"
+                            >
+                                {sprintf(
+                                    __('View inserted %s', 'give'),
+                                    'page' === state.insertPostType
+                                        ? __('Page', 'give')
+                                        : __('Post', 'give'))}
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
+                                variant="tertiary"
+                                onClick={() => setState(prevState => {
+                                    return {
+                                        ...prevState,
+                                        isInserted: false,
+                                        selectedPost: null,
+                                        insertedLink: null,
+                                    };
+                                })}
+                            >
+                                {__('Add another', 'give')}
+                            </Button>
+                        </div>
+                    </div>
                 ) : (
                     <Button
                         variant="secondary"
-                        disabled={!state.selected || state.isInserting}
+                        disabled={!state.selectedPost || state.isInserting}
                         isBusy={state.isInserting}
-                        onClick={handleInsertIntoExisting}
+                        onClick={handleInsert}
                     >
                         {state.isInserting ? __('Inserting form...', 'give') : __('Insert form', 'give')}
                     </Button>
@@ -231,57 +330,115 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                         return {
                             ...prevState,
                             createPostType: value,
-                        }
+                            currentPostType: value,
+                        };
                     })}
                 />
 
                 <TextControl
-                    required
+                    disabled={state.isCreated}
+                    ref={newPostNameRef}
                     value={state.newPostName}
+                    className={cx({'give-embed-modal-input-error': isPageAlreadyCreated})}
+                    help={isPageAlreadyCreated
+                        ? sprintf(
+                            __('%s with that name already exists', 'give'),
+                            'page' === state.currentPostType
+                                ? __('Page', 'give')
+                                : __('Post', 'give'))
+                        : null
+                    }
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
-                            newPostName: value
-                        }
+                            newPostName: value,
+                        };
                     })}
                 />
 
-                <Button
-                    variant="secondary"
-                    disabled={state.isCreating}
-                    isBusy={state.isCreating}
-                    onClick={handleCreateNew}
-                >
-                    {state.isCreating ? __('Creating...', 'give') : __('Create', 'give')}
-                </Button>
+                {state.isCreated ? (
+                    <div className="give-embed-modal-items">
+                        <div>
+                            <Button
+                                href={state.createdLink}
+                                target="_blank"
+                                icon={external}
+                                variant="secondary"
+                            >
+                                {sprintf(
+                                    __('View created %s', 'give'),
+                                    'page' === state.currentPostType
+                                        ? __('Page', 'give')
+                                        : __('Post', 'give'))}
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
+                                variant="tertiary"
+                                onClick={() => {
+                                    newPostNameRef.current?.focus();
+
+                                    setState(prevState => {
+                                        return {
+                                            ...prevState,
+                                            isCreated: false,
+                                            newPostName: '',
+                                            createdLink: null,
+                                        };
+                                    });
+                                }}
+                            >
+                                {__('Add another', 'give')}
+                            </Button>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {!isPageAlreadyCreated && (
+                            <Button
+                                variant="secondary"
+                                disabled={state.isCreating}
+                                isBusy={state.isCreating}
+                                onClick={handleCreateNew}
+                            >
+                                {state.isCreating ? __('Creating...', 'give') : __('Create', 'give')}
+                            </Button>
+                        )}
+                    </>
+                )}
 
             </div>
 
             <div className="give-embed-modal-row">
                 <strong>
-                    {__('Shortcode', 'give')}
+                    {__('Not using the block editor?', 'give')}
                 </strong>
 
-                <div className="give-embed-modal-items">
-                    <div>
-                        <TextControl
-                            readOnly
-                            value={shortcode}
-                            onChange={null}
-                        />
-                    </div>
+                <div className="give-embed-modal-helptext">
+                    {__('Copy and paste the shortcode within your page builder.', 'give')}
+                </div>
 
+                <div className="give-embed-modal-items give-embed-modal-copy">
                     <div>
                         <Button
+                            icon={CopyIcon}
                             variant="secondary"
                             onClick={handleCopy}
                         >
                             {state.isCopied ? __('Copied!', 'give') : __('Copy Shortcode', 'give')}
                         </Button>
                     </div>
+                    <div>
+                        <Interweave
+                            content={sprintf(
+                                __('%s about the shortcode', 'give'),
+                                `<a href="https://givewp.com/documentation/core/shortcodes/" target="_blank">${__('Learn more', 'give')}</a>`,
+                            )}
+                        />
+                    </div>
                 </div>
             </div>
         </div>,
-        document.body
-    )
+        document.body,
+    );
 }
