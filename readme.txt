@@ -264,6 +264,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.1.1: November 3rd, 2023 =
 * Fix: Embedded forms created with the Visual Builder now redirect to the confirmation page after a completed donation.
+* Fix: Donor title prefixes are now formatted as strings (like Mr or Ms) instead of numbers.
 
 = 3.1.0: October 25th, 2023 =
 * Feature: Design Mode changes in the Form Builder are now instant and awesome! Instant gratification!
