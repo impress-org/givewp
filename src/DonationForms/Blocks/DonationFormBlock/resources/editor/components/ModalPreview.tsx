@@ -33,7 +33,7 @@ export default function ModalPreview({enableIframe, formId, openFormButton}: Mod
                         src={`/?givewp-route=donation-form-view&form-id=${formId}`}
                         checkOrigin={false}
                         style={{
-                            width: '1px',
+                            width: '32.5rem',
                             minWidth: '100%',
                             border: 'none',
                             overflowY: 'scroll',
