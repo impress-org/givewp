@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from '@wordpress/element';
 import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 import {ModalToggle} from '../../editor/components/ModalToggle';
-import close from '../images/close-icon.svg';
+import close from '../../editor/images/close-icon.svg';
 
 import '../../editor/styles/index.scss';
 
