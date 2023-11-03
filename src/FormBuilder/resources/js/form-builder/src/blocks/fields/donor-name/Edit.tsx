@@ -23,13 +23,15 @@ export default function Edit({
                              }: BlockEditProps<any>) {
 
     const [selectedTitle, setSelectedTitle] = useState<string>(Object.values(honorifics)[0] as string ?? '');
-    const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(Object.values(honorifics).map((token) => {
-        return {
-            label: titleLabelTransform(token),
-            value: titleValueTransform(token),
-            checked: selectedTitle === token,
-        } as OptionProps;
-    }));
+    const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(
+        Object.values(honorifics).map((token: string) => {
+            return {
+                label: titleLabelTransform(token),
+                value: titleValueTransform(token),
+                checked: selectedTitle === token,
+            } as OptionProps;
+        })
+    );
 
     const setOptions = (options: OptionProps[]) => {
         setHonorificOptions(options);
