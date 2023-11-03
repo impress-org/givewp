@@ -345,7 +345,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 />
 
                 <TextControl
-                    disabled={state.isCreated}
+                    readOnly={state.isCreated}
                     ref={newPostNameRef}
                     value={state.newPostName}
                     className={cx({'give-embed-modal-input-error': isPageAlreadyCreated})}
