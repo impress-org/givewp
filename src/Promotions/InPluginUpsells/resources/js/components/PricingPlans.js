@@ -3,6 +3,7 @@ import {Hero} from './Hero';
 import styles from './PricingPlans.module.css';
 
 const {heading, description, plansButtonCaption, plans} = window.GiveAddons.pricingPlans;
+const {promotionalData} = window.GiveAddons;
 
 const customPlanOrder = ['Plus Plan', 'Pro Plan', 'Basic Plan', 'Agency Plan'];
 
@@ -14,7 +15,7 @@ const sortedPlans = plans.slice().sort((a, b) => {
 
 export const PricingPlans = () => (
     <article>
-        <Hero heading={heading} description={description} />
+        <Hero heading={promotionalData?.heading ?? heading} description={promotionalData?.description ?? description} />
         <ul className={styles.plans}>
             {sortedPlans.map((plan) => (
                 <li key={plan.name}>
@@ -24,7 +25,7 @@ export const PricingPlans = () => (
                         actionText={plansButtonCaption}
                         actionLink={plan.url}
                         icon={plan.icon}
-                        savingsPercentage={plan.savingsPercentage}
+                        savingsPercentage={promotionalData.savingsPercentage ?? plan.savingsPercentage}
                         includes={plan.includes}
                         isMostPopular={plan.mostPopular}
                     />
