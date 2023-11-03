@@ -7,22 +7,22 @@ import '../styles/index.scss';
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: string;
+    displayStyle: 'onPage' | 'modal' | 'link' | string;
     openFormButton: string;
 }
 
 /**
  * @since 3.0.0
  */
-export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
+export default function BlockPreview({clientId, formId, displayStyle, openFormButton}: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
-    const isModalDisplay = formFormat === 'modal';
-    const isLinkDisplay = formFormat === 'link';
+    const isModalDisplay = displayStyle === 'modal';
+    const isLinkDisplay = displayStyle === 'link';
 
     return isLinkDisplay ? (
         <a

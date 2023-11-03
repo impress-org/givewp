@@ -18,7 +18,7 @@ class BlockAttributes implements Arrayable
     /**
      * @var string
      */
-    public $formFormat;
+    public $displayStyle;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class BlockAttributes implements Arrayable
 
         $self->formId = !empty($array['formId']) ? (int)$array['formId'] : null;
         $self->blockId = !empty($array['blockId']) ? (string)$array['blockId'] : null;
-        $self->formFormat = !empty($array['formFormat']) ? (string)$array['formFormat'] : null;
+        $self->displayStyle = !empty($array['displayStyle']) ? (string)$array['displayStyle'] : null;
         $self->openFormButton = !empty($array['openFormButton']) ? (string)$array['openFormButton'] : null;
 
         return $self;

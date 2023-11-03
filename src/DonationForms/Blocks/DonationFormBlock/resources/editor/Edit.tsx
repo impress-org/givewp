@@ -13,11 +13,11 @@ import './styles/index.scss';
  * @since 3.0.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId, formFormat, openFormButton} = attributes;
+    const {formId, blockId, displayStyle, openFormButton} = attributes;
     const [showPreview, setShowPreview] = useState<boolean>(!!formId);
     const {formOptions, isResolving} = useFormOptions();
 
-    const showOpenFormButton = formFormat === 'link' || formFormat === 'modal';
+    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
 
     useEffect(() => {
         if (!blockId) {
@@ -56,15 +56,15 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                     </PanelRow>
                     <PanelRow>
                         <SelectControl
-                            label={__('Form Format', 'give')}
-                            value={formFormat}
+                            label={__('Display style', 'give')}
+                            value={displayStyle}
                             options={[
                                 {
-                                    label: __('Full Form', 'give'),
-                                    value: 'full',
+                                    label: __('On page', 'give'),
+                                    value: 'onPage',
                                 },
                                 {
-                                    label: __('New Tab Link', 'give'),
+                                    label: __('Link to new page', 'give'),
                                     value: 'link',
                                 },
                                 {
@@ -73,7 +73,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                                 },
                             ]}
                             onChange={(value) => {
-                                setAttributes({formFormat: value});
+                                setAttributes({displayStyle: value});
                             }}
                         />
                     </PanelRow>
@@ -106,7 +106,7 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                     <BlockPreview
                         clientId={clientId}
                         formId={formId}
-                        formFormat={formFormat}
+                        displayStyle={displayStyle}
                         openFormButton={openFormButton}
                     />
                 ) : (

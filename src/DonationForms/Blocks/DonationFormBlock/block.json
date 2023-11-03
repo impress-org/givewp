@@ -9,7 +9,7 @@
     "description": "The GiveWP Donation Form block inserts an existing donation form into the page.",
     "supports": {
         "html": false,
-        "inserter": false
+        "inserter": true
     },
     "attributes": {
         "formId": {
@@ -18,9 +18,9 @@
         "blockId": {
             "type": "string"
         },
-        "formFormat": {
+        "displayStyle": {
             "type": "string",
-            "default": "full"
+            "default": "onPage"
         },
         "openFormButton": {
             "type": "string",

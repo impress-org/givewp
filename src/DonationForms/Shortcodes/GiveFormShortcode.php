@@ -14,20 +14,23 @@ class GiveFormShortcode
     public function __invoke(string $output, array $atts): string
     {
         $formId = absint($atts['id']);
-        $isV3Form = (bool) give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
+        $isV3Form = (bool)give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
 
         if (!$formId || !$isV3Form) {
             return $output;
         }
 
-        $formFormat = (isset($atts['display_style']) && !empty($atts['display_style'])) ? $atts['display_style'] : 'full';
-        $openFormButton = (isset($atts['continue_button_title']) && !empty($atts['continue_button_title'])) ? $atts['continue_button_title'] : __('Donate now','give');
+        $displayStyle = (isset($atts['display_style']) && !empty($atts['display_style'])) ? $atts['display_style'] : 'full';
+        $openFormButton = (isset($atts['continue_button_title']) && !empty($atts['continue_button_title'])) ? $atts['continue_button_title'] : __(
+            'Donate now',
+            'give'
+        );
 
         $controller = new BlockRenderController();
         $blockAttributes = [
             'formId' => $formId,
-            'blockId' => 'give-form-shortcode-' . uniqid(),
-            'formFormat' => $formFormat,
+            'blockId' => 'give-form-shortcode-' . uniqid('', true),
+            'displayStyle' => $displayStyle,
             'openFormButton' => $openFormButton
         ];
 
