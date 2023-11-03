@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {useDispatch, useSelect} from '@wordpress/data';
@@ -13,7 +13,7 @@ import {Interweave} from 'interweave';
 import './styles.scss';
 
 interface EmbedFormModalProps {
-    handleClose: Function;
+    handleClose: MouseEventHandler<HTMLButtonElement>;
 }
 
 type Post = {
@@ -42,7 +42,7 @@ interface StateProps {
 /**
  * @unreleased
  */
-export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
+export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const {formId} = getWindowData();
@@ -51,8 +51,8 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         insertPostType: 'page',
         createPostType: 'page',
         currentPostType: 'page',
-        newPostName: null,
-        selectedPost: null,
+        newPostName: '',
+        selectedPost: '',
         isCopied: false,
         isInserting: false,
         isCreating: false,
@@ -119,6 +119,10 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
 
     }, [state.createPostType, state.insertPostType]);
 
+    /**
+     * Check if page is already created
+     * Works for posts and pages
+     */
     const isPageAlreadyCreated = !state.isCreated && state.newPostName
         && state.posts[state.createPostType]?.filter(post => post.label == state.newPostName).length > 0;
 
@@ -141,6 +145,9 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
         return pages;
     }, [state.posts]);
 
+    /**
+     * Handle copying shortcode to clipboard
+     */
     const handleCopy = useCallback(async () => {
         await navigator.clipboard.writeText(shortcode);
 
@@ -256,6 +263,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                             insertPostType: value,
                             currentPostType: value,
                             selectedPost: '',
+                            isInserted: false,
                         };
                     })}
                 />
@@ -294,7 +302,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                                     return {
                                         ...prevState,
                                         isInserted: false,
-                                        selectedPost: null,
+                                        selectedPost: '',
                                         insertedLink: null,
                                     };
                                 })}
@@ -331,6 +339,7 @@ export default function EmbedFormModal<EmbedFormModalProps>({handleClose}) {
                             ...prevState,
                             createPostType: value,
                             currentPostType: value,
+                            isCreated: false,
                         };
                     })}
                 />
