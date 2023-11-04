@@ -254,6 +254,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 		if ( ! result.success ) {
             this.hostedFieldOnSubmitErrorHandler(result.data.error);
+            Give.form.fn.hideProcessingState();
             return;
 		}
 
