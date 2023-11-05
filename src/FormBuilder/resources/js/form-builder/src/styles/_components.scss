@@ -415,7 +415,77 @@ div.givewp-classic-editor > label {
     padding: 1.5rem;
 
     &__menu {
+        position: relative;
+        overflow: hidden;
         width: 17.5rem;
+
+        > ul {
+            position: relative;
+            margin: 0;
+            transition: translate 0.1s linear;
+
+            li {
+                margin: 0;
+
+                ul {
+                    left: 100%;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                }
+
+                button {
+                    align-items: center;
+                    background: none;
+                    border: 0;
+                    color: var(--wp-components-color-foreground, var(--givewp-grey-900));
+                    display: flex;
+                    justify-content: space-between;
+                    line-height: 1.125rem;
+                    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+                    text-align: left;
+                    width: 100%;
+
+                    &:hover {
+                        background-color: var(--givewp-grey-5);
+                        cursor: pointer;
+                    }
+
+                    svg {
+                        fill: var(--givewp-grey-500);
+                    }
+
+                    &.back-menu-button {
+                        font-weight: 600;
+                        gap: var(--givewp-spacing-2);
+                        justify-content: start;
+                        padding-left: var(--givewp-spacing-2);
+
+                        svg {
+                            fill: currentColor;
+                        }
+                    }
+                }
+
+                &.is-active {
+                    > button {
+                        background-color: var(--givewp-grey-25);
+                        font-weight: 600;
+                    }
+                }
+
+                &.has-children {
+                    > button {
+                    }
+                }
+            }
+        }
+
+        @for $i from 1 through 5 {
+            &__page-#{$i} {
+                translate: -#{($i - 1) * 100%} 0;
+            }
+        }
     }
 
     &__content {

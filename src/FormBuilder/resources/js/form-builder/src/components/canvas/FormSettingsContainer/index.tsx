@@ -19,18 +19,17 @@ export function useFormSettingsContext() {
 
 export default function FormSettingsContainer({children}) {
    const [state, dispatch] = useReducer(formSettingsReducer, {
-        content: null,
-        activeMenuItem: null,
-        menuStack: [],
+       content: null,
+       menuPage: 1,
+       activeMenu: 'item-general',
+       menuStack: [],
    });
-
-   console.log(state.menuStack);
 
     return (
         <FormSettingsContext.Provider value={[state, dispatch]}>
             <div className={'givewp-form-settings'}>
                 <div className={'givewp-form-settings__menu'}>
-                    <ul>
+                    <ul className={`givewp-form-settings__menu__page-${state.menuPage}`}>
                         {children}
                         {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
                     </ul>
