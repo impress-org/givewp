@@ -164,7 +164,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
             pages.push({value: '', label: selectLabel, disabled: true});
         }
-        
+
         if (state.posts[state.insertPostType]) {
             pages.push(...state.posts[state.insertPostType]);
         }
