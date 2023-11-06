@@ -1,0 +1,28 @@
+.givewp-settings-text-editor {
+
+    &__textarea,
+    &__editor {
+        .components-base-control__field {
+            margin-bottom: 0;
+        }
+
+        textarea,
+        .ql-editor {
+            font-size: 0.813rem;
+            line-height: 1.7;
+            color: var(--givewp-grey-900);
+            padding: 1rem 1rem 0;
+            border: 0;
+            min-height: 11.625rem;
+        }
+
+        .ql-container,
+        .ql-toolbar {
+            border: none !important;
+        }
+
+        .ql-toolbar {
+            border-bottom: 1px solid #ccc !important;
+        }
+    }
+}

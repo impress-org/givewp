@@ -23,7 +23,6 @@ export const setContent = (content: React.ReactNode): Action => ({
 });
 
 export const setMenuPage = (page: number): Action => {
-    console.log(page);
     return {
         type: 'SET_MENU_PAGE',
         payload: page,
