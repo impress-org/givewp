@@ -30,6 +30,7 @@ interface StateProps {
     currentPostType: string;
     newPostName: string;
     selectedPost: string;
+    selectedStyle: string;
     isCopied: boolean;
     isInserting: boolean;
     isCreating: boolean;
@@ -53,6 +54,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         currentPostType: 'page',
         newPostName: '',
         selectedPost: '',
+        selectedStyle: 'full',
         isCopied: false,
         isInserting: false,
         isCreating: false,
@@ -82,6 +84,24 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const postOptions = [
         {label: 'Page', value: 'page'},
         {label: 'Post', value: 'post'},
+    ];
+
+    const displayStyles = [
+        {
+            label: __('Full form', 'give'),
+            value: 'full',
+            description: __('All fields are visible on one page with the donate button at the bottom', 'give'),
+        },
+        {
+            label: __('Modal', 'give'),
+            value: 'modal',
+            description: __('Add description for Modal', 'give'),
+        },
+        {
+            label: __('New Tab', 'give'),
+            value: 'new-tab',
+            description: __('Add description for New tab', 'give'),
+        },
     ];
 
     // Get posts/pages
@@ -129,7 +149,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     /**
      * Get site posts/pages for select option
      */
-    const sitePosts = useCallback(() => {
+    const getSitePosts = useCallback(() => {
         const pages = [];
 
         const selectLabel = 'page' === state.insertPostType
@@ -144,6 +164,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
         return pages;
     }, [state.posts]);
+
+    const getSiteDesignDescription = () => displayStyles.find(style => style.value === state.selectedStyle).description;
 
     /**
      * Handle copying shortcode to clipboard
@@ -250,6 +272,27 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             <div className="give-embed-modal-row">
 
                 <strong>
+                    {__('Form settings', 'give')}
+                </strong>
+
+                <SelectControl
+                    label={__('Display style', 'give')}
+                    value={state.selectedStyle}
+                    options={displayStyles}
+                    onChange={value => setState(prevState => {
+                        return {
+                            ...prevState,
+                            selectedStyle: value,
+                        };
+                    })}
+                    help={getSiteDesignDescription()}
+                />
+
+            </div>
+
+            <div className="give-embed-modal-row">
+
+                <strong>
                     {__('Add to existing content', 'give')}
                 </strong>
 
@@ -270,7 +313,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
                 <SelectControl
                     value={state.selectedPost}
-                    options={sitePosts()}
+                    options={getSitePosts()}
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,

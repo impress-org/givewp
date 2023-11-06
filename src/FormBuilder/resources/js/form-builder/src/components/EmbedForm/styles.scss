@@ -58,6 +58,18 @@
         button {
             margin-right: 10px;
         }
+
+        label {
+            text-transform: unset !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+            font-weight: 500 !important;
+            color: #0e0e0e;
+        }
+
+        .components-base-control__help {
+            margin-bottom: 0;
+        }
     }
 
     &-helptext {
