@@ -412,13 +412,14 @@ div.givewp-classic-editor > label {
 .givewp-form-settings {
     display: flex;
     gap: var(--givewp-spacing-10);
-    height: 100%;
     padding: 1.5rem;
 
     &__menu {
-        position: relative;
+        height: calc(100vh - 7rem);
+        position: sticky;
         overflow: hidden;
         width: 17.5rem;
+        top: 1.5rem;
 
         > ul {
             position: relative;

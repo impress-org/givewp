@@ -55,9 +55,9 @@
 .email-preview__back-btn {
     z-index: 11; /* Above the modal header */
     position: absolute;
-    top: 0;
-    right: 0;
-    margin: var(--givewp-spacing-5) var(--givewp-spacing-8);
+    top: 2rem;
+    right: 1.5rem;
+    margin: var(--givewp-spacing-8);
     padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
 }
 
@@ -76,12 +76,8 @@
 }
 
 .email-settings {
-    display: flex;
-    gap: var(--givewp-spacing-10);
-    height: 100%;
-    overflow: hidden;
-    flex: 1;
-    margin-top: 1.5rem;
+    padding-bottom: 3rem;
+
     .components-text-control__input {
         height: 2.25rem;
     }
@@ -94,6 +90,11 @@
         height: 2.5rem;
         width: 100%;
         justify-content: center;
+
+        &--preview {
+            padding: 0.5rem 1rem;
+            width: auto;
+        }
     }
 
     &__close-btn {
