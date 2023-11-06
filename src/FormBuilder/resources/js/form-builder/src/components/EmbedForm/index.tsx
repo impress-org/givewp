@@ -107,12 +107,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     // Fetch posts/pages
     const isLoadingPages = useSelect((select) => {
         const filtered = [];
-        const query = {
+        // @ts-ignore
+        const data = select(store).getEntityRecords('postType', state.currentPostType, {
             status: ['publish', 'draft'],
             per_page: -1, // do we want this?
-        };
-        // @ts-ignore
-        const data = select(store).getEntityRecords('postType', state.currentPostType, query);
+        });
 
         if (data) {
             data?.forEach(page => {
