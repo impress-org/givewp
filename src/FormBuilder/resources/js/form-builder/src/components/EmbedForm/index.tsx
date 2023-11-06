@@ -231,10 +231,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             return;
         }
 
-        if (state.isCreating) {
-            return;
-        }
-
         setState(prevState => {
             return {
                 ...prevState,
