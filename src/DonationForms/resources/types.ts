@@ -43,6 +43,7 @@ export interface FormServerExports {
     validateUrl: string;
     authUrl: string;
     inlineRedirectRoutes: string[];
+    previewMode: boolean;
 }
 
 export interface ReceiptDetail {
@@ -191,6 +192,31 @@ export interface Section extends Group {
     description: string;
 }
 
+/**
+ * @since 3.1.0
+ */
+export interface FormGoal {
+    type: string;
+    label: string;
+    enabled: boolean;
+    show: boolean;
+    typeIsCount: boolean;
+    typeIsMoney: boolean;
+    currentAmount: number;
+    targetAmount: number;
+    progressPercentage: number;
+    isAchieved: boolean;
+}
+
+export interface FormColors {
+    primaryColor: string;
+    secondaryColor: string;
+}
+
+export type RequireAtLeastOne<T> = {
+    [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>
+}[keyof T]
+
 export interface Form extends Group {
     currency: string;
     settings: FormSettings;
@@ -200,18 +226,7 @@ export interface Form extends Group {
         totalCountValue: number;
         totalCountLabel: string;
     };
-    goal: {
-        type: string;
-        label: string;
-        enabled: boolean;
-        show: boolean;
-        typeIsCount: boolean;
-        typeIsMoney: boolean;
-        currentAmount: number;
-        targetAmount: number;
-        progressPercentage: number;
-        isAchieved: boolean;
-    };
+    goal: FormGoal;
     design?: {
         id: string;
         name: string;

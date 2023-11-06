@@ -97,6 +97,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
+     * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
      * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
      *
@@ -120,10 +121,14 @@ class PayPalOrder
         );
         $request->body = [
             'intent' => 'CAPTURE',
-            'payer' => [
-                'given_name' => $array['payer']['firstName'],
-                'surname' => $array['payer']['lastName'],
-                'email_address' => $array['payer']['email'],
+            'payment_source' => [
+                "paypal" => [
+                    'name' => [
+                        "given_name" => $array['payer']['firstName'],
+                        "surname" => $array['payer']['lastName']
+                    ],
+                    "email_address" => $array['payer']['email']
+                ]
             ],
             'purchase_units' => [
                 [
@@ -170,8 +175,8 @@ class PayPalOrder
             ];
         }
 
-        if ( ! empty($array['payer']['address'])) {
-            $request->body['payer']['address'] = $array['payer']['address'];
+        if (! empty($array['payer']['address'])) {
+            $request->body['payment_source']['paypal']['address'] = $array['payer']['address'];
         }
 
         try {

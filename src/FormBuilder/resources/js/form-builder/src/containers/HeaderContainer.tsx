@@ -40,7 +40,7 @@ const Logo = () => (
 );
 
 /**
- * @unreleased dispatch page slug from form title on initial publish.
+ * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleShowSidebar}) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();

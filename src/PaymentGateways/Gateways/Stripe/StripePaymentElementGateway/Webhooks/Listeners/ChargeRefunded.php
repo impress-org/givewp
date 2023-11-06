@@ -22,6 +22,7 @@ class ChargeRefunded
      *
      * @see https://stripe.com/docs/api/events/types#event_types-charge.refunded
      *
+     * @since 3.0.4 Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -30,20 +31,21 @@ class ChargeRefunded
     public function __invoke(Event $event)
     {
         try {
-            $this->processEvent($event);
+            if ($this->processEvent($event)) {
+                exit;
+            }
         } catch (Exception $exception) {
             $this->logWebhookError($event, $exception);
         }
-
-        exit;
     }
 
     /**
+     * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *
      * @throws Exception
      */
-    public function processEvent(Event $event)
+    public function processEvent(Event $event): bool
     {
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
@@ -51,7 +53,7 @@ class ChargeRefunded
         $donation = give()->donations->getByGatewayTransactionId($stripeCharge->payment_intent);
 
         if (!$donation || !$this->shouldProcessDonation($donation)) {
-            return;
+            return false;
         }
 
         if ($stripeCharge->refunded && !$donation->status->isRefunded()) {
@@ -63,5 +65,7 @@ class ChargeRefunded
                 'content' => __('Payment refunded in Stripe.', 'give'),
             ]);
         }
+
+        return true;
     }
 }

@@ -199,7 +199,7 @@ class Give_Donor_Wall_Block {
 	/**
 	 * Block render callback
      *
-     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
 	 *
 	 * @param array $attributes Block parameters.
 	 *

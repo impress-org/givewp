@@ -3,12 +3,8 @@ import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
-import debounce from 'lodash.debounce';
-import Heading from './Heading';
-import Description from '@givewp/form-builder/settings/design/Description';
-import MultiStepFirstButtonText from '@givewp/form-builder/settings/design/MultiStepFirstButtonText';
-import MultiStepNextButtonText from '@givewp/form-builder/settings/design/MultiStepNextButtonText';
-import DonateButton from '@givewp/form-builder/settings/design/DonateButton';
+
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 const {formDesigns} = getWindowData();
 
@@ -33,6 +29,7 @@ const FormDesignSettings = () => {
     } = useFormState();
     const dispatch = useFormStateDispatch();
     const design = getDesign(designId);
+    const {publishSettings, publishColors} = useDonationFormPubSub();
 
     return (
         <>
@@ -41,7 +38,7 @@ const FormDesignSettings = () => {
                     <SelectControl
                         label={__('Form design', 'give')}
                         value={designId}
-                        onChange={(designId) => dispatch(setFormSettings({designId}))}
+                        onChange={(designId: string) => dispatch(setFormSettings({designId}))}
                         options={designOptions}
                     />
                 </PanelRow>
@@ -52,14 +49,20 @@ const FormDesignSettings = () => {
                     colorSettings={[
                         {
                             value: primaryColor,
-                            onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
+                            onChange: (primaryColor: string) => {
+                                dispatch(setFormSettings({primaryColor}));
+                                publishColors({primaryColor});
+                            },
                             label: __('Primary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
                         },
                         {
                             value: secondaryColor,
-                            onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
+                            onChange: (secondaryColor: string) => {
+                                dispatch(setFormSettings({secondaryColor}));
+                                publishColors({secondaryColor});
+                            },
                             label: __('Secondary Color', 'give'),
                             disableCustomColors: false,
                             colors: SETTINGS_DEFAULTS.colors,
@@ -69,7 +72,15 @@ const FormDesignSettings = () => {
             </PanelBody>
             <PanelBody title={__('Donate Button', 'give')} initialOpen={false}>
                 <PanelRow>
-                    <DonateButton text={donateButtonCaption} />
+                    <TextControl
+                        label={__('Button caption', 'give')}
+                        value={donateButtonCaption}
+                        onChange={(donateButtonCaption) => {
+                            dispatch(setFormSettings({donateButtonCaption}));
+                            publishSettings({donateButtonCaption});
+                        }}
+                        help={__('Enter the text you want to display on the donation button.', 'give')}
+                    />
                 </PanelRow>
             </PanelBody>
             <PanelBody title={__('Header', 'give')} initialOpen={false}>
@@ -77,7 +88,10 @@ const FormDesignSettings = () => {
                     <ToggleControl
                         label={__('Show Header', 'give')}
                         checked={showHeader}
-                        onChange={() => dispatch(setFormSettings({showHeader: !showHeader}))}
+                        onChange={() => {
+                            dispatch(setFormSettings({showHeader: !showHeader}));
+                            publishSettings({showHeader: !showHeader});
+                        }}
                     />
                 </PanelRow>
                 {showHeader && (
@@ -86,24 +100,44 @@ const FormDesignSettings = () => {
                             <ToggleControl
                                 label={__('Show Heading', 'give')}
                                 checked={showHeading}
-                                onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
+                                onChange={() => {
+                                    dispatch(setFormSettings({showHeading: !showHeading}));
+                                    publishSettings({showHeading: !showHeading});
+                                }}
                             />
                         </PanelRow>
                         <PanelRow>
                             <ToggleControl
                                 label={__('Show Description', 'give')}
                                 checked={showDescription}
-                                onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
+                                onChange={() => {
+                                    dispatch(setFormSettings({showDescription: !showDescription}));
+                                    publishSettings({showDescription: !showDescription});
+                                }}
                             />
                         </PanelRow>
                         {showHeading && (
                             <PanelRow>
-                                <Heading heading={heading} />
+                                <TextControl
+                                    label={__('Heading', 'give')}
+                                    value={heading}
+                                    onChange={(heading) => {
+                                        dispatch(setFormSettings({heading}));
+                                        publishSettings({heading});
+                                    }}
+                                />
                             </PanelRow>
                         )}
                         {showDescription && (
                             <PanelRow>
-                                <Description description={description} />
+                                <TextareaControl
+                                    label={__('Description', 'give')}
+                                    value={description}
+                                    onChange={(description) => {
+                                        dispatch(setFormSettings({description}));
+                                        publishSettings({description});
+                                    }}
+                                />
                             </PanelRow>
                         )}
                     </>
@@ -112,10 +146,26 @@ const FormDesignSettings = () => {
             {design?.isMultiStep && (
                 <PanelBody title={__('Multi-Step', 'give')} initialOpen={false}>
                     <PanelRow>
-                        <MultiStepFirstButtonText text={multiStepFirstButtonText} />
+                        <TextControl
+                            label={__('First Step Button Text', 'give')}
+                            value={multiStepFirstButtonText}
+                            onChange={(multiStepFirstButtonText) => {
+                                dispatch(setFormSettings({multiStepFirstButtonText}));
+                                publishSettings({multiStepFirstButtonText});
+                            }}
+                            help={__('Customize the text that appears in the first step, prompting the user to go to the next step.')}
+                        />
                     </PanelRow>
                     <PanelRow>
-                        <MultiStepNextButtonText text={multiStepNextButtonText} />
+                        <TextControl
+                            label={__('Next Step Button Text', 'give')}
+                            value={multiStepNextButtonText}
+                            onChange={(multiStepNextButtonText) => {
+                                dispatch(setFormSettings({multiStepNextButtonText}));
+                                publishSettings({multiStepNextButtonText});
+                            }}
+                            help={__('Customize the text that appears prompting the user to go to the next step.')}
+                        />
                     </PanelRow>
                 </PanelBody>
             )}

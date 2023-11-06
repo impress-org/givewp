@@ -7,12 +7,12 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.1.0
  */
 class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldReturnDefaultBlockCollection(): void
     {
@@ -22,7 +22,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldIncludeDefaultDonationAmountBlock(): void
     {
@@ -62,7 +62,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldIncludeDefaultDonorNameBlock(): void
     {
@@ -91,7 +91,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldIncludeDefaultEmailBlock(): void
     {
@@ -111,7 +111,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldIncludeDefaultDonationSummaryBlock(): void
     {
@@ -125,7 +125,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.1.0
      */
     public function testShouldIncludeDefaultPaymentGatewaysBlock(): void
     {
