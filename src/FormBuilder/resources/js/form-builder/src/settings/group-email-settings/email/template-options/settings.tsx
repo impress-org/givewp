@@ -4,8 +4,13 @@ import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wo
 import {Icon as WPIcon, plus} from '@wordpress/icons';
 
 import {__} from '@wordpress/i18n';
+<<<<<<< refactor/replace-editor-email-settings:src/FormBuilder/resources/js/form-builder/src/settings/email/template-options/settings.tsx
 import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
 import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
+=======
+import Editor from '@givewp/form-builder/components/editor';
+import TrashIcon from './components/TrashIcon';
+>>>>>>> feature: adjust main fields on general group:src/FormBuilder/resources/js/form-builder/src/settings/group-email-settings/email/template-options/settings.tsx
 
 type EmailTemplateSettingsProps = {
     notification: string;

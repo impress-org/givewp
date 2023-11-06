@@ -1,9 +1,9 @@
 import {__} from '@wordpress/i18n';
-import {settings} from '@wordpress/icons';
 
 import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
-import BlockCard from '@givewp/form-builder/components/forks/BlockCard';
-import {FormGridSettings, FormSummarySettings, RegistrationSettings} from '@givewp/form-builder/settings';
+import FormGridSettings from './form-grid';
+import FormSummarySettings from './form-summary';
+import RegistrationSettings from './registration';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
 
 export default function FormGeneralSettingsGroup() {
@@ -13,14 +13,6 @@ export default function FormGeneralSettingsGroup() {
                 title={__('General', 'give')}
                 description={__('This includes the form name, the permalink and the visibility of this form.', 'give')}
             >
-                <BlockCard
-                    icon={settings}
-                    title="Form Settings"
-                    description={__(
-                        'These settings affect how your form functions and is presented, as well as the form page.',
-                        'give'
-                    )}
-                />
                 <FormSummarySettings />
             </SettingsSection>
             <SettingsSection
@@ -32,7 +24,13 @@ export default function FormGeneralSettingsGroup() {
             >
                 <RegistrationSettings />
             </SettingsSection>
-            <SettingsSection title={__('Form Grid', 'give')}>
+            <SettingsSection
+                title={__('Form Grid', 'give')}
+                description={__(
+                    'The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode. Learn more about the Form Grid',
+                    'give'
+                )}
+            >
                 <FormGridSettings />
             </SettingsSection>
         </SettingsGroup>

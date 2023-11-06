@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
-import {DonationConfirmation} from '@givewp/form-builder/settings';
+import DonationConfirmation from './donation-confirmation';
 
 export default function FormDonationConfirmationSettingsGroup() {
     return (

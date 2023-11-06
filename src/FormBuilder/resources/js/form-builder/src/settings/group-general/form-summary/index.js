@@ -1,4 +1,4 @@
-import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
+import {PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
@@ -17,10 +17,10 @@ const FormSummarySettings = () => {
     const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
     return (
-        <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
+        <div className={'givewp-form-settings__section__body__extra-gap'}>
             <PanelRow>
                 <TextControl
-                    label={__('Title')}
+                    label={__('Form name', 'give')}
                     value={formTitle}
                     onChange={(formTitle) => {
                         !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
@@ -28,12 +28,11 @@ const FormSummarySettings = () => {
                     }}
                 />
             </PanelRow>
+
             {!!isFormPageEnabled && (
-                <PanelRow>
-                    <PageSlugControl pageSlug={isTitleSlug ? cleanForSlug(formTitle) : pageSlug} />
-                </PanelRow>
+                <PageSlugControl pageSlug={isTitleSlug ? cleanForSlug(formTitle) : pageSlug} />
             )}
-        </PanelBody>
+        </div>
     );
 };
 

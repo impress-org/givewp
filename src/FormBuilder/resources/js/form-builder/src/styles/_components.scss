@@ -517,8 +517,44 @@ div.givewp-classic-editor > label {
             }
         }
 
-        &__body {
+        & &__body {
             flex: 1;
+            max-width: 33.25rem;
+
+            &__extra-gap {
+                padding-left: 3.25rem;
+            }
+
+            .components-base-control {
+                &__label {
+                    color: var(--givewp-grey-900);
+                    font-size: 0.8125rem !important;
+                    font-weight: 400 !important;
+                    line-height: 1.1375rem;
+                }
+
+                .components-text-control {
+                    &__input {
+                        padding: var(--givewp-spacing-3);
+                        font-size: 0.8125rem !important;
+                        line-height: 1rem;
+                    }
+                }
+
+                &.components-toggle-control {
+                    .components-h-stack {
+                        gap: 1rem;
+                    }
+
+                    &__label {
+                        color: var(--givewp-grey-900);
+                    }
+
+                    .components-base-control__help {
+                        margin-left: 3.25rem;
+                    }
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
-import {EmailSettings} from '@givewp/form-builder/settings';
+import EmailSettings from './email';
 
 export default function FormEmailSettingsGroup() {
     return (
