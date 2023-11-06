@@ -104,7 +104,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         },
     ];
 
-    // Get posts/pages
+    // Fetch posts/pages
     const isLoadingPages = useSelect((select) => {
         const filtered = [];
         const query = {
