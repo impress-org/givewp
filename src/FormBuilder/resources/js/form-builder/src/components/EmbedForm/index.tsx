@@ -152,7 +152,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     /**
      * Get site posts/pages for select option
      */
-    const getSitePosts = useCallback(() => {
+    const getPostsList = useCallback(() => {
         const pages = [];
 
         if (isLoadingPages) {
@@ -172,7 +172,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return pages;
     }, [state.posts, isLoadingPages]);
 
-    const getSiteDesignDescription = () => displayStyles.find(style => style.value === state.selectedStyle).description;
+    const getStyleDescription = () => displayStyles.find(style => style.value === state.selectedStyle).description;
 
     /**
      * Handle copying shortcode to clipboard
@@ -292,7 +292,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             selectedStyle: value,
                         };
                     })}
-                    help={getSiteDesignDescription()}
+                    help={getStyleDescription()}
                 />
 
             </div>
@@ -320,7 +320,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
                 <SelectControl
                     value={state.selectedPost}
-                    options={getSitePosts()}
+                    options={getPostsList()}
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
