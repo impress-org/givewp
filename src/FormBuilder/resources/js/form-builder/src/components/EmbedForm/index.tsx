@@ -105,13 +105,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     ];
 
     // Get posts/pages
-    useSelect((select) => {
+    const isLoadingPages = useSelect((select) => {
         const filtered = [];
-        // @ts-ignore
-        const data = select(store).getEntityRecords('postType', state.currentPostType, {
+        const query = {
             status: ['publish', 'draft'],
             per_page: -1, // do we want this?
-        });
+        };
+        // @ts-ignore
+        const data = select(store).getEntityRecords('postType', state.currentPostType, query);
 
         if (data) {
             data?.forEach(page => {
@@ -137,6 +138,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             });
         }
 
+        return !data;
+
     }, [state.createPostType, state.insertPostType]);
 
     /**
@@ -152,18 +155,22 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const getSitePosts = useCallback(() => {
         const pages = [];
 
-        const selectLabel = 'page' === state.insertPostType
-            ? __('Select a page', 'give')
-            : __('Select a post', 'give');
+        if (isLoadingPages) {
+            pages.push({value: '', label: __('Loading...', 'give'), disabled: true});
+        } else {
+            const selectLabel = 'page' === state.insertPostType
+                ? __('Select a page', 'give')
+                : __('Select a post', 'give');
 
-        pages.push({value: '', label: selectLabel, disabled: true});
-
+            pages.push({value: '', label: selectLabel, disabled: true});
+        }
+        
         if (state.posts[state.insertPostType]) {
             pages.push(...state.posts[state.insertPostType]);
         }
 
         return pages;
-    }, [state.posts]);
+    }, [state.posts, isLoadingPages]);
 
     const getSiteDesignDescription = () => displayStyles.find(style => style.value === state.selectedStyle).description;
 
