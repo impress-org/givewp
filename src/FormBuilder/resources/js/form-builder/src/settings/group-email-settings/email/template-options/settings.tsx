@@ -69,25 +69,26 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
             </SettingsSection>
 
             {'enabled' === option.status && (
-                <SettingsSection
-                    title={__('Template details', 'give')}
-                    description={__('Set the content structure for the email', 'give')}
-                >
-                    <div className={'givewp-form-settings__section__body__extra-gap'}>
-                        <TextControl
-                            label={__('Email Subject', 'givewp')}
-                            help={__('Enter the email subject line', 'givewp')}
-                            onChange={(value) => updateEmailTemplateOption('email_subject', value)}
-                            value={option.email_subject || config.defaultValues.email_subject}
-                        />
+                <>
+                    <SettingsSection
+                        title={__('Template details', 'give')}
+                        description={__('Set the content structure for the email', 'give')}
+                    >
+                        <div className={'givewp-form-settings__section__body__extra-gap'}>
+                            <TextControl
+                                label={__('Email Subject', 'givewp')}
+                                help={__('Enter the email subject line', 'givewp')}
+                                onChange={(value) => updateEmailTemplateOption('email_subject', value)}
+                                value={option.email_subject || config.defaultValues.email_subject}
+                            />
 
-                        <TextControl
-                            label={__('Email Header', 'givewp')}
-                            help={__('Enter the email header that appears at the top of the email', 'givewp')}
-                            onChange={(value) => updateEmailTemplateOption('email_header', value)}
-                            // @ts-ignore
-                            value={option.email_header || config.defaultValues.email_header}
-                        />
+                            <TextControl
+                                label={__('Email Header', 'givewp')}
+                                help={__('Enter the email header that appears at the top of the email', 'givewp')}
+                                onChange={(value) => updateEmailTemplateOption('email_header', value)}
+                                // @ts-ignore
+                                value={option.email_header || config.defaultValues.email_header}
+                            />
 
                         <ClassicEditor
                             id={'givewp-custom-email-message'}
@@ -96,80 +97,81 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                             setContent={(value) => updateEmailTemplateOption('email_message', value)}
                         />
 
-                        <SelectControl
-                            className={'select-control--email-options'}
-                            onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
-                            label={__('Email content type', 'givewp')}
-                            help={__('Choose email type', 'givewp')}
-                            value={option.email_content_type || config.defaultValues.email_content_type}
-                            options={[
-                                {label: __('HTML', 'givewp'), value: 'text/html'},
-                                {label: __('Plain', 'givewp'), value: 'text/plain'},
-                            ]}
-                        />
-
-                        {config.supportsRecipients && (
-                            <div className={'email-settings-template__recipient'}>
-                                <div>
-                                    <h2 className={'email-settings__header'}>{__('Email recipient', 'givewp')}</h2>
-                                    <p className={'email-settings__description'}>
-                                        {__('Email address that should receive a notification', 'givewp')}
-                                    </p>
-                                </div>
-                                <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
-                                    {recipients.map((recipientEmail, index) => {
-                                        return (
-                                            <li
-                                                key={'level-option-inspector-' + index}
-                                                className={'base-control--email-options'}
-                                            >
-                                                <TextControl
-                                                    hideLabelFromVision
-                                                    value={recipientEmail}
-                                                    onChange={(value) => {
-                                                        const newRecipients = [...recipients];
-                                                        newRecipients[index] = value;
-                                                        updateEmailTemplateOption('recipient', newRecipients);
-                                                    }}
-                                                />
-
-                                                <Button
-                                                    className={'email-settings-template__recipient-delete-btn'}
-                                                    onClick={() => {
-                                                        recipients.splice(index, 1);
-                                                        updateEmailTemplateOption('recipient', recipients.slice());
-                                                    }}
-                                                >
-                                                    <TrashIcon />
-                                                </Button>
-                                            </li>
-                                        );
-                                    })}
-
-                                    <Button
-                                        className={'email-settings-template__recipient-add-email-btn'}
-                                        variant={'secondary'}
-                                        onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}
-                                    >
-                                        <WPIcon size={17} icon={plus} /> {__('Add email', 'givewp')}
-                                    </Button>
-                                </BaseControl>
-                            </div>
-                        )}
-                        {!config.supportsRecipients && (
-                            <TextControl
-                                disabled={true}
-                                label={__('Email', 'givewp')}
-                                help={__(
-                                    'This email is automatically sent to the individual fundraiser and the recipient cannot be customized.',
-                                    'givewp'
-                                )}
-                                onChange={() => null}
-                                value="{donor_email}"
+                            <SelectControl
+                                className={'select-control--email-options'}
+                                onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
+                                label={__('Email content type', 'givewp')}
+                                help={__('Choose email type', 'givewp')}
+                                value={option.email_content_type || config.defaultValues.email_content_type}
+                                options={[
+                                    {label: __('HTML', 'givewp'), value: 'text/html'},
+                                    {label: __('Plain', 'givewp'), value: 'text/plain'},
+                                ]}
                             />
-                        )}
-                    </div>
-                </SettingsSection>
+                        </div>
+                    </SettingsSection>
+                    <SettingsSection
+                        title={__('Email recipient', 'give')}
+                        description={__('Email address that should receive a notification', 'give')}
+                    >
+                        <div className={'givewp-form-settings__section__body__extra-gap'}>
+                            {config.supportsRecipients && (
+                                <div className={'email-settings-template__recipient'}>
+                                    <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
+                                        {recipients.map((recipientEmail, index) => {
+                                            return (
+                                                <li
+                                                    key={'level-option-inspector-' + index}
+                                                    className={'base-control--email-options'}
+                                                >
+                                                    <TextControl
+                                                        hideLabelFromVision
+                                                        value={recipientEmail}
+                                                        onChange={(value) => {
+                                                            const newRecipients = [...recipients];
+                                                            newRecipients[index] = value;
+                                                            updateEmailTemplateOption('recipient', newRecipients);
+                                                        }}
+                                                    />
+
+                                                    <Button
+                                                        className={'email-settings-template__recipient-delete-btn'}
+                                                        onClick={() => {
+                                                            recipients.splice(index, 1);
+                                                            updateEmailTemplateOption('recipient', recipients.slice());
+                                                        }}
+                                                    >
+                                                        <TrashIcon />
+                                                    </Button>
+                                                </li>
+                                            );
+                                        })}
+
+                                        <Button
+                                            className={'email-settings-template__recipient-add-email-btn'}
+                                            variant={'secondary'}
+                                            onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}
+                                        >
+                                            <WPIcon size={17} icon={plus} /> {__('Add email', 'givewp')}
+                                        </Button>
+                                    </BaseControl>
+                                </div>
+                            )}
+                            {!config.supportsRecipients && (
+                                <TextControl
+                                    disabled={true}
+                                    label={__('Email', 'givewp')}
+                                    help={__(
+                                        'This email is automatically sent to the individual fundraiser and the recipient cannot be customized.',
+                                        'givewp'
+                                    )}
+                                    onChange={() => null}
+                                    value="{donor_email}"
+                                />
+                            )}
+                        </div>
+                    </SettingsSection>
+                </>
             )}
         </div>
     );
