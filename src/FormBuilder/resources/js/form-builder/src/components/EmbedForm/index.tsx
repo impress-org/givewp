@@ -47,6 +47,7 @@ interface StateProps {
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
     const newPostNameRef = useRef<HTMLInputElement>(null);
+    const openFormBtnRef = useRef<HTMLInputElement>(null);
     const {formId} = getWindowData();
     const [state, setState] = useState<StateProps>({
         posts: [],
@@ -56,7 +57,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         newPostName: '',
         selectedPost: '',
         selectedStyle: 'onpage',
-        openFormButton: __('Donate', 'give'),
+        openFormButton: '',
         isCopied: false,
         isInserting: false,
         isCreating: false,
@@ -79,8 +80,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
         return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
-
-    const block = `<!-- wp:give/donation-form {"id":${formId}, "displayStyle":"${state.selectedStyle}", "continueButtonTitle":"${state.openFormButton}"} /-->`;
 
     const shortcode = `[give_form id=${formId}]`;
 
@@ -122,7 +121,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     value: page.id,
                     label: page.title.rendered,
                     content: page.content.raw,
-                    disabled: page.content.raw.includes(block), // disable pages that already have the same form block included
+                    disabled: page.content.raw.includes(`wp:give/donation-form {"id":${formId}`), // disable pages that already have this form block included
                 });
             });
 
@@ -151,6 +150,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const isPageAlreadyCreated = !state.isCreated && state.newPostName
         && state.posts[state.createPostType]?.filter(post => post.label == state.newPostName).length > 0;
 
+    const isButton = ['new-tab', 'modal'].includes(state.selectedStyle);
+
     /**
      * Get site posts/pages for select option
      */
@@ -175,6 +176,20 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }, [state.posts, isLoadingPages]);
 
     const getStyleDescription = () => displayStyles.find(style => style.value === state.selectedStyle).description;
+
+    const getBlockComment = () => {
+
+        const attributes = {
+            id: formId
+        }
+
+        if ('onpage' !== state.selectedStyle) {
+            attributes['displayStyle'] = state.selectedStyle;
+            attributes['continueButtonTitle'] = state.openFormButton;
+        }
+
+        return `<!-- wp:give/donation-form ${JSON.stringify(attributes)} /-->`;
+    }
 
     /**
      * Handle copying shortcode to clipboard
@@ -203,6 +218,12 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * Handle inserting form into existing post/page
      */
     const handleInsert = async () => {
+
+        if (isButton && !state.openFormButton) {
+            openFormBtnRef.current?.focus();
+            return;
+        }
+
         setState(prevState => {
             return {
                 ...prevState,
@@ -210,7 +231,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             };
         });
 
-        const content = state?.posts[state.insertPostType]?.find((page) => page.value == state.selectedPost)?.content + block;
+        const content = state?.posts[state.insertPostType]?.find((page) => page.value == state.selectedPost)?.content + getBlockComment();
 
         await editEntityRecord('postType', state.insertPostType, state.selectedPost, {content});
         const response = await saveEditedEntityRecord('postType', state.insertPostType, state.selectedPost, {content});
@@ -234,6 +255,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             return;
         }
 
+        if (isButton && !state.openFormButton) {
+            openFormBtnRef.current?.focus();
+            return;
+        }
+
         setState(prevState => {
             return {
                 ...prevState,
@@ -243,7 +269,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
         const response = await saveEntityRecord('postType', state.createPostType, {
             title: state.newPostName,
-            content: block,
+            content: getBlockComment(),
         });
 
         setState(prevState => {
@@ -293,9 +319,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     help={getStyleDescription()}
                 />
 
-                {['new-tab', 'modal'].includes(state.selectedStyle) && (
+                {isButton && (
                     <TextControl
-                        label={__('Open form button', 'give')}
+                        ref={openFormBtnRef}
+                        placeholder={__('Donate', 'give')}
+                        label={__('Open form button text', 'give')}
                         value={state.openFormButton}
                         onChange={value => setState(prevState => {
                             return {
