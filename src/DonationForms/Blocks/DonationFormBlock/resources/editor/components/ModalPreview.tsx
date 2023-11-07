@@ -1,6 +1,5 @@
 import {useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
-import {ModalToggle} from './ModalToggle';
 import {Modal} from '@wordpress/components';
 
 import '../styles/index.scss';
@@ -24,9 +23,9 @@ export default function ModalPreview({enableIframe, formId, openFormButton}: Mod
 
     return (
         <div className={'givewp-donation-form-modal'}>
-            <ModalToggle classname={'givewp-donation-form-modal__open'} onClick={toggleModal}>
+            <button className={'givewp-donation-form-modal__open'} onClick={toggleModal}>
                 {openFormButton}
-            </ModalToggle>
+            </button>
             {isOpen && (
                 <Modal title={''} onRequestClose={toggleModal}>
                     <IframeResizer

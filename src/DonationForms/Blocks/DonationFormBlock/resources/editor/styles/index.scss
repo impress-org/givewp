@@ -44,17 +44,44 @@
 }
 
 .givewp-donation-form-link, .givewp-donation-form-modal__open {
-    color: var(--givewp-secondary-color, #ffffff);
+    color: var(--givewp-secondary-color, #ffffff) !important;
     background: var(--givewp-primary-color, #2271b1);
-    padding: .5rem 1rem;
+    padding: .75rem 1.25rem !important;
     cursor: pointer;
     border: none;
     border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500 !important;
     text-decoration: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;;
 }
 
 .givewp-donation-form-modal {
+    border: none;
 
+    &__dialog {
+        position: relative;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    &__close {
+        position: absolute;
+        right: 3.5%;
+        top: 1.5%;
+        margin-right: auto;
+        padding: .5rem .5rem .25rem .5rem;
+        border: none !important;
+        background-color: transparent !important;
+        cursor: pointer;
+
+
+        &:hover {
+            path {
+                fill: #0073AA;
+            }
+        }
+    }
 }
 
 .components-modal__header {
