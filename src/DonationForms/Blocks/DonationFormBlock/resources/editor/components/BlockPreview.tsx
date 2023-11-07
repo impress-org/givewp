@@ -12,6 +12,7 @@ interface BlockPreviewProps {
 }
 
 /**
+ * @unreleased replace reveal for link display.
  * @since 3.0.0
  */
 export default function BlockPreview({clientId, formId, displayStyle, openFormButton}: BlockPreviewProps) {

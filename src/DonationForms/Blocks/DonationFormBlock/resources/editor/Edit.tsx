@@ -10,6 +10,7 @@ import useFormOptions from './hooks/useFormOptions';
 import './styles/index.scss';
 
 /**
+ * @unreleased replace formFormat with displayStyle. Donation selector is now a component.
  * @since 3.0.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
