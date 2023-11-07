@@ -46,9 +46,10 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
+    const {formId} = getWindowData();
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
-    const {formId} = getWindowData();
+
     const [state, setState] = useState<StateProps>({
         posts: [],
         insertPostType: 'page',
