@@ -58,21 +58,6 @@ jQuery(document).ready(function ($) {
     });
 
     /**
-     * Show/Hide Title Prefixes
-     */
-    /*if ( 'disabled' !== $( 'input[name="name_title_prefix"]:checked' ).val() ) {
-		$( '.give-title-prefixes-settings-wrap' ).show();
-	}
-
-	$( 'input[name="name_title_prefix"]' ).on( 'change', function() {
-		if ( 'disabled' !== $( this ).val() ) {
-			$( '.give-title-prefixes-settings-wrap' ).show();
-		} else {
-			$( '.give-title-prefixes-settings-wrap' ).hide();
-		}
-	} );*/
-
-    /**
      * Repeater setting field event.
      */
     $('a.give-repeat-setting-field').on('click', function (e) {

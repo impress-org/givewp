@@ -708,23 +708,6 @@ const gravatar = require('gravatar');
                 .change();
 
             /**
-             * Terms and Conditions
-             */
-            /*const terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
-            terms_and_conditions
-                .on('change', function () {
-                    const field_value = $('input[name="terms"]:checked', '.give-setting-tab-body-display').val();
-                    if ('enabled' === field_value) {
-                        $('#agree_to_terms_label').parents('tr').show();
-                        $('#wp-agreement_text-wrap').parents('tr').show();
-                    } else {
-                        $('#agree_to_terms_label').parents('tr').hide();
-                        $('#wp-agreement_text-wrap').parents('tr').hide();
-                    }
-                })
-                .change();*/
-
-            /**
              * Disable admin notification
              */
             const admin_notification = $('input[name="admin_notices"]', '.give-setting-tab-body-emails');
