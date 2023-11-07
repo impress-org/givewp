@@ -8,7 +8,7 @@ import './styles/index.scss';
 /**
  * @since 3.0.0
  */
-function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}) {
     if (formFormat === 'reveal') {
         return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
@@ -16,6 +16,23 @@ function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
     if (formFormat === 'modal') {
         return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
+
+    if (formFormat === 'new-tab' && formUrl) {
+        return (
+            <a
+                href={formUrl}
+                target="_blank"
+                className="givewp-donation-form-display__button"
+                style={{
+                    textDecoration: 'none',
+                    color: '#fff'
+                }}
+            >
+                {openFormButton}
+            </a>
+        );
+    }
+
 
     return (
         <IframeResizer
@@ -38,6 +55,7 @@ roots.forEach((root) => {
     const embedId = root.getAttribute('data-givewp-embed-id');
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
+    const formUrl = root.getAttribute('data-form-url');
 
     if (createRoot) {
         createRoot(root).render(
@@ -46,6 +64,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                formUrl={formUrl}
             />
         );
     } else {
@@ -55,6 +74,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                formUrl={formUrl}
             />,
             root
         );
