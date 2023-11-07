@@ -82,6 +82,7 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
+                'nameTitlePrefixes' => give_get_option('title_prefixes'),
             ],
             $viewModel->storageData($formId)
         );
