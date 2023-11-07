@@ -710,7 +710,7 @@ const gravatar = require('gravatar');
             /**
              * Terms and Conditions
              */
-            const terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
+            /*const terms_and_conditions = $('input[name="terms"]', '.give-setting-tab-body-display');
             terms_and_conditions
                 .on('change', function () {
                     const field_value = $('input[name="terms"]:checked', '.give-setting-tab-body-display').val();
@@ -722,7 +722,7 @@ const gravatar = require('gravatar');
                         $('#wp-agreement_text-wrap').parents('tr').hide();
                     }
                 })
-                .change();
+                .change();*/
 
             /**
              * Disable admin notification

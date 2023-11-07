@@ -73,6 +73,7 @@ class FormBuilderViewModel
                 'agreementText' => give_get_option('agreement_text'),
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
+            'nameTitlePrefixes' => give_get_option('title_prefixes'),
         ];
     }
 
