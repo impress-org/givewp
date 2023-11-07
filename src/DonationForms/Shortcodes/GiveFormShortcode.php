@@ -23,6 +23,8 @@ class GiveFormShortcode
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . uniqid(),
+            'formFormat' => $atts['display_style'] ?? null,
+            'openFormButton' => $atts['continue_button_title'] ?? null
         ];
 
         $output = $controller->render($blockAttributes);
