@@ -80,12 +80,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
 
-    const block = sprintf(
-        `<!-- wp:give/donation-form {"id":%d, "displayStyle":"%s", "continueButtonTitle":"%s"} /-->`,
-        formId,
-        state.selectedStyle,
-        state.openFormButton,
-    );
+    const block = `<!-- wp:give/donation-form {"id":${formId}, "displayStyle":"${state.selectedStyle}", "continueButtonTitle":"${state.openFormButton}"} /-->`;
 
     const shortcode = `[give_form id=${formId}]`;
 
