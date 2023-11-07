@@ -11,6 +11,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
+import {PayPalSubscriber} from "./types";
 
 (() => {
     /**
@@ -35,6 +36,13 @@ import {CSSProperties, useEffect, useState} from 'react';
     let subscriptionFrequency;
     let subscriptionInstallments;
     let subscriptionPeriod;
+
+    let country;
+    let state;
+    let city;
+    let addressLine1;
+    let addressLine2;
+    let postalCode;
 
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
@@ -103,6 +111,15 @@ import {CSSProperties, useEffect, useState} from 'react';
         formData.append('give_last', lastName);
         formData.append('give_email', email);
 
+        if( country ) {
+            formData.append('card_address', addressLine1);
+            formData.append('card_address_2', addressLine2);
+            formData.append('card_city', city);
+            formData.append('card_state', state);
+            formData.append('card_zip', postalCode);
+            formData.append('billing_country', country);
+        }
+
         return formData;
     };
 
@@ -139,7 +156,34 @@ import {CSSProperties, useEffect, useState} from 'react';
             throw responseJson.data.error;
         }
 
-        return actions.subscription.create({plan_id: responseJson.data.id}).then((orderId) => {
+        const subscriberData: PayPalSubscriber = {
+            "name": {
+                "given_name": firstName,
+                "surname": lastName
+            },
+            "email_address": email,
+        };
+
+        if (country) {
+            subscriberData.shipping_address = {
+                name: {
+                    "full_name": `${firstName} ${lastName}`.trim()
+                },
+                address: {
+                    "address_line_1": addressLine1,
+                    "address_line_2": addressLine2,
+                    "admin_area_2": city,
+                    "admin_area_1": state,
+                    "postal_code": postalCode,
+                    "country_code": country
+                }
+            };
+        }
+
+        return actions.subscription.create({
+            "plan_id": responseJson.data.id,
+            "subscriber": subscriberData
+        }).then((orderId) => {
             return payPalSubscriptionId = orderId;
         });
     };
@@ -193,6 +237,13 @@ import {CSSProperties, useEffect, useState} from 'react';
         subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
         subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
         subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
+
+        addressLine1 = useWatch({name: 'address1'});
+        addressLine2 = useWatch({name: 'address2'});
+        city = useWatch({name: 'city'});
+        state = useWatch({name: 'state'});
+        postalCode = useWatch({name: 'zip'});
+        country = useWatch({name: 'country'});
 
         return children;
     };

@@ -8,8 +8,8 @@ import {
     TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
-import debounce from 'lodash.debounce';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
@@ -19,6 +19,7 @@ const DonationGoalSettings = () => {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
+    const {publishGoal, publishGoalType} = useDonationFormPubSub();
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
@@ -32,6 +33,7 @@ const DonationGoalSettings = () => {
                     checked={enableDonationGoal}
                     onChange={() => {
                         dispatch(setFormSettings({enableDonationGoal: !enableDonationGoal}));
+                        publishGoal({show: !enableDonationGoal});
                     }}
                 />
             </PanelRow>
@@ -65,7 +67,10 @@ const DonationGoalSettings = () => {
                             label={__('Goal Type', 'give')}
                             value={goalType}
                             options={goalTypeOptions}
-                            onChange={(goalType) => dispatch(setFormSettings({goalType: goalType}))}
+                            onChange={(goalType: string) => {
+                                dispatch(setFormSettings({goalType}))
+                                publishGoalType(goalType);
+                            }}
                             help={selectedGoalDescription}
                         />
                     </PanelRow>
@@ -75,14 +80,20 @@ const DonationGoalSettings = () => {
                                 label={__('Goal Amount', 'give')}
                                 min={0}
                                 value={goalAmount}
-                                onValueChange={debounce((goalAmount) => dispatch(setFormSettings({goalAmount})), 500)}
+                                onValueChange={(goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}))
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
                             />
                         ) : (
                             <NumberControl
                                 label={__('Goal Amount', 'give')}
                                 min={0}
                                 value={goalAmount}
-                                onChange={(goalAmount) => dispatch(setFormSettings({goalAmount}))}
+                                onChange={(goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}))
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
                             />
                         )}
                     </PanelRow>

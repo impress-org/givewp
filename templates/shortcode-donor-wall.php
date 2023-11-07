@@ -94,6 +94,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
             <?php
             if (
                 $atts['show_comments']
+                && empty($donation['_give_anonymous_donation'])
                 && absint($atts['comment_length'])
                 && !empty($donation['donor_comment'])
             ) :

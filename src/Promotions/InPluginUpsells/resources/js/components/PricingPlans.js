@@ -4,11 +4,19 @@ import styles from './PricingPlans.module.css';
 
 const {heading, description, plansButtonCaption, plans} = window.GiveAddons.pricingPlans;
 
+const customPlanOrder = ['Plus Plan', 'Pro Plan', 'Basic Plan', 'Agency Plan'];
+
+const sortedPlans = plans.slice().sort((a, b) => {
+    const aIndex = customPlanOrder.indexOf(a.name);
+    const bIndex = customPlanOrder.indexOf(b.name);
+    return aIndex - bIndex;
+});
+
 export const PricingPlans = () => (
     <article>
         <Hero heading={heading} description={description} />
         <ul className={styles.plans}>
-            {plans.map((plan) => (
+            {sortedPlans.map((plan) => (
                 <li key={plan.name}>
                     <PricingPlanCard
                         name={plan.name}

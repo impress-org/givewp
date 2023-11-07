@@ -8,11 +8,19 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 class GiveFormShortcode
 {
     /**
+     * @var int $instance
+     */
+    public static $instance = 0;
+
+    /**
      * @unreleased include block attributes for shortcode.
+     * @since 3.1.1 use static instance ID to simulate blockId attribute
      * @since 3.0.0
      */
     public function __invoke(string $output, array $atts): string
     {
+        self::$instance++;
+
         $formId = absint($atts['id']);
         $isV3Form = (bool)give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
 

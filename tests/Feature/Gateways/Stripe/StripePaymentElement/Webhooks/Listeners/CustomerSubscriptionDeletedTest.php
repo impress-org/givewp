@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Tests\Feature\Gateways\Stripe\Webhooks\Listeners;
+namespace Give\Tests\Feature\Gateways\Stripe\StripePaymentElement\Webhooks\Listeners;
 
 use Exception;
 use Give\Donations\Models\Donation;

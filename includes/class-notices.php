@@ -285,7 +285,7 @@ class Give_Notices {
     /**
      * Render give frontend notices.
      *
-     * @unreleased Render errors on Ajax request (Donation form validation - v2 forms)
+     * @since 3.1.0 Render errors on Ajax request (Donation form validation - v2 forms)
      * @since 2.32.0 Display registered error on donation form.
      * @since  1.8.9
      * @access public

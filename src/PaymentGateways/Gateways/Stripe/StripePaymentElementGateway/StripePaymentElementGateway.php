@@ -52,7 +52,7 @@ class StripePaymentElementGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased set translations for script
+     * @since 3.1.0 set translations for script
      * @since 3.0.0
      */
     public function enqueueScript(int $formId)

@@ -300,11 +300,7 @@ $give_updates = Give_Updates::get_instance();
 		<?php
 	endif;
 
-	if ( $wpdb->use_mysqli ) {
-		$ver = mysqli_get_server_info( $wpdb->dbh );
-	} else {
-		$ver = mysql_get_server_info();
-	}
+    $ver = mysqli_get_server_info($wpdb->dbh);
 
 	if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) :
 		?>
