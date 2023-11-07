@@ -21,7 +21,7 @@ class BlockAttributesTest extends TestCase
         $attributes = [
             'formId' => 1,
             'blockId' => '123',
-            'formFormat' => 'modal',
+            'displayStyle' => 'modal',
             'openFormButton' => 'Open Form'
         ];
 
