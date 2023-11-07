@@ -31,6 +31,7 @@ interface StateProps {
     newPostName: string;
     selectedPost: string;
     selectedStyle: string;
+    openFormButton: string;
     isCopied: boolean;
     isInserting: boolean;
     isCreating: boolean;
@@ -54,7 +55,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         currentPostType: 'page',
         newPostName: '',
         selectedPost: '',
-        selectedStyle: 'full',
+        selectedStyle: 'onpage',
+        openFormButton: __('Donate', 'give'),
         isCopied: false,
         isInserting: false,
         isCreating: false,
@@ -78,7 +80,13 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
 
-    const block = `<!-- wp:give/donation-form {"id":${formId}} /-->`;
+    const block = sprintf(
+        `<!-- wp:give/donation-form {"id":%d, "displayStyle":"%s", "continueButtonTitle":"%s"} /-->`,
+        formId,
+        state.selectedStyle,
+        state.openFormButton,
+    );
+
     const shortcode = `[give_form id=${formId}]`;
 
     const postOptions = [
@@ -89,7 +97,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const displayStyles = [
         {
             label: __('Full form', 'give'),
-            value: 'full',
+            value: 'onpage',
             description: __('All fields are visible on one page with the donate button at the bottom', 'give'),
         },
         {
@@ -119,7 +127,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     value: page.id,
                     label: page.title.rendered,
                     content: page.content.raw,
-                    disabled: page.content.raw.includes(block), // disable pages that already have form block included
+                    disabled: page.content.raw.includes(block), // disable pages that already have the same form block included
                 });
             });
 
@@ -289,6 +297,19 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     })}
                     help={getStyleDescription()}
                 />
+
+                {['new-tab', 'modal'].includes(state.selectedStyle) && (
+                    <TextControl
+                        label={__('Open form button', 'give')}
+                        value={state.openFormButton}
+                        onChange={value => setState(prevState => {
+                            return {
+                                ...prevState,
+                                openFormButton: value,
+                            };
+                        })}
+                    />
+                )}
 
             </div>
 
