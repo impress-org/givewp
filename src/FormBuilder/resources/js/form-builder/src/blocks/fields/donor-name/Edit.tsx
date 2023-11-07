@@ -133,8 +133,9 @@ export default function Edit({
                                                     color: '#595959',
                                                     fontStyle: 'SF Pro Text',
                                                     fontSize: '0.75rem',
-                                                    lineHeight: '140%',
+                                                    lineHeight: '120%',
                                                     fontWeight: 400,
+                                                    marginTop: '-0.5rem',
                                                 }}
                                             >
                                                 {__(' Go to the settings to change the ')}
