@@ -7,7 +7,7 @@ import '../styles/index.scss';
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: 'fullForm' | 'modal' | 'link' | string;
+    formFormat: 'fullForm' | 'modal' | 'newTab';
     openFormButton: string;
 }
 
@@ -23,9 +23,9 @@ export default function DonationFormBlockPreview({clientId, formId, formFormat, 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
     const isModalDisplay = formFormat === 'modal';
-    const isLinkDisplay = formFormat === 'link';
+    const isNewTabDisplay = formFormat === 'newTab';
 
-    return isLinkDisplay ? (
+    return isNewTabDisplay ? (
         <a
             className={'givewp-donation-form-link'}
             href={`/?givewp-route=donation-form-view&form-id=${formId}`}

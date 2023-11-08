@@ -43,7 +43,7 @@ export default function DonationFormBlockControls({
                             },
                             {
                                 label: __('New Tab', 'give'),
-                                value: 'link',
+                                value: 'newTab',
                             },
                             {
                                 label: __('Modal', 'give'),

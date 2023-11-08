@@ -5,7 +5,7 @@ import IframeResizer from 'iframe-resizer-react';
 import '../editor/styles/index.scss';
 
 type DonationFormBlockAppProps = {
-    formFormat: 'fullForm' | 'link' | 'modal' | string;
+    formFormat: 'fullForm' | 'newTab' | 'modal' | string;
     dataSrc: string;
     embedId: string;
     openFormButton: string;
@@ -13,7 +13,7 @@ type DonationFormBlockAppProps = {
 };
 
 /**
- * @unreleased replace display style reveal with new tab link.
+ * @unreleased replace form format reveal with new tab.
  * @since 3.0.0
  */
 function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {
