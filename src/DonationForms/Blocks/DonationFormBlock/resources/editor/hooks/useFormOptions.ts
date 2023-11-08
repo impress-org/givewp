@@ -6,13 +6,12 @@ import type {Option} from '../types';
 /**
  * @since 3.0.0
  */
-export default function useFormOptions(): {formOptions: Option[] | []; isResolving: boolean} {
+export default function useFormOptions(): {formOptions: Option[] | []; isResolving: boolean; forms: []} {
     const {forms, isResolving} = useSelect((select) => {
         return {
             forms: select('core')
                 // @ts-ignore
-                .getEntityRecords<Post[]>('postType', 'give_forms')
-                ?.filter(({excerpt}) => excerpt.rendered === '<p>[]</p>\n'),
+                .getEntityRecords<Post[]>('postType', 'give_forms'),
             // @ts-ignore
             isResolving: select('core/data').getIsResolving('core', 'getEntityRecords', ['postType', 'give_forms']),
         };
@@ -31,5 +30,6 @@ export default function useFormOptions(): {formOptions: Option[] | []; isResolvi
     return {
         isResolving,
         formOptions,
+        forms,
     };
 }

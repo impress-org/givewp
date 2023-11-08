@@ -1,124 +1,76 @@
-import {__} from '@wordpress/i18n';
-import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl} from '@wordpress/components';
 import {useCallback, useEffect, useState} from '@wordpress/element';
-import {BlockEditProps} from '@wordpress/blocks';
 import BlockPreview from './components/BlockPreview';
 import DonationFormSelector from './components/DonationFormSelector';
 import useFormOptions from './hooks/useFormOptions';
+import {useBlockProps} from '@wordpress/block-editor';
 
 import './styles/index.scss';
+import DonationFormBlockControls from './components/DonationFormBlockControls';
+import LegacyBlockEditor from './components/LegacyBlockEditor';
+import {isLegacyForm, isTemplateForm} from '../../../../../../blocks/utils';
+import {ReactNode} from 'react';
+import {JSX} from 'react/jsx-runtime';
 
 /**
  * @unreleased replace formFormat with displayStyle. Donation selector is now a component.
  * @since 3.0.0
  */
-export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId, displayStyle, openFormButton} = attributes;
-    const [showPreview, setShowPreview] = useState<boolean>(!!formId);
-    const {formOptions, isResolving} = useFormOptions();
+export default function Edit(props) {
+    const {attributes, setAttributes, clientId} = props;
+    const {id, displayStyle, openFormButton} = attributes;
 
-    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
-
-    useEffect(() => {
-        if (!blockId) {
-            setAttributes({blockId: clientId});
-        }
-    }, []);
-
+    const {formOptions, isResolving, forms} = useFormOptions();
     const getDefaultFormId = useCallback(() => {
         if (!isResolving && formOptions.length > 0) {
-            return formId && formOptions?.find(({value}) => value === formId);
+            return id && formOptions.find(({value}) => value === id);
         }
-    }, [isResolving, formId, JSON.stringify(formOptions)]);
+    }, [isResolving, id, JSON.stringify(formOptions)]);
 
-    return (
-        <>
-            {/*block controls*/}
-            <InspectorControls>
-                <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
-                    <PanelRow>
-                        {!isResolving && formOptions.length === 0 ? (
-                            <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                        ) : (
-                            <SelectControl
-                                label={__('Choose a donation form', 'give')}
-                                value={formId ?? ''}
-                                options={[
-                                    // add a disabled selector manually
-                                    ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                    ...formOptions,
-                                ]}
-                                onChange={(newFormId) => {
-                                    setAttributes({formId: newFormId});
-                                }}
-                            />
-                        )}
-                    </PanelRow>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Display style', 'give')}
-                            value={displayStyle}
-                            options={[
-                                {
-                                    label: __('On page', 'give'),
-                                    value: 'onPage',
-                                },
-                                {
-                                    label: __('Link to new page', 'give'),
-                                    value: 'link',
-                                },
-                                {
-                                    label: __('Modal', 'give'),
-                                    value: 'modal',
-                                },
-                            ]}
-                            onChange={(value) => {
-                                setAttributes({displayStyle: value});
-                            }}
-                        />
-                    </PanelRow>
-                    {showOpenFormButton && (
-                        <PanelRow>
-                            <TextControl
-                                label={__('Open Form Button', 'give')}
-                                value={openFormButton}
-                                onChange={(value) => {
-                                    setAttributes({openFormButton: value});
-                                }}
-                            />
-                        </PanelRow>
-                    )}
-                    <PanelRow>
-                        {formId && (
-                            <ExternalLink
-                                href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
-                            >
-                                {__('Edit donation form', 'give')}
-                            </ExternalLink>
-                        )}
-                    </PanelRow>
-                </PanelBody>
-            </InspectorControls>
+    useEffect(() => {
+        if (!attributes.blockId) {
+            setAttributes({blockId: clientId});
+        }
+    }, [attributes.blockId, clientId]);
+    const [showPreview, setShowPreview] = useState(!!id);
 
-            {/*block preview*/}
-            <div {...useBlockProps()}>
-                {formId && showPreview ? (
-                    <BlockPreview
-                        clientId={clientId}
-                        formId={formId}
-                        displayStyle={displayStyle}
-                        openFormButton={openFormButton}
-                    />
-                ) : (
-                    <DonationFormSelector
-                        formId={formId}
-                        getDefaultFormId={getDefaultFormId}
-                        setShowPreview={setShowPreview}
-                        setAttributes={setAttributes}
-                    />
-                )}
-            </div>
-        </>
-    );
+    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
+    const isv2Form = isTemplateForm(forms, id);
+    const isv3Form = !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
+
+    let BlockEditors: string | number | boolean | JSX.Element | Iterable<ReactNode>;
+
+    if (!id) {
+        BlockEditors = (
+            <DonationFormSelector
+                id={id}
+                getDefaultFormId={getDefaultFormId}
+                setShowPreview={setShowPreview}
+                setAttributes={setAttributes}
+            />
+        );
+    } else if (isv2Form) {
+        BlockEditors = <LegacyBlockEditor props={props} attributes={attributes} />;
+    } else if (isv3Form) {
+        BlockEditors = (
+            <>
+                <DonationFormBlockControls
+                    isResolving={isResolving}
+                    formOptions={formOptions}
+                    formId={id}
+                    displayStyle={displayStyle}
+                    setAttributes={setAttributes}
+                    openFormButton={openFormButton}
+                    showOpenFormButton={showOpenFormButton}
+                />
+                <BlockPreview
+                    clientId={clientId}
+                    formId={id}
+                    displayStyle={displayStyle}
+                    openFormButton={openFormButton}
+                />
+            </>
+        );
+    }
+
+    return <div {...useBlockProps()}>{BlockEditors}</div>;
 }

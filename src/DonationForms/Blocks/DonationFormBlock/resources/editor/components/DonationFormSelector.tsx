@@ -10,7 +10,7 @@ import '../styles/index.scss';
 /**
  * @unreleased
  */
-export default function DonationFormSelector({getDefaultFormId, formId, setShowPreview, setAttributes}) {
+export default function DonationFormSelector({getDefaultFormId, id, setShowPreview, setAttributes}) {
     const {formOptions, isResolving} = useFormOptions();
 
     return (
@@ -28,7 +28,7 @@ export default function DonationFormSelector({getDefaultFormId, formId, setShowP
                     placeholder={isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')}
                     onChange={(option) => {
                         if (option) {
-                            setAttributes({formId: option.value});
+                            setAttributes({id: Number(option.value)});
                         }
                     }}
                     noOptionsMessage={() => <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>}
@@ -39,7 +39,7 @@ export default function DonationFormSelector({getDefaultFormId, formId, setShowP
                     styles={reactSelectStyles}
                 />
             </div>
-            <ConfirmButton formId={formId} enablePreview={() => setShowPreview(true)} />
+            <ConfirmButton formId={id} enablePreview={() => setShowPreview(true)} />
         </div>
     );
 }

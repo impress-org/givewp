@@ -10,7 +10,7 @@ import {registerBlockType} from '@wordpress/blocks';
 import './style.scss';
 import GiveIcon from '@givewp/components/GiveIcon';
 import blockAttributes from './data/attributes';
-import GiveForm from './edit/block';
+import Edit from '../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/Edit';
 
 /**
  * Register Block
@@ -29,7 +29,7 @@ export default registerBlockType('give/donation-form', {
         html: false,
     },
     attributes: blockAttributes,
-    edit: GiveForm,
+    edit: Edit,
 
     save: () => {
         // Server side rendering via shortcode

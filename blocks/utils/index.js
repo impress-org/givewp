@@ -62,3 +62,13 @@ export function isLegacyForm(forms, SelectedFormId) {
 
     return false;
 }
+
+export function isTemplateForm(forms, SelectedFormId) {
+    if (forms) {
+        const data = forms.find((form) => parseInt(form.id) === parseInt(SelectedFormId));
+
+        return data && data.formTemplate !== '';
+    }
+
+    return false;
+}
