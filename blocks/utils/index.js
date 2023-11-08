@@ -72,3 +72,13 @@ export function isTemplateForm(forms, SelectedFormId) {
 
     return false;
 }
+
+export function isVisualBuilderForm(forms, SelectedFormId) {
+    if (forms) {
+        const data = forms.find((form) => parseInt(form.id) === parseInt(SelectedFormId));
+        console.log(data);
+        return data && data.formTemplate === '';
+    }
+
+    return false;
+}

@@ -23,12 +23,8 @@ import BlockPreview from '../../../src/DonationForms/Blocks/DonationFormBlock/re
 const GiveForm = (props) => {
     const {attributes, isSelected, setAttributes, className, clientId} = props;
     const {id, blockId, displayStyle, openFormButton} = attributes;
-    const [showPreview, setShowPreview] = useState<boolean>(!!id);
     const {formOptions, isResolving, forms} = useFormOptions();
-
-    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
-    const isv2Form = isTemplateForm(forms, id);
-    const isv3Form = !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
+    const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
     useEffect(() => {
         if (!blockId) {
@@ -42,41 +38,43 @@ const GiveForm = (props) => {
         }
     }, [isResolving, id, JSON.stringify(formOptions)]);
 
+    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
+    const isv2Form = forms && id && isTemplateForm(forms, id);
+    const isv3Form = forms && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
+
     return (
         <>
-            {!id ? (
+            {isv2Form ? (
+                <div className={!!isSelected ? `${className} isSelected` : className}>
+                    <Inspector {...{...props}} />
+                    <ServerSideRender block="give/donation-form" attributes={attributes} />
+                </div>
+            ) : isv3Form ? (
+                <>
+                    <DonationFormBlockControls
+                        isResolving={isResolving}
+                        formOptions={formOptions}
+                        formId={id}
+                        displayStyle={displayStyle}
+                        setAttributes={setAttributes}
+                        openFormButton={openFormButton}
+                        showOpenFormButton={showOpenFormButton}
+                    />
+                    <BlockPreview
+                        clientId={clientId}
+                        formId={id}
+                        displayStyle={displayStyle}
+                        openFormButton={openFormButton}
+                    />
+                </>
+            ) : !id ? (
                 <DonationFormSelector
                     id={id}
                     getDefaultFormId={getDefaultFormId}
                     setShowPreview={setShowPreview}
                     setAttributes={setAttributes}
                 />
-            ) : isv2Form ? (
-                <div className={!!isSelected ? `${className} isSelected` : className}>
-                    <Inspector {...{...props}} />
-                    <ServerSideRender block="give/donation-form" attributes={attributes} />
-                </div>
-            ) : (
-                isv3Form && (
-                    <>
-                        <DonationFormBlockControls
-                            isResolving={isResolving}
-                            formOptions={formOptions}
-                            formId={id}
-                            displayStyle={displayStyle}
-                            setAttributes={setAttributes}
-                            openFormButton={openFormButton}
-                            showOpenFormButton={showOpenFormButton}
-                        />
-                        <BlockPreview
-                            clientId={clientId}
-                            formId={id}
-                            displayStyle={displayStyle}
-                            openFormButton={openFormButton}
-                        />
-                    </>
-                )
-            )}
+            ) : null}
         </>
     );
 };
