@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.1.1: November 3rd, 2023 =
+* Fix: Embedded forms created with the Visual Builder now redirect to the confirmation page after a completed donation.
+* Fix: Donor title prefixes are now formatted as strings (like Mr or Ms) instead of numbers.
+
 = 3.1.0: October 25th, 2023 =
 * Feature: Design Mode changes in the Form Builder are now instant and awesome! Instant gratification!
 * Feature: Donor prefixes can now easily be reordered in the Donor Name block
@@ -278,7 +282,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Multi-form, form grid, and totals shortcodes no longer throw a warning
 * Fix: Multi-form goal block no longer throws an error when filtering by form
 * Fix: Multi-form and progress bar goals no longer throw an error for themes that return false for get_theme_support
-* Fix: Resolved old GiveWP behavior that altered default WodPress behavior when retrieving GiveWP post type meta
+* Fix: Resolved old GiveWP behavior that altered default WordPress behavior when retrieving GiveWP post type meta
 
 = 3.0.4: October 30th, 2023 =
 * Fix: Resolved issue with some Stripe gateways not recording incoming recurring donation renewals.  To recover missing renewals from Stripe in GiveWP, please use the "Sync Subscription" button on the individual subscription details page.  Click [here](https://docs.givewp.com/syncrecurring) to learn more about syncing subscriptions in GiveWP.
