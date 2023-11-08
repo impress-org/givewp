@@ -80,6 +80,11 @@ class GenerateConfirmationPageReceipt
     {
         /** @var PaymentGatewayRegister $paymentGatewayRegistrar */
         $paymentGatewayRegistrar = give(PaymentGatewayRegister::class);
+        $paymentMethodLabel = give_get_gateway_checkout_label($receipt->donation->gatewayId, null);
+
+        if (empty($paymentMethodLabel) || $paymentMethodLabel === $receipt->donation->gatewayId) {
+            $paymentMethodLabel = $paymentGatewayRegistrar->hasPaymentGateway($receipt->donation->gatewayId) ? $paymentGatewayRegistrar->getPaymentGateway($receipt->donation->gatewayId)->getPaymentMethodLabel() : $receipt->donation->gatewayId;
+        }
 
         $receipt->donationDetails->addDetails([
                 new ReceiptDetail(
@@ -88,9 +93,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Payment Method', 'give'),
-                    $paymentGatewayRegistrar->hasPaymentGateway(
-                        $receipt->donation->gatewayId
-                    ) ? $receipt->donation->gateway()->getPaymentMethodLabel() : $receipt->donation->gatewayId
+                    $paymentMethodLabel
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
