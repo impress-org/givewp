@@ -4,8 +4,9 @@ import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wo
 import {Icon as WPIcon, plus} from '@wordpress/icons';
 
 import {__} from '@wordpress/i18n';
-import Editor from '@givewp/form-builder/components/editor';
 import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
+import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
+import {useEffect, useState} from 'react';
 
 type EmailTemplateSettingsProps = {
     notification: string;
@@ -32,6 +33,16 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
 
     const recipients = option.recipient ?? [''];
 
+    const [editorContent, setEditorContent] = useState(
+        option?.email_message.replace(/\n/g, '<br />') || config.defaultValues.email_message
+    );
+
+    useEffect(() => {
+        if (option.email_message !== editorContent) {
+            updateEmailTemplateOption('email_message', editorContent);
+        }
+    }, [editorContent]);
+
     const updateEmailTemplateOption = (property, value) => {
         dispatch(
             setFormSettings({
@@ -52,10 +63,7 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                 className="radio-control--email-options"
                 label={__('Email options', 'give')}
                 hideLabelFromVision={true}
-                help={__(
-                    'Global options are set in GiveWP settings. You may override them for this form here',
-                    'give'
-                )}
+                help={__('Global options are set in GiveWP settings. You may override them for this form here', 'give')}
                 selected={option.status ?? 'global'}
                 options={config.statusOptions}
                 onChange={(value) => updateEmailTemplateOption('status', value)}
@@ -78,9 +86,11 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                         value={option.email_header || config.defaultValues.email_header}
                     />
 
-                    <Editor
-                        value={option?.email_message.replace(/\n/g, '<br />') || config.defaultValues.email_message}
-                        onChange={(value) => updateEmailTemplateOption('email_message', value)}
+                    <ClassicEditor
+                        id={'givewp-custom-email-message'}
+                        label={__('Email Message', 'give')}
+                        content={editorContent}
+                        setContent={setEditorContent}
                     />
 
                     <SelectControl
