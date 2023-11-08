@@ -181,7 +181,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             id: formId
         }
 
-        if ('onpage' !== state.selectedStyle) {
+        if (isButton) {
             attributes['displayStyle'] = state.selectedStyle;
             attributes['continueButtonTitle'] = state.openFormButton;
         }
@@ -196,7 +196,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             id: formId
         }
 
-        if ('onpage' !== state.selectedStyle) {
+        if (isButton) {
             attributes['display_style'] = state.selectedStyle;
             attributes['continue_button_title'] = state.openFormButton;
         }
