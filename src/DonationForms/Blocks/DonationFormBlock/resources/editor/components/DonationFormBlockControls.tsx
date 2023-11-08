@@ -5,7 +5,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 export default function DonationFormBlockControls({
     isResolving,
     formOptions,
-    id,
+    formId,
     displayStyle,
     setAttributes,
     openFormButton,
@@ -20,7 +20,7 @@ export default function DonationFormBlockControls({
                     ) : (
                         <SelectControl
                             label={__('Choose a donation form', 'give')}
-                            value={id ?? ''}
+                            value={formId ?? ''}
                             options={[
                                 // add a disabled selector manually
                                 ...[{value: '', label: __('Select...', 'give'), disabled: true}],
@@ -34,15 +34,15 @@ export default function DonationFormBlockControls({
                 </PanelRow>
                 <PanelRow>
                     <SelectControl
-                        label={__('Display style', 'give')}
+                        label={__('Form Format', 'give')}
                         value={displayStyle}
                         options={[
                             {
-                                label: __('On page', 'give'),
+                                label: __('Full', 'give'),
                                 value: 'onPage',
                             },
                             {
-                                label: __('Link to new page', 'give'),
+                                label: __('Link', 'give'),
                                 value: 'link',
                             },
                             {
@@ -67,9 +67,9 @@ export default function DonationFormBlockControls({
                     </PanelRow>
                 )}
                 <PanelRow>
-                    {id && (
+                    {formId && (
                         <ExternalLink
-                            href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${id}`}
+                            href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
                         >
                             {__('Edit donation form', 'give')}
                         </ExternalLink>

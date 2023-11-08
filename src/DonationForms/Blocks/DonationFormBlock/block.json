@@ -12,7 +12,7 @@
     "inserter": false
   },
   "attributes": {
-    "id": {
+    "formId": {
       "type": "string"
     },
     "blockId": {

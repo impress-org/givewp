@@ -99,6 +99,22 @@
   width: 100%;
 }
 
-.select2-selection__input:focus {
-  box-shadow: none;
+.wp-block-give-donation-form {
+  position: relative;
+
+  form[id*='give-form'] #give-gateway-radio-list > li input[type='radio'] {
+    display: inline-block;
+  }
+
+  iframe {
+    pointer-events: none;
+    width: 100% !important;
+  }
 }
+
+.give-change-donation-form-btn {
+  svg {
+    margin-top: 3px;
+  }
+}
+
