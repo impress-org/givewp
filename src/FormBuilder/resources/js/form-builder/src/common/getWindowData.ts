@@ -14,6 +14,7 @@ type GoalTypeOption = {
     value: string;
     label: string;
     description: string;
+    isCurrency: boolean;
 };
 
 /**

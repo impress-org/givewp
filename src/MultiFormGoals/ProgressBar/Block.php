@@ -52,13 +52,21 @@ class Block
     /**
      * Returns Progress Bar block markup
      *
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
      * @since 2.9.0
      **/
     public function renderCallback($attributes)
     {
         $progressBar = new ProgressBar(
             [
-                'ids' => array_map('_give_redirect_form_id', $attributes['ids']),
+                'ids' => array_map(
+                    static function ($id) {
+                        _give_redirect_form_id($id);
+
+                        return $id;
+                    },
+                    $attributes['ids']
+                ),
                 'tags' => $attributes['tags'],
                 'categories' => $attributes['categories'],
                 'goal' => $attributes['goal'],
@@ -99,11 +107,14 @@ class Block
             ],
         ];
         $editorColorPalette = get_theme_support('editor-color-palette'); // Return value is in a nested array.
+
         wp_localize_script(
             'give-blocks-js',
             'giveProgressBarThemeSupport',
             [
-                'editorColorPalette' => $editorColorPalette ? array_shift($editorColorPalette) : $defaultColorPalette,
+                'editorColorPalette' => is_array($editorColorPalette) ? array_shift(
+                    $editorColorPalette
+                ) : $defaultColorPalette,
             ]
         );
     }

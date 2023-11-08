@@ -46,7 +46,7 @@ class AuthenticationRoute
         if (is_wp_error($userOrError)) {
             wp_send_json_error([
                 'type' => 'authentication_error',
-                'message' => __('The login/password does not match or is incorrect.', 'givewp'),
+                'message' => __('The login/password does not match or is incorrect.', 'give'),
             ], 401);
             exit;
         }

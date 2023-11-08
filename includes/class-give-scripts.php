@@ -1,6 +1,8 @@
 <?php
 
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 
 /**
  * Loads the plugin's scripts and styles.
@@ -602,18 +604,13 @@ class Give_Scripts {
     /**
      * Gutenberg admin scripts.
      *
+     * @since 3.1.0 Use wp scripts to compile blocks
      * @since 2.19.0 Remove undefined gutenberg.css
      * @since 2.19.6 Load script with EnqueueScript.
      * @since 2.19.6 Load missing block styles
      */
     public function gutenberg_admin_scripts()
     {
-        // Enqueue the bundled block JS file
-        EnqueueScript::make('give-blocks-js', 'assets/dist/js/gutenberg.js')
-            ->dependencies(['give-admin-scripts'])
-            ->registerTranslations()
-            ->enqueue();
-
         wp_enqueue_style(
             'give-blocks-css',
             GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-editor.css',
@@ -621,6 +618,17 @@ class Give_Scripts {
             GIVE_VERSION
         );
 
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/adminBlocks.asset.php');
 
+        $handle = 'give-blocks-js';
+        wp_enqueue_script(
+            $handle,
+            GIVE_PLUGIN_URL . 'build/adminBlocks.js',
+            array_merge(['give-admin-scripts'], $scriptAsset['dependencies']),
+            $scriptAsset['version'],
+            true
+        );
+
+        Language::setScriptTranslations($handle);
     }
 }

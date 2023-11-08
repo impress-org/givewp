@@ -126,7 +126,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Retrieve payment meta field for a payment.
 	 *
-	 * @access  public
+	 * @since 3.1.0 Return empty array, when request raw metadata if $single is set to false and metadata does not exist.
 	 * @since   2.0
 	 *
 	 * @param   int    $id       Pst Type  ID.
@@ -150,7 +150,7 @@ class Give_DB_Meta extends Give_DB {
 
 		if ( $this->raw_result ) {
 			if ( ! ( $value = get_metadata( $this->meta_type, $id, $meta_key, false ) ) ) {
-				$value = '';
+				$value = $single ? '' : array();
 			}
 
 			// Reset flag.

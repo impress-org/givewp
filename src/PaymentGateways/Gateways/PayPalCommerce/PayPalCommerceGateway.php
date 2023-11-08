@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -30,19 +31,23 @@ class PayPalCommerceGateway extends PayPalCommerce
     }
 
     /**
+     * @since 3.1.0 set translations for script
      * @since 3.0.0
      */
     public function enqueueScript(int $formId)
     {
         $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/payPalCommerceGateway.asset.php');
+        $handle = $this::id();
 
         wp_enqueue_script(
-            self::id(),
+            $handle,
             GIVE_PLUGIN_URL . 'build/payPalCommerceGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true
         );
+
+        Language::setScriptTranslations($handle);
     }
 
     /**
