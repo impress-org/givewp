@@ -81,8 +81,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
 
-    const shortcode = `[give_form id=${formId}]`;
-
     const postOptions = [
         {label: 'Page', value: 'page'},
         {label: 'Post', value: 'post'},
@@ -191,11 +189,30 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return `<!-- wp:give/donation-form ${JSON.stringify(attributes)} /-->`;
     }
 
+    const getShortcode = () => {
+        const shortcodeAttributes = [];
+
+        const attributes = {
+            id: formId
+        }
+
+        if ('onpage' !== state.selectedStyle) {
+            attributes['display_style'] = state.selectedStyle;
+            attributes['continue_button_title'] = state.openFormButton;
+        }
+
+        for (const key in attributes) {
+            shortcodeAttributes.push(`${key}="${attributes[key]}"`);
+        }
+
+        return `[give_form ${shortcodeAttributes.join(' ')}]`;
+    }
+
     /**
      * Handle copying shortcode to clipboard
      */
-    const handleCopy = useCallback(async () => {
-        await navigator.clipboard.writeText(shortcode);
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(getShortcode());
 
         setState(prevState => {
             return {
@@ -212,7 +229,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 };
             });
         }, 2000);
-    }, []);
+    }
 
     /**
      * Handle inserting form into existing post/page
