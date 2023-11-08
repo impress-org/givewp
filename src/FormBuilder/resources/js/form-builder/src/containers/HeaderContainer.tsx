@@ -175,6 +175,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                             icon={CodeIcon}
                             className="givewp-embed-button"
                             onClick={() => setShowEmbedModal(!showEmbedModal)}
+                            label={__('Embed form', 'give')}
                             variant="tertiary"
                         />
                         {isPublished && (
