@@ -14,7 +14,8 @@ import DonationFormSelector
 import {isLegacyForm, isTemplateForm} from '../../utils/index';
 import DonationFormBlockControls
     from '../../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/components/DonationFormBlockControls';
-import BlockPreview from '../../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/components/BlockPreview';
+import DonationFormBlockPreview
+    from '../../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/components/DonationFormBlockPreview';
 
 /**
  * Render Block UI For Editor
@@ -42,41 +43,49 @@ const GiveForm = (props) => {
     const isv2Form = forms && id && isTemplateForm(forms, id);
     const isv3Form = forms && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
 
-    return (
-        <>
-            {isv2Form ? (
-                <div className={!!isSelected ? `${className} isSelected` : className}>
-                    <Inspector {...{...props}} />
-                    <ServerSideRender block="give/donation-form" attributes={attributes} />
-                </div>
-            ) : isv3Form ? (
-                <>
-                    <DonationFormBlockControls
-                        isResolving={isResolving}
-                        formOptions={formOptions}
-                        formId={id}
-                        displayStyle={displayStyle}
-                        setAttributes={setAttributes}
-                        openFormButton={openFormButton}
-                        showOpenFormButton={showOpenFormButton}
-                    />
-                    <BlockPreview
-                        clientId={clientId}
-                        formId={id}
-                        displayStyle={displayStyle}
-                        openFormButton={openFormButton}
-                    />
-                </>
-            ) : !id ? (
-                <DonationFormSelector
+    if (isv2Form) {
+        return (
+            <div className={!!isSelected ? `${className} isSelected` : className}>
+                <Inspector {...{...props}} />
+                <ServerSideRender block="give/donation-form" attributes={attributes} />
+            </div>
+        );
+    }
+
+    if (isv3Form) {
+        return (
+            <>
+                <DonationFormBlockControls
+                    isResolving={isResolving}
+                    formOptions={formOptions}
                     id={id}
-                    getDefaultFormId={getDefaultFormId}
-                    setShowPreview={setShowPreview}
+                    displayStyle={displayStyle}
                     setAttributes={setAttributes}
+                    openFormButton={openFormButton}
+                    showOpenFormButton={showOpenFormButton}
                 />
-            ) : null}
-        </>
-    );
+                <DonationFormBlockPreview
+                    clientId={clientId}
+                    formId={id}
+                    displayStyle={displayStyle}
+                    openFormButton={openFormButton}
+                />
+            </>
+        );
+    }
+
+    if (!id && !showPreview) {
+        return (
+            <DonationFormSelector
+                id={id}
+                getDefaultFormId={getDefaultFormId}
+                setShowPreview={setShowPreview}
+                setAttributes={setAttributes}
+            />
+        );
+    }
+
+    return false;
 };
 
 export default GiveForm;

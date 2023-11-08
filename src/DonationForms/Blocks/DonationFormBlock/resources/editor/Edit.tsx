@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from '@wordpress/element';
-import BlockPreview from './components/BlockPreview';
+import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import DonationFormSelector from './components/DonationFormSelector';
 import useFormOptions from './hooks/useFormOptions';
 import {useBlockProps} from '@wordpress/block-editor';
@@ -56,13 +56,13 @@ export default function Edit(props) {
                 <DonationFormBlockControls
                     isResolving={isResolving}
                     formOptions={formOptions}
-                    formId={id}
+                    id={id}
                     displayStyle={displayStyle}
                     setAttributes={setAttributes}
                     openFormButton={openFormButton}
                     showOpenFormButton={showOpenFormButton}
                 />
-                <BlockPreview
+                <DonationFormBlockPreview
                     clientId={clientId}
                     formId={id}
                     displayStyle={displayStyle}

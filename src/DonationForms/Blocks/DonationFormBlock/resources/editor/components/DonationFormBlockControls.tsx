@@ -5,7 +5,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 export default function DonationFormBlockControls({
     isResolving,
     formOptions,
-    formId,
+    id,
     displayStyle,
     setAttributes,
     openFormButton,
@@ -20,14 +20,14 @@ export default function DonationFormBlockControls({
                     ) : (
                         <SelectControl
                             label={__('Choose a donation form', 'give')}
-                            value={formId ?? ''}
+                            value={id ?? ''}
                             options={[
                                 // add a disabled selector manually
                                 ...[{value: '', label: __('Select...', 'give'), disabled: true}],
                                 ...formOptions,
                             ]}
                             onChange={(newFormId) => {
-                                setAttributes({formId: newFormId});
+                                setAttributes({id: newFormId});
                             }}
                         />
                     )}
@@ -67,9 +67,9 @@ export default function DonationFormBlockControls({
                     </PanelRow>
                 )}
                 <PanelRow>
-                    {formId && (
+                    {id && (
                         <ExternalLink
-                            href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
+                            href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${id}`}
                         >
                             {__('Edit donation form', 'give')}
                         </ExternalLink>

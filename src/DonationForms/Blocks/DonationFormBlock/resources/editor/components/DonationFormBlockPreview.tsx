@@ -15,7 +15,7 @@ interface BlockPreviewProps {
  * @unreleased replace reveal for link display.
  * @since 3.0.0
  */
-export default function BlockPreview({clientId, formId, displayStyle, openFormButton}: BlockPreviewProps) {
+export default function DonationFormBlockPreview({clientId, formId, displayStyle, openFormButton}: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
