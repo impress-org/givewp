@@ -151,7 +151,6 @@ class Give_Donation_Form_Block
                         'type' => 'string',
                         'default' => 'above',
                     ),
-                    // v3 block attributes
                     'blockId' => array(
                         'type' => 'string',
                     ),
@@ -182,7 +181,6 @@ class Give_Donation_Form_Block
         if (empty($attributes['id'])) {
             return '';
         }
-
         $parameters = array();
 
         $parameters['id'] = absint($attributes['id']);
@@ -191,6 +189,7 @@ class Give_Donation_Form_Block
         $parameters['show_content'] = !empty($attributes['contentDisplay']) ? $attributes['showContent'] : 'none';
         $parameters['display_style'] = $attributes['displayStyle'];
         $parameters['continue_button_title'] = trim($attributes['continueButtonTitle']);
+        $parameters['form_format'] = $attributes['formFormat'];
 
         _give_redirect_form_id($parameters['id']);
 

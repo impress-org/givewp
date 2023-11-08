@@ -28,7 +28,7 @@ class GiveFormShortcode
             return $output;
         }
 
-        $displayStyle = (isset($atts['display_style']) && !empty($atts['display_style'])) ? $atts['display_style'] : 'full';
+        $formFormat = (isset($atts['form_format']) && !empty($atts['form_format'])) ? $atts['form_format'] : 'fullForm';
         $openFormButton = (isset($atts['continue_button_title']) && !empty($atts['continue_button_title'])) ? $atts['continue_button_title'] : __(
             'Donate now',
             'give'
@@ -38,7 +38,7 @@ class GiveFormShortcode
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . uniqid('', true),
-            '$formFormat' => $displayStyle,
+            'formFormat' => $formFormat,
             'openFormButton' => $openFormButton
         ];
 

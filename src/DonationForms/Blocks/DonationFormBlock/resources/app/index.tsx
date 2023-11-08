@@ -17,7 +17,7 @@ type DonationFormBlockAppProps = {
  * @since 3.0.0
  */
 function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {
-    if (formFormat === 'link') {
+    if (formFormat === 'newTab') {
         return (
             <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
                 {openFormButton}
@@ -51,7 +51,7 @@ roots.forEach((root) => {
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
-
+    console.log(root);
     if (createRoot) {
         createRoot(root).render(
             <DonationFormBlockApp

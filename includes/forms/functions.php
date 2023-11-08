@@ -1589,6 +1589,7 @@ function give_get_default_form_shortcode_args() {
 		'float_labels'          => '',
 		'display_style'         => '',
 		'continue_button_title' => '',
+        'form_format'           => 'fullForm',
 
 		// This attribute belong to form template functionality.
 		// You can use this attribute to set modal open button background color.

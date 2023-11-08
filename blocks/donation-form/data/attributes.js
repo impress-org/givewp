@@ -33,7 +33,6 @@ const blockAttributes = {
         type: 'string',
         default: 'above',
     },
-    // v3 block attributes
     blockId: {
         type: 'string',
     },

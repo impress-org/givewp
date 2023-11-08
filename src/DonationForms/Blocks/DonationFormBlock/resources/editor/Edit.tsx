@@ -11,7 +11,7 @@ import Inspector from '../../../../../../blocks/donation-form/edit/inspector';
 import './styles/index.scss';
 
 /**
- * @unreleased replace formFormat with displayStyle. Donation selector is now a component.
+ * @unreleased update to handle v2 forms.
  * @since 3.0.0
  */
 export default function Edit(props) {
@@ -32,7 +32,7 @@ export default function Edit(props) {
         }
     }, [isResolving, id, JSON.stringify(formOptions)]);
 
-    const showOpenFormButton = formFormat === 'link' || formFormat === 'modal';
+    const showOpenFormButton = formFormat === 'newTab' || formFormat === 'modal';
     const isv2Form = forms && id && isTemplateForm(forms, id);
     const isv3Form = forms && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
 
