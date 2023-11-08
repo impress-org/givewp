@@ -70,15 +70,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
     const {editEntityRecord, saveEditedEntityRecord, saveEntityRecord} = useDispatch(store);
 
-    const closeModal = useCallback((e) => {
-        if (e.keyCode === 27 && typeof handleClose === 'function') {
+    const closeModal = useCallback(e => {
+        if (e.keyCode === 27) {
             handleClose(e);
         }
     }, []);
 
     useEffect(() => {
         document.addEventListener('keydown', closeModal, false);
-
         return () => document.removeEventListener('keydown', closeModal, false);
     }, []);
 
@@ -120,7 +119,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             data?.forEach(page => {
                 filtered.push({
                     value: page.id,
-                    label: page.title.rendered,
+                    label: page.title.raw || __('(no title)', 'give'),
                     content: page.content.raw,
                     disabled: page.content.raw.includes(`wp:give/donation-form {"id":${formId}`), // disable pages that already have this form block included
                 });
@@ -162,11 +161,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         if (isLoadingPages) {
             pages.push({value: '', label: __('Loading...', 'give'), disabled: true});
         } else {
-            const selectLabel = 'page' === state.insertPostType
+            const label = 'page' === state.insertPostType
                 ? __('Select a page', 'give')
                 : __('Select a post', 'give');
 
-            pages.push({value: '', label: selectLabel, disabled: true});
+            pages.push({value: '', label, disabled: true});
         }
 
         if (state.posts[state.insertPostType]) {
@@ -361,6 +360,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 <SelectControl
                     value={state.selectedPost}
                     options={getPostsList()}
+                    disabled={state.isInserted}
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
@@ -388,16 +388,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         <div>
                             <Button
                                 variant="tertiary"
-                                onClick={() => setState(prevState => {
-                                    return {
-                                        ...prevState,
-                                        isInserted: false,
-                                        selectedPost: '',
-                                        insertedLink: null,
-                                    };
-                                })}
+                                onClick={handleClose}
                             >
-                                {__('Add another', 'give')}
+                                {__('Close', 'give')}
                             </Button>
                         </div>
                     </div>
@@ -474,20 +467,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         <div>
                             <Button
                                 variant="tertiary"
-                                onClick={() => {
-                                    newPostNameRef.current?.focus();
-
-                                    setState(prevState => {
-                                        return {
-                                            ...prevState,
-                                            isCreated: false,
-                                            newPostName: '',
-                                            createdLink: null,
-                                        };
-                                    });
-                                }}
+                                onClick={handleClose}
                             >
-                                {__('Add another', 'give')}
+                                {__('Close', 'give')}
                             </Button>
                         </div>
                     </div>
