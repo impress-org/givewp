@@ -18,9 +18,9 @@
     "blockId": {
       "type": "string"
     },
-    "displayStyle": {
+    "formFormat": {
       "type": "string",
-      "default": "onPage"
+      "default": "fullForm"
     },
     "openFormButton": {
       "type": "string",

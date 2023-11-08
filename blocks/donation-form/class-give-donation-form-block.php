@@ -151,12 +151,17 @@ class Give_Donation_Form_Block
                         'type' => 'string',
                         'default' => 'above',
                     ),
+                    // v3 block attributes
                     'blockId' => array(
                         'type' => 'string',
                     ),
                     'openFormButton' => array(
                         'type' => 'string',
                         'default' => 'Donate now',
+                    ),
+                    'formFormat' => array(
+                        'type' => 'string',
+                        'default' => 'fullForm',
                     )
                 ),
             )

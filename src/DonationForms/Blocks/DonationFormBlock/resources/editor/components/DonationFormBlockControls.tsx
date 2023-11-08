@@ -6,7 +6,7 @@ export default function DonationFormBlockControls({
     isResolving,
     formOptions,
     formId,
-    displayStyle,
+    formFormat,
     setAttributes,
     openFormButton,
     showOpenFormButton,
@@ -35,14 +35,14 @@ export default function DonationFormBlockControls({
                 <PanelRow>
                     <SelectControl
                         label={__('Form Format', 'give')}
-                        value={displayStyle}
+                        value={formFormat}
                         options={[
                             {
-                                label: __('Full', 'give'),
-                                value: 'onPage',
+                                label: __('Full Form', 'give'),
+                                value: 'fullForm',
                             },
                             {
-                                label: __('Link', 'give'),
+                                label: __('New Tab', 'give'),
                                 value: 'link',
                             },
                             {
@@ -51,7 +51,7 @@ export default function DonationFormBlockControls({
                             },
                         ]}
                         onChange={(value) => {
-                            setAttributes({displayStyle: value});
+                            setAttributes({formFormat: value});
                         }}
                     />
                 </PanelRow>

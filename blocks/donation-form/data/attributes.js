@@ -33,12 +33,17 @@ const blockAttributes = {
         type: 'string',
         default: 'above',
     },
+    // v3 block attributes
     blockId: {
         type: 'string',
     },
     openFormButton: {
         type: 'string',
         default: 'Donate now',
+    },
+    formFormat: {
+        type: 'string',
+        default: 'fullForm',
     },
 };
 

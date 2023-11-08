@@ -5,27 +5,27 @@ import IframeResizer from 'iframe-resizer-react';
 import '../editor/styles/index.scss';
 
 type DonationFormBlockAppProps = {
-    displayStyle: 'onPage' | 'link' | 'modal' | string;
+    formFormat: 'fullForm' | 'link' | 'modal' | string;
     dataSrc: string;
     embedId: string;
     openFormButton: string;
-    permalink: string;
+    formUrl: string;
 };
 
 /**
  * @unreleased replace display style reveal with new tab link.
  * @since 3.0.0
  */
-function DonationFormBlockApp({displayStyle, dataSrc, embedId, openFormButton, permalink}: DonationFormBlockAppProps) {
-    if (displayStyle === 'link') {
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {
+    if (formFormat === 'link') {
         return (
-            <a className={'givewp-donation-form-link'} href={permalink} target={'_blank'} rel={'noopener noreferrer'}>
+            <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
                 {openFormButton}
             </a>
         );
     }
 
-    if (displayStyle === 'modal') {
+    if (formFormat === 'modal') {
         return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
 
@@ -48,28 +48,28 @@ const roots = document.querySelectorAll('.root-data-givewp-embed');
 roots.forEach((root) => {
     const dataSrc = root.getAttribute('data-src');
     const embedId = root.getAttribute('data-givewp-embed-id');
-    const displayStyle = root.getAttribute('data-display-style');
+    const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
-    const permalink = root.getAttribute('data-permalink');
+    const formUrl = root.getAttribute('data-form-url');
 
     if (createRoot) {
         createRoot(root).render(
             <DonationFormBlockApp
                 openFormButton={openFormButton}
-                displayStyle={displayStyle}
+                formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
-                permalink={permalink}
+                formUrl={formUrl}
             />
         );
     } else {
         render(
             <DonationFormBlockApp
                 openFormButton={openFormButton}
-                displayStyle={displayStyle}
+                formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
-                permalink={permalink}
+                formUrl={formUrl}
             />,
             root
         );

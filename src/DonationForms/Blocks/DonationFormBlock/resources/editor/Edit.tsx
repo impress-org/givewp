@@ -16,7 +16,7 @@ import './styles/index.scss';
  */
 export default function Edit(props) {
     const {attributes, isSelected, setAttributes, className, clientId} = props;
-    const {id, blockId, displayStyle, openFormButton} = attributes;
+    const {id, blockId, formFormat, openFormButton} = attributes;
     const {formOptions, isResolving, forms} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
@@ -32,7 +32,7 @@ export default function Edit(props) {
         }
     }, [isResolving, id, JSON.stringify(formOptions)]);
 
-    const showOpenFormButton = displayStyle === 'link' || displayStyle === 'modal';
+    const showOpenFormButton = formFormat === 'link' || formFormat === 'modal';
     const isv2Form = forms && id && isTemplateForm(forms, id);
     const isv3Form = forms && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
 
@@ -52,7 +52,7 @@ export default function Edit(props) {
                     isResolving={isResolving}
                     formOptions={formOptions}
                     formId={id}
-                    displayStyle={displayStyle}
+                    formFormat={formFormat}
                     setAttributes={setAttributes}
                     openFormButton={openFormButton}
                     showOpenFormButton={showOpenFormButton}
@@ -60,7 +60,7 @@ export default function Edit(props) {
                 <DonationFormBlockPreview
                     clientId={clientId}
                     formId={id}
-                    displayStyle={displayStyle}
+                    formFormat={formFormat}
                     openFormButton={openFormButton}
                 />
             </>

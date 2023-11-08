@@ -38,7 +38,7 @@ class GiveFormShortcode
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . uniqid('', true),
-            'displayStyle' => $displayStyle,
+            '$formFormat' => $displayStyle,
             'openFormButton' => $openFormButton
         ];
 

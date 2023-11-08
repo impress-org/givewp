@@ -7,7 +7,7 @@ import '../styles/index.scss';
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    displayStyle: 'onPage' | 'modal' | 'link' | string;
+    formFormat: 'fullForm' | 'modal' | 'link' | string;
     openFormButton: string;
 }
 
@@ -15,15 +15,15 @@ interface BlockPreviewProps {
  * @unreleased replace reveal for link display.
  * @since 3.0.0
  */
-export default function DonationFormBlockPreview({clientId, formId, displayStyle, openFormButton}: BlockPreviewProps) {
+export default function DonationFormBlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
-    const isModalDisplay = displayStyle === 'modal';
-    const isLinkDisplay = displayStyle === 'link';
+    const isModalDisplay = formFormat === 'modal';
+    const isLinkDisplay = formFormat === 'link';
 
     return isLinkDisplay ? (
         <a
