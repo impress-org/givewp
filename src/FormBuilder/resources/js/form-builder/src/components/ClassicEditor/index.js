@@ -37,7 +37,7 @@ function isTmceEmpty(editor) {
 /**
  * @unreleased
  */
-export default function ClassicEditor({id, label, content, setContent}) {
+export default function ClassicEditor({id, label, content, setContent, rows = 20}) {
     const didMount = useRef(false);
 
     useEffect(() => {
@@ -201,7 +201,7 @@ export default function ClassicEditor({id, label, content, setContent}) {
         <div className={'givewp-classic-editor'}>
             <label>{label}</label>
             <textarea
-                rows={20}
+                rows={rows}
                 id={`editor-${id}`}
                 onChange={(event) => {
                     const editor = window.tinymce.get(`editor-${id}`);
