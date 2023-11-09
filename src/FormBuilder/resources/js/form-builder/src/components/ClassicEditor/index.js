@@ -41,9 +41,6 @@ export default function ClassicEditor({id, label, content, setContent, rows = 20
 
     const [editorContent, setEditorContent] = useState(content);
 
-    console.log('content: ', content);
-    console.log('editorContent: ', editorContent);
-
     useEffect(() => {
         if (!didMount.current) {
             return;
