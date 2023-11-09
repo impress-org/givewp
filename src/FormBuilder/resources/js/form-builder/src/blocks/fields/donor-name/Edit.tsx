@@ -69,7 +69,7 @@ export default function Edit({
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: showHonorific ? '1fr 2fr 2fr' : '1fr 1fr',
+                    gridTemplateColumns: showHonorific && honorificOptions.length > 0 ? '1fr 2fr 2fr' : '1fr 1fr',
                     gap: '15px',
                 }}
             >
