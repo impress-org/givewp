@@ -6,7 +6,6 @@ import {Icon as WPIcon, plus} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
 import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
 import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
-import {useEffect, useState} from 'react';
 
 type EmailTemplateSettingsProps = {
     notification: string;
@@ -25,23 +24,13 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
         status: config.defaultValues.notification ?? 'global',
         email_subject: config.defaultValues.email_subject,
         email_header: config.defaultValues.email_header,
-        email_message: config.defaultValues.email_message,
+        email_message: config.defaultValues.email_message.replace(/\n/g, '<br />'),
         email_content_type: config.defaultValues.email_content_type,
         recipient: [emailDefaultAddress],
         ...emailTemplateOptions[notification],
     };
 
     const recipients = option.recipient ?? [''];
-
-    const [editorContent, setEditorContent] = useState(
-        option?.email_message.replace(/\n/g, '<br />') || config.defaultValues.email_message
-    );
-
-    useEffect(() => {
-        if (option.email_message !== editorContent) {
-            updateEmailTemplateOption('email_message', editorContent);
-        }
-    }, [editorContent]);
 
     const updateEmailTemplateOption = (property, value) => {
         dispatch(
@@ -89,8 +78,8 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                     <ClassicEditor
                         id={'givewp-custom-email-message'}
                         label={__('Email Message', 'give')}
-                        content={editorContent}
-                        setContent={setEditorContent}
+                        content={option.email_message}
+                        setContent={(value) => updateEmailTemplateOption('email_message', value)}
                     />
 
                     <SelectControl

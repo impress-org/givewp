@@ -12,9 +12,8 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/freeform/edit.js
  */
 import {debounce} from '@wordpress/compose';
-import {useEffect, useRef} from '@wordpress/element';
+import {useEffect, useRef, useState} from '@wordpress/element';
 import {BACKSPACE, DELETE, F10, isKeyboardEvent} from '@wordpress/keycodes';
-import React from 'react';
 
 const {wp} = window;
 
@@ -40,30 +39,27 @@ function isTmceEmpty(editor) {
 export default function ClassicEditor({id, label, content, setContent, rows = 20}) {
     const didMount = useRef(false);
 
+    const [editorContent, setEditorContent] = useState(content);
+
     useEffect(() => {
         if (!didMount.current) {
             return;
         }
 
-        const editor = window.tinymce.get(`editor-${id}`);
-        const currentContent = editor?.getContent();
-
-        if (currentContent !== content) {
-            editor.setContent(content || '');
-        }
-    }, [content]);
+        setContent(editorContent);
+    }, [editorContent]);
 
     useEffect(() => {
         didMount.current = true;
 
         function onSetup(editor) {
             let bookmark;
-            if (content) {
+            if (editorContent) {
                 editor.on('loadContent', () => {
-                    if (!!editor._lastChange && editor._lastChange !== content) {
+                    if (!!editor._lastChange && editor._lastChange !== editorContent) {
                         editor.setContent(editor.getContent());
                     } else {
-                        editor.setContent(content);
+                        editor.setContent(editorContent);
                     }
                 });
             }
@@ -97,7 +93,7 @@ export default function ClassicEditor({id, label, content, setContent, rows = 20
 
                 if (newContent !== editor._lastChange) {
                     editor._lastChange = newContent;
-                    setContent(newContent);
+                    setEditorContent(newContent);
                 }
             }, 250);
             editor.on('Paste Change input Undo Redo', debouncedOnChange);
@@ -206,7 +202,7 @@ export default function ClassicEditor({id, label, content, setContent, rows = 20
                 onChange={(event) => {
                     const editor = window.tinymce.get(`editor-${id}`);
                     editor._lastChange = event.target.value;
-                    setContent(event.target.value);
+                    setEditorContent(event.target.value);
                 }}
             />
         </div>
