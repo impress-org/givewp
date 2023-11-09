@@ -13,7 +13,7 @@ class GiveFormShortcode
     public static $instance = 0;
 
     /**
-     * @unreleased include block attributes for shortcode.
+     * @unreleased include v3 block attributes for shortcode.
      * @since 3.1.1 use static instance ID to simulate blockId attribute
      * @since 3.0.0
      */
