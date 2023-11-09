@@ -17,14 +17,6 @@
     },
     "blockId": {
       "type": "string"
-    },
-    "formFormat": {
-      "type": "string",
-      "default": "fullForm"
-    },
-    "openFormButton": {
-      "type": "string",
-      "default": "Donate now"
     }
   },
   "textdomain": "give",

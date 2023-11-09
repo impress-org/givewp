@@ -51,17 +51,18 @@ export default function DonationFormBlockControls({
                             },
                         ]}
                         onChange={(value) => {
-                            setAttributes({formFormat: value});
+                            setAttributes({displayStyle: value});
                         }}
                     />
                 </PanelRow>
+
                 {showOpenFormButton && (
                     <PanelRow>
                         <TextControl
                             label={__('Open Form Button', 'give')}
                             value={openFormButton}
                             onChange={(value) => {
-                                setAttributes({openFormButton: value});
+                                setAttributes({continueButtonTitle: value});
                             }}
                         />
                     </PanelRow>

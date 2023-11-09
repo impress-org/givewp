@@ -51,7 +51,7 @@ roots.forEach((root) => {
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
-    console.log(root);
+
     if (createRoot) {
         createRoot(root).render(
             <DonationFormBlockApp

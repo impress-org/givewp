@@ -28,11 +28,8 @@ class GiveFormShortcode
             return $output;
         }
 
-        $formFormat = (isset($atts['form_format']) && !empty($atts['form_format'])) ? $atts['form_format'] : 'fullForm';
-        $openFormButton = (isset($atts['continue_button_title']) && !empty($atts['continue_button_title'])) ? $atts['continue_button_title'] : __(
-            'Donate now',
-            'give'
-        );
+        $formFormat = $atts['display_style'];
+        $openFormButton = $atts['continue_button_title'];
 
         $controller = new BlockRenderController();
         $blockAttributes = [

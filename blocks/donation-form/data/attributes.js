@@ -15,7 +15,7 @@ const blockAttributes = {
     },
     continueButtonTitle: {
         type: 'string',
-        default: '',
+        default: 'Donate now',
     },
     showTitle: {
         type: 'boolean',
@@ -35,14 +35,6 @@ const blockAttributes = {
     },
     blockId: {
         type: 'string',
-    },
-    openFormButton: {
-        type: 'string',
-        default: 'Donate now',
-    },
-    formFormat: {
-        type: 'string',
-        default: 'fullForm',
     },
 };
 

@@ -16,7 +16,7 @@ import './styles/index.scss';
  */
 export default function Edit(props) {
     const {attributes, isSelected, setAttributes, className, clientId} = props;
-    const {id, blockId, formFormat, openFormButton} = attributes;
+    const {id, blockId, displayStyle, continueButtonTitle} = attributes;
     const {formOptions, isResolving, forms} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
@@ -32,10 +32,9 @@ export default function Edit(props) {
         }
     }, [isResolving, id, JSON.stringify(formOptions)]);
 
-    const showOpenFormButton = formFormat === 'newTab' || formFormat === 'modal';
+    const showOpenFormButton = displayStyle === 'newTab' || displayStyle === 'modal';
     const isv2Form = forms && id && isTemplateForm(forms, id);
     const isv3Form = forms && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
-
     if (isv2Form) {
         return (
             <div className={!!isSelected ? `${className} isSelected` : className}>
@@ -52,16 +51,16 @@ export default function Edit(props) {
                     isResolving={isResolving}
                     formOptions={formOptions}
                     formId={id}
-                    formFormat={formFormat}
+                    formFormat={displayStyle}
                     setAttributes={setAttributes}
-                    openFormButton={openFormButton}
+                    openFormButton={continueButtonTitle}
                     showOpenFormButton={showOpenFormButton}
                 />
                 <DonationFormBlockPreview
                     clientId={clientId}
                     formId={id}
-                    formFormat={formFormat}
-                    openFormButton={openFormButton}
+                    formFormat={displayStyle}
+                    openFormButton={continueButtonTitle}
                 />
             </>
         );
