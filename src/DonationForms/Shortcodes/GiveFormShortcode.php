@@ -37,7 +37,7 @@ class GiveFormShortcode
         $controller = new BlockRenderController();
         $blockAttributes = [
             'formId' => $formId,
-            'blockId' => 'give-form-shortcode-' . uniqid('', true),
+            'blockId' => 'give-form-shortcode-' . self::$instance,
             'formFormat' => $formFormat,
             'openFormButton' => $openFormButton
         ];
