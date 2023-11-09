@@ -11,8 +11,14 @@ export default function OptionsList({
     selectable,
     setOptions,
     defaultControlsTooltip,
+    onRemoveOption,
 }: OptionsListProps) {
     const handleRemoveOption = (index: number) => (): void => {
+        if (onRemoveOption) {
+            onRemoveOption(options[index], index);
+            return;
+        }
+
         options[index].label = '';
         options[index].value = '';
         setOptions(options.filter((option, optionIndex) => optionIndex !== index));
@@ -38,6 +44,11 @@ export default function OptionsList({
     const handleUpdateOptionChecked =
         (index: number, multiple: boolean) =>
         (checked: boolean): void => {
+            // bail if we're trying to uncheck a single option
+            if (!multiple && options[index].checked) {
+                return;
+            }
+
             const updatedOptions = [...options];
             if (!multiple) {
                 updatedOptions.forEach((option, optionIndex) => {
@@ -66,28 +77,28 @@ export default function OptionsList({
             <Droppable droppableId="options">
                 {(provided) => (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {options.map((option: OptionProps, index: number) => (
-                            <Draggable key={index} draggableId={`option-${index}`} index={index}>
-                                {(provided) => (
-                                    <OptionsItem
-                                        {...{
-                                            currency,
-                                            provided,
-                                            option,
-                                            index,
-                                            showValues,
-                                            multiple,
-                                            selectable,
-                                            defaultTooltip: defaultControlsTooltip,
-                                            handleRemoveOption: handleRemoveOption(index),
-                                            handleUpdateOptionLabel: handleUpdateOptionLabel(index),
-                                            handleUpdateOptionValue: handleUpdateOptionValue(index),
-                                            handleUpdateOptionChecked: handleUpdateOptionChecked(index, multiple),
-                                        }}
-                                    />
-                                )}
-                            </Draggable>
-                        ))}
+                        {options.map((option: OptionProps, index: number) => {
+                            const key = option.id ? option.id : index;
+                            return (
+                                <Draggable key={key} draggableId={`option-${key}`} index={index}>
+                                    {(provided) => (
+                                        <OptionsItem
+                                            currency={currency}
+                                            provided={provided}
+                                            option={option}
+                                            showValues={showValues}
+                                            multiple={multiple}
+                                            selectable={selectable}
+                                            defaultTooltip={defaultControlsTooltip}
+                                            handleRemoveOption={handleRemoveOption(index)}
+                                            handleUpdateOptionLabel={handleUpdateOptionLabel(index)}
+                                            handleUpdateOptionValue={handleUpdateOptionValue(index)}
+                                            handleUpdateOptionChecked={handleUpdateOptionChecked(index, multiple)}
+                                        />
+                                    )}
+                                </Draggable>
+                            );
+                        })}
                         {provided.placeholder}
                     </div>
                 )}
