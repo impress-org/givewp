@@ -17,15 +17,16 @@ export default function DonationFormBlockControls({
     formOptions,
     isResolving,
     isLegacyForm,
-}: DonationFormBlockControls) {
+}: any) {
     const {id, displayStyle, continueButtonTitle, showTitle, contentDisplay, showGoal, showContent} = attributes;
-    const showOpenFormButton = displayStyle === ('newTab' || 'modal' || 'reveal');
+    const showOpenFormButton = ['newTab', 'modal', 'reveal'].includes(displayStyle);
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
-        legacyOptions: {label: string; value: string}[]
+        legacy: {label: string; value: string}[],
+        v3: {label: string; value: string}[]
     ) => {
-        return isLegacyForm ? options.concat(legacyOptions) : options;
+        return isLegacyForm ? options.concat(legacy) : options.concat(v3);
     };
 
     return (
@@ -60,10 +61,6 @@ export default function DonationFormBlockControls({
                                     value: 'fullForm',
                                 },
                                 {
-                                    label: __('New Tab', 'give'),
-                                    value: 'newTab',
-                                },
-                                {
                                     label: __('Modal', 'give'),
                                     value: 'modal',
                                 },
@@ -72,6 +69,12 @@ export default function DonationFormBlockControls({
                                 {
                                     label: __('Reveal', 'give'),
                                     value: 'reveal',
+                                },
+                            ],
+                            [
+                                {
+                                    label: __('New Tab', 'give'),
+                                    value: 'newTab',
                                 },
                             ]
                         )}
