@@ -8,6 +8,7 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\Types\Operator;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -275,9 +276,13 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
+            // TODO this would only work if the donation mode is set to test or live - not null
             $query->having('give_donationmeta_attach_meta_mode.meta_value', '=', $testMode ? DonationMode::TEST : DonationMode::LIVE);
+        } elseif ($testMode){
+            $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
-            $query->where('give_donationmeta_attach_meta_mode.meta_value', $testMode ? DonationMode::TEST : DonationMode::LIVE);
+            $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::LIVE);
         }
 
         return [
