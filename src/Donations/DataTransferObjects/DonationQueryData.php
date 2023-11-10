@@ -124,6 +124,7 @@ final class DonationQueryData
     /**
      * Convert data from object to Donation
      *
+     * @unreleased add fallback for donation mode
      * @since 2.23.0 remove parentId property
      * @since 2.22.0 add support for company field
      * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
@@ -139,6 +140,7 @@ final class DonationQueryData
 
         $currency = $donationQueryObject->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()};
         $feeAmountRecovered = $donationQueryObject->{DonationMetaKeys::FEE_AMOUNT_RECOVERED()->getKeyAsCamelCase()};
+        $donationMode = $donationQueryObject->{DonationMetaKeys::MODE()->getKeyAsCamelCase()};
 
         $self->id = (int)$donationQueryObject->id;
         $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID()->getKeyAsCamelCase()};
@@ -158,7 +160,7 @@ final class DonationQueryData
         $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};
-        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::MODE()->getKeyAsCamelCase()});
+        $self->mode = DonationMode::isValid($donationMode) ? new DonationMode($donationMode) : DonationMode::LIVE();
         $self->billingAddress = BillingAddress::fromArray([
             'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY()->getKeyAsCamelCase()},
             'city' => $donationQueryObject->{DonationMetaKeys::BILLING_CITY()->getKeyAsCamelCase()},
