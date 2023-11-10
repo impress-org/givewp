@@ -276,14 +276,24 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
-            // TODO this would only work if the donation mode is set to test or live - not null
-            $query->having('give_donationmeta_attach_meta_mode.meta_value', '=', $testMode ? DonationMode::TEST : DonationMode::LIVE);
+            $query->having(
+                'give_donationmeta_attach_meta_mode.meta_value',
+                '=',
+                $testMode ? DonationMode::TEST : DonationMode::LIVE
+            );
+
+            if (!$testMode) {
+                $query->orHaving('give_donationmeta_attach_meta_mode.meta_value', '=', '');
+            }
         } elseif ($testMode){
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
             $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::LIVE);
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::LIVE)
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
         }
+
+
 
         return [
             $query,
