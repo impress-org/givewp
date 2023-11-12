@@ -6,10 +6,24 @@ import OptionsList from './OptionsList';
 
 import {OptionsPanelProps} from './types';
 
-export default function Options({currency, multiple, selectable = true, options, setOptions, defaultControlsTooltip}: OptionsPanelProps) {
+export default function Options({
+    currency,
+    multiple,
+    selectable = true,
+    options,
+    setOptions,
+    defaultControlsTooltip,
+    onAddOption,
+    onRemoveOption,
+}: OptionsPanelProps) {
     const [showValues, setShowValues] = useState<boolean>(false);
 
     const handleAddOption = (): void => {
+        if (onAddOption) {
+            onAddOption();
+            return;
+        }
+
         setOptions([...options, {label: '', value: '', checked: false}]);
     };
 
@@ -28,15 +42,14 @@ export default function Options({currency, multiple, selectable = true, options,
                 <BaseControl id={'give'}>
                     <OptionsHeader handleAddOption={handleAddOption} />
                     <OptionsList
-                        {...{
-                            currency,
-                            options,
-                            showValues,
-                            multiple,
-                            selectable,
-                            setOptions,
-                            defaultControlsTooltip,
-                        }}
+                        currency={currency}
+                        options={options}
+                        showValues={showValues}
+                        multiple={multiple}
+                        selectable={selectable}
+                        setOptions={setOptions}
+                        defaultControlsTooltip={defaultControlsTooltip}
+                        onRemoveOption={onRemoveOption}
                     />
                 </BaseControl>
             </PanelRow>
