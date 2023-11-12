@@ -5,7 +5,6 @@ namespace Give\Promotions\InPluginUpsells;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Give\Framework\Shims\Shim;
 use Give\Helpers\EnqueueScript;
 
 /**

@@ -5,7 +5,6 @@ namespace Give\Promotions\InPluginUpsells;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Give\Framework\Shims\Shim;
 
 /**
  * @since 2.17.0
