@@ -1,17 +1,23 @@
+import {useState} from 'react';
+import usePostState from '../hooks/usePostState';
+import {dispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import ReactSelect from 'react-select';
 import {reactSelectStyles, reactSelectThemeStyles} from '../styles/reactSelectStyles';
-import ConfirmButton from './ConfirmButton';
-import useFormOptions from '../hooks/useFormOptions';
 import logo from '../images/givewp-logo.svg';
 
 import '../styles/index.scss';
 
+// @ts-ignore
+const savePost = () => dispatch('core/editor').savePost();
+
 /**
  * @unreleased
  */
-export default function DonationFormSelector({defaultFormId, setAttributes}) {
-    const {formOptions, isResolving} = useFormOptions();
+export default function DonationFormSelector({formOptions, isResolving, handleSelect}) {
+    const [selectedForm, setSelectedForm] = useState(null);
+    const form = formOptions.find(form => form.value == selectedForm);
+    const {isSaving, isDisabled} = usePostState();
 
     return (
         <div className="givewp-donation-form-selector">
@@ -24,11 +30,11 @@ export default function DonationFormSelector({defaultFormId, setAttributes}) {
                 <ReactSelect
                     name="formId"
                     inputId="formId"
-                    value={defaultFormId}
+                    value={form}
                     placeholder={isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')}
                     onChange={(option) => {
                         if (option) {
-                            setAttributes({id: Number(option.value)});
+                            setSelectedForm(option.value);
                         }
                     }}
                     noOptionsMessage={() => <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>}
@@ -39,7 +45,18 @@ export default function DonationFormSelector({defaultFormId, setAttributes}) {
                     styles={reactSelectStyles}
                 />
             </div>
-            <ConfirmButton formId={defaultFormId} />
+
+            <button
+                className="givewp-donation-form-selector__submit"
+                type="button"
+                disabled={isSaving || isDisabled || !selectedForm}
+                onClick={() => {
+                    handleSelect(selectedForm);
+                    savePost();
+                }}
+            >
+                {__('Confirm', 'give')}
+            </button>
         </div>
     );
 }

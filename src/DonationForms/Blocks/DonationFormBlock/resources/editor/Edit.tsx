@@ -1,4 +1,6 @@
-import {useCallback, useEffect, useState} from '@wordpress/element';
+import {useCallback, useEffect, useState} from 'react';
+import {useBlockProps} from '@wordpress/block-editor';
+import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
 import DonationFormSelector from './components/DonationFormSelector';
 import useFormOptions from './hooks/useFormOptions';
@@ -11,10 +13,15 @@ import './styles/index.scss';
  * @unreleased update to handle v2 forms.
  * @since 3.0.0
  */
-export default function Edit(props) {
-    const {attributes, isSelected, setAttributes, className, clientId} = props;
+export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
     const {id, blockId, displayStyle, continueButtonTitle} = attributes;
     const {formOptions, isResolving} = useFormOptions();
+    const [showPreview, setShowPreview] = useState<boolean>(!!id);
+
+    const handleSelect = id => {
+        setShowPreview(true);
+        setAttributes({id});
+    }
 
     useEffect(() => {
         if (!blockId) {
@@ -23,50 +30,52 @@ export default function Edit(props) {
     }, []);
 
     const [
-        defaultFormId,
         isLegacyForm,
         isLegacyTemplate
-    ] = (useCallback(() => {
+    ] = (() => {
         const form = formOptions.find(form => form.value == id)
 
         return [
-            form?.value,
             form?.isLegacyForm,
             form?.isLegacyTemplate
         ]
-    }, [id]))();
-
-    if (!id) {
-        return (
-            <DonationFormSelector
-                defaultFormId={defaultFormId}
-                setAttributes={setAttributes}
-            />
-        )
-    }
+    })();
 
     return (
-        <>
-            <DonationFormBlockControls
-                attributes={attributes}
-                setAttributes={setAttributes}
-                formOptions={formOptions}
-                isResolving={isResolving}
-                isLegacyTemplate={isLegacyTemplate}
-            />
+        <div{...useBlockProps()}>
+            {id && showPreview ? (
+                <>
+                    <DonationFormBlockControls
+                        attributes={attributes}
+                        setAttributes={setAttributes}
+                        formOptions={formOptions}
+                        isResolving={isResolving}
+                        isLegacyTemplate={isLegacyTemplate}
+                    />
 
-            {isLegacyForm ? (
-                <div className={!!isSelected ? `${className} isSelected` : className}>
-                    <ServerSideRender block="give/donation-form" attributes={attributes} />
-                </div>
+                    {isLegacyForm ? (
+                        <div className={!!isSelected ? `${className} isSelected` : className}>
+                            <ServerSideRender block="give/donation-form" attributes={attributes} />
+                        </div>
+                    ) : (
+                        <DonationFormBlockPreview
+                            clientId={clientId}
+                            formId={id}
+                            formFormat={displayStyle}
+                            openFormButton={continueButtonTitle}
+                        />
+                    )}
+                </>
             ) : (
-                <DonationFormBlockPreview
-                    clientId={clientId}
-                    formId={id}
-                    formFormat={displayStyle}
-                    openFormButton={continueButtonTitle}
+                <DonationFormSelector
+                    formOptions={formOptions}
+                    isResolving={isResolving}
+                    handleSelect={handleSelect}
                 />
             )}
-        </>
-    );
+
+        </div>
+
+    )
+
 }
