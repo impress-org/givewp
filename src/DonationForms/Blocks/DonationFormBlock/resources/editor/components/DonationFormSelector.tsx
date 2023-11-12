@@ -10,7 +10,7 @@ import '../styles/index.scss';
 /**
  * @unreleased
  */
-export default function DonationFormSelector({getDefaultFormId, id, setShowPreview, setAttributes}) {
+export default function DonationFormSelector({defaultFormId, id, setShowPreview, setAttributes}) {
     const {formOptions, isResolving} = useFormOptions();
 
     return (
@@ -24,7 +24,7 @@ export default function DonationFormSelector({getDefaultFormId, id, setShowPrevi
                 <ReactSelect
                     name="formId"
                     inputId="formId"
-                    value={getDefaultFormId()}
+                    value={defaultFormId}
                     placeholder={isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')}
                     onChange={(option) => {
                         if (option) {
