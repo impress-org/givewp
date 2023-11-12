@@ -23,78 +23,51 @@ export default function Edit(props) {
         }
     }, []);
 
-    const getDefaultFormId = useCallback(() => {
-        if (!isResolving && formOptions.length > 0) {
-            return id && formOptions?.find(({value}) => value === id);
-        }
-    }, [isResolving, id, JSON.stringify(formOptions)]);
+    const [
+        defaultFormId,
+        isLegacyForm,
+        isLegacyTemplate
+    ] = (useCallback(() => {
+        const form = formOptions.find(form => form.value == id)
 
-    // Todo: combine & return form.template / use pageSlug for new tab linke
-    const isLegacyForm = () => {
-        if (!isResolving && formOptions.length > 0) {
-            const data = forms.find((form) => parseInt(form.id) === parseInt(id));
+        return [
+            form?.value,
+            form?.isLegacyForm,
+            form?.isLegacyTemplate
+        ]
+    }, [id]))();
 
-            return (
-                data &&
-                data.excerpt.rendered !== '<p>[]</p>\n' &&
-                (!data.formTemplate || data.formTemplate === 'legacy')
-            );
-        }
-    };
-
-    const isTemplateForm = (forms, id) => {
-        if (forms) {
-            const data = forms.find((form) => parseInt(form.id) === parseInt(id));
-
-            return data && data.formTemplate !== '';
-        }
-
-        return false;
-    };
-    console.error(forms);
-    const isv3Form = formOptions && id && !isTemplateForm(forms, id) && !isLegacyForm(forms, id);
-    const isv2Form = formOptions && id && isTemplateForm(forms, id);
-
-    if (id) {
-        return (
-            <>
-                <DonationFormBlockControls
-                    attributes={attributes}
+    return (
+        <>
+            {!id && !showPreview && (
+                <DonationFormSelector
+                    id={id}
+                    defaultFormId={defaultFormId}
+                    setShowPreview={setShowPreview}
                     setAttributes={setAttributes}
-                    formOptions={formOptions}
-                    isResolving={isResolving}
-                    isLegacyForm={isLegacyForm(forms, id)}
                 />
+            )}
 
-                {isv2Form && (
-                    <div className={!!isSelected ? `${className} isSelected` : className}>
-                        <ServerSideRender block="give/donation-form" attributes={attributes} />
-                    </div>
-                )}
-
-                {isv3Form && (
-                    <DonationFormBlockPreview
-                        clientId={clientId}
-                        formId={id}
-                        formFormat={displayStyle}
-                        openFormButton={continueButtonTitle}
-                        pageSlug={formOptions.pageSlug}
-                    />
-                )}
-            </>
-        );
-    }
-
-    if (!id && !showPreview) {
-        return (
-            <DonationFormSelector
-                id={id}
-                getDefaultFormId={getDefaultFormId}
-                setShowPreview={setShowPreview}
+            <DonationFormBlockControls
+                attributes={attributes}
                 setAttributes={setAttributes}
+                formOptions={formOptions}
+                isResolving={isResolving}
+                isLegacyTemplate={isLegacyTemplate}
             />
-        );
-    }
 
-    return false;
+            {isLegacyForm ? (
+                <div className={!!isSelected ? `${className} isSelected` : className}>
+                    <ServerSideRender block="give/donation-form" attributes={attributes} />
+                </div>
+            ) : (
+                <DonationFormBlockPreview
+                    clientId={clientId}
+                    formId={id}
+                    formFormat={displayStyle}
+                    openFormButton={continueButtonTitle}
+                />
+            )}
+        </>
+    );
 }
