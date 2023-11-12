@@ -7,7 +7,7 @@ import '../styles/index.scss';
 // @ts-ignore
 const savePost = () => dispatch('core/editor').savePost();
 
-export default function ConfirmButton({formId, enablePreview}) {
+export default function ConfirmButton({formId}) {
     const {isSaving, isDisabled} = usePostState();
 
     return (
@@ -15,10 +15,7 @@ export default function ConfirmButton({formId, enablePreview}) {
             className="givewp-donation-form-selector__submit"
             type="button"
             disabled={isSaving || isDisabled || !formId}
-            onClick={() => {
-                enablePreview();
-                return savePost();
-            }}
+            onClick={savePost}
         >
             {__('Confirm', 'give')}
         </button>

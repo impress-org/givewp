@@ -15,7 +15,6 @@ export default function Edit(props) {
     const {attributes, isSelected, setAttributes, className, clientId} = props;
     const {id, blockId, displayStyle, continueButtonTitle} = attributes;
     const {formOptions, isResolving} = useFormOptions();
-    const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
     useEffect(() => {
         if (!blockId) {
@@ -41,7 +40,6 @@ export default function Edit(props) {
         return (
             <DonationFormSelector
                 defaultFormId={defaultFormId}
-                setShowPreview={setShowPreview}
                 setAttributes={setAttributes}
             />
         )
