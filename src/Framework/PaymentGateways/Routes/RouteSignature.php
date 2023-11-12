@@ -2,8 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
-use Give\Framework\Shims\Shim;
-
 /**
  * Route signature for creating secure gateway route methods
  *
