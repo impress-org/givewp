@@ -8,7 +8,7 @@ interface DonationFormBlockControls {
     setAttributes: (newAttributes: Record<string, any>) => void;
     formOptions: Option[];
     isResolving: boolean;
-    isLegacyForm: boolean;
+    isLegacyTemplate: boolean;
 }
 
 export default function DonationFormBlockControls({
@@ -16,7 +16,7 @@ export default function DonationFormBlockControls({
     setAttributes,
     formOptions,
     isResolving,
-    isLegacyForm,
+    isLegacyTemplate,
 }: any) {
     const {id, displayStyle, continueButtonTitle, showTitle, contentDisplay, showGoal, showContent} = attributes;
     const showOpenFormButton = ['newTab', 'modal', 'reveal'].includes(displayStyle);
@@ -26,7 +26,7 @@ export default function DonationFormBlockControls({
         legacy: {label: string; value: string}[],
         v3: {label: string; value: string}[]
     ) => {
-        return isLegacyForm ? options.concat(legacy) : options.concat(v3);
+        return isLegacyTemplate ? options.concat(legacy) : options.concat(v3);
     };
 
     return (
@@ -95,7 +95,7 @@ export default function DonationFormBlockControls({
                     </PanelRow>
                 )}
 
-                {isLegacyForm && (
+                {isLegacyTemplate && (
                     <>
                         <PanelRow>
                             <ToggleControl
@@ -150,7 +150,7 @@ export default function DonationFormBlockControls({
                     <PanelRow>
                         <ExternalLink
                             href={
-                                isLegacyForm
+                                isLegacyTemplate
                                     ? `/wp-admin/post.php?post=${id}&action=edit`
                                     : `/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${id}`
                             }
