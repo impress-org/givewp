@@ -10,7 +10,7 @@ import '../styles/index.scss';
 /**
  * @unreleased
  */
-export default function DonationFormSelector({defaultFormId, id, setShowPreview, setAttributes}) {
+export default function DonationFormSelector({defaultFormId, setShowPreview, setAttributes}) {
     const {formOptions, isResolving} = useFormOptions();
 
     return (
@@ -39,7 +39,7 @@ export default function DonationFormSelector({defaultFormId, id, setShowPreview,
                     styles={reactSelectStyles}
                 />
             </div>
-            <ConfirmButton formId={id} enablePreview={() => setShowPreview(true)} />
+            <ConfirmButton formId={defaultFormId} enablePreview={() => setShowPreview(true)} />
         </div>
     );
 }

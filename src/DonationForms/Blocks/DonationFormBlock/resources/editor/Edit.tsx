@@ -37,17 +37,18 @@ export default function Edit(props) {
         ]
     }, [id]))();
 
+    if (!id) {
+        return (
+            <DonationFormSelector
+                defaultFormId={defaultFormId}
+                setShowPreview={setShowPreview}
+                setAttributes={setAttributes}
+            />
+        )
+    }
+
     return (
         <>
-            {!id && !showPreview && (
-                <DonationFormSelector
-                    id={id}
-                    defaultFormId={defaultFormId}
-                    setShowPreview={setShowPreview}
-                    setAttributes={setAttributes}
-                />
-            )}
-
             <DonationFormBlockControls
                 attributes={attributes}
                 setAttributes={setAttributes}
