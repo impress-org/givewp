@@ -7,7 +7,7 @@ import '../styles/index.scss';
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: 'fullForm' | 'modal' | 'newTab' | string;
+    formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
     openFormButton: string;
 }
 
@@ -22,7 +22,7 @@ export default function DonationFormBlockPreview({clientId, formId, formFormat, 
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
-    const isModalDisplay = formFormat === 'modal';
+    const isModalDisplay = formFormat === 'modal' || formFormat === 'reveal';
     const isNewTabDisplay = formFormat === 'newTab';
 
     return isNewTabDisplay ? (

@@ -27,6 +27,10 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         if (!blockId) {
             setAttributes({blockId: clientId});
         }
+
+        if (!isLegacyForm && displayStyle === 'reveal') {
+            setAttributes({displayStyle: 'modal'});
+        }
     }, []);
 
     const [isLegacyForm, isLegacyTemplate] = (() => {

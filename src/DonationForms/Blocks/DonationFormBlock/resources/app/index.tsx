@@ -25,7 +25,7 @@ function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, for
         );
     }
 
-    if (formFormat === 'modal') {
+    if (formFormat === 'modal' || formFormat === 'reveal') {
         return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
 
