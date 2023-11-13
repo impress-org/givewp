@@ -420,10 +420,21 @@ class AdvancedCardFields extends PaymentMethod {
 		const errorStringByGroup = {};
 		const errors = [];
 
-		if ( ! Object.values( error ).length ) {
-			Give.form.fn.resetDonationButton( this.jQueryForm );
-			throw window.givePayPalCommerce.genericDonorErrorMessage;
-		}
+        if (! error ) {
+            errors.push({message: window.givePayPalCommerce.genericDonorErrorMessage});
+            Give.form.fn.resetDonationButton(this.jQueryForm);
+            Give.form.fn.addErrorsAndResetDonationButton(this.jQueryForm, Give.form.fn.getErrorHTML(errors));
+            return;
+
+        } else if (typeof error === 'string') {
+            errors.push({message: error});
+            Give.form.fn.resetDonationButton(this.jQueryForm);
+            Give.form.fn.addErrorsAndResetDonationButton(
+                this.jQueryForm,
+                Give.form.fn.getErrorHTML(errors)
+            );
+            return;
+        }
 
 		// Group credit card error notices.
 		error.details.forEach( detail => {

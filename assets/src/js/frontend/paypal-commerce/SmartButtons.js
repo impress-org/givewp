@@ -247,7 +247,7 @@ class SmartButtons extends PaymentMethod {
 
 			this.displayErrorMessage( responseJson.data.error, true );
 
-			errorDetail = responseJson.data.error.details[ 0 ];
+			errorDetail = responseJson.data.error?.details?.[0];
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 				// Recoverable state, see: "Handle Funding Failures"
 				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
