@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -18,10 +18,10 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
-    const handleSelect = id => {
+    const handleSelect = (id) => {
         setShowPreview(true);
         setAttributes({id});
-    }
+    };
 
     useEffect(() => {
         if (!blockId) {
@@ -29,20 +29,14 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         }
     }, []);
 
-    const [
-        isLegacyForm,
-        isLegacyTemplate
-    ] = (() => {
-        const form = formOptions.find(form => form.value == id)
+    const [isLegacyForm, isLegacyTemplate] = (() => {
+        const form = formOptions.find((form) => form.value == id);
 
-        return [
-            form?.isLegacyForm,
-            form?.isLegacyTemplate
-        ]
+        return [form?.isLegacyForm, form?.isLegacyTemplate];
     })();
 
     return (
-        <div{...useBlockProps()}>
+        <div {...useBlockProps()}>
             {id && showPreview ? (
                 <>
                     <DonationFormBlockControls
@@ -51,6 +45,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                         formOptions={formOptions}
                         isResolving={isResolving}
                         isLegacyTemplate={isLegacyTemplate}
+                        isLegacyForm={isLegacyForm}
                     />
 
                     {isLegacyForm ? (
@@ -67,15 +62,8 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                     )}
                 </>
             ) : (
-                <DonationFormSelector
-                    formOptions={formOptions}
-                    isResolving={isResolving}
-                    handleSelect={handleSelect}
-                />
+                <DonationFormSelector formOptions={formOptions} isResolving={isResolving} handleSelect={handleSelect} />
             )}
-
         </div>
-
-    )
-
+    );
 }
