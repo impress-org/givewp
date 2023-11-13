@@ -28,6 +28,12 @@ export default function SettingsGroup({item, title, parentItem = null, children}
         }
     }, []);
 
+    useEffect(() => {
+        if (isActive && content !== children) {
+            dispatch(setContent(children));
+        }
+    }, [children]);
+
     if (hasNestedMenu) {
         children = Children.map(children, (child) => {
             return cloneElement(child, {
