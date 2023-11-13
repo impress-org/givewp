@@ -156,7 +156,7 @@ export default function DonationFormBlockControls({
                     <PanelRow>
                         <ExternalLink
                             href={
-                                isLegacyTemplate
+                                isLegacyForm
                                     ? `/wp-admin/post.php?post=${id}&action=edit`
                                     : `/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${id}`
                             }
