@@ -289,7 +289,7 @@ class AjaxRequestHandler
 
         try {
             $result = give(PayPalOrder::class)->approveOrder($orderId);
-            $this->validateApproveOrderResponse($result);
+            $this->returnErrorOnFailedApproveOrderResponse($result);
             wp_send_json_success(['order' => $result,]);
         } catch (\Exception $ex) {
             wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
@@ -384,17 +384,17 @@ class AjaxRequestHandler
     }
 
     /**
-     * This function should validate PayPal ApproveOrder response and returns error if any.
+     * This function should validate PayPal ApproveOrder response and respond to ajax request on error.
      *
      * @unreleased
      */
-    private function validateApproveOrderResponse(\stdClass $response)
+    private function returnErrorOnFailedApproveOrderResponse(\stdClass $response)
     {
         // Get capture.
         // ref - https://developer.paypal.com/docs/api/orders/v2/#orders_capture
         $capture = $response->purchase_units[0]->payments->captures[0];
 
-        // Check if capture status is not failed or declined.
+        // Check if capture status is failed or declined.
         if (
             in_array($capture->status, ['FAILED', 'DECLINED'])
             && property_exists($capture, 'processor_response')
@@ -402,7 +402,7 @@ class AjaxRequestHandler
             $error = ProcessorResponseError::getError($capture->processor_response);
 
             if ($error) {
-                throw new \Exception($error);
+                wp_send_json_error(['error' => $error]);
             }
         }
     }
