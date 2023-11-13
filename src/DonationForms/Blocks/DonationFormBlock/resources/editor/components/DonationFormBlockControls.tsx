@@ -21,8 +21,8 @@ export default function DonationFormBlockControls({
     isLegacyForm,
 }: DonationFormBlockControls) {
     const {id, displayStyle, continueButtonTitle, showTitle, contentDisplay, showGoal, showContent} = attributes;
-    const showOpenFormButton = ['newTab', 'modal', 'reveal'].includes(displayStyle);
     const hasFormFormat = isLegacyTemplate || !isLegacyForm;
+    const showOpenFormButton = hasFormFormat && ['newTab', 'modal', 'reveal'].includes(displayStyle);
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
