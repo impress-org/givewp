@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 
 import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import FormGridSettings from './form-grid';
@@ -7,6 +8,16 @@ import RegistrationSettings from './registration';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
 
 export default function FormGeneralSettingsGroup() {
+    const formGridDescription = createInterpolateElement(
+        __(
+            'The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode. <a>Learn more about the Form Grid</a>',
+            'give'
+        ),
+        {
+            a: <a href="https://docs.givewp.com/form-grid-addon" target="_blank" />,
+        }
+    );
+
     return (
         <SettingsGroup item="item-general" title={__('General', 'give')}>
             <SettingsSection
@@ -24,13 +35,7 @@ export default function FormGeneralSettingsGroup() {
             >
                 <RegistrationSettings />
             </SettingsSection>
-            <SettingsSection
-                title={__('Form Grid', 'give')}
-                description={__(
-                    'The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode. Learn more about the Form Grid',
-                    'give'
-                )}
-            >
+            <SettingsSection title={__('Form Grid', 'give')} description={formGridDescription}>
                 <FormGridSettings />
             </SettingsSection>
         </SettingsGroup>

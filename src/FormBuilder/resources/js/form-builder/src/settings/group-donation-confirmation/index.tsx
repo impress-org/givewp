@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
 import DonationConfirmation from './donation-confirmation';
@@ -10,6 +11,16 @@ export default function FormDonationConfirmationSettingsGroup() {
         settings: {receiptHeading, receiptDescription},
     } = useFormState();
     const dispatch = useFormStateDispatch();
+
+    const templateTagsDescription = createInterpolateElement(
+        __(
+            'Available template tags for this email. HTML is accepted. <a>See our documentation</a> for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
+            'give'
+        ),
+        {
+            a: <a href="https://givewp.com/documentation/core/settings/emails/email-tags/" target="_blank" />,
+        }
+    );
 
     return (
         <SettingsGroup item="item-donation-confirmation" title={__('Donation Confirmation', 'give')}>
@@ -33,13 +44,7 @@ export default function FormDonationConfirmationSettingsGroup() {
                     onChange={(receiptDescription) => dispatch(setFormSettings({receiptDescription}))}
                 />
             </SettingsSection>
-            <SettingsSection
-                title={__('Template tags', 'give')}
-                description={__(
-                    'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
-                    'give'
-                )}
-            >
+            <SettingsSection title={__('Template tags', 'give')} description={templateTagsDescription}>
                 <TemplateTags />
             </SettingsSection>
         </SettingsGroup>

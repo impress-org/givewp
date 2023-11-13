@@ -1,6 +1,6 @@
 import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import CopyToClipboardButton from './components/copy-to-clipboard-button';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
@@ -12,6 +12,7 @@ import SettingsSection from '@givewp/form-builder/components/canvas/FormSettings
 
 export default function EmailTemplateOptions({notification}) {
     const [showPreview, setShowPreview] = useState<boolean>(false);
+    const templateTagsRef = useRef<HTMLUListElement>(null);
 
     const {
         settings: {emailTemplateOptions},
@@ -27,7 +28,7 @@ export default function EmailTemplateOptions({notification}) {
             'give'
         ),
         {
-            a: <a href="https://make.wordpress.org" target="_blank" />,
+            a: <a href="https://givewp.com/documentation/core/settings/emails/email-tags/" target="_blank" />,
         }
     );
 
@@ -49,7 +50,7 @@ export default function EmailTemplateOptions({notification}) {
             {!showPreview && (
                 <>
                     <div className={'email-settings'}>
-                        <EmailTemplateSettings notification={notification} />
+                        <EmailTemplateSettings notification={notification} templateTagsRef={templateTagsRef} />
 
                         {selectedNotificationStatus === 'enabled' && (
                             <>
@@ -70,15 +71,10 @@ export default function EmailTemplateOptions({notification}) {
 
                                 <SettingsSection
                                     title={__('Template tags', 'give')}
-                                    description={__(
-                                        'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails.',
-                                        'give'
-                                    )}
+                                    description={templateTagsDescription}
                                 >
                                     <div className={'givewp-form-settings__section__body__extra-gap'}>
-                                        <h2 className={'email-settings__header'}>{__('Template tags', 'give')}</h2>
-                                        <p className={'email-settings__description'}>{templateTagsDescription}</p>
-                                        <ul className={'email-settings-template-tags'}>
+                                        <ul className={'email-settings-template-tags'} ref={templateTagsRef}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
                                                     <strong>{'{' + tag.tag + '}'}</strong>

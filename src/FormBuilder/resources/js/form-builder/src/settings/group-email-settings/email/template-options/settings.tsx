@@ -1,6 +1,6 @@
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl} from '@wordpress/components';
 import {Icon as WPIcon, plus} from '@wordpress/icons';
 
 import {__} from '@wordpress/i18n';
@@ -10,9 +10,12 @@ import SettingsSection from '@givewp/form-builder/components/canvas/FormSettings
 
 type EmailTemplateSettingsProps = {
     notification: string;
+    templateTagsRef: {
+        current: HTMLUListElement;
+    };
 };
 
-const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
+const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSettingsProps) => {
     const dispatch = useFormStateDispatch();
     const {
         settings: {emailTemplateOptions},
@@ -75,39 +78,62 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                         description={__('Set the content structure for the email', 'give')}
                     >
                         <div className={'givewp-form-settings__section__body__extra-gap'}>
-                            <TextControl
-                                label={__('Email Subject', 'givewp')}
-                                help={__('Enter the email subject line', 'givewp')}
-                                onChange={(value) => updateEmailTemplateOption('email_subject', value)}
-                                value={option.email_subject || config.defaultValues.email_subject}
-                            />
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Email Subject', 'givewp')}
+                                    help={__('Enter the email subject line', 'givewp')}
+                                    onChange={(value) => updateEmailTemplateOption('email_subject', value)}
+                                    value={option.email_subject || config.defaultValues.email_subject}
+                                />
+                            </PanelRow>
 
-                            <TextControl
-                                label={__('Email Header', 'givewp')}
-                                help={__('Enter the email header that appears at the top of the email', 'givewp')}
-                                onChange={(value) => updateEmailTemplateOption('email_header', value)}
-                                // @ts-ignore
-                                value={option.email_header || config.defaultValues.email_header}
-                            />
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Email Header', 'givewp')}
+                                    help={__('Enter the email header that appears at the top of the email', 'givewp')}
+                                    onChange={(value) => updateEmailTemplateOption('email_header', value)}
+                                    // @ts-ignore
+                                    value={option.email_header || config.defaultValues.email_header}
+                                />
+                            </PanelRow>
 
-                            <ClassicEditor
-                                id={'give-email-template-message__' + notification}
-                                label={__('Email Message', 'give')}
-                                content={option.email_message}
-                                setContent={(value) => updateEmailTemplateOption('email_message', value)}
-                            />
+                            <PanelRow>
+                                <SelectControl
+                                    className={'select-control--email-options'}
+                                    onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
+                                    label={__('Email content type', 'givewp')}
+                                    help={__('Choose email type', 'givewp')}
+                                    value={option.email_content_type || config.defaultValues.email_content_type}
+                                    options={[
+                                        {label: __('HTML', 'givewp'), value: 'text/html'},
+                                        {label: __('Plain', 'givewp'), value: 'text/plain'},
+                                    ]}
+                                />
+                            </PanelRow>
 
-                            <SelectControl
-                                className={'select-control--email-options'}
-                                onChange={(value) => updateEmailTemplateOption('email_content_type', value)}
-                                label={__('Email content type', 'givewp')}
-                                help={__('Choose email type', 'givewp')}
-                                value={option.email_content_type || config.defaultValues.email_content_type}
-                                options={[
-                                    {label: __('HTML', 'givewp'), value: 'text/html'},
-                                    {label: __('Plain', 'givewp'), value: 'text/plain'},
-                                ]}
-                            />
+                            <PanelRow>
+                                <BaseControl label={__('Email message', 'give')}>
+                                    <ClassicEditor
+                                        key={'give-email-template-message__' + notification}
+                                        id={'give-email-template-message__' + notification}
+                                        content={option.email_message}
+                                        setContent={(value) => updateEmailTemplateOption('email_message', value)}
+                                        rows={10}
+                                    />
+                                    <Button
+                                        variant={'secondary'}
+                                        onClick={() => templateTagsRef.current.scrollIntoView({behavior: 'smooth'})}
+                                        style={{
+                                            width: '100%',
+                                            marginTop: '0.5rem',
+                                            height: '2.5rem',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {__('View template tags', 'give')}
+                                    </Button>
+                                </BaseControl>
+                            </PanelRow>
                         </div>
                     </SettingsSection>
                     <SettingsSection

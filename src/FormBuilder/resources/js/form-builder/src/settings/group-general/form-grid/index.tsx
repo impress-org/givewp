@@ -1,11 +1,10 @@
 import {__} from '@wordpress/i18n';
-import {Button, ExternalLink, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {closeSmall} from '@wordpress/icons';
 
 const FormGridSettings = () => {
     const {
-        settings: {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText, formGridHideDocumentationLink},
+        settings: {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -53,46 +52,6 @@ const FormGridSettings = () => {
                             }
                         />
                     </PanelRow>
-                </div>
-            )}
-
-            {!formGridHideDocumentationLink && (
-                <div className={'givewp-form-settings__section__body__extra-gap'}>
-                    <div
-                        style={{
-                            position: 'relative',
-                            backgroundColor: 'var(--givewp-grey-25)',
-                            padding: 'var(--givewp-spacing-4)',
-                        }}
-                    >
-                        <h3
-                            style={{
-                                fontSize: 'var(--givewp-font-size-headline-sm)',
-                                marginBottom: 'var(--givewp-spacing-2)',
-                            }}
-                        >
-                            {__('What is the Form Grid?', 'give')}
-                        </h3>
-                        <p>
-                            {__(
-                                'The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.',
-                                'give'
-                            )}
-                        </p>
-                        <ExternalLink href={'https://docs.givewp.com/form-grid-addon'}>
-                            {__('Learn more about the Form Grid', 'give')}
-                        </ExternalLink>
-                        <Button
-                            icon={closeSmall}
-                            aria-label={__('Dismiss', 'give')}
-                            style={{
-                                position: 'absolute',
-                                top: 'var(--givewp-spacing-2)',
-                                right: 'var(--givewp-spacing-2)',
-                            }}
-                            onClick={() => dispatch(setFormSettings({formGridHideDocumentationLink: true}))}
-                        ></Button>
-                    </div>
                 </div>
             )}
         </>
