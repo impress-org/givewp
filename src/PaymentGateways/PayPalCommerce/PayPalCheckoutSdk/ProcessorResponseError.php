@@ -12,9 +12,14 @@ namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
  */
 class ProcessorResponseError
 {
+    /**
+     * This function decode the error code from PayPal.
+     * @unreleased
+     * @param \stdClass $processorResponse
+     */
     public static function getError(\stdClass $processorResponse): string
     {
-        $error = '';
+        $errors = [];
         $self = new self();
 
         $avsCode = $processorResponse->avs_code ?? '';
@@ -33,31 +38,31 @@ class ProcessorResponseError
             property_exists($processorResponse, 'avs_code')
             && array_key_exists($avsCode, $errorCode['avsCode'])
         ) {
-            $error .= $errorCode['avsCode'][$avsCode];
+            $errors[] = $errorCode['avsCode'][$avsCode];
         }
 
         if (
             property_exists($processorResponse, 'cvv_code')
             && array_key_exists($cvvCode, $errorCode['cvvCode'])
         ) {
-            $error .= $errorCode['cvvCode'][$avsCode];
+            $errors[] = $errorCode['cvvCode'][$avsCode];
         }
 
         if (
             property_exists($processorResponse, 'response_code')
             && array_key_exists($responseCode, $errorCode['responseCode'])
         ) {
-            $error .= $errorCode['responseCode'][$responseCode];
+            $errors[] = $errorCode['responseCode'][$responseCode];
         }
 
         if (
             property_exists($processorResponse, 'payment_advice_code')
             && array_key_exists($paymentAdviceCode, $errorCode['paymentAdviceCode'])
         ) {
-            $error .= $errorCode['paymentAdviceCode'][$paymentAdviceCode];
+            $errors[] = $errorCode['paymentAdviceCode'][$paymentAdviceCode];
         }
 
-        return $error;
+        return implode(' ', $errors);
     }
 
     /**
