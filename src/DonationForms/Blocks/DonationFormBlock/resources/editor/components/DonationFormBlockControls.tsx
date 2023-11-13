@@ -4,11 +4,12 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {Option} from '../types';
 
 interface DonationFormBlockControls {
-    attributes;
+    attributes: Readonly<any>;
     setAttributes: (newAttributes: Record<string, any>) => void;
     formOptions: Option[];
     isResolving: boolean;
     isLegacyTemplate: boolean;
+    isLegacyForm: boolean;
 }
 
 export default function DonationFormBlockControls({
@@ -17,9 +18,11 @@ export default function DonationFormBlockControls({
     formOptions,
     isResolving,
     isLegacyTemplate,
-}: any) {
+    isLegacyForm,
+}: DonationFormBlockControls) {
     const {id, displayStyle, continueButtonTitle, showTitle, contentDisplay, showGoal, showContent} = attributes;
     const showOpenFormButton = ['newTab', 'modal', 'reveal'].includes(displayStyle);
+    const hasFormFormat = isLegacyTemplate || !isLegacyForm;
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
@@ -28,7 +31,6 @@ export default function DonationFormBlockControls({
     ) => {
         return isLegacyTemplate ? options.concat(legacy) : options.concat(v3);
     };
-
     return (
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
@@ -50,39 +52,42 @@ export default function DonationFormBlockControls({
                         />
                     )}
                 </PanelRow>
-                <PanelRow>
-                    <SelectControl
-                        label={__('Form Format', 'give')}
-                        value={displayStyle}
-                        options={displayStyleOptions(
-                            [
-                                {
-                                    label: __('Full Form', 'give'),
-                                    value: 'fullForm',
-                                },
-                                {
-                                    label: __('Modal', 'give'),
-                                    value: 'modal',
-                                },
-                            ],
-                            [
-                                {
-                                    label: __('Reveal', 'give'),
-                                    value: 'reveal',
-                                },
-                            ],
-                            [
-                                {
-                                    label: __('New Tab', 'give'),
-                                    value: 'newTab',
-                                },
-                            ]
-                        )}
-                        onChange={(value) => {
-                            setAttributes({displayStyle: value});
-                        }}
-                    />
-                </PanelRow>
+                {hasFormFormat && (
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Form Format', 'give')}
+                            value={displayStyle}
+                            options={displayStyleOptions(
+                                [
+                                    {
+                                        label: __('Full Form', 'give'),
+                                        value: 'fullForm',
+                                    },
+                                    {
+                                        label: __('Modal', 'give'),
+                                        value: 'modal',
+                                    },
+                                ],
+                                [
+                                    {
+                                        label: __('Reveal', 'give'),
+                                        value: 'reveal',
+                                    },
+                                ],
+                                [
+                                    {
+                                        label: __('New Tab', 'give'),
+                                        value: 'newTab',
+                                    },
+                                ]
+                            )}
+                            onChange={(value) => {
+                                setAttributes({displayStyle: value});
+                            }}
+                        />
+                    </PanelRow>
+                )}
+
                 {showOpenFormButton && (
                     <PanelRow>
                         <TextControl
@@ -127,6 +132,7 @@ export default function DonationFormBlockControls({
                                 }}
                             />
                         </PanelRow>
+
                         {contentDisplay && (
                             <PanelRow>
                                 <SelectControl
