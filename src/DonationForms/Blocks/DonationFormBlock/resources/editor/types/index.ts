@@ -17,10 +17,8 @@ interface Option {
 
 interface Form {
     isLegacyForm: boolean;
-    isLegacyTemplate: boolean
+    isLegacyTemplate: boolean;
+    link: string;
 }
 
-export type {
-    Option,
-    Form
-}
+export type {Option, Form};

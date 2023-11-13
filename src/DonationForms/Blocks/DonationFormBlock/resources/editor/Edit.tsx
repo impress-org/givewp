@@ -33,10 +33,10 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         }
     }, []);
 
-    const [isLegacyForm, isLegacyTemplate] = (() => {
+    const [isLegacyForm, isLegacyTemplate, link] = (() => {
         const form = formOptions.find((form) => form.value == id);
 
-        return [form?.isLegacyForm, form?.isLegacyTemplate];
+        return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
     })();
 
     return (
@@ -62,6 +62,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                             formId={id}
                             formFormat={displayStyle}
                             openFormButton={continueButtonTitle}
+                            link={link}
                         />
                     )}
                 </>

@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
 import type {Post} from '@wordpress/core-data/src/entity-types';
-import type {Option, Form} from '../types';
+import type {Form, Option} from '../types';
 
 type FormOption = Form & Option;
 
@@ -24,13 +24,14 @@ export default function useFormOptions(): {
         };
     }, []);
 
-    forms?.map(({title, id, formTemplate, isLegacyForm}) => {
+    forms?.map(({title, id, formTemplate, isLegacyForm, link}) => {
         formOptions.push({
             label: __(title.rendered, 'give'),
             value: id,
             isLegacyForm,
-            isLegacyTemplate: isLegacyForm && formTemplate === 'legacy'
-        })
+            isLegacyTemplate: isLegacyForm && formTemplate === 'legacy',
+            link: link,
+        });
     });
 
     return {

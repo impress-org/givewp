@@ -9,13 +9,20 @@ interface BlockPreviewProps {
     clientId: string;
     formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
     openFormButton: string;
+    link: string;
 }
 
 /**
  * @unreleased replace reveal for link display.
  * @since 3.0.0
  */
-export default function DonationFormBlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
+export default function DonationFormBlockPreview({
+    clientId,
+    formId,
+    formFormat,
+    openFormButton,
+    link,
+}: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
@@ -26,12 +33,7 @@ export default function DonationFormBlockPreview({clientId, formId, formFormat, 
     const isNewTabDisplay = formFormat === 'newTab';
 
     return isNewTabDisplay ? (
-        <a
-            className={'givewp-donation-form-link'}
-            href={`/?givewp-route=donation-form-view&form-id=${formId}`}
-            target={'_blank'}
-            rel={'noopener noreferrer'}
-        >
+        <a className={'givewp-donation-form-link'} href={link} target={'_blank'} rel={'noopener noreferrer'}>
             {openFormButton}
         </a>
     ) : isModalDisplay ? (
