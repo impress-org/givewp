@@ -10,6 +10,7 @@ export default function FormSettings() {
             <FormGeneralSettingsGroup />
             <FormDonationConfirmationSettingsGroup />
             <FormEmailSettingsGroup />
+            {wp.hooks.applyFilters('givewp_form_builder_settings', '')}
         </FormSettingsContainer>
     );
 }

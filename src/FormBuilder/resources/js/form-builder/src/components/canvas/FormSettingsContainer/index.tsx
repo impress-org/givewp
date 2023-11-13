@@ -31,7 +31,6 @@ export default function FormSettingsContainer({children}) {
                 <div className={'givewp-form-settings__menu'}>
                     <ul className={`givewp-form-settings__menu__page-${state.menuPage}`}>
                         {children}
-                        {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
                     </ul>
                 </div>
                 <div className={'givewp-form-settings__content'}>{state.content}</div>
