@@ -6,7 +6,7 @@ import type {Form, Option} from '../types';
 type FormOption = Form & Option;
 
 /**
- * unreleased include formTemplate and slug to formOptions.
+ * unreleased include isLegacyForm, isLegacyFormTemplate & link.
  * @since 3.0.0
  */
 export default function useFormOptions(): {

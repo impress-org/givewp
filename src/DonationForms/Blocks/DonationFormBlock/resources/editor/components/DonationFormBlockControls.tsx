@@ -12,6 +12,9 @@ interface DonationFormBlockControls {
     isLegacyForm: boolean;
 }
 
+/**
+ * @unreleased
+ */
 export default function DonationFormBlockControls({
     attributes,
     setAttributes,
