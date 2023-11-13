@@ -7,6 +7,14 @@
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
+  &__select {
+    input[type="text"]:focus {
+      border-color: transparent;
+      box-shadow: 0 0 0 1px transparent;
+      outline: 2px solid transparent;
+    }
+  }
+
   &__logo {
     align-self: center;
   }
