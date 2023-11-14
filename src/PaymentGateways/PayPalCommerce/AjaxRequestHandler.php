@@ -279,6 +279,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
+     * @unreleased Discover error by checking capture status.
      * @since 2.9.0
      */
     public function approveOrder()
