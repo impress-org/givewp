@@ -39,6 +39,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Load all the legacy class files since they don't have auto-loading
      *
+     * @unrleased remove WP_Background_Process & WP_Async_Request in favor of namespaced versions.
      * @since 3.0.0 remove the manual (Test Donations) gateway from loading in favor of the new Test Donations gateway
      * @since 2.8.0
      */
