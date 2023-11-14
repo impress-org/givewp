@@ -289,6 +289,8 @@ class AjaxRequestHandler
 
         try {
             $result = give(PayPalOrder::class)->approveOrder($orderId);
+            // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
+            // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
             $this->returnErrorOnFailedApproveOrderResponse($result);
             wp_send_json_success(['order' => $result,]);
         } catch (\Exception $ex) {
