@@ -425,6 +425,11 @@ import {PayPalSubscriber} from "./types";
         initialize() {
             payPalDonationsSettings = this.settings;
         },
+        /**
+         * Before create payment.
+         * @unrelease Handle error response in approveOrderCallback.
+         * @param {Object} values
+         */
         beforeCreatePayment: async function (values): Promise<object> {
             if (payPalOrderId) {
                 // If order ID already set by payment buttons then return early.

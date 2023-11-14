@@ -243,6 +243,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle PayPal payment on approve event.
 	 *
+     * @unreleased Hide processing state upon error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} payload PayPal response object after payment completion.
@@ -412,6 +413,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle hosted fields on submit errors.
 	 *
+     * @unreleased Handle custom error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} error Collection of hosted field on submit error

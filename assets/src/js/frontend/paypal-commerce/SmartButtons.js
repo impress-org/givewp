@@ -216,6 +216,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Order approve event handler for smart buttons.
 	 *
+     * @unrelease Handle custom error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
