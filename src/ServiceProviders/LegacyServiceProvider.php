@@ -48,13 +48,6 @@ class LegacyServiceProvider implements ServiceProvider
 
         require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache-setting.php';
 
-        /**
-         * Load libraries.
-         */
-        if (!class_exists('WP_Async_Request')) {
-            include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php';
-        }
-
         require_once GIVE_PLUGIN_DIR . 'includes/setting-functions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
