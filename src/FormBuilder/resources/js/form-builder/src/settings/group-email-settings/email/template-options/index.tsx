@@ -1,4 +1,4 @@
-import {Button} from '@wordpress/components';
+import {Button, PanelRow} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {useRef, useState} from 'react';
 import CopyToClipboardButton from './components/copy-to-clipboard-button';
@@ -61,19 +61,19 @@ export default function EmailTemplateOptions({notification}) {
                                         'give'
                                     )}
                                 >
-                                    <div className={'givewp-form-settings__section__body__extra-gap'}>
+                                    <PanelRow>
                                         <SendPreviewEmail
                                             defaultEmailAddress={emailDefaultAddress}
                                             emailType={notification}
                                         />
-                                    </div>
+                                    </PanelRow>
                                 </SettingsSection>
 
                                 <SettingsSection
                                     title={__('Template tags', 'give')}
                                     description={templateTagsDescription}
                                 >
-                                    <div className={'givewp-form-settings__section__body__extra-gap'}>
+                                    <PanelRow>
                                         <ul className={'email-settings-template-tags'} ref={templateTagsRef}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
@@ -83,7 +83,7 @@ export default function EmailTemplateOptions({notification}) {
                                                 </li>
                                             ))}
                                         </ul>
-                                    </div>
+                                    </PanelRow>
                                 </SettingsSection>
 
                                 <Button

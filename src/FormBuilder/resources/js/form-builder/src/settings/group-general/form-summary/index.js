@@ -17,7 +17,7 @@ const FormSummarySettings = () => {
     const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
     return (
-        <div className={'givewp-form-settings__section__body__extra-gap'}>
+        <>
             <PanelRow>
                 <TextControl
                     label={__('Form name', 'give')}
@@ -29,10 +29,8 @@ const FormSummarySettings = () => {
                 />
             </PanelRow>
 
-            {!!isFormPageEnabled && (
-                <PageSlugControl pageSlug={isTitleSlug ? cleanForSlug(formTitle) : pageSlug} />
-            )}
-        </div>
+            {!!isFormPageEnabled && <PageSlugControl pageSlug={isTitleSlug ? cleanForSlug(formTitle) : pageSlug} />}
+        </>
     );
 };
 

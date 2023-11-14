@@ -568,7 +568,7 @@ div.givewp-classic-editor > label {
             flex: 1;
             max-width: 33.25rem;
 
-            &__extra-gap {
+            > *:not(.no-extra-gap) {
                 padding-left: 3.25rem;
             }
         }

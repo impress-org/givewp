@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useCopyToClipboard} from '@wordpress/compose';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {Ref, useState} from 'react';
-import {Button} from '@wordpress/components';
+import {Button, PanelRow} from '@wordpress/components';
 import {copy as copyIcon} from '@wordpress/icons';
 
 import './styles.scss';
@@ -35,7 +35,7 @@ function CopyTagButton({textToCopy}) {
 
 const TemplateTags = () => {
     return (
-        <div className={'givewp-form-settings__section__body__extra-gap'}>
+        <PanelRow>
             <ul className="givewp-donation-confirmation-settings__template-tags-list">
                 {donationConfirmationTemplateTags.map(({id, description}) => {
                     const tagId = `{${id}}`;
@@ -55,7 +55,7 @@ const TemplateTags = () => {
                     );
                 })}
             </ul>
-        </div>
+        </PanelRow>
     );
 };
 

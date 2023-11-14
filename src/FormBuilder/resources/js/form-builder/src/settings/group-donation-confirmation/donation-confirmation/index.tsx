@@ -1,10 +1,11 @@
 import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
+import {PanelRow} from '@wordpress/components';
 
 const DonationConfirmation = ({id, content, onChange}) => {
     return (
-        <div className={'givewp-form-settings__section__body__extra-gap'}>
+        <PanelRow>
             <ClassicEditor id={id} content={content} setContent={(value) => onChange(value)} rows={10} />
-        </div>
+        </PanelRow>
     );
 };
 

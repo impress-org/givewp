@@ -10,7 +10,7 @@ const FormGridSettings = () => {
 
     return (
         <>
-            <PanelRow>
+            <PanelRow className={'no-extra-gap'}>
                 <ToggleControl
                     label={__('Customize form grid', 'give')}
                     help={__(
@@ -25,7 +25,7 @@ const FormGridSettings = () => {
             </PanelRow>
 
             {formGridCustomize && (
-                <div className={'givewp-form-settings__section__body__extra-gap'}>
+                <>
                     <PanelRow>
                         <TextControl
                             label={__('Redirect Url', 'give')}
@@ -52,7 +52,7 @@ const FormGridSettings = () => {
                             }
                         />
                     </PanelRow>
-                </div>
+                </>
             )}
         </>
     );
