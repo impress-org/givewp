@@ -48,6 +48,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @since Capture exceptions when get gateway data.
      * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
@@ -105,22 +106,23 @@ class LegacyPaymentGatewayAdapter
 
             $this->setSession($donation->id);
 
-            /**
-             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
-                (new GetGatewayDataFromRequest())(),
-                $donation,
-                $subscription
-            );
-
-            $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
-
-            $controller = new GatewaySubscriptionController($registeredGateway);
             try {
+                /**
+                 * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
+                 *
+                 * @since 2.21.2
+                 */
+                $gatewayData = apply_filters(
+                    "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
+                    (new GetGatewayDataFromRequest())(),
+                    $donation,
+                    $subscription
+                );
+
+                $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
+
+                $controller = new GatewaySubscriptionController($registeredGateway);
+
                 $controller->create($donation, $subscription, $gatewayData);
             } catch (Exception $exception) {
                 PaymentGatewayLog::error(
