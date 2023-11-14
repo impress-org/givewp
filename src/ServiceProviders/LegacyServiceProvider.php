@@ -55,10 +55,6 @@ class LegacyServiceProvider implements ServiceProvider
             include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php';
         }
 
-        if (!class_exists('WP_Background_Process')) {
-            include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php';
-        }
-
         require_once GIVE_PLUGIN_DIR . 'includes/setting-functions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
         require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -230,10 +226,10 @@ class LegacyServiceProvider implements ServiceProvider
      *
      * @since 2.8.0
      *
-     * @param string         $alias
+     * @param string $alias
      * @param string|Closure $class
-     * @param string         $includesPath
-     * @param bool           $singleton
+     * @param string $includesPath
+     * @param bool $singleton
      */
     private function bindInstance($alias, $class, $includesPath, $singleton = false)
     {
