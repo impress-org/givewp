@@ -14,6 +14,7 @@
 import {debounce} from '@wordpress/compose';
 import {useEffect, useRef, useState} from '@wordpress/element';
 import {BACKSPACE, DELETE, F10, isKeyboardEvent} from '@wordpress/keycodes';
+import {BaseControl} from '@wordpress/components';
 
 const {wp} = window;
 
@@ -195,16 +196,17 @@ export default function ClassicEditor({id, label, content, setContent, rows = 20
 
     return (
         <div className={'givewp-classic-editor'}>
-            <label>{label}</label>
-            <textarea
-                rows={rows}
-                id={`editor-${id}`}
-                onChange={(event) => {
-                    const editor = window.tinymce.get(`editor-${id}`);
-                    editor._lastChange = event.target.value;
-                    setEditorContent(event.target.value);
-                }}
-            />
+            <BaseControl id={`editor-base-control-${id}`} label={label}>
+                <textarea
+                    rows={rows}
+                    id={`editor-${id}`}
+                    onChange={(event) => {
+                        const editor = window.tinymce.get(`editor-${id}`);
+                        editor._lastChange = event.target.value;
+                        setEditorContent(event.target.value);
+                    }}
+                />
+            </BaseControl>
         </div>
     );
 }
