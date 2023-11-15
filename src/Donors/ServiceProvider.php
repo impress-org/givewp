@@ -2,6 +2,9 @@
 
 namespace Give\Donors;
 
+use Give\DonationForms\Models\DonationForm;
+use Give\Donors\Actions\CreateUserFromDonor;
+use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
@@ -51,6 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $this->addCustomFieldsToDonorDetails();
+        $this->enforceDonorsAsUsers();
     }
 
     /**
@@ -64,5 +68,23 @@ class ServiceProvider implements ServiceProviderInterface
 
             echo (new DonorDetailsController())->show($donor);
         });
+    }
+
+    /**
+     * Hook into the donor creation process to ensure that donors are also users.
+     * @unreleased
+     */
+    protected function enforceDonorsAsUsers()
+    {
+        add_action('givewp_donate_controller_donor_created', function(Donor $donor, $formId) {
+            if(!$donor->userId) {
+
+                give(CreateUserFromDonor::class)->__invoke($donor);
+
+                if(DonationForm::find($formId)->settings->registrationNotification) {
+                    give(SendDonorUserRegistrationNotification::class)->__invoke($donor);
+                }
+            }
+        }, 10, 2);
     }
 }
