@@ -34,8 +34,6 @@ class TestGetOrCreateDonor extends TestCase
     {
         $donor = Donor::factory()->create(['userId' => 1]);
         $donorFromActionWithMatchingUserId = (new GetOrCreateDonor)($donor->userId, $donor->email, 'billing first name', 'billing last name', null);
-        $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], ['newDonor@givewp.com']);
-        $donor->save();
 
         $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
     }
