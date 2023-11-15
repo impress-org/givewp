@@ -63,6 +63,7 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $goalAmount;
     /**
+     * @unreleased Added registrationNotification property.
      * @var string
      */
     public $registrationNotification;
@@ -175,6 +176,7 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @unreleased Added registrationNotification
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
