@@ -19,8 +19,7 @@ interface EmbedFormModalProps {
 type Post = {
     value: string,
     label: string,
-    content: string,
-    disabled: boolean
+    content: string
 }
 
 interface StateProps {
@@ -99,7 +98,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         },
         {
             label: __('New Tab', 'give'),
-            value: 'new-tab',
+            value: 'newTab',
             description: __('Add description for New tab', 'give'),
         },
     ];
@@ -118,8 +117,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 filtered.push({
                     value: page.id,
                     label: page.title.raw || __('(no title)', 'give'),
-                    content: page.content.raw,
-                    disabled: page.content.raw.includes(`wp:give/donation-form {"id":${formId}`), // disable pages that already have this form block included
+                    content: page.content.raw
                 });
             });
 
@@ -148,7 +146,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const isPageAlreadyCreated = !state.isCreated && state.newPostName
         && state.posts[state.createPostType]?.filter(post => post.label == state.newPostName).length > 0;
 
-    const isButton = ['new-tab', 'modal'].includes(state.selectedStyle);
+    const isButton = ['newTab', 'modal'].includes(state.selectedStyle);
 
     /**
      * Get site posts/pages for select option
