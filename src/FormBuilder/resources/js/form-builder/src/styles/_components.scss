@@ -324,7 +324,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     z-index: 9999999999 !important;
 }
 
-#root > div > div.popover-slot > div > div > div.givewp-styled-popover-content-settings__content > div.givewp-classic-editor {
+.components-popover__content .givewp-classic-editor {
     margin: 0.5rem;
 }
 
