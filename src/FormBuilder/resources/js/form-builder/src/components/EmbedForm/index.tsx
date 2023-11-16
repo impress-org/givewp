@@ -1,12 +1,12 @@
 import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
-import cx from 'classnames';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {Button, RadioControl, SelectControl, Spinner, TextControl} from '@wordpress/components';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
+import {CheckIcon} from '@givewp/form-builder/components/icons';
 import {CopyIcon, ExitIcon} from '@givewp/components/AdminUI/Icons';
 import {Interweave} from 'interweave';
 
@@ -33,6 +33,7 @@ interface StateProps {
     openFormButton: string;
     isCopied: boolean;
     isInserting: boolean;
+    insertPageNotSelected: boolean;
     isCreating: boolean;
     isInserted: boolean;
     isCreated: boolean;
@@ -48,6 +49,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const {formId} = getWindowData();
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
+    const pageSelectLabelRef = useRef<HTMLLabelElement>(null);
 
     const [state, setState] = useState<StateProps>({
         posts: [],
@@ -60,6 +62,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         openFormButton: '',
         isCopied: false,
         isInserting: false,
+        insertPageNotSelected: false,
         isCreating: false,
         isInserted: false,
         isCreated: false,
@@ -94,12 +97,12 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         {
             label: __('Modal', 'give'),
             value: 'modal',
-            description: __('Add description for Modal', 'give'),
+            description: __('Only a button is visible; clicking it opens the form in a modal window', 'give'),
         },
         {
             label: __('New Tab', 'give'),
             value: 'newTab',
-            description: __('Add description for New tab', 'give'),
+            description: __('Only a button is visible; clicking it opens the form in a new window', 'give'),
         },
     ];
 
@@ -239,6 +242,17 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             return;
         }
 
+        if (!state.selectedPost) {
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    insertPageNotSelected: true,
+                };
+            });
+
+            return;
+        }
+
         setState(prevState => {
             return {
                 ...prevState,
@@ -255,6 +269,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             return {
                 ...prevState,
                 isInserting: false,
+                insertPageNotSelected: false,
                 isInserted: true,
                 insertedLink: response?.link,
             };
@@ -297,6 +312,12 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         });
     };
 
+    const getContentType = type => {
+        return type === 'page'
+            ? __('page', 'give')
+            : __('post', 'give');
+    }
+
     return createPortal(
         <div className="give-embed-modal">
 
@@ -338,7 +359,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     <TextControl
                         ref={openFormBtnRef}
                         placeholder={__('Donate', 'give')}
-                        label={__('Open form button text', 'give')}
+                        label={__('Button label', 'give')}
                         value={state.openFormButton}
                         onChange={value => setState(prevState => {
                             return {
@@ -376,9 +397,19 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     value={state.selectedPost}
                     options={getPostsList()}
                     disabled={state.isInserted}
+                    help={state.insertPageNotSelected
+                        ? <p className="give-embed-modal-select-error">
+                            {sprintf(
+                                __('Please select a %s', 'give'),
+                                getContentType(state.insertPostType)
+                            )}
+                        </p>
+                        : null
+                    }
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
+                            insertPageNotSelected: false,
                             selectedPost: value,
                         };
                     })}
@@ -388,35 +419,35 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     <div className="give-embed-modal-items">
                         <div>
                             <Button
-                                href={state.insertedLink}
-                                target="_blank"
-                                icon={external}
+                                icon={CheckIcon}
                                 variant="secondary"
                             >
-                                {sprintf(
-                                    __('View inserted %s', 'give'),
-                                    'page' === state.insertPostType
-                                        ? __('Page', 'give')
-                                        : __('Post', 'give'))}
+                                {__('Form inserted', 'give')}
                             </Button>
                         </div>
                         <div>
                             <Button
+                                href={state.insertedLink}
+                                target="_blank"
+                                icon={external}
                                 variant="tertiary"
-                                onClick={handleClose}
                             >
-                                {__('Close', 'give')}
+                                {sprintf(
+                                    __('View %s', 'give'),
+                                    getContentType(state.insertPostType)
+                                )}
                             </Button>
                         </div>
                     </div>
                 ) : (
                     <Button
                         variant="secondary"
-                        disabled={!state.selectedPost || state.isInserting}
-                        isBusy={state.isInserting}
                         onClick={handleInsert}
                     >
-                        {state.isInserting ? __('Inserting form...', 'give') : __('Insert form', 'give')}
+                        {state.isInserting && <Spinner />}
+                        {state.isInserting
+                            ? __('Inserting form', 'give')
+                            : __('Insert form', 'give')}
                     </Button>
                 )}
 
@@ -446,15 +477,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     readOnly={state.isCreated}
                     ref={newPostNameRef}
                     value={state.newPostName}
-                    className={cx({'give-embed-modal-input-error': isPageAlreadyCreated})}
-                    help={isPageAlreadyCreated
-                        ? sprintf(
-                            __('%s with that name already exists', 'give'),
-                            'page' === state.currentPostType
-                                ? __('Page', 'give')
-                                : __('Post', 'give'))
-                        : null
-                    }
                     onChange={value => setState(prevState => {
                         return {
                             ...prevState,
@@ -467,24 +489,23 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     <div className="give-embed-modal-items">
                         <div>
                             <Button
+                                icon={CheckIcon}
+                                variant="secondary"
+                            >
+                                {__('Created page', 'give')}
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
                                 href={state.createdLink}
                                 target="_blank"
                                 icon={external}
                                 variant="secondary"
                             >
                                 {sprintf(
-                                    __('View created %s', 'give'),
-                                    'page' === state.currentPostType
-                                        ? __('Page', 'give')
-                                        : __('Post', 'give'))}
-                            </Button>
-                        </div>
-                        <div>
-                            <Button
-                                variant="tertiary"
-                                onClick={handleClose}
-                            >
-                                {__('Close', 'give')}
+                                    __('View %s', 'give'),
+                                    getContentType(state.createPostType)
+                                )}
                             </Button>
                         </div>
                     </div>
@@ -493,11 +514,15 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         {!isPageAlreadyCreated && (
                             <Button
                                 variant="secondary"
-                                disabled={state.isCreating}
-                                isBusy={state.isCreating}
                                 onClick={handleCreateNew}
                             >
-                                {state.isCreating ? __('Creating...', 'give') : __('Create', 'give')}
+                                {state.isCreating && <Spinner />}
+                                {state.isCreating
+                                    ? sprintf(
+                                        __('Creating %s', 'give'),
+                                        getContentType(state.createPostType)
+                                    )
+                                    : __('Create', 'give')}
                             </Button>
                         )}
                     </>
