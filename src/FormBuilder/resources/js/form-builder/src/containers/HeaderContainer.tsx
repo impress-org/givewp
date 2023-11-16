@@ -174,9 +174,9 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                         <Button
                             icon={CodeIcon}
                             className="givewp-embed-button"
+                            isPressed={showEmbedModal}
                             onClick={() => setShowEmbedModal(!showEmbedModal)}
                             label={__('Embed form', 'give')}
-                            variant="tertiary"
                         />
                         {isPublished && (
                             <Button label={__('View form', 'give')} href={permalink} target="_blank" icon={external} />
