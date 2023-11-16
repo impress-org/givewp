@@ -57,6 +57,10 @@
 
         button {
             margin-right: 10px;
+
+            svg {
+                fill: none;
+            }
         }
 
         label {
@@ -77,11 +81,13 @@
         margin-bottom: var(--givewp-spacing-3);
     }
 
-    &-input-error {
-        .components-base-control__help {
-            color: var(--givewp-red-500) !important;
-        }
+
+    &-select-error {
+        margin-bottom: 0;
+        font-size: 12px;
+        color: var(--givewp-red-500);
     }
+
 
     &-items {
         display: flex;
@@ -102,12 +108,9 @@
         }
     }
 
-    &-copy {
-        svg {
-            fill: none;
-        }
+    &-items:not(.give-embed-modal-copy) {
+        justify-content: space-between;
     }
-
 
     input:not([type="radio"]),
     select {
@@ -122,6 +125,11 @@
         line-height: 1.4;
         color: #0e0e0e;
         display: block;
+    }
+
+    button svg.components-spinner {
+        margin: unset;
+        margin-right: 10px;
     }
 
 }
