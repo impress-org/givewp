@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Actions;
 
+use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\Models\Donor;
 
 /**
@@ -27,8 +28,7 @@ class CreateUserFromDonor
         if(!is_wp_error($userIdOrError)) {
             $donor->userId = $userIdOrError;
         } else {
-            // How should we handle this?
-            throw new \Exception('Could not create user from donor');
+            throw new FailedDonorUserCreationException($donor);
         }
 
         do_action('givewp_donor_user_created', $donor);

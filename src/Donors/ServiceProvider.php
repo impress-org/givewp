@@ -6,10 +6,12 @@ use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
+use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Helpers\Hooks;
+use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give_Donor as LegacyDonor;
 
@@ -76,10 +78,14 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('givewp_donate_controller_donor_created', function (Donor $donor, $formId) {
             if (!$donor->userId) {
-                give(CreateUserFromDonor::class)->__invoke($donor);
+                try {
+                    give(CreateUserFromDonor::class)->__invoke($donor);
 
-                if (DonationForm::find($formId)->settings->registrationNotification) {
-                    give(SendDonorUserRegistrationNotification::class)->__invoke($donor);
+                    if (DonationForm::find($formId)->settings->registrationNotification) {
+                        give(SendDonorUserRegistrationNotification::class)->__invoke($donor);
+                    }
+                } catch (FailedDonorUserCreationException $e) {
+                    Log::error('Failed creating a user for the donor.', compact('donor'));
                 }
             }
         }, 10, 2);
