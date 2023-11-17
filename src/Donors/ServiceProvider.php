@@ -85,7 +85,10 @@ class ServiceProvider implements ServiceProviderInterface
                         give(SendDonorUserRegistrationNotification::class)->__invoke($donor);
                     }
                 } catch (FailedDonorUserCreationException $e) {
-                    Log::error('Failed creating a user for the donor.', compact('donor'));
+                    Log::error($e->getLogMessage(), [
+                        'donor' => $donor,
+                        'previous' => $e->getPrevious(),
+                    ]);
                 }
             }
         }, 10, 2);

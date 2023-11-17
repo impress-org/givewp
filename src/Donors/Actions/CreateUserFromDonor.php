@@ -28,7 +28,11 @@ class CreateUserFromDonor
         if(!is_wp_error($userIdOrError)) {
             $donor->userId = $userIdOrError;
         } else {
-            throw new FailedDonorUserCreationException($donor);
+            throw new FailedDonorUserCreationException(
+                $donor,
+                0,
+                new \Exception($userIdOrError->get_error_message())
+            );
         }
 
         do_action('givewp_donor_user_created', $donor);
