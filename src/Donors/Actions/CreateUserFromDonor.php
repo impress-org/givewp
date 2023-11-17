@@ -9,7 +9,7 @@ use Give\Donors\Models\Donor;
  */
 class CreateUserFromDonor
 {
-    public function __invoke(Donor $donor)
+    public function __invoke(Donor $donor): Donor
     {
         $userIdOrError = wp_insert_user(apply_filters(
             'givewp_create_donor_new_user',
