@@ -31,7 +31,8 @@
         "wordpress/wordpress": "dev-trunk",
         "squizlabs/php_codesniffer": "^3.5",
         "php-stubs/wp-cli-stubs": "^2.8",
-        "yoast/phpunit-polyfills": "^1.1.0"
+        "yoast/phpunit-polyfills": "^1.1.0",
+        "code-lts/doctum": "^5.0"
     },
     "keywords": [
         "wordpress",
@@ -60,7 +61,10 @@
             "@copy-fonts",
             "rsync -rc --exclude-from=.distignore . release/ --delete --delete-excluded"
         ],
-        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/"
+        "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/",
+        "docs:build": [
+            "php vendor/bin/doctum.php update .docs/config.php"
+        ]
     },
     "autoload": {
         "psr-4": {
