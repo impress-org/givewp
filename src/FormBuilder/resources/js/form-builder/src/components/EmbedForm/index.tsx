@@ -1,4 +1,5 @@
 import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
+import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
@@ -49,7 +50,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const {formId} = getWindowData();
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
-    const pageSelectLabelRef = useRef<HTMLLabelElement>(null);
+    const viewInsertedPageBtnRef = useRef<HTMLButtonElement>(null);
+    const viewCreatedPageBtnRef = useRef<HTMLButtonElement>(null);
 
     const [state, setState] = useState<StateProps>({
         posts: [],
@@ -421,12 +423,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             <Button
                                 icon={CheckIcon}
                                 variant="secondary"
+                                onClick={() => viewInsertedPageBtnRef.current?.focus()}
                             >
                                 {__('Form inserted', 'give')}
                             </Button>
                         </div>
                         <div>
                             <Button
+                                ref={viewInsertedPageBtnRef}
                                 href={state.insertedLink}
                                 target="_blank"
                                 icon={external}
@@ -483,6 +487,15 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             newPostName: value,
                         };
                     })}
+                    className={cx({'give-embed-modal-input-error': isPageAlreadyCreated})}
+                    help={isPageAlreadyCreated
+                        ? <p className="give-embed-modal-select-error">
+                            {sprintf(
+                                __('%s with that name already exists', 'give'),
+                                getContentType(state.createPostType))}
+                        </p>
+                        : null
+                    }
                 />
 
                 {state.isCreated ? (
@@ -491,12 +504,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             <Button
                                 icon={CheckIcon}
                                 variant="secondary"
+                                onClick={() => viewCreatedPageBtnRef.current?.focus()}
                             >
                                 {__('Created page', 'give')}
                             </Button>
                         </div>
                         <div>
                             <Button
+                                ref={viewCreatedPageBtnRef}
                                 href={state.createdLink}
                                 target="_blank"
                                 icon={external}
