@@ -7,6 +7,9 @@ namespace Give\Donors\Exceptions;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\Exception;
 
+/**
+ * @unreleased 
+ */
 class FailedDonorUserCreationException extends Exception
 {
     protected $donor;
