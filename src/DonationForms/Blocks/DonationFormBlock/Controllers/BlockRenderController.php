@@ -38,7 +38,7 @@ class BlockRenderController
         $embedId = $blockAttributes->blockId ?? '';
 
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
-        $formUrl = add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms'));
+        $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
