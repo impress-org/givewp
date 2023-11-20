@@ -2,12 +2,15 @@
 
 namespace Give\DonationForms\Properties;
 
-use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
+/**
+ * @unreleased Remove addSlashesRecursive method
+ * @since      3.0.0
+ */
 class FormSettings implements Arrayable, Jsonable
 {
     /**
@@ -270,6 +273,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
+     * @unreleased Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
     public function toJson($options = 0): string
@@ -279,16 +283,8 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
-                    'emailTemplateOptions' => array_map([$this, 'addSlashesRecursive'], $this->emailTemplateOptions),
                 ]
             )
         );
-    }
-
-    public function addSlashesRecursive($value)
-    {
-        return is_array($value)
-            ? array_map([$this, 'addSlashesRecursive'], $value)
-            : addslashes($value);
     }
 }
