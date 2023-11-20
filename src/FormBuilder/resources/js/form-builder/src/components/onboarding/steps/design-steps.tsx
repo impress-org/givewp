@@ -5,9 +5,9 @@ export default [
     {
         id: 'design-edit-settings',
         attachTo: {element: '#sidebar-primary', on: 'left-start' as Placement},
-        title: __('Editing a form design', 'give'),
+        title: __('Editing a form layout', 'give'),
         text: __(
-            'This is where you can customize the appearance (i.e. colors and features) of your form based on the selected form design.',
+            'This is where you can customize the appearance (i.e. colors and features) of your form based on the selected form layout.',
             'give'
         ),
     },
