@@ -1,6 +1,6 @@
 import {Button, PanelRow} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import CopyToClipboardButton from './components/copy-to-clipboard-button';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
@@ -31,6 +31,12 @@ export default function EmailTemplateOptions({notification}) {
             a: <a href="https://givewp.com/documentation/core/settings/emails/email-tags/" target="_blank" />,
         }
     );
+
+    useEffect(() => {
+        if (showPreview) {
+            setShowPreview(false);
+        }
+    }, [notification]);
 
     return (
         <>
