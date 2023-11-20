@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 3.1.1
+ * Version: 3.1.2
  * Requires at least: 6.0
  * Requires PHP: 7.2
  * Text Domain: give
