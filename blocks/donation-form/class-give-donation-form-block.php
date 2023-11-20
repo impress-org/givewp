@@ -134,7 +134,7 @@ class Give_Donation_Form_Block
                     ),
                     'continueButtonTitle' => array(
                         'type' => 'string',
-                        'default' => '',
+                        'default' => __('Donate now', 'give')
                     ),
                     'showTitle' => array(
                         'type' => 'boolean',
