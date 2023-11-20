@@ -58,7 +58,7 @@ const SchemaEditorSkeleton = () => {
                     id="AddBlockButtonContainer"
                     style={{
                         padding: 'var(--givewp-spacing-2)',
-                        margin: 'calc(var(--givewp-spacing-2) * -1)',
+                        marginLeft: 'var(--givewp-spacing-4)',
                     }}
                 >
                     <Button

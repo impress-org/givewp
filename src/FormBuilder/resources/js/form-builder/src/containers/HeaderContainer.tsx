@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {EditIcon, GiveIcon} from '../components/icons';
+import {GiveIcon} from '../components/icons';
 import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
@@ -27,15 +27,13 @@ const Logo = () => (
             alignItems: 'center',
         }}
     >
-        <div>
-            <a
-                style={{display: 'block', boxShadow: 'none'}}
-                href="edit.php?post_type=give_forms&page=give-forms"
-                title={__('Return to GiveWP', 'give')}
-            >
-                <GiveIcon />
-            </a>
-        </div>
+        <a
+            style={{display: 'flex', boxShadow: 'none'}}
+            href="edit.php?post_type=give_forms&page=give-forms"
+            title={__('Return to GiveWP', 'give')}
+        >
+            <GiveIcon />
+        </a>
     </div>
 );
 
@@ -215,7 +213,11 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                 ? __('Update', 'give')
                                 : __('Publish', 'give')}
                         </Button>
-                        <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                        
+                        {mode !== EditorMode.settings && (
+                            <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                        )}
+
                         <Dropdown
                             popoverProps={{placement: 'bottom-start'}}
                             // @ts-ignore
