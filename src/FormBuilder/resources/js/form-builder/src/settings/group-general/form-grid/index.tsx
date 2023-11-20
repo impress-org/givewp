@@ -14,7 +14,7 @@ const FormGridSettings = () => {
                 <ToggleControl
                     label={__('Customize form grid', 'give')}
                     help={__(
-                        'When enabled, donors will be notified that they have an account they can use to manage their donations. Disable if you do not want donors to be aware of their account.',
+                        'Customize the Redirect URL and Donate button text for this form in the Form Grid.',
                         'give'
                     )}
                     checked={formGridCustomize}
