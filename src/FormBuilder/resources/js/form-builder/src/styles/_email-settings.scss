@@ -32,7 +32,7 @@
 
 .base-control--email-options {
     margin-bottom: 0.5rem;
-    
+
     .components-base-control, .components-base-control__field {
         margin-bottom: 0;
     }
@@ -57,10 +57,11 @@
 .email-preview__back-btn {
     z-index: 11; /* Above the modal header */
     position: absolute;
-    top: 2rem;
-    right: 1.5rem;
-    margin: var(--givewp-spacing-8);
+    top: 0;
+    right: 50%;
+    margin: var(--givewp-spacing-8) 0;
     padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+    translate: 50% 0;
 }
 
 .email-settings-preview-iframe {
