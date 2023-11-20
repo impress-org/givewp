@@ -545,11 +545,16 @@ div.givewp-classic-editor > label {
             width: 100%;
 
             span {
-                border-radius: 2px 0 0 2px;
                 background-color: var(--givewp-grey-5);
+                border-radius: 2px 0 0 2px;
                 border: solid 1px var(--givewp-grey-500);
+                flex: 0 0 auto;
                 line-height: 1rem;
+                max-width: 50%;
+                overflow: hidden;
                 padding: var(--givewp-spacing-3);
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             input {
