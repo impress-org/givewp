@@ -52,6 +52,16 @@ export default function ClassicEditor({id, label = null, content, setContent, ro
     }, [editorContent]);
 
     useEffect(() => {
+        if (!didMount.current || editorContent === content) {
+            return;
+        }
+
+        const editor = window.tinymce.get(`editor-${id}`);
+
+        editor.setContent(content);
+    }, [content]);
+
+    useEffect(() => {
         didMount.current = true;
 
         function onSetup(editor) {
@@ -97,7 +107,7 @@ export default function ClassicEditor({id, label = null, content, setContent, ro
                     editor._lastChange = newContent;
                     setEditorContent(newContent);
                 }
-            }, 250);
+            }, 100);
             editor.on('Paste Change input Undo Redo', debouncedOnChange);
 
             // We need to cancel the debounce call because when we remove
