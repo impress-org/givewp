@@ -35,6 +35,10 @@ export default function SettingsGroup({item, title, parentItem = null, children}
     }, [children]);
 
     if (hasNestedMenu) {
+        children = Children.toArray(children).filter((child) => {
+            return isValidElement(child) && child.type === SettingsGroup;
+        });
+        
         children = Children.map(children, (child) => {
             return cloneElement(child, {
                 parentItem: item,
