@@ -364,10 +364,6 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     }
 }
 
-.wp-editor-wrap {
-    z-index: 9999;
-}
-
 .mce-notification,
 .mce-inline-toolbar-grp,
 .mce-floatpanel {
@@ -379,6 +375,9 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 }
 
 .givewp-classic-editor {
+    .wp-editor-tools {
+        z-index: initial;
+    }
 
 
     textarea {
