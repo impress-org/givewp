@@ -6,30 +6,32 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
+use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
-use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\Event;
 use Stripe\PaymentIntent;
+use WPDieException;
 
 class PaymentIntentSucceededTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since 3.0.0
+     * @since 3.1.0
      *
      * @throws Exception
      */
-    public function testShouldUpdateDonationStatus()
+    public function testShouldUpdateDonationStatus(): void
     {
         $donation = Donation::factory()->create([
             'type' => DonationType::SINGLE(),
             'status' => DonationStatus::PROCESSING(),
         ]);
 
-        $donation->gatewayId = StripePaymentElementGateway::id();
+        $donation->gatewayId = CreditCardGateway::id();
         $donation->gatewayTransactionId = 'stripe-payment-intent-id';
         $donation->save();
 
@@ -52,6 +54,5 @@ class PaymentIntentSucceededTest extends TestCase
         // Refresh donation model
         $donation = Donation::find($donation->id);
         $this->assertTrue($donation->status->isComplete());
-
     }
 }

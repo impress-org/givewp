@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Tests\Feature\Gateways\Stripe;
+namespace Give\Tests\Feature\Gateways\Stripe\StripePaymentElement;
 
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptUrl;

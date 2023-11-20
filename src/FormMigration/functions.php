@@ -9,6 +9,7 @@ use Give\Framework\Database\DB;
  * ex: givewp_migrated_form_id($formId);
  * ex: givewp_migrated_form_id($formId, $atts['id']);
  *
+ * @since 3.1.0 Make sure $formId always will receive an integer value
  * @since 3.0.0
  *
  * @param $formId int $formId is used as an "output argument", meaning it is updated without needing to be returned.
@@ -31,7 +32,7 @@ function _give_redirect_form_id(&$formId, &...$extraReference) {
                       AND `meta_value` = %d",
             $formId
         )
-    ) ) ?: $formId;
+    )) ?: absint($formId);
 
     foreach($extraReference as &$reference) {
         $reference = $formId;

@@ -1,4 +1,14 @@
-.give-sale-banners-container {
+.givewp-sale-banners-container {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: 1.75rem 0 1.5rem 2.75rem;
+    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 8px;
+
     /* Box-sizing reset */
     &,
     & *,
@@ -7,146 +17,141 @@
         box-sizing: border-box;
     }
 
-    display: grid;
-    row-gap: 1.875rem;
     font-family: 'Open Sans', system-ui, sans-serif;
 
     #give-in-plugin-upsells & {
         margin-top: 2rem;
         margin-bottom: 0.5rem;
     }
+}
 
-    .give_forms_page_give-payment-history &,
-    .give_forms_page_give-donors &,
-    .post-type-give_forms.post-new-php &,
-    .post-type-give_forms.edit-php & {
-        background-color: #fff;
-        margin: -10px -20px 30px -20px;
-        border-bottom: 1px solid #dbdbdb;
-        padding: 30px 20px;
+/* List Table pages */
+#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root {
+    .givewp-sale-banners-container {
+        width: auto;
+        margin: 1rem;
     }
-
 }
 
-.give-sale-banner {
-    --sale-icon-size: 2.5em;
-    --bg-gradient: linear-gradient(85.79deg, #1da3b0 44.27%, #9fd894 100%);
-
-    display: grid;
-    align-items: stretch;
-    align-content: center;
-    grid-template-columns: min-content auto min-content;
-    column-gap: 1em;
-    --banner-y-pad: 0.6875em;
-    padding-top: var(--banner-y-pad);
-    padding-bottom: var(--banner-y-pad);
-    padding-left: 1.0625em;
-    padding-right: 1.3125em;
-    background-image: var(--bg-gradient);
-    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
-    color: #fff;
-    font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
-}
-
-.give-sale-banner-icon {
-    width: var(--sale-icon-size);
-    height: var(--sale-icon-size);
-}
-
-.give-sale-banner-content {
-    display: grid;
-    align-items: center;
-    row-gap: 0.5em;
-
-    & * {
-        font-size: inherit;
+/* Add Form page */
+.post-type-give_forms {
+    .givewp-sale-banners-container {
+        width: 100%;
+        margin: 1.55rem 0 0 0;
     }
+}
 
-    & a {
-        display: inline-block;
-        color: inherit;
-        font-weight: 700;
-        text-decoration-thickness: 0.05em;
-        transform-style: preserve-3d;
+/* Settings & Tools page */
+.give_forms_page_give-settings, .give-tools-setting-page{
+    .givewp-sale-banners-container {
+        width: 100%;
+        margin: .5rem 0;
+    }
+}
 
-        &::after {
-            content: "";
-            position: absolute;
-            transform: translateZ(-1px);
-            display: block;
-            background-color: #fff;
-            height: calc(100% + 0.2em);
-            width: calc(100% + 0.6em);
-            top: -0.1em;
-            left: -0.3em;
-            opacity: 0;
-            box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.05);
-            transition: opacity 0.2s ease-in-out;
+/* Reports page */
+.give_forms_page_give-reports {
+    .givewp-sale-banners-container {
+        margin: .5rem 0 0 0;
+    }
+}
+
+.givewp-sale-banner {
+    &__content {
+        width: 70%;
+        line-height: normal;
+        font-style: normal;
+
+        & h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            color: #022603;
+            line-height: 1;
+
+            & strong {
+                color: #459948;
+                font-weight: 900;
+            }
         }
 
-        &:focus {
-            outline: none;
-            box-shadow: none;
+        & p {
+            font-size: 1.25rem !important;
+            font-weight: 500;
         }
 
-        &:hover,
-        &:focus {
-            background-image: var(--bg-gradient);
-            background-clip: text;
-            color: transparent;
+        & a {
+            display: inline-flex;
+            padding: 1rem 1.5rem;
+            justify-content: center;
+            align-items: center;
+            gap: .5rem;
+            background: #459948;
+            border-radius: 36px;
+            border: none;
+            color: var(--shades-white, #FFF);
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
 
-            &::after {
-                opacity: 1;
+            &:hover {
+                background: #2D802F;
             }
         }
     }
 
-    & p {
-        display: flex;
-        flex-wrap: wrap;
-        row-gap: 0.25rem;
-        column-gap: 0.9375em;
-        margin: 0;
-        line-height: 1.37;
+    &__dismiss {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
     }
 }
 
-.give-sale-banner-dismiss {
-    --size: 1.25rem;
-    /* Artificially align this with the sale icon, since we shouldn’t use align-items: center on the banner */
-    margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
-    appearance: none;
-    background: none;
-    display: grid;
-    place-content: center;
-    padding: 0;
-    width: var(--size);
-    height: var(--size);
-    border: 0;
-    border-radius: 9999px;
-    outline-offset: 0.25rem;
-    color: inherit;
-    cursor: pointer;
-    font-size: inherit;
-    transition: color 0.2s, transform 0.2s;
-
-    & svg {
-        width: var(--size);
-        height: var(--size);
-        transition: fill 200ms ease-in-out;
-
-        fill: none;
-
-        /* This ensures that the event target is the button when clicked. */
-        pointer-events: none;
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+    .givewp-sale-banners-container {
+        padding: 1.25rem 0 1.5rem 1.5rem;
     }
 
-    &:hover {
-        transform: scale(1.15);
-    }
+    .givewp-sale-banner__content {
+        & h2 {
+            font-size: 1.125rem;
+        }
 
-    &:active {
-        transform: scale(0.95);
+        & p {
+            margin: .5rem 0 1rem 0;
+            font-size: 0.875rem !important;
+            line-height: 1.75rem;
+
+        }
+
+        & a {
+            font-size: 0.875rem;
+            padding: .75rem 1rem;
+        }
+    }
+}
+
+
+/* Media query for medium screens */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .givewp-sale-banner__content {
+        & h2 {
+            font-size: 1.75rem;
+        }
+
+        & p {
+            font-size: 1.125rem !important;
+            line-height: 1.5rem;
+            margin: .75rem 0 1rem 0;
+        }
+
+        & a {
+            font-size: 1rem;
+        }
     }
 }

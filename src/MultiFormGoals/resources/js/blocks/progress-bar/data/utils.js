@@ -1,9 +1,10 @@
 const {useSelect} = wp.data;
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
 
 /**
  * Get array of form options for a select control
  *
+ * @since 3.1.0 Use title.raw instead of title.rendered
  * @since 2.9.0
  * @return {array} Array of options for a select control
  */
@@ -13,7 +14,7 @@ export const useFormOptions = () => {
         if (records) {
             return records.map((record) => {
                 return {
-                    label: record.title.rendered ? record.title.rendered : __('(no title)'),
+                    label: record.title.raw ? record.title.raw : __('(no title)'),
                     value: record.id,
                 };
             });

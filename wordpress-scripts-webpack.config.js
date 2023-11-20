@@ -55,6 +55,7 @@ module.exports = {
         baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
         formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
         formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
+        adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
     },
 };
 

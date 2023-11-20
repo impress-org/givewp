@@ -12,6 +12,7 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
@@ -73,11 +74,13 @@ class TestOffsiteGateway extends PaymentGateway
     }
 
     /**
+     * @since 3.1.0 set translations for script
      * @since 2.30.0
      */
     public function enqueueScript(int $formId)
     {
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/testOffsiteGateway.asset.php');
+        $handle = $this::id();
 
         wp_enqueue_script(
             $this::id(),
@@ -86,6 +89,8 @@ class TestOffsiteGateway extends PaymentGateway
             $scriptAsset['version'],
             true
         );
+
+        Language::setScriptTranslations($handle);
     }
 
     /**

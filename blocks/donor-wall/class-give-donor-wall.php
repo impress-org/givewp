@@ -198,6 +198,8 @@ class Give_Donor_Wall_Block {
 
 	/**
 	 * Block render callback
+     *
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
 	 *
 	 * @param array $attributes Block parameters.
 	 *
@@ -210,7 +212,14 @@ class Give_Donor_Wall_Block {
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
 			'form_id'           => implode(',',
-                array_map('_give_redirect_form_id', $this->getAsArray($attributes['formID']))
+                array_map(
+                    static function ($id) {
+                        _give_redirect_form_id($id);
+
+                        return $id;
+                    },
+                    $this->getAsArray($attributes['formID'])
+                )
             ),
 			'ids'               => implode(',', $this->getAsArray($attributes['ids'] ) ),
             'cats'              => implode(',', $this->getAsArray($attributes['categories'] ) ),
