@@ -539,6 +539,24 @@ div.givewp-classic-editor > label {
                 }
             }
         }
+
+        .givewp-form-slug {
+            display: flex;
+            width: 100%;
+
+            span {
+                border-radius: 2px 0 0 2px;
+                background-color: var(--givewp-grey-5);
+                border: solid 1px var(--givewp-grey-500);
+                line-height: 1rem;
+                padding: var(--givewp-spacing-3);
+            }
+
+            input {
+                border-radius: 0 2px 2px 0;
+                margin-left: -1px;
+            }
+        }
     }
 
     &__section {

@@ -1,5 +1,4 @@
-import {Button, Dropdown, ExternalLink, PanelRow, TextControl} from '@wordpress/components';
-import {close, Icon} from '@wordpress/icons';
+import {BaseControl, PanelRow, TextControl} from '@wordpress/components';
 import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 import {getWindowData} from '@givewp/form-builder/common';
@@ -9,7 +8,7 @@ import {__} from '@wordpress/i18n';
 import {useCallback, useEffect, useState} from 'react';
 
 const {
-    formPage: {isEnabled, permalink, rewriteSlug},
+    formPage: {isEnabled, rewriteSlug, baseUrl},
 } = getWindowData();
 
 /**
@@ -37,48 +36,17 @@ const PageSlugControl = ({pageSlug}) => {
     return (
         !!isEnabled && (
             <PanelRow>
-                <Dropdown
-                    className="my-container-class-name"
-                    contentClassName="givewp-sidebar-dropdown-content"
-                    popoverProps={{placement: 'bottom-start'}}
-                    focusOnMount={'container'}
-                    renderToggle={({isOpen, onToggle}) => (
+                <BaseControl label={__('URL', 'give')} help={__('The last part of the URL', 'give')}>
+                    <div className={'givewp-form-slug'}>
+                        <span>{`${baseUrl}/${rewriteSlug}`}</span>
                         <TextControl
-                            label={__('URL', 'give')}
-                            value={'/donations/' + editedSlug}
-                            onChange={() => null}
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
+                            value={editedSlug}
+                            onChange={(value) => setEditedSlug(value)}
+                            onBlur={() => updateSlug()}
+                            spellCheck={false}
                         />
-                    )}
-                    renderContent={({onClose}) => (
-                        <div style={{minWidth: 'calc(var(--givewp-sidebar-width) - 48px)'}}>
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <strong style={{fontSize: '14px'}}>{__('URL', 'give')}</strong>
-                                <Button onClick={onClose}>
-                                    <Icon icon={close} size={14}></Icon>
-                                </Button>
-                            </div>
-                            <TextControl
-                                label={__('Permalink', 'give')}
-                                value={editedSlug}
-                                autoComplete="off"
-                                spellCheck="false"
-                                onChange={(newPageSlug) => {
-                                    setEditedSlug(newPageSlug);
-                                }}
-                                help={__('The last part of the URL.', 'give')}
-                                onBlur={() => updateSlug()}
-                            />
-                            <div>
-                                <strong style={{fontSize: '14px'}}>View Page</strong>
-                            </div>
-                            <ExternalLink href={permalink} style={{fontSize: '14px'}}>
-                                {sprintf('%s/%s', rewriteSlug, editedSlug)}
-                            </ExternalLink>
-                        </div>
-                    )}
-                />
+                    </div>
+                </BaseControl>
             </PanelRow>
         )
     );
