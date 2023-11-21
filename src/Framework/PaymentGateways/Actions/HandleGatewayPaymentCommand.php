@@ -45,6 +45,8 @@ class HandleGatewayPaymentCommand
 
             $handler->handle($donation);
 
+            do_action('give_payment_complete', $donation);
+
             return new RedirectResponse(give_get_success_page_uri());
         }
 
@@ -53,6 +55,8 @@ class HandleGatewayPaymentCommand
 
             $handler->handle($donation);
 
+            do_action('give_payment_processing', $donation);
+
             return new RedirectResponse(give_get_success_page_uri());
         }
 
@@ -60,6 +64,8 @@ class HandleGatewayPaymentCommand
             $handler = new PaymentPendingHandler($command);
 
             $handler->handle($donation);
+
+            do_action('give_payment_pending', $donation);
 
             return new RedirectResponse(give_get_success_page_uri());
         }
