@@ -283,7 +283,7 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
-                    'emailTemplateOptions' => array_map('wp_slash', $this->emailTemplateOptions),
+                    'emailTemplateOptions' => wp_slash($this->emailTemplateOptions),
                 ]
             )
         );
