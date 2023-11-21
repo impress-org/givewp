@@ -515,7 +515,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                 href={state.createdLink}
                                 target="_blank"
                                 icon={external}
-                                variant="secondary"
+                                variant="tertiary"
                             >
                                 {sprintf(
                                     __('View %s', 'give'),
@@ -557,11 +557,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 <div className="give-embed-modal-items give-embed-modal-copy">
                     <div>
                         <Button
-                            icon={CopyIcon}
+                            icon={state.isCopied ? CheckIcon : CopyIcon}
                             variant="secondary"
                             onClick={handleCopy}
                         >
-                            {state.isCopied ? __('Copied!', 'give') : __('Copy Shortcode', 'give')}
+                            {state.isCopied ? __('Copied', 'give') : __('Copy Shortcode', 'give')}
                         </Button>
                     </div>
                     <div>
