@@ -1,14 +1,16 @@
 import {createInterpolateElement, render} from '@wordpress/element';
 import {Button} from '@wordpress/components';
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
-const TextContent = ({title, description, stepNumber, stepCount, isLast}) => {
-
-    const stepCountText = createInterpolateElement(__('<strong>Step <stepNumber /></strong> of <stepCount />', 'give'), {
-        strong: <strong />,
-        stepNumber: <span>{stepNumber}</span>,
-        stepCount: <span>{stepCount}</span>,
-    });
+const TextContent = ({title, description, stepNumber, stepCount}) => {
+    const stepCountText = createInterpolateElement(
+        __('<strong>Step <stepNumber /></strong> of <stepCount />', 'give'),
+        {
+            strong: <strong />,
+            stepNumber: <span>{stepNumber}</span>,
+            stepCount: <span>{stepCount}</span>,
+        }
+    );
 
     return (
         <div>
@@ -30,7 +32,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isLast}) => {
             </div>
             <h3
                 style={{
-                    fontSize: isLast ? '20px' : '16px',
+                    fontSize: '16px',
                     margin: 'var(--givewp-spacing-3) 0',
                     // @ts-ignore
                     textWrap: 'balance',
@@ -52,7 +54,6 @@ const withText = (steps) => {
                 description={step.text}
                 stepNumber={index + 1}
                 stepCount={steps.length}
-                isLast={index === steps.length - 1}
             />
         );
         const tempContainer = document.createElement('div');
