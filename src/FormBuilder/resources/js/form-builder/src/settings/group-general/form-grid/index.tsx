@@ -28,7 +28,7 @@ const FormGridSettings = () => {
                 <>
                     <PanelRow>
                         <TextControl
-                            label={__('Redirect Url', 'give')}
+                            label={__('Redirect URL', 'give')}
                             placeholder={'https://example.com/donation'}
                             help={__(
                                 'The full URL of the page you want this form to redirect to when clicked on from the Form Grid. This only applies when the Form Grid uses the "Redirect" method.',
