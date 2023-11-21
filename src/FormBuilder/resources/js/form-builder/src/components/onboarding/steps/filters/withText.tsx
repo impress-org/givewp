@@ -33,6 +33,7 @@ const TextContent = ({title, description, stepNumber, stepCount}) => {
             <h3
                 style={{
                     fontSize: '16px',
+                    fontWeight: '700',
                     margin: 'var(--givewp-spacing-3) 0',
                     // @ts-ignore
                     textWrap: 'balance',
