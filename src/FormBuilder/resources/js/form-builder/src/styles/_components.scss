@@ -389,6 +389,11 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     }
 }
 
+.components-button.is-secondary {
+    &:hover {
+        background-color: rgba(var(--wp-admin-theme-color--rgb), .04);
+    }
+}
 
 div.givewp-classic-editor > label {
     font-size: 11px;
