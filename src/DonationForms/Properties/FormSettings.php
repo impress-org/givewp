@@ -273,7 +273,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
+     * @unreleased Replace addSlashesRecursive local method with wp_slash function
      * @since 3.0.0
      */
     public function toJson($options = 0): string
@@ -283,6 +283,7 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
+                    'emailTemplateOptions' => array_map('wp_slash', $this->emailTemplateOptions),
                 ]
             )
         );
