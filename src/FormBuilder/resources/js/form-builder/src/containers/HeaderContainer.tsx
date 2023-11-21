@@ -213,7 +213,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                 ? __('Update', 'give')
                                 : __('Publish', 'give')}
                         </Button>
-                        
+
                         {mode !== EditorMode.settings && (
                             <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                         )}
@@ -239,18 +239,20 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
                                     <MenuGroup label={__('Support', 'give')}>
-                                        <MenuItem
-                                            onClick={() => {
-                                                // @ts-ignore
-                                                if (!window.tour.isActive()) {
+                                        {mode !== EditorMode.settings && (
+                                            <MenuItem
+                                                onClick={() => {
                                                     // @ts-ignore
-                                                    window.tour.start();
-                                                    onClose();
-                                                }
-                                            }}
-                                        >
-                                            {__('Show Guided Tour', 'give')}
-                                        </MenuItem>
+                                                    if (!window.tour.isActive()) {
+                                                        // @ts-ignore
+                                                        window.tour.start();
+                                                        onClose();
+                                                    }
+                                                }}
+                                            >
+                                                {__('Show Guided Tour', 'give')}
+                                            </MenuItem>
+                                        )}
                                         {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                             <>
                                                 <MenuItem
