@@ -24,6 +24,7 @@ import {PayPalSubscriber} from "./types";
      * a component, so it cannot use hooks to access the form field values.
      */
     let amount;
+    let feeRecovery;
     let firstName;
     let lastName;
     let email;
@@ -92,6 +93,20 @@ import {PayPalSubscriber} from "./types";
         return paypalScriptOptions;
     }
 
+    /**
+     * Get amount with fee (if any).
+     *
+     * @unreleased
+     * @return {number} Amount with fee.
+     */
+    const getAmount = () => {
+        const feeAmount = feeRecovery ? feeRecovery : 0;
+        let amountWithFee = amount + feeAmount
+        amountWithFee = Math.round(amountWithFee * 100) / 100;
+
+        return amountWithFee;
+    }
+
     const getFormData = () => {
         const formData = new FormData();
 
@@ -100,7 +115,7 @@ import {PayPalSubscriber} from "./types";
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', amount);
+        formData.append('give-amount', getAmount() );
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -229,6 +244,7 @@ import {PayPalSubscriber} from "./types";
         const {useWatch} = window.givewp.form.hooks;
 
         amount = useWatch({name: 'amount'});
+        feeRecovery = useWatch({name: 'feeRecovery'});
         firstName = useWatch({name: 'firstName'});
         lastName = useWatch({name: 'lastName'});
         email = useWatch({name: 'email'});
@@ -260,7 +276,7 @@ import {PayPalSubscriber} from "./types";
         const props = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
-            forceReRender: debounce(() => [amount, firstName, lastName, email, currency], 500),
+            forceReRender: debounce(() => [amount, feeRecovery, firstName, lastName, email, currency], 500),
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
