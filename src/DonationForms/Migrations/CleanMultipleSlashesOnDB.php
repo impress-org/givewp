@@ -38,7 +38,7 @@ class CleanMultipleSlashesOnDB extends Migration
             $settings = (new SanitizeDonationFormPreviewRequest())($form->settings->toArray());
             $blocks = (new SanitizeDonationFormPreviewRequest())($form->blocks->toArray());
             $form->settings->emailTemplateOptions = FormSettings::fromArray($settings);
-            $form->blocks = BlockCollection::make($blocks);
+            $form->blocks = BlockCollection::fromArray($blocks);
             $form->save();
         }
     }
