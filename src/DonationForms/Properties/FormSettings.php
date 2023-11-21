@@ -63,9 +63,10 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $goalAmount;
     /**
+     * @unreleased Added registrationNotification property.
      * @var string
      */
-    public $registration;
+    public $registrationNotification;
     /**
      * @var string
      */
@@ -175,6 +176,7 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @unreleased Added registrationNotification
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -200,7 +202,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
-        $self->registration = $array['registration'] ?? 'none';
+        $self->registrationNotification = $array['registrationNotification'] ?? false;
         $self->customCss = $array['customCss'] ?? '';
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(

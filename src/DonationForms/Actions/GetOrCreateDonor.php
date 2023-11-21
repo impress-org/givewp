@@ -10,6 +10,8 @@ use Give\Donors\Models\Donor;
  */
 class GetOrCreateDonor
 {
+    public $donorCreated = false;
+
     /**
      * @unreleased
      *
@@ -46,6 +48,8 @@ class GetOrCreateDonor
                 'userId' => $userId ?: null,
                 'prefix' => $honorific,
             ]);
+
+            $this->donorCreated = true;
         }
 
         return $donor;
