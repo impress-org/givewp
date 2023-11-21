@@ -184,7 +184,7 @@
             display: flex;
             gap: 1rem;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center;
         }
     }
 
@@ -195,17 +195,10 @@
 
         &-delete-btn {
             padding: 0;
+            color: var(--givewp-grey-500);
 
-            svg {
-                display: block;
-                transform: scale(1.2);
-                stroke: var(--givewp-grey-500);
-                fill: var(--givewp-grey-500);
-
-                :hover {
-                    fill: var(--givewp-red-500);
-                    stroke: var(--givewp-red-500);
-                }
+            &:hover {
+                color: var(--givewp-red-500);
             }
         }
 
