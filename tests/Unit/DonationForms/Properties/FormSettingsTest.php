@@ -2,12 +2,11 @@
 
 namespace Give\Tests\Unit\DonationForms\Properties;
 
-use Give\DonationForms\Properties\FormSettings;
 use Give\Tests\TestCase;
 
 final class FormSettingsTest extends TestCase
 {
-    public function testAddSlashesRecursive()
+    public function testEscapeDoubleQuotes()
     {
         $array = [
             'one' => [
@@ -27,7 +26,7 @@ final class FormSettingsTest extends TestCase
                     ]
                 ]
             ],
-            (new FormSettings)->addSlashesRecursive($array)
+            wp_slash($array)
         );
     }
 }
