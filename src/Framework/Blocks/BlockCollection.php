@@ -47,19 +47,6 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
-     */
-    public static function fromArray(array $blocksArray): self
-    {
-        $blocks = [];
-        foreach ($blocksArray as $block) {
-            $blocks[] = BlockModel::make($block);
-        }
-
-        return new self($blocks);
-    }
-
-    /**
      * @since 3.0.0
      *
      * @return false|string
