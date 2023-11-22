@@ -216,6 +216,10 @@
         div {
             display: block !important;
         }
+
+        svg {
+            fill: none;
+        }
     }
 
     &_input {
