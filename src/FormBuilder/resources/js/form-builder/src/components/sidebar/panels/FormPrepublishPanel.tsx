@@ -98,9 +98,9 @@ export default function FormPrepublishPanel
                                             href="#"
                                             icon={CopyIcon}
                                             variant="tertiary"
-                                            onClick={async () => {
+                                            onClick={() => {
                                                 permalinkField.current.select();
-                                                await navigator.clipboard.writeText(permalink)
+                                                document.execCommand('copy');
                                             }}
                                             className="givewp-next-gen-prepublish-panel_copy_link"
                                         >
