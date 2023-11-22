@@ -149,6 +149,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @unreleased added distinct() to the query
      * @since 2.24.0 Refactor to query through the ModelQueryBuilder
      *
      * @return array
@@ -170,7 +171,7 @@ class ListDonationForms extends Endpoint
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
-        $donationForms = $query->getAll();
+        $donationForms = $query->distinct()->getAll();
 
         if ( ! $donationForms) {
             return [];
