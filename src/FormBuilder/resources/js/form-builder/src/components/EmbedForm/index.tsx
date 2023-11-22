@@ -215,7 +215,24 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * Handle copying shortcode to clipboard
      */
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(getShortcode());
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(getShortcode());
+        } else {
+            const textArea = document.createElement('textarea');
+
+            textArea.value = getShortcode();
+            textArea.style.display = 'hidden';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (error) {
+                console.error(error);
+            } finally {
+                textArea.remove();
+            }
+        }
 
         setState(prevState => {
             return {
