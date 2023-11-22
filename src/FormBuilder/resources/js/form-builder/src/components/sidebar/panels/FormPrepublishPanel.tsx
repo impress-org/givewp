@@ -147,6 +147,13 @@ export default function FormPrepublishPanel
                                 </div>
                             </div>
 
+                            <div className="givewp-next-gen-prepublish-panel__content">
+                                <div>
+                                    <strong>{__('Are you ready to publish?', 'give')}</strong>
+                                </div>
+                                <p>{__('Double-check your settings before publishing', 'give')}</p>
+                            </div>
+
                             <FormSummarySettings />
 
                         </>
