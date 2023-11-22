@@ -53,7 +53,7 @@ class CleanMultipleSlashesOnDB extends Migration
      */
     public static function title()
     {
-        return 'Clean multiple slashes in the formBuilderSettings and formBuilderFields meta values';
+        return 'Clean multiple slashes in the formBuilderSettings meta value';
     }
 
     /**
