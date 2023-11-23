@@ -37,7 +37,7 @@ function isTmceEmpty(editor) {
 /**
  * @unreleased
  */
-export default function ClassicEditor({id, label = null, content, setContent, rows = 20}) {
+export default function ClassicEditor({id, label, content, setContent, rows = 20}) {
     const didMount = useRef(false);
 
     const [editorContent, setEditorContent] = useState(content);
@@ -106,7 +106,7 @@ export default function ClassicEditor({id, label = null, content, setContent, ro
                     editor._lastChange = newContent;
                     setEditorContent(newContent);
                 }
-            }, 100);
+            }, 250);
             editor.on('Paste Change input Undo Redo', debouncedOnChange);
 
             // We need to cancel the debounce call because when we remove
