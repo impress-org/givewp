@@ -163,9 +163,9 @@ export default function ClassicEditor({id, label = null, content, setContent, ro
                         plugins:
                             'charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview',
                         toolbar1:
-                            'bold,italic,wp_add_media,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,fullscreen,wp_adv',
+                            'bold,italic,wp_add_media,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,fullscreen,wp_adv',
                         toolbar2:
-                            'formatselect, strikethrough,hr,forecolor,pastetext,removeformat,outdent,indent,undo,redo',
+                            'formatselect,strikethrough,hr,forecolor,pastetext,removeformat,unlink,outdent,indent,undo,redo',
                         setup: onSetup,
                         resize: false,
                         statusbar: false,
