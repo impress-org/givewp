@@ -1,9 +1,9 @@
-import TextEditor from '@givewp/form-builder/components/settings/TextEditor';
+import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
 
-const DonationConfirmation = ({content, onChange}) => {
+const DonationConfirmation = ({id, content, onChange}) => {
     return (
         <div className={'givewp-form-settings__section__body__extra-gap'}>
-            <TextEditor onChange={onChange} content={content} richText={true} />
+            <ClassicEditor id={id} content={content} setContent={(value) => onChange(value)} />
         </div>
     );
 };

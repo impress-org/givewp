@@ -18,6 +18,7 @@ export default function FormDonationConfirmationSettingsGroup() {
                 description={__('This is the first message that displays in the donation confirmation.', 'give')}
             >
                 <DonationConfirmation
+                    id={'give-form-settings__donation-confirmation-heading'}
                     content={receiptHeading}
                     onChange={(receiptHeading) => dispatch(setFormSettings({receiptHeading}))}
                 />
@@ -27,6 +28,7 @@ export default function FormDonationConfirmationSettingsGroup() {
                 description={__('This is the second message that displays in the donation confirmation.', 'give')}
             >
                 <DonationConfirmation
+                    id={'give-form-settings__donation-confirmation-description'}
                     content={receiptDescription}
                     onChange={(receiptDescription) => dispatch(setFormSettings({receiptDescription}))}
                 />

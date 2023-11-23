@@ -90,12 +90,12 @@ const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
                                 value={option.email_header || config.defaultValues.email_header}
                             />
 
-                        <ClassicEditor
-                            id={'givewp-custom-email-message'}
-                            label={__('Email Message', 'give')}
-                            content={option.email_message}
-                            setContent={(value) => updateEmailTemplateOption('email_message', value)}
-                        />
+                            <ClassicEditor
+                                id={'give-email-template-message__' + notification}
+                                label={__('Email Message', 'give')}
+                                content={option.email_message}
+                                setContent={(value) => updateEmailTemplateOption('email_message', value)}
+                            />
 
                             <SelectControl
                                 className={'select-control--email-options'}
