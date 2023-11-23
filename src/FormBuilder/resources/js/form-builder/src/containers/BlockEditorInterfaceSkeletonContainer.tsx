@@ -105,6 +105,7 @@ const SettingsEditorSkeleton = () => {
             header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
             content={<FormSettings />}
             notices={<NoticesContainer />}
+            className={'givewp-form-settings__editor'}
         />
     );
 };

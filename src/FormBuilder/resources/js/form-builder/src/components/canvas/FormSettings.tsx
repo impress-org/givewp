@@ -1,31 +1,15 @@
-import {__} from '@wordpress/i18n';
-import {settings} from '@wordpress/icons';
-import BlockCard from '@givewp/form-builder/components/forks/BlockCard';
-import {
-    DonationConfirmation,
-    EmailSettings,
-    FormGridSettings,
-    FormSummarySettings,
-    RegistrationSettings,
-} from '@givewp/form-builder/settings';
+import React from 'react';
+import FormSettingsContainer from '@givewp/form-builder/components/canvas/FormSettingsContainer';
+import FormDonationConfirmationSettingsGroup from '@givewp/form-builder/settings/group-donation-confirmation';
+import FormEmailSettingsGroup from '@givewp/form-builder/settings/group-email-settings';
+import FormGeneralSettingsGroup from '@givewp/form-builder/settings/group-general';
 
 export default function FormSettings() {
     return (
-        <>
-            <BlockCard
-                icon={settings}
-                title="Form Settings"
-                description={__(
-                    'These settings affect how your form functions and is presented, as well as the form page.',
-                    'give'
-                )}
-            />
-            <FormSummarySettings />
-            <RegistrationSettings />
-            <DonationConfirmation />
-            <FormGridSettings />
-            <EmailSettings />
-            {wp.hooks.applyFilters('givewp_form_builder_pdf_settings', '')}
-        </>
+        <FormSettingsContainer>
+            <FormGeneralSettingsGroup />
+            <FormDonationConfirmationSettingsGroup />
+            <FormEmailSettingsGroup />
+        </FormSettingsContainer>
     );
 }
