@@ -13,7 +13,6 @@
  */
 import {debounce} from '@wordpress/compose';
 import {useEffect, useRef, useState} from '@wordpress/element';
-import {BaseControl} from '@wordpress/components';
 import {BACKSPACE, DELETE, F10, isKeyboardEvent} from '@wordpress/keycodes';
 import {BaseControl} from '@wordpress/components';
 
