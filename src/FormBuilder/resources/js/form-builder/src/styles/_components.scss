@@ -375,10 +375,29 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 }
 
 .givewp-classic-editor {
+    width: 100%;
+    
     .wp-editor-tools {
         z-index: initial;
     }
 
+    .wp-editor-tabs {
+        display: none;
+    }
+
+    .wp-editor-container {
+        border-radius: 0.125rem;
+        overflow: hidden;
+    }
+
+    .mce-top-part::before {
+        display: none;
+    }
+
+    .wp-editor-container,
+    .mce-tinymce {
+        box-shadow: none;
+    }
 
     textarea {
         width: 100%;

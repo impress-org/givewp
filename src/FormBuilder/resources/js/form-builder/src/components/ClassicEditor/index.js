@@ -157,16 +157,18 @@ export default function ClassicEditor({id, label = null, content, setContent, ro
         function initialize() {
             setTimeout(() => {
                 wp.editor.initialize(`editor-${id}`, {
-                    mediaButtons: true,
+                    mediaButtons: false,
                     tinymce: {
                         tinymce: true,
                         plugins:
                             'charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview',
                         toolbar1:
-                            'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,fullscreen,wp_adv',
+                            'bold,italic,wp_add_media,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,fullscreen,wp_adv',
                         toolbar2:
-                            'wp_add_media,strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
+                            'formatselect, strikethrough,hr,forecolor,pastetext,removeformat,outdent,indent,undo,redo',
                         setup: onSetup,
+                        resize: false,
+                        statusbar: false,
                     },
                     quicktags: true,
                 });
