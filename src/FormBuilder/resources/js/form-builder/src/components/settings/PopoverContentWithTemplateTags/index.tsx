@@ -5,7 +5,7 @@ import {useState} from '@wordpress/element';
 import type {Ref} from 'react';
 import {close as closeIcon, copy as copyIcon} from '@wordpress/icons';
 import './styles.scss';
-import Editor from '@givewp/form-builder/components/editor';
+import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
 
 /**
  * @since 3.0.0
@@ -71,10 +71,11 @@ export default function PopoverContentWithTemplateTags({
                 <Button icon={closeIcon} className="givewp-popover-content-settings__close-button" onClick={onClose} />
             </div>
             {richText ? (
-                <Editor
-                    className="givewp-popover-content-settings__editor"
-                    value={content}
-                    onChange={(newContent) => {
+                <ClassicEditor
+                    id={'givewp-popover-content-with-template-tags'}
+                    label={__('', 'give')}
+                    content={content}
+                    setContent={(newContent) => {
                         onContentChange(newContent);
                     }}
                 />

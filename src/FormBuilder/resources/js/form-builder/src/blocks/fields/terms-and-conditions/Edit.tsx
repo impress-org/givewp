@@ -7,10 +7,10 @@ import {Markup} from 'interweave';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
-import Editor from '@givewp/form-builder/components/editor';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 
 import './styles.scss';
+import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
@@ -140,10 +140,11 @@ export default function Edit({
                                             visible={showAgreementTextModal}
                                             onClose={() => setShowAgreementTextModal(false)}
                                         >
-                                            <Editor
-                                                className="givewp-popover-content-settings__editor"
-                                                value={agreementText}
-                                                onChange={(value) => setAttributes({agreementText: value})}
+                                            <ClassicEditor
+                                                id={'givewp-agreement-text'}
+                                                label={__('', 'give')}
+                                                content={agreementText}
+                                                setContent={(value) => setAttributes({agreementText: value})}
                                             />
                                         </StyledPopover>
                                     </ControlForPopover>
