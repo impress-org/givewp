@@ -6,7 +6,7 @@
         position: relative;
         width: 20rem;
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1279px) {
             display: none;
         }
 
@@ -599,7 +599,7 @@ div.givewp-classic-editor > label {
         padding-bottom: 2.5rem;
         margin-bottom: 2.5rem;
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1279px) {
             flex-direction: column;
             gap: 2rem;
         }
@@ -607,7 +607,7 @@ div.givewp-classic-editor > label {
         &__header {
             width: 20rem;
 
-            @media (max-width: 1024px) {
+            @media (max-width: 1279px) {
                 width: 100%;
                 padding-left: 3.25rem;
             }
