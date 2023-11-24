@@ -1,4 +1,4 @@
-import {createRef, MouseEventHandler, RefObject} from 'react';
+import {createRef, MouseEventHandler, RefObject, useState} from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
@@ -31,6 +31,19 @@ export default function FormPrepublishPanel
     const {
         formPage: {permalink},
     } = getWindowData();
+
+    const [isCopied, setIsCopied] = useState(false);
+
+    const handleCopy = () => {
+        setIsCopied(true);
+
+        permalinkField.current.select();
+        document.execCommand('copy');
+
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 3000);
+    }
 
     const isPrivate = () => {
         if (newFormStatus) {
@@ -98,13 +111,10 @@ export default function FormPrepublishPanel
                                             href="#"
                                             icon={CopyIcon}
                                             variant="tertiary"
-                                            onClick={() => {
-                                                permalinkField.current.select();
-                                                document.execCommand('copy');
-                                            }}
+                                            onClick={handleCopy}
                                             className="givewp-next-gen-prepublish-panel_copy_link"
                                         >
-                                            {__('Copy', 'give')}
+                                            {isCopied ? __('Copied', 'give') : __('Copy', 'give')}
                                         </Button>
                                     </span>
                                 </PanelRow>
@@ -142,7 +152,7 @@ export default function FormPrepublishPanel
                                         variant="secondary"
                                         onClick={handleClose}
                                     >
-                                        {__('Close', 'give')}
+                                        {__('Cancel', 'give')}
                                     </Button>
                                 </div>
                             </div>
