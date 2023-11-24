@@ -158,6 +158,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     grid-template-columns: 100px 1fr;
 
     input, select {
+        width: 190px;
         background-color: var(--givewp-gray-10);
 
         &[aria-expanded='true'] {
