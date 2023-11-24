@@ -24,6 +24,8 @@ export default function FormPrepublishPanel
      handleClose
  }: FormPrepublishPanelProps) {
 
+    const permalinkField: RefObject<HTMLInputElement> = createRef();
+
     const {
         settings: {formTitle, formStatus, newFormStatus},
     } = useFormState();
@@ -52,8 +54,6 @@ export default function FormPrepublishPanel
 
         return 'private' === formStatus;
     }
-
-    const permalinkField: RefObject<HTMLInputElement> = createRef();
 
     return createPortal(
         <div
