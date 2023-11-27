@@ -1,32 +1,43 @@
 import ModalPreview from './ModalPreview';
-import RevealPreview from './RevealPreview';
 import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
+
+import '../styles/index.scss';
 
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: string;
+    formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
     openFormButton: string;
+    link: string;
 }
 
 /**
+ * @unreleased replace reveal for newTab display.
  * @since 3.0.0
  */
-export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
+export default function DonationFormBlockPreview({
+    clientId,
+    formId,
+    formFormat,
+    openFormButton,
+    link,
+}: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
 
-    const isModalDisplay = formFormat === 'modal';
-    const isRevealDisplay = formFormat === 'reveal';
+    const isModalDisplay = formFormat === 'modal' || formFormat === 'reveal';
+    const isNewTabDisplay = formFormat === 'newTab';
 
-    return isModalDisplay ? (
+    return isNewTabDisplay ? (
+        <a className={'givewp-donation-form-link'} href={link} target={'_blank'} rel={'noopener noreferrer'}>
+            {openFormButton}
+        </a>
+    ) : isModalDisplay ? (
         <ModalPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
-    ) : isRevealDisplay ? (
-        <RevealPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
     ) : (
         <IframeResizer
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}
