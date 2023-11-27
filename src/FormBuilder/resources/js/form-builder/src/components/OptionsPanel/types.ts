@@ -7,6 +7,8 @@ export interface OptionsPanelProps {
     setOptions: (options: OptionProps[]) => void;
     onRemoveOption?: (option: OptionProps, index: number) => void;
     onAddOption?: () => void;
+    label?: string;
+    readOnly?: boolean;
 }
 
 export interface OptionsListProps {
@@ -18,6 +20,7 @@ export interface OptionsListProps {
     defaultControlsTooltip?: string;
     setOptions: (options: OptionProps[]) => void;
     onRemoveOption?: (option: OptionProps, index: number) => void;
+    readOnly?: boolean;
 }
 
 export interface OptionsItemProps {
@@ -32,6 +35,13 @@ export interface OptionsItemProps {
     handleUpdateOptionValue: (value: string) => void;
     handleUpdateOptionChecked: (checked: boolean) => void;
     handleRemoveOption: () => void;
+    readOnly?: boolean;
+}
+
+export interface OptionsHeaderProps {
+    handleAddOption: () => void;
+    label: string;
+    readOnly: boolean;
 }
 
 export interface OptionProps {

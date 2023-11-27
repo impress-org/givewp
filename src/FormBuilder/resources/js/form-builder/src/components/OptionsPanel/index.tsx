@@ -15,6 +15,8 @@ export default function Options({
     defaultControlsTooltip,
     onAddOption,
     onRemoveOption,
+    readOnly = false,
+    label = __('Options', 'give'),
 }: OptionsPanelProps) {
     const [showValues, setShowValues] = useState<boolean>(false);
 
@@ -29,7 +31,7 @@ export default function Options({
 
     return (
         <>
-            {!currency && (
+            {!currency && !readOnly && (
                 <PanelRow>
                     <ToggleControl
                         label={__('Show values', 'give')}
@@ -40,7 +42,7 @@ export default function Options({
             )}
             <PanelRow>
                 <BaseControl id={'give'}>
-                    <OptionsHeader handleAddOption={handleAddOption} />
+                    <OptionsHeader handleAddOption={handleAddOption} label={label} readOnly={readOnly} />
                     <OptionsList
                         currency={currency}
                         options={options}
@@ -50,6 +52,7 @@ export default function Options({
                         setOptions={setOptions}
                         defaultControlsTooltip={defaultControlsTooltip}
                         onRemoveOption={onRemoveOption}
+                        readOnly={readOnly}
                     />
                 </BaseControl>
             </PanelRow>

@@ -18,6 +18,7 @@ export default function OptionsItem({
     handleUpdateOptionValue,
     handleUpdateOptionChecked,
     handleRemoveOption,
+    readOnly,
 }: OptionsItemProps) {
     return (
         <div className={'givewp-options-list--item'} ref={provided.innerRef} {...provided.draggableProps}>
@@ -64,6 +65,7 @@ export default function OptionsItem({
                             value={option.label}
                             placeholder={__('Label', 'give')}
                             onChange={(event) => handleUpdateOptionLabel(event.target.value)}
+                            readOnly={readOnly}
                         />
 
                         {showValues && (
@@ -72,16 +74,19 @@ export default function OptionsItem({
                                 value={option.value}
                                 placeholder={__('Value', 'give')}
                                 onChange={(event) => handleUpdateOptionValue(event.target.value)}
+                                readOnly={readOnly}
                             />
                         )}
                     </>
                 )}
             </div>
-            <Button
-                icon={minusCircle}
-                className={'givewp-options-list--item--button'}
-                onClick={() => handleRemoveOption()}
-            />
+            {!readOnly && (
+                <Button
+                    icon={minusCircle}
+                    className={'givewp-options-list--item--button'}
+                    onClick={() => handleRemoveOption()}
+                />
+            )}
         </div>
     );
 }
