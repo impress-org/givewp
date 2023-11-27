@@ -276,13 +276,7 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
-            if ($testMode){
-                $query->having(
-                'give_donationmeta_attach_meta_mode.meta_value',
-                '=',
-                DonationMode::TEST
-                );
-            }
+           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
