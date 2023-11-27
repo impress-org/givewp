@@ -209,6 +209,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Updated query to account for possible null and empty values for _give_payment_mode meta
      * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
