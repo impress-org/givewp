@@ -378,6 +378,10 @@ class DonationRepository
             $meta[DonationMetaKeys::COMMENT] = $donation->comment;
         }
 
+        if ($donation->honorific !== null) {
+            $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
+        }
+
         return $meta;
     }
 

@@ -164,6 +164,7 @@ final class TestDonationRepository extends TestCase
 
         // update donation values
         $donation->amount = new Money(10000, 'USD');
+        $donation->honorific = "Mr.";
         $donation->firstName = "Ron";
         $donation->lastName = "Swanson";
         $donation->company = 'Very Good Building';
@@ -180,6 +181,7 @@ final class TestDonationRepository extends TestCase
         // assert updated values from the database
         $this->assertNotEquals(50, $query->amount);
         $this->assertMoneyEquals(new Money(10000, 'USD'), $query->amount);
+        $this->assertSame('Mr.', $query->honorific);
         $this->assertEquals('Ron', $query->firstName);
         $this->assertEquals('Swanson', $query->lastName);
         $this->assertEquals('ron@swanson.com', $query->email);
