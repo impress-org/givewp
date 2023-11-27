@@ -4,18 +4,15 @@ import {__} from '@wordpress/i18n';
 import {chevronLeft, chevronRight} from '@wordpress/icons';
 import {useFormSettingsContext} from '@givewp/form-builder/components/canvas/FormSettingsContainer';
 import {
-    popMenuStack,
-    pushMenuStack,
-    resetMenuStack,
-    setActiveMenu,
+    navigateBackInMenu,
     setContent,
-    setMenuPage,
+    updateMenuState,
 } from '@givewp/form-builder/components/canvas/FormSettingsContainer/formSettingsReducer';
 import {Icon} from '@wordpress/components';
 
-export default function SettingsGroup({item, title, parentItem = null, children}) {
+export default function SettingsGroup({item, title, children}) {
     const [state, dispatch] = useFormSettingsContext();
-    const {content, menuPage, activeMenu, menuStack} = state;
+    const {content, activeMenu} = state;
 
     const isActive = activeMenu === item;
     const hasNestedMenu = Children.toArray(children).some((child) => {
@@ -47,23 +44,11 @@ export default function SettingsGroup({item, title, parentItem = null, children}
     }
 
     const handleItemClick = () => {
-        if (hasNestedMenu) {
-            dispatch(setMenuPage(menuPage + 1));
-        } else {
-            dispatch(setActiveMenu(item));
-            dispatch(setContent(children));
-        }
-
-        if (!parentItem) {
-            dispatch(resetMenuStack());
-        }
-
-        dispatch(pushMenuStack(item));
+        dispatch(updateMenuState(hasNestedMenu, item, children));
     };
 
     const handleBackClick = () => {
-        dispatch(setMenuPage(menuPage - 1));
-        dispatch(popMenuStack());
+        dispatch(navigateBackInMenu());
     };
 
     return (

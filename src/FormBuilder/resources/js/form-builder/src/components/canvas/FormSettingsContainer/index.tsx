@@ -22,7 +22,6 @@ export default function FormSettingsContainer({children}) {
        content: null,
        menuPage: 1,
        activeMenu: 'item-general',
-       menuStack: [],
    });
 
     return (

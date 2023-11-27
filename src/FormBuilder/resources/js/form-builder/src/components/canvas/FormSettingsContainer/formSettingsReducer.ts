@@ -2,16 +2,26 @@ export const formSettingsReducer = (state: State, action: Action) => {
     switch (action.type) {
         case 'SET_CONTENT':
             return {...state, content: action.payload};
-        case 'SET_MENU_PAGE':
-            return {...state, menuPage: action.payload};
-        case 'SET_ACTIVE_MENU':
-            return {...state, activeMenu: action.payload};
-        case 'PUSH_MENU_STACK':
-            return {...state, menuStack: [...state.menuStack, action.payload]};
-        case 'POP_MENU_STACK':
-            return {...state, menuStack: state.menuStack.slice(0, -2)};
-        case 'RESET_MENU_STACK':
-            return {...state, menuStack: []};
+        case 'UPDATE_MENU_STATE':
+            const {hasNestedMenu, menuItem, children} = action.payload;
+
+            if (hasNestedMenu) {
+                return {
+                    ...state,
+                    menuPage: state.menuPage + 1,
+                };
+            } else {
+                return {
+                    ...state,
+                    activeMenu: menuItem,
+                    content: children,
+                };
+            }
+        case 'NAVIGATE_BACK_IN_MENU':
+            return {
+                ...state,
+                menuPage: state.menuPage - 1,
+            };
         default:
             return state;
     }
@@ -22,42 +32,28 @@ export const setContent = (content: React.ReactNode): Action => ({
     payload: content,
 });
 
-export const setMenuPage = (page: number): Action => {
-    return {
-        type: 'SET_MENU_PAGE',
-        payload: page,
-    };
-};
-
-export const setActiveMenu = (menuItem: string): Action => ({
-    type: 'SET_ACTIVE_MENU',
-    payload: menuItem,
+export const updateMenuState = (hasNestedMenu: boolean, menuItem: string, children: React.ReactNode): Action => ({
+    type: 'UPDATE_MENU_STATE',
+    payload: {hasNestedMenu, menuItem, children},
 });
 
-export const pushMenuStack = (menuItem: string): Action => ({
-    type: 'PUSH_MENU_STACK',
-    payload: menuItem,
-});
-
-export const popMenuStack = (): Action => ({
-    type: 'POP_MENU_STACK'
-});
-
-export const resetMenuStack = (): Action => ({
-    type: 'RESET_MENU_STACK'
+export const navigateBackInMenu = (): Action => ({
+    type: 'NAVIGATE_BACK_IN_MENU',
 });
 
 export type State = {
     content: React.ReactNode;
     menuPage: number;
     activeMenu: string;
-    menuStack: string[];
+};
+
+export type MenuState = {
+    hasNestedMenu: boolean;
+    menuItem: string;
+    children: React.ReactNode;
 };
 
 export type Action =
     | {type: 'SET_CONTENT'; payload: React.ReactNode}
-    | {type: 'SET_MENU_PAGE'; payload: number}
-    | {type: 'SET_ACTIVE_MENU'; payload: string}
-    | {type: 'PUSH_MENU_STACK'; payload: string}
-    | {type: 'POP_MENU_STACK'}
-    | {type: 'RESET_MENU_STACK'};
+    | {type: 'UPDATE_MENU_STATE'; payload: MenuState}
+    | {type: 'NAVIGATE_BACK_IN_MENU'};
