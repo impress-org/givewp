@@ -15,6 +15,10 @@ interface Option {
     disabled?: boolean;
 }
 
-export type {
-    Option
+interface Form {
+    isLegacyForm: boolean;
+    isLegacyTemplate: boolean;
+    link: string;
 }
+
+export type {Option, Form};
