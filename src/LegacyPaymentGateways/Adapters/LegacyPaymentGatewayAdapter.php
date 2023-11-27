@@ -49,7 +49,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @since 3.1.2  Capture exceptions when get gateway data.
+     * @unreleased  Capture exceptions when get gateway data.
      * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
@@ -283,7 +283,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @since 3.1.2 add honorific and use GetOrCreateDonor action
+     * @unreleased add honorific and use GetOrCreateDonor action
      * @since 2.21.0
      *
      * @throws Exception

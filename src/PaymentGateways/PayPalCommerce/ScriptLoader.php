@@ -188,7 +188,7 @@ EOT;
     /**
      * Load public assets.
      *
-     * @since 3.1.2 Use EnqueueScript to register and enqueue script.
+     * @unreleased Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */

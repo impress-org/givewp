@@ -11,7 +11,7 @@ type ModalFormProps = {
 };
 
 /**
- * @since 3.1.2 include types. update BEM classnames.
+ * @unreleased include types. update BEM classnames.
  * @since 3.0.0
  */
 export default function ModalForm({dataSrc, embedId, openFormButton}: ModalFormProps) {
