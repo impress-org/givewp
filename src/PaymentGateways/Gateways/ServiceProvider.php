@@ -71,13 +71,6 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(PayPalCommerceGateway::class);
         });
 
-        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerceGateway::id(), function ($gatewayData) {
-            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId']
-                ?? give_clean($_POST['gatewayData']['payPalOrderId']);
-
-            return $gatewayData;
-        });
-
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
         $this->addStripeFormBuilderHooks();

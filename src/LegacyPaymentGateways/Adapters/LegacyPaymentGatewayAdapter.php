@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\DonationForms\Actions\GetOrCreateDonor;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
@@ -48,6 +49,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @unreleased  Capture exceptions when get gateway data.
      * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
@@ -70,7 +72,8 @@ class LegacyPaymentGatewayAdapter
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
             $formData->donorInfo->firstName,
-            $formData->donorInfo->lastName
+            $formData->donorInfo->lastName,
+            $formData->donorInfo->honorific
         );
 
         $donation = $formData->toDonation($donor->id);
@@ -105,30 +108,31 @@ class LegacyPaymentGatewayAdapter
 
             $this->setSession($donation->id);
 
-            /**
-             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
-                (new GetGatewayDataFromRequest)(),
-                $donation,
-                $subscription
-            );
+            try {
+                /**
+                 * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
+                 *
+                 * @since 2.21.2
+                 */
+                $gatewayData = apply_filters(
+                    "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
+                    (new GetGatewayDataFromRequest())(),
+                    $donation,
+                    $subscription
+                );
 
-            $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
+                $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
 
-            $controller = new GatewaySubscriptionController($registeredGateway);
-             try {
+                $controller = new GatewaySubscriptionController($registeredGateway);
+
                 $controller->create($donation, $subscription, $gatewayData);
             } catch (Exception $exception) {
                 PaymentGatewayLog::error(
                     $exception->getMessage(),
                     [
-                        'Payment Gateway' => $registeredGateway::id(),
-                        'Donation' => $donation->toArray(),
-                        'Subscription' => $subscription->toArray(),
+                       'Payment Gateway' => $registeredGateway::id(),
+                       'Donation' => $donation->toArray(),
+                       'Subscription' => $subscription->toArray(),
                     ]
                 );
 
@@ -145,22 +149,22 @@ class LegacyPaymentGatewayAdapter
 
             $this->setSession($donation->id);
 
-            /**
-             * Filter hook to provide gateway data before transaction is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
-                (new GetGatewayDataFromRequest)(),
-                $donation
-            );
-
-            $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
-
-            $controller = new GatewayPaymentController($registeredGateway);
-
             try {
+                /**
+                 * Filter hook to provide gateway data before transaction is processed by the gateway.
+                 *
+                 * @since 2.21.2
+                 */
+                $gatewayData = apply_filters(
+                    "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
+                    (new GetGatewayDataFromRequest())(),
+                    $donation
+                );
+
+                $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
+
+                $controller = new GatewayPaymentController($registeredGateway);
+
                 $controller->create($donation, $gatewayData);
             } catch (Exception $exception) {
                 PaymentGatewayLog::error(
@@ -279,48 +283,25 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * @unreleased add honorific and use GetOrCreateDonor action
      * @since 2.21.0
      *
-     * @param  int|null  $userId
-     * @param  string  $donorEmail
-     * @param  string  $firstName
-     * @param  string  $lastName
-     *
-     * @return Donor
      * @throws Exception
      */
     private function getOrCreateDonor(
-        int $userId,
+        ?int $userId,
         string $donorEmail,
         string $firstName,
-        string $lastName
+        string $lastName,
+        ?string $honorific
     ): Donor {
-        // first check if donor exists as a user
-        $donor = Donor::whereUserId($userId);
-
-        // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
-        if ($donor && !$donor->hasEmail($donorEmail)) {
-            $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
-            $donor->save();
-        }
-
-        // if donor is not a user than check for any donor matching this email
-        if (!$donor) {
-            $donor = Donor::whereEmail($donorEmail);
-        }
-
-        // if no donor exists then create a new one using their personal information from the form.
-        if (!$donor) {
-            $donor = Donor::create([
-                'name' => trim("$firstName $lastName"),
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'email' => $donorEmail,
-                'userId' => $userId ?: null,
-            ]);
-        }
-
-        return $donor;
+        return (new GetOrCreateDonor())(
+            $userId,
+            $donorEmail,
+            $firstName,
+            $lastName,
+            $honorific
+        );
     }
 
     /**
@@ -337,8 +318,8 @@ class LegacyPaymentGatewayAdapter
               <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
               <label for="give-gateway-opt-refund">
                   <?php
-                  esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway->getName()), 'give');
-                  ?>
+                    esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway->getName()), 'give');
+                    ?>
               </label>
             </p>
           </div>
@@ -387,9 +368,11 @@ class LegacyPaymentGatewayAdapter
         }
 
         $donation = Donation::find($donationId);
-        if ($donation->gatewayId === $registeredGateway::id() &&
+        if (
+            $donation->gatewayId === $registeredGateway::id() &&
             'refunded' === $newStatus &&
-            'refunded' !== $oldStatus) {
+            'refunded' !== $oldStatus
+        ) {
             $controller = new GatewayPaymentController($registeredGateway);
             $controller->refund($donation);
         }

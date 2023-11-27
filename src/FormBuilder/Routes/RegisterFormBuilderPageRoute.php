@@ -164,6 +164,8 @@ class RegisterFormBuilderPageRoute
      */
     public function loadGutenbergScripts()
     {
+        wp_enqueue_editor();
+        
         // Gutenberg scripts
         wp_enqueue_script('wp-block-library');
         wp_enqueue_script('wp-format-library');

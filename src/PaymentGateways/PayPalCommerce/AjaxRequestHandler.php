@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
@@ -278,6 +279,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
+     * @unreleased Discover error by checking capture status.
      * @since 2.9.0
      */
     public function approveOrder()
@@ -288,17 +290,12 @@ class AjaxRequestHandler
 
         try {
             $result = give(PayPalOrder::class)->approveOrder($orderId);
-            wp_send_json_success(
-                [
-                    'order' => $result,
-                ]
-            );
+            // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
+            // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
+            $this->returnErrorOnFailedApproveOrderResponse($result);
+            wp_send_json_success(['order' => $result,]);
         } catch (\Exception $ex) {
-            wp_send_json_error(
-                [
-                    'error' => json_decode($ex->getMessage(), true),
-                ]
-            );
+            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
         }
     }
 
@@ -387,5 +384,29 @@ class AjaxRequestHandler
         $address['country_code'] = ! empty($postedData['billing_country']) ? $postedData['billing_country'] : '';
 
         return $address;
+    }
+
+    /**
+     * This function should validate PayPal ApproveOrder response and respond to ajax request on error.
+     *
+     * @unreleased
+     */
+    private function returnErrorOnFailedApproveOrderResponse(\stdClass $response)
+    {
+        // Get capture.
+        // ref - https://developer.paypal.com/docs/api/orders/v2/#orders_capture
+        $capture = $response->purchase_units[0]->payments->captures[0];
+
+        // Check if capture status is failed or declined.
+        if (
+            in_array($capture->status, ['FAILED', 'DECLINED'])
+            && property_exists($capture, 'processor_response')
+        ) {
+            $error = ProcessorResponseError::getError($capture->processor_response);
+
+            if ($error) {
+                wp_send_json_error(['error' => $error]);
+            }
+        }
     }
 }
