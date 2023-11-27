@@ -5,7 +5,7 @@
 
 import React from 'react';
 import _ from 'lodash';
-import {BaseControl, Button, TextControl} from '@wordpress/components';
+import {BaseControl, Button} from '@wordpress/components';
 import {upload} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
 
@@ -49,7 +49,13 @@ export default ({value, onChange}) => {
             )}
         >
             <div style={{display: 'flex', gap: '0.25rem'}}>
-                <TextControl type={'url'} value={value} onChange={onChange} style={{flex: 1}} />
+                <input
+                    type={'url'}
+                    value={value}
+                    onChange={onChange}
+                    className={'components-text-control__input'}
+                    style={{flex: 1}}
+                />
                 <Button
                     icon={upload}
                     variant={'secondary'}

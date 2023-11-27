@@ -111,10 +111,11 @@ const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSet
                         </PanelRow>
 
                         <PanelRow>
-                            <BaseControl label={__('Email message', 'give')}>
+                            <div style={{width: '100%'}}>
                                 <ClassicEditor
                                     key={'give-email-template-message__' + notification}
                                     id={'give-email-template-message__' + notification}
+                                    label={__('Email message', 'give')}
                                     content={option.email_message}
                                     setContent={(value) => updateEmailTemplateOption('email_message', value)}
                                     rows={10}
@@ -131,7 +132,7 @@ const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSet
                                 >
                                     {__('View template tags', 'give')}
                                 </Button>
-                            </BaseControl>
+                            </div>
                         </PanelRow>
                     </SettingsSection>
                     <SettingsSection
