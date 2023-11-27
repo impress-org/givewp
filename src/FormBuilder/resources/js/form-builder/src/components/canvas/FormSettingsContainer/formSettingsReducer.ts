@@ -1,7 +1,5 @@
 export const formSettingsReducer = (state: State, action: Action) => {
     switch (action.type) {
-        case 'SET_CONTENT':
-            return {...state, content: action.payload};
         case 'UPDATE_MENU_STATE':
             const {hasNestedMenu, menuItem, children} = action.payload;
 
@@ -27,11 +25,6 @@ export const formSettingsReducer = (state: State, action: Action) => {
     }
 }
 
-export const setContent = (content: React.ReactNode): Action => ({
-    type: 'SET_CONTENT',
-    payload: content,
-});
-
 export const updateMenuState = (hasNestedMenu: boolean, menuItem: string, children: React.ReactNode): Action => ({
     type: 'UPDATE_MENU_STATE',
     payload: {hasNestedMenu, menuItem, children},
@@ -54,6 +47,5 @@ export type MenuState = {
 };
 
 export type Action =
-    | {type: 'SET_CONTENT'; payload: React.ReactNode}
     | {type: 'UPDATE_MENU_STATE'; payload: MenuState}
     | {type: 'NAVIGATE_BACK_IN_MENU'};
