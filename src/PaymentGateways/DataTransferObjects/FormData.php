@@ -170,6 +170,7 @@ final class FormData
     }
 
     /**
+     * @unreleased added support for honorific field
      * @since 2.22.0 add support for company field
      * @since 2.19.6
      * @throws Exception
@@ -181,6 +182,7 @@ final class FormData
             'gatewayId' => $this->paymentGateway,
             'amount' => Money::fromDecimal($this->price, $this->currency),
             'donorId' => $donorId,
+            'honorific' => $this->donorInfo->honorific,
             'firstName' => $this->donorInfo->firstName,
             'lastName' => $this->donorInfo->lastName,
             'email' => $this->donorInfo->email,

@@ -126,6 +126,7 @@ class DonateControllerData
     public $comment;
 
     /**
+     * @unreleased added honorific property
      * @since 3.0.0
      */
     public function toDonation(int $donorId): Donation

@@ -15,6 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationData
  *
+ * @unreleased added honorific property
  * @since 2.23.0 remove parentId property
  * @since 2.19.6
  */
