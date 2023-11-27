@@ -8,7 +8,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
- * @unreleased Remove addSlashesRecursive method
+ * @since 3.1.2 Remove addSlashesRecursive method
  * @since      3.0.0
  */
 class FormSettings implements Arrayable, Jsonable
@@ -66,7 +66,7 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $goalAmount;
     /**
-     * @unreleased Added registrationNotification property.
+     * @since 3.1.2 Added registrationNotification property.
      * @var string
      */
     public $registrationNotification;
@@ -179,7 +179,7 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
-     * @unreleased Added registrationNotification
+     * @since 3.1.2 Added registrationNotification
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -275,7 +275,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
+     * @since 3.1.2 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
     public function toJson($options = 0): string

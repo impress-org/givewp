@@ -8,7 +8,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased 
+ * @since 3.1.2 
  */
 class FailedDonorUserCreationException extends Exception
 {

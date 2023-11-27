@@ -132,7 +132,7 @@ class RegisterPaymentGateways
     }
 
     /**
-     * @unreleased Prevent undefined index notice when getting payPalOrderId from gateway data.
+     * @since 3.1.2 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.
      * @since 2.21.2
      *

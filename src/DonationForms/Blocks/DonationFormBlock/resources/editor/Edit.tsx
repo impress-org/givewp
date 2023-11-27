@@ -10,7 +10,7 @@ import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import './styles/index.scss';
 
 /**
- * @unreleased updated to handle v2 forms.
+ * @since 3.1.2 updated to handle v2 forms.
  * @since 3.0.0
  */
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {

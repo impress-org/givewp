@@ -7,12 +7,12 @@ use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 3.1.2
  */
 class CleanMultipleSlashesOnDB extends Migration
 {
     /**
-     * @unreleased
+     * @since 3.1.2
      */
     public function run()
     {
@@ -65,7 +65,7 @@ class CleanMultipleSlashesOnDB extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.1.2
      */
     public function cleanMultipleSlashes($var)
     {
