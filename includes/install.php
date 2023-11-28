@@ -29,17 +29,16 @@ if (!defined('ABSPATH')) {
  * successful install, the user is redirected to the Give Onboarding Wizard.
  *
  * @since 1.0
- *
- * @param bool $network_wide
+ * @since 3.1.3 installing in WP multisite only if network admin
  *
  * @return void
  * @global     $wpdb
  */
-function give_install($network_wide = false)
+function give_install()
 {
     global $wpdb;
 
-    if (is_multisite() && $network_wide) {
+    if (is_multisite() && is_network_admin()) {
         foreach ($wpdb->get_col("SELECT blog_id FROM $wpdb->blogs LIMIT 100") as $blog_id) {
             switch_to_blog($blog_id);
             give_run_install();
