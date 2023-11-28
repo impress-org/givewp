@@ -12,6 +12,7 @@ function MenuItem({item}) {
     const [state, dispatch] = useFormSettingsContext();
     const isActive = state.activeMenu === item.path;
     const hasChildren = item.children && item.children.length;
+    const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
 
     const handleItemClick = () => {
         dispatch(updateMenuState(hasChildren, item.path));
@@ -27,7 +28,7 @@ function MenuItem({item}) {
                 {item.name}
                 {hasChildren && <Icon icon={chevronRight} />}
             </button>
-            {hasChildren && (
+            {isActiveParent && (
                 <ul>
                     <li>
                         <button onClick={handleBackClick} className={'back-menu-button'}>

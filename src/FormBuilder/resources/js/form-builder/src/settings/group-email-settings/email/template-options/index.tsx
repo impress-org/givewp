@@ -20,7 +20,7 @@ export default function EmailTemplateOptions({notification}) {
 
     const selectedNotificationStatus = emailTemplateOptions[notification]?.status ?? 'global';
 
-    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderWindowData();
+    const {emailTemplateTags, emailDefaultAddress} = getFormBuilderWindowData();
 
     const templateTagsDescription = createInterpolateElement(
         __(
