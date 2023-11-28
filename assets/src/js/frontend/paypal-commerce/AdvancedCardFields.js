@@ -243,6 +243,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle PayPal payment on approve event.
 	 *
+     * @since 3.1.2 Hide processing state upon error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} payload PayPal response object after payment completion.
@@ -254,6 +255,7 @@ class AdvancedCardFields extends PaymentMethod {
 
 		if ( ! result.success ) {
             this.hostedFieldOnSubmitErrorHandler(result.data.error);
+            Give.form.fn.hideProcessingState();
             return;
 		}
 
@@ -411,6 +413,7 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle hosted fields on submit errors.
 	 *
+     * @since 3.1.2 Handle custom error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} error Collection of hosted field on submit error
@@ -419,10 +422,21 @@ class AdvancedCardFields extends PaymentMethod {
 		const errorStringByGroup = {};
 		const errors = [];
 
-		if ( ! Object.values( error ).length ) {
-			Give.form.fn.resetDonationButton( this.jQueryForm );
-			throw window.givePayPalCommerce.genericDonorErrorMessage;
-		}
+        if (! error ) {
+            errors.push({message: window.givePayPalCommerce.genericDonorErrorMessage});
+            Give.form.fn.resetDonationButton(this.jQueryForm);
+            Give.form.fn.addErrorsAndResetDonationButton(this.jQueryForm, Give.form.fn.getErrorHTML(errors));
+            return;
+
+        } else if (typeof error === 'string') {
+            errors.push({message: error});
+            Give.form.fn.resetDonationButton(this.jQueryForm);
+            Give.form.fn.addErrorsAndResetDonationButton(
+                this.jQueryForm,
+                Give.form.fn.getErrorHTML(errors)
+            );
+            return;
+        }
 
 		// Group credit card error notices.
 		error.details.forEach( detail => {

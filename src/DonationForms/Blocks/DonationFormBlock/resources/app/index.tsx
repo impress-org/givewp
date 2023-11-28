@@ -1,38 +1,33 @@
 import {createRoot, render} from '@wordpress/element';
-import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-import './styles/index.scss';
+import '../editor/styles/index.scss';
+
+type DonationFormBlockAppProps = {
+    formFormat: 'fullForm' | 'newTab' | 'modal' | string;
+    dataSrc: string;
+    embedId: string;
+    openFormButton: string;
+    formUrl: string;
+};
 
 /**
+ * @since 3.1.2 replace form format reveal with new tab.
  * @since 3.0.0
  */
-function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}) {
-    if (formFormat === 'reveal') {
-        return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
-    }
-
-    if (formFormat === 'modal') {
-        return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
-    }
-
-    if (formFormat === 'new-tab' && formUrl) {
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {
+    if (formFormat === 'newTab') {
         return (
-            <a
-                href={formUrl}
-                target="_blank"
-                className="givewp-donation-form-display__button"
-                style={{
-                    textDecoration: 'none',
-                    color: '#fff'
-                }}
-            >
+            <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
                 {openFormButton}
             </a>
         );
     }
 
+    if (formFormat === 'modal' || formFormat === 'reveal') {
+        return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
+    }
 
     return (
         <IframeResizer

@@ -121,7 +121,7 @@ class RegisterPaymentGateways
                     $gatewayClass::id()
                 ),
                 function ($gatewayData, Donation $donation) {
-                    $gatewayData['stripePaymentMethod'] = (new GetPaymentMethodFromRequest)($donation);
+                    $gatewayData['stripePaymentMethod'] = (new GetPaymentMethodFromRequest())($donation);
 
                     return $gatewayData;
                 },
@@ -132,6 +132,7 @@ class RegisterPaymentGateways
     }
 
     /**
+     * @since 3.1.2 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.
      * @since 2.21.2
      *
@@ -146,9 +147,14 @@ class RegisterPaymentGateways
                 PayPalCommerce::id()
             ),
             function ($gatewayData) {
-                $paypalOrderId = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
+                if (array_key_exists('payPalOrderId', $gatewayData)) {
+                    $paypalOrderId = $gatewayData['payPalOrderId'];
+                } else {
+                    $paypalOrderId = give_clean($_POST['payPalOrderId']);
+                    $gatewayData['payPalOrderId'] = $paypalOrderId;
+                }
 
-                if ( ! $paypalOrderId) {
+                if (! $paypalOrderId) {
                     throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
                 }
 

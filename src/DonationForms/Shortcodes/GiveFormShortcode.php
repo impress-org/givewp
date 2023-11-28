@@ -13,6 +13,7 @@ class GiveFormShortcode
     public static $instance = 0;
 
     /**
+     * @since 3.1.2 include v3 block attributes for shortcode.
      * @since 3.1.1 use static instance ID to simulate blockId attribute
      * @since 3.0.0
      */
@@ -21,7 +22,7 @@ class GiveFormShortcode
         self::$instance++;
 
         $formId = absint($atts['id']);
-        $isV3Form = (bool) give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
+        $isV3Form = (bool)give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
 
         if (!$formId || !$isV3Form) {
             return $output;

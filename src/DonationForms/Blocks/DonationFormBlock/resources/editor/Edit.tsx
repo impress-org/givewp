@@ -1,174 +1,74 @@
-import {__} from '@wordpress/i18n';
-import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl} from '@wordpress/components';
-import {Fragment, useCallback, useEffect, useState} from '@wordpress/element';
-import useFormOptions from './hooks/useFormOptions';
-import ConfirmButton from './components/ConfirmButton';
-import Logo from './components/Logo';
+import {useEffect, useState} from 'react';
+import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
-import ReactSelect from 'react-select';
-import BlockPreview from './components/BlockPreview';
+import ServerSideRender from '@wordpress/server-side-render';
+import DonationFormSelector from './components/DonationFormSelector';
+import useFormOptions from './hooks/useFormOptions';
+import DonationFormBlockControls from './components/DonationFormBlockControls';
+import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 
 import './styles/index.scss';
 
 /**
+ * @since 3.1.2 updated to handle v2 forms.
  * @since 3.0.0
  */
-export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId, formFormat, openFormButton} = attributes;
+export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
+    const {id, blockId, displayStyle, continueButtonTitle} = attributes;
     const {formOptions, isResolving} = useFormOptions();
-    const [showPreview, setShowPreview] = useState<boolean>(!!formId);
+    const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
-    const showOpenFormButton = formFormat === 'reveal' || formFormat === 'modal';
+    const handleSelect = (id) => {
+        setShowPreview(true);
+        setAttributes({id});
+    };
 
     useEffect(() => {
         if (!blockId) {
             setAttributes({blockId: clientId});
         }
+
+        if (!isLegacyForm && displayStyle === 'reveal') {
+            setAttributes({displayStyle: 'modal'});
+        }
     }, []);
 
-    const getDefaultFormId = useCallback(() => {
-        if (!isResolving && formOptions.length > 0) {
-            return formId && formOptions?.find(({value}) => value === formId);
-        }
-    }, [isResolving, formId, JSON.stringify(formOptions)]);
+    const [isLegacyForm, isLegacyTemplate, link] = (() => {
+        const form = formOptions.find((form) => form.value == id);
+
+        return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
+    })();
 
     return (
-        <Fragment>
-            {/*block controls*/}
-            <InspectorControls>
-                <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
-                    <PanelRow>
-                        {!isResolving && formOptions.length === 0 ? (
-                            <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                        ) : (
-                            <SelectControl
-                                label={__('Choose a donation form', 'give')}
-                                value={formId ?? ''}
-                                options={[
-                                    // add a disabled selector manually
-                                    ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                    ...formOptions,
-                                ]}
-                                onChange={(newFormId) => {
-                                    setAttributes({formId: newFormId});
-                                }}
-                            />
-                        )}
-                    </PanelRow>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Form Format', 'give')}
-                            value={formFormat}
-                            options={[
-                                {
-                                    label: __('Full Form', 'give'),
-                                    value: 'full',
-                                },
-                                {
-                                    label: __('Reveal', 'give'),
-                                    value: 'reveal',
-                                },
-                                {
-                                    label: __('Modal', 'give'),
-                                    value: 'modal',
-                                },
-                            ]}
-                            onChange={(value) => {
-                                setAttributes({formFormat: value});
-                            }}
-                        />
-                    </PanelRow>
-                    {showOpenFormButton && (
-                        <PanelRow>
-                            <TextControl
-                                label={__('Open Form Button', 'give')}
-                                value={openFormButton}
-                                onChange={(value) => {
-                                    setAttributes({openFormButton: value});
-                                }}
-                            />
-                        </PanelRow>
-                    )}
-                    <PanelRow>
-                        {formId && (
-                            <ExternalLink
-                                href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
-                            >
-                                {__('Edit donation form', 'give')}
-                            </ExternalLink>
-                        )}
-                    </PanelRow>
-                </PanelBody>
-            </InspectorControls>
-
-            {/*block preview*/}
-            <div {...useBlockProps()}>
-                {formId && showPreview ? (
-                    <BlockPreview
-                        clientId={clientId}
-                        formId={formId}
-                        formFormat={formFormat}
-                        openFormButton={openFormButton}
+        <div {...useBlockProps()}>
+            {id && showPreview ? (
+                <>
+                    <DonationFormBlockControls
+                        attributes={attributes}
+                        setAttributes={setAttributes}
+                        formOptions={formOptions}
+                        isResolving={isResolving}
+                        isLegacyTemplate={isLegacyTemplate}
+                        isLegacyForm={isLegacyForm}
                     />
-                ) : (
-                    <div className="givewp-form-block--container">
-                        <Logo />
 
-                        <div className="givewp-form-block__select--container">
-                            <label htmlFor="formId" className="givewp-form-block__select--label">
-                                {__('Choose a donation form', 'give')}
-                            </label>
-
-                            <ReactSelect
-                                classNamePrefix="givewp-form-block__select"
-                                name="formId"
-                                inputId="formId"
-                                value={getDefaultFormId()}
-                                placeholder={
-                                    isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
-                                }
-                                onChange={(option) => {
-                                    if (option) {
-                                        setAttributes({formId: option.value});
-                                    }
-                                }}
-                                noOptionsMessage={() => (
-                                    <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                                )}
-                                options={formOptions}
-                                loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
-                                isLoading={isResolving}
-                                theme={(theme) => ({
-                                    ...theme,
-                                    colors: {
-                                        ...theme.colors,
-                                        primary: '#27ae60',
-                                    },
-                                })}
-                                styles={{
-                                    input: (provided, state) => ({
-                                        ...provided,
-                                        height: '3rem',
-                                    }),
-                                    option: (provided, state) => ({
-                                        ...provided,
-                                        paddingTop: '0.8rem',
-                                        paddingBottom: '0.8rem',
-                                        fontSize: '1rem',
-                                    }),
-                                    control: (provided, state) => ({
-                                        ...provided,
-                                        fontSize: '1rem',
-                                    }),
-                                }}
-                            />
+                    {isLegacyForm ? (
+                        <div className={!!isSelected ? `${className} isSelected` : className}>
+                            <ServerSideRender block="give/donation-form" attributes={attributes} />
                         </div>
-
-                        <ConfirmButton formId={formId} enablePreview={() => setShowPreview(true)} />
-                    </div>
-                )}
-            </div>
-        </Fragment>
+                    ) : (
+                        <DonationFormBlockPreview
+                            clientId={clientId}
+                            formId={id}
+                            formFormat={displayStyle}
+                            openFormButton={continueButtonTitle}
+                            link={link}
+                        />
+                    )}
+                </>
+            ) : (
+                <DonationFormSelector formOptions={formOptions} isResolving={isResolving} handleSelect={handleSelect} />
+            )}
+        </div>
     );
 }
