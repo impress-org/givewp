@@ -262,7 +262,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.1.1: November 27th, 2023 =
+= 3.1.2: November 27th, 2023 =
+* Enhancement: Updated parts of the Form Builder text areas to Text Editors to provide more formatting options
+* Enhancement: Improved compatibility with the donation block and Visual Builder forms
+* Enhancement: All donors are connected with a user for improved security and caching compatibility
+* Fix: Resolved some strange behaviors when using the Amount Levels setting in the Form Builder
+* Fix: Removed WP_Background_Process and WP_Async_Request to avoid conflicts with other plugins
+* Fix: Donor honorific (Mr, Mrs, etc) is now properly saved as part of the donor record
 * Fix: PayPal Donations displays a helpful error message when incorrect credit card information is entered 
 * Fix: Visual Donation Form Builder loading is improved by preventing the formBuilderSettings meta from becoming too large 
 
