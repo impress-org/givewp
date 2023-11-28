@@ -4,6 +4,8 @@ import {
     formSettingsReducer,
     State,
 } from '@givewp/form-builder/components/canvas/FormSettingsContainer/formSettingsReducer';
+import Menu from './components/Menu';
+import Content from './components/Content';
 
 const FormSettingsContext = createContext<[State, Dispatch<Action>] | undefined>(undefined);
 
@@ -17,22 +19,18 @@ export function useFormSettingsContext() {
     return context;
 }
 
-export default function FormSettingsContainer({children}) {
-   const [state, dispatch] = useReducer(formSettingsReducer, {
-       content: null,
-       menuPage: 1,
-       activeMenu: 'item-general',
-   });
+export default function FormSettingsContainer({routes}) {
+    const [state, dispatch] = useReducer(formSettingsReducer, {
+        menuPage: 1,
+        activeMenu: 'general',
+        activeRoute: 'general',
+    });
 
     return (
         <FormSettingsContext.Provider value={[state, dispatch]}>
             <div className={'givewp-form-settings'}>
-                <div className={'givewp-form-settings__menu'}>
-                    <ul className={`givewp-form-settings__menu__page-${state.menuPage}`}>
-                        {children}
-                    </ul>
-                </div>
-                <div className={'givewp-form-settings__content'}>{state.content}</div>
+                <Menu routes={routes} />
+                <Content routes={routes} />
             </div>
         </FormSettingsContext.Provider>
     );

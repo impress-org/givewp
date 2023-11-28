@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
 import DonationConfirmation from './donation-confirmation';
 import TemplateTags from './template-tags';
@@ -23,7 +22,7 @@ export default function FormDonationConfirmationSettingsGroup() {
     );
 
     return (
-        <SettingsGroup item="item-donation-confirmation" title={__('Donation Confirmation', 'give')}>
+        <>
             <SettingsSection
                 title={__('Header', 'give')}
                 description={__('This is the first message that displays in the donation confirmation.', 'give')}
@@ -47,6 +46,6 @@ export default function FormDonationConfirmationSettingsGroup() {
             <SettingsSection title={__('Template tags', 'give')} description={templateTagsDescription}>
                 <TemplateTags />
             </SettingsSection>
-        </SettingsGroup>
+        </>
     );
 }

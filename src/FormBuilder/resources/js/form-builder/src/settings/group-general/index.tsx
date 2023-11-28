@@ -1,7 +1,5 @@
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-
-import SettingsGroup from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsGroup';
 import FormGridSettings from './form-grid';
 import FormSummarySettings from './form-summary';
 import RegistrationSettings from './registration';
@@ -19,7 +17,7 @@ export default function FormGeneralSettingsGroup() {
     );
 
     return (
-        <SettingsGroup item="item-general" title={__('General', 'give')}>
+        <>
             <SettingsSection
                 title={__('General', 'give')}
                 description={__('This includes the form name, the permalink and the visibility of this form.', 'give')}
@@ -38,6 +36,6 @@ export default function FormGeneralSettingsGroup() {
             <SettingsSection title={__('Form Grid', 'give')} description={formGridDescription}>
                 <FormGridSettings />
             </SettingsSection>
-        </SettingsGroup>
+        </>
     );
 }

@@ -1,18 +1,19 @@
 export const formSettingsReducer = (state: State, action: Action) => {
     switch (action.type) {
         case 'UPDATE_MENU_STATE':
-            const {hasNestedMenu, menuItem, children} = action.payload;
+            const {hasChildren, path} = action.payload;
 
-            if (hasNestedMenu) {
+            if (hasChildren) {
                 return {
                     ...state,
                     menuPage: state.menuPage + 1,
+                    activeMenu: path,
                 };
             } else {
                 return {
                     ...state,
-                    activeMenu: menuItem,
-                    content: children,
+                    activeMenu: path,
+                    activeRoute: path,
                 };
             }
         case 'NAVIGATE_BACK_IN_MENU':
@@ -25,9 +26,9 @@ export const formSettingsReducer = (state: State, action: Action) => {
     }
 }
 
-export const updateMenuState = (hasNestedMenu: boolean, menuItem: string, children: React.ReactNode): Action => ({
+export const updateMenuState = (hasChildren: boolean, path: string): Action => ({
     type: 'UPDATE_MENU_STATE',
-    payload: {hasNestedMenu, menuItem, children},
+    payload: {hasChildren, path},
 });
 
 export const navigateBackInMenu = (): Action => ({
@@ -35,15 +36,14 @@ export const navigateBackInMenu = (): Action => ({
 });
 
 export type State = {
-    content: React.ReactNode;
     menuPage: number;
     activeMenu: string;
+    activeRoute: string;
 };
 
 export type MenuState = {
-    hasNestedMenu: boolean;
-    menuItem: string;
-    children: React.ReactNode;
+    hasChildren: boolean;
+    path: string;
 };
 
 export type Action =
