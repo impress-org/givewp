@@ -1,19 +1,31 @@
 import {createRoot, render} from '@wordpress/element';
-import RevealForm from './Components/RevealForm';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
 
-import './styles/index.scss';
+import '../editor/styles/index.scss';
+
+type DonationFormBlockAppProps = {
+    formFormat: 'fullForm' | 'newTab' | 'modal' | string;
+    dataSrc: string;
+    embedId: string;
+    openFormButton: string;
+    formUrl: string;
+};
 
 /**
+ * @since 3.1.2 replace form format reveal with new tab.
  * @since 3.0.0
  */
-function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton}) {
-    if (formFormat === 'reveal') {
-        return <RevealForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
+function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {
+    if (formFormat === 'newTab') {
+        return (
+            <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
+                {openFormButton}
+            </a>
+        );
     }
 
-    if (formFormat === 'modal') {
+    if (formFormat === 'modal' || formFormat === 'reveal') {
         return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} />;
     }
 
@@ -38,6 +50,7 @@ roots.forEach((root) => {
     const embedId = root.getAttribute('data-givewp-embed-id');
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');
+    const formUrl = root.getAttribute('data-form-url');
 
     if (createRoot) {
         createRoot(root).render(
@@ -46,6 +59,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                formUrl={formUrl}
             />
         );
     } else {
@@ -55,6 +69,7 @@ roots.forEach((root) => {
                 formFormat={formFormat}
                 dataSrc={dataSrc}
                 embedId={embedId}
+                formUrl={formUrl}
             />,
             root
         );

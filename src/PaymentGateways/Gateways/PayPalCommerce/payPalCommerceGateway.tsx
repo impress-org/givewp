@@ -441,6 +441,11 @@ import {PayPalSubscriber} from "./types";
         initialize() {
             payPalDonationsSettings = this.settings;
         },
+        /**
+         * Before create payment.
+         * @since 3.1.2 Handle error response in approveOrderCallback.
+         * @param {Object} values
+         */
         beforeCreatePayment: async function (values): Promise<object> {
             if (payPalOrderId) {
                 // If order ID already set by payment buttons then return early.
@@ -460,7 +465,7 @@ import {PayPalSubscriber} from "./types";
             }
 
             const approveOrderCallback = async (data) => {
-                await fetch(
+                const response = await fetch(
                     `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
                     data.orderId,
                     {
@@ -468,6 +473,13 @@ import {PayPalSubscriber} from "./types";
                         body: getFormData(),
                     }
                 );
+
+                const {data: ajaxResponseData} = await response.json();
+
+                if( ajaxResponseData.hasOwnProperty('error')){
+                    throw new Error(ajaxResponseData.error);
+                }
+
                 return {...data, payPalOrderId: data.orderId};
             };
 
@@ -500,7 +512,7 @@ import {PayPalSubscriber} from "./types";
                 // Handle PayPal error.
                 const isPayPalDonationError = err.hasOwnProperty('details');
                 if( isPayPalDonationError ){
-                                        throw new Error(err.details[0].description);
+                    throw new Error(err.details[0].description);
                 }
 
                 throw new Error(

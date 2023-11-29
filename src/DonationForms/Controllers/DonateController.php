@@ -20,7 +20,7 @@ class DonateController
     /**
      * First we create a donation and/or subscription, then move on to the gateway processing
      *
-     * @unreleased Pass the form ID to match updated signature for getOrCreateDonor().
+     * @since 3.1.2 Pass the form ID to match updated signature for getOrCreateDonor().
      * @since 3.0.0
      *
      * @return void
@@ -79,7 +79,7 @@ class DonateController
     }
 
     /**
-     * @unreleased Added $formId to the signature for passing to do_action hooks. Added honorific and use GetOrCreateDonor action
+     * @since 3.1.2 Added $formId to the signature for passing to do_action hooks. Added honorific and use GetOrCreateDonor action
      * @since 3.0.0
      *
      * @throws Exception
@@ -104,7 +104,7 @@ class DonateController
 
          if ($getOrCreateDonorAction->donorCreated) {
             /**
-             * @unreleased Add a new do_action hook to differentiate when a v3 form creates a new donor.
+             * @since 3.1.2 Add a new do_action hook to differentiate when a v3 form creates a new donor.
              * @param Donor $donor
              * @param int $formId
              */

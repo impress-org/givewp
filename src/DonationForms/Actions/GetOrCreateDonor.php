@@ -6,14 +6,14 @@ use Exception;
 use Give\Donors\Models\Donor;
 
 /**
- * @unreleased
+ * @since 3.1.2
  */
 class GetOrCreateDonor
 {
     public $donorCreated = false;
 
     /**
-     * @unreleased
+     * @since 3.1.2
      *
      * @throws Exception
      */
