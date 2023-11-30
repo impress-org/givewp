@@ -70,7 +70,7 @@ class PayPalOrder
      *
      * @param string $orderId
      *
-     * @return string
+     * @return \stdClass
      * @throws Exception
      */
     public function approveOrder($orderId)

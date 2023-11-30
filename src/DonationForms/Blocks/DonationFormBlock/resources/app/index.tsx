@@ -13,7 +13,7 @@ type DonationFormBlockAppProps = {
 };
 
 /**
- * @unreleased replace form format reveal with new tab.
+ * @since 3.1.2 replace form format reveal with new tab.
  * @since 3.0.0
  */
 function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl}: DonationFormBlockAppProps) {

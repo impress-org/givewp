@@ -72,7 +72,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Hook into the donor creation process to ensure that donors are also users.
-     * @unreleased
+     * @since 3.1.2
      */
     protected function enforceDonorsAsUsers()
     {
