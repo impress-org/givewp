@@ -46,4 +46,5 @@ type Route = {
     path: string;
     element?: React.ReactElement;
     childRoutes?: Route[];
+    showWhen?: () => boolean;
 };

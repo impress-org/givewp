@@ -4,24 +4,27 @@ import {useFormState} from '@givewp/form-builder/stores/form-state';
 
 const getEmailSettings = () => {
     const {emailNotifications} = getFormBuilderWindowData();
+
+    return emailNotifications.map((emailNotification) => {
+        const {id, title} = emailNotification;
+
+        return {
+            name: title,
+            path: `email-settings/${id}`,
+            element: <EmailTemplateOptions notification={id} />,
+            showWhen: areEmailSettingsEnabled,
+        };
+    });
+};
+
+const areEmailSettingsEnabled = () => {
+    const {emailNotifications} = getFormBuilderWindowData();
     const {
         settings: {emailOptionsStatus},
     } = useFormState();
     let emailSettings = [];
 
-    if (emailOptionsStatus === 'enabled') {
-        emailSettings = emailNotifications.map((emailNotification) => {
-            const {id, title} = emailNotification;
-
-            return {
-                name: title,
-                path: `email-settings/${id}`,
-                element: <EmailTemplateOptions notification={id} />,
-            };
-        });
-    }
-
-    return emailSettings;
-}
+    return emailOptionsStatus === 'enabled';
+};
 
 export default getEmailSettings;
