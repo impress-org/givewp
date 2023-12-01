@@ -48,7 +48,7 @@ export default ({emailType, defaultEmailAddress}: SendPreviewEmailProps) => {
     };
 
     return (
-        <div style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+        <div className={'email-settings__send-preview-email'}>
             {defaultEmailAddress !== null && <TextControl onChange={setEmailAddress} value={emailAddress} />}
             <Button className={'email-settings__email-btn'} variant={'secondary'} onClick={sendTestEmail}>
                 {__('Send test email', 'give')}

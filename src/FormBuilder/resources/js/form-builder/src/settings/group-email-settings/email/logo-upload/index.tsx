@@ -48,7 +48,7 @@ export default ({value, onChange}) => {
                 'give'
             )}
         >
-            <div style={{display: 'flex', gap: '0.25rem'}}>
+            <div className={'email-settings__logo-upload'}>
                 <input
                     type={'url'}
                     value={value}
@@ -57,16 +57,10 @@ export default ({value, onChange}) => {
                     style={{flex: 1}}
                 />
                 <Button
+                    className={'email-settings__logo-upload__button'}
                     icon={upload}
                     variant={'secondary'}
                     onClick={openMediaLibrary}
-                    style={{
-                        borderRadius: '0.125rem',
-                        paddingLeft: '1rem',
-                        paddingRight: '1rem',
-                        flex: '0 0 auto',
-                        height: 'auto',
-                    }}
                 >
                     {__('Add or upload file', 'give')}
                 </Button>
