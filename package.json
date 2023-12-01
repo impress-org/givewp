@@ -141,7 +141,8 @@
         "swr": "^2.0.1",
         "uiblocker": "latest",
         "use-immer": "^0.9.0",
-        "vhtml": "^2.2.0"
+        "vhtml": "^2.2.0",
+        "@givewp/form-builder-library": "file:../form-builder-library/src"
     },
     "overrides": {
         "react-dates": {
