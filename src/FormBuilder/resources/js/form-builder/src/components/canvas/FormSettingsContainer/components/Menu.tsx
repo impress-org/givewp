@@ -11,7 +11,7 @@ import classnames from 'classnames';
 function MenuItem({item}) {
     const [state, dispatch] = useFormSettingsContext();
     const isActive = state.activeMenu === item.path;
-    const hasChildren = item.children && item.children.length;
+    const hasChildren = item.childRoutes && item.childRoutes.length;
     const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
 
     const handleItemClick = () => {
@@ -35,7 +35,7 @@ function MenuItem({item}) {
                             <Icon icon={chevronLeft} /> {__('Back to main menu', 'give')}
                         </button>
                     </li>
-                    {item.children.map((child, index) => (
+                    {item.childRoutes.map((child, index) => (
                         <MenuItem item={child} key={index} />
                     ))}
                 </ul>

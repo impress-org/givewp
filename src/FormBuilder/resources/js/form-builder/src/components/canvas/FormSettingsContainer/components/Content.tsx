@@ -4,8 +4,8 @@ function renderRoutes(routes) {
     const [state] = useFormSettingsContext();
 
     return routes.map((route) => {
-        if (route.children && route.children.length > 0) {
-            return renderRoutes(route.children);
+        if (route.childRoutes && route.childRoutes.length > 0) {
+            return renderRoutes(route.childRoutes);
         }
         return state.activeRoute === route.path && route.element;
     });
