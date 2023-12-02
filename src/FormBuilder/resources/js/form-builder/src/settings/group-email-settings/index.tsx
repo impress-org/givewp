@@ -18,11 +18,9 @@ const getEmailSettings = () => {
 };
 
 const areEmailSettingsEnabled = () => {
-    const {emailNotifications} = getFormBuilderWindowData();
     const {
         settings: {emailOptionsStatus},
     } = useFormState();
-    let emailSettings = [];
 
     return emailOptionsStatus === 'enabled';
 };
