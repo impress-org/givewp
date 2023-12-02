@@ -1,5 +1,5 @@
-import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
 import {PanelRow} from '@wordpress/components';
+import {ClassicEditor} from '@givewp/form-builder-library';
 
 const DonationConfirmation = ({id, content, onChange}) => {
     return (

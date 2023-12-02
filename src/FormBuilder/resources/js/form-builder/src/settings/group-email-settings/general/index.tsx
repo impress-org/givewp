@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
-import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
+import {SettingsSection} from '@givewp/form-builder-library';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import LogoUpload from '@givewp/form-builder/settings/group-email-settings/email/logo-upload';
 
 export default function EmailGeneralSettings() {

@@ -1,12 +1,11 @@
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {__} from '@wordpress/i18n';
 import {BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl} from '@wordpress/components';
 import {Icon as WPIcon, plus} from '@wordpress/icons';
+import {ClassicEditor, SettingsSection} from '@givewp/form-builder-library';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
-import {__} from '@wordpress/i18n';
-import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
 import TrashIcon from './components/TrashIcon';
-import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
 
 type EmailTemplateSettingsProps = {
     notification: string;

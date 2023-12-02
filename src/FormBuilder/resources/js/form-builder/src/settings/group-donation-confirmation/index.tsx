@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-import SettingsSection from '@givewp/form-builder/components/canvas/FormSettingsContainer/components/SettingsSection';
+import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
 import TemplateTags from './template-tags';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
