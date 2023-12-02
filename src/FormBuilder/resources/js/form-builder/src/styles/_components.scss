@@ -591,49 +591,4 @@ div.givewp-classic-editor > label {
             }
         }
     }
-
-    &__section {
-        border-bottom: 1px solid var(--givewp-grey-50);
-        display: flex;
-        gap: 3.5rem;
-        padding-bottom: 2.5rem;
-        margin-bottom: 2.5rem;
-
-        @media (max-width: 1279px) {
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        &__header {
-            width: 20rem;
-
-            @media (max-width: 1279px) {
-                width: 100%;
-                padding-left: 3.25rem;
-            }
-
-            h4 {
-                color: var(--givewp-grey-900);
-                font-size: 1rem;
-                line-height: 1.5rem;
-                margin: 0 0 var(--givewp-spacing-2);
-            }
-
-            p {
-                color: var(--givewp-grey-500);
-                font-size: 0.75rem;
-                line-height: 1.125rem;
-                margin: 0;
-            }
-        }
-
-        &__body {
-            flex: 1;
-            max-width: 33.25rem;
-
-            > *:not(.no-extra-gap) {
-                padding-left: 3.25rem;
-            }
-        }
-    }
 }
