@@ -28,15 +28,12 @@ class GiveFormShortcode
             return $output;
         }
 
-        $formFormat = $atts['display_style'];
-        $openFormButton = $atts['continue_button_title'];
-
         $controller = new BlockRenderController();
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . self::$instance,
-            'formFormat' => $formFormat,
-            'openFormButton' => $openFormButton
+            'formFormat' => $atts['display_style'] ?? null,
+            'openFormButton' => $atts['continue_button_title'] ?? null
         ];
 
         $output = $controller->render($blockAttributes);

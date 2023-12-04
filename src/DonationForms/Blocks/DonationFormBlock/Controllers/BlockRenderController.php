@@ -39,6 +39,7 @@ class BlockRenderController
         $embedId = $blockAttributes->blockId ?? '';
 
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
+        $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
 
         $formUrl = add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms'));
 

@@ -124,44 +124,41 @@ class DonationFormsAdminPage
     }
 
     /**
-     * Load scripts for the edit v2 form page
+     * Load migration onboarding scripts
+     * @unreleased
      *
-     * @since 3.0.0
      * @return void
      */
-    public function loadEditFormScripts()
+    public function loadMigrationScripts()
     {
-        $data = [
-            'supportedAddons' => $this->getSupportedAddons(),
-            'supportedGateways' => $this->getSupportedGateways(),
-            'migrationApiRoot' => $this->migrationApiRoot,
-            'apiNonce' => $this->apiNonce,
-            'isMigrated' => _give_is_form_migrated((int)$_GET['post'])
-        ];
+        if ($this->isShowingAddV2FormPage()) {
+            EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
+                         ->loadInFooter()
+                         ->registerTranslations()
+                         ->registerLocalizeData('GiveDonationForms', [
+                             'supportedAddons' => $this->getSupportedAddons(),
+                             'supportedGateways' => $this->getSupportedGateways(),
+                         ])
+                         ->enqueue();
 
-        EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
-            ->loadInFooter()
-            ->registerTranslations()
-            ->registerLocalizeData('GiveDonationForms', $data)
-            ->enqueue();
+            wp_enqueue_style('givewp-design-system-foundation');
+        }
 
-        wp_enqueue_style('givewp-design-system-foundation');
-    }
+        if ($this->isShowingEditV2FormPage()) {
+            EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
+                         ->loadInFooter()
+                         ->registerTranslations()
+                         ->registerLocalizeData('GiveDonationForms', [
+                             'supportedAddons' => $this->getSupportedAddons(),
+                             'supportedGateways' => $this->getSupportedGateways(),
+                             'migrationApiRoot' => $this->migrationApiRoot,
+                             'apiNonce' => $this->apiNonce,
+                             'isMigrated' => _give_is_form_migrated((int)$_GET['post'])
+                         ])
+                         ->enqueue();
 
-    public function loadAddFormScripts()
-    {
-        $data = [
-            'supportedAddons' => $this->getSupportedAddons(),
-            'supportedGateways' => $this->getSupportedGateways(),
-        ];
-
-        EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
-            ->loadInFooter()
-            ->registerTranslations()
-            ->registerLocalizeData('GiveDonationForms', $data)
-            ->enqueue();
-
-        wp_enqueue_style('givewp-design-system-foundation');
+            wp_enqueue_style('givewp-design-system-foundation');
+        }
     }
 
     /**
@@ -276,9 +273,9 @@ class DonationFormsAdminPage
      *
      * @return bool
      */
-    public static function isShowingEditV2FormPage(): bool
+    private function isShowingEditV2FormPage(): bool
     {
-        return ! isset($_GET['page']) && isset($_GET['action']) && $_GET['action'] === 'edit';
+        return isset($_GET['action']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
     }
 
     /**
@@ -288,7 +285,7 @@ class DonationFormsAdminPage
      *
      * @return bool
      */
-    public static function isShowingAddV2FormPage(): bool
+    private function isShowingAddV2FormPage(): bool
     {
         return ! isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
