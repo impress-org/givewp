@@ -5,7 +5,7 @@ import {Icon as WPIcon, plus} from '@wordpress/icons';
 
 import {__} from '@wordpress/i18n';
 import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
-import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
+import ClassicEditor from '@givewp/form-builder-library/ClassicEditor';
 
 type EmailTemplateSettingsProps = {
     notification: string;
