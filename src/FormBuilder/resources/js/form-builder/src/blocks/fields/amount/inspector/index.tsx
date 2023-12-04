@@ -14,9 +14,9 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
-//import Options from '@givewp/form-builder/components/OptionsPanel';
-//import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
-import Options from '@givewp/form-builder-library/OptionsPanel';
+// @ts-ignore
+import OptionsPanel from '@givewp/form-builder-library/OptionsPanel';
+// @ts-ignore
 import {OptionProps} from '@givewp/form-builder-library/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
@@ -252,7 +252,7 @@ const Inspector = ({attributes, setAttributes}) => {
 
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    <Options
+                    <OptionsPanel
                         currency={currency}
                         multiple={false}
                         options={donationLevels}
