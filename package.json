@@ -36,10 +36,11 @@
         }
     ],
     "devDependencies": {
+        "@givewp/form-builder-library": "^1.0.0",
         "@types/lodash": "^4.14.199",
-        "@types/react": "^18.2.21",
-        "@types/react-dom": "^18.2.7",
+        "@types/react": "^18.2.42",
         "@types/react-datepicker": "^4.15.0",
+        "@types/react-dom": "^18.2.17",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
         "@wordpress/dependency-extraction-webpack-plugin": "^3.3.2",
@@ -141,8 +142,7 @@
         "swr": "^2.0.1",
         "uiblocker": "latest",
         "use-immer": "^0.9.0",
-        "vhtml": "^2.2.0",
-        "@givewp/form-builder-library": "file:../form-builder-library/src"
+        "vhtml": "^2.2.0"
     },
     "overrides": {
         "react-dates": {
