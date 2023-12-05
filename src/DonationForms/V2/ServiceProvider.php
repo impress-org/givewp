@@ -47,14 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         // Onboarding
         Hooks::addAction('submitpost_box', DonationFormsAdminPage::class, 'renderMigrationGuideBox');
-
-        if (DonationFormsAdminPage::isShowingEditV2FormPage()) {
-            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadEditFormScripts');
-        }
-
-        if (DonationFormsAdminPage::isShowingAddV2FormPage()) {
-            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadAddFormScripts');
-        }
+        Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadMigrationScripts');
 
         add_action('wp_ajax_givewp_show_onboarding_banner', static function () {
             add_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', time(), true);

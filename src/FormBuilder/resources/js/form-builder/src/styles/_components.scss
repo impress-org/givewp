@@ -315,3 +315,29 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         }
     }
 }
+
+.wp-editor-wrap {
+    z-index: 9999;
+}
+
+.mce-notification,
+.mce-inline-toolbar-grp,
+.mce-floatpanel {
+    z-index: 9999999999 !important;
+}
+
+.components-popover__content .givewp-classic-editor {
+    margin: 0.5rem;
+}
+
+.givewp-classic-editor {
+
+
+    textarea {
+        width: 100%;
+    }
+
+    .wp-switch-editor {
+        box-sizing: content-box !important;
+    }
+}

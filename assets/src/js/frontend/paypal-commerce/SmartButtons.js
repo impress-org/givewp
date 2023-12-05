@@ -139,33 +139,62 @@ class SmartButtons extends PaymentMethod {
 		return actions.reject();
 	}
 
-	/**
-	 * Create subscription event handler for smart buttons.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {object} data PayPal button data.
-	 * @param {object} actions PayPal button actions.
-	 *
-	 * @return {Promise<unknown>} Return PayPal order id.
-	 */
-	async creatSubscriptionHandler( data, actions ) {
-		Give.form.fn.removeErrors( this.jQueryForm );
+    /**
+     * Create subscription event handler for smart buttons.
+     *
+     * @since 3.1.0 Pass subscriber details to subscription. These details will automatically fill in PayPal payment modal.
+     * @since 2.9.0
+     *
+     * @param {object} data PayPal button data.
+     * @param {object} actions PayPal button actions.
+     *
+     * @return {Promise<unknown>} Return PayPal order id.
+     */
+    async creatSubscriptionHandler(data, actions) {
+        Give.form.fn.removeErrors(this.jQueryForm);
 
-		// eslint-disable-next-line
-		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
-			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} );
+        // eslint-disable-next-line
+        const response = await fetch(`${this.ajaxurl}?action=give_paypal_commerce_create_plan_id`, {
+            method: 'POST',
+            body: DonationForm.getFormDataWithoutGiveActionField(this.form),
+        });
 
-		const responseJson = await response.json();
+        const responseJson = await response.json();
 
-		if ( ! responseJson.success ) {
-			throw responseJson.data.error;
-		}
+        if (!responseJson.success) {
+            throw responseJson.data.error;
+        }
 
-		return actions.subscription.create( { plan_id: responseJson.data.id } );
-	}
+        const formData = new FormData(this.form);
+        const subscriberData = {
+            "name": {
+                "given_name": formData.get('give_first'),
+                "surname": formData.get('give_last')
+            },
+            "email_address": formData.get('give_email')
+        };
+
+        if (formData.get('billing_country')) {
+            subscriberData.shipping_address = {
+                name: {
+                    "full_name": `${formData.get('give_first')} ${formData.get('give_last')}`.trim()
+                },
+                address: {
+                    "address_line_1": formData.get('card_address'),
+                    "address_line_2": formData.get('card_address_2'),
+                    "admin_area_2": formData.get('card_city'),
+                    "admin_area_1": formData.get('card_state'),
+                    "postal_code": formData.get('card_zip'),
+                    "country_code": formData.get('billing_country')
+                }
+            };
+        }
+
+        return actions.subscription.create({
+                "plan_id": responseJson.data.id,
+                "subscriber": subscriberData
+            });
+    }
 
 	/**
 	 * Subscription approve event handler for smart buttons.
@@ -187,6 +216,7 @@ class SmartButtons extends PaymentMethod {
 	/**
 	 * Order approve event handler for smart buttons.
 	 *
+     * @unrelease Handle custom error.
 	 * @since 2.9.0
 	 *
 	 * @param {object} data PayPal button data.
@@ -218,7 +248,7 @@ class SmartButtons extends PaymentMethod {
 
 			this.displayErrorMessage( responseJson.data.error, true );
 
-			errorDetail = responseJson.data.error.details[ 0 ];
+			errorDetail = responseJson.data.error?.details?.[0];
 			if ( errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED' ) {
 				// Recoverable state, see: "Handle Funding Failures"
 				// https://developer.paypal.com/docs/checkout/integration-features/funding-failure/

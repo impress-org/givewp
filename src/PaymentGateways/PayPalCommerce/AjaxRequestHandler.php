@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
@@ -109,13 +110,13 @@ class AjaxRequestHandler
 
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
-        try{
+        try {
             $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
                 give_clean($_GET['authCode']),
                 give_clean($_GET['sharedId']),
                 $partnerLinkInfo['nonce']
             );
-        } catch ( \Exception $exception ) {
+        } catch (\Exception $exception) {
             wp_send_json_error();
         }
 
@@ -225,6 +226,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment create error on frontend.
      *
+     * @since 3.1.0 Remove unused variable from createOrder argument.
      * @since 2.9.0
      */
     public function createOrder()
@@ -233,6 +235,7 @@ class AjaxRequestHandler
 
         $postData = give_clean($_POST);
         $formId = absint($postData['give-form-id']);
+        $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
 
         $data = [
             'formId' => $formId,
@@ -250,11 +253,8 @@ class AjaxRequestHandler
                 'firstName' => $postData['give_first'],
                 'lastName' => $postData['give_last'],
                 'email' => $postData['give_email'],
-                'address' => $this->getDonorAddressFromPostedDataForPaypalOrder($postData),
-            ],
-            'application_context' => [
-                'shipping_preference' => 'NO_SHIPPING',
-            ],
+                'address' => $donorAddress,
+            ]
         ];
 
         try {
@@ -279,6 +279,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
+     * @since 3.1.2 Discover error by checking capture status.
      * @since 2.9.0
      */
     public function approveOrder()
@@ -289,17 +290,12 @@ class AjaxRequestHandler
 
         try {
             $result = give(PayPalOrder::class)->approveOrder($orderId);
-            wp_send_json_success(
-                [
-                    'order' => $result,
-                ]
-            );
+            // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
+            // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
+            $this->returnErrorOnFailedApproveOrderResponse($result);
+            wp_send_json_success(['order' => $result,]);
         } catch (\Exception $ex) {
-            wp_send_json_error(
-                [
-                    'error' => json_decode($ex->getMessage(), true),
-                ]
-            );
+            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
         }
     }
 
@@ -369,25 +365,48 @@ class AjaxRequestHandler
     }
 
     /**
+     * This function should return address array in PayPal rest api accepted format.
+     *
+     * @since 3.1.0 Return address only if setting enabled and has valida country in PayPal accepted formatted.
      * @since 2.11.1
-     *
-     * @param array $postedData
-     *
-     * @return array
      */
-    private function getDonorAddressFromPostedDataForPaypalOrder($postedData)
+    private function getDonorAddressFromPostedDataForPaypalOrder(array $postedData): array
     {
-        if (! $this->settings->canCollectBillingInformation()) {
+        if (empty($postedData['billing_country'])) {
             return [];
         }
 
-        $address['address_line1'] = ! empty($postedData['card_address']) ? $postedData['card_address'] : '';
+        $address['address_line_1'] = ! empty($postedData['card_address']) ? $postedData['card_address'] : '';
         $address['address_line_2'] = ! empty($postedData['card_address_2']) ? $postedData['card_address_2'] : '';
-        $address['admin_line_1'] = ! empty($postedData['card_city']) ? $postedData['card_city'] : '';
-        $address['admin_line_2'] = ! empty($postedData['card_state']) ? $postedData['card_state'] : '';
+        $address['admin_area_2'] = ! empty($postedData['card_city']) ? $postedData['card_city'] : '';
+        $address['admin_area_1'] = ! empty($postedData['card_state']) ? $postedData['card_state'] : '';
         $address['postal_code'] = ! empty($postedData['card_zip']) ? $postedData['card_zip'] : '';
         $address['country_code'] = ! empty($postedData['billing_country']) ? $postedData['billing_country'] : '';
 
         return $address;
+    }
+
+    /**
+     * This function should validate PayPal ApproveOrder response and respond to ajax request on error.
+     *
+     * @since 3.1.2
+     */
+    private function returnErrorOnFailedApproveOrderResponse(\stdClass $response)
+    {
+        // Get capture.
+        // ref - https://developer.paypal.com/docs/api/orders/v2/#orders_capture
+        $capture = $response->purchase_units[0]->payments->captures[0];
+
+        // Check if capture status is failed or declined.
+        if (
+            in_array($capture->status, ['FAILED', 'DECLINED'])
+            && property_exists($capture, 'processor_response')
+        ) {
+            $error = ProcessorResponseError::getError($capture->processor_response);
+
+            if ($error) {
+                wp_send_json_error(['error' => $error]);
+            }
+        }
     }
 }

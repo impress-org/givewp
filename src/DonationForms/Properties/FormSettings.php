@@ -2,12 +2,15 @@
 
 namespace Give\DonationForms\Properties;
 
-use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
+/**
+ * @since 3.1.2 Remove addSlashesRecursive method
+ * @since      3.0.0
+ */
 class FormSettings implements Arrayable, Jsonable
 {
     /**
@@ -63,9 +66,10 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $goalAmount;
     /**
+     * @since 3.1.2 Added registrationNotification property.
      * @var string
      */
-    public $registration;
+    public $registrationNotification;
     /**
      * @var string
      */
@@ -175,6 +179,7 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @since 3.1.2 Added registrationNotification
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -200,7 +205,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
-        $self->registration = $array['registration'] ?? 'none';
+        $self->registrationNotification = $array['registrationNotification'] ?? false;
         $self->customCss = $array['customCss'] ?? '';
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
@@ -270,6 +275,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
+     * @since 3.1.2 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
     public function toJson($options = 0): string
@@ -279,16 +285,8 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
-                    'emailTemplateOptions' => array_map([$this, 'addSlashesRecursive'], $this->emailTemplateOptions),
                 ]
             )
         );
-    }
-
-    public function addSlashesRecursive($value)
-    {
-        return is_array($value)
-            ? array_map([$this, 'addSlashesRecursive'], $value)
-            : addslashes($value);
     }
 }

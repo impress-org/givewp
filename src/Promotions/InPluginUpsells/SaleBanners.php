@@ -33,6 +33,7 @@ class SaleBanners
     /**
      * Get banners definitions
      *
+     * @since 3.1.0 add Giving Tuesday 2023 banner
      * @since 2.23.2 add Giving Tuesday 2022 banner
      * @since 2.17.0
      *
@@ -42,26 +43,46 @@ class SaleBanners
     {
         return [
             [
-                'id' => 'bfgt2021',
-                'iconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
+                'id' => 'bfgt2023',
+                'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
+                'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
+                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
+                'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
+                'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
+                'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
+                'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
                 'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => __('Save 40% on all Plans for a limited time.', 'give'),
-                'contentText' => __('Black Friday through Giving Tuesday.', 'give'),
+                'leadText' => self::getDataByPricingPlan(
+                    [
+                        'Free' => __(
+                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                            'give'
+                        ),
+                        'Basic' => __(
+                            'Upgrade to a Plus Plan to get all must-have add-ons.',
+                            'give'
+                        ),
+                        'Plus' => __(
+                            'Upgrade to Pro and get Peer-to-Peer fundraising.',
+                            'give'
+                        ),
+                        'default' => __(
+                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
+                            'give'
+                        ),
+                    ]
+                ),
                 'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://go.givewp.com/bfgt21',
-                'startDate' => '2021-11-26 00:00',
-                'endDate' => '2021-11-30 23:59',
-            ],
-            [
-                'id' => 'bfgt2022',
-                'iconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/sale-icon.png',
-                'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => __('Save 40% on all Plans for a limited time.', 'give'),
-                'contentText' => __('Black Friday through Giving Tuesday.', 'give'),
-                'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://go.givewp.com/bf22',
-                'startDate' => '2022-11-01 00:00',
-                'endDate' => '2022-11-29 23:59',
+                'actionURL' => self::getDataByPricingPlan(
+                    [
+                        'Free' => 'https://go.givewp.com/bf23',
+                        'Basic' => 'https://go.givewp.com/bfup23',
+                        'Plus' => 'https://go.givewp.com/bfup23',
+                        'Default' => 'https://go.givewp.com/bfup23',
+                    ]
+                ),
+                'startDate' => '2023-11-20 00:00',
+                'endDate' => '2023-11-29 23:59',
             ],
         ];
     }
@@ -69,10 +90,15 @@ class SaleBanners
     /**
      * Get the banners that should be displayed.
      *
+     * @since 3.1.0 hide banners for users with Pro tier accounts.
      * @since 2.17.0
      */
     public function getVisibleBanners(): array
     {
+        if (self::getUserPricingPlan() === 'Pro') {
+            return [];
+        }
+
         $currentDateTime = current_datetime();
         $currentUserId = get_current_user_id();
         $giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');
@@ -85,7 +111,7 @@ class SaleBanners
                 try {
                     $isFuture = $currentDateTime < new DateTimeImmutable($banner['startDate'], $giveWPWebsiteTimezone);
                     $isPast = $currentDateTime > new DateTimeImmutable($banner['endDate'], $giveWPWebsiteTimezone);
-                } catch(Exception $exception) {
+                } catch (Exception $exception) {
                     return false;
                 }
 
@@ -161,4 +187,71 @@ class SaleBanners
     {
         return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
+
+    /**
+     * @since 3.1.0 retrieve licensed plugin slugs.
+     */
+    public static function getLicensedPluginSlugs(): array
+    {
+        $pluginSlugs = [];
+        $licenses = get_option("give_licenses", []);
+
+        foreach ($licenses as $license) {
+            if (isset($license['is_all_access_pass']) && $license['is_all_access_pass'] && !empty($license['download'])) {
+                $pluginSlugs = ['is_all_access_pass'];
+            } else {
+                $pluginSlugs[] = $license['plugin_slug'];
+            }
+        }
+
+        return $pluginSlugs;
+    }
+
+    /**
+     * @since 3.1.0 determines user pricing plan from licensed plugin slugs.
+     */
+    public static function getUserPricingPlan(): string
+    {
+        $plan = 'Free';
+
+        $pricingPlans = [
+            'Basic' => ['pdf' => 'give-pdf-receipts'],
+            'Plus' => [
+                'pdf_receipts' => 'give-pdf-receipts',
+                'recurring_donations' => 'give-recurring',
+                'fee_recovery' => 'give-fee-recovery',
+                'form_field_manager' => 'give-form-field-manager',
+                'tributes' => 'give-tributes',
+                'annual_receipts' => 'give-annual-receipts',
+                'peer_to_peer' => 'give-peer-to-peer',
+            ],
+            'Pro' => ['is_all_access_pass'],
+        ];
+
+        $licensedPluginSlugs = self::getLicensedPluginSlugs();
+
+        foreach ($pricingPlans as $planName => $requiredLicenses) {
+            $missingLicenses = array_diff($requiredLicenses, $licensedPluginSlugs);
+            if (empty($missingLicenses)) {
+                $plan = $planName;
+            }
+        }
+
+        return $plan;
+    }
+
+    /**
+     * @since 3.1.0 return data by user pricing plan.
+     */
+    public static function getDataByPricingPlan($data): string
+    {
+        $userPricingPlan = self::getUserPricingPlan();
+
+        if (array_key_exists($userPricingPlan, $data)) {
+            return $data[$userPricingPlan];
+        }
+
+        return $data['default'];
+    }
 }
+

@@ -6,6 +6,10 @@ namespace Give\Framework\WordPressLibraries;
 /**
  * This is a fork of WP_Background_Process that  adds GiveWP namespaces to prevent conflicts with other plugins.
  *
+ * IMPORTANT: Developers, please be aware that the usage of WPAsyncRequest and WPBackgroundProcess is discouraged as they are included only for legacy purposes.
+ * Instead, it is strongly recommended to use Action Scheduler for any asynchronous processing needs.
+ * Action Scheduler is available, provides a more efficient solution, and is the preferred choice for new development.
+ *
  * @since 2.32.0
  */
 abstract class WPBackgroundProcess extends WPAsyncRequest

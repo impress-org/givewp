@@ -52,7 +52,7 @@ class Block
     /**
      * Returns Progress Bar block markup
      *
-     * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
      * @since 2.9.0
      **/
     public function renderCallback($attributes)

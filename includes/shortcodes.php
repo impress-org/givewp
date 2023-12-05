@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
  * @param array       $atts
@@ -617,6 +618,7 @@ function give_totals_shortcode( $atts ) {
 	/**
 	 * Give Action fire before the shortcode is rendering is started.
 	 *
+     * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
 	 * @since 2.1.4
 	 *
 	 * @param array $atts shortcode attribute.
@@ -631,7 +633,14 @@ function give_totals_shortcode( $atts ) {
 			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 		}
 
-        array_walk($form_ids, '_give_redirect_form_id');
+        $form_ids = array_map(
+            static function ($id) {
+                _give_redirect_form_id($id);
+
+                return $id;
+            },
+            $form_ids
+        );
 
 		/**
 		 * Filter to modify WP Query for Total Goal.
@@ -785,7 +794,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  *
  * @since  2.1.0
  *
- * @unreleased Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
+ * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
  * @since      2.23.1 Updated the default text color for the donate button, see #6591.
  * @since      2.21.2 change tag_background_color, progress_bar_color to official green color #69b868.
  *             change tag_text_color color to #333333.

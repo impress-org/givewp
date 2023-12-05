@@ -1,10 +1,9 @@
+import {useCallback} from 'react';
 import {withTemplateWrapper} from '../templates';
-import getWindowData from '../utilities/getWindowData';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 
-const {form} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const HeaderTemplate = withTemplateWrapper(formTemplates.layouts.header);
@@ -12,19 +11,19 @@ const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitl
 const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
-/**
- * @since 3.0.0
- */
-const formatGoalAmount = (amount: number) => {
-    return amountFormatter(form.currency, {
-        maximumFractionDigits: 0,
-    }).format(amount);
-};
+
 
 /**
  * @since 3.0.0
  */
-export default function Header() {
+export default function Header({form}) {
+
+    const formatGoalAmount = useCallback((amount: number) => {
+        return amountFormatter(form.currency, {
+            maximumFractionDigits: 0,
+        }).format(amount);
+    }, []);
+
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
@@ -38,7 +37,7 @@ export default function Header() {
                             currency={form.currency}
                             type={form.goal.type as GoalType}
                             goalLabel={form.goal.label}
-                            progressPercentage={form.goal.progressPercentage}
+                            progressPercentage={Math.round((form.goal.currentAmount / form.goal.targetAmount) * 100)}
                             currentAmount={form.goal.currentAmount}
                             currentAmountFormatted={
                                 form.goal.typeIsMoney

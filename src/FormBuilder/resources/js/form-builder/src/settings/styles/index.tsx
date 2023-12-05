@@ -7,8 +7,10 @@ import {Button, Modal, PanelBody, PanelRow} from '@wordpress/components';
 
 import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/snippets/css';
-import 'ace-builds/src-noconflict/theme-textmate';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+
+import "ace-builds/src-noconflict/theme-textmate";
+import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 const CustomStyleSettings = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -72,6 +74,7 @@ const CustomStyleCodeControl = () => {
         settings: {customCss},
     } = useFormState();
     const dispatch = useFormStateDispatch();
+    const {publishCss} = useDonationFormPubSub();
 
     return (
         <AceEditor
@@ -81,7 +84,10 @@ const CustomStyleCodeControl = () => {
                 editor.renderer.setScrollMargin( 8, 8, 8, 8 );
                 editor.renderer.setPadding( 8 );
             } }
-            onChange={debounce((customCss) => dispatch(setFormSettings({customCss})),500)}
+            onChange={debounce((customCss) => {
+                dispatch(setFormSettings({customCss}));
+                publishCss({customCss});
+            },500)}
             showPrintMargin={false}
             highlightActiveLine={ false }
             showGutter={true}
@@ -95,6 +101,7 @@ const CustomStyleCodeControl = () => {
                 enableSnippets: true,
                 showLineNumbers: true,
                 tabSize: 2,
+                useWorker: false
             } }
         />
     )

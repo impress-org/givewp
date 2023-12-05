@@ -3,8 +3,10 @@ export interface OptionsPanelProps {
     multiple: boolean;
     selectable?: boolean;
     options: OptionProps[];
-    setOptions: (options: OptionProps[]) => void;
     defaultControlsTooltip?: string;
+    setOptions: (options: OptionProps[]) => void;
+    onRemoveOption?: (option: OptionProps, index: number) => void;
+    onAddOption?: () => void;
 }
 
 export interface OptionsListProps {
@@ -13,8 +15,9 @@ export interface OptionsListProps {
     showValues: boolean;
     multiple: boolean;
     selectable: boolean;
-    setOptions: (options: OptionProps[]) => void;
     defaultControlsTooltip?: string;
+    setOptions: (options: OptionProps[]) => void;
+    onRemoveOption?: (option: OptionProps, index: number) => void;
 }
 
 export interface OptionsItemProps {
@@ -32,6 +35,7 @@ export interface OptionsItemProps {
 }
 
 export interface OptionProps {
+    id?: string;
     label: string;
     value: string;
     checked: boolean;

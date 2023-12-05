@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {EditIcon, GiveIcon} from '../components/icons';
+import {EditIcon, GiveIcon, CodeIcon} from '../components/icons';
 import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
@@ -16,6 +16,7 @@ import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/for
 import EditorMode from '@givewp/form-builder/types/editorMode';
 import {useDispatch} from '@wordpress/data';
 import {cleanForSlug} from '@wordpress/url';
+import EmbedFormModal from '@givewp/form-builder/components/EmbedForm';
 
 const Logo = () => (
     <div
@@ -40,7 +41,7 @@ const Logo = () => (
 );
 
 /**
- * @unreleased dispatch page slug from form title on initial publish.
+ * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleShowSidebar}) => {
     const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
@@ -49,6 +50,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
     const dispatch = useFormStateDispatch();
     const [isSaving, setSaving] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [showEmbedModal, setShowEmbedModal] = useState(false);
     const [showPublishConfirmation, setShowPublishConfirmation] = useState(false);
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
@@ -170,6 +172,13 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                             ? __('Save as Draft', 'give')
                                             : __('Switch to Draft', 'give')}
                                 </Button>
+                                <Button
+                                    icon={CodeIcon}
+                                    className="givewp-embed-button"
+                                    isPressed={showEmbedModal}
+                                    onClick={() => setShowEmbedModal(!showEmbedModal)}
+                                    label={__('Embed form', 'give')}
+                                />
                                 {isPublished && (
                                     <Button
                                         label={__('View form', 'give')}
@@ -270,6 +279,11 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 >
                     <Markup content={errorMessage} />
                 </InfoModal>
+            )}
+            {showEmbedModal && (
+                <EmbedFormModal
+                    handleClose={() => setShowEmbedModal(false)}
+                />
             )}
             {showPublishConfirmation && (
                 <FormPrepublishPanel

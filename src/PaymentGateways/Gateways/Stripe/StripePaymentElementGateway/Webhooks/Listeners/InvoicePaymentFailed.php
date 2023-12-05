@@ -21,6 +21,7 @@ class InvoicePaymentFailed
      *
      * @see https://stripe.com/docs/api/events/types#event_types-invoice.payment_failed
      *
+     * @since 3.0.4 Add exit statement only when the event is successfully processed.
      * @since 3.0.0
      *
      * @return void
@@ -29,20 +30,21 @@ class InvoicePaymentFailed
     public function __invoke(Event $event)
     {
         try {
-            $this->processEvent($event);
+            if ($this->processEvent($event)) {
+                exit;
+            }
         } catch (Exception $exception) {
             $this->logWebhookError($event, $exception);
         }
-
-        exit;
     }
 
     /**
+     * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *
      * @throws Exception
      */
-    public function processEvent(Event $event)
+    public function processEvent(Event $event): bool
     {
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
@@ -51,7 +53,7 @@ class InvoicePaymentFailed
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
-            return;
+            return false;
         }
 
         if (
@@ -64,6 +66,8 @@ class InvoicePaymentFailed
             $subscription->status = SubscriptionStatus::FAILING();
             $subscription->save();
         }
+
+        return true;
     }
 
     /**

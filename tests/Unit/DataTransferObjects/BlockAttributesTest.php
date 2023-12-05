@@ -37,10 +37,10 @@ class BlockAttributesTest extends TestCase
      */
     public function testFormIdShouldReturnIntFromString()
     {
-      $blockAttributes = BlockAttributes::fromArray([
-          'formId' => '1',
-          'blockId' => '123'
-      ]);
+        $blockAttributes = BlockAttributes::fromArray([
+            'formId' => '1',
+            'blockId' => '123'
+        ]);
 
         $this->assertSame(1, $blockAttributes->formId);
     }

@@ -273,3 +273,23 @@
         transform: translateX(0%);
     }
 }
+
+.givewp-embed-button {
+    svg {
+        fill: none;
+        stroke: #4d4d4d;
+    }
+
+    &:hover {
+        svg {
+            stroke: #2271b1;
+        }
+    }
+
+    &.is-pressed {
+        svg {
+            fill: #000;
+            stroke: #fff;
+        }
+    };
+}
