@@ -99,3 +99,7 @@ export const decodeHTMLEntity = (entity) => {
     div.innerHTML = entity;
     return div.innerText;
 };
+
+export const updatePasswordWithAPI = async (newPassword) => {
+    return donorDashboardApi.post('password', {newPassword})
+};
