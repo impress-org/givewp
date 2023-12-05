@@ -3,26 +3,25 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {useState} from 'react';
-import Options from '@givewp/form-builder/components/OptionsPanel';
-import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import Options from '@givewp/form-builder-library/src/OptionsPanel';
+import {OptionProps} from '@givewp/form-builder-library/src/OptionsPanel/types';
 
 const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
 const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
 export default function Edit({
-                                 attributes: {
-                                     showHonorific,
-                                     honorifics,
-                                     firstNameLabel,
-                                     firstNamePlaceholder,
-                                     lastNameLabel,
-                                     lastNamePlaceholder,
-                                     requireLastName,
-                                 },
-                                 setAttributes,
-                             }: BlockEditProps<any>) {
-
-    const [selectedTitle, setSelectedTitle] = useState<string>(Object.values(honorifics)[0] as string ?? '');
+    attributes: {
+        showHonorific,
+        honorifics,
+        firstNameLabel,
+        firstNamePlaceholder,
+        lastNameLabel,
+        lastNamePlaceholder,
+        requireLastName,
+    },
+    setAttributes,
+}: BlockEditProps<any>) {
+    const [selectedTitle, setSelectedTitle] = useState<string>((Object.values(honorifics)[0] as string) ?? '');
     const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(
         Object.values(honorifics).map((token: string) => {
             return {
@@ -38,12 +37,12 @@ export default function Edit({
 
         const filtered = {};
         // Filter options
-       Object.values(options).forEach((option) => {
-            Object.assign(filtered, {[option.label]: option.label})
+        Object.values(options).forEach((option) => {
+            Object.assign(filtered, {[option.label]: option.label});
         });
 
-        setAttributes({honorifics: filtered})
-    }
+        setAttributes({honorifics: filtered});
+    };
 
     return (
         <>
@@ -100,7 +99,6 @@ export default function Edit({
                             </div>
                             {!!showHonorific && (
                                 <Options
-                                    currency={false}
                                     multiple={false}
                                     selectable={false}
                                     options={honorificOptions}
