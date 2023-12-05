@@ -24,6 +24,7 @@ class DonateControllerDataTest extends TestCase
 {
 
     /**
+     * @unreleased added honorific property
      * @since 3.0.0
      */
     public function testToDonationShouldReturnDonationModel()
@@ -62,6 +63,7 @@ class DonateControllerDataTest extends TestCase
             'gatewayId' => $data->gatewayId,
             'amount' => Money::fromDecimal($data->amount, $data->currency),
             'donorId' => $donor->id,
+            'honorific' => $data->honorific,
             'firstName' => $data->firstName,
             'lastName' => $data->lastName,
             'email' => $data->email,

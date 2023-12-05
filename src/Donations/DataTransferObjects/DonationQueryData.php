@@ -15,6 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationData
  *
+ * @unreleased added honorific property
  * @since 2.23.0 remove parentId property
  * @since 2.19.6
  */
@@ -120,6 +121,10 @@ final class DonationQueryData
      * @var string|null
      */
     public $comment;
+    /**
+     * @var string|null
+     */
+    public $honorific;
 
     /**
      * Convert data from object to Donation
@@ -150,6 +155,7 @@ final class DonationQueryData
         $self->feeAmountRecovered = $feeAmountRecovered ? Money::fromDecimal($feeAmountRecovered, $currency) : null;
         $self->exchangeRate = $donationQueryObject->{DonationMetaKeys::EXCHANGE_RATE()->getKeyAsCamelCase()};
         $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
+        $self->honorific = $donationQueryObject->{DonationMetaKeys::HONORIFIC()->getKeyAsCamelCase()};
         $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()};
         $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
         $self->email = $donationQueryObject->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
