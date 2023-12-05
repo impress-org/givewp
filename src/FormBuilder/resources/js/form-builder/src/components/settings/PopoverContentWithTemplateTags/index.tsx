@@ -5,7 +5,7 @@ import {useState} from '@wordpress/element';
 import type {Ref} from 'react';
 import {close as closeIcon, copy as copyIcon} from '@wordpress/icons';
 import './styles.scss';
-import ClassicEditor from '@givewp/form-builder-library/ClassicEditor';
+import ClassicEditor from '@givewp/form-builder-library/src/ClassicEditor';
 
 /**
  * @since 3.0.0

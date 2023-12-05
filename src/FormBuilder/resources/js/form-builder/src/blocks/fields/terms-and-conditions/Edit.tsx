@@ -10,7 +10,7 @@ import ControlForPopover from '@givewp/form-builder/components/settings/ControlF
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 
 import './styles.scss';
-import ClassicEditor from '@givewp/form-builder-library/ClassicEditor';
+import ClassicEditor from '@givewp/form-builder-library/src/ClassicEditor';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',

@@ -14,10 +14,8 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
-// @ts-ignore
-import OptionsPanel from '@givewp/form-builder-library/OptionsPanel';
-// @ts-ignore
-import {OptionProps} from '@givewp/form-builder-library/OptionsPanel/types';
+import OptionsPanel from '@givewp/form-builder-library/src/OptionsPanel';
+import {OptionProps} from '@givewp/form-builder-library/src/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
