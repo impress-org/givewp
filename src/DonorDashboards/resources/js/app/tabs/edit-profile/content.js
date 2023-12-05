@@ -209,7 +209,7 @@ const Content = () => {
                     </Fragment>
                 )}
             </Button>
-            
+
             <Heading>{__('Update Password', 'give')}</Heading>
             <Divider />
             <TextControl
