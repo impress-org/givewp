@@ -20,6 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 class FormBuilderViewModel
 {
     /**
+     * @unreleased Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
     public function storageData(int $donationFormId): array
@@ -73,6 +74,7 @@ class FormBuilderViewModel
                 'agreementText' => give_get_option('agreement_text'),
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
+            'nameTitlePrefixes' => give_get_option('title_prefixes'),
         ];
     }
 

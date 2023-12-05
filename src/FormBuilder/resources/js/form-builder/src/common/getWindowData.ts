@@ -47,6 +47,7 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    nameTitlePrefixes: string[];
 }
 
 /**
