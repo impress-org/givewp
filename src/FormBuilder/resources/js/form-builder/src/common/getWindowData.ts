@@ -61,7 +61,7 @@ declare const window: {
                 [key: string]: Component;
             };
         };
-    };
+    }
 } & Window;
 
 /**

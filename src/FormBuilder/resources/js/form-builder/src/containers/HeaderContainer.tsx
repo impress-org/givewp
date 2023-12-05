@@ -11,6 +11,7 @@ import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
+import FormPrepublishPanel from "@givewp/form-builder/components/sidebar/panels/FormPrepublishPanel";
 import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/form-builder/stores/editor-state';
 import EditorMode from '@givewp/form-builder/types/editorMode';
 import {useDispatch} from '@wordpress/data';
@@ -50,10 +51,11 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
     const [isSaving, setSaving] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [showEmbedModal, setShowEmbedModal] = useState(false);
+    const [showPublishConfirmation, setShowPublishConfirmation] = useState(false);
 
     const isDraftDisabled = (isSaving || !isDirty) && 'draft' === formSettings.formStatus;
-    const isPublishDisabled = (isSaving || !isDirty) && 'publish' === formSettings.formStatus;
-    const isPublished = 'publish' === formSettings.formStatus;
+    const isPublishDisabled = (isSaving || !isDirty) && ['publish', 'private'].includes(formSettings.formStatus);
+    const isPublished = ['publish', 'private'].includes(formSettings.formStatus);
     const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
     const {createSuccessNotice} = useDispatch('core/notices');
 
@@ -64,23 +66,21 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
 
-        dispatch(setFormSettings({formStatus}));
+        const status = 'draft' === formStatus ? formStatus : formSettings.newFormStatus ?? formStatus;
+
+        dispatch(setFormSettings({formStatus: status, newFormStatus: null}));
 
         revertMissingBlocks(blocks);
 
-        Storage.save({blocks, formSettings: {...formSettings, formStatus}})
+        Storage.save({blocks, formSettings: {...formSettings, formStatus: status}})
             .catch((error) => {
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 setErrorMessage(error.message);
+                setShowPublishConfirmation(false);
             })
             .then(({formTitle, pageSlug}: FormSettings) => {
-                dispatch(
-                    setFormSettings({
-                        formTitle,
-                        pageSlug,
-                    })
-                );
+                dispatch(setFormSettings({formTitle, pageSlug}));
                 dispatch(setIsDirty(false));
                 setSaving(null);
                 showOnSaveNotice(formStatus);
@@ -93,10 +93,9 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 type: 'snackbar',
             });
         } else {
-            const notice =
-                'publish' === formStatus && formSettings.formStatus !== 'draft'
-                    ? __('Form updated.', 'give')
-                    : __('Form published.', 'give');
+            const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
+                ? __('Form updated.', 'give')
+                : __('Form published.', 'give')
 
             createSuccessNotice(notice, {
                 type: 'snackbar',
@@ -108,7 +107,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 ],
             });
         }
-    };
+    }
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
@@ -119,7 +118,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
         if (EditorMode.design === mode) {
             dispatchEditorState(setEditorMode(EditorMode.schema));
         }
-    };
+    }
 
     // @ts-ignore
     return (
@@ -159,41 +158,50 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 }
                 contentRight={
                     <>
-                        <Button
-                            onClick={() => onSave('draft')}
-                            aria-disabled={isDraftDisabled}
-                            disabled={isDraftDisabled}
-                            variant="tertiary"
-                        >
-                            {isSaving && 'draft' === isSaving
-                                ? __('Saving...', 'give')
-                                : 'draft' === formSettings.formStatus
-                                    ? __('Save as Draft', 'give')
-                                    : __('Switch to Draft', 'give')}
-                        </Button>
-                        <Button
-                            icon={CodeIcon}
-                            className="givewp-embed-button"
-                            isPressed={showEmbedModal}
-                            onClick={() => setShowEmbedModal(!showEmbedModal)}
-                            label={__('Embed form', 'give')}
-                        />
-                        {isPublished && (
-                            <Button label={__('View form', 'give')} href={permalink} target="_blank" icon={external} />
+                        {!showPublishConfirmation && (
+                            <>
+                                <Button
+                                    onClick={() => onSave('draft')}
+                                    aria-disabled={isDraftDisabled}
+                                    disabled={isDraftDisabled}
+                                    variant="tertiary"
+                                >
+                                    {isSaving && 'draft' === isSaving
+                                        ? __('Saving...', 'give')
+                                        : 'draft' === formSettings.formStatus
+                                            ? __('Save as Draft', 'give')
+                                            : __('Switch to Draft', 'give')}
+                                </Button>
+                                <Button
+                                    icon={CodeIcon}
+                                    className="givewp-embed-button"
+                                    isPressed={showEmbedModal}
+                                    onClick={() => setShowEmbedModal(!showEmbedModal)}
+                                    label={__('Embed form', 'give')}
+                                />
+                                {isPublished && (
+                                    <Button
+                                        label={__('View form', 'give')}
+                                        href={permalink}
+                                        target="_blank"
+                                        icon={external}
+                                    />
+                                )}
+                                <Button
+                                    onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
+                                    aria-disabled={isPublishDisabled}
+                                    disabled={isPublishDisabled}
+                                    variant="primary"
+                                >
+                                    {isSaving && 'publish' === isSaving
+                                        ? __('Updating...', 'give')
+                                        : isPublished
+                                            ? __('Update', 'give')
+                                            : __('Publish', 'give')}
+                                </Button>
+                                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                            </>
                         )}
-                        <Button
-                            onClick={() => onSave('publish')}
-                            aria-disabled={isPublishDisabled}
-                            disabled={isPublishDisabled}
-                            variant="primary"
-                        >
-                            {isSaving && 'publish' === isSaving
-                                ? __('Updating...', 'give')
-                                : 'publish' === formSettings.formStatus
-                                    ? __('Update', 'give')
-                                    : __('Publish', 'give')}
-                        </Button>
-                        <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                         <Dropdown
                             popoverProps={{placement: 'bottom-start'}}
                             // @ts-ignore
@@ -210,7 +218,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                             onToggle();
                                         }}
                                     />
-                                );
+                                )
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
@@ -230,9 +238,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                         {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                             <>
                                                 <MenuItem
-                                                    className={
-                                                        transfer.showTooltip && 'givewp-transfer-selected-menuitem'
-                                                    }
+                                                    className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
                                                     onClick={() => {
                                                         dispatch(setTransferState({showTransferModal: true}));
                                                         onClose();
@@ -243,10 +249,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
 
                                                 {transfer.showTooltip && (
                                                     <div className="givewp-transfer-tooltip">
-                                                        {__(
-                                                            'Want to transfer donation data later? Access this option in the three dots menu above at any time.',
-                                                            'give'
-                                                        )}
+                                                        {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
                                                     </div>
                                                 )}
                                             </>
@@ -257,7 +260,9 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                         href="https://docs.givewp.com/nextgenfeedback"
                                         rel="noopener noreferrer"
                                     >
-                                        <MenuItem icon={external}>{__('Submit Feedback', 'give')}</MenuItem>
+                                        <MenuItem icon={external}>
+                                                {__('Submit Feedback', 'give')}
+                                        </MenuItem>
                                     </ExternalLink>
                                 </div>
                             )}
@@ -278,6 +283,14 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
             {showEmbedModal && (
                 <EmbedFormModal
                     handleClose={() => setShowEmbedModal(false)}
+                />
+            )}
+            {showPublishConfirmation && (
+                <FormPrepublishPanel
+                    isSaving={isSaving}
+                    isPublished={isPublished}
+                    handleSave={() => onSave('publish')}
+                    handleClose={() => setShowPublishConfirmation(false)}
                 />
             )}
         </>
