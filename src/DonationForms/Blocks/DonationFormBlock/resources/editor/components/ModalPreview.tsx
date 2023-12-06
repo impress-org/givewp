@@ -11,7 +11,7 @@ type ModalPreviewProps = {
 };
 
 /**
- * @since 3.1.2 updated BEM classnames and included button component.
+ * @unreleased updated BEM classnames and included button component.
  * @since 3.0.0
  */
 export default function ModalPreview({enableIframe, formId, openFormButton}: ModalPreviewProps) {

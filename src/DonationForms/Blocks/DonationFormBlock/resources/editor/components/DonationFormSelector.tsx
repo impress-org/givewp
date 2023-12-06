@@ -12,7 +12,7 @@ import '../styles/index.scss';
 const savePost = () => dispatch('core/editor').savePost();
 
 /**
- * @since 3.1.2
+ * @unreleased
  */
 export default function DonationFormSelector({formOptions, isResolving, handleSelect}) {
     const [selectedForm, setSelectedForm] = useState(null);

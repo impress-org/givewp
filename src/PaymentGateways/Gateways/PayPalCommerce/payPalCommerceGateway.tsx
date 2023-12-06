@@ -427,7 +427,7 @@ import {PayPalSubscriber} from "./types";
         },
         /**
          * Before create payment.
-         * @since 3.1.2 Handle error response in approveOrderCallback.
+         * @unreleased Handle error response in approveOrderCallback.
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {
