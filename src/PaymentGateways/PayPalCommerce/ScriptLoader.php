@@ -188,8 +188,8 @@ EOT;
     /**
      * Load public assets.
      *
-     * @unreleased Get form id from post content if form id is not available.
-     * @unreleased Use EnqueueScript to register and enqueue script.
+     * @since 3.2.0 Get form id from post content if form id is not available.
+     * @since 3.2.0 Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */
@@ -292,7 +292,7 @@ EOT;
      * This function should return form id from page, post content.
      *
      *
-     * @unreleased
+     * @since 3.2.0
      */
     private function getFormIdFromPostContent(): ?int
     {

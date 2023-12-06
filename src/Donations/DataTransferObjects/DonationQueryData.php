@@ -15,7 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationData
  *
- * @unreleased added honorific property
+ * @since 3.2.0 added honorific property
  * @since 2.23.0 remove parentId property
  * @since 2.19.6
  */
@@ -129,7 +129,7 @@ final class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @unreleased add fallback for donation mode
+     * @since 3.2.0 add fallback for donation mode
      * @since 2.23.0 remove parentId property
      * @since 2.22.0 add support for company field
      * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate

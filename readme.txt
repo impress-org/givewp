@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,15 +262,22 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.1.2: November 27th, 2023 =
+= 3.2.0: Dec 6th, 2023 =
 * Enhancement: Updated parts of the Form Builder text areas to Text Editors to provide more formatting options
 * Enhancement: Improved compatibility with the donation block and Visual Builder forms
 * Enhancement: All donors are connected with a user for improved security and caching compatibility
+* Enhancement: Improve the Name, and Terms and Conditions blocks with global settings
+* New: Embed form button added to the Visual Donation Form Builder
+* New: Pre-publish confirmation panel added to the Visual Donation Form Builder
 * Fix: Resolved some strange behaviors when using the Amount Levels setting in the Form Builder
 * Fix: Removed WP_Background_Process and WP_Async_Request to avoid conflicts with other plugins
 * Fix: Donor honorific (Mr, Mrs, etc) is now properly saved as part of the donor record
-* Fix: PayPal Donations displays a helpful error message when incorrect credit card information is entered 
-* Fix: Visual Donation Form Builder loading is improved by preventing the formBuilderSettings meta from becoming too large 
+* Fix: PayPal Donations displays a helpful error message when incorrect credit card information is entered
+* Fix: Visual Donation Form Builder loading is improved by preventing the formBuilderSettings meta from becoming too large
+* Fix: Resolved an issue where some donations list tables were failing to load due to missing donation mode meta
+* Fix: Resolved an issue where the donation forms list tables were resulting in duplicate forms
+* Fix: Resolved an issue where PayPal smart buttons were not being displayed on embedded forms using legacy template
+* Fix: Resolved an issue with PayPal donations and fee recovery where the fee was not being added to the donation total
 
 = 3.1.1: November 3rd, 2023 =
 * Fix: Embedded forms created with the Visual Builder now redirect to the confirmation page after a completed donation.

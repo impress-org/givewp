@@ -279,7 +279,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
-     * @unreleased Discover error by checking capture status.
+     * @since 3.2.0 Discover error by checking capture status.
      * @since 2.9.0
      */
     public function approveOrder()
@@ -389,7 +389,7 @@ class AjaxRequestHandler
     /**
      * This function should validate PayPal ApproveOrder response and respond to ajax request on error.
      *
-     * @unreleased
+     * @since 3.2.0
      */
     private function returnErrorOnFailedApproveOrderResponse(\stdClass $response)
     {

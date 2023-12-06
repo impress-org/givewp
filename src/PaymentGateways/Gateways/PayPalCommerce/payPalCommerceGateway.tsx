@@ -96,7 +96,7 @@ import {PayPalSubscriber} from "./types";
     /**
      * Get amount with fee (if any).
      *
-     * @unreleased
+     * @since 3.2.0
      * @return {number} Amount with fee.
      */
     const getAmount = () => {
@@ -443,7 +443,7 @@ import {PayPalSubscriber} from "./types";
         },
         /**
          * Before create payment.
-         * @unreleased Handle error response in approveOrderCallback.
+         * @since 3.2.0 Handle error response in approveOrderCallback.
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {

@@ -149,7 +149,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased added distinct() to the query
+     * @since 3.2.0 added distinct() to the query
      * @since 2.24.0 Refactor to query through the ModelQueryBuilder
      *
      * @return array

@@ -35,7 +35,7 @@ function isTmceEmpty(editor) {
 }
 
 /**
- * @unreleased
+ * @since 3.2.0
  */
 export default function ClassicEditor({id, label, content, setContent, rows = 20}) {
     const didMount = useRef(false);

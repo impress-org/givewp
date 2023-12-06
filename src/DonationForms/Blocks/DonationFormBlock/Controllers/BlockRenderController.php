@@ -13,7 +13,7 @@ use Give\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
-     * @unreleased include form url for new tab format.
+     * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
      *
      * @return string|null

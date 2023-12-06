@@ -8,13 +8,13 @@ namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
  * Source of errors
  *  - https://developer.paypal.com/docs/api/orders/v2/#definition-processor_response
  *
- * @unreleased
+ * @since 3.2.0
  */
 class ProcessorResponseError
 {
     /**
      * This function decode the error code from PayPal.
-     * @unreleased
+     * @since 3.2.0
      * @param \stdClass $processorResponse
      */
     public static function getError(\stdClass $processorResponse): string
@@ -66,7 +66,7 @@ class ProcessorResponseError
     }
 
     /**
-     * @unreleased
+     * @since 3.2.0
      */
     private function avsCode(): array
     {
@@ -193,7 +193,7 @@ class ProcessorResponseError
     }
 
     /**
-     * @unreleased
+     * @since 3.2.0
      */
     private function responseCode(): array
     {
@@ -368,7 +368,7 @@ class ProcessorResponseError
     }
 
     /**
-     * @unreleased
+     * @since 3.2.0
      */
     private function paymentAdviceCode(): array
     {
