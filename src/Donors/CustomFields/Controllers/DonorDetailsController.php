@@ -45,7 +45,7 @@ class DonorDetailsController
     {
         $formIds = array_map(static function (Donation $donation) {
             return $donation->formId;
-        }, $donor->donations);
+        }, $donor->donations ?? []);
 
         $formIds = array_filter($formIds, static function ($formId) {
             return !give(DonationFormRepository::class)->isLegacyForm($formId);
