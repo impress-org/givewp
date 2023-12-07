@@ -8,8 +8,10 @@ import DonationFormBlockControls from './components/DonationFormBlockControls';
 import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 
 import './styles/index.scss';
+import { __ } from '@wordpress/i18n';
 
 /**
+ * @unreleased added isResolving loading state to prevent forms from prematurely being rendered.
  * @since 3.2.0 updated to handle v2 forms.
  * @since 3.0.0
  */
@@ -38,6 +40,12 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
 
         return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
     })();
+
+    if (isResolving !== false) {
+        return <div {...useBlockProps()}>
+            <p>{__('Loading...', 'give')}</p>
+        </div>
+    }
 
     return (
         <div {...useBlockProps()}>
