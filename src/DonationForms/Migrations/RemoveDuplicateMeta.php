@@ -49,6 +49,7 @@ class RemoveDuplicateMeta extends Migration
 
         foreach ($posts as $post) {
             $formEarnings = give_get_meta($post->ID, '_give_form_earnings');
+            $formSales = give_get_meta($post->ID, '_give_form_sales');
 
             // Update meta with duplicate keys only
             if (count($formEarnings) > 1) {
@@ -59,6 +60,15 @@ class RemoveDuplicateMeta extends Migration
                 $earnings = $this->getEarningsFromDonations($post->ID);
                 give_update_meta($post->ID, '_give_form_earnings', $earnings);
             }
+
+            if (count($formSales) > 1) {
+                // Delete all meta
+                give_delete_meta($post->ID, '_give_form_sales');
+
+                // Get sales count from donations
+                $sales = $this->getSalesCountFromDonations($post->ID);
+                give_update_meta($post->ID, '_give_form_sales', $sales);
+            }
         }
     }
 
@@ -67,9 +77,9 @@ class RemoveDuplicateMeta extends Migration
      *
      * @param $formId
      *
-     * @return int
+     * @return float | int
      */
-    private function getEarningsFromDonations($formId): int
+    private function getEarningsFromDonations($formId)
     {
         $donations = Db::table('posts')
             ->attachMeta(
@@ -85,6 +95,28 @@ class RemoveDuplicateMeta extends Migration
         $amounts = array_column($donations, 'amount');
 
         return array_sum($amounts);
+    }
+
+    /**
+     * Get sales count from donations by Form ID
+     *
+     * @param $formId
+     *
+     * @return int
+     */
+    private function getSalesCountFromDonations($formId): int
+    {
+        return Db::table('posts')
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                [DonationMetaKeys::FORM_ID(), 'formId']
+            )
+            ->where('post_type', 'give_payment')
+            ->where('post_status', 'publish')
+            ->where('give_donationmeta_attach_meta_formId.meta_value', $formId)
+            ->count('ID');
     }
 
 }
