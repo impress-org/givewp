@@ -9,7 +9,7 @@ use WP_REST_Response;
 
 
 /**
- * @since 2.10.0
+ * @unreleased
  */
 class PasswordResetRoute implements RestRoute
 {
