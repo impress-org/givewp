@@ -24,7 +24,7 @@ class DonateControllerDataTest extends TestCase
 {
 
     /**
-     * @unreleased added honorific property
+     * @since 3.2.0 added honorific property
      * @since 3.0.0
      */
     public function testToDonationShouldReturnDonationModel()

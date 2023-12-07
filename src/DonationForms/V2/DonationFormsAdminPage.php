@@ -125,7 +125,7 @@ class DonationFormsAdminPage
 
     /**
      * Load migration onboarding scripts
-     * @unreleased
+     * @since 3.2.0
      *
      * @return void
      */

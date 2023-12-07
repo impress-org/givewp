@@ -43,7 +43,7 @@ interface StateProps {
 }
 
 /**
- * @unreleased
+ * @since 3.2.0
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 

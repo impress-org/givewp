@@ -145,7 +145,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased added honorific property
+     * @since 3.2.0 added honorific property
      * @since 2.23.1 add company to test to catch cases where missing meta was not updated
      * @since 2.19.6
      *

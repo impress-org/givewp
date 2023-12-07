@@ -23,7 +23,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Add support to nameTitlePrefixes key in the compared array
+     * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
      * @since 3.0.0
      *
      * @return void

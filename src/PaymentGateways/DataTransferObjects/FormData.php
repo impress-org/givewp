@@ -170,7 +170,7 @@ final class FormData
     }
 
     /**
-     * @unreleased added support for honorific field
+     * @since 3.2.0 added support for honorific field
      * @since 2.22.0 add support for company field
      * @since 2.19.6
      * @throws Exception

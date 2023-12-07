@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,15 +27,15 @@ Free donor tools also help keep your donors happy. The donor dashboard helps you
 
 **[Powerful Donation Forms](https://go.givewp.com/features-forms "See how powerful our fundraising forms can be")**
 
-GiveWP has taken inspiration from Gutenberg blocks to create an even better form-building experience. The Visual Donation Form Builder uses sections and blocks to provide a more intuitive way to build and configure your donation forms. 
+GiveWP has taken inspiration from Gutenberg blocks to create an even better form-building experience. The Visual Donation Form Builder uses sections and blocks to provide a more intuitive way to build and configure your donation forms.
 
-In this builder, you’ll see your design in real time. Watch as your form takes shape as you select custom colors, fields, elements, and more. For those with a flair for customization, you can add Custom CSS directly into the builder. 
+In this builder, you’ll see your design in real time. Watch as your form takes shape as you select custom colors, fields, elements, and more. For those with a flair for customization, you can add Custom CSS directly into the builder.
 
 * Build custom donation forms in your WordPress admin
 * Customize donation form templates without any code
 * Add goals, multiple giving amounts, custom amounts, terms and conditions and more with just a couple clicks
 
-Never used blocks before? No worries - [we’ve got you covered with our guide](https://go.givewp.com/visual-builder). 
+Never used blocks before? No worries - [we’ve got you covered with our guide](https://go.givewp.com/visual-builder).
 
 **[Actionable Fundraising Reporting](https://go.givewp.com/features-reports "See our gorgeous and helpful reports dashboards")**
 
@@ -67,8 +67,8 @@ With more than 100,000+ active installs of GiveWP, we hear more and more success
 * [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser.
 * [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name.
 * [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic.
-* [Quiltlove](https://go.givewp.com/quiltlove), which provides personalized quilts for different life events (like new babies, extended hospital stays, and more), uses GiveWP to create a sustainable business model. 
-* [Niels Vink, a Dutch wheelchair tennis player](https://go.givewp.com/niels-vink), uses GiveWP to raise money to train, travel, and participate in competitions. At the 2021 Tokyo Paralympics, Vink earned a gold medal in doubles and a bronze medal in singles. 
+* [Quiltlove](https://go.givewp.com/quiltlove), which provides personalized quilts for different life events (like new babies, extended hospital stays, and more), uses GiveWP to create a sustainable business model.
+* [Niels Vink, a Dutch wheelchair tennis player](https://go.givewp.com/niels-vink), uses GiveWP to raise money to train, travel, and participate in competitions. At the 2021 Tokyo Paralympics, Vink earned a gold medal in doubles and a bronze medal in singles.
 
 In addition to nonprofit organizations, GiveWP is widely used for individual or creative purposes. We’ve seen tip jars for blogs or musicians, live streams, and more. Our [Donation Upsells for WooCommerce Add-on](https://go.givewp.com/wooread) is even used in some eCommerce stores to collect donations for a cause, or ask for tips in the cart or checkout.
 
@@ -167,8 +167,8 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 5.0 or greater
-* PHP version 7.0 or greater
+* WordPress 6.0 or greater
+* PHP version 7.2 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
 * Some payment gateways require fsockopen support (for IPN access)
@@ -262,15 +262,22 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.1.2: November 27th, 2023 =
+= 3.2.0: Dec 6th, 2023 =
+* New: Embed form button added to the Visual Donation Form Builder
+* New: Pre-publish confirmation panel added to the Visual Donation Form Builder
 * Enhancement: Updated parts of the Form Builder text areas to Text Editors to provide more formatting options
 * Enhancement: Improved compatibility with the donation block and Visual Builder forms
 * Enhancement: All donors are connected with a user for improved security and caching compatibility
+* Enhancement: Improve the Name, and Terms and Conditions blocks with global settings
 * Fix: Resolved some strange behaviors when using the Amount Levels setting in the Form Builder
 * Fix: Removed WP_Background_Process and WP_Async_Request to avoid conflicts with other plugins
 * Fix: Donor honorific (Mr, Mrs, etc) is now properly saved as part of the donor record
-* Fix: PayPal Donations displays a helpful error message when incorrect credit card information is entered 
-* Fix: Visual Donation Form Builder loading is improved by preventing the formBuilderSettings meta from becoming too large 
+* Fix: PayPal Donations displays a helpful error message when incorrect credit card information is entered
+* Fix: Visual Donation Form Builder loading is improved by preventing the formBuilderSettings meta from becoming too large
+* Fix: Resolved an issue where some donations list tables were failing to load due to missing donation mode meta
+* Fix: Resolved an issue where the donation forms list tables were resulting in duplicate forms
+* Fix: Resolved an issue where PayPal smart buttons were not being displayed on embedded forms using legacy template
+* Fix: Resolved an issue with PayPal donations and fee recovery where the fee was not being added to the donation total
 
 = 3.1.1: November 3rd, 2023 =
 * Fix: Embedded forms created with the Visual Builder now redirect to the confirmation page after a completed donation.
@@ -331,8 +338,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 = 2.33.0: August 28th, 2023 =
 * New: Admins can now select standard or advanced connection type during setup
-* New: Added a new SubscriptionSynced command class 
-* New: Added PayPal Standard to PayPal Donations migration information banners 
+* New: Added a new SubscriptionSynced command class
+* New: Added PayPal Standard to PayPal Donations migration information banners
 * Security: Remove uses of payment intent secret and existing meta
 
 = 2.32.0: August 11th, 2023 =

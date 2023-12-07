@@ -13,7 +13,7 @@ interface BlockPreviewProps {
 }
 
 /**
- * @since 3.1.2 replace reveal for newTab display.
+ * @since 3.2.0 replace reveal for newTab display.
  * @since 3.0.0
  */
 export default function DonationFormBlockPreview({

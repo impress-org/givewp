@@ -6,7 +6,7 @@ use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\Models\Donor;
 
 /**
- * @since 3.1.2
+ * @since 3.2.0
  */
 class CreateUserFromDonor
 {
