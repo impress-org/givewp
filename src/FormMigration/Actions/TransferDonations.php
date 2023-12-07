@@ -45,7 +45,7 @@ class TransferDonations
             give_update_meta(
                 $destinationId,
                 '_give_form_sales',
-                (float)give_get_meta($this->sourceId, '_give_form_sales', true)
+                (int)give_get_meta($this->sourceId, '_give_form_sales', true)
             );
             give_update_meta($this->sourceId, '_give_form_sales', 0);
 
