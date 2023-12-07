@@ -64,7 +64,7 @@ export default function DonationFormBlockControls({
                                 [
                                     {
                                         label: __('Full Form', 'give'),
-                                        value: 'fullForm',
+                                        value: 'onpage',
                                     },
                                     {
                                         label: __('Modal', 'give'),

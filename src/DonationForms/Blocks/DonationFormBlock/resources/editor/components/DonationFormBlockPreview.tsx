@@ -7,7 +7,7 @@ import '../styles/index.scss';
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
+    formFormat: 'onpage' | 'modal' | 'newTab' | 'reveal';
     openFormButton: string;
     link: string;
 }

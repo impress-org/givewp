@@ -5,7 +5,7 @@ import IframeResizer from 'iframe-resizer-react';
 import '../editor/styles/index.scss';
 
 type DonationFormBlockAppProps = {
-    formFormat: 'fullForm' | 'newTab' | 'modal' | string;
+    formFormat: 'onpage' | 'newTab' | 'modal' | string;
     dataSrc: string;
     embedId: string;
     openFormButton: string;
