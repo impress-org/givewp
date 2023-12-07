@@ -4,6 +4,10 @@ import IframeResizer from 'iframe-resizer-react';
 
 import '../editor/styles/index.scss';
 
+/**
+ * @unreleased Revert the display style value of "fullForm" to "onpage".
+ * @since 3.1.2
+ */
 type DonationFormBlockAppProps = {
     formFormat: 'onpage' | 'newTab' | 'modal' | string;
     dataSrc: string;

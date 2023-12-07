@@ -13,6 +13,7 @@ interface DonationFormBlockControls {
 }
 
 /**
+ * @unreleased Revert the display style value of "fullForm" to "onpage".
  * @since 3.2.0
  */
 export default function DonationFormBlockControls({
