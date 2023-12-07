@@ -1,6 +1,7 @@
 import {donorDashboardApi} from '../../../utils';
 import {store} from '../../../store';
 import {setProfile} from '../../../store/actions';
+import {getCleanParentHref} from "../../../components/logout-modal/utils";
 
 export const updateProfileWithAPI = async ({
     titlePrefix,
@@ -101,5 +102,7 @@ export const decodeHTMLEntity = (entity) => {
 };
 
 export const updatePasswordWithAPI = async (newPassword) => {
-    return donorDashboardApi.post('password', {newPassword})
+    return donorDashboardApi
+        .post('password', {newPassword})
+        .then(() => window.parent.location.href = getCleanParentHref()) // After password update the cookie is invalidated, so we need to refresh the page.
 };
