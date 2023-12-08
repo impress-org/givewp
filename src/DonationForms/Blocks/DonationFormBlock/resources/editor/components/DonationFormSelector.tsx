@@ -7,11 +7,14 @@ import {reactSelectStyles, reactSelectThemeStyles} from '../styles/reactSelectSt
 import logo from '../images/givewp-logo.svg';
 
 import '../styles/index.scss';
-import {FormOption} from '../hooks/useFormOptions';
+import type {FormOption} from '../hooks/useFormOptions';
 
 // @ts-ignore
 const savePost = () => dispatch('core/editor').savePost();
 
+/**
+ * @unreleased
+ */
 type DonationFormSelectorProps = {
     formOptions: FormOption[];
     isResolving: boolean;
