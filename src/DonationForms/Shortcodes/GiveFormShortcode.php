@@ -13,7 +13,7 @@ class GiveFormShortcode
     public static $instance = 0;
 
     /**
-     * @since 3.1.2 include v3 block attributes for shortcode.
+     * @since 3.2.0 include v3 block attributes for shortcode.
      * @since 3.1.1 use static instance ID to simulate blockId attribute
      * @since 3.0.0
      */
@@ -28,15 +28,12 @@ class GiveFormShortcode
             return $output;
         }
 
-        $formFormat = $atts['display_style'];
-        $openFormButton = $atts['continue_button_title'];
-
         $controller = new BlockRenderController();
         $blockAttributes = [
             'formId' => $formId,
             'blockId' => 'give-form-shortcode-' . self::$instance,
-            'formFormat' => $formFormat,
-            'openFormButton' => $openFormButton
+            'formFormat' => $atts['display_style'] ?? null,
+            'openFormButton' => $atts['continue_button_title'] ?? null
         ];
 
         $output = $controller->render($blockAttributes);

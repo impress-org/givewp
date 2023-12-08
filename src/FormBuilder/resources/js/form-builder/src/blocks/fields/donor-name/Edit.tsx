@@ -2,27 +2,28 @@ import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
 const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
 export default function Edit({
-                                 attributes: {
-                                     showHonorific,
-                                     honorifics,
-                                     firstNameLabel,
-                                     firstNamePlaceholder,
-                                     lastNameLabel,
-                                     lastNamePlaceholder,
-                                     requireLastName,
-                                 },
-                                 setAttributes,
-                             }: BlockEditProps<any>) {
-
-    const [selectedTitle, setSelectedTitle] = useState<string>(Object.values(honorifics)[0] as string ?? '');
+    attributes: {
+        showHonorific,
+        useGlobalSettings,
+        honorifics,
+        firstNameLabel,
+        firstNamePlaceholder,
+        lastNameLabel,
+        lastNamePlaceholder,
+        requireLastName,
+    },
+    setAttributes,
+}: BlockEditProps<any>) {
+    const [selectedTitle, setSelectedTitle] = useState<string>((Object.values(honorifics)[0] as string) ?? '');
     const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(
         Object.values(honorifics).map((token: string) => {
             return {
@@ -38,19 +39,37 @@ export default function Edit({
 
         const filtered = {};
         // Filter options
-       Object.values(options).forEach((option) => {
-            Object.assign(filtered, {[option.label]: option.label})
+        Object.values(options).forEach((option) => {
+            Object.assign(filtered, {[option.label]: option.label});
         });
 
-        setAttributes({honorifics: filtered})
+        setAttributes({honorifics: filtered});
+    };
+
+    if (typeof useGlobalSettings === 'undefined') {
+        setAttributes({useGlobalSettings: true});
     }
+
+    useEffect(() => {
+        const options = !!useGlobalSettings ? getFormBuilderWindowData().nameTitlePrefixes : ['Mr', 'Ms', 'Mrs'];
+
+        setOptions(
+            Object.values(options).map((token: string) => {
+                return {
+                    label: titleLabelTransform(token),
+                    value: titleValueTransform(token),
+                    checked: selectedTitle === token,
+                } as OptionProps;
+            })
+        );
+    }, [useGlobalSettings]);
 
     return (
         <>
             <div
                 style={{
                     display: 'grid',
-                    gridTemplateColumns: showHonorific ? '1fr 2fr 2fr' : '1fr 1fr',
+                    gridTemplateColumns: showHonorific && honorificOptions.length > 0 ? '1fr 2fr 2fr' : '1fr 1fr',
                     gap: '15px',
                 }}
             >
@@ -97,8 +116,39 @@ export default function Edit({
                                         'give'
                                     )}
                                 />
+                                {!!showHonorific && (
+                                    <>
+                                        <SelectControl
+                                            label={__('Options', 'give')}
+                                            onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
+                                            value={useGlobalSettings}
+                                            options={[
+                                                {label: __('Global', 'give'), value: 'true'},
+                                                {label: __('Customize', 'give'), value: 'false'},
+                                            ]}
+                                        />
+                                        {useGlobalSettings && (
+                                            <p
+                                                style={{
+                                                    color: '#595959',
+                                                    fontStyle: 'SF Pro Text',
+                                                    fontSize: '0.75rem',
+                                                    lineHeight: '120%',
+                                                    fontWeight: 400,
+                                                    marginTop: '-0.5rem',
+                                                }}
+                                            >
+                                                {__(' Go to the settings to change the ')}
+                                                <a href="/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=display-settings">
+                                                    {__('global Title Prefixes options.')}
+                                                </a>
+                                            </p>
+                                        )}
+                                    </>
+                                )}
                             </div>
-                            {!!showHonorific && (
+
+                            {!!showHonorific && !useGlobalSettings && (
                                 <Options
                                     currency={false}
                                     multiple={false}

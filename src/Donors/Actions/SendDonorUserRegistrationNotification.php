@@ -6,7 +6,7 @@ use Give\Donors\Models\Donor;
 use Give_Donor_Register_Email;
 
 /**
- * @since 3.1.2
+ * @since 3.2.0
  */
 class SendDonorUserRegistrationNotification
 {

@@ -47,6 +47,7 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    nameTitlePrefixes: string[];
 }
 
 /**
@@ -61,7 +62,7 @@ declare const window: {
                 [key: string]: Component;
             };
         };
-    };
+    }
 } & Window;
 
 /**

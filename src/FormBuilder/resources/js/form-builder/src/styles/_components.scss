@@ -155,9 +155,10 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .givewp-panel-body--summary .components-base-control__field .components-select-control,
 .givewp-panel-body--summary .components-base-control__field {
     display: grid;
-    grid-template-columns: 85px 1fr;
+    grid-template-columns: 100px 1fr;
 
-    input {
+    input, select {
+        width: 190px;
         background-color: var(--givewp-gray-10);
 
         &[aria-expanded='true'] {
@@ -174,7 +175,8 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     }
 
     .components-input-control__container {
-        width: 158px;
+        margin-left: -8px;
+        width: 190px;
     }
 
     .components-flex.components-select-control > .components-flex-item {

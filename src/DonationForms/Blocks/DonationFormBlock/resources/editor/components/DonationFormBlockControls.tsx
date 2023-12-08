@@ -13,7 +13,7 @@ interface DonationFormBlockControls {
 }
 
 /**
- * @since 3.1.2
+ * @since 3.2.0
  */
 export default function DonationFormBlockControls({
     attributes,
