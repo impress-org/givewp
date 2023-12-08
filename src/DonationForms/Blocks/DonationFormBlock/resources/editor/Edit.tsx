@@ -54,7 +54,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     }, []);
 
     const [isLegacyForm, isLegacyTemplate, link] = (() => {
-        const form = formOptions.find((form) => form.value === String(id));
+        const form = formOptions.find((form) => form.value === id);
 
         return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
     })();

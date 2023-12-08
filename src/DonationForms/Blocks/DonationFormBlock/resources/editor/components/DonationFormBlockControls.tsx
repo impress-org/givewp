@@ -1,19 +1,19 @@
 import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {Option} from '../types';
+import {FormOption} from '../hooks/useFormOptions';
 
 interface DonationFormBlockControls {
     attributes: Readonly<any>;
     setAttributes: (newAttributes: Record<string, any>) => void;
-    formOptions: Option[];
+    formOptions: FormOption[];
     isResolving: boolean;
     isLegacyTemplate: boolean;
     isLegacyForm: boolean;
 }
 
 /**
- * @unreleased updated setAttributes ID to be a number.
+ * @unreleased updated setAttributes ID to be a number and formOptions to return select options.
  * @since 3.2.0
  */
 export default function DonationFormBlockControls({
@@ -48,7 +48,7 @@ export default function DonationFormBlockControls({
                             options={[
                                 // add a disabled selector manually
                                 ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                ...formOptions,
+                                ...formOptions.map((form) => ({label: form.label, value: String(form.value)})),
                             ]}
                             onChange={(newFormId) => {
                                 setAttributes({id: Number(newFormId)});

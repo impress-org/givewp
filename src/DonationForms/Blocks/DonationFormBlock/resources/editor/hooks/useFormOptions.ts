@@ -1,9 +1,15 @@
 import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
 import type {Post} from '@wordpress/core-data/src/entity-types';
-import type {Form, Option} from '../types';
+import type {Form} from '../types';
 
-type FormOption = Form & Option;
+/**
+ * @unreleased
+ */
+export interface FormOption extends Form {
+    label: string;
+    value: number;
+}
 
 /**
  * @since 3.2.0 include isLegacyForm, isLegacyFormTemplate & link.
