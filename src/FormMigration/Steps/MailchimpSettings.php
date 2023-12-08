@@ -4,14 +4,16 @@ namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
-use Give\Log\Log;
 
+/**
+ * @unreleased
+ */
 class MailchimpSettings extends FormMigrationStep
 {
     /**
      * @unreleased
      */
-    public function process()
+    public function process(): void
     {
         $prevFormId = $this->formV2->id;
 
@@ -66,7 +68,6 @@ class MailchimpSettings extends FormMigrationStep
 
             'defaultAudiences' => $this->getFormMetaValue($prevFormId, '_give_mailchimp') ??
                                   give_get_option('give_mailchimp_list', []),
-
         ];
     }
 }
