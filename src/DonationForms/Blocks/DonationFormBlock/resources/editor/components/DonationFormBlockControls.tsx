@@ -13,6 +13,7 @@ interface DonationFormBlockControls {
 }
 
 /**
+ * @unreleased updated setAttributes ID to be a number.
  * @since 3.2.0
  */
 export default function DonationFormBlockControls({
@@ -38,7 +39,7 @@ export default function DonationFormBlockControls({
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
                 <PanelRow>
-                    {!isResolving && formOptions.length === 0 ? (
+                    {isResolving === false && formOptions.length === 0 ? (
                         <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
                     ) : (
                         <SelectControl
@@ -50,7 +51,7 @@ export default function DonationFormBlockControls({
                                 ...formOptions,
                             ]}
                             onChange={(newFormId) => {
-                                setAttributes({id: newFormId});
+                                setAttributes({id: Number(newFormId)});
                             }}
                         />
                     )}

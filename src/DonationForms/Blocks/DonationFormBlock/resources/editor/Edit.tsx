@@ -6,9 +6,27 @@ import DonationFormSelector from './components/DonationFormSelector';
 import useFormOptions from './hooks/useFormOptions';
 import DonationFormBlockControls from './components/DonationFormBlockControls';
 import DonationFormBlockPreview from './components/DonationFormBlockPreview';
+import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
 
 import './styles/index.scss';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * @unreleased
+ *
+ * @see 'class-give-block-donation-form.php'
+ */
+type DonationFormBlockAttributes = {
+    id: number;
+    prevId: number;
+    blockId: string;
+    displayStyle: BlockPreviewProps['formFormat'];
+    continueButtonTitle: string;
+    showTitle: boolean;
+    showGoal: boolean;
+    showContent: boolean;
+    contentDisplay: string;
+}
 
 /**
  * @unreleased added isResolving loading state to prevent forms from prematurely being rendered.
@@ -16,13 +34,13 @@ import { __ } from '@wordpress/i18n';
  * @since 3.0.0
  */
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
-    const {id, blockId, displayStyle, continueButtonTitle} = attributes;
+    const {id, blockId, displayStyle, continueButtonTitle} = attributes as DonationFormBlockAttributes;
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
     const handleSelect = (id) => {
-        setShowPreview(true);
         setAttributes({id});
+        setShowPreview(true);
     };
 
     useEffect(() => {
@@ -36,7 +54,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     }, []);
 
     const [isLegacyForm, isLegacyTemplate, link] = (() => {
-        const form = formOptions.find((form) => form.value == id);
+        const form = formOptions.find((form) => form.value === String(id));
 
         return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
     })();

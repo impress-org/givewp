@@ -4,7 +4,7 @@ import {useSelect} from '@wordpress/data';
 
 import '../styles/index.scss';
 
-interface BlockPreviewProps {
+export interface BlockPreviewProps {
     formId: number;
     clientId: string;
     formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
