@@ -81,13 +81,13 @@ class RemoveDuplicateMeta extends Migration
      */
     private function getEarningsFromDonations($formId)
     {
-        $donations = Db::table('posts')
+        $donations = DB::table('posts')
             ->attachMeta(
                 'give_donationmeta',
                 'ID',
                 'donation_id',
-                [DonationMetaKeys::FORM_ID(), 'formId'],
-                [DonationMetaKeys::AMOUNT(), 'amount'])
+                [DonationMetaKeys::FORM_ID, 'formId'],
+                [DonationMetaKeys::AMOUNT, 'amount'])
             ->where('post_type', 'give_payment')
             ->where('give_donationmeta_attach_meta_formId.meta_value', $formId)
             ->getAll('ARRAY_A');
@@ -106,12 +106,12 @@ class RemoveDuplicateMeta extends Migration
      */
     private function getSalesCountFromDonations($formId): int
     {
-        return Db::table('posts')
+        return DB::table('posts')
             ->attachMeta(
                 'give_donationmeta',
                 'ID',
                 'donation_id',
-                [DonationMetaKeys::FORM_ID(), 'formId']
+                [DonationMetaKeys::FORM_ID, 'formId']
             )
             ->where('post_type', 'give_payment')
             ->where('post_status', 'publish')
