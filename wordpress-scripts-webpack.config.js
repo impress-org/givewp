@@ -8,8 +8,6 @@ const path = require('path');
  */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 
-defaultConfig.module.rules[0].exclude = /node_modules\/(?!(@givewp\/form-builder-library)\/).*/;
-
 /**
  * Custom config
  */
