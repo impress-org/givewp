@@ -45,7 +45,7 @@ class PasswordResetRoute implements RestRoute
     /**
      * Handles logout request
      *
-     * @since 2.10.0
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
