@@ -41,6 +41,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $exchangeRate
  * @property string $gatewayId
  * @property int $donorId
+ * @property string $honorific
  * @property string $firstName
  * @property string $lastName
  * @property string $email
@@ -78,6 +79,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'exchangeRate' => ['string', '1'],
         'gatewayId' => 'string',
         'donorId' => 'int',
+        'honorific' => 'string',
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',

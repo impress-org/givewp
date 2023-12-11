@@ -17,6 +17,10 @@ const settings: FieldBlock['settings'] = {
             type: 'boolean',
             default: true,
         },
+        useGlobalSettings: {
+            type: 'boolean',
+            default: 'true',
+        },
         honorifics: {
             type: 'array',
             default: ['Mr', 'Ms', 'Mrs'],

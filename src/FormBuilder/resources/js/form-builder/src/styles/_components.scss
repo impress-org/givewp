@@ -206,35 +206,46 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     z-index: 99999999;
 }
 
-.givewp-panel-body--summary .components-base-control__field .components-select-control,
-.givewp-panel-body--summary .components-base-control__field {
-    display: grid;
-    grid-template-columns: 85px 1fr;
+.givewp-panel-body--summary {
+    .givewp-form-slug {
+        display: flex;
+        width: 100%;
 
-    input {
-        background-color: var(--givewp-gray-10);
+        span {
+            background-color: var(--givewp-grey-5);
+            border-radius: 2px 0 0 2px;
+            border: solid 1px var(--givewp-grey-500);
+            flex: 0 0 auto;
+            line-height: 1rem;
+            max-width: 50%;
+            overflow: hidden;
+            padding: 0.375rem var(--givewp-spacing-2);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-        &[aria-expanded='true'] {
-            background-color: var(--givewp-primary-200);
+        input {
+            border-radius: 0 2px 2px 0;
+            margin-left: -1px;
+            height: 100%;
         }
     }
 
-    label {
-        display: flex;
-        align-items: center;
+    .components-panel__body-title {
         margin-bottom: 0;
-        margin-right: 0;
-        font-weight: 400;
     }
 
-    .components-input-control__container {
-        width: 158px;
+    .components-panel__row {
+        margin-top: var(--givewp-spacing-4);
     }
 
-    .components-flex.components-select-control > .components-flex-item {
-        &,
-        label {
+    .components-base-control {
+        &__field {
             height: 100%;
+        }
+
+        &__help {
+            margin-bottom: 0;
         }
     }
 }
@@ -538,6 +549,10 @@ div.givewp-classic-editor > label {
                     font-size: 0.8125rem !important;
                     font-weight: 400 !important;
                     line-height: 1.1375rem;
+                }
+
+                &__help {
+                    margin-bottom: 0;
                 }
 
                 .components-select-control,

@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Helpers\EnqueueScript;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
@@ -187,6 +188,8 @@ EOT;
     /**
      * Load public assets.
      *
+     * @since 3.2.0 Get form id from post content if form id is not available.
+     * @since 3.2.0 Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */
@@ -194,11 +197,15 @@ EOT;
     {
         $formId = FrontendFormTemplateUtils::getFormId();
 
+        if (! $formId) {
+            $formId = $this->getFormIdFromPostContent();
+        }
+
         if (
             ! $formId
             || \Give\Helpers\Form\Utils::isV3Form($formId)
-            || !Utils::gatewayIsActive()
-            || !Utils::isAccountReadyToAcceptPayment()
+            || ! Utils::gatewayIsActive()
+            || ! Utils::isAccountReadyToAcceptPayment()
         ) {
             return;
         }
@@ -220,6 +227,7 @@ EOT;
                     $e->getMessage()
                 )
             );
+
             return;
         }
 
@@ -227,51 +235,44 @@ EOT;
         $merchant = give(MerchantDetail::class);
 
         $scriptId = 'give-paypal-commerce-js';
+        $data = [
+            'paypalCardInfoErrorPrefixes' => [
+                'expirationDateField' => esc_html__('Card Expiration Date:', 'give'),
+                'cardNumberField' => esc_html__('Card Number:', 'give'),
+                'cardCvcField' => esc_html__('Card CVC:', 'give'),
+            ],
+            'cardFieldPlaceholders' => [
+                'cardNumber' => esc_html__('Card Number', 'give'),
+                'cardCvc' => esc_html__('CVC', 'give'),
+                'expirationDate' => esc_html__('MM/YY', 'give'),
+            ],
+            'threeDsCardAuthenticationFailedNotice' => esc_html__(
+                'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
+                'give'
+            ),
+            'errorCodeLabel' => esc_html__('Error Code', 'give'),
+            'genericDonorErrorMessage' => __(
+                'There was an error processing your donation. Please contact the administrator.',
+                'give'
+            ),
+            // List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
+            'hostedCardFieldStyles' => apply_filters('give_paypal_commerce_hosted_field_style', []),
+            'supportsCustomPayments' => $merchant->supportsCustomPayments ? 1 : '',
+            'separatorLabel' => esc_html__('Or pay with card', 'give'),
+            'payPalSdkQueryParameters' => $paypalSDKOptions,
+            'textForOverlayScreen' => sprintf(
+                '<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
+                esc_html__('Donation Processing...', 'give'),
+                esc_html__('Checking donation status with PayPal.', 'give'),
+                esc_html__('This will only take a second!', 'give')
+            )
+        ];
 
-        wp_enqueue_script(
-            $scriptId,
-            GIVE_PLUGIN_URL . 'assets/dist/js/paypal-commerce.js',
-            [],
-            GIVE_VERSION,
-            true
-        );
-
-        wp_localize_script(
-            $scriptId,
-            'givePayPalCommerce',
-            [
-                'paypalCardInfoErrorPrefixes' => [
-                    'expirationDateField' => esc_html__('Card Expiration Date:', 'give'),
-                    'cardNumberField' => esc_html__('Card Number:', 'give'),
-                    'cardCvcField' => esc_html__('Card CVC:', 'give'),
-                ],
-                'cardFieldPlaceholders' => [
-                    'cardNumber' => esc_html__('Card Number', 'give'),
-                    'cardCvc' => esc_html__('CVC', 'give'),
-                    'expirationDate' => esc_html__('MM/YY', 'give'),
-                ],
-                'threeDsCardAuthenticationFailedNotice' => esc_html__(
-                    'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
-                    'give'
-                ),
-                'errorCodeLabel' => esc_html__('Error Code', 'give'),
-                'genericDonorErrorMessage' => __(
-                    'There was an error processing your donation. Please contact the administrator.',
-                    'give'
-                ),
-                // List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
-                'hostedCardFieldStyles' => apply_filters('give_paypal_commerce_hosted_field_style', []),
-                'supportsCustomPayments' => $merchant->supportsCustomPayments ? 1 : '',
-                'separatorLabel' => esc_html__('Or pay with card', 'give'),
-                'payPalSdkQueryParameters' => $paypalSDKOptions,
-                'textForOverlayScreen' => sprintf(
-                    '<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
-                    esc_html__('Donation Processing...', 'give'),
-                    esc_html__('Checking donation status with PayPal.', 'give'),
-                    esc_html__('This will only take a second!', 'give')
-                )
-            ]
-        );
+        EnqueueScript::make($scriptId, 'assets/dist/js/paypal-commerce.js')
+            ->registerTranslations()
+            ->loadInFooter()
+            ->registerLocalizeData('givePayPalCommerce', $data)
+            ->enqueue();
     }
 
     /**
@@ -285,5 +286,57 @@ EOT;
     private function getPartnerJsUrl()
     {
         return 'https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js';
+    }
+
+    /**
+     * This function should return form id from page, post content.
+     *
+     *
+     * @since 3.2.0
+     */
+    private function getFormIdFromPostContent(): ?int
+    {
+        global $post;
+        $formId = null;
+
+        if (!$post) {
+            return null;
+        }
+
+
+        // Donation form can be in page, post content as shortcode.
+        $has_shortcode = $post && has_shortcode($post->post_content, 'give_form');
+        if ($has_shortcode) {
+            $pattern = get_shortcode_regex(['give_form']);
+
+            if (
+                preg_match('/' . $pattern . '/s', $post->post_content, $matches)
+                && array_key_exists(2, $matches)
+                && 'give_form' === $matches[2]
+            ) {
+                $attributes = shortcode_parse_atts($matches[3]);
+
+                if (array_key_exists('id', $attributes)) {
+                    $formId = $attributes['id'];
+                }
+            }
+        }
+
+        // Donation form can be in page, post content as Donation Form block.
+        if (!$formId) {
+            $blocks = parse_blocks($post->post_content);
+
+            foreach ($blocks as $block) {
+                if (
+                    $block['blockName'] === 'give/donation-form'
+                    && array_key_exists('id', $block['attrs'])
+                ) {
+                    $formId = $block['attrs']['id'];
+                    break;
+                }
+            }
+        }
+
+        return absint($formId);
     }
 }

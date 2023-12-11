@@ -71,7 +71,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'                => 'chosen',
 							'data_type'           => 'multiselect',
 							'allow-custom-values' => true,
-							'wrapper_class'       => 'give-hidden give-title-prefixes-settings-wrap',
+                            'wrapper_class' => 'give-title-prefixes-settings-wrap',
 							'style'               => 'width: 30%',
 							'options'             => give_get_default_title_prefixes(),
 						],
