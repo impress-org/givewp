@@ -10,6 +10,7 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 class PaymentGateways extends FormMigrationStep
 {
     /**
+     * @unreleased Add Per Form Gateways settings to this step
      * @since 3.0.0
      */
     public function process()
@@ -25,6 +26,22 @@ class PaymentGateways extends FormMigrationStep
 
         foreach ($attributes as $key => $value) {
             $paymentGatewaysBlock->setAttribute($key, $value);
+        }
+
+        $perFormGateways = give()->form_meta->get_meta($this->formV2->id, '_give_per_form_gateways', true);
+        if (is_array($perFormGateways) && count($perFormGateways) > 0) {
+            $gateways = [];
+            foreach ($perFormGateways as $key => $checked) {
+                $gateways[] = [
+                    'key' => $key,
+                    'label' => give_get_gateway_checkout_label($key),
+                    'checked' => (bool)$checked,
+                ];
+            }
+            $paymentGatewaysBlock->setAttribute('useDefaultGateways', false);
+            $paymentGatewaysBlock->setAttribute('perFormGateways', $gateways);
+        } else {
+            $paymentGatewaysBlock->setAttribute('useDefaultGateways', true);
         }
     }
 }

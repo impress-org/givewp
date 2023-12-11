@@ -341,7 +341,7 @@ class DonationFormsAdminPage
             //            'Double the Donation' => defined('GIVE_DTD_NAME'),
             //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
             //            'Receipt Attachments' => defined('GIVERA_VERSION'),
-            //            'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
+            'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
