@@ -29,19 +29,22 @@ class PaymentGateways extends FormMigrationStep
         }
 
         $perFormGateways = give()->form_meta->get_meta($this->formV2->id, '_give_per_form_gateways', true);
+        $compatibleGateways = array_keys(give_get_enabled_payment_gateways(0, 3));
+        $gateways = [];
         if (is_array($perFormGateways) && count($perFormGateways) > 0) {
-            $gateways = [];
+
             foreach ($perFormGateways as $key => $checked) {
+                if (in_array($key, $compatibleGateways)) {
                 $gateways[] = [
                     'key' => $key,
                     'label' => give_get_gateway_checkout_label($key),
                     'checked' => (bool)$checked,
                 ];
+                }
             }
-            $paymentGatewaysBlock->setAttribute('useDefaultGateways', false);
-            $paymentGatewaysBlock->setAttribute('perFormGateways', $gateways);
-        } else {
-            $paymentGatewaysBlock->setAttribute('useDefaultGateways', true);
         }
+
+        $paymentGatewaysBlock->setAttribute('useDefaultGateways', count($gateways) === 0);
+        $paymentGatewaysBlock->setAttribute('perFormGateways', $gateways);
     }
 }
