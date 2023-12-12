@@ -526,9 +526,10 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @unreleased
      */
-    public function getMailchimpLabel(): string
+    public function getMailchimpLabel()
     {
-        return $this->getMeta('_give_mailchimp_custom_label');
+        $value = $this->getMeta('_give_mailchimp_custom_label');
+        return $value === '' ? null : $value;
     }
 
     /**
