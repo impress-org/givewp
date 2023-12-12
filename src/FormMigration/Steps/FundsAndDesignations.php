@@ -18,7 +18,8 @@ class FundsAndDesignations extends FormMigrationStep
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes($this->formV2->id);
 
-        if (empty($fundsAndDesignationsAttributes)) {
+        if (count($fundsAndDesignationsAttributes['fund']) === 0 &&
+            count($fundsAndDesignationsAttributes['options']) === 0) {
             return;
         }
 
