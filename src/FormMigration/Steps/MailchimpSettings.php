@@ -17,17 +17,15 @@ class MailchimpSettings extends FormMigrationStep
     {
         return $this->formV2->isMailchimpEnabled();
     }
-    
+
     /**
      * @unreleased
      */
     public function process(): void
     {
-        $prevFormId = $this->formV2->id;
-
         $block = BlockModel::make([
             'name'       => 'givewp/mailchimp',
-            'attributes' => $this->getAttributes($prevFormId)
+            'attributes' => $this->getAttributes()
         ]);
 
         $this->fieldBlocks->insertAfter('givewp/email', $block);
@@ -36,38 +34,24 @@ class MailchimpSettings extends FormMigrationStep
     /**
      * @unreleased
      */
-    private function getFormMetaValue(int $prevFormId, string $metaKey)
-    {
-        $meta = give()->form_meta->get_meta($prevFormId, $metaKey, true);
-
-        return $meta === '' ? null : $meta;
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getAttributes($prevFormId): array
+    private function getAttributes(): array
     {
         return   [
-            'label'            => $this->getFormMetaValue($prevFormId, '_give_mailchimp_custom_label') ??
+            'label'            => $this->formV2->getMailchimpLabel() ??
                                   give_get_option('give_mailchimp_label', __('Subscribe to newsletter?')),
-
-            'checked'          => $this->getFormMetaValue($prevFormId, '_give_mailchimp_checked_default') ??
+            'checked'          => $this->formV2->getMailchimpDefaultChecked() ??
                                   give_get_option('give_mailchimp_checked_default', true),
-
-            'doubleOptIn'      => $this->getFormMetaValue($prevFormId, '_give_mailchimp_double_opt_in') ??
-                                  give_get_option('give_mailchimp_double_opt_in', false),
-
-            'subscriberTags'   => $this->getFormMetaValue($prevFormId, '_give_mailchimp_tags') ?? [],
-
-            'sendDonationData' => $this->getFormMetaValue($prevFormId, '_give_mailchimp_send_donation') ??
+            'doubleOptIn'      => $this->formV2->getMailchimpDoubleOptIn() ??
+                                  give_get_option('give_mailchimp_double_opt_in'),
+            'subscriberTags'   => $this->formV2->getMailchimpSubscriberTags() ??
+                                  [],
+            'sendDonationData' => $this->formV2->getMailchimpSendDonationData() ??
                                   give_get_option('give_mailchimp_donation_data', true),
-
-            'sendFFMData'      => $this->getFormMetaValue($prevFormId, '_give_mailchimp_send_ffm') ??
-                                  give_get_option('give_mailchimp_ffm_pass_field', false),
-
-            'defaultAudiences' => $this->getFormMetaValue($prevFormId, '_give_mailchimp') ??
+            'sendFFMData'      => $this->formV2->getMailchimpSendFFMData() ??
+                                  give_get_option('give_mailchimp_ffm_pass_field'),
+            'defaultAudiences' => $this->formV2->getMailchimpDefaultAudiences() ??
                                   give_get_option('give_mailchimp_list', []),
         ];
     }
 }
+

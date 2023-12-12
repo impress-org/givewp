@@ -532,6 +532,63 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function getMailchimpLabel(): string
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_custom_label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultChecked(): bool
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_checked_default');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDoubleOptIn(): bool
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_double_opt_in');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendDonationData(): bool
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_send_donation');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendFFMData(): bool
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_send_ffm');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultAudiences(): array
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSubscriberTags(): array
+    {
+        return $this->getMeta($this->form->id, '_give_mailchimp_tags');
+    }
+
+
+    /**
      * Retrieves metadata for the current form.
      *
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
