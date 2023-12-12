@@ -528,7 +528,7 @@ class FormMetaDecorator extends FormModelDecorator
             'custom'
         );
 
-        return !$isFormDisabled || ($isGloballyEnabled && $isFormEnabled);
+        return ($isGloballyEnabled && !$isFormDisabled) || $isFormEnabled;
     }
 
     /**
