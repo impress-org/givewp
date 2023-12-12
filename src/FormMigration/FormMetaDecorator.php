@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -513,22 +514,13 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function isMailchimpEnabled(): bool
     {
-        $isFormEnabled = give_is_setting_enabled(
-            $this->getMeta('_give_mailchimp_enable'),
-            'custom'
-        );
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'),'true');
 
-        $isFormDisabled = give_is_setting_enabled(
-            $this->getMeta('_give_mailchimp_disable'),
-            'custom'
-        );
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'),'true');
 
-        $isGloballyEnabled = give_is_setting_enabled(
-            $this->getMeta('give_mailchimp_show_checkout_signup'),
-            'custom'
-        );
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
 
-        return ($isGloballyEnabled && !$isFormDisabled) || $isFormEnabled;
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
     }
 
     /**
