@@ -47,16 +47,12 @@ function SectionNode({node}: {node: Node}) {
 
     if (isField(node) && fieldTemplateExists(node)) {
         if (node.type === 'gateways') {
-            // @ts-ignore
             return <GatewayFieldNode node={node} />;
         }
-        // @ts-ignore
         return <FieldNode node={node} />;
     } else if (isElement(node) && elementTemplateExists(node)) {
-        // @ts-ignore
         return <ElementNode node={node} />;
     } else if (isGroup(node) && groupTemplateExists(node)) {
-        // @ts-ignore
         return <GroupNode node={node} />;
     } else {
         console.error(`Node: ${JSON.stringify(node)} does not exist in Form Design: ${JSON.stringify(formTemplates)}`);

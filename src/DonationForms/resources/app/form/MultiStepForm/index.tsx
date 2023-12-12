@@ -33,10 +33,7 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
                     <FormSectionTemplate key={section.name} section={section} hideLabel>
                         {section.nodes.map((node) => (
                             <DonationFormErrorBoundary key={node.name}>
-                                {
-                                    // @ts-ignore
-                                    <SectionNode key={node.name} node={node} />
-                                }
+                                <SectionNode key={node.name} node={node} />
                             </DonationFormErrorBoundary>
                         ))}
                     </FormSectionTemplate>

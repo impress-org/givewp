@@ -18,7 +18,6 @@ function GroupNode({node}: {node: Group}) {
     const Group = useTemplateWrapper<GroupProps>(formTemplates.groups[node.type], 'div', node.name);
 
     const nodeComponents = node.reduceNodes((nodes, node: Node) => {
-        // @ts-ignore
         nodes[node.name] = (props: Node) => <SectionNode node={{...node, ...props}} />;
 
         return nodes;

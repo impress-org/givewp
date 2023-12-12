@@ -30,10 +30,7 @@ export default function Section({section}: {section: SectionType}) {
         <FormSectionTemplate section={section}>
             {section.nodes.map((node) => (
                 <DonationFormErrorBoundary key={node.name}>
-                    {
-                        // @ts-ignore
-                        <SectionNode node={node} />
-                    }
+                    <SectionNode node={node} />
                 </DonationFormErrorBoundary>
             ))}
         </FormSectionTemplate>
