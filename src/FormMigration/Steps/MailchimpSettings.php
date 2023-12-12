@@ -13,17 +13,17 @@ class MailchimpSettings extends FormMigrationStep
     /**
      * @unreleased
      */
+    public function canHandle(): bool
+    {
+        return $this->formV2->isMailchimpEnabled();
+    }
+    
+    /**
+     * @unreleased
+     */
     public function process(): void
     {
         $prevFormId = $this->formV2->id;
-
-        $isFormEnabled = $this->getFormMetaValue($prevFormId, '_give_mailchimp_enable') === 'true';
-        $isFormDisabled = $this->getFormMetaValue($prevFormId, '_give_mailchimp_disable') === 'true';
-        $isGloballyEnabled = give_get_option( 'give_mailchimp_show_checkout_signup') === 'on';
-
-        if ($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled)) {
-            return;
-        }
 
         $block = BlockModel::make([
             'name'       => 'givewp/mailchimp',

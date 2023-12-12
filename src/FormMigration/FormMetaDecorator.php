@@ -509,6 +509,29 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function isMailchimpEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled(
+            $this->getMeta($this->form->id, '_give_mailchimp_enable'),
+            'custom'
+        );
+
+        $isFormDisabled = give_is_setting_enabled(
+            $this->getMeta($this->form->id, '_give_mailchimp_disable'),
+            'custom'
+        );
+
+        $isGloballyEnabled = give_is_setting_enabled(
+            $this->getMeta($this->form->id, 'give_mailchimp_show_checkout_signup'),
+            'custom'
+        );
+
+        return !$isFormDisabled || ($isGloballyEnabled && $isFormEnabled);
+    }
+
+    /**
      * Retrieves metadata for the current form.
      *
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
