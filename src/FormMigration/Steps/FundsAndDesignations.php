@@ -32,7 +32,7 @@ class FundsAndDesignations extends FormMigrationStep
     /**
      * @unreleased
      */
-    public function getFundsAndDesignationsAttributes(int $formId): array
+    private function getFundsAndDesignationsAttributes(int $formId): array
     {
         $label = give_get_meta($formId, 'give_funds_label', true);
         $isAdminChoice = 'admin_choice' === give_get_meta($formId, 'give_funds_form_choice', true);
@@ -62,7 +62,7 @@ class FundsAndDesignations extends FormMigrationStep
     /**
      * @unreleased
      */
-    public function getFundLabel(int $fundId): string
+    private function getFundLabel(int $fundId): string
     {
         global $wpdb;
 
