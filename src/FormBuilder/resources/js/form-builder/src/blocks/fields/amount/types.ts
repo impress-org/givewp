@@ -4,6 +4,9 @@ export interface DonationAmountAttributes {
     label: string;
     levels: number[];
     defaultLevel: number;
+    hasRecurringLevels: boolean;
+    recurringLevels: number[];
+    defaultRecurringLevel: number;
     priceOption: string;
     setPrice: number;
     customAmount: boolean;
@@ -14,5 +17,5 @@ export interface DonationAmountAttributes {
     recurringBillingPeriodOptions: subscriptionPeriod[];
     recurringLengthOfTime: string;
     recurringOptInDefaultBillingPeriod: subscriptionPeriod | 'one-time';
-    recurringEnableOneTimeDonations: boolean
+    recurringEnableOneTimeDonations: boolean;
 }

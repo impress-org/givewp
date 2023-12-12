@@ -115,6 +115,7 @@ export interface DonationAmountProps extends GroupProps {
 
 export interface AmountProps extends FieldProps {
     levels: number[];
+    recurringLevels: number[] | null;
     allowLevels: boolean;
     allowCustomAmount: boolean;
     fixedAmountValue: number;

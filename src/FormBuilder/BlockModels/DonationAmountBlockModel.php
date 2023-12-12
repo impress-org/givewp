@@ -66,8 +66,8 @@ class DonationAmountBlockModel
      */
     public function getLevels(): array
     {
-        return array_map(static function($level) {
-            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+        return array_map(static function ($level) {
+            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         }, $this->block->getAttribute('levels'));
     }
 
@@ -76,7 +76,40 @@ class DonationAmountBlockModel
      */
     public function getDefaultLevel(): ?float
     {
-        return (float)filter_var($this->block->getAttribute('defaultLevel'), FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+        return (float)filter_var(
+            $this->block->getAttribute('defaultLevel'),
+            FILTER_SANITIZE_NUMBER_FLOAT,
+            FILTER_FLAG_ALLOW_FRACTION
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getRecurringLevels(): ?array
+    {
+        $levels = $this->block->getAttribute('recurringLevels');
+        $hasRecurringLevels = $this->block->getAttribute('hasRecurringLevels');
+
+        if (!$hasRecurringLevels || !is_array($levels) || empty($levels)) {
+            return null;
+        }
+
+        return array_map(static function ($level) {
+            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }, $levels);
+    }
+
+    public function getDefaultRecurringLevel(): ?float
+    {
+        $defaultLevel = $this->block->getAttribute('recurringDefaultLevel');
+        $hasRecurringLevels = $this->block->getAttribute('hasRecurringLevels');
+
+        if (!$hasRecurringLevels || !is_numeric($defaultLevel)) {
+            return null;
+        }
+
+        return (float)filter_var($defaultLevel, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 
     /**

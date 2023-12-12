@@ -31,6 +31,7 @@ export default function Amount({
 
     const currency = useWatch({name: 'currency'});
 
+    console.log({levels, recurringLevels});
     const getAmountLevels = useCallback(() => {
         if (currencySwitcherSettings.length <= 1) {
             return levels;

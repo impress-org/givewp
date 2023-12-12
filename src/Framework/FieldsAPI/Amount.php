@@ -6,6 +6,13 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 
+/**
+ * Class Amount
+ *
+ * This class represents an amount field.
+ *
+ * @package YourNamespace
+ */
 class Amount extends Field
 {
     use HasLabel;
@@ -13,9 +20,20 @@ class Amount extends Field
     const TYPE = 'amount';
 
     /**
-     * @var int[]
+     * @var float[]
      */
     protected $levels = [];
+
+    /**
+     * @var null|float[]
+     */
+    protected $recurringLevels = null;
+
+    /**
+     * @var float|null
+     */
+    protected $recurringDefaultValue = null;
+
     /**
      * @var string
      */
@@ -53,6 +71,46 @@ class Amount extends Field
     public function getLevels(): array
     {
         return $this->levels;
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function recurringLevels(float ...$levels): self
+    {
+        $this->recurringLevels = $levels;
+
+        return $this;
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function recurringDefaultLevel(float $level): self
+    {
+        $this->recurringDefaultValue = $level;
+
+        return $this;
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function disableRecurringLevels(): self
+    {
+        $this->recurringLevels = null;
+
+        return $this;
+    }
+
+    /**
+     * @since unreleased
+     *
+     * @return array<float>} The recurring levels.
+     */
+    public function getRecurringLevels(): array
+    {
+        return $this->recurringLevels;
     }
 
     /**
@@ -96,7 +154,7 @@ class Amount extends Field
     /**
      * @since 3.0.0
      *
-     * @param  float|int  $amount
+     * @param float|int $amount
      */
     public function fixedAmountValue($amount): Amount
     {

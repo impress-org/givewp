@@ -9,16 +9,16 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/components/CurrencyControl';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {useCallback, useState} from '@wordpress/element';
+import {useCallback} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
-import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
+import useDonationLevels from '@givewp/form-builder/blocks/fields/amount/inspector/useDonationLevels';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -61,6 +61,9 @@ const Inspector = ({attributes, setAttributes}) => {
         label = __('Donation Amount', 'give'),
         levels,
         defaultLevel,
+        hasRecurringLevels,
+        recurringLevels,
+        defaultRecurringLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -113,60 +116,35 @@ const Inspector = ({attributes, setAttributes}) => {
         [recurringBillingPeriodOptions]
     );
 
+    const {
+        levelOptions: donationLevels,
+        handleLevelAdded,
+        handleLevelRemoved,
+        handleLevelsChange,
+    } = useDonationLevels(
+        levels,
+        defaultLevel,
+        useCallback((defaultLevel) => setAttributes({defaultLevel}), [setAttributes]),
+        useCallback((levels) => setAttributes({levels}), [setAttributes])
+    );
+
+    const {
+        levelOptions: recurringDonationLevels,
+        handleLevelAdded: handleRecurringLevelAdded,
+        handleLevelRemoved: handleRecurringLevelRemoved,
+        handleLevelsChange: handleRecurringLevelsChange,
+    } = useDonationLevels(
+        recurringLevels || levels,
+        defaultRecurringLevel || defaultLevel,
+        useCallback((defaultRecurringLevel) => setAttributes({defaultRecurringLevel}), [setAttributes]),
+        useCallback((recurringLevels) => setAttributes({recurringLevels}), [setAttributes])
+    );
+
     const {gateways, recurringAddonData, gatewaySettingsUrl} = getFormBuilderWindowData();
     const enabledGateways = gateways.filter((gateway) => gateway.enabled);
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
-
-    const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
-        levels.map((level) => ({
-            id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(level.toString()),
-            value: level.toString(),
-            checked: defaultLevel === level,
-        }))
-    );
-
-    const handleLevelAdded = () => {
-        const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
-        const newLevel = {
-            id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(newLevelValue),
-            value: newLevelValue,
-            checked: false,
-        };
-
-        // If there are no levels, set the new level as the default.
-        if (!levels.length) {
-            newLevel.checked = true;
-            setAttributes({defaultLevel: Number(newLevelValue)});
-        }
-
-        setDonationLevels([...donationLevels, newLevel]);
-        setAttributes({levels: [...levels, Number(newLevelValue)]});
-    };
-
-    const handleLevelRemoved = (level: OptionProps, index: number) => {
-        const newLevels = levels.filter((_, i) => i !== index);
-        const newDonationLevels = donationLevels.filter((_, i) => i !== index);
-
-        if (level.checked && newDonationLevels.length > 0) {
-            newDonationLevels[0].checked = true;
-            setAttributes({defaultLevel: Number(newDonationLevels[0].value)});
-        }
-
-        setDonationLevels(newDonationLevels);
-        setAttributes({levels: newLevels});
-    };
-
-    const handleLevelsChange = (options: OptionProps[]) => {
-        const checkedLevel = options.filter((option) => option.checked);
-        const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
-
-        setDonationLevels(options);
-        setAttributes({levels: newLevels, defaultLevel: Number(checkedLevel[0].value)});
-    };
 
     const getDefaultBillingPeriodOptions = useCallback(
         (options) => {
@@ -257,6 +235,30 @@ const Inspector = ({attributes, setAttributes}) => {
                         onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
                     />
+
+                    {isRecurringSupported && (
+                        <ToggleControl
+                            label={__('Enable recurring donation levels', 'give')}
+                            help={__(
+                                'This will allow you to set different donation levels for recurring donations.',
+                                'give'
+                            )}
+                            checked={hasRecurringLevels}
+                            onChange={() => setAttributes({hasRecurringLevels: !hasRecurringLevels})}
+                        />
+                    )}
+
+                    {isRecurringSupported && hasRecurringLevels && (
+                        <Options
+                            currency={true}
+                            multiple={false}
+                            options={recurringDonationLevels}
+                            setOptions={handleRecurringLevelsChange}
+                            onAddOption={handleRecurringLevelAdded}
+                            onRemoveOption={handleRecurringLevelRemoved}
+                            defaultControlsTooltip={__('Default Level', 'give')}
+                        />
+                    )}
                 </PanelBody>
             )}
 

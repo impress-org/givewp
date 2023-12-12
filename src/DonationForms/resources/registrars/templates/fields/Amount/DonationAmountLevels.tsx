@@ -13,12 +13,7 @@ type DonationAmountLevelsProps = {
 /**
  * @since 3.0.0
  */
-export default function DonationAmountLevels({
-    name,
-    currency,
-    levels,
-    onLevelClick,
-}: DonationAmountLevelsProps) {
+export default function DonationAmountLevels({name, currency, levels, recurringLevels, onLevelClick}: DonationAmountLevelsProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useCurrencyFormatter(currency);

@@ -43,6 +43,18 @@ const settings: FieldBlock['settings'] = {
             type: 'number',
             default: defaultLevel,
         },
+        hasRecurringLevels: {
+            type: 'boolean',
+            default: false,
+        },
+        recurringLevels: {
+            type: 'array',
+            default: levels,
+        },
+        recurringDefaultLevel: {
+            type: 'number',
+            default: defaultLevel,
+        },
         priceOption: {
             type: 'string',
             default: priceOption,

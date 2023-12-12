@@ -60,6 +60,7 @@ class ConvertDonationAmountBlockToFieldsApi
             $amountNode
                 ->label($block->getLabel())
                 ->levels(...$block->getLevels())
+                ->recurringLevels(...$block->getRecurringLevels())
                 ->allowLevels($block->getPriceOption() === 'multi')
                 ->allowCustomAmount($block->isCustomAmountEnabled())
                 ->fixedAmountValue($block->getSetPrice())
