@@ -514,17 +514,17 @@ class FormMetaDecorator extends FormModelDecorator
     public function isMailchimpEnabled(): bool
     {
         $isFormEnabled = give_is_setting_enabled(
-            $this->getMeta($this->form->id, '_give_mailchimp_enable'),
+            $this->getMeta('_give_mailchimp_enable'),
             'custom'
         );
 
         $isFormDisabled = give_is_setting_enabled(
-            $this->getMeta($this->form->id, '_give_mailchimp_disable'),
+            $this->getMeta('_give_mailchimp_disable'),
             'custom'
         );
 
         $isGloballyEnabled = give_is_setting_enabled(
-            $this->getMeta($this->form->id, 'give_mailchimp_show_checkout_signup'),
+            $this->getMeta('give_mailchimp_show_checkout_signup'),
             'custom'
         );
 
@@ -536,7 +536,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpLabel(): string
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_custom_label');
+        return $this->getMeta('_give_mailchimp_custom_label');
     }
 
     /**
@@ -544,7 +544,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultChecked(): bool
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_checked_default');
+        return $this->getMeta('_give_mailchimp_checked_default');
     }
 
     /**
@@ -552,7 +552,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDoubleOptIn(): bool
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_double_opt_in');
+        return $this->getMeta('_give_mailchimp_double_opt_in');
     }
 
     /**
@@ -560,7 +560,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendDonationData(): bool
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_send_donation');
+        return $this->getMeta('_give_mailchimp_send_donation');
     }
 
     /**
@@ -568,7 +568,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendFFMData(): bool
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_send_ffm');
+        return $this->getMeta('_give_mailchimp_send_ffm');
     }
 
     /**
@@ -576,7 +576,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultAudiences(): array
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp');
+        return $this->getMeta('_give_mailchimp');
     }
 
     /**
@@ -584,7 +584,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSubscriberTags(): array
     {
-        return $this->getMeta($this->form->id, '_give_mailchimp_tags');
+        return $this->getMeta('_give_mailchimp_tags');
     }
 
 
