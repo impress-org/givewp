@@ -316,6 +316,7 @@ class DonationRepository
     }
 
     /**
+     * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
      */
@@ -376,6 +377,10 @@ class DonationRepository
 
         if ($donation->comment !== null) {
             $meta[DonationMetaKeys::COMMENT] = $donation->comment;
+        }
+
+        if ($donation->honorific !== null) {
+            $meta[DonationMetaKeys::HONORIFIC] = $donation->honorific;
         }
 
         return $meta;

@@ -126,6 +126,7 @@ class DonateControllerData
     public $comment;
 
     /**
+     * @since 3.2.0 added honorific property
      * @since 3.0.0
      */
     public function toDonation(int $donorId): Donation
@@ -138,6 +139,7 @@ class DonateControllerData
             'amount' => $this->amount(),
             'anonymous' => $this->anonymous,
             'donorId' => $donorId,
+            'honorific' => $this->honorific,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'email' => $this->email,

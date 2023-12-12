@@ -9,6 +9,7 @@ import CheckVerified from './CheckVerified';
 import CubeIcon from './Cube';
 import Award from './Award';
 import ArrowUpLeft from './ArrowUpLeft';
+import CopyIcon from './CopyIcon';
 
 export {
     QuestionMarkIcon,
@@ -21,5 +22,6 @@ export {
     CheckVerified,
     CubeIcon,
     Award,
-    ArrowUpLeft
+    ArrowUpLeft,
+    CopyIcon
 }

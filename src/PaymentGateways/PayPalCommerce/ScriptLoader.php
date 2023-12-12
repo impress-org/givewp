@@ -188,13 +188,18 @@ EOT;
     /**
      * Load public assets.
      *
-     * @since 3.1.2 Use EnqueueScript to register and enqueue script.
+     * @since 3.2.0 Get form id from post content if form id is not available.
+     * @since 3.2.0 Use EnqueueScript to register and enqueue script.
      * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */
     public function loadPublicAssets()
     {
         $formId = FrontendFormTemplateUtils::getFormId();
+
+        if (! $formId) {
+            $formId = $this->getFormIdFromPostContent();
+        }
 
         if (
             ! $formId
@@ -281,5 +286,57 @@ EOT;
     private function getPartnerJsUrl()
     {
         return 'https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js';
+    }
+
+    /**
+     * This function should return form id from page, post content.
+     *
+     *
+     * @since 3.2.0
+     */
+    private function getFormIdFromPostContent(): ?int
+    {
+        global $post;
+        $formId = null;
+
+        if (!$post) {
+            return null;
+        }
+
+
+        // Donation form can be in page, post content as shortcode.
+        $has_shortcode = $post && has_shortcode($post->post_content, 'give_form');
+        if ($has_shortcode) {
+            $pattern = get_shortcode_regex(['give_form']);
+
+            if (
+                preg_match('/' . $pattern . '/s', $post->post_content, $matches)
+                && array_key_exists(2, $matches)
+                && 'give_form' === $matches[2]
+            ) {
+                $attributes = shortcode_parse_atts($matches[3]);
+
+                if (array_key_exists('id', $attributes)) {
+                    $formId = $attributes['id'];
+                }
+            }
+        }
+
+        // Donation form can be in page, post content as Donation Form block.
+        if (!$formId) {
+            $blocks = parse_blocks($post->post_content);
+
+            foreach ($blocks as $block) {
+                if (
+                    $block['blockName'] === 'give/donation-form'
+                    && array_key_exists('id', $block['attrs'])
+                ) {
+                    $formId = $block['attrs']['id'];
+                    break;
+                }
+            }
+        }
+
+        return absint($formId);
     }
 }

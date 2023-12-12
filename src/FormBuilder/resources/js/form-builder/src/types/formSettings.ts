@@ -25,6 +25,7 @@ export type FormSettings = {
     receiptHeading: string;
     receiptDescription: string;
     formStatus: FormStatus;
+    newFormStatus: FormStatus;
     emailTemplateOptions: EmailTemplateOption[];
     emailOptionsStatus: string;
     emailTemplate: string;
