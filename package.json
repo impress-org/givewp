@@ -36,7 +36,7 @@
         }
     ],
     "devDependencies": {
-        "@givewp/form-builder-library": "^1.0.0",
+        "@givewp/form-builder-library": "^1.1.2",
         "@types/lodash": "^4.14.199",
         "@types/react": "^18.2.42",
         "@types/react-datepicker": "^4.15.0",
