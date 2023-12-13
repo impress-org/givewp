@@ -138,6 +138,7 @@ if (!defined('ABSPATH')) {
  *
  * @mixin Container
  */
+#[AllowDynamicProperties]
 final class Give
 {
     /**
