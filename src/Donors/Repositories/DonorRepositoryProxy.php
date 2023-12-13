@@ -17,7 +17,7 @@ use Give_DB_Donors;
  *
  * @throws InvalidArgumentException
  */
-#[AllowDynamicProperties]
+#[\AllowDynamicProperties]
 class DonorRepositoryProxy
 {
     const SHARED_METHODS = ['insert', 'update', 'delete'];
