@@ -27,6 +27,11 @@ class DonorsExport extends Give_Batch_Export
     protected $searchBy;
 
     /**
+     * @var int
+     */
+    protected $donationForm;
+
+    /**
      * @inheritdoc
      */
     public function set_properties($request)
@@ -44,10 +49,12 @@ class DonorsExport extends Give_Batch_Export
         if ($this->postedData['searchBy']) {
             $this->searchBy = $this->postedData['searchBy'];
         }
+
+        $this->donationForm = (int)$this->postedData['forms'];
     }
 
     /**
-     * @since 2.29.0 Include donor created date
+     * @since      2.29.0 Include donor created date
      * @since      2.21.2
      */
     public function get_data(): array
@@ -89,6 +96,22 @@ class DonorsExport extends Give_Batch_Export
             } elseif ($this->endDate) {
                 $donationQuery->where('DATE(donations.post_date)', $this->endDate, '<=');
             }
+        }
+
+        /**
+         * Filter by donation form
+         *
+         * @unreleased
+         */
+        if ($this->donationForm) {
+            $donationQuery
+                ->join(function (JoinQueryBuilder $builder) {
+                    $builder
+                        ->leftJoin('give_donationmeta', 'form')
+                        ->on('donations.ID', 'form.donation_id')
+                        ->andOn('form.meta_key', '_give_payment_form_id', true);
+                })
+                ->where('form.meta_value', $this->donationForm);
         }
 
         $donorQuery->joinRaw("JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId");
@@ -136,7 +159,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @since 2.29.0 Include donor created col
+     * @since      2.29.0 Include donor created col
      * @since      2.21.2
      */
     public function csv_cols(): array
