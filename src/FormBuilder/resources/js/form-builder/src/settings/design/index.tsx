@@ -158,7 +158,8 @@ const FormDesignSettings = () => {
                                 publishSettings({multiStepFirstButtonText});
                             }}
                             help={__(
-                                'Customize the text that appears in the first step, prompting the user to go to the next step.'
+                                'Customize the text that appears in the first step, prompting the user to go to the next step.',
+                                'give'
                             )}
                         />
                     </PanelRow>
@@ -170,7 +171,10 @@ const FormDesignSettings = () => {
                                 dispatch(setFormSettings({multiStepNextButtonText}));
                                 publishSettings({multiStepNextButtonText});
                             }}
-                            help={__('Customize the text that appears prompting the user to go to the next step.')}
+                            help={__(
+                                'Customize the text that appears prompting the user to go to the next step.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                 </PanelBody>
