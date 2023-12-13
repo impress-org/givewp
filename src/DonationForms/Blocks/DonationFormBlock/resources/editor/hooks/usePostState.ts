@@ -1,7 +1,7 @@
 import {useSelect} from '@wordpress/data';
 
 /**
- * @unreleased updated isDisabled to use isEditedPostSaveable
+ * @since 3.2.1 updated isDisabled to use isEditedPostSaveable
  * @since 3.0.0
  */
 export default function usePostState(): { isSaving: boolean, isDisabled: boolean } {

@@ -4,7 +4,7 @@ import type {Post} from '@wordpress/core-data/src/entity-types';
 import type {Form} from '../types';
 
 /**
- * @unreleased
+ * @since 3.2.1
  */
 export interface FormOption extends Form {
     label: string;

@@ -1577,7 +1577,7 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 /**
  * Get the list of default parameters for the form shortcode.
  *
- * @unreleased Revert default display style to "onpage".
+ * @since 3.2.1 Revert default display style to "onpage".
  * @since 2.4.1
  *
  * @return array

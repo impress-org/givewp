@@ -13,7 +13,7 @@ import type {FormOption} from '../hooks/useFormOptions';
 const savePost = () => dispatch('core/editor').savePost();
 
 /**
- * @unreleased
+ * @since 3.2.1
  */
 type DonationFormSelectorProps = {
     formOptions: FormOption[];

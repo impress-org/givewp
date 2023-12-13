@@ -48,7 +48,7 @@ class LegacyFormEditor
     }
 
     /**
-     * @unreleased replaced logic to be give_forms post_type specific
+     * @since 3.2.1 replaced logic to be give_forms post_type specific
      * @since 2.27.1
      */
     public static function isShowing(): bool

@@ -12,7 +12,7 @@ import './styles/index.scss';
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 3.2.1
  *
  * @see 'class-give-block-donation-form.php'
  */
@@ -29,7 +29,7 @@ type DonationFormBlockAttributes = {
 }
 
 /**
- * @unreleased added isResolving loading state to prevent forms from prematurely being rendered.
+ * @since 3.2.1 added isResolving loading state to prevent forms from prematurely being rendered.
  * @since 3.2.0 updated to handle v2 forms.
  * @since 3.0.0
  */

@@ -269,7 +269,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
-     * @unreleased added global $post to isset
+     * @since 3.2.1 added global $post to isset
      * @since 3.0.0
      *
      * @return bool

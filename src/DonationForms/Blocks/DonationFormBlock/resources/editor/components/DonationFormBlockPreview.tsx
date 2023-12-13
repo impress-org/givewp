@@ -5,7 +5,7 @@ import {useSelect} from '@wordpress/data';
 import '../styles/index.scss';
 
 /**
- * @unreleased Revert the display style value of "fullForm" to "onpage"
+ * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
  * @since 3.1.2 Add typing for formFormat
  * @since
  */
