@@ -14,7 +14,7 @@ function MenuItem({item}) {
     const hasChildren = item.childRoutes && item.childRoutes.length;
     const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
 
-    if (item.showWhen && !item.showWhen()) {
+    if (item.showWhen && !item.showWhen(item)) {
         return null;
     }
 
