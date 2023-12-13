@@ -8,7 +8,7 @@ use Give\Framework\Blocks\BlockModel;
 /**
  * @unreleased
  */
-class MailchimpSettings extends FormMigrationStep
+class Mailchimp extends FormMigrationStep
 {
     /**
      * @unreleased
