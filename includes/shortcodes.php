@@ -142,6 +142,10 @@ add_shortcode( 'donation_history', 'give_donation_history' );
 function give_form_shortcode( $atts ) {
 	$atts = shortcode_atts( give_get_default_form_shortcode_args(), $atts, 'give_form' );
 
+    if('fullForm' === $atts['display_style']) {
+        $atts['display_style'] = 'onpage';
+    }
+
 	// Convert string to bool.
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );

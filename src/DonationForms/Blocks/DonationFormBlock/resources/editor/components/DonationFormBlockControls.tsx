@@ -13,7 +13,7 @@ interface DonationFormBlockControls {
 }
 
 /**
- * @unreleased updated setAttributes ID to be a number and formOptions to return select options.
+ * @unreleased Updated setAttributes ID to be a number and formOptions to return select options. Revert the display style value of "fullForm" to "onpage".
  * @since 3.2.0
  */
 export default function DonationFormBlockControls({
@@ -65,7 +65,7 @@ export default function DonationFormBlockControls({
                                 [
                                     {
                                         label: __('Full Form', 'give'),
-                                        value: 'fullForm',
+                                        value: 'onpage',
                                     },
                                     {
                                         label: __('Modal', 'give'),

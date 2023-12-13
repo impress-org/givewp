@@ -1577,8 +1577,10 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 /**
  * Get the list of default parameters for the form shortcode.
  *
- * @return array
+ * @unreleased Revert default display style to "onpage".
  * @since 2.4.1
+ *
+ * @return array
  */
 function give_get_default_form_shortcode_args() {
 	$default = [
@@ -1587,7 +1589,7 @@ function give_get_default_form_shortcode_args() {
 		'show_goal'             => true,
 		'show_content'          => '',
 		'float_labels'          => '',
-        'display_style'         => 'fullForm',
+        'display_style'         => '',
         'continue_button_title' => __('Donate now', 'give'),
 
 		// This attribute belong to form template functionality.
