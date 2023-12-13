@@ -5,7 +5,6 @@ namespace Give\Revenue\Repositories;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class Revenue
@@ -62,6 +61,24 @@ class Revenue
         return DB::delete(
             $wpdb->give_revenue,
             ['donation_id' => $revenueId],
+            ['%d']
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return false|int
+     */
+    public function updateFundId(int $fundId, Donation $donation)
+    {
+        global $wpdb;
+
+        return DB::update(
+            $wpdb->give_revenue,
+            ['fund_id' => $fundId],
+            ['donation_id' => $donation->id],
+            ['%d'],
             ['%d']
         );
     }
