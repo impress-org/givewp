@@ -509,6 +509,45 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function isConstantContactEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_enable'),'true');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'),'true');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_constant_contact_show_checkout_signup'), 'on');
+
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactLabel()
+    {
+        return $this->getMeta('_give_constant_contact_custom_label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactDefaultChecked(): bool
+    {
+        return $this->getMeta('_give_constant_contact_checked_default'
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactSelectedLists(): array
+    {
+        return $this->getMeta('_give_constant_contact');
+    }
+
+    /**
      * Retrieves metadata for the current form.
      *
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
