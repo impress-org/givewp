@@ -66,24 +66,6 @@ class Revenue
     }
 
     /**
-     * @unreleased
-     *
-     * @return false|int
-     */
-    public function updateFundId(int $fundId, Donation $donation)
-    {
-        global $wpdb;
-
-        return DB::update(
-            $wpdb->give_revenue,
-            ['fund_id' => $fundId],
-            ['donation_id' => $donation->id],
-            ['%d'],
-            ['%d']
-        );
-    }
-
-    /**
      * @since 2.22.1
      *
      * @param Donation $donation
