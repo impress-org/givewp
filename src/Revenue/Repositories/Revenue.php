@@ -5,7 +5,6 @@ namespace Give\Revenue\Repositories;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class Revenue
@@ -45,6 +44,29 @@ class Revenue
             $wpdb->give_revenue,
             $revenueData,
             $this->getPlaceholderForPrepareQuery($revenueData)
+        );
+    }
+
+    /**
+     * Update revenue.
+     *
+     * @unreleased
+     *
+     * @return bool|int
+     */
+    public function update(array $revenueData)
+    {
+        global $wpdb;
+
+        // Validate revenue data
+        $this->validateNewRevenueData($revenueData);
+
+        return DB::update(
+            $wpdb->give_revenue,
+            $revenueData,
+            ['donation_id' => $revenueData['donation_id']],
+            ['%d'],
+            ['%d']
         );
     }
 
