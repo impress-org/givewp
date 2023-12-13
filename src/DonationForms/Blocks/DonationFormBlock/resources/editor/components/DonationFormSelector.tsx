@@ -7,16 +7,26 @@ import {reactSelectStyles, reactSelectThemeStyles} from '../styles/reactSelectSt
 import logo from '../images/givewp-logo.svg';
 
 import '../styles/index.scss';
+import type {FormOption} from '../hooks/useFormOptions';
 
 // @ts-ignore
 const savePost = () => dispatch('core/editor').savePost();
 
 /**
+ * @unreleased
+ */
+type DonationFormSelectorProps = {
+    formOptions: FormOption[];
+    isResolving: boolean;
+    handleSelect: (id: number) => void;
+}
+
+/**
  * @since 3.2.0
  */
-export default function DonationFormSelector({formOptions, isResolving, handleSelect}) {
-    const [selectedForm, setSelectedForm] = useState(null);
-    const form = formOptions.find(form => form.value == selectedForm);
+export default function DonationFormSelector({formOptions, isResolving, handleSelect}: DonationFormSelectorProps) {
+    const [selectedForm, setSelectedForm] = useState<number>(null);
+    const form = formOptions.find(form => form.value === selectedForm);
     const {isSaving, isDisabled} = usePostState();
 
     return (

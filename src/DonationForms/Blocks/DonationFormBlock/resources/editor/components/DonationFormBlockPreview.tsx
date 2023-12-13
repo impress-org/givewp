@@ -9,7 +9,7 @@ import '../styles/index.scss';
  * @since 3.1.2 Add typing for formFormat
  * @since
  */
-interface BlockPreviewProps {
+export interface BlockPreviewProps {
     formId: number;
     clientId: string;
     formFormat: 'onpage' | 'modal' | 'newTab' | 'reveal';

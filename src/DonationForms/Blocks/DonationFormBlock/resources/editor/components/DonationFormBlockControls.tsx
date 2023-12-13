@@ -1,19 +1,19 @@
 import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {Option} from '../types';
+import type {FormOption} from '../hooks/useFormOptions';
 
 interface DonationFormBlockControls {
     attributes: Readonly<any>;
     setAttributes: (newAttributes: Record<string, any>) => void;
-    formOptions: Option[];
+    formOptions: FormOption[];
     isResolving: boolean;
     isLegacyTemplate: boolean;
     isLegacyForm: boolean;
 }
 
 /**
- * @unreleased Revert the display style value of "fullForm" to "onpage".
+ * @unreleased Updated setAttributes ID to be a number and formOptions to return select options. Revert the display style value of "fullForm" to "onpage".
  * @since 3.2.0
  */
 export default function DonationFormBlockControls({
@@ -39,7 +39,7 @@ export default function DonationFormBlockControls({
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
                 <PanelRow>
-                    {!isResolving && formOptions.length === 0 ? (
+                    {isResolving === false && formOptions.length === 0 ? (
                         <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
                     ) : (
                         <SelectControl
@@ -48,10 +48,10 @@ export default function DonationFormBlockControls({
                             options={[
                                 // add a disabled selector manually
                                 ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                ...formOptions,
+                                ...formOptions.map((form) => ({label: form.label, value: String(form.value)})),
                             ]}
                             onChange={(newFormId) => {
-                                setAttributes({id: newFormId});
+                                setAttributes({id: Number(newFormId)});
                             }}
                         />
                     )}
