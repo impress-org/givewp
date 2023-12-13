@@ -4,10 +4,15 @@ import {useSelect} from '@wordpress/data';
 
 import '../styles/index.scss';
 
+/**
+ * @unreleased Revert the display style value of "fullForm" to "onpage"
+ * @since 3.1.2 Add typing for formFormat
+ * @since
+ */
 interface BlockPreviewProps {
     formId: number;
     clientId: string;
-    formFormat: 'fullForm' | 'modal' | 'newTab' | 'reveal';
+    formFormat: 'onpage' | 'modal' | 'newTab' | 'reveal';
     openFormButton: string;
     link: string;
 }
