@@ -29,7 +29,7 @@ class DonorsExport extends Give_Batch_Export
     /**
      * @var int
      */
-    protected $donationForm;
+    protected $donationFormId;
 
     /**
      * @inheritdoc
@@ -50,12 +50,13 @@ class DonorsExport extends Give_Batch_Export
             $this->searchBy = $this->postedData['searchBy'];
         }
 
-        $this->donationForm = (int)$this->postedData['forms'];
+        $this->donationFormId = (int)$this->postedData['forms'];
     }
 
     /**
      * @since      2.29.0 Include donor created date
      * @since      2.21.2
+     * @unreleased Filter donors by form ID
      */
     public function get_data(): array
     {
@@ -98,12 +99,7 @@ class DonorsExport extends Give_Batch_Export
             }
         }
 
-        /**
-         * Filter by donation form
-         *
-         * @unreleased
-         */
-        if ($this->donationForm) {
+        if ($this->donationFormId) {
             $donationQuery
                 ->join(function (JoinQueryBuilder $builder) {
                     $builder
@@ -111,7 +107,7 @@ class DonorsExport extends Give_Batch_Export
                         ->on('donations.ID', 'form.donation_id')
                         ->andOn('form.meta_key', '_give_payment_form_id', true);
                 })
-                ->where('form.meta_value', $this->donationForm);
+                ->where('form.meta_value', $this->donationFormId);
         }
 
         $donorQuery->joinRaw("JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId");
