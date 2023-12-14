@@ -12,6 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
 use Give\Framework\TemplateTags\DonationTemplateTags;
+use Give\Log\Log;
 
 class GenerateConfirmationPageReceipt
 {
@@ -30,6 +31,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added support for retrieving custom fields programmatically with Fields API
      * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array
@@ -48,7 +50,20 @@ class GenerateConfirmationPageReceipt
         $receiptDetails = [];
         foreach($customFields as $field) {
             /** @var Field|HasLabel|HasName $field */
-            if ($field->shouldStoreAsDonorMeta()) {
+            if ($field->hasReceiptValue()) {
+                try {
+                    $value = $field->getReceiptValue()($field, $donation);
+                } catch (\Exception $e) {
+                    $value = null;
+
+                    Log::error('Error getting receipt value for field', [
+                        'field' => $field->getName(),
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                }
+
+            } elseif ($field->shouldStoreAsDonorMeta()) {
                 if (!metadata_exists('donor', $donation->donor->id, $field->getName()) ) {
                     continue;
                 }
@@ -63,8 +78,8 @@ class GenerateConfirmationPageReceipt
             }
 
             $receiptDetails[] = new ReceiptDetail(
-                $field->getLabel(),
-                $value
+                $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
+                $value ?? ''
             );
         }
 
