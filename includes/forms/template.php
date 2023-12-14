@@ -1805,7 +1805,7 @@ function give_payment_mode_select( $form_id, $args ) {
 	do_action( 'give_payment_mode_bottom', $form_id );
 	?>
 
-	<div id="give_purchase_form_wrap">
+    <div id="give_purchase_form_wrap" class="give-gateway-details">
 
 		<?php
 		/**

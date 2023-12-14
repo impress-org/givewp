@@ -223,6 +223,11 @@ $gatewayFontSize: 1rem;
     font-size: 0.9375rem;
     line-height: 1.5;
 
+    &#give_purchase_form_wrap {
+        padding: 0;
+        border: 0;
+    }
+
     > * {
         grid-column: span 12;
     }
