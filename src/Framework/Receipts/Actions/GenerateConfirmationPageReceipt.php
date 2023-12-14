@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Receipts\Actions;
 
+use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
@@ -31,7 +32,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased added support for retrieving custom fields programmatically with Fields API
+     * @unreleased updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array
@@ -48,12 +49,12 @@ class GenerateConfirmationPageReceipt
         });
 
         $receiptDetails = [];
-        foreach($customFields as $field) {
+        foreach ($customFields as $field) {
             /** @var Field|HasLabel|HasName $field */
             if ($field->hasReceiptValue()) {
                 try {
-                    $value = $field->getReceiptValue()($field, $donation);
-                } catch (\Exception $e) {
+                    $value = $field->isReceiptValueCallback() ? $field->getReceiptValue()($field, $donation) : null;
+                } catch (Exception $e) {
                     $value = null;
 
                     Log::error('Error getting receipt value for field', [
@@ -62,25 +63,42 @@ class GenerateConfirmationPageReceipt
                         'trace' => $e->getTraceAsString(),
                     ]);
                 }
-
-            } elseif ($field->shouldStoreAsDonorMeta()) {
-                if (!metadata_exists('donor', $donation->donor->id, $field->getName()) ) {
+            } elseif ($field->getScope()->isDonor()) {
+                if (!metadata_exists('donor', $donation->donor->id, $field->getName())) {
                     continue;
                 }
 
                 $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
-            } else {
-                if (!metadata_exists('donation', $donation->id, $field->getName()) ) {
+            } elseif ($field->getScope()->isDonation()) {
+                if (!metadata_exists('donation', $donation->id, $field->getName())) {
                     continue;
                 }
 
                 $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
+            } else {
+                $value = null;
             }
 
-            $receiptDetails[] = new ReceiptDetail(
-                $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
-                $value ?? ''
+            $value = apply_filters(
+                sprintf("givewp_donation_confirmation_page_field_value_for_%s", $field->getName()),
+                $value,
+                $field,
+                $donation
             );
+
+            $label = apply_filters(
+                sprintf("givewp_donation_confirmation_page_field_label_for_%s", $field->getName()),
+                $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
+                $field,
+                $donation
+            );
+
+            if (!empty($label)){
+                 $receiptDetails[] = new ReceiptDetail(
+                    $label,
+                    $value ?? ''
+                );
+            }
         }
 
         return $receiptDetails;
@@ -98,7 +116,10 @@ class GenerateConfirmationPageReceipt
         $paymentMethodLabel = give_get_gateway_checkout_label($receipt->donation->gatewayId, null);
 
         if (empty($paymentMethodLabel) || $paymentMethodLabel === $receipt->donation->gatewayId) {
-            $paymentMethodLabel = $paymentGatewayRegistrar->hasPaymentGateway($receipt->donation->gatewayId) ? $paymentGatewayRegistrar->getPaymentGateway($receipt->donation->gatewayId)->getPaymentMethodLabel() : $receipt->donation->gatewayId;
+            $paymentMethodLabel = $paymentGatewayRegistrar->hasPaymentGateway(
+                $receipt->donation->gatewayId
+            ) ? $paymentGatewayRegistrar->getPaymentGateway($receipt->donation->gatewayId)->getPaymentMethodLabel(
+            ) : $receipt->donation->gatewayId;
         }
 
         $receipt->donationDetails->addDetails([
@@ -157,7 +178,8 @@ class GenerateConfirmationPageReceipt
                 __('Billing Address', 'give'),
                 $receipt->donation->billingAddress->address1 . ' ' . $receipt->donation->billingAddress->address2 . PHP_EOL .
                 $receipt->donation->billingAddress->city . ($receipt->donation->billingAddress->state ? ', ' . $receipt->donation->billingAddress->state : '') . ' ' . $receipt->donation->billingAddress->zip . PHP_EOL .
-                $receipt->donation->billingAddress->country . PHP_EOL);
+                $receipt->donation->billingAddress->country . PHP_EOL
+            );
         }
 
         $receipt->donorDetails->addDetails($details);

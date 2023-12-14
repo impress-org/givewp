@@ -80,6 +80,14 @@ trait ShowInReceipt
     /**
      * @unreleased
      */
+    public function isReceiptValueCallback(): bool
+    {
+        return is_callable($this->receiptValueCallback);
+    }
+
+    /**
+     * @unreleased
+     */
     public function getReceiptValue(): Closure
     {
         return $this->receiptValueCallback;
