@@ -525,9 +525,11 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @unreleased
      */
-    public function getConstantContactLabel()
+    public function getConstantContactLabel(): string
     {
-        return $this->getMeta('_give_constant_contact_custom_label');
+        $defaultMeta = give_get_option('give_constant_contact_label', __('Subscribe to our newsletter?'));
+
+        return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
     }
 
     /**
@@ -535,8 +537,13 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactDefaultChecked(): bool
     {
-        return $this->getMeta('_give_constant_contact_checked_default'
+        $defaultMeta = give_is_setting_enabled(
+            give_get_option('give_constant_contact_checked_default',
+            true),
+            'on'
         );
+
+        return $this->getMeta('_give_constant_contact_checked_default', $defaultMeta);
     }
 
     /**
