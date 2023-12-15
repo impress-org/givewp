@@ -47,6 +47,10 @@ class DonateController
              * Internal hook that fires after a donation is created during the donate controller.
              *
              * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
              */
             do_action('givewp_donate_controller_donation_created', $formData, $donation, null);
 
@@ -54,6 +58,9 @@ class DonateController
              * Fires after a donation is created during donation form processing.
              *
              * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
              */
             do_action('givewp_donation_form_processing_donation_created', $donation, null);
 
@@ -85,6 +92,10 @@ class DonateController
              * Internal hook that fires after a donation is created in the donate controller.
              *
              * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
              */
             do_action('givewp_donate_controller_donation_created', $formData, $donation, $subscription);
 
@@ -92,6 +103,9 @@ class DonateController
              * Fires after a donation is created during donation form processing.
              *
              * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
              */
             do_action('givewp_donation_form_processing_donation_created', $donation, $subscription);
 
@@ -99,6 +113,10 @@ class DonateController
              * Internal hook that fires after a subscription is created in the donate controller.
              *
              * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
              */
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
@@ -106,6 +124,9 @@ class DonateController
              * Fires after a subscription is created during donation form processing.
              *
              * @unreleased
+             *
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
              */
             do_action('givewp_donation_form_processing_subscription_created', $subscription, $donation);
 
