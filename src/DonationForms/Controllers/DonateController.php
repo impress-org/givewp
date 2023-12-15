@@ -30,6 +30,16 @@ class DonateController
      */
     public function donate(DonateControllerData $formData, PaymentGateway $gateway)
     {
+        /**
+         * Fires at the start of donation form processing, before any data is processed.
+         *
+         * @unreleased
+         *
+         * @param  DonateControllerData  $formData
+         * @param  PaymentGateway  $gateway
+         */
+        do_action('givewp_donation_form_processing_start', $formData, $gateway);
+
         $donor = $this->getOrCreateDonor(
             $formData->formId,
             $formData->wpUserId,
@@ -173,12 +183,23 @@ class DonateController
 
         if ($getOrCreateDonorAction->donorCreated) {
             /**
-             *  Internal hook to differentiate when a v3 form creates a new donor.
+             * Internal hook to differentiate when a v3 form creates a new donor.
+             *
              * @since 3.2.0
              * @param  Donor  $donor
              * @param  int  $formId
              */
             do_action('givewp_donate_controller_donor_created', $donor, $formId);
+
+            /**
+             * Fires after a donor is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donor  $donor
+             * @param  int  $formId
+             */
+            do_action('givewp_donation_form_processing_donor_created', $donor, $formId);
         }
 
         return $donor;
