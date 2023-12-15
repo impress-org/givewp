@@ -94,8 +94,8 @@ class DonateController
              * @since 3.0.0
              *
              * @param  DonateControllerData  $formData
-             * @param  Subscription  $subscription
              * @param  Donation  $donation
+             * @param  Subscription  $subscription
              */
             do_action('givewp_donate_controller_donation_created', $formData, $donation, $subscription);
 
