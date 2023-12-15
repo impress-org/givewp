@@ -27,6 +27,15 @@ class DonationConfirmationReceiptViewController
             return '';
         }
 
+        /**
+         * Fires before the donation confirmation receipt view is rendered.
+         *
+         * @unreleased
+         *
+         * @param Donation $donation
+         */
+        do_action('givewp_donation_confirmation_receipt_view_before_render', $donation);
+
         ob_clean();
         return (new DonationConfirmationReceiptViewModel($donation))->render();
     }
