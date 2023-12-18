@@ -50,12 +50,13 @@ class FundsAndDesignations extends FormMigrationStep
             ];
         }
 
-        $adminChoice = ['value' => $adminChoice, 'label' => $this->getFundLabel($adminChoice), 'checked' => true];
-
         return [
             'label' => $label,
-            'isAdminChoice' => $isAdminChoice,
-            'fund' => $adminChoice,
+            'fund' => $isAdminChoice ? [
+                'value' => $adminChoice,
+                'label' => $this->getFundLabel($adminChoice),
+                'checked' => true,
+            ] : $options[0],
             'options' => $options,
         ];
     }
