@@ -138,7 +138,6 @@ if (!defined('ABSPATH')) {
  *
  * @mixin Container
  */
-#[AllowDynamicProperties]
 final class Give
 {
     /**
@@ -170,6 +169,18 @@ final class Give
      * @var Give_Stripe
      */
     public $stripe;
+
+    /**
+     * @var Give_DB_Customers
+     * @deprecated use give()->donors instead
+     */
+    public $customers;
+
+    /**
+     * @var Give_DB_Customer_Meta
+     * @deprecated use give()->donor_meta instead
+     */
+    public $customer_meta;
 
     /**
      * @since 2.8.0
