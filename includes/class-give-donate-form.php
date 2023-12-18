@@ -30,6 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property $earnings
  * @property $post_type
  */
+#[\AllowDynamicProperties]
 class Give_Donate_Form {
 
 	/**

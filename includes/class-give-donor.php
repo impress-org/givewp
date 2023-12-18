@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
+#[\AllowDynamicProperties]
 class Give_Donor {
 
 	/**
