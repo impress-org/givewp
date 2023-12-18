@@ -41,13 +41,7 @@ class RevenueServiceProvider implements ServiceProvider
         Hooks::addAction('give_insert_payment', DonationHandler::class, 'handle', 999, 1);
         Hooks::addAction('give_register_updates', AddPastDonationsToRevenueTable::class, 'register', 10, 1);
         Hooks::addAction('givewp_donation_updated', UpdateRevenueWhenDonationAmountUpdated::class);
-        add_action('give_updated_edited_donation', static function($donationId) {
-            $donation = Donation::find($donationId);
-
-            if ($donation){
-                (new UpdateRevenueWhenDonationAmountUpdated)($donation);
-            }
-        });
+        Hooks::addAction('give_updated_edited_donation',LegacyListeners\UpdateRevenueWhenDonationAmountUpdated::class);
     }
 
     /**

@@ -1,25 +1,21 @@
 <?php
 
-namespace Give\Tests\Unit\Revenue\Listeners;
+namespace Give\Tests\Unit\Revenue\LegacyListeners;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Revenue\Listeners\UpdateRevenueWhenDonationAmountUpdated;
+use Give\Revenue\LegacyListeners\UpdateRevenueWhenDonationAmountUpdated;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-/**
- * @since 2.20.1
- */
 class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased updated action to accept Donation model
-     * @since 2.20.1
+     * @unreleased
      */
     public function testRevenueIsUpdatedWhenDonationIsUpdated()
     {
@@ -32,7 +28,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
         $donation->save();
 
         $listener = new UpdateRevenueWhenDonationAmountUpdated();
-        $listener($donation);
+        $listener($donation->id);
 
         $this->assertEquals(
             Money::fromDecimal(25.00, 'USD')->formatToMinorAmount(),
