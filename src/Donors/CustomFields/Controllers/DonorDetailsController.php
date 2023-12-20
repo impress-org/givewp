@@ -35,7 +35,7 @@ class DonorDetailsController
     }
 
     /**
-     * @unreleased added array fallback when no donations are found
+     * @since 3.2.2 added array fallback when no donations are found
      * @since 3.0.0
      *
      * @param  Donor  $donor

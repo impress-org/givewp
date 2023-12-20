@@ -26,7 +26,7 @@ class BlockAttributes implements Arrayable
     public $openFormButton;
 
     /**
-     * @unreleased add v3 default for form button.
+     * @since 3.2.2 add v3 default for form button.
      * @since 3.0.0
      */
     public static function fromArray(array $array): BlockAttributes
