@@ -35,6 +35,7 @@ class DonorDetailsController
     }
 
     /**
+     * @unreleased added array fallback when no donations are found
      * @since 3.0.0
      *
      * @param  Donor  $donor
@@ -45,7 +46,7 @@ class DonorDetailsController
     {
         $formIds = array_map(static function (Donation $donation) {
             return $donation->formId;
-        }, $donor->donations);
+        }, $donor->donations()->getAll() ?? []);
 
         $formIds = array_filter($formIds, static function ($formId) {
             return !give(DonationFormRepository::class)->isLegacyForm($formId);
