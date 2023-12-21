@@ -10,6 +10,16 @@ use Give\Framework\Blocks\BlockModel;
  */
 class FundsAndDesignations extends FormMigrationStep
 {
+    /**
+     * @unreleased
+     */
+    public function canHandle(): bool
+    {
+        $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes($this->formV2->id);
+
+        return count($fundsAndDesignationsAttributes['fund']) !== 0 ||
+               count($fundsAndDesignationsAttributes['options']) !== 0;
+    }
 
     /**
      * @unreleased
