@@ -47,6 +47,7 @@ class FundsAndDesignations extends FormMigrationStep
                 'value' => $fundId,
                 'label' => $this->getFundLabel($fundId),
                 'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
+                'isDefault' => $this->isDefault($fundId),
             ];
         }
 
@@ -56,6 +57,7 @@ class FundsAndDesignations extends FormMigrationStep
                 'value' => $adminChoice,
                 'label' => $this->getFundLabel($adminChoice),
                 'checked' => true,
+                'isDefault' => $this->isDefault($adminChoice),
             ] : $options[0],
             'options' => $options,
         ];
@@ -77,5 +79,21 @@ class FundsAndDesignations extends FormMigrationStep
         }
 
         return $fund->title;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isDefault(int $fundId): bool
+    {
+        global $wpdb;
+
+        $fund = $wpdb->get_row("SELECT id FROM {$wpdb->give_funds} WHERE is_default = 1");
+
+        if ( ! $fund) {
+            return false;
+        }
+
+        return $fund->id === $fundId;
     }
 }
