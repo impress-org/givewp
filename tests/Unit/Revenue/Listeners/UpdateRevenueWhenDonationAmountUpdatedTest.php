@@ -21,7 +21,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
      * @unreleased updated action to accept Donation model
      * @since 2.20.1
      */
-    public function testRevenueIsUpdatedWhenDonationIsUpdated()
+    public function testRevenueIsUpdatedWhenDonationIsUpdated(): void
     {
         $donation = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
@@ -41,9 +41,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     }
 
     /**
-     * @param  Donation  $donation
-     *
-     * @return int
+     * @since 2.20.1
      */
     private function getRevenueAmountForDonation(Donation $donation)
     {

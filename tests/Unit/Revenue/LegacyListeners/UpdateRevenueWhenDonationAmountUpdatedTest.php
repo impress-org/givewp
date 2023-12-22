@@ -10,6 +10,9 @@ use Give\Revenue\LegacyListeners\UpdateRevenueWhenDonationAmountUpdated;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @unreleased
+ */
 class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
 {
     use RefreshDatabase;
@@ -17,7 +20,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     /**
      * @unreleased
      */
-    public function testRevenueIsUpdatedWhenDonationIsUpdated()
+    public function testRevenueIsUpdatedWhenDonationIsUpdated(): void
     {
         $donation = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
@@ -37,9 +40,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     }
 
     /**
-     * @param  Donation  $donation
-     *
-     * @return int
+     * @unreleased
      */
     private function getRevenueAmountForDonation(Donation $donation)
     {
