@@ -36,9 +36,9 @@ class DonateController
          * @unreleased
          *
          * @param  DonateControllerData  $formData
-         * @param  PaymentGateway  $gateway
+         * @param  string  $gatewayId
          */
-        do_action('givewp_donation_form_processing_start', $formData, $gateway);
+        do_action('givewp_donation_form_processing_start', $formData, $gateway::id());
 
         $donor = $this->getOrCreateDonor(
             $formData->formId,
