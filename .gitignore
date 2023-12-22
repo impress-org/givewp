@@ -75,3 +75,6 @@ build
 **/build.asset.*
 
 .phpunit.result.cache
+
+# wp-env
+.wp-env.override.json
