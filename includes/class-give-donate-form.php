@@ -921,7 +921,7 @@ class Give_Donate_Form {
 		if ( ! isset( $this->sales ) ) {
 
 			if ( '' == give_get_meta( $this->ID, '_give_form_sales', true ) ) {
-				add_post_meta( $this->ID, '_give_form_sales', 0 );
+                give_update_meta( $this->ID, '_give_form_sales', 0 );
 			} // End if
 
 			$this->sales = give_get_meta( $this->ID, '_give_form_sales', true );
@@ -1009,7 +1009,7 @@ class Give_Donate_Form {
 		if ( ! isset( $this->earnings ) ) {
 
 			if ( '' == give_get_meta( $this->ID, '_give_form_earnings', true ) ) {
-				add_post_meta( $this->ID, '_give_form_earnings', 0 );
+                give_update_meta( $this->ID, '_give_form_earnings', 0 );
 			}
 
 			$this->earnings = give_get_meta( $this->ID, '_give_form_earnings', true );
