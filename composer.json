@@ -5,6 +5,7 @@
     "description": "GiveWP - a WordPress Donation Plugin and Fundraising Platform",
     "homepage": "https://givewp.com/",
     "require": {
+        "php": "^7.2 || ~8.0.0",
         "composer/installers": "~1.2",
         "tecnickcom/tcpdf": "^6.2",
         "stripe/stripe-php": "^7.97.0",
