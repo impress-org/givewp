@@ -65,6 +65,7 @@ function StateFieldContainer({
     const {errors} = useFormState();
     const {setValue, clearErrors} = useFormContext();
     const country = useWatch({name: 'country'});
+    const state = useWatch({name: 'state'});
     const [states, setStates] = useState<State[]>([]);
     const [statesLoading, setStatesLoading] = useState<boolean>(false);
     const [stateLabel, setStateLabel] = useState<string>('State');
@@ -93,7 +94,7 @@ function StateFieldContainer({
             .then((data) => {
                 if (data.ok) {
                     setStatesLoading(false);
-                    setValue('state', null);
+                    setValue('state', '');
 
                     return data.json();
                 }
@@ -185,7 +186,7 @@ function StateFieldContainer({
                 ) : (
                     <input
                         type="text"
-                        value={''}
+                        value={state}
                         onChange={updateStateValue}
                         aria-invalid={fieldError ? 'true' : 'false'}
                     />
