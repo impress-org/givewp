@@ -75,6 +75,7 @@ webpack.config.js
 webpack.mix.js
 docker-compose.yml
 wp-textdomain.js
+.wp-env.json
 
 # GH Action files
 DOCKER_ENV

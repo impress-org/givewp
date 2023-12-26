@@ -269,13 +269,14 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
+     * @since 3.2.1 added global $post to isset
      * @since 3.0.0
      *
      * @return bool
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
     }
 
     /**
