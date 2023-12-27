@@ -68,7 +68,18 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateDonationFormStatus($formData->formId);
 
+        /**
+         * Fires at the start of donation form processing, before any data is processed.
+         *
+         * @unreleased
+         *
+         * @param  FormData  $formData
+         * @param  string  $gatewayId
+         */
+        do_action('give_donation_form_processing_start', $formData, $formData->paymentGateway);
+
         $donor = $this->getOrCreateDonor(
+            $formData->formId,
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
             $formData->donorInfo->firstName,
@@ -107,6 +118,26 @@ class LegacyPaymentGatewayAdapter
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
             $this->setSession($donation->id);
+
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('give_donation_form_processing_donation_created', $donation, $subscription);
+
+            /**
+             * Fires after a subscription is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
+             */
+            do_action('give_donation_form_processing_subscription_created', $subscription, $donation);
 
             try {
                 /**
@@ -148,6 +179,16 @@ class LegacyPaymentGatewayAdapter
             $donation->save();
 
             $this->setSession($donation->id);
+
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('give_donation_form_processing_donation_created', $donation, null);
 
             try {
                 /**
@@ -283,25 +324,43 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * @unreleased add $formId and do_action
      * @since 3.2.0 add honorific and use GetOrCreateDonor action
      * @since 2.21.0
      *
      * @throws Exception
      */
     private function getOrCreateDonor(
+        ?int $formId,
         ?int $userId,
         string $donorEmail,
         string $firstName,
         string $lastName,
         ?string $honorific
     ): Donor {
-        return (new GetOrCreateDonor())(
+        $getOrCreateDonorAction = new GetOrCreateDonor();
+
+        $donor = $getOrCreateDonorAction(
             $userId,
             $donorEmail,
             $firstName,
             $lastName,
             $honorific
         );
+
+        if ($getOrCreateDonorAction->donorCreated) {
+            /**
+             * Fires after a donor is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donor  $donor
+             * @param  int  $formId
+             */
+            do_action('give_donation_form_processing_donor_created', $donor, $formId);
+        }
+
+        return $donor;
     }
 
     /**
