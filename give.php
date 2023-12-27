@@ -171,6 +171,18 @@ final class Give
     public $stripe;
 
     /**
+     * @var Give_DB_Customers
+     * @deprecated use give()->donors instead
+     */
+    public $customers;
+
+    /**
+     * @var Give_DB_Customer_Meta
+     * @deprecated use give()->donor_meta instead
+     */
+    public $customer_meta;
+
+    /**
      * @since 2.8.0
      *
      * @var Container
