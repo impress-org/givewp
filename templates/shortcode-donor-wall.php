@@ -101,7 +101,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 ?>
                 <div class="give-donor-wrapper">
                     <div class="give-donor-content"
-                         style="border-color: <?php echo !empty($atts['color']) ? $atts['color'] : '#219653' ?>">
+                         style="border-color: <?php echo !empty($atts['color']) ? esc_attr($atts['color']) : '#219653' ?>">
                         <?php
                         $comment = esc_html($donation['donor_comment']);
                         $stripped_comment = str_replace(' ', '', $comment);
@@ -127,7 +127,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                             $excerpt = trim($excerpt, '.!,:;');
 
                             echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
-                                    <span> <a class='give-donor-content__read-more' style='color: $primary_color'> $read_more_text </a></span>
+                                    <span> <a class='give-donor-content__read-more' style='color: " . esc_attr($primary_color) . "'> $read_more_text </a></span>
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
@@ -178,7 +178,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                 if ($atts['show_total']) {
                     echo "
-                             <span class= 'give-donor-details__total' style='color: $primary_color'> $donation_amount </span>
+                             <span class= 'give-donor-details__total' style='color: " . esc_attr($primary_color) . "'> $donation_amount </span>
                         ";
                 }
                 ?>
@@ -199,7 +199,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     trim($honoree_first_name) . ".";
 
             echo
-            "<div class='give-donor-tribute' style='background-color: {$tribute_background_color} '>
+            "<div class='give-donor-tribute' style='background-color: " . esc_attr($tribute_background_color) . " '>
                     <span>
                         <svg width='16' height='16' viewBox='0 0 16 16'  xmlns='http://www.w3.org/2000/svg' class='give-donor-tribute__svg'>
                              <path fill='$primary_color' opacity='0.4' d='M11.9667 5.13998L11.8734 5.08665L10.9467 4.55332L9.0334 3.44665C8.44673 3.10665 7.5534 3.10665 6.96673 3.44665L5.0534 4.55332L4.12673 5.09332L4.00673 5.15998C2.8134 5.95998 2.7334 6.10665 2.7334 7.39332V10.4667C2.7334 11.7533 2.8134 11.9 4.0334 12.72L6.96673 14.4133C7.26007 14.5867 7.62673 14.6667 8.00007 14.6667C8.36673 14.6667 8.74007 14.5867 9.0334 14.4133L11.9934 12.7C13.1867 11.9 13.2667 11.7533 13.2667 10.4667V7.39332C13.2667 6.10665 13.1867 5.95998 11.9667 5.13998Z' fill='#15AE56'/>
