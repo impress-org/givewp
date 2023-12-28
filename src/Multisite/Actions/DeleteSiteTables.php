@@ -6,6 +6,9 @@ use Give\Framework\Database\DB;
 
 class DeleteSiteTables
 {
+    /**
+     * @unreleased
+     */
     public function __invoke()
     {
         $prefix = DB::prefix('give_%');
