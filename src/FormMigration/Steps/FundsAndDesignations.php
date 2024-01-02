@@ -25,11 +25,6 @@ class FundsAndDesignations extends FormMigrationStep
     {
         $fundsAndDesignationsAttributes = $this->formV2->getFundsAndDesignationsAttributes();
 
-        if (count($fundsAndDesignationsAttributes['fund']) === 0 &&
-            count($fundsAndDesignationsAttributes['options']) === 0) {
-            return;
-        }
-
         $fundsAndDesignationsBlock = BlockModel::make([
             'name' => 'givewp/funds-and-designations',
             'attributes' => $fundsAndDesignationsAttributes,

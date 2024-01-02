@@ -545,7 +545,6 @@ class FormMetaDecorator extends FormModelDecorator
         return count($fundsAndDesignationsAttributes['options']) > 0;
     }
 
-
     /**
      * @unreleased
      */
