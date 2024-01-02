@@ -31,6 +31,4 @@ class FundsAndDesignations extends FormMigrationStep
         ]);
         $this->fieldBlocks->insertAfter('givewp/donation-amount', $fundsAndDesignationsBlock);
     }
-
-
 }
