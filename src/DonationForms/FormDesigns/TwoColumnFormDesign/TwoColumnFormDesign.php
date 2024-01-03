@@ -24,7 +24,7 @@ class TwoColumnFormDesign extends FormDesign
      */
     public static function name(): string
     {
-        return __('Two column', 'give');
+        return __('Two-Column', 'give');
     }
 
     /**
