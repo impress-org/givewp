@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\FormDesigns\ClassicFormDesign;
+namespace Give\DonationForms\FormDesigns\TwoColumnFormDesign;
 
 use Give\Framework\FormDesigns\FormDesign;
 
@@ -9,6 +9,8 @@ use Give\Framework\FormDesigns\FormDesign;
  */
 class TwoColumnFormDesign extends FormDesign
 {
+    protected $isMultiStep = true;
+
     /**
      * @unreleased
      */
