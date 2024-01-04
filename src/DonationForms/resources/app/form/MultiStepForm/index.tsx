@@ -57,10 +57,10 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
  * @since 3.0.0
  */
 export default function MultiStepForm({form}: {form: Form}) {
-    const includeHeaderInSteps = form.design?.multiStepShouldIncludeHeaderInSteps && form.settings?.showHeader;
-    const steps = convertSectionsToSteps(form.nodes, includeHeaderInSteps);
+    const shouldIncludeHeaderInSteps = form.design?.multiStepShouldIncludeHeaderInSteps && form.settings?.showHeader;
+    const steps = convertSectionsToSteps(form.nodes, shouldIncludeHeaderInSteps);
 
-    if (includeHeaderInSteps) {
+    if (shouldIncludeHeaderInSteps) {
         steps.unshift({
             id: 0,
             title: null,
@@ -73,7 +73,7 @@ export default function MultiStepForm({form}: {form: Form}) {
     }
 
     return (
-        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0, showHeader: includeHeaderInSteps}}>
+        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0, showHeader: shouldIncludeHeaderInSteps}}>
             <DonationSummaryProvider>
                 <Steps steps={steps} />
             </DonationSummaryProvider>
