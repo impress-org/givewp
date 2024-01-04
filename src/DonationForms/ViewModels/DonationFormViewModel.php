@@ -227,6 +227,7 @@ class DonationFormViewModel
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
+                    'multiStepShouldIncludeHeaderInSteps' => $formDesign->multiStepShouldIncludeHeaderInSteps(),
                 ] : null,
             ]),
             'previewMode' => $this->previewMode,

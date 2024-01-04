@@ -231,6 +231,7 @@ export interface Form extends Group {
         id: string;
         name: string;
         isMultiStep: boolean;
+        multiStepShouldIncludeHeaderInSteps: boolean;
     };
     nodes: Section[];
     currencySwitcherSettings?: CurrencySwitcherSetting[];

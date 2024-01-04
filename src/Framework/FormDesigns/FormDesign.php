@@ -11,7 +11,14 @@ use Give\Framework\FormDesigns\Contracts\FormDesignInterface;
  */
 abstract class FormDesign implements FormDesignInterface
 {
+    /**
+     * @var bool
+     */
     protected $isMultiStep = false;
+    /**
+     * @var bool
+     */
+    protected $multiStepShouldIncludeHeaderInSteps = false;
 
     /**
      * The unique identifier of the design
@@ -70,5 +77,13 @@ abstract class FormDesign implements FormDesignInterface
     public function isMultiStep(): bool
     {
         return $this->isMultiStep;
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function multiStepShouldIncludeHeaderInSteps(): bool
+    {
+        return $this->multiStepShouldIncludeHeaderInSteps;
     }
 }
