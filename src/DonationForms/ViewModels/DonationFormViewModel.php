@@ -274,6 +274,11 @@ class DonationFormViewModel
         if ($this->previewMode) {
             $classNames[] = 'givewp-donation-form--preview';
         }
+
+        $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
+        $classNames[] = 'givewp-design-settings--logo-position__' . $this->formSettings->designSettingsLogoPosition;
+        $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
+
         ?>
 
         <div data-theme="light" id="root-givewp-donation-form"

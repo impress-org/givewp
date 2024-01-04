@@ -2,6 +2,9 @@
 
 namespace Give\DonationForms\Properties;
 
+use Give\DonationForms\ValueObjects\DesignSettingsImageStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
+use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
@@ -179,6 +182,36 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @unreleased
+     * @var string
+     */
+    public  $designSettingImageUrl;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageStyle;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsLogoUrl;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsLogoPosition;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsSectionStyle;
+
+    /**
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -252,6 +285,20 @@ class FormSettings implements Arrayable, Jsonable
         $self->pdfSettings = isset($array['pdfSettings']) && is_array(
             $array['pdfSettings']
         ) ? $array['pdfSettings'] : [];
+
+        $self->designSettingImageUrl = $array['designSettingImageUrl'] ?? '';
+        $self->designSettingsImageStyle = !empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
+            $array['designSettingsImageStyle']
+        ) : DesignSettingsImageStyle::COVER();
+
+        $self->designSettingsLogoUrl = $array['designSettingsLogoUrl'] ?? '';
+        $self->designSettingsLogoPosition = !empty($array['designSettingsLogoPosition']) ? new DesignSettingsLogoPosition(
+            $array['designSettingsLogoPosition']
+        ) : DesignSettingsLogoPosition::LEFT();
+
+        $self->designSettingsSectionStyle = !empty($array['designSettingsSectionStyle']) ? new DesignSettingsSectionStyle(
+            $array['designSettingsSectionStyle']
+        ) : DesignSettingsSectionStyle::DEFAULT();
 
         return $self;
     }
