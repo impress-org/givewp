@@ -193,6 +193,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased added multiStepShouldIncludeHeaderInSteps to form design export
      * @since 3.0.0
      */
     public function exports(): array

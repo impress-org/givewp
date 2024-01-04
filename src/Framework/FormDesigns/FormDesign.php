@@ -7,6 +7,7 @@ use Give\Framework\FormDesigns\Contracts\FormDesignInterface;
 /**
  * The FormDesign is meant to be extended to create custom GiveWP form designs.
  *
+ * @unreleased added $multiStepShouldIncludeHeaderInSteps property
  * @since 3.0.0
  */
 abstract class FormDesign implements FormDesignInterface
