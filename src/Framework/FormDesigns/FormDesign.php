@@ -81,7 +81,7 @@ abstract class FormDesign implements FormDesignInterface
     }
 
     /**
-     * @since 3.0.0
+     * @unreleased
      */
     public function multiStepShouldIncludeHeaderInSteps(): bool
     {
