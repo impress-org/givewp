@@ -1,5 +1,9 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
 
+@import "design-settings/image";
+@import "design-settings/logo";
+@import "design-settings/section";
+
 @layer base {
     @import "pico";
 }

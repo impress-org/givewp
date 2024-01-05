@@ -1,0 +1,47 @@
+.givewp-design-settings--section-style {
+    &__default {
+        // This section intentionally left blank.
+    }
+
+    &__border {
+        .givewp-layouts-section__fieldset__legend legend {
+            padding-bottom: var(--givewp-spacing-2);
+            border-bottom: solid 1px var(--givewp-grey-900);
+        }
+    }
+
+    &__solid {
+        .givewp-layouts-section {
+            padding: 0;
+        }
+        .givewp-layouts-section__fieldset__legend legend {
+            color: white;
+            background-color: #ef5da8;
+            padding: var(--givewp-spacing-8) var(--givewp-spacing-20);
+        }
+        .givewp-layouts-section__fieldset__legend p {
+            padding: var(--givewp-spacing-8) var(--givewp-spacing-20) var(--givewp-spacing-6);
+        }
+        .givewp-section-nodes {
+            padding: 0 var(--givewp-spacing-20) var(--givewp-spacing-10);
+        }
+    }
+
+    &__card {
+        .givewp-layouts-header {
+            margin-bottom: var(--givewp-spacing-4);
+            border-radius: 4px;
+        }
+        form#give-next-gen {
+            display: flex;
+            flex-direction: column;
+            gap: var(--givewp-spacing-4);
+            background-color: #f2f2f2;
+        }
+        .givewp-layouts-section {
+            border-radius: 4px;
+            background-color: white;
+            outline: 1px solid var(--givewp-grey-25);
+        }
+    }
+}
