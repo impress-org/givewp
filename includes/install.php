@@ -210,6 +210,7 @@ add_action('wpmu_new_blog', 'give_on_create_blog', 10, 6);
 /**
  * Drop Give's custom tables when a mu site is deleted.
  *
+ * @unlreased updated implementation to query all give_* tables
  * @since  1.4.3
  *
  * @param array $tables The tables to drop.
