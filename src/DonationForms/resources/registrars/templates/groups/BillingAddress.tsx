@@ -182,16 +182,13 @@ function StateFieldContainer({
             <label>
                 <Label label={stateLabel ?? __('State', 'give')} required={stateRequired} />
 
-                {statesLoading ? (
-                    <input type="text" disabled={true} value={__('Loading...', 'give')} />
-                ) : (
-                    <input
-                        type="text"
-                        value={state}
-                        onChange={updateStateValue}
-                        aria-invalid={fieldError ? 'true' : 'false'}
-                    />
-                )}
+                <input
+                    type="text"
+                    onChange={updateStateValue}
+                    aria-invalid={fieldError ? 'true' : 'false'}
+                    placeholder={statesLoading ? __('Loading...', 'give') : ''}
+                    disabled={statesLoading}
+                />
 
                 <HiddenStateField />
 
