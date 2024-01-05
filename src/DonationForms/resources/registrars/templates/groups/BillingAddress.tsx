@@ -224,6 +224,7 @@ export default function BillingAddress({
                 <Country />
                 <Address1 />
                 <Address2 />
+                {/*TODO: fix asterisk not dynamically showing up on city and zip*/}
                 <City validationRules={{required: cityRequired}} />
                 <StateFieldContainer
                     apiUrl={apiUrl}
@@ -232,6 +233,7 @@ export default function BillingAddress({
                     setZipRequired={setZipRequired}
                     nodeName={name}
                 />
+                {/*TODO: fix asterisk not dynamically showing up on city and zip*/}
                 <Zip validationRules={{required: zipRequired}} />
             </fieldset>
         </>
