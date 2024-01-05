@@ -11,7 +11,7 @@ import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepFor
 function StepsWrapperTitle() {
     const step = useCurrentStep();
 
-    return step.id > 0 && <p className="givewp-donation-form__steps-header-title-text">{step.title}</p>;
+    return step.title && <p className="givewp-donation-form__steps-header-title-text">{step.title}</p>;
 }
 
 /**
@@ -22,9 +22,12 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
 
     const showProgress = !showHeader || currentStep > 0;
     const totalSteps = showHeader ? steps.length : steps.length - 1;
+    const currentStepProgress = !showHeader && currentStep === 0 ? totalSteps / 10 : currentStep;
+    const showStepsHeader = !showHeader || currentStep > 0;
 
     return (
         <div className="givewp-donation-form__steps">
+          {showStepsHeader && (
             <div className="givewp-donation-form__steps-header">
                 <div className="givewp-donation-form__steps-header-previous">
                     <PreviousButton>{__('Previous', 'give')}</PreviousButton>
@@ -33,8 +36,9 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
                     <StepsWrapperTitle />
                 </div>
             </div>
+            )}
             {showProgress && (
-                <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
+                <progress className="givewp-donation-form__steps-progress" value={currentStepProgress} max={totalSteps} />
             )}
             <div className="givewp-donation-form__steps-body">{children}</div>
             <div className="givewp-donation-form__steps-footer">
