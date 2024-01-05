@@ -59,7 +59,10 @@ function App({form}: { form: DonationForm }) {
         return (
             <DonationFormSettingsProvider value={{...form.settings, ...donationFormNodeSettings}}>
                 <DonationFormStateProvider initialState={initialState}>
-                    <MultiStepForm form={form} />
+                    <div className="givewp-donation-form__container">
+                        {!form.design?.includeHeaderInMultiStep && form.settings.showHeader && <Header form={form} />}
+                        <MultiStepForm form={form} />
+                    </div>
                 </DonationFormStateProvider>
             </DonationFormSettingsProvider>
         );
