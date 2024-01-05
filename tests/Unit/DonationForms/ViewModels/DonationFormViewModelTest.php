@@ -20,7 +20,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased added multiStepShouldIncludeHeaderInSteps to form design exports
+     * @unreleased added includeHeaderInMultiStep to form design exports
      * @since 3.0.0
      */
     public function testExportsShouldReturnExpectedArrayOfData()
@@ -74,7 +74,7 @@ class DonationFormViewModelTest extends TestCase
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
-                    'multiStepShouldIncludeHeaderInSteps' => $formDesign->shouldIncludeHeaderInMultiStep(),
+                    'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ],
             ]),
             'previewMode' => false
