@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
 import {PanelRow} from '@wordpress/components';
-import {createInterpolateElement} from '@wordpress/element';
 import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
@@ -14,16 +13,6 @@ export default function FormDonationConfirmationSettingsGroup() {
         settings: {receiptHeading, receiptDescription},
     } = useFormState();
     const dispatch = useFormStateDispatch();
-
-    const templateTagsDescription = createInterpolateElement(
-        __(
-            'Available template tags for this email. HTML is accepted. <a>See our documentation</a> for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
-            'give'
-        ),
-        {
-            a: <a href="https://givewp.com/documentation/core/settings/emails/email-tags/" target="_blank" />,
-        }
-    );
 
     return (
         <>
@@ -47,7 +36,13 @@ export default function FormDonationConfirmationSettingsGroup() {
                     onChange={(receiptDescription) => dispatch(setFormSettings({receiptDescription}))}
                 />
             </SettingsSection>
-            <SettingsSection title={__('Template tags', 'give')} description={templateTagsDescription}>
+            <SettingsSection
+                title={__('Template tags', 'give')}
+                description={__(
+                    'Available template tags for the header and description of the donation confirmation.',
+                    'give'
+                )}
+            >
                 <PanelRow>
                     <TemplateTags templateTags={donationConfirmationTemplateTags} />
                 </PanelRow>
