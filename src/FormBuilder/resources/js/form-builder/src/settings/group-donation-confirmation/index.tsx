@@ -1,9 +1,13 @@
 import {__} from '@wordpress/i18n';
+import {PanelRow} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
 import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
-import TemplateTags from './template-tags';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags';
+
+const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 export default function FormDonationConfirmationSettingsGroup() {
     const {
@@ -44,7 +48,9 @@ export default function FormDonationConfirmationSettingsGroup() {
                 />
             </SettingsSection>
             <SettingsSection title={__('Template tags', 'give')} description={templateTagsDescription}>
-                <TemplateTags />
+                <PanelRow>
+                    <TemplateTags templateTags={donationConfirmationTemplateTags} />
+                </PanelRow>
             </SettingsSection>
         </>
     );

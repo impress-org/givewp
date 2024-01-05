@@ -1,5 +1,5 @@
-.givewp-donation-confirmation-settings {
-    &__template-tags-list {
+.givewp-template-tags {
+    &__list {
         border-radius: 2px;
         border: 1px solid var(--givewp-grey-100);
         height: 25rem;
@@ -11,7 +11,7 @@
         }
     }
 
-    &__template-tag-list-item {
+    &__list-item {
         display: flex;
         flex-direction: column;
         padding: 0.5rem 1rem;
@@ -20,19 +20,19 @@
             background-color: var(--givewp-grey-5);
         }
 
-        .givewp-popover-content-settings__copy-button {
+        .givewp-template-tags__copy-button {
             opacity: 0;
             font-size: 0.75rem;
         }
 
         &:hover {
-            .givewp-popover-content-settings__copy-button {
+            .givewp-template-tags__copy-button {
                 opacity: 1;
             }
         }
     }
 
-    &__template-tag {
+    &__tag {
         background-color: var(--givewp-blue-25);
         color: var(--givewp-blue-900);
         font-weight: 500;
@@ -41,7 +41,7 @@
         height: 100%;
     }
 
-    &__template-tag-list-item-top {
+    &__list-item-top {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -50,7 +50,7 @@
         padding: 0 0 0.5rem 0;
     }
 
-    &__template-tag-list-item-bottom {
+    &__list-item-bottom {
         font-size: 0.75rem;
         line-height: 1.125rem;
         color: var(--givewp-gray-700, #404040);
