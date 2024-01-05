@@ -236,7 +236,6 @@ final class Give
         DonationFormsServiceProvider::class,
         FormDesignServiceProvider::class,
         FormMigrationServiceProvider::class,
-        MultisiteServiceProvider::class,
         //TODO: merge this service provider
         Give\PaymentGateways\Gateways\ServiceProvider::class,
 
