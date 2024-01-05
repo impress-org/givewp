@@ -60,7 +60,7 @@ export default function TemplateTags({templateTags}: {templateTags: TemplateTag[
 /**
  * @unreleased
  */
-type TemplateTag = {
+export type TemplateTag = {
     id: string;
     description: string;
 };

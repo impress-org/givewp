@@ -1,19 +1,9 @@
-import {Button, Popover, TextareaControl} from '@wordpress/components';
-import {useCopyToClipboard} from '@wordpress/compose';
-import {__} from '@wordpress/i18n';
-import {useState} from '@wordpress/element';
-import type {Ref} from 'react';
-import {close as closeIcon, copy as copyIcon} from '@wordpress/icons';
-import './styles.scss';
-import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
-
-/**
- * @since 3.0.0
- */
-type TemplateTag = {
-    id: string;
-    description: string;
-};
+import { Button, Popover, TextareaControl } from "@wordpress/components";
+import { __ } from "@wordpress/i18n";
+import { close as closeIcon } from "@wordpress/icons";
+import "./styles.scss";
+import ClassicEditor from "@givewp/form-builder/components/ClassicEditor";
+import TemplateTags, { TemplateTag } from "@givewp/form-builder/components/settings/TemplateTags";
 
 /**
  * @since 3.0.0
@@ -26,30 +16,6 @@ type PopoverContentWithTemplateTagsProps = {
     heading: string;
     richText?: boolean;
 };
-
-/**
- * @since 3.0.0
- */
-function CopyTagButton({textToCopy}) {
-    const [isCopied, setCopied] = useState(false);
-    const ref = useCopyToClipboard(textToCopy, () => {
-        setCopied(true);
-
-        return setTimeout(() => setCopied(false), 1000);
-    });
-
-    return (
-        <Button
-            className="givewp-popover-content-settings__copy-button"
-            isSmall
-            variant="tertiary"
-            ref={ref as Ref<HTMLAnchorElement>}
-            icon={copyIcon}
-        >
-            {isCopied ? __('Copied!', 'give') : __('Copy Tag', 'give')}
-        </Button>
-    );
-}
 
 /**
  * @since 3.0.0
@@ -92,25 +58,9 @@ export default function PopoverContentWithTemplateTags({
                 <span>{__('Template tags', 'give')}</span>
             </div>
 
-            <ul className="givewp-popover-content-settings__template-tags-list">
-                {templateTags.map(({id, description}) => {
-                    const tagId = `{${id}}`;
-
-                    return (
-                        <li className="givewp-popover-content-settings__template-tag-list-item" key={id}>
-                            <div className="givewp-popover-content-settings__template-tag-list-item-top">
-                                <span className="givewp-popover-content-settings__template-tag">{tagId}</span>
-                                <CopyTagButton textToCopy={tagId} />
-                            </div>
-                            <div className="givewp-popover-content-settings__template-tag-list-item-bottom">
-                                <span className="givewp-popover-content-settings__template-description">
-                                    {description}
-                                </span>
-                            </div>
-                        </li>
-                    );
-                })}
-            </ul>
+            <div className="givewp-popover-content-settings__template-tags">
+                <TemplateTags templateTags={templateTags} />
+            </div>
         </Popover>
     );
 }
