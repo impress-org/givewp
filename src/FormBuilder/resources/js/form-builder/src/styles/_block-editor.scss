@@ -24,10 +24,15 @@
 
 .interface-interface-skeleton__content {
     width: 720px;
-    margin: auto;
+    margin: 0 auto;
     padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
+
+    .givewp-form-builder__design-tab & {
+        width: 100%;
+        max-width: 1200px;
+    }
 
     @media screen and (max-width: 782px) {
         padding: 1rem 0;

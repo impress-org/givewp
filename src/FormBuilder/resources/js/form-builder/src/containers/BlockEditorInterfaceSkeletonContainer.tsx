@@ -35,15 +35,11 @@ const DesignEditorSkeleton = () => {
 
     return (
         <InterfaceSkeleton
-            header={
-                <HeaderContainer
-                    showSidebar={showSidebar}
-                    toggleShowSidebar={toggleShowSidebar}
-                />
-            }
+            header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
             content={<DesignPreview />}
             sidebar={<DesignSidebar />}
             notices={<NoticesContainer />}
+            className="givewp-form-builder__design-tab"
         />
     );
 }
