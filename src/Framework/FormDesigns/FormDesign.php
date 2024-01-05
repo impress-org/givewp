@@ -7,7 +7,7 @@ use Give\Framework\FormDesigns\Contracts\FormDesignInterface;
 /**
  * The FormDesign is meant to be extended to create custom GiveWP form designs.
  *
- * @unreleased added $multiStepShouldIncludeHeaderInSteps property
+ * @unreleased added $includeHeaderInMultiStep property
  * @since 3.0.0
  */
 abstract class FormDesign implements FormDesignInterface
@@ -19,7 +19,7 @@ abstract class FormDesign implements FormDesignInterface
     /**
      * @var bool
      */
-    protected $multiStepShouldIncludeHeaderInSteps = false;
+    protected $includeHeaderInMultiStep = false;
 
     /**
      * The unique identifier of the design
@@ -83,8 +83,8 @@ abstract class FormDesign implements FormDesignInterface
     /**
      * @unreleased
      */
-    public function multiStepShouldIncludeHeaderInSteps(): bool
+    public function shouldIncludeHeaderInMultiStep(): bool
     {
-        return $this->multiStepShouldIncludeHeaderInSteps;
+        return $this->includeHeaderInMultiStep;
     }
 }

@@ -59,7 +59,7 @@ function App({form}: { form: DonationForm }) {
         return (
             <DonationFormSettingsProvider value={{...form.settings,...donationFormNodeSettings}}>
                 <DonationFormStateProvider initialState={initialState}>
-                    {!form.design?.multiStepShouldIncludeHeaderInSteps && form.settings.showHeader && <Header form={form} />}
+                    {!form.design?.includeHeaderInMultiStep && form.settings.showHeader && <Header form={form} />}
                     <MultiStepForm form={form} />
                 </DonationFormStateProvider>
             </DonationFormSettingsProvider>

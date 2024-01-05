@@ -74,7 +74,7 @@ class DonationFormViewModelTest extends TestCase
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
-                    'multiStepShouldIncludeHeaderInSteps' => $formDesign->multiStepShouldIncludeHeaderInSteps(),
+                    'multiStepShouldIncludeHeaderInSteps' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ],
             ]),
             'previewMode' => false

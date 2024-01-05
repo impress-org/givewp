@@ -54,11 +54,11 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
 };
 
 /**
- * @unreleased updated to use multiStepShouldIncludeHeaderInSteps
+ * @unreleased updated to use includeHeaderInMultiStep
  * @since 3.0.0
  */
 export default function MultiStepForm({form}: {form: Form}) {
-    const shouldIncludeHeaderInSteps = form.design?.multiStepShouldIncludeHeaderInSteps && form.settings?.showHeader;
+    const shouldIncludeHeaderInSteps = form.design?.includeHeaderInMultiStep && form.settings?.showHeader;
     const steps = convertSectionsToSteps(form.nodes, shouldIncludeHeaderInSteps);
 
     if (shouldIncludeHeaderInSteps) {

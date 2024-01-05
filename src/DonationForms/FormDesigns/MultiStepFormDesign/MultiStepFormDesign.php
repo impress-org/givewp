@@ -17,7 +17,7 @@ class MultiStepFormDesign extends FormDesign
     /**
      * @unreleased
      */
-    protected $multiStepShouldIncludeHeaderInSteps = true;
+    protected $includeHeaderInMultiStep = true;
 
     /**
      * @since 3.0.0
