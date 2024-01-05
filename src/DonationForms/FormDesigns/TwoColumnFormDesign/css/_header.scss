@@ -1,0 +1,20 @@
+.givewp-layouts {
+    &-header {
+        padding: var(--givewp-spacing-6);
+        text-align: center;
+
+        @media screen and (min-width: 70.5rem) {
+            border: solid 1px var(--givewp-grey-25);
+            border-radius: var(--givewp-rounded-8);
+            box-shadow: var(--givewp-shadow-sm);
+        }
+    }
+
+    &-headerTitle {
+        margin-bottom: var(--givewp-spacing-3);
+    }
+
+    &-headerDescription {
+        margin-bottom: var(--givewp-spacing-10);
+    }
+}
