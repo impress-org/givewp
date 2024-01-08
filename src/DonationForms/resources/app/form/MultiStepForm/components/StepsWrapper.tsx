@@ -17,7 +17,7 @@ function StepsWrapperTitle() {
 }
 
 /**
- * @unreleased updated with showStepsHeader conditional and currentStepProgress
+ * @unreleased updated with showStepsHeader conditional
  * @since 3.0.0
  */
 export default function StepsWrapper({children}: { children: ReactNode }) {
@@ -26,7 +26,6 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
 
     const showProgress = !showHeader || currentStep > 0;
     const totalSteps = showHeader ? steps.length : steps.length - 1;
-    const currentStepProgress = !showHeader && currentStep === 0 ? totalSteps / 10 : currentStep;
     const showStepsHeader = !showHeader || currentStep > 0;
 
     return (
@@ -42,7 +41,7 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
             </div>
             )}
             {showProgress && (
-                <progress className="givewp-donation-form__steps-progress" value={currentStepProgress} max={totalSteps} />
+                <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
             )}
             <div className="givewp-donation-form__steps-body">{children}</div>
             <div className="givewp-donation-form__steps-footer">
