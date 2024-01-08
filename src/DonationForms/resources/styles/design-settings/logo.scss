@@ -29,8 +29,8 @@
         content: "";
         position: absolute;
         top: -80px;
-        left: 0;
-        width: calc(100% - 19px);
+        left: -2;
+        width: calc(100% - 16px);
         margin: 10px;
         height: 80px;
         padding: 20px 60px;
@@ -38,6 +38,11 @@
         background-color: white;
         background-position: left; /* left, center, or right */
         background-origin: content-box;
-        background-image: url("https://givewp.com/wp-content/uploads/2021/02/givewp-logo-with-badge.svg");
+        background-image: var(--givewp-design-settings-logo);
+    }
+
+    .givewp-layouts-header {
+        border-top-left-radius: 0!important;
+        border-top-right-radius: 0!important;
     }
 }
