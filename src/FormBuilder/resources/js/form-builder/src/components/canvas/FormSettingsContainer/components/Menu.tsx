@@ -17,6 +17,7 @@ function MenuItem({item}: {item: Route}) {
     const isActive = state.activeMenu === item.path;
     const hasChildren = item.childRoutes && item.childRoutes.length > 0;
     const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
+    const baseClassName = 'givewp-form-settings__menu';
 
     if (item.showWhen && !item.showWhen(item)) {
         return null;
@@ -31,7 +32,13 @@ function MenuItem({item}: {item: Route}) {
     };
 
     return (
-        <li className={classnames({'is-active': isActive, 'has-children': hasChildren})}>
+        <li
+            className={classnames({
+                [`${baseClassName}__item`]: true,
+                [`${baseClassName}__item--is-active`]: isActive,
+                [`${baseClassName}__item--has-children`]: hasChildren,
+            })}
+        >
             <button onClick={handleItemClick}>
                 {item.name}
                 {hasChildren && <Icon icon={chevronRight} />}
@@ -39,7 +46,7 @@ function MenuItem({item}: {item: Route}) {
             {isActiveParent && (
                 <ul>
                     <li>
-                        <button onClick={handleBackClick} className={'back-menu-button'}>
+                        <button onClick={handleBackClick} className={`${baseClassName}__back-button`}>
                             <Icon icon={chevronLeft} /> {__('Back to main menu', 'give')}
                         </button>
                     </li>
