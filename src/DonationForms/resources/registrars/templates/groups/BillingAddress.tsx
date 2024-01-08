@@ -1,8 +1,8 @@
-import type {BillingAddressProps} from '@givewp/forms/propTypes';
-import {FC, useEffect, useState} from 'react';
-import {__} from '@wordpress/i18n';
-import {ErrorMessage} from '@hookform/error-message';
-import {useCallback} from '@wordpress/element';
+import type { BillingAddressProps } from "@givewp/forms/propTypes";
+import { FC, useEffect, useState } from "react";
+import { __ } from "@wordpress/i18n";
+import { ErrorMessage } from "@hookform/error-message";
+import { useCallback } from "@wordpress/element";
 
 /**
  * @since 3.0.0
@@ -66,7 +66,6 @@ function StateFieldContainer({
     const {errors} = useFormState();
     const {setValue, clearErrors} = useFormContext();
     const country = useWatch({name: 'country'});
-    const state = useWatch({name: 'state'});
     const [states, setStates] = useState<State[]>([]);
     const [statesLoading, setStatesLoading] = useState<boolean>(false);
     const [stateLabel, setStateLabel] = useState<string>('State');
