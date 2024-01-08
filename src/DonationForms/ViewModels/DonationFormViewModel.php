@@ -104,6 +104,7 @@ class DonationFormViewModel
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
+            --givewp-design-settings-background-image:url('{$this->formSettings->designSettingImageUrl}');
             }"
         );
 
