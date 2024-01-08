@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import FormSettingsContainer from "@givewp/form-builder/components/canvas/FormSettingsContainer";
-import FormDonationConfirmationSettingsGroup from "@givewp/form-builder/settings/group-donation-confirmation";
-import FormGeneralSettingsGroup from "@givewp/form-builder/settings/group-general";
-import { __ } from "@wordpress/i18n";
-import EmailGeneralSettings from "@givewp/form-builder/settings/group-email-settings/general";
-import getEmailSettings from "@givewp/form-builder/settings/group-email-settings";
+import React, {useMemo} from 'react';
+import FormSettingsContainer from '@givewp/form-builder/components/canvas/FormSettingsContainer';
+import FormGeneralSettingsGroup from '@givewp/form-builder/settings/group-general';
+import FormDonationConfirmationSettingsGroup from '@givewp/form-builder/settings/group-donation-confirmation';
+import {__} from '@wordpress/i18n';
+import EmailGeneralSettings from '@givewp/form-builder/settings/group-email-settings/general';
+import getEmailSettings from '@givewp/form-builder/settings/group-email-settings';
 
 /**
  * @unreleased
@@ -19,12 +19,12 @@ export default function FormSettings() {
             {
                 name: __('General', 'give'),
                 path: 'general',
-                element: <FormGeneralSettingsGroup />,
+                element: FormGeneralSettingsGroup,
             },
             {
                 name: __('Donation Confirmation', 'give'),
                 path: 'donation-confirmation',
-                element: <FormDonationConfirmationSettingsGroup />,
+                element: FormDonationConfirmationSettingsGroup,
             },
             {
                 name: __('Email Settings', 'give'),
@@ -34,7 +34,7 @@ export default function FormSettings() {
                     {
                         name: __('General', 'give'),
                         path: 'email-settings/general',
-                        element: <EmailGeneralSettings />,
+                        element: EmailGeneralSettings,
                     },
                     ...getEmailSettings(),
                 ],
@@ -85,7 +85,7 @@ function isValidRoute(route: Route) {
 export type Route = {
     name: string;
     path: string;
-    element?: React.ReactElement;
+    element?: React.FC<{settings: any; setSettings: any}>;
     childRoutes?: Route[];
     showWhen?: ({item, settings}) => boolean;
 };

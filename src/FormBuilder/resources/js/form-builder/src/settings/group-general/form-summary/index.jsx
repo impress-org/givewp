@@ -1,18 +1,14 @@
-import {PanelRow, SelectControl, TextControl} from '@wordpress/components';
-import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import { PanelRow, SelectControl, TextControl } from "@wordpress/components";
+import { __ } from "@wordpress/i18n";
 
-import {isFormPageEnabled, PageSlugControl} from './page-slug';
-import {cleanForSlug} from '@wordpress/url';
+import { isFormPageEnabled, PageSlugControl } from "./page-slug";
+import { cleanForSlug } from "@wordpress/url";
 
 /**
  * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
-const FormSummarySettings = () => {
-    const {
-        settings: {formTitle, pageSlug, formStatus, newFormStatus},
-    } = useFormState();
-    const dispatch = useFormStateDispatch();
+const FormSummarySettings = ({settings, setSettings}) => {
+    const {formTitle, pageSlug, formStatus, newFormStatus} = settings;
     const isPublished = ['publish', 'private'].includes(formStatus);
     const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
@@ -31,8 +27,8 @@ const FormSummarySettings = () => {
                     label={__('Title')}
                     value={formTitle}
                     onChange={(formTitle) => {
-                        !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
-                        dispatch(setFormSettings({formTitle}));
+                        !isPublished && setSettings({pageSlug: cleanForSlug(formTitle)});
+                        setSettings({formTitle});
                     }}
                 />
             </PanelRow>
@@ -52,7 +48,7 @@ const FormSummarySettings = () => {
                         {label: __('Public', 'give'), value: 'publish'},
                         {label: __('Private', 'give'), value: 'private'},
                     ]}
-                    onChange={(newFormStatus) => dispatch(setFormSettings({newFormStatus}))}
+                    onChange={(newFormStatus) => setSettings({newFormStatus})}
                 />
             </PanelRow>
         </>

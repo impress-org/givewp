@@ -1,17 +1,13 @@
 import { __ } from "@wordpress/i18n";
 import { PanelRow, SelectControl, TextControl, ToggleControl } from "@wordpress/components";
 import { SettingsSection } from "@givewp/form-builder-library";
-import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 import LogoUpload from "@givewp/form-builder/settings/group-email-settings/email/logo-upload";
 
 /**
  * @unreleased
  */
-export default function EmailGeneralSettings() {
-    const {
-        settings: {emailOptionsStatus, emailTemplate, emailLogo, emailFromName, emailFromEmail},
-    } = useFormState();
-    const dispatch = useFormStateDispatch();
+export default function EmailGeneralSettings({ settings, setSettings }) {
+    const { emailOptionsStatus, emailTemplate, emailLogo, emailFromName, emailFromEmail } = settings;
 
     return (
         <>
@@ -28,7 +24,7 @@ export default function EmailGeneralSettings() {
                         help={__('Uses global settings when disabled.', 'give')}
                         checked={emailOptionsStatus === 'enabled'}
                         onChange={(emailOptionsStatus) => {
-                            dispatch(setFormSettings({emailOptionsStatus: emailOptionsStatus ? 'enabled' : 'global'}));
+                            setSettings({ emailOptionsStatus: emailOptionsStatus ? 'enabled' : 'global' });
                         }}
                     />
                 </PanelRow>
@@ -47,7 +43,7 @@ export default function EmailGeneralSettings() {
                                 {label: __('No template, plain text only', 'givewp'), value: 'none'},
                             ]}
                             value={emailTemplate}
-                            onChange={(emailTemplate) => dispatch(setFormSettings({emailTemplate}))}
+                            onChange={(emailTemplate) => setSettings({ emailTemplate })}
                         />
                     </PanelRow>
                     <PanelRow>
@@ -58,7 +54,7 @@ export default function EmailGeneralSettings() {
                                 'givewp'
                             )}
                             value={emailFromName}
-                            onChange={(emailFromName) => dispatch(setFormSettings({emailFromName}))}
+                            onChange={(emailFromName) => setSettings({ emailFromName })}
                         />
                     </PanelRow>
                     <PanelRow>
@@ -69,13 +65,13 @@ export default function EmailGeneralSettings() {
                                 'givewp'
                             )}
                             value={emailFromEmail}
-                            onChange={(emailFromEmail) => dispatch(setFormSettings({emailFromEmail}))}
+                            onChange={(emailFromEmail) => setSettings({ emailFromEmail })}
                         />
                     </PanelRow>
                     <PanelRow>
                         <LogoUpload
                             value={emailLogo}
-                            onChange={(emailLogo) => dispatch(setFormSettings({emailLogo}))}
+                            onChange={(emailLogo) => setSettings({ emailLogo })}
                         />
                     </PanelRow>
                 </SettingsSection>

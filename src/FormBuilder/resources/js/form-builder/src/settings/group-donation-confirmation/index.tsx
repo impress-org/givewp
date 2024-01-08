@@ -2,7 +2,6 @@ import {__} from '@wordpress/i18n';
 import {PanelRow} from '@wordpress/components';
 import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags';
 
@@ -11,11 +10,8 @@ const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 /**
  * @unreleased
  */
-export default function FormDonationConfirmationSettingsGroup() {
-    const {
-        settings: {receiptHeading, receiptDescription},
-    } = useFormState();
-    const dispatch = useFormStateDispatch();
+export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {
+    const {receiptHeading, receiptDescription} = settings;
 
     return (
         <>
@@ -26,7 +22,7 @@ export default function FormDonationConfirmationSettingsGroup() {
                 <DonationConfirmation
                     id={'give-form-settings__donation-confirmation-heading'}
                     content={receiptHeading}
-                    onChange={(receiptHeading) => dispatch(setFormSettings({receiptHeading}))}
+                    onChange={(receiptHeading) => setSettings({receiptHeading})}
                 />
             </SettingsSection>
             <SettingsSection
@@ -36,7 +32,7 @@ export default function FormDonationConfirmationSettingsGroup() {
                 <DonationConfirmation
                     id={'give-form-settings__donation-confirmation-description'}
                     content={receiptDescription}
-                    onChange={(receiptDescription) => dispatch(setFormSettings({receiptDescription}))}
+                    onChange={(receiptDescription) => setSettings({receiptDescription})}
                 />
             </SettingsSection>
             <SettingsSection

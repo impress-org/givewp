@@ -6,20 +6,17 @@ import { SettingsSection } from "@givewp/form-builder-library";
 import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
 import SendPreviewEmail from "./components/send-preview-email";
 import EmailPreviewContent from "./components/email-preview-content";
-import { useFormState } from "@givewp/form-builder/stores/form-state";
 import EmailTemplateSettings from "@givewp/form-builder/settings/group-email-settings/email/template-options/settings";
 import TemplateTags from "@givewp/form-builder/components/settings/TemplateTags";
 
 /**
  * @unreleased
  */
-export default function EmailTemplateOptions({notification}) {
+export default function EmailTemplateOptions({notification, settings, setSettings}) {
     const [showPreview, setShowPreview] = useState<boolean>(false);
     const templateTagsRef = useRef<HTMLUListElement>(null);
 
-    const {
-        settings: {emailTemplateOptions},
-    } = useFormState();
+    const {emailTemplateOptions} = settings;
 
     const selectedNotificationStatus = emailTemplateOptions[notification]?.status ?? 'global';
 
@@ -45,7 +42,7 @@ export default function EmailTemplateOptions({notification}) {
         <>
             {showPreview && (
                 <>
-                    <EmailPreviewContent emailType={notification} />
+                    <EmailPreviewContent emailType={notification} settings={settings} />
                     <Button
                         className={'email-preview__back-btn'}
                         variant={'secondary'}
@@ -59,7 +56,12 @@ export default function EmailTemplateOptions({notification}) {
             {!showPreview && (
                 <>
                     <div className={'email-settings'}>
-                        <EmailTemplateSettings notification={notification} templateTagsRef={templateTagsRef} />
+                        <EmailTemplateSettings
+                            notification={notification}
+                            settings={settings}
+                            setSettings={setSettings}
+                            templateTagsRef={templateTagsRef}
+                        />
 
                         {selectedNotificationStatus === 'enabled' && (
                             <>
@@ -74,6 +76,7 @@ export default function EmailTemplateOptions({notification}) {
                                         <SendPreviewEmail
                                             defaultEmailAddress={emailDefaultAddress}
                                             emailType={notification}
+                                            settings={settings}
                                         />
                                     </PanelRow>
                                 </SettingsSection>

@@ -8,7 +8,7 @@ import RegistrationSettings from "./registration";
 /**
  * @unreleased
  */
-export default function FormGeneralSettingsGroup() {
+export default function FormGeneralSettingsGroup({settings, setSettings}) {
     const formGridDescription = createInterpolateElement(
         __(
             'The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode. <a>Learn more about the Form Grid</a>',
@@ -25,7 +25,7 @@ export default function FormGeneralSettingsGroup() {
                 title={__('General', 'give')}
                 description={__('This includes the form name, the permalink and the visibility of this form.', 'give')}
             >
-                <FormSummarySettings />
+                <FormSummarySettings settings={settings} setSettings={setSettings} />
             </SettingsSection>
             <SettingsSection
                 title={__('User Registration', 'give')}
@@ -34,10 +34,10 @@ export default function FormGeneralSettingsGroup() {
                     'give'
                 )}
             >
-                <RegistrationSettings />
+                <RegistrationSettings settings={settings} setSettings={setSettings} />
             </SettingsSection>
             <SettingsSection title={__('Form Grid', 'give')} description={formGridDescription}>
-                <FormGridSettings />
+                <FormGridSettings settings={settings} setSettings={setSettings} />
             </SettingsSection>
         </>
     );

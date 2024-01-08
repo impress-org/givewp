@@ -1,15 +1,11 @@
 import { __ } from "@wordpress/i18n";
 import { PanelRow, TextControl, ToggleControl } from "@wordpress/components";
-import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 
 /**
  * @unreleased
  */
-const FormGridSettings = () => {
-    const {
-        settings: {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText},
-    } = useFormState();
-    const dispatch = useFormStateDispatch();
+const FormGridSettings = ({settings, setSettings}) => {
+    const {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText} = settings;
 
     return (
         <>
@@ -22,7 +18,7 @@ const FormGridSettings = () => {
                     )}
                     checked={formGridCustomize}
                     onChange={() => {
-                        dispatch(setFormSettings({formGridCustomize: !formGridCustomize}));
+                        setSettings({formGridCustomize: !formGridCustomize});
                     }}
                 />
             </PanelRow>
@@ -38,7 +34,7 @@ const FormGridSettings = () => {
                                 'give'
                             )}
                             value={formGridRedirectUrl}
-                            onChange={(formGridRedirectUrl) => dispatch(setFormSettings({formGridRedirectUrl}))}
+                            onChange={(formGridRedirectUrl) => setSettings({formGridRedirectUrl})}
                         />
                     </PanelRow>
                     <PanelRow>
@@ -50,9 +46,7 @@ const FormGridSettings = () => {
                                 'give'
                             )}
                             value={formGridDonateButtonText}
-                            onChange={(formGridDonateButtonText) =>
-                                dispatch(setFormSettings({formGridDonateButtonText}))
-                            }
+                            onChange={(formGridDonateButtonText) => setSettings({formGridDonateButtonText})}
                         />
                     </PanelRow>
                 </>

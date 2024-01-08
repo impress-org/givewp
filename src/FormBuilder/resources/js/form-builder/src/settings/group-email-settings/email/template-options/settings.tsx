@@ -3,7 +3,6 @@ import { BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl
 import { Icon as WPIcon, plus } from "@wordpress/icons";
 import { ClassicEditor, SettingsSection } from "@givewp/form-builder-library";
 import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
-import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 
 import TrashIcon from "./components/TrashIcon";
 
@@ -15,16 +14,15 @@ type EmailTemplateSettingsProps = {
     templateTagsRef: {
         current: HTMLUListElement;
     };
+    settings: any;
+    setSettings: (props: {}) => void;
 };
 
 /**
  * @unreleased
  */
-const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSettingsProps) => {
-    const dispatch = useFormStateDispatch();
-    const {
-        settings: {emailTemplateOptions},
-    } = useFormState();
+const EmailTemplateSettings = ({notification, templateTagsRef, settings, setSettings}: EmailTemplateSettingsProps) => {
+    const {emailTemplateOptions} = settings;
 
     const {emailNotifications, emailDefaultAddress} = getFormBuilderWindowData();
     const config = emailNotifications.find((config) => config.id === notification);
@@ -42,19 +40,16 @@ const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSet
     const recipients = option.recipient ?? [''];
 
     const updateEmailTemplateOption = (property, value) => {
-        dispatch(
-            setFormSettings({
-                emailTemplateOptions: {
-                    ...emailTemplateOptions,
-                    [notification]: {
-                        ...option,
-                        [property]: value,
-                    },
+        setSettings({
+            emailTemplateOptions: {
+                ...emailTemplateOptions,
+                [notification]: {
+                    ...option,
+                    [property]: value,
                 },
-            })
-        );
+            },
+        });
     };
-
     return (
         <div className={'email-settings-template__container'}>
             <SettingsSection

@@ -1,18 +1,16 @@
 import {useEffect, useState} from 'react';
-import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {__} from '@wordpress/i18n';
 
 type EmailPreviewContentProps = {
     emailType: string;
+    settings: any;
 };
 
-const EmailPreviewContent = ({emailType}: EmailPreviewContentProps) => {
+const EmailPreviewContent = ({emailType, settings}: EmailPreviewContentProps) => {
     const [previewHtml, setPreviewHtml] = useState<string>(null);
 
-    const {
-        settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail},
-    } = useFormState();
+    const {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail} = settings;
 
     const {formId, nonce, emailPreviewURL} = getFormBuilderWindowData();
 

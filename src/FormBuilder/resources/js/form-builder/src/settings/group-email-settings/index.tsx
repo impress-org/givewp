@@ -13,7 +13,7 @@ const getEmailSettings = () => {
         return {
             name: title,
             path: `email-settings/${id}`,
-            element: <EmailTemplateOptions notification={id} />,
+            element: (props) => <EmailTemplateOptions notification={id} {...props} />,
             showWhen: areEmailSettingsEnabled,
         };
     });
