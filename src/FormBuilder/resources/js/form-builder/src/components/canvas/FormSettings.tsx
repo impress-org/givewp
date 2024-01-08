@@ -11,7 +11,9 @@ import getEmailSettings from "@givewp/form-builder/settings/group-email-settings
  */
 export default function FormSettings() {
     const routes: Route[] = useMemo(() => {
-        const additionalSettings = wp.hooks.applyFilters('givewp_form_builder_settings_additional_routes', []);
+        const additionalSettings = validateRoutes(
+            wp.hooks.applyFilters('givewp_form_builder_settings_additional_routes', [])
+        );
 
         return [
             {
@@ -44,6 +46,42 @@ export default function FormSettings() {
     return <FormSettingsContainer routes={routes} />;
 }
 
+/**
+ * @unreleased
+ */
+function validateRoutes(routes: Route[]): Route[] {
+    return routes.filter((route) => {
+        let isValid = isValidRoute(route);
+
+        if (route.childRoutes) {
+            if (Array.isArray(route.childRoutes)) {
+                route.childRoutes = validateRoutes(route.childRoutes);
+            } else {
+                delete route.childRoutes;
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    });
+}
+
+/**
+ * @unreleased
+ */
+function isValidRoute(route: Route) {
+    return (
+        route.name &&
+        typeof route.name === 'string' &&
+        route.path &&
+        typeof route.path === 'string' &&
+        'element' in route
+    );
+}
+
+/**
+ * @unreleased
+ */
 type Route = {
     name: string;
     path: string;
