@@ -1,8 +1,8 @@
 import { Button, Popover, TextareaControl } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
 import { close as closeIcon } from "@wordpress/icons";
+import { ClassicEditor } from "@givewp/form-builder-library";
 import "./styles.scss";
-import ClassicEditor from "@givewp/form-builder/components/ClassicEditor";
 import TemplateTags, { TemplateTag } from "@givewp/form-builder/components/settings/TemplateTags";
 
 /**
