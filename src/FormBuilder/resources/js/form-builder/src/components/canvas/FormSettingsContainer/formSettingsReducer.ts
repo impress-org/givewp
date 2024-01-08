@@ -1,9 +1,13 @@
+// Action type constants
+const UPDATE_MENU_STATE = "UPDATE_MENU_STATE";
+const NAVIGATE_BACK_IN_MENU = "NAVIGATE_BACK_IN_MENU";
+
 /**
  * @unreleased
  */
 export const formSettingsReducer = (state: State, action: Action) => {
     switch (action.type) {
-        case 'UPDATE_MENU_STATE':
+        case UPDATE_MENU_STATE:
             const {hasChildren, path} = action.payload;
 
             if (hasChildren) {
@@ -19,7 +23,7 @@ export const formSettingsReducer = (state: State, action: Action) => {
                     activeRoute: path,
                 };
             }
-        case 'NAVIGATE_BACK_IN_MENU':
+        case NAVIGATE_BACK_IN_MENU:
             return {
                 ...state,
                 menuPage: state.menuPage - 1,
@@ -29,12 +33,11 @@ export const formSettingsReducer = (state: State, action: Action) => {
     }
 }
 
-
 /**
  * @unreleased
  */
 export const updateMenuState = (hasChildren: boolean, path: string): Action => ({
-    type: 'UPDATE_MENU_STATE',
+    type: UPDATE_MENU_STATE,
     payload: {hasChildren, path},
 });
 
@@ -42,7 +45,7 @@ export const updateMenuState = (hasChildren: boolean, path: string): Action => (
  * @unreleased
  */
 export const navigateBackInMenu = (): Action => ({
-    type: 'NAVIGATE_BACK_IN_MENU',
+    type: NAVIGATE_BACK_IN_MENU,
 });
 
 /**
@@ -65,6 +68,4 @@ export type MenuState = {
 /**
  * @unreleased
  */
-export type Action =
-    | {type: 'UPDATE_MENU_STATE'; payload: MenuState}
-    | {type: 'NAVIGATE_BACK_IN_MENU'};
+export type Action = {type: typeof UPDATE_MENU_STATE; payload: MenuState} | {type: typeof NAVIGATE_BACK_IN_MENU};
