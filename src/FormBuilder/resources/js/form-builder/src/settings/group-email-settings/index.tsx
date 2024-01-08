@@ -1,7 +1,10 @@
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import EmailTemplateOptions from './email/template-options';
-import {useFormState} from '@givewp/form-builder/stores/form-state';
+import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
+import EmailTemplateOptions from "./email/template-options";
+import { useFormState } from "@givewp/form-builder/stores/form-state";
 
+/**
+ * @unreleased
+ */
 const getEmailSettings = () => {
     const {emailNotifications} = getFormBuilderWindowData();
 
@@ -17,6 +20,9 @@ const getEmailSettings = () => {
     });
 };
 
+/**
+ * @unreleased
+ */
 const areEmailSettingsEnabled = () => {
     const {
         settings: {emailOptionsStatus},

@@ -1,12 +1,15 @@
-import {__} from '@wordpress/i18n';
-import {BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl} from '@wordpress/components';
-import {Icon as WPIcon, plus} from '@wordpress/icons';
-import {ClassicEditor, SettingsSection} from '@givewp/form-builder-library';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import { __ } from "@wordpress/i18n";
+import { BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl } from "@wordpress/components";
+import { Icon as WPIcon, plus } from "@wordpress/icons";
+import { ClassicEditor, SettingsSection } from "@givewp/form-builder-library";
+import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
+import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 
-import TrashIcon from './components/TrashIcon';
+import TrashIcon from "./components/TrashIcon";
 
+/**
+ * @unreleased
+ */
 type EmailTemplateSettingsProps = {
     notification: string;
     templateTagsRef: {
@@ -14,6 +17,9 @@ type EmailTemplateSettingsProps = {
     };
 };
 
+/**
+ * @unreleased
+ */
 const EmailTemplateSettings = ({notification, templateTagsRef}: EmailTemplateSettingsProps) => {
     const dispatch = useFormStateDispatch();
     const {

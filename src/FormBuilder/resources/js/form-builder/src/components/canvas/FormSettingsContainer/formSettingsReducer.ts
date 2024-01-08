@@ -1,3 +1,6 @@
+/**
+ * @unreleased
+ */
 export const formSettingsReducer = (state: State, action: Action) => {
     switch (action.type) {
         case 'UPDATE_MENU_STATE':
@@ -26,26 +29,42 @@ export const formSettingsReducer = (state: State, action: Action) => {
     }
 }
 
+
+/**
+ * @unreleased
+ */
 export const updateMenuState = (hasChildren: boolean, path: string): Action => ({
     type: 'UPDATE_MENU_STATE',
     payload: {hasChildren, path},
 });
 
+/**
+ * @unreleased
+ */
 export const navigateBackInMenu = (): Action => ({
     type: 'NAVIGATE_BACK_IN_MENU',
 });
 
+/**
+ * @unreleased
+ */
 export type State = {
     menuPage: number;
     activeMenu: string;
     activeRoute: string;
 };
 
+/**
+ * @unreleased
+ */
 export type MenuState = {
     hasChildren: boolean;
     path: string;
 };
 
+/**
+ * @unreleased
+ */
 export type Action =
     | {type: 'UPDATE_MENU_STATE'; payload: MenuState}
     | {type: 'NAVIGATE_BACK_IN_MENU'};

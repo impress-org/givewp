@@ -1,10 +1,13 @@
-import {__} from '@wordpress/i18n';
-import {createInterpolateElement} from '@wordpress/element';
-import {SettingsSection} from '@givewp/form-builder-library';
-import FormGridSettings from './form-grid';
-import FormSummarySettings from './form-summary';
-import RegistrationSettings from './registration';
+import { __ } from "@wordpress/i18n";
+import { createInterpolateElement } from "@wordpress/element";
+import { SettingsSection } from "@givewp/form-builder-library";
+import FormGridSettings from "./form-grid";
+import FormSummarySettings from "./form-summary";
+import RegistrationSettings from "./registration";
 
+/**
+ * @unreleased
+ */
 export default function FormGeneralSettingsGroup() {
     const formGridDescription = createInterpolateElement(
         __(

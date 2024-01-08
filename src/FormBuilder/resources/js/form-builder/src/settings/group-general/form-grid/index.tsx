@@ -1,7 +1,10 @@
-import {__} from '@wordpress/i18n';
-import {PanelRow, TextControl, ToggleControl} from '@wordpress/components';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import { __ } from "@wordpress/i18n";
+import { PanelRow, TextControl, ToggleControl } from "@wordpress/components";
+import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 
+/**
+ * @unreleased
+ */
 const FormGridSettings = () => {
     const {
         settings: {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText},

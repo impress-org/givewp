@@ -1,15 +1,18 @@
-import {useEffect, useRef, useState} from 'react';
-import {createInterpolateElement} from '@wordpress/element';
-import {Button, PanelRow} from '@wordpress/components';
-import {__} from '@wordpress/i18n';
-import {SettingsSection} from '@givewp/form-builder-library';
-import CopyToClipboardButton from './components/copy-to-clipboard-button';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import SendPreviewEmail from './components/send-preview-email';
-import EmailPreviewContent from './components/email-preview-content';
-import {useFormState} from '@givewp/form-builder/stores/form-state';
-import EmailTemplateSettings from '@givewp/form-builder/settings/group-email-settings/email/template-options/settings';
+import { useEffect, useRef, useState } from "react";
+import { createInterpolateElement } from "@wordpress/element";
+import { Button, PanelRow } from "@wordpress/components";
+import { __ } from "@wordpress/i18n";
+import { SettingsSection } from "@givewp/form-builder-library";
+import CopyToClipboardButton from "./components/copy-to-clipboard-button";
+import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
+import SendPreviewEmail from "./components/send-preview-email";
+import EmailPreviewContent from "./components/email-preview-content";
+import { useFormState } from "@givewp/form-builder/stores/form-state";
+import EmailTemplateSettings from "@givewp/form-builder/settings/group-email-settings/email/template-options/settings";
 
+/**
+ * @unreleased
+ */
 export default function EmailTemplateOptions({notification}) {
     const [showPreview, setShowPreview] = useState<boolean>(false);
     const templateTagsRef = useRef<HTMLUListElement>(null);

@@ -1,5 +1,8 @@
-import {useFormSettingsContext} from '@givewp/form-builder/components/canvas/FormSettingsContainer';
+import { useFormSettingsContext } from "@givewp/form-builder/components/canvas/FormSettingsContainer";
 
+/**
+ * @unreleased
+ */
 function renderRoutes(routes) {
     const [state] = useFormSettingsContext();
 
@@ -10,6 +13,10 @@ function renderRoutes(routes) {
         return state.activeRoute === route.path && route.element;
     });
 }
+
+/**
+ * @unreleased
+ */
 export default function Content({routes}) {
     return (
         <div className={'givewp-form-settings__content'}>

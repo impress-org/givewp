@@ -1,6 +1,9 @@
-import {PanelRow} from '@wordpress/components';
-import {ClassicEditor} from '@givewp/form-builder-library';
+import { PanelRow } from "@wordpress/components";
+import { ClassicEditor } from "@givewp/form-builder-library";
 
+/**
+ * @unreleased
+ */
 const DonationConfirmation = ({id, content, onChange}) => {
     return (
         <PanelRow>

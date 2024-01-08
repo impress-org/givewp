@@ -1,7 +1,10 @@
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {__} from '@wordpress/i18n';
-import {PanelRow, ToggleControl} from '@wordpress/components';
+import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
+import { __ } from "@wordpress/i18n";
+import { PanelRow, ToggleControl } from "@wordpress/components";
 
+/**
+ * @unreleased
+ */
 const RegistrationSettings = () => {
     const {
         settings: {registrationNotification},
