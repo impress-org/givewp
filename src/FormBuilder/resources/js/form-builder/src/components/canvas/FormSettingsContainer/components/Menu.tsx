@@ -8,18 +8,20 @@ import {
 } from "@givewp/form-builder/components/canvas/FormSettingsContainer/formSettingsReducer";
 import classnames from "classnames";
 import { Route } from "@givewp/form-builder/components/canvas/FormSettings";
+import { useFormState } from "@givewp/form-builder/stores/form-state";
 
 /**
  * @unreleased
  */
 function MenuItem({item}: {item: Route}) {
     const [state, dispatch] = useFormSettingsContext();
+    const {settings} = useFormState();
     const isActive = state.activeMenu === item.path;
     const hasChildren = item.childRoutes && item.childRoutes.length > 0;
     const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
     const baseClassName = 'givewp-form-settings__menu';
 
-    if (item.showWhen && !item.showWhen(item)) {
+    if (item.showWhen && !item.showWhen({item, settings})) {
         return null;
     }
 

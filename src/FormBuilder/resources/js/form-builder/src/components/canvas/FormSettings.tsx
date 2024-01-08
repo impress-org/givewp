@@ -87,5 +87,5 @@ export type Route = {
     path: string;
     element?: React.ReactElement;
     childRoutes?: Route[];
-    showWhen?: (item?: Route) => boolean;
+    showWhen?: ({item, settings}) => boolean;
 };

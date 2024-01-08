@@ -1,6 +1,5 @@
 import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
 import EmailTemplateOptions from "./email/template-options";
-import { useFormState } from "@givewp/form-builder/stores/form-state";
 
 /**
  * @unreleased
@@ -23,10 +22,8 @@ const getEmailSettings = () => {
 /**
  * @unreleased
  */
-const areEmailSettingsEnabled = () => {
-    const {
-        settings: {emailOptionsStatus},
-    } = useFormState();
+const areEmailSettingsEnabled = ({settings}) => {
+    const {emailOptionsStatus} = settings;
 
     return emailOptionsStatus === 'enabled';
 };
