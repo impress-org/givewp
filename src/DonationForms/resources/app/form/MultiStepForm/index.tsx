@@ -72,7 +72,7 @@ export default function MultiStepForm({form}: {form: Form}) {
     }
 
     return (
-        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0, showHeader: form.settings?.showHeader}}>
+        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0}}>
             <DonationSummaryProvider>
                 <Steps steps={steps} />
             </DonationSummaryProvider>

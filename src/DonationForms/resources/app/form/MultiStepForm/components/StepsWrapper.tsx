@@ -4,6 +4,7 @@ import StepsPagination from "@givewp/forms/app/form/MultiStepForm/components/Ste
 import {__} from "@wordpress/i18n";
 import useCurrentStep from "@givewp/forms/app/form/MultiStepForm/hooks/useCurrentStep";
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
+import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 
 /**
  * @since 3.0.0
@@ -18,7 +19,8 @@ function StepsWrapperTitle() {
  * @since 3.0.0
  */
 export default function StepsWrapper({children}: { children: ReactNode }) {
-    const {steps, showHeader, currentStep} = useDonationFormMultiStepState();
+    const {steps, currentStep} = useDonationFormMultiStepState();
+    const {showHeader} = useDonationFormSettings();
 
     const showProgress = !showHeader || currentStep > 0;
     const totalSteps = showHeader ? steps.length : steps.length - 1;
