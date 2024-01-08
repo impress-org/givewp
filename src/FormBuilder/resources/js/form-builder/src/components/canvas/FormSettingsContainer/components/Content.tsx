@@ -1,9 +1,10 @@
 import { useFormSettingsContext } from "@givewp/form-builder/components/canvas/FormSettingsContainer";
+import { Route } from "@givewp/form-builder/components/canvas/FormSettings";
 
 /**
  * @unreleased
  */
-function renderRoutes(routes) {
+function renderRoutes(routes: Route[]) {
     const [state] = useFormSettingsContext();
 
     return routes.map((route) => {
@@ -17,10 +18,6 @@ function renderRoutes(routes) {
 /**
  * @unreleased
  */
-export default function Content({routes}) {
-    return (
-        <div className={'givewp-form-settings__content'}>
-            {renderRoutes(routes)}
-        </div>
-    );
+export default function Content({routes}: {routes: Route[]}) {
+    return <div className={'givewp-form-settings__content'}>{renderRoutes(routes)}</div>;
 }

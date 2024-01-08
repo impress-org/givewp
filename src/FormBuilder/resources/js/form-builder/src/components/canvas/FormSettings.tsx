@@ -82,10 +82,10 @@ function isValidRoute(route: Route) {
 /**
  * @unreleased
  */
-type Route = {
+export type Route = {
     name: string;
     path: string;
     element?: React.ReactElement;
     childRoutes?: Route[];
-    showWhen?: () => boolean;
+    showWhen?: (item?: Route) => boolean;
 };

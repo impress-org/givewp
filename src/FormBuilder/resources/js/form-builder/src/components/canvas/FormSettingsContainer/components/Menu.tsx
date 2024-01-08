@@ -7,14 +7,15 @@ import {
     updateMenuState
 } from "@givewp/form-builder/components/canvas/FormSettingsContainer/formSettingsReducer";
 import classnames from "classnames";
+import { Route } from "@givewp/form-builder/components/canvas/FormSettings";
 
 /**
  * @unreleased
  */
-function MenuItem({item}) {
+function MenuItem({item}: {item: Route}) {
     const [state, dispatch] = useFormSettingsContext();
     const isActive = state.activeMenu === item.path;
-    const hasChildren = item.childRoutes && item.childRoutes.length;
+    const hasChildren = item.childRoutes && item.childRoutes.length > 0;
     const isActiveParent = hasChildren && state.activeMenu.split('/').includes(item.path);
 
     if (item.showWhen && !item.showWhen(item)) {
@@ -54,7 +55,7 @@ function MenuItem({item}) {
 /**
  * @unreleased
  */
-export default function Menu({routes}) {
+export default function Menu({routes}: {routes: Route[]}) {
     const [state] = useFormSettingsContext();
 
     return (
