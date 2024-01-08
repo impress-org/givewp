@@ -7,6 +7,7 @@ import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepFor
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 
 /**
+ * @unreleased updated to be less restrictive of step number
  * @since 3.0.0
  */
 function StepsWrapperTitle() {
@@ -16,6 +17,7 @@ function StepsWrapperTitle() {
 }
 
 /**
+ * @unreleased updated with showStepsHeader conditional and currentStepProgress
  * @since 3.0.0
  */
 export default function StepsWrapper({children}: { children: ReactNode }) {
