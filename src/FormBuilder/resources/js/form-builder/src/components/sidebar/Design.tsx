@@ -1,11 +1,7 @@
-import {__} from "@wordpress/i18n";
-import {
-    CustomStyleSettings,
-    DonationGoalSettings,
-    FormDesignSettings
-} from "@givewp/form-builder/settings";
+import {__} from '@wordpress/i18n';
+import FormDesignSettings from '@givewp/form-builder/settings/design';
 
-const Sidebar = () => {
+const Sidebar = ({toggleShowSidebar}) => {
     return (
         <div
             id="sidebar-primary"
@@ -14,11 +10,9 @@ const Sidebar = () => {
             aria-label={__('Form design settings')}
             tabIndex={-1}
         >
-            <FormDesignSettings />
-            <DonationGoalSettings />
-            <CustomStyleSettings />
+            <FormDesignSettings toggleShowSidebar={toggleShowSidebar} />
         </div>
-    )
-}
+    );
+};
 
 export default Sidebar;
