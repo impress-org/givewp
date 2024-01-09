@@ -33,10 +33,16 @@ function CopyTagButton({textToCopy}) {
 /**
  * @unreleased
  */
-export default function TemplateTags({templateTags}: {templateTags: TemplateTag[]}) {
+export default function TemplateTags({
+    templateTags,
+    templateTagsRef,
+}: {
+    templateTags: TemplateTag[];
+    templateTagsRef?: Ref<HTMLUListElement>;
+}) {
     return (
-        <ul className="givewp-template-tags__list">
-            {templateTags.map(({ id, description }) => {
+        <ul className="givewp-template-tags__list" ref={templateTagsRef}>
+            {templateTags.map(({id, description}) => {
                 const tagId = `{${id}}`;
 
                 return (
@@ -46,9 +52,7 @@ export default function TemplateTags({templateTags}: {templateTags: TemplateTag[
                             <CopyTagButton textToCopy={tagId} />
                         </div>
                         <div className="givewp-template-tags__list-item-bottom">
-                                <span className="givewp-template-tags__description">
-                                    {description}
-                                </span>
+                            <span className="givewp-template-tags__description">{description}</span>
                         </div>
                     </li>
                 );

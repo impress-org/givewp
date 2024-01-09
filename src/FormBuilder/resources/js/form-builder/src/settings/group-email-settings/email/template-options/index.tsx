@@ -86,7 +86,10 @@ export default function EmailTemplateOptions({notification, settings, setSetting
                                     description={templateTagsDescription}
                                 >
                                     <PanelRow>
-                                        <TemplateTags templateTags={emailTemplateTags} />
+                                        <TemplateTags
+                                            templateTags={emailTemplateTags}
+                                            templateTagsRef={templateTagsRef}
+                                        />
                                     </PanelRow>
                                 </SettingsSection>
 
