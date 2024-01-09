@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 import {Button, PanelBody, PanelRow, Spinner, TextControl} from '@wordpress/components';
-import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {CopyIcon} from '@givewp/form-builder/components/icons';
 import FormSummarySettings from '@givewp/form-builder/settings/group-general/form-summary';
 import {getWindowData} from '@givewp/form-builder/common';
@@ -24,9 +24,8 @@ export default function FormPrepublishPanel({
 }: FormPrepublishPanelProps) {
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
-    const {
-        settings: {formTitle, formStatus, newFormStatus},
-    } = useFormState();
+    const {settings} = useFormState();
+    const {formTitle, formStatus, newFormStatus} = settings;
     const dispatch = useFormStateDispatch();
     const {
         formPage: {permalink},
@@ -151,7 +150,10 @@ export default function FormPrepublishPanel({
                                 title={__('Summary', 'give')}
                                 initialOpen={true}
                             >
-                                <FormSummarySettings />
+                                <FormSummarySettings
+                                    settings={settings}
+                                    setSettings={(props: {}) => dispatch(setFormSettings(props))}
+                                />
                             </PanelBody>
                         </>
                     )}
