@@ -264,6 +264,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.3.0: Jan 10th, 2024 =
 * Happy new year!
+* Fix: Resolved an issue where some migrated forms were being duplicated
+* Fix: Resolved an issue with the donor export filter by donation form
+* Fix: Added additional attribute escaping to the donor wall shortcode
+* Enhancement: Improved current compatibility with PHP 8.2
+* New: The donor dashboard now has a way to update and reset passwords
+* New: Added pre-requisite v3 compatibility updates for the Give Funds and Designations add-on
+* New: Added v3 form migration compatibility for select GiveWP add-ons including: Mailchimp and Funds and Designations
+* New: Added a new programmatic way to interact with the v3 confirmation page using our fields api
 
 = 3.2.2: Dec 20th, 2023 =
 * Fix: Resolved an error on the donor details page when they have no donations
