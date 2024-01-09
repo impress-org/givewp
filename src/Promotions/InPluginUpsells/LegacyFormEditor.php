@@ -48,18 +48,15 @@ class LegacyFormEditor
     }
 
     /**
-     *
+     * @since 3.2.1 replaced logic to be give_forms post_type specific
      * @since 2.27.1
-     *
      */
     public static function isShowing(): bool
     {
-        $queryParameters = $_GET;
+        global $post, $pagenow;
 
-        if (isset($queryParameters['action']) && $queryParameters['action'] === 'edit' && $queryParameters['post']) {
-            return true;
-        }
-
-        return false;
+        return $post &&
+            in_array($pagenow, ['post-new.php', 'post.php'], true) &&
+            'give_forms' === get_post_type($post);
     }
 }

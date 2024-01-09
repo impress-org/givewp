@@ -1,22 +1,23 @@
 <?php
 
-namespace Give\Revenue\Listeners;
+namespace Give\Revenue\LegacyListeners;
 
 use Give\Donations\Models\Donation;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @since 2.22.1
+ * @unreleased
  */
 class UpdateRevenueWhenDonationAmountUpdated
 {
     /**
-     * @unreleased updated to accept Donation model
-     * @since 2.22.1
+     * @unreleased
      */
-    public function __invoke(Donation $donation)
+    public function __invoke(int $donationId)
     {
-        if ($donation->isDirty('amount')) {
+        $donation = Donation::find($donationId);
+
+        if ($donation){
             give(Revenue::class)->updateRevenueAmount($donation);
         }
     }

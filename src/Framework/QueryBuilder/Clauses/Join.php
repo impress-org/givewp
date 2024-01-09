@@ -35,7 +35,10 @@ class Join
     {
         $this->table    = QueryBuilder::prefixTable($table);
         $this->joinType = $this->getJoinType($joinType);
-        $this->alias    = trim($alias);
+
+        if ( ! is_null($alias)) {
+            $this->alias = trim($alias);
+        }
     }
 
     /**
