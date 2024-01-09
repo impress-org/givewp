@@ -313,7 +313,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
-     * @unreleased Add support to the Funds and Designations addon
+     * @since 3.3.0 Add support to the Funds and Designations addon
      * @since 3.0.0
      * @return array
      */
