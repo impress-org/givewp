@@ -17,6 +17,7 @@ use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
+use Give\DonationForms\Migrations\RemoveDuplicateMeta;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
@@ -73,6 +74,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         give(MigrationsRegister::class)->addMigrations([
             CleanMultipleSlashesOnDB::class,
+            RemoveDuplicateMeta::class,
         ]);
     }
 
