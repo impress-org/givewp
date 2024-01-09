@@ -5,7 +5,6 @@ namespace Give\Revenue\Repositories;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class Revenue
