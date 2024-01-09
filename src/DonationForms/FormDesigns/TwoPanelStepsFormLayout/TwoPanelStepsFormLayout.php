@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\DonationForms\FormDesigns\TwoColumnFormDesign;
+namespace Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout;
 
 use Give\Framework\FormDesigns\FormDesign;
 
 /**
  * @unreleased
  */
-class TwoColumnFormDesign extends FormDesign
+class TwoPanelStepsFormLayout extends FormDesign
 {
     protected $isMultiStep = true;
 
@@ -16,7 +16,7 @@ class TwoColumnFormDesign extends FormDesign
      */
     public static function id(): string
     {
-        return 'two-column';
+        return 'two-panel-steps';
     }
 
     /**
@@ -24,7 +24,7 @@ class TwoColumnFormDesign extends FormDesign
      */
     public static function name(): string
     {
-        return __('Two-Column', 'give');
+        return __('Two Panel (Steps)', 'give');
     }
 
     /**
@@ -32,6 +32,6 @@ class TwoColumnFormDesign extends FormDesign
      */
     public function css(): string
     {
-        return GIVE_PLUGIN_URL . 'build/twoColumnFormDesignCss.css';
+        return GIVE_PLUGIN_URL . 'build/twoPanelStepsFormLayoutCss.css';
     }
 }
