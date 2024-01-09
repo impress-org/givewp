@@ -269,13 +269,14 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
+     * @since 3.2.1 added global $post to isset
      * @since 3.0.0
      *
      * @return bool
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
     }
 
     /**
@@ -312,6 +313,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
+     * @unreleased Add support to the Funds and Designations addon
      * @since 3.0.0
      * @return array
      */
@@ -332,7 +334,7 @@ class DonationFormsAdminPage
             'Salesforce' => defined('GIVE_SALESFORCE_VERSION'),
             'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
-            //            'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
+            'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
             //            'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
             //            'Gift Aid' => class_exists('Give_Gift_Aid'),
             //            'MailChimp' => class_exists('Give_MailChimp'),
