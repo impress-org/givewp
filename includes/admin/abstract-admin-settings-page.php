@@ -20,6 +20,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 	 *
 	 * @sine 1.8
 	 */
+    #[\AllowDynamicProperties]
 	class Give_Settings_Page {
 
 		/**

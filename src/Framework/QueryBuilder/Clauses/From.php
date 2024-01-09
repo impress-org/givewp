@@ -20,12 +20,15 @@ class From
     public $alias;
 
     /**
-     * @param  string|RawSQL  $table
-     * @param  string|null  $alias
+     * @param string|RawSQL $table
+     * @param string|null   $alias
      */
     public function __construct($table, $alias = null)
     {
         $this->table = QueryBuilder::prefixTable($table);
-        $this->alias = trim($alias);
+
+        if ( ! is_null($alias)) {
+            $this->alias = trim($alias);
+        }
     }
 }
