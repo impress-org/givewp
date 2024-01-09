@@ -101,7 +101,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 ?>
                 <div class="give-donor-wrapper">
                     <div class="give-donor-content"
-                         style="border-color: <?php echo !empty($atts['color']) ? $atts['color'] : '#219653' ?>">
+                         style="border-color: <?php echo !empty($atts['color']) ? esc_attr($atts['color']) : '#219653' ?>">
                         <?php
                         $comment = esc_html($donation['donor_comment']);
                         $stripped_comment = str_replace(' ', '', $comment);
@@ -127,7 +127,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                             $excerpt = trim($excerpt, '.!,:;');
 
                             echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
-                                    <span> <a class='give-donor-content__read-more' style='color: $primary_color'> $read_more_text </a></span>
+                                    <span> <a class='give-donor-content__read-more' style='color: " . esc_attr($primary_color) . "'> $read_more_text </a></span>
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
@@ -178,7 +178,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                 if ($atts['show_total']) {
                     echo "
-                             <span class= 'give-donor-details__total' style='color: $primary_color'> $donation_amount </span>
+                             <span class= 'give-donor-details__total' style='color: " . esc_attr($primary_color) . "'> $donation_amount </span>
                         ";
                 }
                 ?>
@@ -199,12 +199,12 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     trim($honoree_first_name) . ".";
 
             echo
-            "<div class='give-donor-tribute' style='background-color: {$tribute_background_color} '>
+            "<div class='give-donor-tribute' style='background-color: " . esc_attr($tribute_background_color) . " '>
                     <span>
                         <svg width='16' height='16' viewBox='0 0 16 16'  xmlns='http://www.w3.org/2000/svg' class='give-donor-tribute__svg'>
-                             <path fill='$primary_color' opacity='0.4' d='M11.9667 5.13998L11.8734 5.08665L10.9467 4.55332L9.0334 3.44665C8.44673 3.10665 7.5534 3.10665 6.96673 3.44665L5.0534 4.55332L4.12673 5.09332L4.00673 5.15998C2.8134 5.95998 2.7334 6.10665 2.7334 7.39332V10.4667C2.7334 11.7533 2.8134 11.9 4.0334 12.72L6.96673 14.4133C7.26007 14.5867 7.62673 14.6667 8.00007 14.6667C8.36673 14.6667 8.74007 14.5867 9.0334 14.4133L11.9934 12.7C13.1867 11.9 13.2667 11.7533 13.2667 10.4667V7.39332C13.2667 6.10665 13.1867 5.95998 11.9667 5.13998Z' fill='#15AE56'/>
-                             <path fill='$primary_color' d='M4.12671 5.09337L5.05338 4.55337L6.88004 3.50004L6.96671 3.44671C7.55337 3.10671 8.44671 3.10671 9.03338 3.44671L9.12004 3.50004L10.9467 4.55337L11.8734 5.08671V3.66004C11.8734 2.16004 11.0467 1.33337 9.54671 1.33337H6.44671C4.94671 1.33337 4.12671 2.16004 4.12671 3.66004V5.09337Z' fill='#15AE56'/>
-                             <path fill='$primary_color' d='M9.89333 8.89327L9.47999 9.39994C9.41333 9.47327 9.36666 9.61994 9.37333 9.71994L9.41333 10.3733C9.43999 10.7733 9.15333 10.9799 8.77999 10.8333L8.17333 10.5933C8.07999 10.5599 7.91999 10.5599 7.82666 10.5933L7.21999 10.8333C6.84666 10.9799 6.55999 10.7733 6.58666 10.3733L6.62666 9.71994C6.63333 9.61994 6.58666 9.47327 6.51999 9.39994L6.10666 8.89327C5.84666 8.5866 5.95999 8.2466 6.34666 8.1466L6.97999 7.9866C7.07999 7.95994 7.19999 7.8666 7.25333 7.77994L7.60666 7.23327C7.82666 6.89327 8.17333 6.89327 8.39333 7.23327L8.74666 7.77994C8.79999 7.8666 8.91999 7.95994 9.01999 7.9866L9.65333 8.1466C10.04 8.2466 10.1533 8.5866 9.89333 8.89327Z' fill='#15AE56'/>
+                             <path fill=' " . esc_attr($primary_color) . "' opacity='0.4' d='M11.9667 5.13998L11.8734 5.08665L10.9467 4.55332L9.0334 3.44665C8.44673 3.10665 7.5534 3.10665 6.96673 3.44665L5.0534 4.55332L4.12673 5.09332L4.00673 5.15998C2.8134 5.95998 2.7334 6.10665 2.7334 7.39332V10.4667C2.7334 11.7533 2.8134 11.9 4.0334 12.72L6.96673 14.4133C7.26007 14.5867 7.62673 14.6667 8.00007 14.6667C8.36673 14.6667 8.74007 14.5867 9.0334 14.4133L11.9934 12.7C13.1867 11.9 13.2667 11.7533 13.2667 10.4667V7.39332C13.2667 6.10665 13.1867 5.95998 11.9667 5.13998Z' fill='#15AE56'/>
+                             <path fill=' " . esc_attr($primary_color) . "' d='M4.12671 5.09337L5.05338 4.55337L6.88004 3.50004L6.96671 3.44671C7.55337 3.10671 8.44671 3.10671 9.03338 3.44671L9.12004 3.50004L10.9467 4.55337L11.8734 5.08671V3.66004C11.8734 2.16004 11.0467 1.33337 9.54671 1.33337H6.44671C4.94671 1.33337 4.12671 2.16004 4.12671 3.66004V5.09337Z' fill='#15AE56'/>
+                             <path fill=' " . esc_attr($primary_color) . "' d='M9.89333 8.89327L9.47999 9.39994C9.41333 9.47327 9.36666 9.61994 9.37333 9.71994L9.41333 10.3733C9.43999 10.7733 9.15333 10.9799 8.77999 10.8333L8.17333 10.5933C8.07999 10.5599 7.91999 10.5599 7.82666 10.5933L7.21999 10.8333C6.84666 10.9799 6.55999 10.7733 6.58666 10.3733L6.62666 9.71994C6.63333 9.61994 6.58666 9.47327 6.51999 9.39994L6.10666 8.89327C5.84666 8.5866 5.95999 8.2466 6.34666 8.1466L6.97999 7.9866C7.07999 7.95994 7.19999 7.8666 7.25333 7.77994L7.60666 7.23327C7.82666 6.89327 8.17333 6.89327 8.39333 7.23327L8.74666 7.77994C8.79999 7.8666 8.91999 7.95994 9.01999 7.9866L9.65333 8.1466C10.04 8.2466 10.1533 8.5866 9.89333 8.89327Z' fill='#15AE56'/>
                         </svg>
                     </span>
 
