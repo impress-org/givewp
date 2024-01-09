@@ -37,7 +37,7 @@ const EmailTemplateSettings = ({notification, templateTagsRef, settings, setSett
         ...emailTemplateOptions[notification],
     };
 
-    const recipients = option.recipient ?? [''];
+    const recipients = Object.values(option.recipient) ?? [''];
 
     const updateEmailTemplateOption = (property, value) => {
         setSettings({
