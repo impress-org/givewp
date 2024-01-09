@@ -6,7 +6,7 @@ import SelectControl from '../../components/select-control';
 import TextControl from '../../components/text-control';
 import RadioControl from '../../components/radio-control';
 import Button from '../../components/button';
-import {updateProfileWithAPI} from './utils';
+import {updateProfileWithAPI, updatePasswordWithAPI} from './utils';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import EmailControls from './email-controls';
@@ -93,6 +93,14 @@ const Content = () => {
             label: __('Private - only organization admins can view my info', 'give'),
         },
     ];
+
+    const [newPassword, setNewPassword] = useState('');
+    const [passwordUpdated, setPasswordUpdated] = useState(false);
+    const handlePasswordUpdate = async () => {
+        updatePasswordWithAPI(newPassword)
+        setNewPassword('');
+        setPasswordUpdated(true);
+    };
 
     useEffect(() => {
         setUpdated(false);
@@ -193,6 +201,31 @@ const Content = () => {
                 ) : (
                     <Fragment>
                         {__('Update Profile', 'give')}{' '}
+                        <FontAwesomeIcon
+                            className={isUpdating ? 'give-donor-dashboard__edit-profile-spinner' : ''}
+                            icon={isUpdating ? 'spinner' : 'save'}
+                            fixedWidth
+                        />
+                    </Fragment>
+                )}
+            </Button>
+
+            <Heading>{__('Update Password', 'give')}</Heading>
+            <Divider />
+            <TextControl
+                type="password"
+                label={__('New Password', 'give')}
+                value={newPassword}
+                onChange={(value) => setNewPassword(value)}
+            />
+            <Button onClick={() => handlePasswordUpdate()}>
+                {passwordUpdated ? (
+                    <Fragment>
+                        {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        {__('Update Password', 'give')}{' '}
                         <FontAwesomeIcon
                             className={isUpdating ? 'give-donor-dashboard__edit-profile-spinner' : ''}
                             icon={isUpdating ? 'spinner' : 'save'}
