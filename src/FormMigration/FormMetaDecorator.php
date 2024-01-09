@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -507,6 +508,78 @@ class FormMetaDecorator extends FormModelDecorator
             'feeMessage' => $this->getMeta('_form_give_fee_explanation'),
         ];
     }
+
+    /**
+     * @unreleased
+     */
+    public function isMailchimpEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'),'true');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'),'true');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
+
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpLabel()
+    {
+        $value = $this->getMeta('_give_mailchimp_custom_label');
+        return $value === '' ? null : $value;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultChecked(): bool
+    {
+        return $this->getMeta('_give_mailchimp_checked_default');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDoubleOptIn(): bool
+    {
+        return $this->getMeta('_give_mailchimp_double_opt_in');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendDonationData(): bool
+    {
+        return $this->getMeta('_give_mailchimp_send_donation');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendFFMData(): bool
+    {
+        return $this->getMeta('_give_mailchimp_send_ffm');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultAudiences(): array
+    {
+        return $this->getMeta('_give_mailchimp');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSubscriberTags(): array
+    {
+        return $this->getMeta('_give_mailchimp_tags');
+    }
+
 
     /**
      * Retrieves metadata for the current form.
