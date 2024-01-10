@@ -36,10 +36,14 @@ const FormDesignSettings = () => {
             <PanelBody title={__('Donation Form', 'give')} initialOpen={true}>
                 <PanelRow>
                     <SelectControl
-                        label={__('Form design', 'give')}
+                        label={__('Form layout', 'give')}
                         value={designId}
                         onChange={(designId: string) => dispatch(setFormSettings({designId}))}
                         options={designOptions}
+                        help={__(
+                            'Change the appearance of your donation form on your site. Each option has a different layout.',
+                            'give'
+                        )}
                     />
                 </PanelRow>
 
@@ -153,7 +157,10 @@ const FormDesignSettings = () => {
                                 dispatch(setFormSettings({multiStepFirstButtonText}));
                                 publishSettings({multiStepFirstButtonText});
                             }}
-                            help={__('Customize the text that appears in the first step, prompting the user to go to the next step.')}
+                            help={__(
+                                'Customize the text that appears in the first step, prompting the user to go to the next step.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                     <PanelRow>
@@ -164,7 +171,10 @@ const FormDesignSettings = () => {
                                 dispatch(setFormSettings({multiStepNextButtonText}));
                                 publishSettings({multiStepNextButtonText});
                             }}
-                            help={__('Customize the text that appears prompting the user to go to the next step.')}
+                            help={__(
+                                'Customize the text that appears prompting the user to go to the next step.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                 </PanelBody>

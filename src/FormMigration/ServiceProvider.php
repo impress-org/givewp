@@ -45,6 +45,9 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormMeta::class,
                 Steps\PdfSettings::class,
                 Steps\FeeRecovery::class,
+                Steps\PerFormGateways::class,
+                Steps\Mailchimp::class,
+                Steps\FundsAndDesignations::class,
             ]);
         });
     }

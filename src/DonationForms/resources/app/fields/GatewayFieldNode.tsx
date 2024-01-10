@@ -1,4 +1,4 @@
-import {Field} from '@givewp/forms/types';
+import type {Field} from '@givewp/forms/types';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 import {useDonationFormState} from '@givewp/forms/app/store';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
