@@ -1,10 +1,10 @@
-import { __ } from "@wordpress/i18n";
-import { BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl } from "@wordpress/components";
-import { Icon as WPIcon, plus } from "@wordpress/icons";
-import { ClassicEditor, SettingsSection } from "@givewp/form-builder-library";
-import { getFormBuilderWindowData } from "@givewp/form-builder/common/getWindowData";
+import {__} from '@wordpress/i18n';
+import {BaseControl, Button, PanelRow, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {Icon as WPIcon, plus} from '@wordpress/icons';
+import {ClassicEditor, SettingsSection} from '@givewp/form-builder-library';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
-import TrashIcon from "./components/TrashIcon";
+import TrashIcon from './components/TrashIcon';
 
 /**
  * @unreleased
@@ -142,7 +142,7 @@ const EmailTemplateSettings = ({notification, templateTagsRef, settings, setSett
                         {config.supportsRecipients && (
                             <div className={'email-settings-template__recipient'}>
                                 <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
-                                    {recipients.map((recipientEmail, index) => {
+                                    {recipients.map((recipientEmail: string, index) => {
                                         return (
                                             <li
                                                 key={'level-option-inspector-' + index}
