@@ -6,7 +6,7 @@ import FormSummarySettings from "./form-summary";
 import RegistrationSettings from "./registration";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function FormGeneralSettingsGroup({settings, setSettings}) {
     const formGridDescription = createInterpolateElement(

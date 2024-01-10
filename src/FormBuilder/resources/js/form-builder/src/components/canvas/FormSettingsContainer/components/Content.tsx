@@ -3,7 +3,7 @@ import { Route } from "@givewp/form-builder/components/canvas/FormSettings";
 import { setFormSettings, useFormState, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 function RenderRoutes({routes}: {routes: Route[]}) {
     const [state] = useFormSettingsContext();
@@ -29,7 +29,7 @@ function RenderRoutes({routes}: {routes: Route[]}) {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function Content({routes}: {routes: Route[]}) {
     return (

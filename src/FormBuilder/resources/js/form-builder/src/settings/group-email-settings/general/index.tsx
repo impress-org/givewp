@@ -4,7 +4,7 @@ import { SettingsSection } from "@givewp/form-builder-library";
 import LogoUpload from "@givewp/form-builder/settings/group-email-settings/email/logo-upload";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function EmailGeneralSettings({ settings, setSettings }) {
     const { emailOptionsStatus, emailTemplate, emailLogo, emailFromName, emailFromEmail } = settings;

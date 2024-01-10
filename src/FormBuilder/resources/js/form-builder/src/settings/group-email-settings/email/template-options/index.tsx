@@ -10,7 +10,7 @@ import EmailTemplateSettings from "@givewp/form-builder/settings/group-email-set
 import TemplateTags from "@givewp/form-builder/components/settings/TemplateTags";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function EmailTemplateOptions({notification, settings, setSettings}) {
     const [showPreview, setShowPreview] = useState<boolean>(false);

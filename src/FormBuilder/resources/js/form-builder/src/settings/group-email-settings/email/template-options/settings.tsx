@@ -7,7 +7,7 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import TrashIcon from './components/TrashIcon';
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 type EmailTemplateSettingsProps = {
     notification: string;
@@ -19,7 +19,7 @@ type EmailTemplateSettingsProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 const EmailTemplateSettings = ({notification, templateTagsRef, settings, setSettings}: EmailTemplateSettingsProps) => {
     const {emailTemplateOptions} = settings;
