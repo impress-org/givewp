@@ -268,7 +268,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an issue with the donor export filter by donation form
 * Fix: Added additional attribute escaping to the donor wall shortcode
 * Enhancement: Improved current compatibility with PHP 8.2
-* New: The visual donation form builder UI has been improved to be more intuitive with dedicated Build, Design, and Settings screens
+* Enhancement: Improved the UI of the the visual donation form builder to be more intuitive with dedicated Build, Design, and Settings screens
 * New: The donor dashboard now has a way to update and reset passwords
 * New: Added pre-requisite v3 compatibility updates for the Give Funds and Designations add-on
 * New: Added v3 form migration compatibility for select GiveWP add-ons including: Mailchimp, Funds and Designations, and Per-Form Gateways
