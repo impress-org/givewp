@@ -1,6 +1,5 @@
 import {memo} from '@wordpress/element';
 import {Node} from '@givewp/forms/types';
-import {JSX} from 'react/jsx-runtime';
 
 /**
  * This is used for memoizing Node components. Node props come from the server and are never intended to change. The
@@ -9,11 +8,11 @@ import {JSX} from 'react/jsx-runtime';
  * @unreleased updated param and return types
  * @since 3.0.0
  */
-export default function memoNode(NodeComponent: { ({node}: {node: Node}): JSX.Element; }): typeof NodeComponent {
+export default function memoNode(NodeComponent: {({node}: {node: Node}): JSX.Element}): typeof NodeComponent {
     return memo(NodeComponent, compareNodeProps) as typeof NodeComponent;
 }
 
-type NodeProp = { node: Node };
+type NodeProp = {node: Node};
 
 function compareNodeProps(oldNode: NodeProp, newNode: NodeProp) {
     return oldNode.node.name === newNode.node.name;
