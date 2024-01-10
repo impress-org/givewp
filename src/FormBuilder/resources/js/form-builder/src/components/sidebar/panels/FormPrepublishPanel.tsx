@@ -3,9 +3,9 @@ import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 import {Button, PanelBody, PanelRow, Spinner, TextControl} from '@wordpress/components';
-import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {CopyIcon} from '@givewp/form-builder/components/icons';
-import FormSummarySettings from '@givewp/form-builder/settings/form-summary';
+import FormSummarySettings from '@givewp/form-builder/settings/group-general/form-summary';
 import {getWindowData} from '@givewp/form-builder/common';
 import {Interweave} from 'interweave';
 
@@ -16,19 +16,16 @@ interface FormPrepublishPanelProps {
     handleClose: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function FormPrepublishPanel
-({
-     isSaving,
-     isPublished,
-     handleSave,
-     handleClose
- }: FormPrepublishPanelProps) {
-
+export default function FormPrepublishPanel({
+    isSaving,
+    isPublished,
+    handleSave,
+    handleClose,
+}: FormPrepublishPanelProps) {
     const permalinkField: RefObject<HTMLInputElement> = createRef();
 
-    const {
-        settings: {formTitle, formStatus, newFormStatus},
-    } = useFormState();
+    const {settings} = useFormState();
+    const {formTitle, formStatus, newFormStatus} = settings;
     const dispatch = useFormStateDispatch();
     const {
         formPage: {permalink},
@@ -45,7 +42,7 @@ export default function FormPrepublishPanel
         setTimeout(() => {
             setIsCopied(false);
         }, 3000);
-    }
+    };
 
     const isPrivate = () => {
         if (newFormStatus) {
@@ -53,20 +50,19 @@ export default function FormPrepublishPanel
         }
 
         return 'private' === formStatus;
-    }
+    };
 
     return createPortal(
         <div
-            className={cx('givewp-next-gen-prepublish-panel', {'givewp-next-gen-prepublish-panel__animate': !isPublished})}>
+            className={cx('givewp-next-gen-prepublish-panel', {
+                'givewp-next-gen-prepublish-panel__animate': !isPublished,
+            })}
+        >
             {isSaving ? (
                 <>
                     <div className="givewp-next-gen-prepublish-panel__header">
                         <div className="givewp-next-gen-prepublish-panel__header-actions">
-                            <Button
-                                variant="primary"
-                                isBusy={true}
-                                isPressed={true}
-                            >
+                            <Button variant="primary" isBusy={true} isPressed={true}>
                                 {__('Publishing', 'give')}
                             </Button>
                         </div>
@@ -81,10 +77,7 @@ export default function FormPrepublishPanel
                         <>
                             <div className="givewp-next-gen-prepublish-panel__header">
                                 <div className="givewp-next-gen-prepublish-panel__header-actions">
-                                    <Button
-                                        variant="secondary"
-                                        onClick={handleClose}
-                                    >
+                                    <Button variant="secondary" onClick={handleClose}>
                                         {__('Close panel', 'give')}
                                     </Button>
                                 </div>
@@ -103,9 +96,7 @@ export default function FormPrepublishPanel
 
                             <PanelBody title={__("What's next?", 'give')} initialOpen={true}>
                                 <PanelRow className="givewp-next-gen-prepublish-panel_link">
-                                    <span>
-                                        {__('PAGE ADDRESS', 'give')}
-                                    </span>
+                                    <span>{__('PAGE ADDRESS', 'give')}</span>
                                     <span>
                                         <Button
                                             href="#"
@@ -119,11 +110,7 @@ export default function FormPrepublishPanel
                                     </span>
                                 </PanelRow>
                                 <PanelRow className="givewp-next-gen-prepublish-panel_input">
-                                    <TextControl
-                                        ref={permalinkField}
-                                        value={permalink}
-                                        onChange={null}
-                                    />
+                                    <TextControl ref={permalinkField} value={permalink} onChange={null} />
                                 </PanelRow>
                                 <PanelRow className="givewp-next-gen-prepublish-panel_view">
                                     <Button
@@ -141,17 +128,11 @@ export default function FormPrepublishPanel
                         <>
                             <div className="givewp-next-gen-prepublish-panel__header">
                                 <div className="givewp-next-gen-prepublish-panel__header-actions">
-                                    <Button
-                                        variant="primary"
-                                        onClick={handleSave}
-                                    >
+                                    <Button variant="primary" onClick={handleSave}>
                                         {__('Publish', 'give')}
                                     </Button>
 
-                                    <Button
-                                        variant="secondary"
-                                        onClick={handleClose}
-                                    >
+                                    <Button variant="secondary" onClick={handleClose}>
                                         {__('Cancel', 'give')}
                                     </Button>
                                 </div>
@@ -164,12 +145,21 @@ export default function FormPrepublishPanel
                                 <p>{__('Double-check your settings before publishing', 'give')}</p>
                             </div>
 
-                            <FormSummarySettings />
-
+                            <PanelBody
+                                className={'givewp-panel-body--summary'}
+                                title={__('Summary', 'give')}
+                                initialOpen={true}
+                            >
+                                <FormSummarySettings
+                                    settings={settings}
+                                    setSettings={(props: {}) => dispatch(setFormSettings(props))}
+                                />
+                            </PanelBody>
                         </>
                     )}
                 </>
             )}
-        </div>, document.body)
-
+        </div>,
+        document.body
+    );
 }

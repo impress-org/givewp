@@ -5,7 +5,7 @@
 
 import React from 'react';
 import _ from 'lodash';
-import {Button, TextControl} from '@wordpress/components';
+import {BaseControl, Button} from '@wordpress/components';
 import {upload} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
 
@@ -41,20 +41,30 @@ export default ({value, onChange}) => {
         frame.open();
     };
     return (
-        <div style={{display: 'flex', flexDirection: 'column', marginBottom: '8px', width: '100%'}}>
-            <div>
-                {' '}
-                {/* Wrapping the TextControl solves a spacing issue */}
-                <TextControl type={'url'} label={__('Logo URL', 'give')} value={value} onChange={onChange} />
+        <BaseControl
+            label={__('Logo URL', 'give')}
+            help={__(
+                'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.',
+                'give'
+            )}
+        >
+            <div className={'email-settings__logo-upload'}>
+                <input
+                    type={'url'}
+                    value={value}
+                    onChange={onChange}
+                    className={'components-text-control__input'}
+                    style={{flex: 1}}
+                />
+                <Button
+                    className={'email-settings__logo-upload__button'}
+                    icon={upload}
+                    variant={'secondary'}
+                    onClick={openMediaLibrary}
+                >
+                    {__('Add or upload file', 'give')}
+                </Button>
             </div>
-            <Button
-                icon={upload}
-                variant={'secondary'}
-                onClick={openMediaLibrary}
-                style={{width: '100%', justifyContent: 'center', marginBottom: '8px'}}
-            >
-                {__('Add or upload file', 'give')}
-            </Button>
-        </div>
+        </BaseControl>
     );
 };
