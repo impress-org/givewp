@@ -105,7 +105,7 @@ class DonationFormViewModel
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
             --givewp-design-settings-logo:url('{$this->formSettings->designSettingsLogoUrl}');
-            --givewp-design-settings-background-image:url('{$this->formSettings->designSettingImageUrl}');
+            --givewp-design-settings-background-image:url('{$this->formSettings->designSettingsImageUrl}');
             }"
         );
 
@@ -277,7 +277,7 @@ class DonationFormViewModel
             $classNames[] = 'givewp-donation-form--preview';
         }
 
-        if($this->formSettings->designSettingImageUrl) {
+        if($this->formSettings->designSettingsImageUrl) {
             $classNames[] = 'givewp-design-settings--image';
             $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
         }

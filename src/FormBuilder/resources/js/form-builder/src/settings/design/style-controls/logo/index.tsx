@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {PanelBody, SelectControl} from '@wordpress/components';
+import MediaLibrary from "@givewp/form-builder/components/media-library";
 
 export default function Logo() {
     const {
@@ -16,6 +17,18 @@ export default function Logo() {
 
     return (
         <PanelBody title={__('Logo', 'give')}>
+            <MediaLibrary
+                label={__('Logo URL', 'give')}
+                value={designSettingsLogoUrl}
+                onChange={(designSettingsLogoUrl) => {
+                    dispatch(setFormSettings({designSettingsLogoUrl}));
+                    publishSettings({designSettingsLogoUrl});
+                }}
+                help={__(
+                    'Upload or choose an logo to be displayed in the form.',
+                    'give'
+                )}
+            />
             <SelectControl
                 label={__('Logo Alignment', 'give')}
                 onChange={(designSettingsLogoPosition) => {

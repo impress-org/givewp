@@ -185,7 +185,7 @@ class FormSettings implements Arrayable, Jsonable
      * @unreleased
      * @var string
      */
-    public  $designSettingImageUrl;
+    public  $designSettingsImageUrl;
 
     /**
      * @unreleased
@@ -286,7 +286,7 @@ class FormSettings implements Arrayable, Jsonable
             $array['pdfSettings']
         ) ? $array['pdfSettings'] : [];
 
-        $self->designSettingImageUrl = $array['designSettingImageUrl'] ?? '';
+        $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
         $self->designSettingsImageStyle = !empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
             $array['designSettingsImageStyle']
         ) : DesignSettingsImageStyle::COVER();
