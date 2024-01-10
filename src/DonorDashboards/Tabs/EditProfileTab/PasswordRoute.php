@@ -38,7 +38,7 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
-     * @unreleased
+     * @since 3.3.0
      *
      * @param WP_REST_Request $request
      *

@@ -7,7 +7,7 @@ import { Button } from "@wordpress/components";
 import "./styles.scss";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 function CopyTagButton({textToCopy}) {
     const [isCopied, setCopied] = useState(false);
@@ -31,7 +31,7 @@ function CopyTagButton({textToCopy}) {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function TemplateTags({
     templateTags,
@@ -62,7 +62,7 @@ export default function TemplateTags({
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export type TemplateTag = {
     id: string;

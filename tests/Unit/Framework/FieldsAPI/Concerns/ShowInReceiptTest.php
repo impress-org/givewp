@@ -12,7 +12,7 @@ use Give\Tests\TestCase;
 class ShowInReceiptTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function testSettingTheReceiptLabel(): void
     {
@@ -25,7 +25,7 @@ class ShowInReceiptTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function testSettingTheReceiptValue(): void
     {
@@ -43,7 +43,7 @@ class ShowInReceiptTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function testShouldShowInReceipt(): void
     {

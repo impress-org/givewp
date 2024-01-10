@@ -11,7 +11,7 @@ import { Route } from "@givewp/form-builder/components/canvas/FormSettings";
 import { useFormState } from "@givewp/form-builder/stores/form-state";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 function MenuItem({item}: {item: Route}) {
     const [state, dispatch] = useFormSettingsContext();
@@ -62,7 +62,7 @@ function MenuItem({item}: {item: Route}) {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function Menu({routes}: {routes: Route[]}) {
     const [state] = useFormSettingsContext();

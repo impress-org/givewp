@@ -32,7 +32,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
+     * @since 3.3.0 updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array

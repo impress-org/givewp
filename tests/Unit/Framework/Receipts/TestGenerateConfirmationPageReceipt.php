@@ -250,7 +250,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function testShouldAddCustomFieldsToAdditionalDetails(): void
     {
