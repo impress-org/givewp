@@ -3,8 +3,8 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {useEffect, useState} from 'react';
-import Options from '@givewp/form-builder/components/OptionsPanel';
-import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {OptionsPanel} from '@givewp/form-builder-library';
+import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
@@ -149,8 +149,7 @@ export default function Edit({
                             </div>
 
                             {!!showHonorific && !useGlobalSettings && (
-                                <Options
-                                    currency={false}
+                                <OptionsPanel
                                     multiple={false}
                                     selectable={false}
                                     options={honorificOptions}

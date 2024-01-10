@@ -51,6 +51,7 @@ class FormBuilderViewModel
                 // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
                 'permalink' => add_query_arg(['p' => $donationFormId], site_url('?post_type=give_forms')),
                 'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
+                'baseUrl' => preg_replace('/^https?:\/\//', '', site_url()),
             ],
             'gateways' => $this->getGateways(),
             'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
