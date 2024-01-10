@@ -26,3 +26,16 @@ export const verifyEmailWithAPI = ({email, recaptcha}) => {
         )
         .then((response) => response.data);
 };
+
+
+export const resetPasswordWithAPI = (email) => {
+    return axios
+        .post(
+            getAPIRoot() + 'give-api/v2/donor-dashboard/reset-password',
+            {
+                email,
+            },
+            {}
+        )
+        .then((response) => response.data);
+};

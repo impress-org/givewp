@@ -1,0 +1,58 @@
+.givewp-template-tags {
+    &__list {
+        border-radius: 2px;
+        border: 1px solid var(--givewp-grey-100);
+        height: 25rem;
+        overflow: scroll;
+        scroll-snap-type: y mandatory;
+
+        & > li {
+            scroll-snap-align: start;
+        }
+    }
+
+    &__list-item {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 1rem;
+
+        &:nth-child(even) {
+            background-color: var(--givewp-grey-5);
+        }
+
+        .givewp-template-tags__copy-button {
+            opacity: 0;
+            font-size: 0.75rem;
+        }
+
+        &:hover {
+            .givewp-template-tags__copy-button {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__tag {
+        background-color: var(--givewp-blue-25);
+        color: var(--givewp-blue-900);
+        font-weight: 500;
+        font-size: .812rem;
+        line-height: 1.137rem;
+        height: 100%;
+    }
+
+    &__list-item-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 0 0.5rem 0;
+    }
+
+    &__list-item-bottom {
+        font-size: 0.75rem;
+        line-height: 1.125rem;
+        color: var(--givewp-gray-700, #404040);
+    }
+}

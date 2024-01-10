@@ -12,7 +12,7 @@ class SanitizeDonationFormPreviewRequest
         if (is_array($var)) {
             return array_map($this, $var);
         } else {
-            return is_string($var) ? wp_unslash(wp_kses_post($var)) : $var;
+            return is_string($var) ? wp_unslash($var) : $var;
         }
     }
 }

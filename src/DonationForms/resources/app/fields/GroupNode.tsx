@@ -1,9 +1,7 @@
-import {Node, Group, isField, isGroup} from '@givewp/forms/types';
+import {Group, Node} from '@givewp/forms/types';
 import {useTemplateWrapper} from '../templates';
 import type {GroupProps} from '@givewp/forms/propTypes';
-import {memo, useEffect} from '@wordpress/element';
 import SectionNode from './SectionNode';
-import useVisibilityCondition from '@givewp/forms/app/hooks/useVisibilityCondition';
 import memoNode from '@givewp/forms/app/utilities/memoNode';
 
 const formTemplates = window.givewp.form.templates;
@@ -16,7 +14,7 @@ const formTemplates = window.givewp.form.templates;
  *
  * @since 3.0.0
  */
-function GroupNode({node}: { node: Group }) {
+function GroupNode({node}: {node: Group}) {
     const Group = useTemplateWrapper<GroupProps>(formTemplates.groups[node.type], 'div', node.name);
 
     const nodeComponents = node.reduceNodes((nodes, node: Node) => {
