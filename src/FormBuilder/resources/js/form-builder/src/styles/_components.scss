@@ -305,3 +305,170 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     background-color: var(--givewp-gray-60);
     color: var(--givewp-shades-white);
 }
+
+.components-button.is-secondary {
+    &:hover {
+        background-color: rgba(var(--wp-admin-theme-color--rgb), .04);
+    }
+}
+
+.givewp-form-settings {
+    display: flex;
+    gap: var(--givewp-spacing-10);
+    padding: 1.5rem;
+
+    &__menu {
+        height: calc(100vh - 7rem);
+        position: sticky;
+        overflow: hidden;
+        width: 17.5rem;
+        top: 1.5rem;
+
+        > ul {
+            position: relative;
+            margin: 0;
+            transition: translate 0.1s linear;
+        }
+
+        &__item {
+            margin: 0;
+
+            ul {
+                left: 100%;
+                position: absolute;
+                top: 0;
+                width: 100%;
+            }
+
+            button {
+                align-items: center;
+                background: none;
+                border: 0;
+                color: var(--wp-components-color-foreground, var(--givewp-grey-900));
+                display: flex;
+                justify-content: space-between;
+                line-height: 1.125rem;
+                padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+                text-align: left;
+                width: 100%;
+
+                &:hover {
+                    background-color: var(--givewp-grey-5);
+                    cursor: pointer;
+                }
+
+                svg {
+                    fill: var(--givewp-grey-500);
+                }
+            }
+
+            &--is-active {
+                > button {
+                    background-color: var(--givewp-grey-25);
+                    font-weight: 600;
+                }
+            }
+
+            &--has-children {
+                > button {
+                }
+            }
+        }
+
+        &__back-button:is(button) {
+            font-weight: 600;
+            gap: var(--givewp-spacing-2);
+            justify-content: start;
+            padding-left: var(--givewp-spacing-2);
+
+            svg {
+                fill: currentColor;
+            }
+        }
+
+        @for $i from 1 through 5 {
+            &__page-#{$i} {
+                translate: -#{($i - 1) * 100%} 0;
+            }
+        }
+    }
+
+    &__content {
+        flex: 1;
+        padding-top: var(--givewp-spacing-2);
+        position: relative;
+
+        .interface-interface-skeleton__content & {
+            .components-panel__row {
+                margin-top: var(--givewp-spacing-6);
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            .components-base-control,
+            .components-input-control, {
+                &__label {
+                    color: var(--givewp-grey-900);
+                    font-size: 0.8125rem !important;
+                    font-weight: 400 !important;
+                    line-height: 1.1375rem;
+                }
+
+                &__help {
+                    margin-bottom: 0;
+                }
+
+                .components-select-control,
+                .components-text-control {
+                    &__input {
+                        font-size: 0.8125rem !important;
+                        height: auto !important;
+                        line-height: 1rem;
+                        padding: var(--givewp-spacing-3);
+                        border-radius: 0.125rem;
+                        color: var(--givewp-grey-900);
+                    }
+                }
+
+                &.components-toggle-control {
+                    .components-h-stack {
+                        gap: 1rem;
+                    }
+
+                    .components-toggle-control__label {
+                        color: var(--givewp-grey-900);
+                    }
+
+                    .components-base-control__help {
+                        margin-left: 3.25rem;
+                    }
+                }
+            }
+        }
+
+        .givewp-form-slug {
+            display: flex;
+            width: 100%;
+
+            span {
+                background-color: var(--givewp-grey-5);
+                border-radius: 2px 0 0 2px;
+                border: solid 1px var(--givewp-grey-500);
+                flex: 0 0 auto;
+                line-height: 1rem;
+                max-width: 50%;
+                overflow: hidden;
+                padding: var(--givewp-spacing-3);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            input {
+                border-radius: 0 2px 2px 0;
+                margin-left: -1px;
+            }
+        }
+    }
+}
