@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import Color from '@givewp/form-builder/settings/design/style-controls/color';
-import CustomStyles from '@givewp/form-builder/settings/design/style-controls/custom-styles';
-import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
+import DesignSettings from '@givewp/form-builder/settings/design/controls/design-settings';
+import Color from '@givewp/form-builder/settings/design/controls/style-controls/color';
+import CustomStyles from '@givewp/form-builder/settings/design/controls/style-controls/custom-styles';
 
 /**
  * @unreleased abstract design controls.
