@@ -57,8 +57,9 @@ function App({form}: { form: DonationForm }) {
 
     if (form.design?.isMultiStep) {
         return (
-            <DonationFormSettingsProvider value={{...form.settings, ...donationFormNodeSettings}}>
+            <DonationFormSettingsProvider value={{...form.settings,...donationFormNodeSettings}}>
                 <DonationFormStateProvider initialState={initialState}>
+                    {!form.design?.includeHeaderInMultiStep && form.settings.showHeader && <Header form={form} />}
                     <MultiStepForm form={form} />
                 </DonationFormStateProvider>
             </DonationFormSettingsProvider>
