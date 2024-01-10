@@ -21,6 +21,7 @@ class Tab extends TabAbstract
             ProfileRoute::class,
             LocationRoute::class,
             AvatarRoute::class,
+            PasswordRoute::class,
         ];
     }
 }

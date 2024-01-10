@@ -1,17 +1,71 @@
 .givewp-form-title {
+    margin-left: var(--givewp-spacing-4);
+
     .components-base-control__field {
         margin-bottom: 0;
+        position: relative;
+        width: 20rem;
+
+        @media (max-width: 1279px) {
+            display: none;
+        }
+
+        &:hover {
+            input {
+                border-color: var(--wp-admin-theme-color);
+            }
+
+            label {
+                color: var(--wp-admin-theme-color);
+            }
+        }
 
         input {
-            background: var(--givewp-gray-5);
             border-color: var(--givewp-gray-10);
-            font-size: 1rem;
+            font-size: 0.875rem;
             height: 2.25rem;
-            padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-9) var(--givewp-spacing-2) var(--givewp-spacing-4);
             max-width: 100%;
-            text-align: center;
-            width: 25rem;
         }
+
+        label {
+            display: flex;
+            margin: 0;
+            position: absolute;
+            right: var(--givewp-spacing-4);
+            top: 50%;
+            translate: 0 -50%;
+        }
+    }
+}
+
+.givewp-header-tabs {
+    display: flex;
+    height: 3.75rem;
+    justify-content: center;
+}
+
+.givewp-header-tabs__tab {
+    border-radius: 0;
+    font-size: 1rem;
+    height: 3.25rem;
+    justify-content: center;
+    line-height: 1.5rem;
+    margin: 0.25rem 0;
+    min-width: 5.5rem;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+    &:hover {
+        background-color: var(--givewp-gray-5);
+        color: var(--wp-components-color-foreground, #1e1e1e);
+    }
+
+    &.is-active {
+        background-color: transparent;
+        border-bottom: 0.25rem solid var(--wp-admin-theme-color);
+        height: 3.5rem;
+        color: var(--wp-admin-theme-color);
+        font-weight: 600;
     }
 }
 
@@ -152,37 +206,46 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     z-index: 99999999;
 }
 
-.givewp-panel-body--summary .components-base-control__field .components-select-control,
-.givewp-panel-body--summary .components-base-control__field {
-    display: grid;
-    grid-template-columns: 100px 1fr;
+.givewp-panel-body--summary {
+    .givewp-form-slug {
+        display: flex;
+        width: 100%;
 
-    input, select {
-        width: 190px;
-        background-color: var(--givewp-gray-10);
+        span {
+            background-color: var(--givewp-grey-5);
+            border-radius: 2px 0 0 2px;
+            border: solid 1px var(--givewp-grey-500);
+            flex: 0 0 auto;
+            line-height: 1rem;
+            max-width: 50%;
+            overflow: hidden;
+            padding: 0.375rem var(--givewp-spacing-2);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-        &[aria-expanded='true'] {
-            background-color: var(--givewp-primary-200);
+        input {
+            border-radius: 0 2px 2px 0;
+            margin-left: -1px;
+            height: 100%;
         }
     }
 
-    label {
-        display: flex;
-        align-items: center;
+    .components-panel__body-title {
         margin-bottom: 0;
-        margin-right: 0;
-        font-weight: 400;
     }
 
-    .components-input-control__container {
-        margin-left: -8px;
-        width: 190px;
+    .components-panel__row {
+        margin-top: var(--givewp-spacing-4);
     }
 
-    .components-flex.components-select-control > .components-flex-item {
-        &,
-        label {
+    .components-base-control {
+        &__field {
             height: 100%;
+        }
+
+        &__help {
+            margin-bottom: 0;
         }
     }
 }
@@ -243,101 +306,169 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     color: var(--givewp-shades-white);
 }
 
-.givewp-options-header {
+.components-button.is-secondary {
+    &:hover {
+        background-color: rgba(var(--wp-admin-theme-color--rgb), .04);
+    }
+}
+
+.givewp-form-settings {
     display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 0.5rem;
-    justify-content: space-between;
-    width: 100%;
+    gap: var(--givewp-spacing-10);
+    padding: 1.5rem;
 
-    &--label {
-        margin-bottom: 0;
-    }
+    &__menu {
+        height: calc(100vh - 7rem);
+        position: sticky;
+        overflow: hidden;
+        width: 17.5rem;
+        top: 1.5rem;
 
-    &--button {
-        color: var(--givewp-grey-500);
-        padding: 0 !important;
-        min-width: fit-content !important;
-        height: fit-content !important;
-
-        svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-    }
-}
-
-.givewp-options-list {
-
-    &--item {
-        display: grid;
-        gap: 0.5rem;
-        grid-template-columns: auto auto 1fr auto;
-        grid-template-rows: 1.875rem;
-        margin-top: 0.5rem;
-
-        > * {
-            align-self: center;
+        > ul {
+            position: relative;
+            margin: 0;
+            transition: translate 0.1s linear;
         }
 
-        &--draggable {
-            color: var(--givewp-grey-500);
-            cursor: grab;
-            display: flex;
-            user-select: none;
-        }
+        &__item {
+            margin: 0;
 
-        &--checked {
-            margin: 0 !important;
-            width: 1rem !important;
-        }
-
-        &--inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .components-base-control {
-                margin-bottom: 0 !important;
+            ul {
+                left: 100%;
+                position: absolute;
+                top: 0;
+                width: 100%;
             }
 
-            &--open {
-                grid-row: span 2;
+            button {
+                align-items: center;
+                background: none;
+                border: 0;
+                color: var(--wp-components-color-foreground, var(--givewp-grey-900));
+                display: flex;
+                justify-content: space-between;
+                line-height: 1.125rem;
+                padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+                text-align: left;
+                width: 100%;
+
+                &:hover {
+                    background-color: var(--givewp-grey-5);
+                    cursor: pointer;
+                }
+
+                svg {
+                    fill: var(--givewp-grey-500);
+                }
+            }
+
+            &--is-active {
+                > button {
+                    background-color: var(--givewp-grey-25);
+                    font-weight: 600;
+                }
+            }
+
+            &--has-children {
+                > button {
+                }
             }
         }
 
-        &--button {
-            color: var(--givewp-grey-500);
-            padding: 0 !important;
-            min-width: fit-content !important;
-            height: fit-content !important;
+        &__back-button:is(button) {
+            font-weight: 600;
+            gap: var(--givewp-spacing-2);
+            justify-content: start;
+            padding-left: var(--givewp-spacing-2);
+
+            svg {
+                fill: currentColor;
+            }
+        }
+
+        @for $i from 1 through 5 {
+            &__page-#{$i} {
+                translate: -#{($i - 1) * 100%} 0;
+            }
         }
     }
-}
 
-.wp-editor-wrap {
-    z-index: 9999;
-}
+    &__content {
+        flex: 1;
+        padding-top: var(--givewp-spacing-2);
+        position: relative;
 
-.mce-notification,
-.mce-inline-toolbar-grp,
-.mce-floatpanel {
-    z-index: 9999999999 !important;
-}
+        .interface-interface-skeleton__content & {
+            .components-panel__row {
+                margin-top: var(--givewp-spacing-6);
 
-.components-popover__content .givewp-classic-editor {
-    margin: 0.5rem;
-}
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
 
-.givewp-classic-editor {
+            .components-base-control,
+            .components-input-control, {
+                &__label {
+                    color: var(--givewp-grey-900);
+                    font-size: 0.8125rem !important;
+                    font-weight: 400 !important;
+                    line-height: 1.1375rem;
+                }
 
+                &__help {
+                    margin-bottom: 0;
+                }
 
-    textarea {
-        width: 100%;
-    }
+                .components-select-control,
+                .components-text-control {
+                    &__input {
+                        font-size: 0.8125rem !important;
+                        height: auto !important;
+                        line-height: 1rem;
+                        padding: var(--givewp-spacing-3);
+                        border-radius: 0.125rem;
+                        color: var(--givewp-grey-900);
+                    }
+                }
 
-    .wp-switch-editor {
-        box-sizing: content-box !important;
+                &.components-toggle-control {
+                    .components-h-stack {
+                        gap: 1rem;
+                    }
+
+                    .components-toggle-control__label {
+                        color: var(--givewp-grey-900);
+                    }
+
+                    .components-base-control__help {
+                        margin-left: 3.25rem;
+                    }
+                }
+            }
+        }
+
+        .givewp-form-slug {
+            display: flex;
+            width: 100%;
+
+            span {
+                background-color: var(--givewp-grey-5);
+                border-radius: 2px 0 0 2px;
+                border: solid 1px var(--givewp-grey-500);
+                flex: 0 0 auto;
+                line-height: 1rem;
+                max-width: 50%;
+                overflow: hidden;
+                padding: var(--givewp-spacing-3);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            input {
+                border-radius: 0 2px 2px 0;
+                margin-left: -1px;
+            }
+        }
     }
 }

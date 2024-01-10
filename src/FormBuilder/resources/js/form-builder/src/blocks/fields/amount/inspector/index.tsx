@@ -14,8 +14,8 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
-import Options from '@givewp/form-builder/components/OptionsPanel';
-import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {OptionsPanel} from '@givewp/form-builder-library';
+import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
@@ -184,6 +184,8 @@ const Inspector = ({attributes, setAttributes}) => {
         [recurringBillingPeriodOptions, recurringEnableOneTimeDonations]
     );
 
+    const {currency = 'USD'} = getFormBuilderWindowData();
+
     return (
         <InspectorControls>
             <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
@@ -248,8 +250,8 @@ const Inspector = ({attributes, setAttributes}) => {
 
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    <Options
-                        currency={true}
+                    <OptionsPanel
+                        currency={currency}
                         multiple={false}
                         options={donationLevels}
                         setOptions={handleLevelsChange}

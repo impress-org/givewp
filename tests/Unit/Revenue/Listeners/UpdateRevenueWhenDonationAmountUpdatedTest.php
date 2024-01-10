@@ -3,12 +3,9 @@
 namespace Give\Tests\Unit\Revenue\Listeners;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Revenue\Listeners\UpdateRevenueWhenDonationAmountUpdated;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -21,9 +18,10 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since 3.3.0 updated action to accept Donation model
      * @since 2.20.1
      */
-    public function testRevenueIsUpdatedWhenDonationIsUpdated()
+    public function testRevenueIsUpdatedWhenDonationIsUpdated(): void
     {
         $donation = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
@@ -34,7 +32,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
         $donation->save();
 
         $listener = new UpdateRevenueWhenDonationAmountUpdated();
-        $listener->__invoke($donation->id);
+        $listener($donation);
 
         $this->assertEquals(
             Money::fromDecimal(25.00, 'USD')->formatToMinorAmount(),
@@ -43,9 +41,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     }
 
     /**
-     * @param Donation $donation
-     *
-     * @return int
+     * @since 2.20.1
      */
     private function getRevenueAmountForDonation(Donation $donation)
     {

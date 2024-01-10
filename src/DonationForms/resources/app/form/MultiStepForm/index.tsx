@@ -1,3 +1,4 @@
+import type {Form} from '@givewp/forms/types';
 import {Section} from '@givewp/forms/types';
 import {DonationFormMultiStepStateProvider} from './store';
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
@@ -9,7 +10,6 @@ import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import Steps from '@givewp/forms/app/form/MultiStepForm/components/Steps';
 import HeaderStep from '@givewp/forms/app/form/MultiStepForm/components/HeaderStep';
 import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
-import type {Form} from '@givewp/forms/types';
 
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
@@ -54,12 +54,14 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
 };
 
 /**
+ * @unreleased updated to use includeHeaderInMultiStep
  * @since 3.0.0
  */
 export default function MultiStepForm({form}: {form: Form}) {
-    const steps = convertSectionsToSteps(form.nodes, form.settings?.showHeader);
+    const shouldIncludeHeaderInSteps = form.design?.includeHeaderInMultiStep && form.settings?.showHeader;
+    const steps = convertSectionsToSteps(form.nodes, shouldIncludeHeaderInSteps);
 
-    if (form.settings?.showHeader) {
+    if (shouldIncludeHeaderInSteps) {
         steps.unshift({
             id: 0,
             title: null,
@@ -72,7 +74,7 @@ export default function MultiStepForm({form}: {form: Form}) {
     }
 
     return (
-        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0, showHeader: form.settings?.showHeader}}>
+        <DonationFormMultiStepStateProvider initialState={{steps, currentStep: 0, showHeader: shouldIncludeHeaderInSteps}}>
             <DonationSummaryProvider>
                 <Steps steps={steps} />
             </DonationSummaryProvider>
