@@ -42,4 +42,9 @@ export type FormSettings = {
     multiStepFirstButtonText: string;
     multiStepNextButtonText: string;
     pdfSettings: object;
+    designSettingsImageUrl: string;
+    designSettingsImageStyle: string;
+    designSettingsLogoUrl: string;
+    designSettingsLogoPosition: string;
+    designSettingsSectionStyle: string;
 };
