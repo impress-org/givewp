@@ -1,7 +1,28 @@
 import {__} from '@wordpress/i18n';
-import FormDesignSettings from '@givewp/form-builder/settings/design';
+import FormDesignSettings, {DesignSettings} from '@givewp/form-builder/settings/design';
+import {useState} from 'react';
+import {TabSelector} from '@givewp/form-builder/components/sidebar/TabSelector';
 
+type designTabState = DesignSettings.General | DesignSettings.Styles;
+
+/**
+ * @unreleased add FormDesignSetting tabs.
+ */
 const Sidebar = ({toggleShowSidebar}) => {
+    const [selected, setSelected] = useState<designTabState>(DesignSettings.General);
+    const selectTab = (value: designTabState) => setSelected(value);
+
+    const designSettingTabs = [
+        {
+            name: DesignSettings.General,
+            label: __('General', 'give'),
+        },
+        {
+            name: DesignSettings.Styles,
+            label: __('Styles', 'give'),
+        },
+    ];
+
     return (
         <div
             id="sidebar-primary"
@@ -10,7 +31,8 @@ const Sidebar = ({toggleShowSidebar}) => {
             aria-label={__('Form design settings')}
             tabIndex={-1}
         >
-            <FormDesignSettings toggleShowSidebar={toggleShowSidebar} />
+            <TabSelector close={toggleShowSidebar} selectTab={selectTab} selected={selected} tabs={designSettingTabs} />
+            <FormDesignSettings tab={selected} />
         </div>
     );
 };

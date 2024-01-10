@@ -1,27 +1,23 @@
-import {DesignTabs} from '@givewp/form-builder/settings/design/tabs';
-import DesignControls from '@givewp/form-builder/settings/design/controls';
-import {useState} from 'react';
+import React from 'react';
+import GeneralControls from '@givewp/form-builder/settings/design/general-controls';
+import StyleControls from '@givewp/form-builder/settings/design/style-controls';
 
-export enum DesignTab {
+export enum DesignSettings {
     General = 'general',
     Styles = 'styles',
 }
 
-export type designTabState = DesignTab.General | DesignTab.Styles;
-
 /**
  * @unreleased
  */
-const FormDesignSettings = ({toggleShowSidebar}) => {
-    const [selected, setSelected] = useState<designTabState>(DesignTab.General);
-    const switchTab = (value: designTabState) => setSelected(value);
+const FormDesignSettings = ({tab}) => {
+    if (tab == DesignSettings.General) {
+        return <GeneralControls />;
+    }
 
-    return (
-        <div className={'givewp-block-editor-design-sidebar'}>
-            <DesignTabs close={toggleShowSidebar} switchTab={switchTab} selected={selected} />
-            <DesignControls selected={selected} />
-        </div>
-    );
+    if (tab == DesignSettings.Styles) {
+        return <StyleControls />;
+    }
 };
 
 export default FormDesignSettings;

@@ -2,12 +2,12 @@ import {__} from '@wordpress/i18n';
 import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import DonationGoal from './donation-goal';
-import DesignSettings from '@givewp/form-builder/settings/design/controls/design-settings';
-import Header from '@givewp/form-builder/settings/design/controls/general-controls/header';
-import Layout from '@givewp/form-builder/settings/design/controls/general-controls/layout';
+import Header from '@givewp/form-builder/settings/design/general-controls/header';
+import Layout from '@givewp/form-builder/settings/design/general-controls/layout';
 import {getWindowData} from '@givewp/form-builder/common';
-import DonateButton from '@givewp/form-builder/settings/design/controls/general-controls/donate-button';
-import MultiStep from '@givewp/form-builder/settings/design/controls/general-controls/multi-step';
+import DonateButton from '@givewp/form-builder/settings/design/general-controls/donate-button';
+import MultiStep from '@givewp/form-builder/settings/design/general-controls/multi-step';
+import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
 
 const {formDesigns} = getWindowData();
 const getDesign = (designId: string) => formDesigns[designId];
@@ -23,7 +23,7 @@ export default function GeneralControls() {
     const dispatch = useFormStateDispatch();
     const {publishSettings} = useDonationFormPubSub();
     const design = getDesign(designId);
-
+    
     return (
         <DesignSettings
             title={__('General', 'give')}
