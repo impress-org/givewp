@@ -7,6 +7,9 @@ type PanelDescription = {
     description: string;
 };
 
+/**
+ * @unreleased
+ */
 export default function DesignSettings({title, description, children}: PanelDescription) {
     return (
         <div className={'givewp-block-editor-design-sidebar__settings'}>

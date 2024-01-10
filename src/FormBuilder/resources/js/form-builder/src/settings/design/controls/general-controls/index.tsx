@@ -12,6 +12,9 @@ import MultiStep from '@givewp/form-builder/settings/design/controls/general-con
 const {formDesigns} = getWindowData();
 const getDesign = (designId: string) => formDesigns[designId];
 
+/**
+ * @unreleased abstract design controls.
+ */
 export default function GeneralControls() {
     const {
         settings: {designId},

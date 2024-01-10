@@ -9,6 +9,9 @@ type DesignTabs = {
     selected: designTabState;
 };
 
+/**
+ * @unreleased
+ */
 export function DesignTabs({close, switchTab, selected}: DesignTabs) {
     return (
         <div className="components-panel__header interface-complementary-area-header edit-post-sidebar__panel-tabs">

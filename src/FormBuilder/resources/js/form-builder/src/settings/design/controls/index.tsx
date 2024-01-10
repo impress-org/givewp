@@ -7,6 +7,9 @@ type DesignControls = {
     selected: designTabState;
 };
 
+/**
+ * @unreleased
+ */
 export default function DesignControls({selected}: DesignControls) {
     if (selected == DesignTab.General) {
         return <GeneralControls />;

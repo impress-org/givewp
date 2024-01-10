@@ -9,10 +9,13 @@ export enum DesignTab {
 
 export type designTabState = DesignTab.General | DesignTab.Styles;
 
+/**
+ * @unreleased
+ */
 const FormDesignSettings = ({toggleShowSidebar}) => {
     const [selected, setSelected] = useState<designTabState>(DesignTab.General);
     const switchTab = (value: designTabState) => setSelected(value);
-    
+
     return (
         <div className={'givewp-block-editor-design-sidebar'}>
             <DesignTabs close={toggleShowSidebar} switchTab={switchTab} selected={selected} />

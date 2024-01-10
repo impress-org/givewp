@@ -4,6 +4,9 @@ import DesignSettings from '@givewp/form-builder/settings/design/controls/design
 import Color from '@givewp/form-builder/settings/design/controls/style-controls/color';
 import CustomStyles from '@givewp/form-builder/settings/design/controls/style-controls/custom-styles';
 
+/**
+ * @unreleased abstract design controls.
+ */
 export default function StyleControls() {
     const dispatch = useFormStateDispatch();
 
