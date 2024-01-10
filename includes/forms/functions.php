@@ -1577,8 +1577,10 @@ add_action( 'before_delete_post', 'give_handle_form_meta_on_delete', 10, 1 );
 /**
  * Get the list of default parameters for the form shortcode.
  *
- * @return array
+ * @since 3.2.1 Revert default display style to "onpage".
  * @since 2.4.1
+ *
+ * @return array
  */
 function give_get_default_form_shortcode_args() {
 	$default = [
@@ -1587,8 +1589,8 @@ function give_get_default_form_shortcode_args() {
 		'show_goal'             => true,
 		'show_content'          => '',
 		'float_labels'          => '',
-        'display_style'         => 'fullForm',
-        'continue_button_title' => __('Donate now', 'give'),
+        'display_style'         => '',
+        'continue_button_title' => '',
 
 		// This attribute belong to form template functionality.
 		// You can use this attribute to set modal open button background color.

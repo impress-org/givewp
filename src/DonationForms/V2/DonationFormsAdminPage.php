@@ -269,13 +269,14 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is the edit v2 form page
      *
+     * @since 3.2.1 added global $post to isset
      * @since 3.0.0
      *
      * @return bool
      */
     private function isShowingEditV2FormPage(): bool
     {
-        return isset($_GET['action']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
+        return isset($_GET['action'], $GLOBALS['post']) && $_GET['action'] === 'edit' && $GLOBALS['post']->post_type === 'give_forms';
     }
 
     /**
@@ -312,6 +313,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
+     * @unreleased Add support to the Funds and Designations addon
      * @since 3.0.0
      * @return array
      */
@@ -331,8 +333,9 @@ class DonationFormsAdminPage
             'Zapier' => defined('GIVE_ZAPIER_VERSION'),
             'Salesforce' => defined('GIVE_SALESFORCE_VERSION'),
             'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
+            'MailChimp' => class_exists('Give_MailChimp'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
-            //            'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
+            'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
             //            'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
             //            'Gift Aid' => class_exists('Give_Gift_Aid'),
             //            'MailChimp' => class_exists('Give_MailChimp'),
@@ -341,7 +344,7 @@ class DonationFormsAdminPage
             //            'Double the Donation' => defined('GIVE_DTD_NAME'),
             //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
             //            'Receipt Attachments' => defined('GIVERA_VERSION'),
-            //            'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
+            'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),

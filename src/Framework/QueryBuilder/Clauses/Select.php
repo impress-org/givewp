@@ -24,6 +24,9 @@ class Select
     public function __construct($column, $alias = null)
     {
         $this->column = trim($column);
-        $this->alias  = trim($alias);
+
+        if ( ! is_null($alias)) {
+            $this->alias = trim($alias);
+        }
     }
 }

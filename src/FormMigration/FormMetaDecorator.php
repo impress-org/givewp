@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -509,6 +510,78 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function isMailchimpEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'),'true');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'),'true');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
+
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpLabel()
+    {
+        $value = $this->getMeta('_give_mailchimp_custom_label');
+        return $value === '' ? null : $value;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultChecked(): bool
+    {
+        return $this->getMeta('_give_mailchimp_checked_default');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDoubleOptIn(): bool
+    {
+        return $this->getMeta('_give_mailchimp_double_opt_in');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendDonationData(): bool
+    {
+        return $this->getMeta('_give_mailchimp_send_donation');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSendFFMData(): bool
+    {
+        return $this->getMeta('_give_mailchimp_send_ffm');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpDefaultAudiences(): array
+    {
+        return $this->getMeta('_give_mailchimp');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMailchimpSubscriberTags(): array
+    {
+        return $this->getMeta('_give_mailchimp_tags');
+    }
+
+
+    /**
      * Retrieves metadata for the current form.
      *
      * This method acts as a wrapper for the give_get_meta function, reducing redundancy
@@ -523,5 +596,92 @@ class FormMetaDecorator extends FormModelDecorator
     private function getMeta(string $key, $default = null)
     {
         return give_get_meta($this->form->id, $key, true, $default);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasFunds(): bool
+    {
+        $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
+
+        return count($fundsAndDesignationsAttributes['fund']) > 0;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasFundOptions(): bool
+    {
+        $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
+
+        return count($fundsAndDesignationsAttributes['options']) > 0;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getFundsAndDesignationsAttributes(): array
+    {
+        $label = give_get_meta($this->form->id, 'give_funds_label', true);
+        $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
+        $adminChoice = give_get_meta($this->form->id, 'give_funds_admin_choice', true);
+        $donorOptions = give_get_meta($this->form->id, 'give_funds_donor_choice', true);
+
+
+        $options = [];
+        foreach ($donorOptions as $fundId) {
+            $options[] = [
+                'value' => $fundId,
+                'label' => $this->getFundLabel($fundId),
+                'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
+                'isDefault' => $this->isDefaultFund($fundId),
+            ];
+        }
+
+        return [
+            'label' => $label,
+            'fund' => $isAdminChoice ? [
+                'value' => $adminChoice,
+                'label' => $this->getFundLabel($adminChoice),
+                'checked' => true,
+                'isDefault' => $this->isDefaultFund($adminChoice),
+            ] : $options[0],
+            'options' => $options,
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getFundLabel(int $fundId): string
+    {
+        global $wpdb;
+
+        $fund = $wpdb->get_row(
+            $wpdb->prepare("SELECT * FROM {$wpdb->give_funds} WHERE id = %d", $fundId)
+        );
+
+        if ( ! $fund) {
+            return '';
+        }
+
+        return $fund->title;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isDefaultFund(int $fundId): bool
+    {
+        global $wpdb;
+
+        $fund = $wpdb->get_row("SELECT id FROM {$wpdb->give_funds} WHERE is_default = 1");
+
+        if ( ! $fund) {
+            return false;
+        }
+
+        return $fund->id === $fundId;
     }
 }

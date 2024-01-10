@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import TextControl from '../text-control';
 import Button from '../button';
 
-import {loginWithAPI, verifyEmailWithAPI} from './utils';
+import {loginWithAPI, verifyEmailWithAPI, resetPasswordWithAPI} from './utils';
 import {getWindowData} from '../../utils';
 
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -21,6 +21,9 @@ const AuthModal = () => {
     const [verifyingEmail, setVerifyingEmail] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
     const [emailError, setEmailError] = useState(null);
+    const [passwordResetEmail, setPasswordResetEmail] = useState('');
+    const [showPasswordReset, setShowPasswordReset] = useState(false);
+    const [passwordResetSent, setPasswordResetSent] = useState(false);
     const emailAccessEnabled = getWindowData('emailAccessEnabled');
     const loggedInWithoutDonor = getWindowData('loggedInWithoutDonor');
     const recaptchaKey = getWindowData('recaptchaKey');
@@ -65,6 +68,21 @@ const AuthModal = () => {
 
             if (status === 200) {
                 setEmailSent(true);
+            } else {
+                setEmailError(body_response.message);
+            }
+        }
+    };
+
+    const handlePasswordReset = async (e) => {
+        e.preventDefault();
+        if (passwordResetEmail) {
+            // eslint-disable-next-line camelcase
+            const {status, body_response} = await resetPasswordWithAPI(passwordResetEmail);
+
+            if (status === 200) {
+                setPasswordResetSent(true);
+                setShowPasswordReset(false);
             } else {
                 setEmailError(body_response.message);
             }
@@ -124,38 +142,70 @@ const AuthModal = () => {
                         <div className="give-donor-dashboard__auth-modal-seperator" />
                     )}
                     {loginEnabled && (
-                        <Fragment>
-                            <div className="give-donor-dashboard__auth-modal-instruction">
-                                {emailAccessEnabled && (
-                                    <Fragment>
-                                        {__('Already have an account?', 'give')} <br />
-                                    </Fragment>
-                                )}
-                                {__('Log in below to access your dashboard', 'give')}
-                            </div>
-                            <form className="give-donor-dashboard__auth-modal-form" onSubmit={(e) => handleLogin(e)}>
-                                <TextControl icon="user" value={login} onChange={(value) => setLogin(value)} />
-                                <TextControl
-                                    icon="lock"
-                                    type="password"
-                                    value={password}
-                                    onChange={(value) => setPassword(value)}
-                                />
-                                <div className="give-donor-dashboard__auth-modal-row">
-                                    <Button type="submit">
-                                        {__('Log in', 'give')}
-                                        <FontAwesomeIcon
-                                            className={loggingIn ? 'give-donor-dashboard__auth-modal-spinner' : ''}
-                                            icon={loggingIn ? 'spinner' : 'chevron-right'}
-                                            fixedWidth
+                        <>
+                            {showPasswordReset && (
+                                <>
+                                    <div className="give-donor-dashboard__auth-modal-instruction">
+                                        {__('Reset your password by entering your email address.', 'give')}
+                                    </div>
+                                    <form className="give-donor-dashboard__auth-modal-form" onSubmit={(e) => handlePasswordReset(e)}>
+                                        <TextControl icon="envelope" value={passwordResetEmail} onChange={(value) => setPasswordResetEmail(value)} />
+                                        <div className="give-donor-dashboard__auth-modal-row">
+                                            <Button type="submit">
+                                                {__('Reset Password', 'give')}
+                                                <FontAwesomeIcon
+                                                    className={loggingIn ? 'give-donor-dashboard__auth-modal-spinner' : ''}
+                                                    icon={loggingIn ? 'spinner' : 'chevron-right'}
+                                                    fixedWidth
+                                                />
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </>
+                            )}
+                            {!showPasswordReset && (
+                                <>
+                                    <div className="give-donor-dashboard__auth-modal-instruction">
+                                        {emailAccessEnabled && (
+                                            <Fragment>
+                                                {__('Already have an account?', 'give')} <br />
+                                            </Fragment>
+                                        )}
+                                        {__('Log in below to access your dashboard', 'give')}
+                                    </div>
+                                    <form className="give-donor-dashboard__auth-modal-form" onSubmit={(e) => handleLogin(e)}>
+                                        <TextControl icon="user" value={login} onChange={(value) => setLogin(value)} />
+                                        <TextControl
+                                            icon="lock"
+                                            type="password"
+                                            value={password}
+                                            onChange={(value) => setPassword(value)}
                                         />
-                                    </Button>
-                                    {loginError && (
-                                        <div className="give-donor-dashboard__auth-modal-error">{loginError}</div>
-                                    )}
-                                </div>
-                            </form>
-                        </Fragment>
+                                        <div className="give-donor-dashboard__auth-modal-row">
+                                            <Button type="submit">
+                                                {__('Log in', 'give')}
+                                                <FontAwesomeIcon
+                                                    className={loggingIn ? 'give-donor-dashboard__auth-modal-spinner' : ''}
+                                                    icon={loggingIn ? 'spinner' : 'chevron-right'}
+                                                    fixedWidth
+                                                />
+                                            </Button>
+                                            <Button type="button" onClick={() => setShowPasswordReset(true)}>{__('Forgot Password?', 'give')}</Button>
+                                            {loginError && (
+                                                <div className="give-donor-dashboard__auth-modal-error">{loginError}</div>
+                                            )}
+                                        </div>
+                                    </form>
+                                </>
+                            )}
+                            {passwordResetSent && (
+                                <>
+                                    <div className="give-donor-dashboard__auth-modal-instruction">
+                                        {__('Instructions for resetting your password have been sent to you email.', 'give')}
+                                    </div>
+                                </>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

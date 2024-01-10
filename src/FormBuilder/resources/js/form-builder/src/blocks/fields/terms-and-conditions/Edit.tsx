@@ -4,13 +4,13 @@ import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Markup} from 'interweave';
+import {ClassicEditor} from '@givewp/form-builder-library';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 
 import './styles.scss';
-import {ClassicEditor} from '@givewp/form-builder-library';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
