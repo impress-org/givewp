@@ -11,14 +11,13 @@ use Give\Revenue\Repositories\Revenue;
 class UpdateRevenueWhenDonationAmountUpdated
 {
     /**
+     * @unreleased updated to accept Donation model
      * @since 2.22.1
-     *
-     * @param int $donationId The ID of the Donation.
      */
-    public function __invoke($donationId)
+    public function __invoke(Donation $donation)
     {
-        give(Revenue::class)->updateRevenueAmount(
-            Donation::find($donationId)
-        );
+        if ($donation->isDirty('amount')) {
+            give(Revenue::class)->updateRevenueAmount($donation);
+        }
     }
 }

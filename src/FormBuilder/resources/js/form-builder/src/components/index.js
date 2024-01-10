@@ -1,5 +1,5 @@
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
-import ClassicEditor from '@givewp/form-builder/components/ClassicEditor';
+import {ClassicEditor} from '@givewp/form-builder-library';
 
 export {default as Header} from './header';
 export {SecondarySidebar, Sidebar} from './sidebar';
