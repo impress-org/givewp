@@ -1,0 +1,52 @@
+.givewp-image-upload-control {
+    &__container {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+    }
+
+    &__image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    &__reset {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        z-index: 999;
+    }
+
+    &__button {
+        height: 3rem;
+        width: 100%;
+        border: none;
+    }
+
+    .components-button.has-icon.has-text {
+        justify-content: center;
+    }
+
+    .components-button.is-secondary {
+        box-shadow: none;
+        border: 1px dotted;
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}
+
