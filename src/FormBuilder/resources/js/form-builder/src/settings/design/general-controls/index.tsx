@@ -30,7 +30,12 @@ export default function GeneralControls() {
             title={__('General', 'give')}
             description={__('These settings affect the basic appearance of the form', 'give')}
         >
-            <Layout dispatch={dispatch} formDesigns={formDesigns} designId={designId} />
+            <Layout
+                dispatch={dispatch}
+                publishSettings={publishSettings}
+                formDesigns={formDesigns}
+                designId={designId}
+            />
             {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
             <Logo dispatch={dispatch} publishSettings={publishSettings} />
