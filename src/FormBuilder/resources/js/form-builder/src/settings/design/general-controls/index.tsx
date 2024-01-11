@@ -23,13 +23,18 @@ export default function GeneralControls() {
     const dispatch = useFormStateDispatch();
     const {publishSettings} = useDonationFormPubSub();
     const design = getDesign(designId);
-    
+
     return (
         <DesignSettings
             title={__('General', 'give')}
             description={__('These settings affect the basic appearance of the form', 'give')}
         >
-            <Layout dispatch={dispatch} formDesigns={formDesigns} designId={designId} />
+            <Layout
+                dispatch={dispatch}
+                publishSettings={publishSettings}
+                formDesigns={formDesigns}
+                designId={designId}
+            />
             {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
             <DonationGoal dispatch={dispatch} />
