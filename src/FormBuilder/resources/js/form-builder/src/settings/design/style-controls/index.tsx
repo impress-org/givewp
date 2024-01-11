@@ -6,12 +6,15 @@ import ImageSettings from './image';
 import LogoSettings from './logo';
 import SectionSettings from './section';
 import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
+import HeaderSettings from '@givewp/form-builder/settings/design/style-controls/header';
+import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 /**
  * @unreleased abstract design controls.
  */
 export default function StyleControls() {
     const dispatch = useFormStateDispatch();
+    const {publishSettings} = useDonationFormPubSub();
 
     return (
         <DesignSettings
@@ -24,6 +27,7 @@ export default function StyleControls() {
             <Color dispatch={dispatch} />
             <ImageSettings />
             <LogoSettings />
+            <HeaderSettings dispatch={dispatch} publishSettings={publishSettings} />
             <SectionSettings />
             <CustomStyles />
         </DesignSettings>
