@@ -9,7 +9,7 @@ import {BaseControl, Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import './styles.scss';
 
-type ImageUpload = {
+type MediaLibrary = {
     id: string;
     value: string;
     onChange: (url: string) => void;
@@ -18,7 +18,7 @@ type ImageUpload = {
     actionLabel?: string;
     icon?;
 };
-export default ({id, value, onChange, label, help, actionLabel, icon}: ImageUpload) => {
+export default function MediaLibrary({id, value, onChange, label, help, actionLabel, icon}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -57,16 +57,16 @@ export default ({id, value, onChange, label, help, actionLabel, icon}: ImageUplo
 
     return (
         <BaseControl label={label} help={help} id={id}>
-            <div className={'givewp-image-upload-control'}>
+            <div className={'givewp-media-library-control'}>
                 {value ? (
-                    <div className={'givewp-image-upload-control__container'}>
+                    <div className={'givewp-media-library-control__container'}>
                         <img
-                            className={'givewp-image-upload-control__image'}
+                            className={'givewp-media-library-control__image'}
                             src={value}
                             alt={__('uploaded image', 'give')}
                         />
                         <Button
-                            className={'givewp-image-upload-control__reset'}
+                            className={'givewp-media-library-control__reset'}
                             icon={
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +92,7 @@ export default ({id, value, onChange, label, help, actionLabel, icon}: ImageUplo
                     </div>
                 ) : (
                     <Button
-                        className={'givewp-image-upload-control__button'}
+                        className={'givewp-media-library-control__button'}
                         icon={icon}
                         variant={'secondary'}
                         onClick={openMediaLibrary}
@@ -103,4 +103,4 @@ export default ({id, value, onChange, label, help, actionLabel, icon}: ImageUplo
             </div>
         </BaseControl>
     );
-};
+}

@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
-import ImageUpload from '@givewp/form-builder/components/settings/ImageUpload';
 import {upload} from '@wordpress/icons';
+import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
 
 export default function Header({dispatch, publishSettings}) {
     const {
@@ -76,8 +76,8 @@ export default function Header({dispatch, publishSettings}) {
                         </PanelRow>
                     )}
                     <PanelRow>
-                        <ImageUpload
-                            id="givewp-header-image-control-upload"
+                        <MediaLibrary
+                            id="givewp-header-media-library-control"
                             icon={upload}
                             label={__('Image', 'give')}
                             actionLabel={__('Upload Image', 'give')}

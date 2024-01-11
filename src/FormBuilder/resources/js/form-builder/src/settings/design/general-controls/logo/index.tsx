@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
-import ImageUpload from '@givewp/form-builder/components/settings/ImageUpload';
 import {upload} from '@wordpress/icons';
+import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
 
 export default function Logo({dispatch, publishSettings}) {
     const {
@@ -12,8 +12,8 @@ export default function Logo({dispatch, publishSettings}) {
     return (
         <PanelBody title={__('Branding', 'give')} initialOpen={false}>
             <PanelRow>
-                <ImageUpload
-                    id="givewp-logo-image-control-upload"
+                <MediaLibrary
+                    id="givewp-logo-media-library-control"
                     icon={upload}
                     value={designSettingsLogoUrl}
                     label={__('Logo URL', 'give')}
