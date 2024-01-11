@@ -4,44 +4,53 @@
     }
 
     &__border {
-        .givewp-layouts-section__fieldset__legend legend {
+        .givewp-layouts-section__fieldset__legend > legend {
             padding-bottom: var(--givewp-spacing-2);
-            border-bottom: solid 1px var(--givewp-grey-900);
+            margin-bottom: var(--givewp-spacing-6);
+            border-bottom: 1px solid;
         }
     }
 
     &__solid {
         .givewp-layouts-section {
-            padding: 0;
+            padding-top: 0;
+            padding-inline: 0;
+
+            .givewp-section-nodes {
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+            }
         }
-        .givewp-layouts-section__fieldset__legend legend {
-            color: white;
-            background-color: #ef5da8;
-            padding: var(--givewp-spacing-8) var(--givewp-spacing-20);
-        }
-        .givewp-layouts-section__fieldset__legend p {
-            padding: var(--givewp-spacing-8) var(--givewp-spacing-20) var(--givewp-spacing-6);
-        }
-        .givewp-section-nodes {
-            padding: 0 var(--givewp-spacing-20) var(--givewp-spacing-10);
+
+        .givewp-layouts-section__fieldset__legend {
+            & > p {
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+            }
+
+            & > legend {
+                background: var(--givewp-secondary-color);
+                padding: var(--givewp-spacing-6) 0;
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+                font-size: 1.25rem;
+                color: var(--givewp-shades-white);
+                line-height: 1;
+            }
         }
     }
 
     &__card {
-        .givewp-layouts-header {
-            margin-bottom: var(--givewp-spacing-4);
-            border-radius: 4px;
+        .givewp-layouts-form {
+            background: transparent;
         }
-        form#give-next-gen {
-            display: flex;
-            flex-direction: column;
-            gap: var(--givewp-spacing-4);
-            background-color: #f2f2f2;
-        }
+
         .givewp-layouts-section {
-            border-radius: 4px;
-            background-color: white;
+            border-radius: .25rem;
+            margin: var(--givewp-spacing-4) 0;
             outline: 1px solid var(--givewp-grey-25);
+            background: var(--givewp-shades-white);
+
+            &:last-child {
+                padding-top: var(--givewp-spacing-4);
+            }
         }
     }
 }
