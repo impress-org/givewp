@@ -40,6 +40,7 @@ const DesignEditorSkeleton = () => {
             content={<DesignPreview />}
             sidebar={!!showSidebar && <DesignSidebar />}
             notices={<NoticesContainer />}
+            className="givewp-form-builder__design-tab"
         />
     );
 }
