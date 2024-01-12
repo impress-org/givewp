@@ -1,32 +1,23 @@
 import {ReactNode} from "react";
 import PreviousButton from "@givewp/forms/app/form/MultiStepForm/components/PreviousButton";
-import StepsPagination from "@givewp/forms/app/form/MultiStepForm/components/StepsPagination";
 import {__} from "@wordpress/i18n";
-import useCurrentStep from "@givewp/forms/app/form/MultiStepForm/hooks/useCurrentStep";
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
+import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
+import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities/getCurrentStepObject';
 
 /**
- * @unreleased updated to be less restrictive of step number
+ * @unreleased updated with steps props and showStepsHeader conditional
  * @since 3.0.0
  */
-function StepsWrapperTitle() {
-    const step = useCurrentStep();
+export default function StepsWrapper({steps, children}: {steps: StepObject[], children: ReactNode }) {
+    const {currentStep} = useDonationFormMultiStepState();
+    const {showHeader: hasFirstStep} = useDonationFormSettings();
+    const currentStepObject = getCurrentStepObject(steps, currentStep);
 
-    return step.title && <p className="givewp-donation-form__steps-header-title-text">{step.title}</p>;
-}
-
-/**
- * @unreleased updated with showStepsHeader conditional
- * @since 3.0.0
- */
-export default function StepsWrapper({children}: { children: ReactNode }) {
-    const {steps, currentStep} = useDonationFormMultiStepState();
-    const {showHeader} = useDonationFormSettings();
-
-    const showProgress = !showHeader || currentStep > 0;
-    const totalSteps = showHeader ? steps.length : steps.length - 1;
-    const showStepsHeader = !showHeader || currentStep > 0;
+    const showProgress = !hasFirstStep || currentStep > 0;
+    const totalSteps = hasFirstStep ? steps.length : steps.length - 1;
+    const showStepsHeader = !hasFirstStep || currentStepObject.title !== null;
 
     return (
         <div className="givewp-donation-form__steps">
@@ -36,7 +27,7 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
                     <PreviousButton>{__('Previous', 'give')}</PreviousButton>
                 </div>
                 <div className="givewp-donation-form__steps-header-title">
-                    <StepsWrapperTitle />
+                    <p className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</p>
                 </div>
             </div>
             )}
