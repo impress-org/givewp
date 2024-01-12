@@ -4,7 +4,7 @@ import { SettingsSection } from "@givewp/form-builder-library";
 import MediaLibrary from "../../../components/media-library";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function EmailGeneralSettings({ settings, setSettings }) {
     const { emailOptionsStatus, emailTemplate, emailLogo, emailFromName, emailFromEmail } = settings;

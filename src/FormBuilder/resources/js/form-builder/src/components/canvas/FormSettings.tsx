@@ -7,7 +7,7 @@ import EmailGeneralSettings from "@givewp/form-builder/settings/group-email-sett
 import getEmailSettings from "@givewp/form-builder/settings/group-email-settings";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 const routes: Route[] = [
     {
@@ -37,14 +37,14 @@ const routes: Route[] = [
 ];
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function FormSettings() {
     return <FormSettingsContainer routes={validateRoutes(routes)} />;
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 function validateRoutes(routes: Route[]): Route[] {
     const paths = [];
@@ -73,7 +73,7 @@ function validateRoutes(routes: Route[]): Route[] {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 function isValidRoute(route: Route) {
     return (
@@ -86,7 +86,7 @@ function isValidRoute(route: Route) {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export type Route = {
     name: string;

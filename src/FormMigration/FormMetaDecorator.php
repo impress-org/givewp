@@ -510,7 +510,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function isMailchimpEnabled(): bool
     {
@@ -524,7 +524,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpLabel()
     {
@@ -533,7 +533,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDefaultChecked(): bool
     {
@@ -541,7 +541,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDoubleOptIn(): bool
     {
@@ -549,7 +549,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSendDonationData(): bool
     {
@@ -557,7 +557,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSendFFMData(): bool
     {
@@ -565,7 +565,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDefaultAudiences(): array
     {
@@ -573,7 +573,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSubscriberTags(): array
     {
@@ -599,7 +599,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function hasFunds(): bool
     {
@@ -609,7 +609,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function hasFundOptions(): bool
     {
@@ -619,7 +619,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
     {
@@ -652,7 +652,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function getFundLabel(int $fundId): string
     {
@@ -670,7 +670,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function isDefaultFund(int $fundId): bool
     {

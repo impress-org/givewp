@@ -18,7 +18,7 @@ type PopoverContentWithTemplateTagsProps = {
 };
 
 /**
- * @unreleased extracted template tags to be a shared component
+ * @since 3.3.0 extracted template tags to be a shared component
  * @since 3.0.0
  */
 export default function PopoverContentWithTemplateTags({
