@@ -9,7 +9,7 @@ use WP_REST_Response;
 
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 class PasswordResetRoute implements RestRoute
 {
@@ -45,7 +45,7 @@ class PasswordResetRoute implements RestRoute
     /**
      * Handles logout request
      *
-     * @unreleased
+     * @since 3.3.0
      *
      * @param WP_REST_Request $request
      *

@@ -8,7 +8,7 @@ import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags'
 const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {
     const {receiptHeading, receiptDescription} = settings;

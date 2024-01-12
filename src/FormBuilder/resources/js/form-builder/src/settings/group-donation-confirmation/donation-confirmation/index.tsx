@@ -2,7 +2,7 @@ import { PanelRow } from "@wordpress/components";
 import { ClassicEditor } from "@givewp/form-builder-library";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 const DonationConfirmation = ({id, content, onChange}) => {
     return (

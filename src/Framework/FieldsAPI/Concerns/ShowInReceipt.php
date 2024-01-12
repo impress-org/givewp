@@ -44,7 +44,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function receiptLabel(string $label): self
     {
@@ -54,7 +54,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function hasReceiptLabel(): bool
     {
@@ -62,7 +62,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getReceiptLabel(): string
     {
@@ -70,7 +70,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function hasReceiptValue(): bool
     {
@@ -78,7 +78,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function isReceiptValueCallback(): bool
     {
@@ -86,7 +86,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getReceiptValue(): Closure
     {
@@ -94,7 +94,7 @@ trait ShowInReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function receiptValue(Closure $value): self
     {
