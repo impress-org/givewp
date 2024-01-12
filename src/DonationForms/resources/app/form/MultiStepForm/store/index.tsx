@@ -8,12 +8,18 @@ StoreContext.displayName = 'DonationFormMultiStepState';
 const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'DonationFormMultiStepStateDispatch';
 
+/**
+ * @unreleased removed showHeader in favor of DonationFormSettings context
+ * @since 3.0.0
+ */
 export type MultiStepFormContextState = {
     steps: StepObject[];
     currentStep: number;
-    showHeader: boolean;
 };
 
+/**
+ * @since 3.0.0
+ */
 type PropTypes = {
     initialState: MultiStepFormContextState;
     children: ReactNode;
