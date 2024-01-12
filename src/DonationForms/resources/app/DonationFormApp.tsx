@@ -92,6 +92,28 @@ function AppPreview() {
 
     useEffect(() => {
         subscribeToSettings((settings) => {
+
+            if(settings['designSettingsSectionStyle']) {
+                updateDesignSettingsClassName('givewp-design-settings--section-style', settings['designSettingsSectionStyle']);
+            }
+
+            if(settings['designSettingsImageUrl']) {
+                root.style.setProperty('--givewp-design-settings-background-image', 'url(' + settings['designSettingsImageUrl'] + ')');
+            }
+
+            if(settings['designSettingsImageStyle']) {
+                console.log(settings['designSettingsImageStyle'])
+                updateDesignSettingsClassName('givewp-design-settings--image-style', settings['designSettingsImageStyle']);
+            }
+
+            if(settings['designSettingsLogoUrl']) {
+                root.style.setProperty('--givewp-design-settings-logo', 'url(' + settings['designSettingsLogoUrl'] + ')');
+            }
+
+            if(settings['designSettingsLogoPosition']) {
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
+            }
+
             setFormState(prevState => {
                 return {
                     ...prevState,
@@ -143,6 +165,15 @@ function AppPreview() {
     }, []);
 
     return <App form={formState} />
+}
+
+function updateDesignSettingsClassName(block, element) {
+    root.classList.forEach((className) => {
+        if(className.startsWith(block + '__')) {
+            root.classList.remove(className);
+        }
+    });
+    root.classList.add(block + '__' + element);
 }
 
 const root = document.getElementById('root-givewp-donation-form');
