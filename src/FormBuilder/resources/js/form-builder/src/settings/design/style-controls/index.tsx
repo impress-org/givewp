@@ -2,8 +2,6 @@ import {__} from '@wordpress/i18n';
 import {useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import Color from './color';
 import CustomStyles from './custom-styles';
-import ImageSettings from './image';
-import LogoSettings from './logo';
 import SectionSettings from './section';
 import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
 import HeaderSettings from '@givewp/form-builder/settings/design/style-controls/header';
@@ -25,8 +23,6 @@ export default function StyleControls() {
             )}
         >
             <Color dispatch={dispatch} />
-            <ImageSettings />
-            <LogoSettings />
             <HeaderSettings dispatch={dispatch} publishSettings={publishSettings} />
             <SectionSettings />
             <CustomStyles />
