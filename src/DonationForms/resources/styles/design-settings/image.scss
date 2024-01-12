@@ -119,6 +119,10 @@
 
 .givewp-design-settings--image-style__above {
     &:has(.givewp-donation-form__steps) {
+        .givewp-donation-form__steps-body {
+            padding-top: 0;
+        }
+
         .givewp-layouts-header > div:first-child {
             padding-top: var(--givewp-spacing-6);
         }
