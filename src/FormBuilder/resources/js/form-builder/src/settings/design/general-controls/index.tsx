@@ -8,6 +8,7 @@ import {getWindowData} from '@givewp/form-builder/common';
 import DonateButton from '@givewp/form-builder/settings/design/general-controls/donate-button';
 import MultiStep from '@givewp/form-builder/settings/design/general-controls/multi-step';
 import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
+import Logo from '@givewp/form-builder/settings/design/general-controls/logo';
 
 const {formDesigns} = getWindowData();
 const getDesign = (designId: string) => formDesigns[designId];
@@ -23,15 +24,21 @@ export default function GeneralControls() {
     const dispatch = useFormStateDispatch();
     const {publishSettings} = useDonationFormPubSub();
     const design = getDesign(designId);
-    
+
     return (
         <DesignSettings
             title={__('General', 'give')}
             description={__('These settings affect the basic appearance of the form', 'give')}
         >
-            <Layout dispatch={dispatch} formDesigns={formDesigns} designId={designId} />
+            <Layout
+                dispatch={dispatch}
+                publishSettings={publishSettings}
+                formDesigns={formDesigns}
+                designId={designId}
+            />
             {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
+            <Logo dispatch={dispatch} publishSettings={publishSettings} />
             <DonationGoal dispatch={dispatch} />
             <DonateButton dispatch={dispatch} publishSettings={publishSettings} />
         </DesignSettings>

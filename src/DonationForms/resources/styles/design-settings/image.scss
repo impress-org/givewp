@@ -1,10 +1,11 @@
 .givewp-design-settings--image-style {
+
     &__background {
         .givewp-layouts-header {
-            --tint-color: rgba(30, 140, 190,0.4); /* Note: Color needs to be converted to RGB values. */
-            --tint: linear-gradient(90deg,var(--tint-color),var(--tint-color));
+            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
-            background-image: var(--tint,linear-gradient(transparent,transparent)),var(--givewp-design-settings-background-image);
+            background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
             background-position: 50%;
             background-size: cover;
         }
@@ -20,34 +21,42 @@
             margin-top: 300px;
             position: relative;
         }
+
         .givewp-layouts-headerTextWrapper {
             position: absolute;
             top: -50%;
         }
+
         .givewp-layouts-header::after {
             content: "";
             position: absolute;
             display: block;
             top: -100%;
-            left: -12.5%;
-            width: 125%;
+            width: 145%;
             height: 180%;
             z-index: -1;
-            --tint-color: rgba(30, 140, 190,0.4); /* Note: Color needs to be converted to RGB values. */
-            --tint: linear-gradient(90deg,var(--tint-color),var(--tint-color));
+            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
-            background-image: var(--tint,linear-gradient(transparent,transparent)),var(--givewp-design-settings-background-image);
+            background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
             background-size: cover;
         }
     }
 
     &__above {
+        // Flatten image borders when logo is available.
+        &.givewp-design-settings--logo {
+            .givewp-layouts-header::after {
+                border-radius: 0;
+            }
+        }
+
         .givewp-layouts-header {
             margin-top: 320px;
             position: relative;
             border-radius: 0;
-            background-color: var(--givewp-blue-25);
         }
+
         .givewp-layouts-headerTitle h2,
         .givewp-layouts-headerDescription {
             color: var(--givewp-grey-900);
@@ -68,14 +77,12 @@
     }
 
     &__center {
-        .givewp-layouts-header {
-            background-color: var(--givewp-blue-25);
-        }
         .givewp-layouts-goal {
             margin-top: 320px;
             position: relative;
             border-radius: 0;
         }
+
         .givewp-layouts-headerTitle h2,
         .givewp-layouts-headerDescription {
             color: var(--givewp-grey-900);
@@ -88,11 +95,84 @@
             left: 0;
             width: 100%;
             height: 320px;
+
             background-image: var(--givewp-design-settings-background-image);
             background-position: 50%;
             background-size: cover;
             border-top-left-radius: 0.5rem;
             border-top-right-radius: 0.5rem;
+        }
+    }
+}
+
+
+.givewp-design-settings--image-style__cover {
+    &.givewp-design-settings--logo {
+        &.givewp-donation-form::after {
+            width: 142.32%;
+            left: -21.15%;
+            top: -3.35rem;
+        }
+    }
+}
+
+
+.givewp-design-settings--image-style__above {
+    &:has(.givewp-donation-form__steps) {
+        .givewp-donation-form__steps-body {
+            padding-top: 0;
+        }
+
+        .givewp-layouts-header > div:first-child {
+            padding-top: var(--givewp-spacing-6);
+        }
+
+        .givewp-layouts-header::after {
+            left: -4rem;
+            width: calc(100% + 6rem);
+            border-radius: 0;
+        }
+    }
+}
+
+.givewp-design-settings--image-style__background {
+    &:has(.givewp-donation-form__steps) {
+        .givewp-layouts-header {
+            position: relative;
+            margin-bottom: 10rem;
+            background: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -2rem;
+                width: calc(100% + 4rem);
+                height: 290px;
+                --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+                --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
+                background-color: rgb(30, 140, 190);
+                background-image: var(--givewp-design-settings-background-image);
+                background-position: 50%;
+                background-size: cover;
+            }
+
+
+            .givewp-layouts-headerTitle > h2, .givewp-layouts-headerDescription > p {
+                position: relative;
+                transform: translateY(5rem);
+                color: var(--givewp-shades-white);
+                z-index: 999;
+            }
+        }
+
+        .givewp-layouts-goal {
+            transform: translateY(10rem);
+        }
+
+
+        .givewp-donation-form__steps-body {
+            padding-top: 0;
         }
     }
 }

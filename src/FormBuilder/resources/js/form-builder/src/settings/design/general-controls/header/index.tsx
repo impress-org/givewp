@@ -1,10 +1,20 @@
 import {__} from '@wordpress/i18n';
-import {PanelBody, PanelRow, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
+import {upload} from '@wordpress/icons';
+import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
 
 export default function Header({dispatch, publishSettings}) {
     const {
-        settings: {showHeader, showHeading, heading, showDescription, description},
+        settings: {
+            showHeader,
+            showHeading,
+            heading,
+            showDescription,
+            description,
+            designSettingsImageUrl,
+            designSettingsImageStyle,
+        },
     } = useFormState();
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
@@ -65,6 +75,33 @@ export default function Header({dispatch, publishSettings}) {
                             />
                         </PanelRow>
                     )}
+                    <PanelRow>
+                        <MediaLibrary
+                            id="givewp-header-media-library-control"
+                            icon={upload}
+                            label={__('Image', 'give')}
+                            actionLabel={__('Upload Image', 'give')}
+                            value={designSettingsImageUrl}
+                            onChange={(designSettingsImageUrl) => {
+                                dispatch(setFormSettings({designSettingsImageUrl}));
+                            }}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Image Style', 'give')}
+                            onChange={(designSettingsImageStyle) => {
+                                dispatch(setFormSettings({designSettingsImageStyle}));
+                            }}
+                            value={designSettingsImageStyle}
+                            options={[
+                                {label: __('Background', 'give'), value: 'background'},
+                                {label: __('Cover', 'give'), value: 'cover'},
+                                {label: __('Above', 'give'), value: 'above'},
+                                {label: __('Center', 'give'), value: 'center '},
+                            ]}
+                        />
+                    </PanelRow>
                 </>
             )}
         </PanelBody>
