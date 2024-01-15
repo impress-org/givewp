@@ -4,6 +4,18 @@
     &.givewp-donation-form {
         position: relative;
         transform: translateY(var(--givewp-logo-container));
+        padding-bottom: var(--givewp-logo-container);
+        width: 35rem;
+        margin: 0 auto;
+
+        .givewp-donation-form__steps {
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
+            border-top: none;
+            box-shadow: var(--givewp-shadow-md);
+            border-bottom: none;
+            margin: 0 auto;
+        }
 
         // This accounts for the space below the button that overflows/hidden.
         button[type=submit] {

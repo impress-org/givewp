@@ -1,0 +1,75 @@
+.givewp-design-settings--textField-style {
+    &__line {
+        .givewp-layouts-section {
+            input[type='text'], input[type='email'], select[name="honorific"], .givewp-fields-amount__input-container {
+                background: var(--givewp-grey-5, #FAFAFA);
+                color: var(--givewp-grey-400, #8C8C8C);
+                border-top: 0;
+                border-left: 0;
+                border-right: 0;
+                border-radius: 0;
+            }
+
+            .givewp-fields-text, .givewp-fields-select-honorific, .givewp-fields-email {
+                label {
+                    position: relative;
+
+                    > span {
+                        visibility: hidden;
+                        position: absolute;
+                        top: .5rem;
+                        left: var(--givewp-spacing-4);
+                        color: var(--givewp-primary-color);
+                        font-size: .75rem;
+                        padding-bottom: 2rem;
+                    }
+
+                    input:focus {
+                        padding-top: 2.25rem;
+                    }
+                }
+
+                label:focus-within span {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+
+    &__box {
+        .givewp-layouts-section {
+            input[type='text'], input[type='email'],
+
+        , select [ name = "honorific" ] {
+            position: relative;
+            border: 1px solid var(--givewp-primary-color, #0B72D9);
+        }
+
+            .givewp-fields-text, .givewp-fields-select-honorific, .givewp-fields-email {
+                label {
+                    position: relative;
+
+                    > span {
+                        visibility: hidden;
+                        position: absolute;
+                        top: -.7rem;
+                        left: .5rem;
+                        width: fit-content;
+                        padding: 0 .25rem;
+                        background: var(--givewp-shades-white);
+                        color: var(--givewp-primary-color, #0B72D9);
+                        z-index: 999;
+                    }
+                }
+
+                label:focus-within span {
+                    visibility: visible;
+                }
+            }
+
+            #amount-custom {
+                border: red;
+            }
+        }
+    }
+}
