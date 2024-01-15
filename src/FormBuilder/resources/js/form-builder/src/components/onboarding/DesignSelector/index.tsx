@@ -6,9 +6,11 @@ import DesignCard from './components/DesignCard';
 
 // @ts-ignore
 import classDesignScreenshot from './images/classic-design-screenshot.png';
-
 // @ts-ignore
 import multiStepDesignScreenshot from './images/multi-step-design-screenshot.png';
+// @ts-ignore
+import twoPanelStepsDesignScreenshot from './images/two-panel-steps-design-screenshot.png';
+
 import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 export default ({onContinue}) => {
@@ -63,6 +65,17 @@ export default ({onContinue}) => {
                         title={__('Multi-step', 'give')}
                         description={__(
                             'This walks the donor through a number of steps to the donation process. The sections are broken into steps in the form',
+                            'give'
+                        )}
+                    />
+                    <DesignCard
+                        selected={selectedDesign === 'two-panel-steps'}
+                        onSelected={() => onDesignSelected('two-panel-steps')}
+                        image={twoPanelStepsDesignScreenshot}
+                        alt={__('Two-Panel (Steps) form design', 'give')}
+                        title={__('Two-Panel (Steps)', 'give')}
+                        description={__(
+                            'This has a side-by-side layout which breaks the sections of the donation process into steps.',
                             'give'
                         )}
                     />
