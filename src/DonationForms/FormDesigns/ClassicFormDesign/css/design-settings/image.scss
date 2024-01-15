@@ -115,22 +115,3 @@
         }
     }
 }
-
-
-.givewp-design-settings--image-style__above {
-    &:has(.givewp-donation-form__steps) {
-        .givewp-donation-form__steps-body {
-            padding-top: 0;
-        }
-
-        .givewp-layouts-header > div:first-child {
-            padding-top: var(--givewp-spacing-6);
-        }
-
-        .givewp-layouts-header::after {
-            left: -4rem;
-            width: calc(100% + 6rem);
-            border-radius: 0;
-        }
-    }
-}
