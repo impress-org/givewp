@@ -69,7 +69,7 @@
 
     .components-modal__content {
         margin: 0;
-        width: 45rem;
+        width: min-content;
         padding: var(--givewp-spacing-6);
 
         p {
@@ -103,7 +103,7 @@
     .givewp-design-selector--cards {
         display: grid;
         grid-auto-flow: column;
-        column-gap: var(--givewp-spacing-10);
+        column-gap: var(--givewp-spacing-6);
     }
 
     .givewp-design-selector--card {
