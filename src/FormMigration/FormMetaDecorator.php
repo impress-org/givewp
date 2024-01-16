@@ -707,22 +707,6 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getGiftAidDescription(): string
     {
-        return $this->getMeta('give_gift_aid_fieldset_title');
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getGiftAidTitle(): string
-    {
-        return $this->getMeta('give_gift_aid_fieldset_title');
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getGiftAidDescription(): string
-    {
         return $this->getMeta('give_gift_aid_explanation_content');
     }
 
