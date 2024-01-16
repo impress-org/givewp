@@ -5,7 +5,6 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
-use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -683,5 +682,30 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return $fund->id === $fundId;
+    }
+
+    /**
+     * @unlreased
+     */
+    public function getGiftAidSettings(): array
+    {
+        $giftAidStatus = $this->getMeta('give_gift_aid_enable_disable');
+
+        if (empty($giftAidStatus) || ($giftAidStatus !== 'enabled' && $giftAidStatus !== 'global')) {
+            return [];
+        }
+
+        return [
+            'useGlobalSettings' => $giftAidStatus === 'global',
+            'title' => $this->getMeta('give_gift_aid_fieldset_title'),
+            'description' => $this->getMeta('give_gift_aid_explanation_content'),
+            'longExplanationEnabled' => $this->getMeta('give_gift_aid_long_explanation_enable_disable'),
+            'linkText' => __('Tell me more', 'give-gift-aid'),
+            'modalHeader' => __('What is Gift Aid?', 'give-gift-aid'),
+            'longExplanation' => $this->getMeta('give_gift_aid_long_explanation_content'),
+            'checkboxLabel' => $this->getMeta('give_gift_aid_checkbox_label'),
+            'agreementText' => $this->getMeta('give_gift_aid_agreement'),
+            'declarationForm' => $this->getMeta('give_gift_aid_declaration_form'),
+        ];
     }
 }
