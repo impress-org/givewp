@@ -14,9 +14,9 @@ export default function Logo({dispatch, publishSettings}) {
             <PanelRow>
                 <MediaLibrary
                     id="givewp-logo-media-library-control"
+                    label={__('Logo URL', 'give')}
                     icon={upload}
                     value={designSettingsLogoUrl}
-                    label={__('Logo URL', 'give')}
                     actionLabel={__('Upload Logo', 'give')}
                     onChange={(designSettingsLogoUrl) => {
                         dispatch(setFormSettings({designSettingsLogoUrl}));
@@ -24,21 +24,23 @@ export default function Logo({dispatch, publishSettings}) {
                     }}
                 />
             </PanelRow>
-            <PanelRow>
-                <SelectControl
-                    label={__('Logo Alignment', 'give')}
-                    onChange={(designSettingsLogoPosition) => {
-                        dispatch(setFormSettings({designSettingsLogoPosition}));
-                        publishSettings({designSettingsLogoPosition});
-                    }}
-                    value={designSettingsLogoPosition}
-                    options={[
-                        {label: __('Left', 'give'), value: 'left'},
-                        {label: __('Center', 'give'), value: 'center'},
-                        {label: __('Right', 'give'), value: 'right'},
-                    ]}
-                />
-            </PanelRow>
+            {designSettingsLogoUrl && (
+                <PanelRow>
+                    <SelectControl
+                        label={__('Logo Alignment', 'give')}
+                        onChange={(designSettingsLogoPosition) => {
+                            dispatch(setFormSettings({designSettingsLogoPosition}));
+                            publishSettings({designSettingsLogoPosition});
+                        }}
+                        value={designSettingsLogoPosition}
+                        options={[
+                            {label: __('Left', 'give'), value: 'left'},
+                            {label: __('Center', 'give'), value: 'center'},
+                            {label: __('Right', 'give'), value: 'right'},
+                        ]}
+                    />
+                </PanelRow>
+            )}
         </PanelBody>
     );
 }
