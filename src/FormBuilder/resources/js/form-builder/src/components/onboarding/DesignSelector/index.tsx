@@ -1,17 +1,14 @@
-import { useContext, useState } from "react";
-import { Button, Modal } from "@wordpress/components";
-import { ShepherdTourContext } from "react-shepherd";
-import { __ } from "@wordpress/i18n";
-import DesignCard from "./components/DesignCard";
+import {useContext, useState} from 'react';
+import {Button, Modal} from '@wordpress/components';
+import {ShepherdTourContext} from 'react-shepherd';
+import {__} from '@wordpress/i18n';
+import DesignCard from './components/DesignCard';
 
-// @ts-ignore
-import classDesignScreenshot from "./images/classic-design-screenshot.png";
-// @ts-ignore
-import multiStepDesignScreenshot from "./images/multi-step-design-screenshot.png";
-// @ts-ignore
-import twoPanelStepsDesignScreenshot from "./images/two-panel-steps-design-screenshot.png";
+import classDesignScreenshot from './images/classic-design-screenshot.png';
+import multiStepDesignScreenshot from './images/multi-step-design-screenshot.png';
+import twoPanelStepsDesignScreenshot from './images/two-panel-steps-design-screenshot.png';
 
-import { setFormSettings, useFormStateDispatch } from "@givewp/form-builder/stores/form-state";
+import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 /**
  * @unreleased Added Two-Panel (Steps) design option
