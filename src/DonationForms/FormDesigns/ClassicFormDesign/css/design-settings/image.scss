@@ -2,7 +2,7 @@
 
     &__background {
         .givewp-layouts-header {
-            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
             background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
@@ -26,7 +26,6 @@
 
         .givewp-layouts-headerTextWrapper {
             position: absolute;
-            top: -10rem;
 
             .givewp-layouts-headerTitle {
                 margin-bottom: var(--givewp-spacing-4);
@@ -36,12 +35,11 @@
         .givewp-layouts-header::before {
             content: "";
             position: absolute;
-            display: block;
             top: -75%;
             width: 145%;
-            height: 140%;
+            height: 145%;
             z-index: -1;
-            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
             background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
