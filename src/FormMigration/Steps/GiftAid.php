@@ -9,18 +9,34 @@ class GiftAid extends FormMigrationStep
 {
 
     /**
-     * @unlreased
+     * @unreleased
+     *
+     * @return void
      */
     public function process()
     {
-        $giftAidSettings = $this->formV2->getGiftAidSettings();
+        $giftAidStatus = $this->formV2->getGiftAidStatus();
+        $useGlobalSettings = $giftAidStatus === 'global';
 
-        if (empty($giftAidSettings) || (
-                $giftAidSettings['useGlobalSettings'] === true &&
+        if (empty($giftAidStatus) || (
+                $useGlobalSettings === true &&
                 !give_is_setting_enabled(give_get_option('give_gift_aid_enable_disable', 'disabled'))
-            )) {
+            ) || !in_array($giftAidStatus, ['enabled', 'global'], true)) {
             return;
         }
+
+        $giftAidSettings = [
+            'useGlobalSettings' => $useGlobalSettings,
+            'title' => $this->formV2->getGiftAidTitle(),
+            'description' => $this->formV2->getGiftAidDescription(),
+            'longExplanationEnabled' => $this->formV2->getGiftAidLongExplanationEnabled(),
+            'linkText' => $this->formV2->getGiftAidLinkText(),
+            'modalHeader' => $this->formV2->getGiftAidModalHeader(),
+            'longExplanation' => $this->formV2->getGiftAidLongExplanation(),
+            'checkboxLabel' => $this->formV2->getGiftAidCheckboxLabel(),
+            'agreementText' => $this->formV2->getGiftAidAgreementText(),
+            'declarationForm' => $this->formV2->getGiftAidDeclarationForm(),
+        ];
 
         $giftAidBlock = BlockModel::make([
             'name' => 'givewp-gift-aid/gift-aid',

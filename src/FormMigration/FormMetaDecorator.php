@@ -685,27 +685,100 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unlreased
+     * @unreleased
+     *
+     * @return string 'global', 'enabled', 'disabled'
      */
-    public function getGiftAidSettings(): array
+    public function getGiftAidStatus(): string
     {
-        $giftAidStatus = $this->getMeta('give_gift_aid_enable_disable');
+        return $this->getMeta('give_gift_aid_enable_disable');
+    }
 
-        if (empty($giftAidStatus) || ($giftAidStatus !== 'enabled' && $giftAidStatus !== 'global')) {
-            return [];
-        }
+    /**
+     * @unreleased
+     */
+    public function getGiftAidTitle(): string
+    {
+        return $this->getMeta('give_gift_aid_fieldset_title');
+    }
 
-        return [
-            'useGlobalSettings' => $giftAidStatus === 'global',
-            'title' => $this->getMeta('give_gift_aid_fieldset_title'),
-            'description' => $this->getMeta('give_gift_aid_explanation_content'),
-            'longExplanationEnabled' => $this->getMeta('give_gift_aid_long_explanation_enable_disable'),
-            'linkText' => __('Tell me more', 'give-gift-aid'),
-            'modalHeader' => __('What is Gift Aid?', 'give-gift-aid'),
-            'longExplanation' => $this->getMeta('give_gift_aid_long_explanation_content'),
-            'checkboxLabel' => $this->getMeta('give_gift_aid_checkbox_label'),
-            'agreementText' => $this->getMeta('give_gift_aid_agreement'),
-            'declarationForm' => $this->getMeta('give_gift_aid_declaration_form'),
-        ];
+    /**
+     * @unreleased
+     */
+    public function getGiftAidDescription(): string
+    {
+        return $this->getMeta('give_gift_aid_fieldset_title');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidTitle(): string
+    {
+        return $this->getMeta('give_gift_aid_fieldset_title');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidDescription(): string
+    {
+        return $this->getMeta('give_gift_aid_explanation_content');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidLongExplanationEnabled(): bool
+    {
+        return $this->getMeta('give_gift_aid_long_explanation_enable_disable');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidLinkText(): string
+    {
+        return __('Tell me more', 'give-gift-aid');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidModalHeader(): string
+    {
+        return __('What is Gift Aid?', 'give-gift-aid');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidLongExplanation(): string
+    {
+        return $this->getMeta('give_gift_aid_long_explanation_content');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidCheckboxLabel(): string
+    {
+        return $this->getMeta('give_gift_aid_checkbox_label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidAgreementText(): string
+    {
+        return $this->getMeta('give_gift_aid_agreement');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidDeclarationForm(): string
+    {
+        return $this->getMeta('give_gift_aid_declaration_form');
     }
 }
