@@ -48,6 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\PerFormGateways::class,
                 Steps\Mailchimp::class,
                 Steps\FundsAndDesignations::class,
+                Steps\GiftAid::class,
             ]);
         });
     }
