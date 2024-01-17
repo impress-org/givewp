@@ -1,52 +1,67 @@
 .givewp-media-library-control {
-    &__container {
-        position: relative;
-
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5rem;
-            background-color: rgba(0, 0, 0, 0.3);
-            z-index: 1;
-        }
-    }
-
-    &__image {
-        height: 5rem;
-        width: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
+    cursor: pointer;
 
     &__reset {
+        position: relative;
+        display: flex;
+        background: transparent;
+        height: 5rem;
+        width: 100%;
+        padding: 0;
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            svg {
+                visibility: visible
+            }
+        }
+
+    }
+
+
+    svg {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        cursor: pointer;
+        visibility: hidden;
         z-index: 999;
     }
 
-    &__button {
-        height: 3rem;
+    &__image {
         width: 100%;
-        border: none;
+        height: 5rem;
+        object-fit: cover;
+        object-position: center;
+        transition: filter 0.3s ease;
+
+        &:hover {
+            filter: brightness(80%); /* Adjust the brightness percentage for the desired tint */
+        }
     }
 
-    .components-button.has-icon.has-text {
+    &__button {
+        display: flex;
+        justify-content: center;
+        height: 3rem;
+        width: 100%;
+        border: 1px dotted;
+
+        &--update {
+            margin-top: var(--givewp-spacing-2);
+            border: 1px solid;
+        }
+    }
+
+    .components-button.has-text {
         justify-content: center;
     }
 
     .components-button.is-secondary {
         box-shadow: none;
-        border: 1px dotted;
 
         &:hover {
             box-shadow: none;
         }
     }
 }
-
