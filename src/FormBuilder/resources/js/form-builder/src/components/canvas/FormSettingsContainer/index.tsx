@@ -10,7 +10,7 @@ import Content from './components/Content';
 const FormSettingsContext = createContext<[State, Dispatch<Action>] | undefined>(undefined);
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export function useFormSettingsContext() {
     const context = useContext(FormSettingsContext);
@@ -23,7 +23,7 @@ export function useFormSettingsContext() {
 }
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 export default function FormSettingsContainer({routes}) {
     const [state, dispatch] = useReducer(formSettingsReducer, {

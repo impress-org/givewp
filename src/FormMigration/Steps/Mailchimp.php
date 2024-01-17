@@ -6,12 +6,12 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 class Mailchimp extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function canHandle(): bool
     {
@@ -19,7 +19,7 @@ class Mailchimp extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function process(): void
     {
@@ -32,7 +32,7 @@ class Mailchimp extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function getAttributes(): array
     {

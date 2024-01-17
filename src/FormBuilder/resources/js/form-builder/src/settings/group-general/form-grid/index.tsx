@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import { PanelRow, TextControl, ToggleControl } from "@wordpress/components";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 const FormGridSettings = ({settings, setSettings}) => {
     const {formGridCustomize, formGridRedirectUrl, formGridDonateButtonText} = settings;

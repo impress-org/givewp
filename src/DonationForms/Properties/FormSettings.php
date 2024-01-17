@@ -296,7 +296,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
         $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
             $array['designSettingsImageStyle']
-        ) : DesignSettingsImageStyle::COVER();
+        ) : DesignSettingsImageStyle::BACKGROUND();
 
         $self->designSettingsLogoUrl = $array['designSettingsLogoUrl'] ?? '';
         $self->designSettingsLogoPosition = ! empty($array['designSettingsLogoPosition']) ? new DesignSettingsLogoPosition(

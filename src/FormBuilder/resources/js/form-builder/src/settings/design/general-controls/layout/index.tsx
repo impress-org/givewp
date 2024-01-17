@@ -26,6 +26,7 @@ export default function Layout({dispatch, publishSettings, formDesigns, designId
             <PanelRow>
                 <SelectControl
                     label={__('Input Field', 'give')}
+                    help={__('Change the design of the input fields for this form.', 'give')}
                     onChange={(designSettingsTextFieldStyle) => {
                         dispatch(setFormSettings({designSettingsTextFieldStyle}));
                         publishSettings({designSettingsTextFieldStyle});

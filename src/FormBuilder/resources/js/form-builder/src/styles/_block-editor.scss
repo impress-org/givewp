@@ -34,11 +34,16 @@
 }
 
 .interface-interface-skeleton__content {
-    width: 720px;
+    width: 100%;
     margin: auto;
     padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
+
+    #form-blocks-canvas {
+        width: 720px;
+        margin: 0 auto;
+    }
 
     @media screen and (max-width: 782px) {
         padding: 1rem 0;

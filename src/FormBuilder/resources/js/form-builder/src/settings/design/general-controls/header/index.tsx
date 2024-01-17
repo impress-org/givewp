@@ -14,8 +14,23 @@ export default function Header({dispatch, publishSettings}) {
             description,
             designSettingsImageUrl,
             designSettingsImageStyle,
+            designSettingsLogoUrl,
+            designSettingsLogoPosition
         },
     } = useFormState();
+
+    const resetSettings = ()=> {
+        const reset = {
+            designSettingsImageUrl: '',
+            designSettingsImageStyle: '',
+            designSettingsLogoUrl,
+            designSettingsLogoPosition
+        };
+
+        dispatch(setFormSettings(reset));
+        publishSettings(reset);
+    }
+
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
             <PanelRow>
@@ -83,25 +98,56 @@ export default function Header({dispatch, publishSettings}) {
                             actionLabel={__('Upload Image', 'give')}
                             value={designSettingsImageUrl}
                             onChange={(designSettingsImageUrl) => {
-                                dispatch(setFormSettings({designSettingsImageUrl}));
+                                dispatch(setFormSettings({
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition
+                                }));
+
+                                publishSettings({
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition
+                                });
                             }}
+                            reset={resetSettings}
                         />
                     </PanelRow>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Image Style', 'give')}
-                            onChange={(designSettingsImageStyle) => {
-                                dispatch(setFormSettings({designSettingsImageStyle}));
-                            }}
-                            value={designSettingsImageStyle}
-                            options={[
-                                {label: __('Background', 'give'), value: 'background'},
-                                {label: __('Cover', 'give'), value: 'cover'},
-                                {label: __('Above', 'give'), value: 'above'},
-                                {label: __('Center', 'give'), value: 'center '},
-                            ]}
-                        />
-                    </PanelRow>
+                    {designSettingsImageUrl && (
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Image Style', 'give')}
+                                help={__(
+                                    'Determines how the image will be applied in the header for this form.',
+                                    'give'
+                                )}
+                                onChange={(designSettingsImageStyle) => {
+                                    dispatch(setFormSettings({
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition
+                                    }));
+                                    
+                                    publishSettings({
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition
+                                    });
+                                }}
+                                value={designSettingsImageStyle}
+                                options={[
+                                    {label: __('Background', 'give'), value: 'background'},
+                                    {label: __('Cover', 'give'), value: 'cover'},
+                                    {label: __('Above', 'give'), value: 'above'},
+                                    {label: __('Center', 'give'), value: 'center'},
+                                ]}
+                            />
+                        </PanelRow>
+                    )}
                 </>
             )}
         </PanelBody>

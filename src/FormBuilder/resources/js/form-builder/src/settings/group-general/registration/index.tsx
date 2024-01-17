@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import { PanelRow, ToggleControl } from "@wordpress/components";
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 const RegistrationSettings = ({settings, setSettings}) => {
     const {registrationNotification} = settings;

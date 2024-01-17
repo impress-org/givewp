@@ -1,7 +1,8 @@
 .givewp-design-settings--image-style {
+
     &__background {
         .givewp-layouts-header {
-            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
             background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
@@ -15,26 +16,31 @@
          * Note: This requires that the Header.tsx template wrap the title/description.
          *       The below examples adds the `.givewp-layouts-headerCover` wrapper.
          */
+        &.givewp-donation-form {
+            transform: translateY(15rem);
+        }
 
         .givewp-layouts-header {
-            margin-top: 300px;
             position: relative;
         }
 
         .givewp-layouts-headerTextWrapper {
             position: absolute;
-            top: -50%;
+            top: -10rem;
+
+            .givewp-layouts-headerTitle {
+                margin-bottom: var(--givewp-spacing-4);
+            }
         }
 
-        .givewp-layouts-header::after {
+        .givewp-layouts-header::before {
             content: "";
             position: absolute;
-            display: block;
-            top: -100%;
+            top: -75%;
             width: 145%;
-            height: 180%;
+            height: 145%;
             z-index: -1;
-            --tint-color: rgba(30, 140, 190, 0.4); /* Note: Color needs to be converted to RGB values. */
+            --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
             background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
@@ -43,16 +49,24 @@
     }
 
     &__above {
-        .givewp-layouts-header {
-            margin-top: 320px;
-            position: relative;
-            border-radius: 0;
-            background-color: var(--givewp-blue-25);
+        &.givewp-design-settings--logo {
+            .givewp-layouts-header::after {
+                border-radius: 0;
+            }
         }
 
-        .givewp-layouts-headerTitle h2,
-        .givewp-layouts-headerDescription {
-            color: var(--givewp-grey-900);
+        .givewp-layouts-header {
+            position: relative;
+            margin-top: 320px;
+            border-radius: 0;
+
+            .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                color: var(--givewp-grey-900);
+            }
+
+            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+            }
         }
 
         .givewp-layouts-header::after {
@@ -69,16 +83,22 @@
         }
     }
 
+
     &__center {
+        .givewp-layouts-header {
+            .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                color: var(--givewp-grey-900);
+            }
+
+            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+            }
+        }
+
         .givewp-layouts-goal {
             margin-top: 320px;
             position: relative;
             border-radius: 0;
-        }
-
-        .givewp-layouts-headerTitle h2,
-        .givewp-layouts-headerDescription {
-            color: var(--givewp-grey-900);
         }
 
         .givewp-layouts-goal::after {
@@ -88,6 +108,7 @@
             left: 0;
             width: 100%;
             height: 320px;
+
             background-image: var(--givewp-design-settings-background-image);
             background-position: 50%;
             background-size: cover;
@@ -100,11 +121,23 @@
 
 .givewp-design-settings--image-style__cover {
     &.givewp-design-settings--logo {
+        .givewp-layouts-header {
+            margin-top: 13rem;
+        }
+
+        .givewp-layouts-header::before {
+            top: -80%;
+        }
+
+        .givewp-layouts-headerTextWrapper {
+            top: -10rem;
+        }
+
+        //Logo container
         &.givewp-donation-form::after {
             width: 142.32%;
             left: -21.15%;
-            top: -3.35rem;
+            top: -3%;
         }
     }
 }
-
