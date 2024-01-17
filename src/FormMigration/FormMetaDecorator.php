@@ -721,22 +721,6 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @unreleased
      */
-    public function getGiftAidLinkText(): string
-    {
-        return __('Tell me more', 'give-gift-aid');
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getGiftAidModalHeader(): string
-    {
-        return __('What is Gift Aid?', 'give-gift-aid');
-    }
-
-    /**
-     * @unreleased
-     */
     public function getGiftAidLongExplanation(): string
     {
         return $this->getMeta('give_gift_aid_long_explanation_content');
