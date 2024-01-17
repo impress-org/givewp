@@ -90,6 +90,9 @@ export interface BillingAddressProps extends GroupProps {
         zip: FC<Partial<FieldProps> | {}>;
     };
     apiUrl: string;
+    stateAlwaysRequired: boolean;
+    cityAlwaysRequired: boolean;
+    zipAlwaysRequired: boolean;
 }
 
 export interface DonationAmountProps extends GroupProps {

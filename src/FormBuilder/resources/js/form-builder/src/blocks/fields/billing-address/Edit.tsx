@@ -37,13 +37,13 @@ export default function Edit({
         requireAddress2,
         cityLabel,
         cityPlaceholder,
-        alwaysRequireCity,
+        cityAlwaysRequired,
         stateLabel,
         statePlaceholder,
-        alwaysRequireState,
+        stateAlwaysRequired,
         zipLabel,
         zipPlaceholder,
-        alwaysRequireZip,
+        zipAlwaysRequired,
     },
     setAttributes,
 }: BlockEditProps<any>) {
@@ -104,8 +104,8 @@ export default function Edit({
                     <TextControl
                         label={cityLabel}
                         placeholder={cityPlaceholder}
-                        required={alwaysRequireCity}
-                        className={`${alwaysRequireCity ? 'give-is-required' : ''}`}
+                        required={cityAlwaysRequired}
+                        className={`${cityAlwaysRequired ? 'give-is-required' : ''}`}
                         readOnly
                         value={cityPlaceholder}
                         onChange={null}
@@ -115,8 +115,8 @@ export default function Edit({
                     <TextControl
                         label={stateLabel}
                         placeholder={statePlaceholder}
-                        required={alwaysRequireState}
-                        className={`${alwaysRequireState ? 'give-is-required' : ''}`}
+                        required={stateAlwaysRequired}
+                        className={`${stateAlwaysRequired ? 'give-is-required' : ''}`}
                         value={statePlaceholder}
                         onChange={null}
                         readOnly
@@ -126,8 +126,8 @@ export default function Edit({
                     <TextControl
                         label={zipLabel}
                         placeholder={zipPlaceholder}
-                        required={alwaysRequireZip}
-                        className={`${alwaysRequireZip ? 'give-is-required' : ''}`}
+                        required={zipAlwaysRequired}
+                        className={`${zipAlwaysRequired ? 'give-is-required' : ''}`}
                         value={zipPlaceholder}
                         onChange={null}
                         readOnly
@@ -198,8 +198,8 @@ export default function Edit({
                     <PanelRow>
                         <ToggleControl
                             label={__('Always Required', 'give')}
-                            checked={alwaysRequireState}
-                            onChange={() => setAttributes({alwaysRequireState: !alwaysRequireState})}
+                            checked={stateAlwaysRequired}
+                            onChange={() => setAttributes({stateAlwaysRequired: !stateAlwaysRequired})}
                             help={__(
                                 'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
                                 'give'
@@ -225,8 +225,8 @@ export default function Edit({
                     <PanelRow>
                         <ToggleControl
                             label={__('Always Required', 'give')}
-                            checked={alwaysRequireCity}
-                            onChange={() => setAttributes({alwaysRequireCity: !alwaysRequireCity})}
+                            checked={cityAlwaysRequired}
+                            onChange={() => setAttributes({cityAlwaysRequired: !cityAlwaysRequired})}
                             help={__(
                                 'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
                                 'give'
@@ -252,8 +252,8 @@ export default function Edit({
                     <PanelRow>
                         <ToggleControl
                             label={__('Always Required', 'give')}
-                            checked={alwaysRequireZip}
-                            onChange={() => setAttributes({alwaysRequireZip: !alwaysRequireZip})}
+                            checked={zipAlwaysRequired}
+                            onChange={() => setAttributes({zipAlwaysRequired: !zipAlwaysRequired})}
                             help={__(
                                 'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
                                 'give'

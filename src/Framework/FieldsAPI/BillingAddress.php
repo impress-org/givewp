@@ -22,6 +22,21 @@ class BillingAddress extends Group
     public $groupLabel;
 
     /**
+     * @unreleased
+     */
+    public $stateAlwaysRequired;
+
+    /**
+     * @unreleased
+     */
+    public $cityAlwaysRequired;
+
+    /**
+     * @unreleased
+     */
+    public $zipAlwaysRequired;
+
+    /**
      * @since 3.0.0
      */
     public function setApiUrl(string $url): BillingAddress
@@ -37,6 +52,36 @@ class BillingAddress extends Group
     public function setGroupLabel(string $groupLabel): BillingAddress
     {
         $this->groupLabel = $groupLabel;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setStateAlwaysRequired(bool $stateAlwaysRequired): BillingAddress
+    {
+        $this->stateAlwaysRequired = $stateAlwaysRequired;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setCityAlwaysRequired(bool $cityAlwaysRequired): BillingAddress
+    {
+        $this->cityAlwaysRequired = $cityAlwaysRequired;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setZipAlwaysRequired(bool $zipAlwaysRequired): BillingAddress
+    {
+        $this->zipAlwaysRequired = $zipAlwaysRequired;
 
         return $this;
     }

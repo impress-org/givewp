@@ -1,8 +1,8 @@
-import type { BillingAddressProps } from "@givewp/forms/propTypes";
-import { FC, useEffect, useState } from "react";
-import { __ } from "@wordpress/i18n";
-import { ErrorMessage } from "@hookform/error-message";
-import { useCallback } from "@wordpress/element";
+import type {BillingAddressProps} from '@givewp/forms/propTypes';
+import {FC, useEffect, useState} from 'react';
+import {__} from '@wordpress/i18n';
+import {ErrorMessage} from '@hookform/error-message';
+import {useCallback} from '@wordpress/element';
 
 /**
  * @since 3.0.0
@@ -52,12 +52,14 @@ function StateFieldContainer({
     setCityRequired,
     setZipRequired,
     nodeName,
+    stateAlwaysRequired,
 }: {
     apiUrl: string;
     state: FC;
     setCityRequired: Function;
     setZipRequired: Function;
     nodeName: string;
+    stateAlwaysRequired: boolean;
 }) {
     const Label = window.givewp.form.templates.layouts.fieldLabel;
     const FieldError = window.givewp.form.templates.layouts.fieldError;
@@ -136,7 +138,7 @@ function StateFieldContainer({
              */
             <NodeWrapper nodeType="fields" type="select" htmlTag="div" name="state">
                 <label>
-                    <Label label={stateLabel} required={stateRequired} />
+                    <Label label={stateLabel} required={stateAlwaysRequired ? stateAlwaysRequired : stateRequired} />
 
                     <select
                         onChange={updateStateValue}
@@ -179,7 +181,10 @@ function StateFieldContainer({
          */
         <NodeWrapper nodeType="fields" type="text" htmlTag="div" name="state">
             <label>
-                <Label label={stateLabel ?? __('State', 'give')} required={stateRequired} />
+                <Label
+                    label={stateLabel ?? __('State', 'give')}
+                    required={stateAlwaysRequired ? stateAlwaysRequired : stateRequired}
+                />
 
                 <input
                     type="text"
@@ -208,6 +213,9 @@ export default function BillingAddress({
     groupLabel,
     nodeComponents: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
     apiUrl,
+    stateAlwaysRequired,
+    cityAlwaysRequired,
+    zipAlwaysRequired,
     name,
 }: BillingAddressProps) {
     // these are necessary to set the required indicator on the city and zip field labels
@@ -222,15 +230,16 @@ export default function BillingAddress({
                 <Country />
                 <Address1 />
                 <Address2 />
-                <City validationRules={{required: cityRequired}} />
+                <City validationRules={{required: cityAlwaysRequired ? cityAlwaysRequired : cityRequired}} />
                 <StateFieldContainer
                     apiUrl={apiUrl}
                     state={state}
                     setCityRequired={setCityRequired}
                     setZipRequired={setZipRequired}
                     nodeName={name}
+                    stateAlwaysRequired={stateAlwaysRequired}
                 />
-                <Zip validationRules={{required: zipRequired}} />
+                <Zip validationRules={{required: zipAlwaysRequired ? zipAlwaysRequired : zipRequired}} />
             </fieldset>
         </>
     );

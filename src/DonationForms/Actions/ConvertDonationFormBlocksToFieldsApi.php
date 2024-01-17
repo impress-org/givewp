@@ -310,6 +310,15 @@ class ConvertDonationFormBlocksToFieldsApi
             ->setGroupLabel(
                 $block->getAttribute('groupLabel')
             )
+            ->setStateAlwaysRequired(
+                $block->getAttribute('stateAlwaysRequired') ?? false
+            )
+            ->setCityAlwaysRequired(
+                $block->getAttribute('cityAlwaysRequired') ?? false
+            )
+            ->setZipAlwaysRequired(
+                $block->getAttribute('zipAlwaysRequired') ?? false
+            )
             ->tap(function ($group) use ($block, $countryList) {
                 $group->getNodeByName('country')
                     ->label($block->getAttribute('countryLabel'))
