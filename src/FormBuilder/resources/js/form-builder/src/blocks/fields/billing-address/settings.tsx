@@ -63,6 +63,10 @@ const settings: FieldBlock['settings'] = {
             source: 'attribute',
             default: __('City', 'give'),
         },
+        alwaysRequireCity: {
+            type: 'boolean',
+            default: false,
+        },
         stateLabel: {
             type: 'string',
             source: 'attribute',
@@ -73,6 +77,10 @@ const settings: FieldBlock['settings'] = {
             source: 'attribute',
             default: __('This changes by country selection...', 'give'),
         },
+        alwaysRequireState: {
+            type: 'boolean',
+            default: false,
+        },
         zipLabel: {
             type: 'string',
             source: 'attribute',
@@ -82,6 +90,10 @@ const settings: FieldBlock['settings'] = {
             type: 'string',
             source: 'attribute',
             default: __('Zip/Postal Code', 'give'),
+        },
+        alwaysRequireZip: {
+            type: 'boolean',
+            default: false,
         },
     },
     edit: Edit,

@@ -37,10 +37,13 @@ export default function Edit({
         requireAddress2,
         cityLabel,
         cityPlaceholder,
+        alwaysRequireCity,
         stateLabel,
         statePlaceholder,
+        alwaysRequireState,
         zipLabel,
         zipPlaceholder,
+        alwaysRequireZip,
     },
     setAttributes,
 }: BlockEditProps<any>) {
@@ -101,8 +104,8 @@ export default function Edit({
                     <TextControl
                         label={cityLabel}
                         placeholder={cityPlaceholder}
-                        required={true}
-                        className={'give-is-required'}
+                        required={alwaysRequireCity}
+                        className={`${alwaysRequireCity ? 'give-is-required' : ''}`}
                         readOnly
                         value={cityPlaceholder}
                         onChange={null}
@@ -112,8 +115,8 @@ export default function Edit({
                     <TextControl
                         label={stateLabel}
                         placeholder={statePlaceholder}
-                        required={true}
-                        className={'give-is-required'}
+                        required={alwaysRequireState}
+                        className={`${alwaysRequireState ? 'give-is-required' : ''}`}
                         value={statePlaceholder}
                         onChange={null}
                         readOnly
@@ -123,8 +126,8 @@ export default function Edit({
                     <TextControl
                         label={zipLabel}
                         placeholder={zipPlaceholder}
-                        required={true}
-                        className={'give-is-required'}
+                        required={alwaysRequireZip}
+                        className={`${alwaysRequireZip ? 'give-is-required' : ''}`}
                         value={zipPlaceholder}
                         onChange={null}
                         readOnly
@@ -191,6 +194,19 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
+                <PanelBody title={__('State/Province/Country', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Always Required', 'give')}
+                            checked={alwaysRequireState}
+                            onChange={() => setAttributes({alwaysRequireState: !alwaysRequireState})}
+                            help={__(
+                                'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
+                                'give'
+                            )}
+                        />
+                    </PanelRow>
+                </PanelBody>
                 <PanelBody title={__('City', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
@@ -204,6 +220,17 @@ export default function Edit({
                             label={__('Placeholder')}
                             value={cityPlaceholder}
                             onChange={(value) => setAttributes({cityPlaceholder: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Always Required', 'give')}
+                            checked={alwaysRequireCity}
+                            onChange={() => setAttributes({alwaysRequireCity: !alwaysRequireCity})}
+                            help={__(
+                                'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                 </PanelBody>
@@ -220,6 +247,17 @@ export default function Edit({
                             label={__('Placeholder')}
                             value={zipPlaceholder}
                             onChange={(value) => setAttributes({zipPlaceholder: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Always Required', 'give')}
+                            checked={alwaysRequireZip}
+                            onChange={() => setAttributes({alwaysRequireZip: !alwaysRequireZip})}
+                            help={__(
+                                'Do you want to force this field always to be required? When disabled, it will be enabled according to the Country selection.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                 </PanelBody>
