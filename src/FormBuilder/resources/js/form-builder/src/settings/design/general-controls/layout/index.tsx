@@ -4,7 +4,13 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 
 export default function Layout({dispatch, publishSettings, formDesigns, designId}) {
     const {
-        settings: {designSettingsTextFieldStyle},
+        settings: {
+            designSettingsTextFieldStyle,
+            designSettingsImageStyle,
+            designSettingsImageUrl,
+            designSettingsLogoUrl,
+            designSettingsLogoPosition,
+        },
     } = useFormState();
 
     const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id, label: name}));
@@ -28,8 +34,22 @@ export default function Layout({dispatch, publishSettings, formDesigns, designId
                     label={__('Input Field', 'give')}
                     help={__('Change the design of the input fields for this form.', 'give')}
                     onChange={(designSettingsTextFieldStyle) => {
-                        dispatch(setFormSettings({designSettingsTextFieldStyle}));
-                        publishSettings({designSettingsTextFieldStyle});
+                        dispatch(
+                            setFormSettings({
+                                designSettingsTextFieldStyle,
+                                designSettingsImageStyle,
+                                designSettingsImageUrl,
+                                designSettingsLogoUrl,
+                                designSettingsLogoPosition,
+                            })
+                        );
+                        publishSettings({
+                            designSettingsTextFieldStyle,
+                            designSettingsImageStyle,
+                            designSettingsImageUrl,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition,
+                        });
                     }}
                     value={designSettingsTextFieldStyle}
                     options={[
