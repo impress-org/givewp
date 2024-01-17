@@ -20,7 +20,7 @@
                         top: .5rem;
                         left: var(--givewp-spacing-4);
                         color: var(--givewp-primary-color);
-                        font-size: .75rem;
+                        font-size: .75rem !important;
                         padding-bottom: 2rem;
                     }
 
@@ -31,6 +31,12 @@
 
                 label:focus-within span {
                     visibility: visible;
+                }
+
+
+                label:focus-within input {
+                    box-shadow: none;
+                    border-bottom: 2px solid var(--givewp-primary-color);
                 }
             }
         }
@@ -55,6 +61,7 @@
                         top: -.7rem;
                         left: .5rem;
                         width: fit-content;
+                        font-size: 0.875rem !important;
                         padding: 0 .25rem;
                         background: var(--givewp-shades-white);
                         color: var(--givewp-primary-color, #0B72D9);
