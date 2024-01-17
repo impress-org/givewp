@@ -14,8 +14,22 @@ export default function Header({dispatch, publishSettings}) {
             description,
             designSettingsImageUrl,
             designSettingsImageStyle,
+            designSettingsLogoUrl,
+            designSettingsLogoPosition
         },
     } = useFormState();
+
+    const resetSettings = ()=> {
+        const reset = {
+            designSettingsImageUrl: '',
+            designSettingsImageStyle: '',
+            designSettingsLogoUrl,
+            designSettingsLogoPosition
+        };
+
+        dispatch(setFormSettings(reset));
+        publishSettings(reset);
+    }
 
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
@@ -84,13 +98,21 @@ export default function Header({dispatch, publishSettings}) {
                             actionLabel={__('Upload Image', 'give')}
                             value={designSettingsImageUrl}
                             onChange={(designSettingsImageUrl) => {
-                                dispatch(setFormSettings({designSettingsImageUrl, designSettingsImageStyle}));
-                                publishSettings({designSettingsImageUrl, designSettingsImageStyle});
+                                dispatch(setFormSettings({
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition
+                                }));
+
+                                publishSettings({
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition
+                                });
                             }}
-                            reset={() => {
-                                dispatch(setFormSettings({designSettingsImageUrl: '', designSettingsImageStyle: ''}));
-                                publishSettings({designSettingsImageUrl: '', designSettingsImageStyle: ''});
-                            }}
+                            reset={resetSettings}
                         />
                     </PanelRow>
                     {designSettingsImageUrl && (
@@ -102,8 +124,19 @@ export default function Header({dispatch, publishSettings}) {
                                     'give'
                                 )}
                                 onChange={(designSettingsImageStyle) => {
-                                    dispatch(setFormSettings({designSettingsImageUrl, designSettingsImageStyle}));
-                                    publishSettings({designSettingsImageUrl, designSettingsImageStyle});
+                                    dispatch(setFormSettings({
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition
+                                    }));
+                                    
+                                    publishSettings({
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition
+                                    });
                                 }}
                                 value={designSettingsImageStyle}
                                 options={[

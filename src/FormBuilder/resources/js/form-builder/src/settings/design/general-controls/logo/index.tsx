@@ -6,8 +6,20 @@ import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary'
 
 export default function Logo({dispatch, publishSettings}) {
     const {
-        settings: {designSettingsLogoUrl, designSettingsLogoPosition},
+        settings: {designSettingsLogoUrl, designSettingsLogoPosition, designSettingsImageUrl, designSettingsImageStyle},
     } = useFormState();
+
+    const resetSettings = () => {
+        const reset = {
+            designSettingsLogoUrl: '',
+            designSettingsLogoPosition: '',
+            designSettingsImageUrl,
+            designSettingsImageStyle,
+        }
+
+        dispatch(setFormSettings(reset));
+        publishSettings(reset);
+    }
 
     return (
         <PanelBody title={__('Branding', 'give')} initialOpen={false}>
@@ -19,13 +31,21 @@ export default function Logo({dispatch, publishSettings}) {
                     value={designSettingsLogoUrl}
                     actionLabel={__('Upload Logo', 'give')}
                     onChange={(designSettingsLogoUrl) => {
-                        dispatch(setFormSettings({designSettingsLogoUrl, designSettingsLogoPosition}));
-                        publishSettings({designSettingsLogoUrl, designSettingsLogoPosition});
+                        dispatch(setFormSettings({
+                            designSettingsImageUrl,
+                            designSettingsImageStyle,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition
+                        }));
+
+                        publishSettings({
+                            designSettingsImageUrl,
+                            designSettingsImageStyle,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition
+                        });
                     }}
-                    reset={() => {
-                        dispatch(setFormSettings({designSettingsLogoUrl: '', designSettingsLogoPosition: ''}));
-                        publishSettings({designSettingsLogoUrl: '', designSettingsLogoPosition: ''});
-                    }}
+                    reset={resetSettings}
                 />
             </PanelRow>
             {designSettingsLogoUrl && (
@@ -33,8 +53,19 @@ export default function Logo({dispatch, publishSettings}) {
                     <SelectControl
                         label={__('Logo Alignment', 'give')}
                         onChange={(designSettingsLogoPosition) => {
-                            dispatch(setFormSettings({designSettingsLogoPosition, designSettingsLogoUrl}));
-                            publishSettings({designSettingsLogoPosition, designSettingsLogoUrl});
+                            dispatch(setFormSettings({
+                                designSettingsImageUrl,
+                                designSettingsImageStyle,
+                                designSettingsLogoUrl,
+                                designSettingsLogoPosition
+                            }));
+
+                            publishSettings({
+                                designSettingsImageUrl,
+                                designSettingsImageStyle,
+                                designSettingsLogoUrl,
+                                designSettingsLogoPosition
+                            });
                         }}
                         value={designSettingsLogoPosition}
                         options={[

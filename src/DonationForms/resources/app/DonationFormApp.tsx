@@ -103,14 +103,9 @@ function AppPreview() {
                     'url(' + settings['designSettingsImageUrl'] + ')'
                 );
 
-                if (!settings['designSettingsImageStyle']) {
-                    updateDesignSettingsClassName('givewp-design-settings--image-style', 'background');
-                } else {
-                    updateDesignSettingsClassName(
-                        'givewp-design-settings--image-style',
-                        settings['designSettingsImageStyle']
-                    );
-                }
+                const style = settings['designSettingsImageStyle'] ? settings['designSettingsImageStyle'] : 'background';
+
+                updateDesignSettingsClassName('givewp-design-settings--image-style', style);
             }
 
             if (settings['designSettingsLogoUrl']) {
@@ -120,14 +115,8 @@ function AppPreview() {
                 );
                 root.classList.add('givewp-design-settings--logo');
 
-                if (!settings['designSettingsLogoPosition']) {
-                    updateDesignSettingsClassName('givewp-design-settings--image-style', 'left');
-                } else {
-                    updateDesignSettingsClassName(
-                        'givewp-design-settings--logo-position',
-                        settings['designSettingsLogoPosition']
-                    );
-                }
+                const position = settings['designSettingsLogoPosition'] ? settings['designSettingsLogoPosition'] : 'left';
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', position);
             }
 
             if (settings['designSettingsTextFieldStyle']) {
@@ -137,12 +126,21 @@ function AppPreview() {
                 );
             }
 
-            // reset/remove classnames on delete
             if (!settings['designSettingsImageUrl']) {
+                // reset/remove classnames on delete
                 root.style.setProperty('--givewp-design-settings-background-image', '');
                 updateDesignSettingsClassName('givewp-design-settings--image-style', '');
+
+                // reconstruct branding container & logo container
+                root.classList.add('givewp-design-settings--logo');
+                root.style.setProperty(
+                    '--givewp-design-settings-logo',
+                    'url(' + settings['designSettingsLogoUrl'] + ')'
+                );
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
             }
 
+            // reset/remove classnames on delete
             if (!settings['designSettingsLogoUrl']) {
                 root.style.setProperty('--givewp-design-settings-logo', '');
                 root.classList.remove('givewp-design-settings--logo');
