@@ -13,12 +13,13 @@ type MediaLibrary = {
     id: string;
     value: string;
     onChange: (url: string) => void;
+    reset: () => void;
     label: string;
     help?: string;
     actionLabel?: string;
     icon?;
 };
-export default function MediaLibrary({id, value, onChange, label, help, actionLabel, icon}: MediaLibrary) {
+export default function MediaLibrary({id, value, onChange, label, help, actionLabel, icon, reset}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -51,7 +52,7 @@ export default function MediaLibrary({id, value, onChange, label, help, actionLa
     };
 
     const resetImage = (event) => {
-        onChange('');
+        reset();
     };
 
     return (

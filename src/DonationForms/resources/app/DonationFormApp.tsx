@@ -46,7 +46,6 @@ const initialState = {
  * @since 3.0.0
  */
 function App({form}: { form: DonationForm }) {
-
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
@@ -79,7 +78,6 @@ function App({form}: { form: DonationForm }) {
  * @since 3.1.0
  */
 function AppPreview() {
-
     const {
         subscribeToGoal,
         subscribeToColors,
@@ -92,26 +90,44 @@ function AppPreview() {
 
     useEffect(() => {
         subscribeToSettings((settings) => {
-
-            if(settings['designSettingsSectionStyle']) {
-                updateDesignSettingsClassName('givewp-design-settings--section-style', settings['designSettingsSectionStyle']);
+            if (settings['designSettingsSectionStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--section-style',
+                    settings['designSettingsSectionStyle']
+                );
             }
 
-            if(settings['designSettingsImageUrl']) {
-                root.style.setProperty('--givewp-design-settings-background-image', 'url(' + settings['designSettingsImageUrl'] + ')');
+            if (settings['designSettingsImageUrl']) {
+                root.style.setProperty(
+                    '--givewp-design-settings-background-image',
+                    'url(' + settings['designSettingsImageUrl'] + ')'
+                );
+
+                if (!settings['designSettingsImageStyle']) {
+                    updateDesignSettingsClassName('givewp-design-settings--image-style', 'background');
+                } else {
+                    updateDesignSettingsClassName(
+                        'givewp-design-settings--image-style',
+                        settings['designSettingsImageStyle']
+                    );
+                }
             }
 
-            if(settings['designSettingsImageStyle']) {
-                console.log(settings['designSettingsImageStyle'])
-                updateDesignSettingsClassName('givewp-design-settings--image-style', settings['designSettingsImageStyle']);
-            }
+            if (settings['designSettingsLogoUrl']) {
+                root.style.setProperty(
+                    '--givewp-design-settings-logo',
+                    'url(' + settings['designSettingsLogoUrl'] + ')'
+                );
+                root.classList.add('givewp-design-settings--logo');
 
-            if(settings['designSettingsLogoUrl']) {
-                root.style.setProperty('--givewp-design-settings-logo', 'url(' + settings['designSettingsLogoUrl'] + ')');
-            }
-
-            if(settings['designSettingsLogoPosition']) {
-                updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
+                if (!settings['designSettingsLogoPosition']) {
+                    updateDesignSettingsClassName('givewp-design-settings--image-style', 'left');
+                } else {
+                    updateDesignSettingsClassName(
+                        'givewp-design-settings--logo-position',
+                        settings['designSettingsLogoPosition']
+                    );
+                }
             }
 
             if (settings['designSettingsTextFieldStyle']) {
@@ -121,28 +137,40 @@ function AppPreview() {
                 );
             }
 
-            setFormState(prevState => {
+            // reset/remove classnames on delete
+            if (!settings['designSettingsImageUrl']) {
+                root.style.setProperty('--givewp-design-settings-background-image', '');
+                updateDesignSettingsClassName('givewp-design-settings--image-style', '');
+            }
+
+            if (!settings['designSettingsLogoUrl']) {
+                root.style.setProperty('--givewp-design-settings-logo', '');
+                root.classList.remove('givewp-design-settings--logo');
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', '');
+            }
+
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     settings: {
                         ...prevState.settings,
-                        ...settings
-                    }
-                }
-            })
-        })
+                        ...settings,
+                    },
+                };
+            });
+        });
 
         subscribeToGoal((goal) => {
-            setFormState(prevState => {
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     goal: {
                         ...prevState.goal,
-                        ...goal
-                    }
-                }
-            })
-        })
+                        ...goal,
+                    },
+                };
+            });
+        });
 
         subscribeToColors((data) => {
             if (data['primaryColor']) {
@@ -152,7 +180,7 @@ function AppPreview() {
             if (data['secondaryColor']) {
                 root.style.setProperty('--givewp-secondary-color', data['secondaryColor']);
             }
-        })
+        });
 
         subscribeToCss(({customCss}) => {
             let cssRules = '';
@@ -161,22 +189,21 @@ function AppPreview() {
             stylesheet.replaceSync(customCss);
 
             for (let i = 0; i < stylesheet.cssRules.length; i++) {
-                cssRules += stylesheet.cssRules[i].cssText + "\n";
+                cssRules += stylesheet.cssRules[i].cssText + '\n';
             }
 
             style.innerText = cssRules;
-        })
+        });
 
         return () => unsubscribeAll();
-
     }, []);
 
-    return <App form={formState} />
+    return <App form={formState} />;
 }
 
 function updateDesignSettingsClassName(block, element) {
     root.classList.forEach((className) => {
-        if(className.startsWith(block + '__')) {
+        if (className.startsWith(block + '__')) {
             root.classList.remove(className);
         }
     });

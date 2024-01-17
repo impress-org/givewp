@@ -19,8 +19,12 @@ export default function Logo({dispatch, publishSettings}) {
                     value={designSettingsLogoUrl}
                     actionLabel={__('Upload Logo', 'give')}
                     onChange={(designSettingsLogoUrl) => {
-                        dispatch(setFormSettings({designSettingsLogoUrl}));
-                        publishSettings({designSettingsLogoUrl});
+                        dispatch(setFormSettings({designSettingsLogoUrl, designSettingsLogoPosition}));
+                        publishSettings({designSettingsLogoUrl, designSettingsLogoPosition});
+                    }}
+                    reset={() => {
+                        dispatch(setFormSettings({designSettingsLogoUrl: '', designSettingsLogoPosition: ''}));
+                        publishSettings({designSettingsLogoUrl: '', designSettingsLogoPosition: ''});
                     }}
                 />
             </PanelRow>
@@ -29,8 +33,8 @@ export default function Logo({dispatch, publishSettings}) {
                     <SelectControl
                         label={__('Logo Alignment', 'give')}
                         onChange={(designSettingsLogoPosition) => {
-                            dispatch(setFormSettings({designSettingsLogoPosition}));
-                            publishSettings({designSettingsLogoPosition});
+                            dispatch(setFormSettings({designSettingsLogoPosition, designSettingsLogoUrl}));
+                            publishSettings({designSettingsLogoPosition, designSettingsLogoUrl});
                         }}
                         value={designSettingsLogoPosition}
                         options={[

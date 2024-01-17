@@ -84,8 +84,12 @@ export default function Header({dispatch, publishSettings}) {
                             actionLabel={__('Upload Image', 'give')}
                             value={designSettingsImageUrl}
                             onChange={(designSettingsImageUrl) => {
-                                dispatch(setFormSettings({designSettingsImageUrl}));
-                                publishSettings({designSettingsImageUrl});
+                                dispatch(setFormSettings({designSettingsImageUrl, designSettingsImageStyle}));
+                                publishSettings({designSettingsImageUrl, designSettingsImageStyle});
+                            }}
+                            reset={() => {
+                                dispatch(setFormSettings({designSettingsImageUrl: '', designSettingsImageStyle: ''}));
+                                publishSettings({designSettingsImageUrl: '', designSettingsImageStyle: ''});
                             }}
                         />
                     </PanelRow>
@@ -98,8 +102,8 @@ export default function Header({dispatch, publishSettings}) {
                                     'give'
                                 )}
                                 onChange={(designSettingsImageStyle) => {
-                                    dispatch(setFormSettings({designSettingsImageStyle}));
-                                    publishSettings({designSettingsImageStyle});
+                                    dispatch(setFormSettings({designSettingsImageUrl, designSettingsImageStyle}));
+                                    publishSettings({designSettingsImageUrl, designSettingsImageStyle});
                                 }}
                                 value={designSettingsImageStyle}
                                 options={[
