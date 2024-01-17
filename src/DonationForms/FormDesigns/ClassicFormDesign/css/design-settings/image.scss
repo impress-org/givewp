@@ -48,7 +48,6 @@
     }
 
     &__above {
-        // Flatten image borders when logo is available.
         &.givewp-design-settings--logo {
             .givewp-layouts-header::after {
                 border-radius: 0;
@@ -56,9 +55,17 @@
         }
 
         .givewp-layouts-header {
-            margin-top: 320px;
             position: relative;
+            margin-top: 320px;
             border-radius: 0;
+
+            .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                color: var(--givewp-grey-900);
+            }
+
+            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+            }
         }
 
         .givewp-layouts-header::after {
@@ -75,7 +82,18 @@
         }
     }
 
+
     &__center {
+        .givewp-layouts-header {
+            .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                color: var(--givewp-grey-900);
+            }
+
+            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+            }
+        }
+
         .givewp-layouts-goal {
             margin-top: 320px;
             position: relative;
