@@ -114,6 +114,13 @@ function AppPreview() {
                 updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
             }
 
+            if (settings['designSettingsTextFieldStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--textField-style',
+                    settings['designSettingsTextFieldStyle']
+                );
+            }
+
             setFormState(prevState => {
                 return {
                     ...prevState,
