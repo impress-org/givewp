@@ -5,7 +5,13 @@ import {PanelBody, SelectControl} from '@wordpress/components';
 
 export default function Section() {
     const {
-        settings: {designSettingsSectionStyle},
+        settings: {
+            designSettingsSectionStyle,
+            designSettingsImageStyle,
+            designSettingsImageUrl,
+            designSettingsLogoUrl,
+            designSettingsLogoPosition,
+        },
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -16,8 +22,22 @@ export default function Section() {
             <SelectControl
                 label={__('Section Style', 'give')}
                 onChange={(designSettingsSectionStyle) => {
-                    dispatch(setFormSettings({designSettingsSectionStyle}))
-                    publishSettings({designSettingsSectionStyle});
+                    dispatch(
+                        setFormSettings({
+                            designSettingsSectionStyle,
+                            designSettingsImageStyle,
+                            designSettingsImageUrl,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition,
+                        })
+                    );
+                    publishSettings({
+                        designSettingsSectionStyle,
+                        designSettingsImageStyle,
+                        designSettingsImageUrl,
+                        designSettingsLogoUrl,
+                        designSettingsLogoPosition,
+                    });
                 }}
                 value={designSettingsSectionStyle}
                 options={[
