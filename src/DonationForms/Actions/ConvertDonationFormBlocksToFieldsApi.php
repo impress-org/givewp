@@ -300,6 +300,10 @@ class ConvertDonationFormBlocksToFieldsApi
             $countryList[] = [$value, $label];
         }
 
+        $stateAlwaysRequired = $block->getAttribute('stateAlwaysRequired') ?? false;
+        $cityAlwaysRequired = $block->getAttribute('cityAlwaysRequired') ?? false;
+        $zipAlwaysRequired = $block->getAttribute('zipAlwaysRequired') ?? false;
+
         return BillingAddress::make('billingAddress')
             ->setApiUrl(
                 give_get_ajax_url([
@@ -311,15 +315,19 @@ class ConvertDonationFormBlocksToFieldsApi
                 $block->getAttribute('groupLabel')
             )
             ->setStateAlwaysRequired(
-                $block->getAttribute('stateAlwaysRequired') ?? false
+                $stateAlwaysRequired
             )
             ->setCityAlwaysRequired(
-                $block->getAttribute('cityAlwaysRequired') ?? false
+                $cityAlwaysRequired
             )
-            ->setZipAlwaysRequired(
-                $block->getAttribute('zipAlwaysRequired') ?? false
-            )
-            ->tap(function ($group) use ($block, $countryList) {
+            ->setZipAlwaysRequired($zipAlwaysRequired)
+            ->tap(function ($group) use (
+                $block,
+                $countryList,
+                $stateAlwaysRequired,
+                $cityAlwaysRequired,
+                $zipAlwaysRequired
+            ) {
                 $group->getNodeByName('country')
                     ->label($block->getAttribute('countryLabel'))
                     ->options(...$countryList)
@@ -339,16 +347,16 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('city')
                     ->label($block->getAttribute('cityLabel'))
                     ->placeholder($block->getAttribute('cityPlaceholder'))
-                    ->rules('max:255', new BillingAddressCityRule());
+                    ->rules('max:255', $cityAlwaysRequired ? 'required' : new BillingAddressCityRule());
 
                 $group->getNodeByName('state')
                     ->label($block->getAttribute('stateLabel'))
-                    ->rules('max:255', new BillingAddressStateRule());
+                    ->rules('max:255', $stateAlwaysRequired ? 'required' : new BillingAddressStateRule());
 
                 $group->getNodeByName('zip')
                     ->label($block->getAttribute('zipLabel'))
                     ->placeholder($block->getAttribute('zipPlaceholder'))
-                    ->rules('max:255', new BillingAddressZipRule());
+                    ->rules('max:255', $zipAlwaysRequired ? 'required' : new BillingAddressZipRule());
             });
     }
 
