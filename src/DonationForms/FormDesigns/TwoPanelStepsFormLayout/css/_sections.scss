@@ -1,7 +1,19 @@
-.givewp-donation-form__steps {
-    @media screen and (max-width: 71.5rem) {
-        border-radius: 0;
-        box-shadow: none;
+@mixin responsive-styles {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.givewp-donation-form {
+    &:not(&--preview) .givewp-donation-form__steps {
+        @media screen and (max-width: 79rem) {
+            @include responsive-styles;
+        }
+    }
+
+    &:is(&--preview) .givewp-donation-form__steps {
+        @media screen and (max-width: 71.5rem) {
+            @include responsive-styles;
+        }
     }
 }
 
@@ -14,3 +26,4 @@
         gap: var(--givewp-spacing-6);
     }
 }
+

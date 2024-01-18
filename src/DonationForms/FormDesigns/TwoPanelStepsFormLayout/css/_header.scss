@@ -1,12 +1,24 @@
+@mixin responsive-styles {
+    border: solid 1px var(--givewp-grey-25);
+    border-radius: var(--givewp-rounded-8);
+    box-shadow: var(--givewp-shadow-sm);
+}
+
 .givewp-layouts {
     &-header {
+        max-width: var(--two-panel-header-width);
         padding: var(--givewp-spacing-6);
         text-align: center;
+        width: 100%;
 
-        @media screen and (min-width: 71.5rem) {
-            border: solid 1px var(--givewp-grey-25);
-            border-radius: var(--givewp-rounded-8);
-            box-shadow: var(--givewp-shadow-sm);
+        @media screen and (min-width: 79rem) {
+            @include responsive-styles;
+        }
+
+        .givewp-donation-form--preview & {
+            @media screen and (min-width: 71.5rem) {
+                @include responsive-styles;
+            }
         }
     }
 
@@ -18,3 +30,4 @@
         margin-bottom: var(--givewp-spacing-10);
     }
 }
+
