@@ -210,6 +210,7 @@ add_action('wpmu_new_blog', 'give_on_create_blog', 10, 6);
 /**
  * Drop Give's custom tables when a mu site is deleted.
  *
+ * @unlreased updated implementation to query all give_* tables
  * @since  1.4.3
  *
  * @param array $tables The tables to drop.
@@ -219,19 +220,20 @@ add_action('wpmu_new_blog', 'give_on_create_blog', 10, 6);
  */
 function give_wpmu_drop_tables($tables, $blog_id)
 {
-    switch_to_blog($blog_id);
-    $custom_tables = __give_get_tables();
+    global $wpdb;
 
-    /* @var Give_DB $table */
-    foreach ($custom_tables as $table) {
-        if ($table->installed()) {
-            $tables[] = $table->table_name;
-        }
+    switch_to_blog($blog_id);
+
+    $prefix = $wpdb->prefix . 'give_%';
+    $giveTables = $wpdb->get_col("SHOW TABLES LIKE '{$prefix}'");
+
+    foreach ($giveTables as $table) {
+        $tables[] = $table;
     }
 
     restore_current_blog();
 
-    return $tables;
+    return array_unique($tables);
 }
 
 add_filter('wpmu_drop_tables', 'give_wpmu_drop_tables', 10, 2);
