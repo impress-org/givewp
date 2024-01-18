@@ -23,9 +23,9 @@
             content: "";
             position: absolute;
             height: var(--givewp-logo-container);
-            top: calc(-1 * var(--givewp-logo-container));
+            top: calc(-1.15 * var(--givewp-logo-container));
             left: -7%;
-            width: 33.75rem;
+            width: 35.75rem;
             padding: var(--givewp-spacing-6) var(--givewp-spacing-10);
             background-size: contain;
             background-color: white;
