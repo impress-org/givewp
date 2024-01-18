@@ -15,21 +15,21 @@ export default function Header({dispatch, publishSettings}) {
             designSettingsImageUrl,
             designSettingsImageStyle,
             designSettingsLogoUrl,
-            designSettingsLogoPosition
+            designSettingsLogoPosition,
         },
     } = useFormState();
 
-    const resetSettings = ()=> {
+    const resetSettings = () => {
         const reset = {
             designSettingsImageUrl: '',
             designSettingsImageStyle: '',
             designSettingsLogoUrl,
-            designSettingsLogoPosition
+            designSettingsLogoPosition,
         };
 
         dispatch(setFormSettings(reset));
         publishSettings(reset);
-    }
+    };
 
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
@@ -38,8 +38,22 @@ export default function Header({dispatch, publishSettings}) {
                     label={__('Show Header', 'give')}
                     checked={showHeader}
                     onChange={() => {
-                        dispatch(setFormSettings({showHeader: !showHeader}));
-                        publishSettings({showHeader: !showHeader});
+                        dispatch(
+                            setFormSettings({
+                                showHeader: !showHeader,
+                                designSettingsImageUrl,
+                                designSettingsImageStyle,
+                                designSettingsLogoUrl,
+                                designSettingsLogoPosition,
+                            })
+                        );
+                        publishSettings({
+                            showHeader: !showHeader,
+                            designSettingsImageUrl,
+                            designSettingsImageStyle,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition,
+                        });
                     }}
                 />
             </PanelRow>
@@ -51,8 +65,22 @@ export default function Header({dispatch, publishSettings}) {
                             label={__('Show Heading', 'give')}
                             checked={showHeading}
                             onChange={() => {
-                                dispatch(setFormSettings({showHeading: !showHeading}));
-                                publishSettings({showHeading: !showHeading});
+                                dispatch(
+                                    setFormSettings({
+                                        showHeading: !showHeading,
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition,
+                                    })
+                                );
+                                publishSettings({
+                                    showHeading: !showHeading,
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition,
+                                });
                             }}
                         />
                     </PanelRow>
@@ -61,8 +89,22 @@ export default function Header({dispatch, publishSettings}) {
                             label={__('Show Description', 'give')}
                             checked={showDescription}
                             onChange={() => {
-                                dispatch(setFormSettings({showDescription: !showDescription}));
-                                publishSettings({showDescription: !showDescription});
+                                dispatch(
+                                    setFormSettings({
+                                        showDescription: !showDescription,
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition,
+                                    })
+                                );
+                                publishSettings({
+                                    showDescription: !showDescription,
+                                    designSettingsImageUrl,
+                                    designSettingsImageStyle,
+                                    designSettingsLogoUrl,
+                                    designSettingsLogoPosition,
+                                });
                             }}
                         />
                     </PanelRow>
@@ -72,8 +114,22 @@ export default function Header({dispatch, publishSettings}) {
                                 label={__('Heading', 'give')}
                                 value={heading}
                                 onChange={(heading) => {
-                                    dispatch(setFormSettings({heading}));
-                                    publishSettings({heading});
+                                    dispatch(
+                                        setFormSettings({
+                                            heading,
+                                            designSettingsImageUrl,
+                                            designSettingsImageStyle,
+                                            designSettingsLogoUrl,
+                                            designSettingsLogoPosition,
+                                        })
+                                    );
+                                    publishSettings({
+                                        heading,
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition,
+                                    });
                                 }}
                             />
                         </PanelRow>
@@ -84,8 +140,22 @@ export default function Header({dispatch, publishSettings}) {
                                 label={__('Description', 'give')}
                                 value={description}
                                 onChange={(description) => {
-                                    dispatch(setFormSettings({description}));
-                                    publishSettings({description});
+                                    dispatch(
+                                        setFormSettings({
+                                            description,
+                                            designSettingsImageUrl,
+                                            designSettingsImageStyle,
+                                            designSettingsLogoUrl,
+                                            designSettingsLogoPosition,
+                                        })
+                                    );
+                                    publishSettings({
+                                        description,
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition,
+                                    });
                                 }}
                             />
                         </PanelRow>
@@ -98,18 +168,20 @@ export default function Header({dispatch, publishSettings}) {
                             actionLabel={__('Upload Image', 'give')}
                             value={designSettingsImageUrl}
                             onChange={(designSettingsImageUrl) => {
-                                dispatch(setFormSettings({
-                                    designSettingsImageUrl,
-                                    designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition
-                                }));
+                                dispatch(
+                                    setFormSettings({
+                                        designSettingsImageUrl,
+                                        designSettingsImageStyle,
+                                        designSettingsLogoUrl,
+                                        designSettingsLogoPosition,
+                                    })
+                                );
 
                                 publishSettings({
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,
                                     designSettingsLogoUrl,
-                                    designSettingsLogoPosition
+                                    designSettingsLogoPosition,
                                 });
                             }}
                             reset={resetSettings}
@@ -124,18 +196,20 @@ export default function Header({dispatch, publishSettings}) {
                                     'give'
                                 )}
                                 onChange={(designSettingsImageStyle) => {
-                                    dispatch(setFormSettings({
-                                        designSettingsImageUrl,
-                                        designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition
-                                    }));
-                                    
+                                    dispatch(
+                                        setFormSettings({
+                                            designSettingsImageUrl,
+                                            designSettingsImageStyle,
+                                            designSettingsLogoUrl,
+                                            designSettingsLogoPosition,
+                                        })
+                                    );
+
                                     publishSettings({
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
                                         designSettingsLogoUrl,
-                                        designSettingsLogoPosition
+                                        designSettingsLogoPosition,
                                     });
                                 }}
                                 value={designSettingsImageStyle}

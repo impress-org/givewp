@@ -4,7 +4,13 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 
 export default function DonateButton({dispatch, publishSettings}) {
     const {
-        settings: {donateButtonCaption},
+        settings: {
+            donateButtonCaption,
+            designSettingsImageUrl,
+            designSettingsImageStyle,
+            designSettingsLogoUrl,
+            designSettingsLogoPosition,
+        },
     } = useFormState();
 
     return (
@@ -14,8 +20,22 @@ export default function DonateButton({dispatch, publishSettings}) {
                     label={__('Button caption', 'give')}
                     value={donateButtonCaption}
                     onChange={(donateButtonCaption) => {
-                        dispatch(setFormSettings({donateButtonCaption}));
-                        publishSettings({donateButtonCaption});
+                        dispatch(
+                            setFormSettings({
+                                donateButtonCaption,
+                                designSettingsImageUrl,
+                                designSettingsImageStyle,
+                                designSettingsLogoUrl,
+                                designSettingsLogoPosition,
+                            })
+                        );
+                        publishSettings({
+                            donateButtonCaption,
+                            designSettingsImageUrl,
+                            designSettingsImageStyle,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition,
+                        });
                     }}
                     help={__('Enter the text you want to display on the donation button.', 'give')}
                 />
