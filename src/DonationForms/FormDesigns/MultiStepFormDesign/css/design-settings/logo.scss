@@ -38,6 +38,10 @@
         &-header {
             margin-top: -4.25rem;
         }
+
+        &-progress {
+            z-index: 999;
+        }
     }
 }
 
@@ -58,32 +62,6 @@
     &__right {
         &.givewp-donation-form:after {
             background-position: right; /* left, center, or right */
-        }
-    }
-}
-
-
-.givewp-design-settings--image-style__background {
-    &.givewp-design-settings--logo {
-        .givewp-donation-form__steps {
-            padding-top: 5rem;
-
-            &-header {
-                margin-top: -5rem;
-            }
-        }
-    }
-
-    .givewp-design-settings--image-style__above {
-        &.givewp-design-settings--logo {
-            .givewp-donation-form__steps {
-                padding-top: 4.25rem;
-
-                &-header {
-                    margin-top: -4.25rem;
-
-                }
-            }
         }
     }
 }
