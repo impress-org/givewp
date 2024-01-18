@@ -23,7 +23,7 @@ class GenerateDefaultDonationFormBlockCollection
 
         $section2 = $this->createSection(
             __('Who\'s Giving Today?', 'give'),
-            __('We\'ll never share this information with anyone', 'give'),
+            __('We\'ll never share this information with anyone.', 'give'),
             $this->createDonorNameBlock(),
             $this->createEmailBlock()
         );
