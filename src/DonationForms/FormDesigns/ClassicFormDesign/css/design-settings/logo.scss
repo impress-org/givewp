@@ -1,15 +1,11 @@
 .givewp-design-settings--logo {
     --givewp-logo-container: 5rem;
+    height: calc(100% + 5rem);
 
     &.givewp-donation-form {
         position: relative;
-        transform: translateY(var(--givewp-logo-container));
-
-        // This accounts for the space below the button that overflows/hidden.
-        button[type=submit] {
-            margin-bottom: 4rem;
-        }
-
+        margin-top: 5rem;
+        padding-bottom: 5rem;
 
         &::after {
             content: "";
@@ -33,7 +29,6 @@
         }
     }
 }
-
 
 .givewp-design-settings--logo-position {
 

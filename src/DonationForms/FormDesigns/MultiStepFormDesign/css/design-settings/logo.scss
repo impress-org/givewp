@@ -17,11 +17,6 @@
         margin: 0 auto;
     }
 
-    // This accounts for the space below the button that overflows/hidden.
-    button[type=submit] {
-        margin-bottom: 4rem;
-    }
-
     &:after {
         content: "";
         position: absolute;
