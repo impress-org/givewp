@@ -17,7 +17,7 @@ class GenerateDefaultDonationFormBlockCollection
     {
         $section1 = $this->createSection(
             __('How much would you like to donate today?', 'give'),
-            __('All donations directly impact our organization and help us further our mission.?', 'give'),
+            __('All donations directly impact our organization and help us further our mission.', 'give'),
             $this->createAmountBlock()
         );
 
