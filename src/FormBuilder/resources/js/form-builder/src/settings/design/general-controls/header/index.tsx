@@ -215,7 +215,6 @@ export default function Header({dispatch, publishSettings}) {
                                 value={designSettingsImageStyle}
                                 options={[
                                     {label: __('Background', 'give'), value: 'background'},
-                                    {label: __('Cover', 'give'), value: 'cover'},
                                     {label: __('Above', 'give'), value: 'above'},
                                     {label: __('Center', 'give'), value: 'center'},
                                 ]}

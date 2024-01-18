@@ -16,12 +16,23 @@
          * Note: This requires that the Header.tsx template wrap the title/description.
          *       The below examples adds the `.givewp-layouts-headerCover` wrapper.
          */
+        &.givewp-design-settings--logo {
+            &.givewp-donation-form::after {
+                min-width: 65rem;
+                width: 100%;
+                left: -6.75rem;
+            }
+        }
+
         &.givewp-donation-form {
-            transform: translateY(15rem);
+            background: transparent;
+            padding-top: 15rem;
         }
 
         .givewp-layouts-header {
             position: relative;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
         }
 
         .givewp-layouts-headerTextWrapper {
@@ -36,9 +47,11 @@
         .givewp-layouts-header::before {
             content: "";
             position: absolute;
-            top: -75%;
-            width: 145%;
-            height: 145%;
+            top: -15.5rem;
+            min-width: 65rem;
+            width: 100%;
+
+            height: 436px;
             z-index: -1;
             --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
@@ -118,26 +131,3 @@
     }
 }
 
-
-.givewp-design-settings--image-style__cover {
-    &.givewp-design-settings--logo {
-        .givewp-layouts-header {
-            margin-top: 13rem;
-        }
-
-        .givewp-layouts-header::before {
-            top: -80%;
-        }
-
-        .givewp-layouts-headerTextWrapper {
-            top: -10rem;
-        }
-
-        //Logo container
-        &.givewp-donation-form::after {
-            width: 142.32%;
-            left: -21.15%;
-            top: -3%;
-        }
-    }
-}
