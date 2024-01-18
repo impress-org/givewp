@@ -4,11 +4,11 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 
 export default function MultiStep({dispatch, publishSettings}) {
     const {
-        settings: {multiStepNextButtonText, multiStepFirstButtonText},
+        settings: {multiStepNextButtonText, multiStepFirstButtonText, donateButtonCaption},
     } = useFormState();
 
     return (
-        <PanelBody title={__('Multi-Step', 'give')} initialOpen={false}>
+        <PanelBody title={__('Buttons', 'give')} initialOpen={false}>
             <PanelRow>
                 <TextControl
                     label={__('First Step Button Text', 'give')}
@@ -32,6 +32,23 @@ export default function MultiStep({dispatch, publishSettings}) {
                         publishSettings({multiStepNextButtonText});
                     }}
                     help={__('Customize the text that appears prompting the user to go to the next step.', 'give')}
+                />
+            </PanelRow>
+            <PanelRow>
+                <TextControl
+                    label={__('Button caption', 'give')}
+                    value={donateButtonCaption}
+                    onChange={(donateButtonCaption) => {
+                        dispatch(
+                            setFormSettings({
+                                donateButtonCaption,
+                            })
+                        );
+                        publishSettings({
+                            donateButtonCaption,
+                        });
+                    }}
+                    help={__('Enter the text you want to display on the donation button.', 'give')}
                 />
             </PanelRow>
         </PanelBody>

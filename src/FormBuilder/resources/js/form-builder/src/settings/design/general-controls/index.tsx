@@ -40,7 +40,7 @@ export default function GeneralControls() {
             <Header dispatch={dispatch} publishSettings={publishSettings} />
             <Logo dispatch={dispatch} publishSettings={publishSettings} />
             <DonationGoal dispatch={dispatch} />
-            <DonateButton dispatch={dispatch} publishSettings={publishSettings} />
+            {!design?.isMultiStep && <DonateButton dispatch={dispatch} publishSettings={publishSettings} />}
         </DesignSettings>
     );
 }
