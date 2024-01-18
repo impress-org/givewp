@@ -492,7 +492,7 @@ final class Give
     public function install()
     {
         $this->loadServiceProviders();
-        give_install();
+        give_install(is_plugin_active_for_network(GIVE_PLUGIN_BASENAME));
     }
 
     /**
