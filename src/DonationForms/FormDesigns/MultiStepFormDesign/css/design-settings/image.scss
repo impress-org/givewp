@@ -42,21 +42,22 @@
          * Note: This requires that the Header.tsx template wrap the title/description.
          *       The below examples adds the `.givewp-layouts-headerCover` wrapper.
          */
+        border: 2px solid green;
 
-        .givewp-donation-form {
+        &.givewp-donation-form {
             position: relative;
-            transform: translateY(15rem);
             border: 2px solid red;
+            padding-bottom: 25rem;
         }
 
         .givewp-donation-form__steps {
             overflow: visible;
-            margin-top: 20rem;
             background: transparent;
             box-shadow: none !important;
+            border: 1px solid blue;
+
 
             &-body {
-                margin-top: 13rem;
                 border-radius: 0.5rem;
                 background: var(--givewp-shades-white);
             }
@@ -76,6 +77,7 @@
             .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                 color: var(--givewp-shades-white);
             }
+
 
             :before {
                 content: "";
