@@ -8,7 +8,7 @@
         position: relative;
         background: var(--givewp-shades-white);
         padding: 0;
-
+        border-radius: 0.5rem;
 
         &:after {
             content: "";
@@ -24,6 +24,8 @@
             background-position: left; /* left, center, or right */
             background-origin: content-box;
             background-image: var(--givewp-design-settings-logo);
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
             z-index: 1;
         }
     }
@@ -32,11 +34,11 @@
         border-top: none;
         border-bottom: none;
         box-shadow: var(--givewp-shadow-md);
-        padding-top: 4.3rem;
+        padding-top: 4rem;
         background: var(--givewp-shades-white);
 
         &-header {
-            margin-top: -4.25rem;
+            margin-top: -4rem;
         }
 
         &-progress {
