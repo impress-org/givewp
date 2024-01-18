@@ -5,7 +5,7 @@
             margin-bottom: 10rem;
             background: none;
 
-            &::after {
+            &::before {
                 content: "";
                 position: absolute;
                 top: 0;
@@ -42,20 +42,15 @@
          * Note: This requires that the Header.tsx template wrap the title/description.
          *       The below examples adds the `.givewp-layouts-headerCover` wrapper.
          */
-        border: 2px solid green;
-
         &.givewp-donation-form {
             position: relative;
-            border: 2px solid red;
-            padding-bottom: 25rem;
         }
 
         .givewp-donation-form__steps {
             overflow: visible;
-            background: transparent;
+            background: var(--givewp-shades-white);
+            margin-top: 15rem;
             box-shadow: none !important;
-            border: 1px solid blue;
-
 
             &-body {
                 border-radius: 0.5rem;
@@ -70,7 +65,7 @@
 
         .givewp-layouts-headerTextWrapper {
             position: absolute;
-            top: 8%;
+            top: -50%;
             left: 0;
             width: 100%;
 
@@ -78,11 +73,10 @@
                 color: var(--givewp-shades-white);
             }
 
-
             :before {
                 content: "";
                 position: absolute;
-                top: -28%;
+                top: -40%;
                 left: -23%;
                 width: 145%;
                 height: 24rem;
@@ -91,7 +85,7 @@
                 background-color: rgb(30, 140, 190);
                 background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
                 background-size: cover;
-                z-index: -1;
+                z-index: -100;
             }
 
             .givewp-layouts-headerTitle {
@@ -105,7 +99,6 @@
             padding-top: 0;
         }
 
-        // Flatten image borders when logo is available.
         &.givewp-design-settings--logo {
             .givewp-layouts-header::after {
                 border-radius: 0;
@@ -122,7 +115,7 @@
             padding-top: var(--givewp-spacing-6);
         }
 
-        .givewp-layouts-header::after {
+        .givewp-layouts-header::before {
             content: "";
             position: absolute;
             top: -320px;
@@ -167,24 +160,5 @@
             background-size: cover;
             border-radius: 0.5rem;
         }
-    }
-}
-
-.givewp-design-settings--image-style__cover {
-    &.givewp-design-settings--logo {
-        &.givewp-donation-form::after {
-            width: 141%;
-            left: -21%;
-            top: -11%;
-        }
-
-        .givewp-donation-form__steps-body {
-        }
-    }
-}
-
-.givewp-layouts-multiStepForm {
-    :after {
-        visibility: hidden;
     }
 }
