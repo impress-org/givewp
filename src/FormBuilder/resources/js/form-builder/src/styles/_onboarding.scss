@@ -86,6 +86,7 @@
 
     .givewp-design-selector--header {
         font-size: 1rem;
+        text-align: center;
 
         h3 {
             font-size: 1.5rem;
@@ -152,7 +153,9 @@
     }
 
     .givewp-design-selector--button {
+        align-self: flex-end;
         width: 100%;
+        max-width: 22.5rem;
         justify-content: center;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-8);
         min-height: var(--givewp-spacing-12);
