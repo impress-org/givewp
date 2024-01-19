@@ -207,12 +207,14 @@ $give_updates = Give_Updates::get_instance();
 				$tls_check = wp_remote_get( 'https://www.howsmyssl.com/a/check' );
 			}
 
-			if ( ! is_wp_error( $tls_check ) ) {
-				$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ), false );
+            if ( ! $tls_check ) {
+                echo __( 'Please enable' ) . ' <b>allow_url_fopen</b> ' . __( 'in your php.ini file to determine this value.' );
+            } else if ( ! is_wp_error( $tls_check ) ) {
+                $tls_check = json_decode( wp_remote_retrieve_body( $tls_check ), false );
 
-				/* translators: %s: SSL connection response */
-				printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
-			}
+                /* translators: %s: SSL connection response */
+                printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
+            }
 			?>
 		</td>
 	</tr>
@@ -221,9 +223,11 @@ $give_updates = Give_Updates::get_instance();
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
 		<td>
 			<?php
-			if ( ! is_wp_error( $tls_check ) ) {
-				esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
-			}
+            if ( ! $tls_check ) {
+                echo __( 'Please enable' ) . ' <b>allow_url_fopen</b> ' . __( 'in your php.ini file to determine this value.' );
+            } else if ( ! is_wp_error( $tls_check ) ) {
+                esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
+            }
 			?>
 		</td>
 	</tr>
