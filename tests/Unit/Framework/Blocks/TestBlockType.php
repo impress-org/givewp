@@ -26,7 +26,7 @@ class TestBlockType extends TestCase
         $blockModel = new BlockModel('givewp/not-donation-amount');
 
         new class ($blockModel) extends BlockType {
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -43,13 +43,13 @@ class TestBlockType extends TestCase
         $blockModel = new BlockModel('givewp/donation-amount');
 
         $blockType = new class ($blockModel) extends BlockType {
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
         };
 
-        $this->assertSame('givewp/donation-amount', $blockType->getName());
+        $this->assertSame('givewp/donation-amount', $blockType::name());
     }
 
     /**
@@ -73,7 +73,7 @@ class TestBlockType extends TestCase
                 'recurringEnabled' => 'bool',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -112,7 +112,7 @@ class TestBlockType extends TestCase
                 'truthyIntAttribute' => 'bool',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -149,7 +149,7 @@ class TestBlockType extends TestCase
                 'floatStringAttribute' => 'string',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -183,7 +183,7 @@ class TestBlockType extends TestCase
                 'floatIntAttribute' => 'int',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -217,7 +217,7 @@ class TestBlockType extends TestCase
                 'stringArrayAttribute' => 'array',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -249,7 +249,7 @@ class TestBlockType extends TestCase
                 'intFloatAttribute' => 'float',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -284,7 +284,7 @@ class TestBlockType extends TestCase
                 'arrayAttribute' => 'array',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -312,7 +312,7 @@ class TestBlockType extends TestCase
                 'arrayAttribute' => 'array',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -338,7 +338,7 @@ class TestBlockType extends TestCase
                 'arrayAttribute' => 'array',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -368,7 +368,7 @@ class TestBlockType extends TestCase
                 'arrayAttribute' => 'array',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }
@@ -401,7 +401,7 @@ class TestBlockType extends TestCase
                 'boolAttribute' => 'bool',
             ];
 
-            public function getName(): string
+            public static function name(): string
             {
                 return 'givewp/donation-amount';
             }

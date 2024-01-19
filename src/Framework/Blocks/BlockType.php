@@ -13,7 +13,6 @@ use RuntimeException;
  */
 abstract class BlockType implements BlockTypeInterface, Arrayable
 {
-
     /**
      * @var string[]
      */
@@ -25,18 +24,23 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     protected $block;
 
     /**
+     * @unreleased
+     */
+    abstract public static function name(): string;
+
+    /**
      * @throws Exception
      */
     public function __construct(BlockModel $block)
     {
         $this->block = $block;
 
-        if ($this->block->name !== $this->getName()) {
+        if ($this->block->name !== $this::name()) {
             throw new RuntimeException(
                 sprintf(
                     'BlockModel name "%s" does not match the BlockType name "%s".',
                     $this->block->name,
-                    $this->getName()
+                    $this::name()
                 )
             );
         }
@@ -204,7 +208,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
         }
 
         return [
-            'name' => $this->getName(),
+            'name' => $this::name(),
             'attributes' => $attributes
         ];
     }

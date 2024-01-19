@@ -10,5 +10,5 @@ interface BlockTypeInterface
     /**
      * @unreleased
      */
-    public function getName(): string;
+    public static function name(): string;
 }
