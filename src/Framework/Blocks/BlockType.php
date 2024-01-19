@@ -6,13 +6,13 @@ use Exception;
 use Give\Framework\Blocks\Contracts\BlockTypeInterface;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Contracts\Arrayable;
-
-use const FILTER_VALIDATE_BOOL;
+use RuntimeException;
 
 /**
  * @unreleased
  */
-abstract class BlockType implements BlockTypeInterface, Arrayable {
+abstract class BlockType implements BlockTypeInterface, Arrayable
+{
 
     /**
      * @var string[]
@@ -22,7 +22,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
     /**
      * @var BlockModel
      */
-    public $block;
+    protected $block;
 
     /**
      * @throws Exception
@@ -32,15 +32,17 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
         $this->block = $block;
 
         if ($this->block->name !== $this->getName()) {
-            throw new \RuntimeException(sprintf(
-                'BlockModel name "%s" does not match the BlockType name "%s".',
-                $this->block->name,
-                $this->getName()
-            ));
+            throw new RuntimeException(
+                sprintf(
+                    'BlockModel name "%s" does not match the BlockType name "%s".',
+                    $this->block->name,
+                    $this->getName()
+                )
+            );
         }
     }
 
-     /**
+    /**
      * Dynamically retrieve attributes.
      *
      * @unreleased
@@ -54,21 +56,23 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
         return $this->castAttributeType($key, $value);
     }
 
-     /**
+    /**
      * Dynamically set attributes.
      *
      * @unreleased
-      *
-     * @param mixed  $value
+     *
+     * @param  mixed  $value
      *
      * @return void
      */
     public function __set(string $key, $value)
     {
+        $this->validateAttributeType($key, $value);
+
         $this->setAttribute($key, $value);
     }
 
-     /**
+    /**
      * Determine if an attribute exists.
      *
      * @unreleased
@@ -77,10 +81,10 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
      */
     public function __isset(string $key)
     {
-        return isset($this->properties[$key]);
+        return !is_null($this->getAttribute($key));
     }
 
-      /**
+    /**
      * @unreleased
      */
     protected function getAttribute($name)
@@ -101,8 +105,6 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
      */
     protected function setAttribute(string $name, $value): self
     {
-        $this->validateAttributeType($name, $value);
-
         $this->block->setAttribute($name, $value);
 
         return $this;
@@ -117,8 +119,8 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
      */
     protected function validateAttributeType(string $key, $value): void
     {
-        if ( ! $this->isAttributeTypeValid($key, $value)) {
-            $type = $this->getAttributeType($key);
+        if (!$this->isAttributeTypeValid($key, $value)) {
+            $type = $this->getPropertyType($key);
 
             throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
         }
@@ -135,7 +137,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
             return true;
         }
 
-        $type = $this->getAttributeType($key);
+        $type = $this->getPropertyType($key);
 
         switch ($type) {
             case 'int':
@@ -160,7 +162,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
             return null;
         }
 
-        $type = $this->getAttributeType($key);
+        $type = $this->getPropertyType($key);
 
         switch ($type) {
             case 'int':
@@ -176,10 +178,10 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
         }
     }
 
-     /**
+    /**
      * @unreleased
      */
-    protected function getAttributeType(string $key): string
+    protected function getPropertyType(string $key): string
     {
         $type = is_array($this->properties[$key]) ? $this->properties[$key][0] : $this->properties[$key];
 
@@ -191,6 +193,15 @@ abstract class BlockType implements BlockTypeInterface, Arrayable {
      */
     public function toArray(): array
     {
-        return $this->block->toArray();
+        $attributes = [];
+
+        foreach($this->properties as $key => $type) {
+            $attributes[$key] = $this->{$key};
+        }
+
+        return [
+            'name' => $this->getName(),
+            'attributes' => $attributes
+        ];
     }
 }

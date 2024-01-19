@@ -5,6 +5,7 @@ namespace Give\Tests\Unit\Framework\Blocks;
 use Exception;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Blocks\BlockType;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Tests\TestCase;
 use RuntimeException;
 
@@ -225,5 +226,160 @@ class TestBlockType extends TestCase
         $this->assertEquals(['green', 'eggs', 'and', 'ham'], $blockType->arrayAttribute);
         $this->assertEquals([123], $blockType->intArrayAttribute);
         $this->assertEquals(['green'], $blockType->stringArrayAttribute);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldThrowExceptionWhenSettingInvalidPropertyType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'arrayAttribute' => 'array',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $blockType->arrayAttribute = 'not an array';
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldUpdateExistingPropertyValue(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'arrayAttribute' => 'array',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $blockType->arrayAttribute = array_merge($blockType->arrayAttribute,['sam', 'i', 'am']);
+
+        $this->assertEquals(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldSetNewProperty(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => []
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'arrayAttribute' => 'array',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $blockType->arrayAttribute = ['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'];
+
+        $this->assertEquals(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testIssetProperty(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'arrayAttribute' => 'array',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $this->assertTrue(isset($blockType->arrayAttribute));
+        $this->assertFalse(isset($blockType->notAnAttribute));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testBlockTypeToArray(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
+                'stringAttribute' => 'hello',
+                'intAttribute' => 123,
+                'boolAttribute' => true,
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'arrayAttribute' => 'array',
+                'stringAttribute' => 'string',
+                'intAttribute' => 'int',
+                'boolAttribute' => 'bool',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $this->assertEquals([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
+                'stringAttribute' => 'hello',
+                'intAttribute' => 123,
+                'boolAttribute' => true,
+            ]
+        ], $blockType->toArray());
     }
 }
