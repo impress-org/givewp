@@ -49,7 +49,7 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals('givewp/donation-amount', $blockType->getName());
+        $this->assertSame('givewp/donation-amount', $blockType->getName());
     }
 
     /**
@@ -79,8 +79,8 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals('Donation Amount', $blockType->label);
-        $this->assertEquals(false, $blockType->recurringEnabled);
+        $this->assertSame('Donation Amount', $blockType->label);
+        $this->assertSame(false, $blockType->recurringEnabled);
     }
 
     /**
@@ -155,9 +155,9 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals('123', $blockType->stringAttribute);
-        $this->assertEquals('123', $blockType->intStringAttribute);
-        $this->assertEquals('123', $blockType->floatStringAttribute);
+        $this->assertSame('123', $blockType->stringAttribute);
+        $this->assertSame('123', $blockType->intStringAttribute);
+        $this->assertSame('123', $blockType->floatStringAttribute);
     }
 
     /**
@@ -189,9 +189,9 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals(123, $blockType->intAttribute);
-        $this->assertEquals(123, $blockType->stringIntAttribute);
-        $this->assertEquals(123, $blockType->floatIntAttribute);
+        $this->assertSame(123, $blockType->intAttribute);
+        $this->assertSame(123, $blockType->stringIntAttribute);
+        $this->assertSame(123, $blockType->floatIntAttribute);
     }
 
     /**
@@ -223,9 +223,9 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals(['green', 'eggs', 'and', 'ham'], $blockType->arrayAttribute);
-        $this->assertEquals([123], $blockType->intArrayAttribute);
-        $this->assertEquals(['green'], $blockType->stringArrayAttribute);
+        $this->assertSame(['green', 'eggs', 'and', 'ham'], $blockType->arrayAttribute);
+        $this->assertSame([123], $blockType->intArrayAttribute);
+        $this->assertSame(['green'], $blockType->stringArrayAttribute);
     }
 
     /**
@@ -255,11 +255,11 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals(123.00, $blockType->floatAttribute);
+        $this->assertSame(123.00, $blockType->floatAttribute);
         $this->assertIsFloat($blockType->floatAttribute);
-        $this->assertEquals(123.00, $blockType->stringFloatAttribute);
+        $this->assertSame(123.00, $blockType->stringFloatAttribute);
         $this->assertIsFloat($blockType->stringFloatAttribute);
-        $this->assertEquals(123.00, $blockType->intFloatAttribute);
+        $this->assertSame(123.00, $blockType->intFloatAttribute);
         $this->assertIsFloat($blockType->intFloatAttribute);
     }
 
@@ -320,7 +320,7 @@ class TestBlockType extends TestCase
 
         $blockType->arrayAttribute = array_merge($blockType->arrayAttribute,['sam', 'i', 'am']);
 
-        $this->assertEquals(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
+        $this->assertSame(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
     }
 
     /**
@@ -346,7 +346,7 @@ class TestBlockType extends TestCase
 
         $blockType->arrayAttribute = ['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'];
 
-        $this->assertEquals(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
+        $this->assertSame(['green', 'eggs', 'and', 'ham', 'sam', 'i', 'am'], $blockType->arrayAttribute);
     }
 
     /**
@@ -407,7 +407,7 @@ class TestBlockType extends TestCase
             }
         };
 
-        $this->assertEquals([
+        $this->assertSame([
             'name' => 'givewp/donation-amount',
             'attributes' => [
                 'arrayAttribute' => ['green', 'eggs', 'and', 'ham'],
