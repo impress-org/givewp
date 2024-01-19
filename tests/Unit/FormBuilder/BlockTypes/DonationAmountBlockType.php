@@ -21,7 +21,7 @@ class DonationAmountBlockType extends TestCase
         $blockModel = $this->getDefaultDonationAmountBlockModel();
         $block = new \Give\FormBuilder\BlockTypes\DonationAmountBlockType($blockModel);
 
-        $this->assertSame('givewp/donation-amount', $block->getName());
+        $this->assertSame('givewp/donation-amount', $block::name());
     }
 
     /**

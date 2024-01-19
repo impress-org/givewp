@@ -28,7 +28,7 @@ class DonationAmountBlockType extends BlockType
     /**
      * @unreleased
      */
-    public function getName(): string
+    public static function name(): string
     {
         return 'givewp/donation-amount';
     }
