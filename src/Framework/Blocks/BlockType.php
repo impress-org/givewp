@@ -148,6 +148,8 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
                 return is_bool($value);
             case 'array':
                 return is_array($value);
+            case 'float':
+                return is_float($value);
             default:
                 return $value instanceof $type;
         }
@@ -173,6 +175,8 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
                 return filter_var($value, FILTER_VALIDATE_BOOLEAN);
             case 'array':
                 return (array)($value);
+            case 'float':
+                return (float)filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
             default:
                 return $value;
         }

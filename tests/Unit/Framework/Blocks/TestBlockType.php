@@ -230,6 +230,41 @@ class TestBlockType extends TestCase
 
     /**
      * @unreleased
+     */
+    public function testShouldCastFloatPropertyValues(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'floatAttribute' => 123.00,
+                'stringFloatAttribute' => '123.00',
+                'intFloatAttribute' => 123,
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'floatAttribute' => 'float',
+                'stringFloatAttribute' => 'float',
+                'intFloatAttribute' => 'float',
+            ];
+
+            public function getName(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $this->assertEquals(123.00, $blockType->floatAttribute);
+        $this->assertIsFloat($blockType->floatAttribute);
+        $this->assertEquals(123.00, $blockType->stringFloatAttribute);
+        $this->assertIsFloat($blockType->stringFloatAttribute);
+        $this->assertEquals(123.00, $blockType->intFloatAttribute);
+        $this->assertIsFloat($blockType->intFloatAttribute);
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exception
      */
