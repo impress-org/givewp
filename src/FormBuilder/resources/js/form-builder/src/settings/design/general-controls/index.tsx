@@ -37,8 +37,12 @@ export default function GeneralControls() {
                 designId={designId}
             />
             {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
-            <Header dispatch={dispatch} publishSettings={publishSettings} />
-            <Logo dispatch={dispatch} publishSettings={publishSettings} />
+            {'classic' === designId && (
+                <>
+                    <Header dispatch={dispatch} publishSettings={publishSettings} />
+                    <Logo dispatch={dispatch} publishSettings={publishSettings} />
+                </>
+            )}
             <DonationGoal dispatch={dispatch} />
             {!design?.isMultiStep && <DonateButton dispatch={dispatch} publishSettings={publishSettings} />}
         </DesignSettings>

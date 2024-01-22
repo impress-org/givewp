@@ -29,7 +29,11 @@ export default function StyleControls() {
             )}
         >
             <Color dispatch={dispatch} />
-            {isClassicTemplate && <SectionSettings />}
+            {'classic' === designId && (
+                <>
+                    <SectionSettings />
+                </>
+            )}
             <CustomStyles />
         </DesignSettings>
     );
