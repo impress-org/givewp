@@ -73,7 +73,10 @@ const StripeFields = ({gateway}) => {
     );
 };
 
+let appearanceOptions = {};
+
 interface StripeSettings extends GatewaySettings {
+    formId: number;
     stripeKey: string;
     stripeConnectAccountId: string;
     stripeClientSecret: string;
@@ -90,11 +93,13 @@ interface StripeGateway extends Gateway {
 const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {
-        const {stripeKey, stripeConnectedAccountId} = this.settings;
+        const {stripeKey, stripeConnectedAccountId, formId} = this.settings;
 
         if (!stripeKey || !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
+
+        appearanceOptions = applyFilters('give_stripe_elements_appearance_options', {}, formId) as object;
 
         /**
          * Create the Stripe object and pass our api keys
@@ -168,22 +173,12 @@ const stripePaymentElementGateway: StripeGateway = {
         const donationAmount = useWatch({name: 'amount'});
         const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
 
-        const stripeElementOptions: StripeElementsOptionsMode = useMemo(() => {
-            const appearanceOptions = applyFilters(
-                'give_stripe_elements_appearance_options',
-                {},
-                donationType,
-                donationCurrency,
-                stripeAmount
-            ) as object;
-
-            return {
-                mode: donationType === 'subscription' ? 'subscription' : 'payment',
-                amount: stripeAmount,
-                currency: donationCurrency.toLowerCase(),
-                appearance: appearanceOptions,
-            };
-        }, [donationType, donationCurrency, stripeAmount]);
+        const stripeElementOptions: StripeElementsOptionsMode = {
+            mode: donationType === 'subscription' ? 'subscription' : 'payment',
+            amount: stripeAmount,
+            currency: donationCurrency.toLowerCase(),
+            appearance: appearanceOptions,
+        };
 
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
