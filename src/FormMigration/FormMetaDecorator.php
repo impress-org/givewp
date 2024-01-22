@@ -605,7 +605,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['fund']) > 0;
+        return !empty($fundsAndDesignationsAttributes['fund']);
     }
 
     /**
@@ -615,7 +615,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['options']) > 0;
+        return !empty($fundsAndDesignationsAttributes['options']);
     }
 
     /**
