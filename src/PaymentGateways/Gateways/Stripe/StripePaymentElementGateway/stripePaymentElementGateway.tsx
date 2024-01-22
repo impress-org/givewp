@@ -6,6 +6,8 @@ import {
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import {useMemo} from '@wordpress/element';
+import {applyFilters} from '@wordpress/hooks';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
 let stripePromise = null;
@@ -166,11 +168,22 @@ const stripePaymentElementGateway: StripeGateway = {
         const donationAmount = useWatch({name: 'amount'});
         const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
 
-        const stripeElementOptions: StripeElementsOptionsMode = {
-            mode: donationType === 'subscription' ? 'subscription' : 'payment',
-            amount: stripeAmount,
-            currency: donationCurrency.toLowerCase(),
-        };
+        const stripeElementOptions: StripeElementsOptionsMode = useMemo(() => {
+            const appearanceOptions = applyFilters(
+                'give_stripe_elements_appearance_options',
+                {},
+                donationType,
+                donationCurrency,
+                stripeAmount
+            ) as object;
+
+            return {
+                mode: donationType === 'subscription' ? 'subscription' : 'payment',
+                amount: stripeAmount,
+                currency: donationCurrency.toLowerCase(),
+                appearance: appearanceOptions,
+            };
+        }, [donationType, donationCurrency, stripeAmount]);
 
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
