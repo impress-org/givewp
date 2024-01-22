@@ -98,7 +98,7 @@ const stripePaymentElementGateway: StripeGateway = {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
-        appearanceOptions = applyFilters('give_stripe_elements_appearance_options', {}, formId) as object;
+        appearanceOptions = applyFilters('givewp_stripe_elements_appearance_options', {}, formId) as object;
 
         /**
          * Create the Stripe object and pass our api keys
