@@ -6,7 +6,6 @@ import {
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
-import {useMemo} from '@wordpress/element';
 import {applyFilters} from '@wordpress/hooks';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
