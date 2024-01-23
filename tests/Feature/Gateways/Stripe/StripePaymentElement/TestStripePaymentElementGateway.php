@@ -50,6 +50,7 @@ class TestStripePaymentElementGateway extends TestCase
         $settings = $mockGateway->formSettings($form->id);
 
         $this->assertSame($settings, [
+            'formId' => $form->id,
             'stripeKey' => $stripePublishableKey,
             'stripeConnectedAccountId' => $stripeConnectedAccountKey,
         ]);
