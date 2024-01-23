@@ -5,7 +5,6 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
-use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -599,23 +598,25 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 3.3.1 changed how is checked if the form has funds
      * @since 3.3.0
      */
     public function hasFunds(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['fund']) > 0;
+        return !empty($fundsAndDesignationsAttributes['fund']);
     }
 
     /**
+     * @since 3.3.1 changed how is checked if the form has fund options
      * @since 3.3.0
      */
     public function hasFundOptions(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['options']) > 0;
+        return !empty($fundsAndDesignationsAttributes['options']);
     }
 
     /**

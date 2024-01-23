@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,7 +262,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.3.0: Jan 10th, 2024 =
+= 3.3.1: January 23rd, 2024 =
+* Fix: Resolved an issue checking for the GiveWP Funds and Designations add-on information during form migrations  
+
+= 3.3.0: January 10th, 2024 =
 * Happy new year!
 * Fix: Resolved an issue where some migrated forms were being duplicated
 * Fix: Resolved an issue with the donor export filter by donation form
