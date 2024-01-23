@@ -534,7 +534,10 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</tr>
 
 				<?php
-				$raw_key = $this->get_importer( $csv, 0, $delimiter );
+
+                $selectedOptions = []; // Initialize the tracking array for selected options
+
+                $raw_key = $this->get_importer( $csv, 0, $delimiter );
 				$mapto   = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
 
 				foreach ( $raw_key as $index => $value ) {
@@ -543,7 +546,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<th><?php echo esc_html($value); ?></th>
 						<th>
 							<?php
-							$this->get_columns( $index, $value, $mapto );
+							$this->get_columns( $index, $value, $mapto, $selectedOptions );
 							?>
 						</th>
 					</tr>
@@ -584,28 +587,28 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @return void
 		 */
-		private function get_columns( $index, $value = false, $mapto = array() ) {
+		private function get_columns( $index, $value = false, $mapto = array(), &$selectedOptions ) {
 			$default       = give_import_default_options();
 			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
 			<select name="mapto[<?php echo esc_attr($index); ?>]">
-				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value ); ?>
+				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value, $selectedOptions ); ?>
 
 				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( give_import_donations_options(), $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donations_options(), $current_mapto, $value, $selectedOptions );
 					?>
 				</optgroup>
 
 				<optgroup label="<?php _e( 'Donors', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( give_import_donor_options(), $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donor_options(), $current_mapto, $value, $selectedOptions );
 					?>
 				</optgroup>
 
 				<optgroup label="<?php _e( 'Forms', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( give_import_donation_form_options(), $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donation_form_options(), $current_mapto, $value, $selectedOptions );
 					?>
 				</optgroup>
 
@@ -634,34 +637,44 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @return void
 		 */
-		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
+        public function get_dropdown_option_html( $options, $current_mapto, $value = false, &$selectedOptions ) {
+            foreach ( $options as $option => $option_value ) {
+                $ignore = array();
+                if ( isset( $option_value['ignore'] ) && is_array( $option_value['ignore'] ) ) {
+                    $ignore = $option_value['ignore'];
+                    unset( $option_value['ignore'] );
+                }
 
-			foreach ( $options as $option => $option_value ) {
-				$ignore = array();
-				if ( isset( $option_value['ignore'] ) && is_array( $option_value['ignore'] ) ) {
-					$ignore = $option_value['ignore'];
-					unset( $option_value['ignore'] );
-				}
+                $option_value_texts = (array) $option_value;
+                $option_text = $option_value_texts[0];
 
-				$option_value_texts = (array) $option_value;
-				$option_text        = $option_value_texts[0];
+                // Initialize selected as false
+                $selected = false;
 
-				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-				if ( empty( $checked ) && ! in_array( $value, $ignore ) ) {
-					foreach ( $option_value_texts as $option_value_text ) {
-						$checked = $this->selected( $option_value_text, $value );
-						if ( $checked ) {
-							break;
-						}
-					}
-				}
+                // If current field matches option and it's not already selected, mark as selected
+                if ( $current_mapto === $option && !in_array($option, $selectedOptions) ) {
+                    $selected = 'selected';
+                    $selectedOptions[] = $option; // Add to selected options
+                } else {
+                    // Check against option value texts if not already selected
+                    if ( ! in_array( $value, $ignore ) && !in_array($option, $selectedOptions) ) {
+                        foreach ( $option_value_texts as $option_value_text ) {
+                            $selected = $this->selected( $option_value_text, $value );
+                            if ( $selected ) {
+                                $selectedOptions[] = $option; // Add to selected options
+                                break;
+                            }
+                        }
+                    }
+                }
                 ?>
-                    <option value="<?php echo esc_attr($option); ?>" <?php echo esc_attr($checked); ?> ><?php echo esc_html($option_text); ?></option>
+                <option value="<?php echo esc_attr($option); ?>" <?php echo $selected; ?> ><?php echo esc_html($option_text); ?></option>
                 <?php
-			}
-		}
+            }
+        }
 
-		/**
+
+        /**
 		 * Get column count of csv file.
 		 *
 		 * @since 1.8.14
