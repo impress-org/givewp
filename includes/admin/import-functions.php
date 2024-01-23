@@ -846,7 +846,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 			add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
 			add_filter( 'give_is_stop_email_notification', '__return_true' );
 
-			// if it status is other then pending then first change the donation status to pending and after adding the payment meta update the donation status.
+			// If status is other than pending then first change the donation status to pending and after adding the payment meta update the donation status.
 			if ( 'pending' !== $status ) {
 				unset( $payment_data['status'] );
 			}
@@ -915,7 +915,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 			 * @param array $donor_data donor data
 			 * @param object $donor_data form object
 			 */
-			do_action( 'give_import_after_import_payment', $payment, $payment_data, $data, $donor_data, $form );
+			do_action( 'give_import_after_import_payment', $payment_id, $payment_data, $data, $donor_data, $form );
 		} else {
 			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
 			$payment_id                = true;
