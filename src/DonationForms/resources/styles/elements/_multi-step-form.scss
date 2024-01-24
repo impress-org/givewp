@@ -11,7 +11,8 @@
         border-radius: var(--givewp-rounded-8);
         color: var(--givewp-grey-700);
         background-color: var(--givewp-shades-white);
-        box-shadow: var(--givewp-shadow-sm);
+        box-shadow: var(--givewp-shadow-xs);
+        border: solid 1px var(--givewp-grey-25);
 
         &-header {
             position: relative;

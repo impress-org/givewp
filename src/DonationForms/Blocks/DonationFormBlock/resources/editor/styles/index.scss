@@ -73,9 +73,10 @@
         position: fixed;
         padding: 0 !important;
         border: none !important;
+        background-color: transparent;
 
         &::backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
         }
     }
 
