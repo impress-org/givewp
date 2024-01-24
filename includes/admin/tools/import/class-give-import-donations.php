@@ -670,7 +670,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
                     }
                 }
                 ?>
-                <option value="<?php echo esc_attr($option); ?>" <?php echo $selected; ?> ><?php echo esc_html($option_text); ?></option>
+                <option value="<?php echo esc_attr($option); ?>" <?php echo esc_html($selected); ?> ><?php echo esc_html($option_text); ?></option>
                 <?php
             }
         }
