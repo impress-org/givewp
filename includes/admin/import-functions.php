@@ -909,7 +909,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 			 *
 			 * @since 2.1.0
 			 *
-			 * @param int $payment payment id
+			 * @param int $payment_id payment id
 			 * @param array $payment_data payment data
 			 * @param array $payment_data donation data
 			 * @param array $donor_data donor data
