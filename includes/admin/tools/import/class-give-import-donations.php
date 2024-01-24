@@ -584,10 +584,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @param string $index
 		 * @param bool   $value
 		 * @param array  $mapto
+		 * @param array  $selectedOptions
 		 *
 		 * @return void
 		 */
-		private function get_columns( $index, $value = false, $mapto = array(), &$selectedOptions ) {
+		private function get_columns( $index, $value = false, $mapto = array(), &$selectedOptions = array() ) {
 			$default       = give_import_default_options();
 			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
