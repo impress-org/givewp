@@ -635,10 +635,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @param  array  $options
 		 * @param  string $current_mapto
 		 * @param bool   $value
+		 * @param array   $selectedOptions
 		 *
 		 * @return void
 		 */
-        public function get_dropdown_option_html( $options, $current_mapto, $value = false, &$selectedOptions ) {
+        public function get_dropdown_option_html( $options, $current_mapto, $value = false, &$selectedOptions = array() ) {
             foreach ( $options as $option => $option_value ) {
                 $ignore = array();
                 if ( isset( $option_value['ignore'] ) && is_array( $option_value['ignore'] ) ) {
