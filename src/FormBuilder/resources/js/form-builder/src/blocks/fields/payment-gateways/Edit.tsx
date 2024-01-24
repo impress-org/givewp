@@ -2,6 +2,7 @@ import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {Gateway} from '@givewp/form-builder/types';
+import {applyFilters} from '@wordpress/hooks';
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -19,14 +20,11 @@ const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
 };
 
 export default function Edit(props: BlockEditProps<any>) {
-    // @ts-ignore
-    const isPerFormGatewaysActive = Boolean(window.perFormGatewaysFormBuilder);
-    const {perFormGateways, useDefaultGateways} = props.attributes;
-    const isGatewayEnabled = (gateway: Gateway) =>
-        isPerFormGatewaysActive && perFormGateways && !useDefaultGateways
-            ? gateway.enabled &&
-              Boolean(perFormGateways.filter((perFormGateway) => perFormGateway.key === gateway.id).length)
-            : gateway.enabled;
+    const isGatewayEnabled = (gateway: Gateway) => {
+        let enabled = applyFilters('givewp_form_builder_enabled_payment_gateway_' + gateway.id, [gateway.enabled]);
+        enabled = typeof enabled === 'undefined' ? true : enabled[0];
+        return enabled;
+    };
 
     const {gateways} = getFormBuilderWindowData();
 
