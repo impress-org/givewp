@@ -3,32 +3,37 @@ import IframeResizer from 'iframe-resizer-react';
 import {createPortal} from 'react-dom';
 
 import '../../editor/styles/index.scss';
-import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
+import {useCallback} from 'react';
 
 type ModalFormProps = {
     dataSrc: string;
     embedId: string;
     openFormButton: string;
+    openByDefault?: boolean;
+    isFormRedirect: boolean;
+    formViewUrl: string;
 };
 
 /**
  * @unreleased
- */
-const inlineRedirectRoutes = ['donation-confirmation-receipt-view'];
-
-/**
  * @since 3.2.0 include types. update BEM classnames.
  * @since 3.0.0
  */
-export default function ModalForm({dataSrc, embedId, openFormButton}: ModalFormProps) {
-    const redirectUrl = new URL(dataSrc);
-    const redirectUrlParams = new URLSearchParams(redirectUrl.search);
-    const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
-    const [isOpen, setIsOpen] = useState(shouldRedirectInline);
+export default function ModalForm({dataSrc, embedId, openFormButton, openByDefault, isFormRedirect, formViewUrl}: ModalFormProps) {
+    const [isOpen, setIsOpen] = useState(openByDefault || isFormRedirect);
     const modalRef = useRef(null);
+    const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
+
+    const resetDataSrcUrl = () => {
+         if (!isOpen && isFormRedirect) {
+            setDataSrcUrl(formViewUrl);
+        }
+    };
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
+
+        resetDataSrcUrl();
     };
 
     useEffect(() => {
@@ -65,7 +70,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton}: ModalFormP
                         </button>
                         <IframeResizer
                             id={embedId}
-                            src={dataSrc}
+                            src={dataSrcUrl}
                             checkOrigin={false}
                             style={{
                                 width: '32.5rem',
