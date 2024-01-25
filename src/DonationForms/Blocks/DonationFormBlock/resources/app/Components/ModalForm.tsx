@@ -1,8 +1,10 @@
 import {useEffect, useRef, useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
 import {createPortal} from 'react-dom';
+import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 
 import '../../editor/styles/index.scss';
+import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
 type ModalFormProps = {
     dataSrc: string;
@@ -11,11 +13,19 @@ type ModalFormProps = {
 };
 
 /**
+ * @unreleased
+ */
+const inlineRedirectRoutes = ['donation-confirmation-receipt-view'];
+
+/**
  * @since 3.2.0 include types. update BEM classnames.
  * @since 3.0.0
  */
 export default function ModalForm({dataSrc, embedId, openFormButton}: ModalFormProps) {
-    const [isOpen, setIsOpen] = useState(false);
+    const redirectUrl = new URL(dataSrc);
+    const redirectUrlParams = new URLSearchParams(redirectUrl.search);
+    const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
+    const [isOpen, setIsOpen] = useState(shouldRedirectInline);
     const modalRef = useRef(null);
 
     const toggleModal = () => {
