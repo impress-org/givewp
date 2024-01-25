@@ -6,6 +6,7 @@ import {
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import {applyFilters} from '@wordpress/hooks';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
 let stripePromise = null;
@@ -71,7 +72,10 @@ const StripeFields = ({gateway}) => {
     );
 };
 
+let appearanceOptions = {};
+
 interface StripeSettings extends GatewaySettings {
+    formId: number;
     stripeKey: string;
     stripeConnectAccountId: string;
     stripeClientSecret: string;
@@ -88,11 +92,13 @@ interface StripeGateway extends Gateway {
 const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {
-        const {stripeKey, stripeConnectedAccountId} = this.settings;
+        const {stripeKey, stripeConnectedAccountId, formId} = this.settings;
 
         if (!stripeKey || !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
+
+        appearanceOptions = applyFilters('givewp_stripe_payment_element_appearance_options', {}, formId) as object;
 
         /**
          * Create the Stripe object and pass our api keys
@@ -170,6 +176,7 @@ const stripePaymentElementGateway: StripeGateway = {
             mode: donationType === 'subscription' ? 'subscription' : 'payment',
             amount: stripeAmount,
             currency: donationCurrency.toLowerCase(),
+            appearance: appearanceOptions,
         };
 
         return (
