@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
 import {createPortal} from 'react-dom';
-import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 
 import '../../editor/styles/index.scss';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
