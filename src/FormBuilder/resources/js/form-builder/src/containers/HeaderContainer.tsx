@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {EditIcon, GiveIcon, CodeIcon} from '../components/icons';
+import {CodeIcon, GiveIcon} from '../components/icons';
 import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {Button, Dropdown, ExternalLink, MenuGroup, MenuItem, TextControl} from '@wordpress/components';
@@ -11,11 +11,12 @@ import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 import {Markup} from 'interweave';
 import {InfoModal, ModalType} from '../components/modal';
-import FormPrepublishPanel from "@givewp/form-builder/components/sidebar/panels/FormPrepublishPanel";
+import FormPrepublishPanel from '@givewp/form-builder/components/sidebar/panels/FormPrepublishPanel';
 import {setEditorMode, useEditorState, useEditorStateDispatch} from '@givewp/form-builder/stores/editor-state';
 import EditorMode from '@givewp/form-builder/types/editorMode';
 import {useDispatch} from '@wordpress/data';
 import {cleanForSlug} from '@wordpress/url';
+import cn from 'classnames';
 import EmbedFormModal from '@givewp/form-builder/components/EmbedForm';
 
 const Logo = () => (
@@ -28,15 +29,13 @@ const Logo = () => (
             alignItems: 'center',
         }}
     >
-        <div>
-            <a
-                style={{display: 'block', boxShadow: 'none'}}
-                href="edit.php?post_type=give_forms&page=give-forms"
-                title={__('Return to GiveWP', 'give')}
-            >
-                <GiveIcon />
-            </a>
-        </div>
+        <a
+            style={{display: 'flex', boxShadow: 'none'}}
+            href="edit.php?post_type=give_forms&page=give-forms"
+            title={__('Return to GiveWP', 'give')}
+        >
+            <GiveIcon />
+        </a>
     </div>
 );
 
@@ -93,9 +92,10 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 type: 'snackbar',
             });
         } else {
-            const notice = 'publish' === formStatus && formSettings.formStatus !== 'draft'
-                ? __('Form updated.', 'give')
-                : __('Form published.', 'give')
+            const notice =
+                'publish' === formStatus && formSettings.formStatus !== 'draft'
+                    ? __('Form updated.', 'give')
+                    : __('Form published.', 'give');
 
             createSuccessNotice(notice, {
                 type: 'snackbar',
@@ -111,14 +111,11 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
-    const toggleEditorMode = () => {
-        if (EditorMode.schema === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.design));
+    const switchEditorMode = (newMode: EditorMode) => {
+        if (newMode && Object.keys(EditorMode).includes(newMode)) {
+            dispatchEditorState(setEditorMode(newMode));
         }
-        if (EditorMode.design === mode) {
-            dispatchEditorState(setEditorMode(EditorMode.schema));
-        }
-    }
+    };
 
     // @ts-ignore
     return (
@@ -128,33 +125,66 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                     <>
                         <Logo />
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
-                        <Button
-                            id={'editor-state-toggle'}
-                            style={{
-                                backgroundColor: 'black',
-                                color: 'white',
-                                borderRadius: '4px',
-                                display: 'flex',
-                                gap: 'var(--givewp-spacing-2)',
-                                padding: 'var(--givewp-spacing-3) var(--givewp-spacing-4)',
+                        <TextControl
+                            className={'givewp-form-title'}
+                            value={formTitle}
+                            onChange={(formTitle) => {
+                                !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
+                                dispatch(setFormSettings({formTitle}));
                             }}
-                            onClick={() => toggleEditorMode()}
-                            icon={EditIcon}
-                        >
-                            {EditorMode.schema === mode && __('Edit form design', 'give')}
-                            {EditorMode.design === mode && __('Edit form', 'give')}
-                        </Button>
+                            label={
+                                <>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 16 16"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M6.02157 10.1075L12.666 3.39785L11.2216 2L4.57713 8.70968L3.99935 10.6667L6.02157 10.1075Z"
+                                            fill="currentColor"
+                                        />
+                                        <path
+                                            d="M2.66602 13.3333H7.99935M12.666 3.39785L6.02157 10.1075L3.99935 10.6667L4.57713 8.70968L11.2216 2L12.666 3.39785Z"
+                                            stroke="currentColor"
+                                        />
+                                    </svg>
+                                </>
+                            }
+                        />
                     </>
                 }
                 contentMiddle={
-                    <TextControl
-                        className={'givewp-form-title'}
-                        value={formTitle}
-                        onChange={(formTitle) => {
-                            !isPublished && dispatch(setFormSettings({pageSlug: cleanForSlug(formTitle)}));
-                            dispatch(setFormSettings({formTitle}));
-                        }}
-                    />
+                    <div className={'givewp-header-tabs'}>
+                        <Button
+                            id={'editor-state-switch-schema'}
+                            className={cn('givewp-header-tabs__tab', {
+                                'is-active': mode === EditorMode.schema,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.schema)}
+                        >
+                            {__('Build', 'give')}
+                        </Button>
+                        <Button
+                            id={'editor-state-switch-design'}
+                            className={cn('givewp-header-tabs__tab', {
+                                'is-active': mode === EditorMode.design,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.design)}
+                        >
+                            {__('Design', 'give')}
+                        </Button>
+                        <Button
+                            id={'editor-state-switch-settings'}
+                            className={cn('givewp-header-tabs__tab', {
+                                'is-active': mode === EditorMode.settings,
+                            })}
+                            onClick={() => switchEditorMode(EditorMode.settings)}
+                        >
+                            {__('Settings', 'give')}
+                        </Button>
+                    </div>
                 }
                 contentRight={
                     <>
@@ -169,8 +199,8 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     {isSaving && 'draft' === isSaving
                                         ? __('Saving...', 'give')
                                         : 'draft' === formSettings.formStatus
-                                            ? __('Save as Draft', 'give')
-                                            : __('Switch to Draft', 'give')}
+                                        ? __('Save as Draft', 'give')
+                                        : __('Switch to Draft', 'give')}
                                 </Button>
                                 <Button
                                     icon={CodeIcon}
@@ -188,7 +218,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     />
                                 )}
                                 <Button
-                                    onClick={() => isPublished ? onSave('publish') : setShowPublishConfirmation(true)}
+                                    onClick={() => (isPublished ? onSave('publish') : setShowPublishConfirmation(true))}
                                     aria-disabled={isPublishDisabled}
                                     disabled={isPublishDisabled}
                                     variant="primary"
@@ -196,10 +226,12 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     {isSaving && 'publish' === isSaving
                                         ? __('Updating...', 'give')
                                         : isPublished
-                                            ? __('Update', 'give')
-                                            : __('Publish', 'give')}
+                                        ? __('Update', 'give')
+                                        : __('Publish', 'give')}
                                 </Button>
-                                <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                                {mode !== EditorMode.settings && (
+                                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                                )}
                             </>
                         )}
                         <Dropdown
@@ -218,27 +250,31 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                             onToggle();
                                         }}
                                     />
-                                )
+                                );
                             }}
                             renderContent={({onClose}) => (
                                 <div style={{minWidth: '280px', maxWidth: '400px'}}>
                                     <MenuGroup label={__('Support', 'give')}>
-                                        <MenuItem
-                                            onClick={() => {
-                                                // @ts-ignore
-                                                if (!window.tour.isActive()) {
+                                        {mode !== EditorMode.settings && (
+                                            <MenuItem
+                                                onClick={() => {
                                                     // @ts-ignore
-                                                    window.tour.start();
-                                                    onClose();
-                                                }
-                                            }}
-                                        >
-                                            {__('Show Guided Tour', 'give')}
-                                        </MenuItem>
+                                                    if (!window.tour.isActive()) {
+                                                        // @ts-ignore
+                                                        window.tour.start();
+                                                        onClose();
+                                                    }
+                                                }}
+                                            >
+                                                {__('Show Guided Tour', 'give')}
+                                            </MenuItem>
+                                        )}
                                         {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                             <>
                                                 <MenuItem
-                                                    className={transfer.showTooltip && 'givewp-transfer-selected-menuitem'}
+                                                    className={
+                                                        transfer.showTooltip && 'givewp-transfer-selected-menuitem'
+                                                    }
                                                     onClick={() => {
                                                         dispatch(setTransferState({showTransferModal: true}));
                                                         onClose();
@@ -249,7 +285,10 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
 
                                                 {transfer.showTooltip && (
                                                     <div className="givewp-transfer-tooltip">
-                                                        {__('Want to transfer donation data later? Access this option in the three dots menu above at any time.', 'give')}
+                                                        {__(
+                                                            'Want to transfer donation data later? Access this option in the three dots menu above at any time.',
+                                                            'give'
+                                                        )}
                                                     </div>
                                                 )}
                                             </>
@@ -260,9 +299,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                         href="https://docs.givewp.com/nextgenfeedback"
                                         rel="noopener noreferrer"
                                     >
-                                        <MenuItem icon={external}>
-                                                {__('Submit Feedback', 'give')}
-                                        </MenuItem>
+                                        <MenuItem icon={external}>{__('Submit Feedback', 'give')}</MenuItem>
                                     </ExternalLink>
                                 </div>
                             )}
@@ -280,11 +317,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                     <Markup content={errorMessage} />
                 </InfoModal>
             )}
-            {showEmbedModal && (
-                <EmbedFormModal
-                    handleClose={() => setShowEmbedModal(false)}
-                />
-            )}
+            {showEmbedModal && <EmbedFormModal handleClose={() => setShowEmbedModal(false)} />}
             {showPublishConfirmation && (
                 <FormPrepublishPanel
                     isSaving={isSaving}

@@ -19,7 +19,7 @@ $wrapper            = '
 	width:100%;
 	-webkit-text-size-adjust:none !important;
 	margin:0;
-	padding: 30px 0 50px 0;
+	padding: 84px 0 50px 0;
 ';
 $template_container = '
 	box-shadow:0 0 0 1px #f3f3f3 !important;

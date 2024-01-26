@@ -11,7 +11,7 @@ use Give\Revenue\Repositories\Revenue;
 class UpdateRevenueWhenDonationAmountUpdated
 {
     /**
-     * @unreleased updated to accept Donation model
+     * @since 3.3.0 updated to accept Donation model
      * @since 2.22.1
      */
     public function __invoke(Donation $donation)

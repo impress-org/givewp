@@ -1,15 +1,14 @@
 import {useContext, useEffect, useState} from 'react';
-import {useFormState} from '@givewp/form-builder/stores/form-state';
+import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
 import {designSteps, schemaSteps} from './steps';
-import {useEditorState} from "@givewp/form-builder/stores/editor-state";
-import {setFormSettings, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
+import {useEditorState} from '@givewp/form-builder/stores/editor-state';
 
 import 'shepherd.js/dist/css/shepherd.css';
-import DesignSelector from "@givewp/form-builder/components/onboarding/DesignSelector";
-import SchemaWelcome from "@givewp/form-builder/components/onboarding/SchemaWelcome";
+import DesignSelector from '@givewp/form-builder/components/onboarding/DesignSelector';
+import SchemaWelcome from '@givewp/form-builder/components/onboarding/SchemaWelcome';
 
 declare global {
     interface Window {

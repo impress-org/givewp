@@ -6,12 +6,12 @@ use Give\Donations\Models\Donation;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 class UpdateRevenueWhenDonationAmountUpdated
 {
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function __invoke(int $donationId)
     {
