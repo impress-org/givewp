@@ -127,7 +127,7 @@ class LegacyPaymentGatewayAdapter
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
              */
-            do_action('give_donation_form_processing_donation_created', $donation, $subscription);
+            do_action('givewp_donation_form_processing_donation_created', $donation, $subscription);
 
             /**
              * Fires after a subscription is created during donation form processing.
@@ -137,7 +137,7 @@ class LegacyPaymentGatewayAdapter
              * @param  Subscription  $subscription
              * @param  Donation  $donation
              */
-            do_action('give_donation_form_processing_subscription_created', $subscription, $donation);
+            do_action('givewp_donation_form_processing_subscription_created', $subscription, $donation);
 
             try {
                 /**
@@ -188,7 +188,7 @@ class LegacyPaymentGatewayAdapter
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
              */
-            do_action('give_donation_form_processing_donation_created', $donation, null);
+            do_action('givewp_donation_form_processing_donation_created', $donation, null);
 
             try {
                 /**
@@ -357,7 +357,7 @@ class LegacyPaymentGatewayAdapter
              * @param  Donor  $donor
              * @param  int  $formId
              */
-            do_action('give_donation_form_processing_donor_created', $donor, $formId);
+            do_action('givewp_donation_form_processing_donor_created', $donor, $formId);
         }
 
         return $donor;
