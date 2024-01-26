@@ -8,7 +8,7 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class DonationAmountBlockType extends TestCase
+class TestDonationAmountBlockType extends TestCase
 {
     use RefreshDatabase;
 

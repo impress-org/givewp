@@ -44,6 +44,8 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
                 )
             );
         }
+
+        $this->fillDefaultProperties();
     }
 
     /**
@@ -211,5 +213,22 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
             'name' => $this::name(),
             'attributes' => $attributes
         ];
+    }
+
+     /**
+     * @unreleased
+     */
+    abstract protected function setDefaultProperties(): array;
+
+    /**
+     * @unreleased
+     */
+    private function fillDefaultProperties(): void
+    {
+        foreach ($this->setDefaultProperties() as $key => $type) {
+            if ($this->hasAttribute($key)) {
+                $this->properties[$key] = $type;
+            }
+        }
     }
 }

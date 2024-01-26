@@ -7,7 +7,7 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TextBlockType extends TestCase
+class TestTextBlockType extends TestCase
 {
     use RefreshDatabase;
 
