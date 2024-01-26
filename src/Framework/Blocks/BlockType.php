@@ -218,7 +218,10 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
      /**
      * @unreleased
      */
-    abstract protected function setDefaultProperties(): array;
+    protected function setDefaultProperties(): array
+    {
+        return [];
+    }
 
     /**
      * @unreleased
