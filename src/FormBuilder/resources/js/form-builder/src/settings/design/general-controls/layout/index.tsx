@@ -29,38 +29,36 @@ export default function Layout({dispatch, publishSettings, formDesigns, designId
                     )}
                 />
             </PanelRow>
-            {'classic' === designId && (
-                <PanelRow>
-                    <SelectControl
-                        label={__('Input Field', 'give')}
-                        help={__('Change the design of the input fields for this form.', 'give')}
-                        onChange={(designSettingsTextFieldStyle) => {
-                            dispatch(
-                                setFormSettings({
-                                    designSettingsTextFieldStyle,
-                                    designSettingsImageStyle,
-                                    designSettingsImageUrl,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
-                                })
-                            );
-                            publishSettings({
+            <PanelRow>
+                <SelectControl
+                    label={__('Input Field', 'give')}
+                    help={__('Change the design of the input fields for this form.', 'give')}
+                    onChange={(designSettingsTextFieldStyle) => {
+                        dispatch(
+                            setFormSettings({
                                 designSettingsTextFieldStyle,
                                 designSettingsImageStyle,
                                 designSettingsImageUrl,
                                 designSettingsLogoUrl,
                                 designSettingsLogoPosition,
-                            });
-                        }}
-                        value={designSettingsTextFieldStyle}
-                        options={[
-                            {label: __('Default', 'give'), value: 'default'},
-                            {label: __('Box (inner-label)', 'give'), value: 'box'},
-                            {label: __('Line (inner-label)', 'give'), value: 'line'},
-                        ]}
-                    />
-                </PanelRow>
-            )}
+                            })
+                        );
+                        publishSettings({
+                            designSettingsTextFieldStyle,
+                            designSettingsImageStyle,
+                            designSettingsImageUrl,
+                            designSettingsLogoUrl,
+                            designSettingsLogoPosition,
+                        });
+                    }}
+                    value={designSettingsTextFieldStyle}
+                    options={[
+                        {label: __('Default', 'give'), value: 'default'},
+                        {label: __('Box (inner-label)', 'give'), value: 'box'},
+                        {label: __('Line (inner-label)', 'give'), value: 'line'},
+                    ]}
+                />
+            </PanelRow>
         </PanelBody>
     );
 }

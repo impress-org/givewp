@@ -1,7 +1,7 @@
 .givewp-design-settings--image-style {
 
     &__background {
-        .givewp-layouts-header {
+        & > .givewp-layouts-header {
             --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
             --tint: linear-gradient(90deg, var(--tint-color), var(--tint-color));
             background-color: rgb(30, 140, 190);
@@ -82,7 +82,7 @@
             }
         }
 
-        .givewp-layouts-header::after {
+        & > .givewp-layouts-header::after {
             content: "";
             position: absolute;
             top: -320px;
