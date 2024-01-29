@@ -147,12 +147,22 @@ class Model
      *
      * @since 2.9.0
      */
-    public function getDonationCount(): string
+    public function getDonationCount(): int
     {
         $results = $this->getDonationRevenueResults();
 
+        return $results->count;
+    }
+
+    /**
+     * Get formatted number of donations
+     *
+     * @since 2.9.0
+     */
+    public function getFormattedDonationCount(): string
+    {
         return give_format_amount(
-                $results->count,
+                $this->getDonationCount(),
                 [
                     'sanitize' => false,
                     'decimal' => false,
