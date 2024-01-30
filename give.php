@@ -497,13 +497,14 @@ final class Give
      *
      * Runs on plugin activation and performs initial setup.
      *
+     * @unreleased check if installing in WP multisite
      * @since 2.33.3 set network_wide parameter to true, enabling installing in WP multisite
      * @since 1.0.0
      */
     public function install()
     {
         $this->loadServiceProviders();
-        give_install(true);
+        give_install(is_plugin_active_for_network(GIVE_PLUGIN_BASENAME));
     }
 
     /**
