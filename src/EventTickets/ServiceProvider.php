@@ -43,5 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         Hooks::addAction('init', Actions\RegisterEventsPostType::class);
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', Actions\EnqueueFormBuilderScripts::class);
+        Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
     }
 }
