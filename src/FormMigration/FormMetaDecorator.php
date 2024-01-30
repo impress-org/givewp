@@ -5,7 +5,6 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
-use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -510,7 +509,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function isMailchimpEnabled(): bool
     {
@@ -524,7 +523,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpLabel()
     {
@@ -533,7 +532,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDefaultChecked(): bool
     {
@@ -541,7 +540,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDoubleOptIn(): bool
     {
@@ -549,7 +548,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSendDonationData(): bool
     {
@@ -557,7 +556,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSendFFMData(): bool
     {
@@ -565,7 +564,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpDefaultAudiences(): array
     {
@@ -573,7 +572,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getMailchimpSubscriberTags(): array
     {
@@ -599,27 +598,29 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.1 changed how is checked if the form has funds
+     * @since 3.3.0
      */
     public function hasFunds(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['fund']) > 0;
+        return !empty($fundsAndDesignationsAttributes['fund']);
     }
 
     /**
-     * @unreleased
+     * @since 3.3.1 changed how is checked if the form has fund options
+     * @since 3.3.0
      */
     public function hasFundOptions(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['options']) > 0;
+        return !empty($fundsAndDesignationsAttributes['options']);
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
     {
@@ -652,7 +653,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function getFundLabel(int $fundId): string
     {
@@ -670,7 +671,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function isDefaultFund(int $fundId): bool
     {
@@ -683,5 +684,71 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return $fund->id === $fundId;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string 'global', 'enabled', 'disabled'
+     */
+    public function getGiftAidStatus(): string
+    {
+        return $this->getMeta('give_gift_aid_enable_disable');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidTitle(): string
+    {
+        return $this->getMeta('give_gift_aid_fieldset_title');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidDescription(): string
+    {
+        return $this->getMeta('give_gift_aid_explanation_content');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidLongExplanationEnabled(): bool
+    {
+        return $this->getMeta('give_gift_aid_long_explanation_enable_disable');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidLongExplanation(): string
+    {
+        return $this->getMeta('give_gift_aid_long_explanation_content');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidCheckboxLabel(): string
+    {
+        return $this->getMeta('give_gift_aid_checkbox_label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidAgreementText(): string
+    {
+        return $this->getMeta('give_gift_aid_agreement');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGiftAidDeclarationForm(): string
+    {
+        return $this->getMeta('give_gift_aid_declaration_form');
     }
 }

@@ -56,7 +56,7 @@ class DonorsExport extends Give_Batch_Export
     /**
      * @since      2.29.0 Include donor created date
      * @since      2.21.2
-     * @unreleased Filter donors by form ID
+     * @since 3.3.0 Filter donors by form ID
      */
     public function get_data(): array
     {

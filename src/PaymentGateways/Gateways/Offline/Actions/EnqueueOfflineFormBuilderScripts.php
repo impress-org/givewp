@@ -15,11 +15,18 @@ class EnqueueOfflineFormBuilderScripts
     {
         $scriptAsset = require trailingslashit(GIVE_PLUGIN_DIR) . 'build/offlineGatewayFormBuilder.asset.php';
 
+        wp_enqueue_style(
+            'givewp-offline-gateway-form-builder',
+            GIVE_PLUGIN_URL . 'build/offlineGatewayFormBuilder.css',
+            [],
+            $scriptAsset['version']
+        );
+
         wp_enqueue_script(
             'givewp-offline-gateway-form-builder',
             GIVE_PLUGIN_URL . 'build/offlineGatewayFormBuilder.js',
             $scriptAsset['dependencies'],
-            false,
+            $scriptAsset['version'],
             true
         );
 

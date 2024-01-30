@@ -25,6 +25,7 @@ export default function Header({contentLeft, contentMiddle, contentRight}: Props
                     gap: '0.5rem',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
+                    maxWidth: '33%',
                 }}
             >
                 {contentLeft}
@@ -37,6 +38,7 @@ export default function Header({contentLeft, contentMiddle, contentRight}: Props
                     gap: '0.5rem',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
+                    maxWidth: '33%',
                 }}
             >
                 {contentRight}
