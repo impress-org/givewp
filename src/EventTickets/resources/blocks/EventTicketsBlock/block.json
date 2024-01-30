@@ -1,0 +1,23 @@
+{
+    "name": "givewp/event-tickets",
+    "title": "Event Tickets",
+    "description": "Sell event tickets for your cause",
+    "category": "input",
+    "icon": "yes",
+    "supports": {
+        "multiple": true
+    },
+    "attributes": {
+        "eventId": {
+            "type": "number"
+        },
+        "ticketsLabel": {
+            "type": "string",
+            "default": "Select tickets"
+        },
+        "ticketsSoldOutMessage": {
+            "type": "string",
+            "default": "Thank you for supporting our cause. Our fundraising event tickets are officially sold out. You can still contribute by making a donation."
+        }
+    }
+}
