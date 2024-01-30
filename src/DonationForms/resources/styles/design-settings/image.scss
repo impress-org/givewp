@@ -1,5 +1,4 @@
 .givewp-design-settings--image-style {
-
     &__background {
         & > .givewp-layouts-header {
             --tint-color: rgba(0, 0, 0, 0.3); /* Note: Color needs to be converted to RGB values. */
@@ -76,10 +75,6 @@
             .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                 color: var(--givewp-grey-900);
             }
-
-            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-            }
         }
 
         & > .givewp-layouts-header::after {
@@ -102,16 +97,6 @@
             .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                 color: var(--givewp-grey-900);
             }
-
-            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-            }
-        }
-
-        .givewp-layouts-goal {
-            margin-top: 320px;
-            position: relative;
-            border-radius: 0;
         }
 
         .givewp-layouts-goal::after {
@@ -120,13 +105,12 @@
             top: -320px;
             left: 0;
             width: 100%;
-            height: 320px;
+            height: 315px;
 
             background-image: var(--givewp-design-settings-background-image);
             background-position: 50%;
             background-size: cover;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
+            border-radius: 0.5rem;
         }
     }
 }
