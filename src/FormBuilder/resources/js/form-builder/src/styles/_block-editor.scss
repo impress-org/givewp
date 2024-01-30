@@ -13,7 +13,7 @@
 }
 
 .interface-interface-skeleton__body {
-    width: 100%;
+    width: calc(100% - var(--givewp-sidebar-width));
     background-color: var(--givewp-gray-10);
 }
 
@@ -296,3 +296,6 @@
     }
 }
 
+.givewp-form-settings__editor .interface-interface-skeleton {
+    width: 100%;
+}
