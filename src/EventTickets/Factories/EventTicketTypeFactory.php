@@ -3,7 +3,7 @@
 namespace Give\EventTickets\Factories;
 
 use Give\Framework\Models\Factories\ModelFactory;
-use GiveEvents\Events\Models\Event;
+use Give\EventTickets\Models\Event;
 
 class EventTicketTypeFactory extends ModelFactory
 {

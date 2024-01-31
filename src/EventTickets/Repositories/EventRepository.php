@@ -10,7 +10,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use GiveEvents\Events\Models\Event;
+use Give\EventTickets\Models\Event;
 
 /**
  * @unreleased

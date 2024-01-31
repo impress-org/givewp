@@ -13,7 +13,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use GiveEvents\Events\Factories\EventTicketFactory;
+use Give\EventTickets\Factories\EventTicketFactory;
 
 /**
  * @unreleased

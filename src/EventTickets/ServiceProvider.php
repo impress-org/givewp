@@ -5,9 +5,9 @@ namespace Give\EventTickets;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use GiveEvents\Events\Repositories\EventRepository;
-use GiveEvents\Events\Repositories\EventTicketRepository;
-use GiveEvents\Events\Repositories\EventTicketTypeRepository;
+use Give\EventTickets\Repositories\EventRepository;
+use Give\EventTickets\Repositories\EventTicketRepository;
+use Give\EventTickets\Repositories\EventTicketTypeRepository;
 
 /**
  * @unreleased
