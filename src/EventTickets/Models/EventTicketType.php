@@ -14,6 +14,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\EventTickets\Factories\EventTicketTypeFactory;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @unreleased
@@ -26,6 +27,8 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int',
         'event_id' => 'int',
+        'price' => Money::class,
+        'max_available' => 'int',
         'date_created' => DateTime::class,
     ];
 

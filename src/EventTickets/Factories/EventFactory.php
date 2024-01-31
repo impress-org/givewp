@@ -12,17 +12,21 @@ class EventFactory extends ModelFactory
      */
     public function definition(): array
     {
-        $start_datetime = $this->faker->dateTimeThisYear;
+        $title = $this->faker->words(3, true);
+        $description = $this->faker->paragraph();
+        $start_datetime = $this->faker->dateTimeThisYear('+6 months');
 
         return [
             'id' => wp_insert_post([
                 'post_type' => 'give_event',
-                'post_title' => $this->faker->text,
-                'post_content' => $this->faker->text,
+                'post_title' => $title,
+                'post_content' => '[]', // Empty block editor content for potential event page
+                'post_excerpt' => $description,
                 'post_status' => 'publish',
             ]),
             'form_id' => DonationForm::factory()->create()->id,
-            'description' => $this->faker->text,
+            'title' => $title,
+            'description' => $description,
             'start_datetime' => $start_datetime,
             'end_datetime' => $start_datetime->modify('+1 hour'),
             'ticket_close_datetime' => $start_datetime->modify('-1 day'),

@@ -64,6 +64,8 @@ class EventTicketTypeRepository
                 ->insert([
                     'id' => $eventTicketType->id,
                     'event_id' => $eventTicketType->event_id,
+                    'price' => $eventTicketType->price,
+                    'max_available' => $eventTicketType->max_available,
                     'date_created' => $dateCreated,
                 ]);
         } catch (Exception $exception) {
@@ -174,6 +176,8 @@ class EventTicketTypeRepository
             ->select(
                 'id',
                 'event_id',
+                'price',
+                'max_available',
                 'date_created'
             );
     }
