@@ -51,7 +51,7 @@ class GenerateConfirmationPageReceipt
 
         $receiptDetails = [];
         foreach ($customFields as $field) {
-            /** @var Field|HasName $field */
+            /** @var Field|HasLabel|HasName $field */
             if ($field->hasReceiptValue()) {
                 try {
                     $value = $field->isReceiptValueCallback() ? $field->getReceiptValue()($field, $donation) : null;
@@ -87,11 +87,9 @@ class GenerateConfirmationPageReceipt
                 $donation
             );
 
-            $defaultLabel = method_exists($field, 'getLabel') ? $field->getLabel() : null;
-
             $label = apply_filters(
                 sprintf("givewp_donation_confirmation_page_field_label_for_%s", $field->getName()),
-                $field->hasReceiptLabel() ? $field->getReceiptLabel() : $defaultLabel,
+                $field->hasReceiptLabel() ? $field->getReceiptLabel() : $field->getLabel(),
                 $field,
                 $donation
             );
