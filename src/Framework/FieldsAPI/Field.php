@@ -2,12 +2,14 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
 use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 
 /**
+ * @unreleased add HasLabel
  * @since 2.27.3 add ShowInAdmin, ShowInReceipt, StoreAsMeta
  * @since      2.17.0 allow fields to be macroable
  * @since      2.12.0
@@ -27,6 +29,7 @@ abstract class Field implements Node
     use Concerns\TapNode;
     use Concerns\ShowInAdmin;
     use Concerns\ShowInReceipt;
+    use Concerns\HasLabel;
     use Concerns\HasVisibilityConditions {
         Concerns\HasVisibilityConditions::__construct as private __visibilityConditionsConstruct;
     }
