@@ -25,7 +25,7 @@ class EnqueueFormBuilderScripts
             'givewp-event-tickets-block',
             'eventTicketsBlockSettings',
             [
-                'events' => [
+                'events' => rand(0, 1) === 0 ? [] : [
                     [
                         'id' => 1,
                         'name' => 'Event 1',

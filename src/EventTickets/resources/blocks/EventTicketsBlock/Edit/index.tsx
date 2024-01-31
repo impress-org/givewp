@@ -3,6 +3,8 @@ import BlockPlaceholderNoEvents from './BlockPlaceholderNoEvents';
 import BlockPlaceholder from './BlockPlaceholder';
 import BlockPlaceholderSelectEvent from './BlockPlaceholderSelectEvent';
 
+import './styles.scss';
+
 export default function Edit(props) {
     const {events} = window.eventTicketsBlockSettings;
     const {

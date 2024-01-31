@@ -1,0 +1,9 @@
+.givewp-event-tickets-block__placeholder {
+    &--no-events,
+    &--select-event {
+        border: 1px dashed var(--givewp-grey-500);
+        border-radius: 0.3125rem;
+        font-size: 0.875rem;
+        padding: var(--givewp-spacing-6);
+    }
+}
