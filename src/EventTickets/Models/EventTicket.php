@@ -5,6 +5,7 @@ namespace Give\EventTickets\Models;
 use DateTime;
 use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\ValueObjects\DonationNoteType;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -46,6 +47,27 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     public static function find($id)
     {
         return give()->events->tickets->getById($id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder
+     */
+    public static function findByEvent($eventId): ModelQueryBuilder
+    {
+        return give()->events->tickets->queryByEventId($eventId);
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder
+     */
+    public static function findByTicketType($ticketTypeId): ModelQueryBuilder
+    {
+        return give()->events->tickets->queryByTicketTypeId($ticketTypeId);
     }
 
 

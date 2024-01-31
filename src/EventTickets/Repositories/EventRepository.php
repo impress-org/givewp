@@ -220,7 +220,8 @@ class EventRepository
                 ['post_excerpt', 'description'],
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
-                ['post_status', 'status']
+                ['post_status', 'status'],
+                'events.*'
             )
             ->leftJoin('give_events', 'posts.ID', 'events.id', 'events')
             ->where('post_type', 'give_event');
