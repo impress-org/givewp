@@ -1,0 +1,50 @@
+{
+	"name": "PHP",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	
+	// Features to add to the dev container. More info: https://containers.dev/implementors/features.
+	"features": {
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"xdebug.php-pack",
+				"yogensia.searchwpdocs",
+				"valeryanm.vscode-phpsab",
+				"johnbillion.vscode-wordpress-hooks",
+				"ms-azuretools.vscode-docker",
+				"dbaeumer.vscode-eslint",
+				"neilbrayfield.php-docblocker",
+				"shevaua.phpcs",
+				"ms-vscode.makefile-tools"
+			]
+		}
+	},
+
+	// For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
+	"forwardPorts": [
+		80,
+		81,
+		3306
+	],
+
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh > .devcontainer/postCreateCommand.log",
+
+	"portsAttributes": {
+		"3306": {
+			"label": "Database (internal)"
+		},
+		"80": {
+			"label": "WordPress"
+		},
+		"81": {
+			"label": "phpMyAdmin"
+		}
+	},
+	"postStartCommand": "service apache2 start"
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
