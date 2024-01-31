@@ -9,11 +9,13 @@ export default function Edit(props) {
         attributes: {eventId},
     } = props;
 
+    const eventIds = events.map((event) => event.id);
+
     return (
         <>
             {events.length === 0 ? (
                 <BlockPlaceholderNoEvents />
-            ) : !eventId ? (
+            ) : !eventId || !eventIds.includes(eventId) ? (
                 <BlockPlaceholderSelectEvent {...props} />
             ) : (
                 <BlockPlaceholder {...props} />

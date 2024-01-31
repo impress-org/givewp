@@ -25,7 +25,20 @@ class EnqueueFormBuilderScripts
             'givewp-event-tickets-block',
             'eventTicketsBlockSettings',
             [
-                'events' => [],
+                'events' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Event 1',
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Event 2',
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'Event 3',
+                    ],
+                ],
                 // TODO: Update this to fetch events from the database
                 'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&action=new'),
                 //TODO: Update this with the correct URL
