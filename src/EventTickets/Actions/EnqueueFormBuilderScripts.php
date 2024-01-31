@@ -41,6 +41,7 @@ class EnqueueFormBuilderScripts
                 ],
                 // TODO: Update this to fetch events from the database
                 'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&action=new'),
+                'listEventsUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets'),
                 //TODO: Update this with the correct URL
             ]
         );

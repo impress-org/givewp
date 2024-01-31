@@ -1,5 +1,6 @@
 import {InspectorControls} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl} from '@wordpress/components';
+import {createInterpolateElement} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import CreateEventNotice from './components/CreateEventNotice';
 
@@ -26,7 +27,12 @@ export default function BlockInspectorControls({attributes, setAttributes}) {
                     <PanelRow>
                         <SelectControl
                             label={__('Event Name', 'give')}
-                            help={__('Add or edit an event in the events page.', 'give')}
+                            help={createInterpolateElement(
+                                __('Add or edit an event in the <a>events page</a>.', 'give'),
+                                {
+                                    a: <a href={window.eventTicketsBlockSettings.listEventsUrl} target="_blank" />,
+                                }
+                            )}
                             value={`${eventId}`}
                             options={[{label: 'Select', value: ''}, ...eventOptions]}
                             onChange={(value: string) => setAttributes({eventId: Number(value)})}

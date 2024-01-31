@@ -6,6 +6,7 @@ export type EventTicketsBlockItem = {
 export interface EventTicketsBlockSettings {
     events: EventTicketsBlockItem[];
     createEventUrl: string;
+    listEventsUrl: string;
 }
 
 declare global {

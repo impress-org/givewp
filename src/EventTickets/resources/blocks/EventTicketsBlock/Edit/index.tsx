@@ -5,6 +5,9 @@ import BlockPlaceholderSelectEvent from './BlockPlaceholderSelectEvent';
 
 import './styles.scss';
 
+/**
+ * @unreleased
+ */
 export default function Edit(props) {
     const {events} = window.eventTicketsBlockSettings;
     const {

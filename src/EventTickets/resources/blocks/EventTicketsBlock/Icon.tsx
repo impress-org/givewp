@@ -1,6 +1,9 @@
 import {Icon} from '@wordpress/icons';
 import {Path, SVG} from '@wordpress/components';
 
+/**
+ * @unreleased
+ */
 export default function BlockIcon() {
     return (
         <Icon

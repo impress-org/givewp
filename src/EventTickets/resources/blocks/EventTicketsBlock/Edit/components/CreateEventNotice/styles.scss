@@ -17,6 +17,14 @@
             p {
                 color: var(--givewp-grey-700);
                 margin-top: var(--givewp-spacing-2);
+
+                a {
+                    color: var(--givewp-grey-900);
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
             }
         }
     }
