@@ -17,6 +17,7 @@ const SecureBadge = () => {
 
 /**
  *
+ * @unreleased updated to render value using Interweave
  * @since 3.0.0
  */
 const Details = ({id, heading, details}: {id: string; heading: string; details: ReceiptDetail[]}) =>
