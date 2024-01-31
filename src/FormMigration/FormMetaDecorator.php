@@ -598,23 +598,25 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 3.3.1 changed how is checked if the form has funds
      * @since 3.3.0
      */
     public function hasFunds(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['fund']) > 0;
+        return !empty($fundsAndDesignationsAttributes['fund']);
     }
 
     /**
+     * @since 3.3.1 changed how is checked if the form has fund options
      * @since 3.3.0
      */
     public function hasFundOptions(): bool
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return count($fundsAndDesignationsAttributes['options']) > 0;
+        return !empty($fundsAndDesignationsAttributes['options']);
     }
 
     /**

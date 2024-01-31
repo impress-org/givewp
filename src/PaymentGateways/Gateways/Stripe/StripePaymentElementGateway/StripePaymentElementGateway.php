@@ -82,6 +82,7 @@ class StripePaymentElementGateway extends PaymentGateway
         $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($formId);
 
         return [
+            'formId' => $formId,
             'stripeKey' => $stripePublishableKey,
             'stripeConnectedAccountId' => $stripeConnectedAccountKey,
         ];
