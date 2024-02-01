@@ -104,6 +104,8 @@ class DonationFormViewModel
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
+            --givewp-design-settings-logo:url('{$this->formSettings->designSettingsLogoUrl}');
+            --givewp-design-settings-background-image:url('{$this->formSettings->designSettingsImageUrl}');
             }"
         );
 
@@ -123,23 +125,23 @@ class DonationFormViewModel
      */
     private function getTotalCountValue(GoalType $goalType): ?int
     {
-      if ($goalType->isDonors()){
-        return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
-      }
+        if ($goalType->isDonors()) {
+            return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
+        }
 
-      if ($goalType->isDonations() || $goalType->isAmount()){
-        return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
-      }
+        if ($goalType->isDonations() || $goalType->isAmount()) {
+            return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
+        }
 
-      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
-        return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
+        }
 
-      if ($goalType->isDonorsFromSubscriptions()){
-        return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isDonorsFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
+        }
 
-      return 0;
+        return 0;
     }
 
     /**
@@ -147,19 +149,19 @@ class DonationFormViewModel
      */
     private function getCountLabel(GoalType $goalType): ?string
     {
-      if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()){
-        return __('Donors', 'give');
-      }
+        if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()) {
+            return __('Donors', 'give');
+        }
 
-      if ($goalType->isDonations() || $goalType->isAmount()){
-        return __('Donations', 'give');
-      }
+        if ($goalType->isDonations() || $goalType->isAmount()) {
+            return __('Donations', 'give');
+        }
 
-      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
-        return __('Recurring Donations', 'give');
-      }
+        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
+            return __('Recurring Donations', 'give');
+        }
 
-      return __('Counted', 'give');
+        return __('Counted', 'give');
     }
 
     /**
@@ -167,11 +169,11 @@ class DonationFormViewModel
      */
     private function getTotalRevenue(GoalType $goalType)
     {
-      if ($goalType->isAmountFromSubscriptions()){
-        return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isAmountFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
+        }
 
-      return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
     }
 
     /**
@@ -186,7 +188,7 @@ class DonationFormViewModel
         $totalCountLabel = $this->getCountLabel($goalType);
 
         return [
-            'totalRevenue' => $totalRevenue,
+            'totalRevenue'    => $totalRevenue,
             'totalCountValue' => $totalCountValue,
             'totalCountLabel' => $totalCountLabel,
         ];
@@ -212,26 +214,26 @@ class DonationFormViewModel
         $formDesign = $this->getFormDesign($this->designId());
 
         return [
-            'donateUrl' => $donateUrl,
-            'validateUrl' => $validateUrl,
-            'authUrl' => $authUrl,
+            'donateUrl'            => $donateUrl,
+            'validateUrl'          => $validateUrl,
+            'authUrl'              => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view',
             ],
-            'registeredGateways' => $formDataGateways,
-            'form' => array_merge($formApi->jsonSerialize(), [
+            'registeredGateways'   => $formDataGateways,
+            'form'                 => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData(),
-                'design' => $formDesign ? [
-                    'id' => $formDesign::id(),
-                    'name' => $formDesign::name(),
+                'goal'     => $donationFormGoalData->toArray(),
+                'stats'    => $this->formStatsData(),
+                'design'   => $formDesign ? [
+                    'id'          => $formDesign::id(),
+                    'name'        => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
                     'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
-            'previewMode' => $this->previewMode,
+            'previewMode'          => $this->previewMode,
         ];
     }
 
@@ -276,6 +278,21 @@ class DonationFormViewModel
         if ($this->previewMode) {
             $classNames[] = 'givewp-donation-form--preview';
         }
+
+        if ($this->formSettings->designSettingsImageUrl) {
+            $classNames[] = 'givewp-design-settings--image';
+            $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
+        }
+
+        if ($this->formSettings->designSettingsLogoUrl) {
+            $classNames[] = 'givewp-design-settings--logo';
+            $classNames[] = 'givewp-design-settings--logo-position__' . $this->formSettings->designSettingsLogoPosition;
+        }
+
+        $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
+
+        $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
+
         ?>
 
         <div data-theme="light" id="root-givewp-donation-form"

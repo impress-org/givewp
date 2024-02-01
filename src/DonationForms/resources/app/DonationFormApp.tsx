@@ -46,7 +46,6 @@ const initialState = {
  * @since 3.0.0
  */
 function App({form}: { form: DonationForm }) {
-
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
@@ -80,7 +79,6 @@ function App({form}: { form: DonationForm }) {
  * @since 3.1.0
  */
 function AppPreview() {
-
     const {
         subscribeToGoal,
         subscribeToColors,
@@ -93,28 +91,85 @@ function AppPreview() {
 
     useEffect(() => {
         subscribeToSettings((settings) => {
-            setFormState(prevState => {
+            if (settings['designSettingsSectionStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--section-style',
+                    settings['designSettingsSectionStyle']
+                );
+            }
+
+            if (settings['designSettingsImageUrl']) {
+                root.style.setProperty(
+                    '--givewp-design-settings-background-image',
+                    'url(' + settings['designSettingsImageUrl'] + ')'
+                );
+
+                const style = settings['designSettingsImageStyle'] ? settings['designSettingsImageStyle'] : 'background';
+
+                updateDesignSettingsClassName('givewp-design-settings--image-style', style);
+            }
+
+            if (settings['designSettingsLogoUrl']) {
+                root.style.setProperty(
+                    '--givewp-design-settings-logo',
+                    'url(' + settings['designSettingsLogoUrl'] + ')'
+                );
+                root.classList.add('givewp-design-settings--logo');
+
+                const position = settings['designSettingsLogoPosition'] ? settings['designSettingsLogoPosition'] : 'left';
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', position);
+            }
+
+            if (settings['designSettingsTextFieldStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--textField-style',
+                    settings['designSettingsTextFieldStyle']
+                );
+            }
+
+            if (!settings['designSettingsImageUrl']) {
+                // reset/remove classnames on delete
+                root.style.setProperty('--givewp-design-settings-background-image', '');
+                updateDesignSettingsClassName('givewp-design-settings--image-style', '');
+
+                // reconstruct branding container & logo container
+                root.classList.add('givewp-design-settings--logo');
+                root.style.setProperty(
+                    '--givewp-design-settings-logo',
+                    'url(' + settings['designSettingsLogoUrl'] + ')'
+                );
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
+            }
+
+            // reset/remove classnames on delete
+            if (!settings['designSettingsLogoUrl']) {
+                root.style.setProperty('--givewp-design-settings-logo', '');
+                root.classList.remove('givewp-design-settings--logo');
+                updateDesignSettingsClassName('givewp-design-settings--logo-position', '');
+            }
+
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     settings: {
                         ...prevState.settings,
-                        ...settings
-                    }
-                }
-            })
-        })
+                        ...settings,
+                    },
+                };
+            });
+        });
 
         subscribeToGoal((goal) => {
-            setFormState(prevState => {
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     goal: {
                         ...prevState.goal,
-                        ...goal
-                    }
-                }
-            })
-        })
+                        ...goal,
+                    },
+                };
+            });
+        });
 
         subscribeToColors((data) => {
             if (data['primaryColor']) {
@@ -124,7 +179,7 @@ function AppPreview() {
             if (data['secondaryColor']) {
                 root.style.setProperty('--givewp-secondary-color', data['secondaryColor']);
             }
-        })
+        });
 
         subscribeToCss(({customCss}) => {
             let cssRules = '';
@@ -133,17 +188,25 @@ function AppPreview() {
             stylesheet.replaceSync(customCss);
 
             for (let i = 0; i < stylesheet.cssRules.length; i++) {
-                cssRules += stylesheet.cssRules[i].cssText + "\n";
+                cssRules += stylesheet.cssRules[i].cssText + '\n';
             }
 
             style.innerText = cssRules;
-        })
+        });
 
         return () => unsubscribeAll();
-
     }, []);
 
-    return <App form={formState} />
+    return <App form={formState} />;
+}
+
+function updateDesignSettingsClassName(block, element) {
+    root.classList.forEach((className) => {
+        if (className.startsWith(block + '__')) {
+            root.classList.remove(className);
+        }
+    });
+    root.classList.add(block + '__' + element);
 }
 
 const root = document.getElementById('root-givewp-donation-form');

@@ -1,0 +1,69 @@
+.givewp-design-settings--logo {
+    --givewp-logo-container: 5rem;
+    position: relative;
+    width: 35rem;
+    margin: 0 auto;
+
+    &.givewp-donation-form {
+        position: relative;
+        background: var(--givewp-shades-white);
+        padding: 0;
+        border-radius: 0.5rem;
+
+        &:after {
+            content: "";
+            position: absolute;
+            height: var(--givewp-logo-container);
+            top: 0;
+            left: 0;
+            width: 25rem;
+            min-width: 100%;
+            padding: var(--givewp-spacing-6) var(--givewp-spacing-10);
+            background-size: contain;
+            background-color: white;
+            background-position: left; /* left, center, or right */
+            background-origin: content-box;
+            background-image: var(--givewp-design-settings-logo);
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            z-index: 1;
+        }
+    }
+
+    .givewp-donation-form__steps {
+        border-top: none;
+        border-bottom: none;
+        box-shadow: var(--givewp-shadow-md);
+        padding-top: 4rem;
+        background: var(--givewp-shades-white);
+
+        &-header {
+            margin-top: -4rem;
+        }
+
+        &-progress {
+            z-index: 999;
+        }
+    }
+}
+
+
+.givewp-design-settings--logo-position {
+    &__left {
+        &.givewp-donation-form:after {
+            background-position: left; /* left, center, or right */
+        }
+    }
+
+    &__center {
+        &.givewp-donation-form:after {
+            background-position: center; /* left, center, or right */
+        }
+    }
+
+    &__right {
+        &.givewp-donation-form:after {
+            background-position: right; /* left, center, or right */
+        }
+    }
+}
