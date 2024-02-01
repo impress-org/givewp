@@ -1,5 +1,5 @@
 import {InspectorControls} from '@wordpress/block-editor';
-import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import CreateEventNotice from './components/CreateEventNotice';
@@ -9,14 +9,12 @@ import CreateEventNotice from './components/CreateEventNotice';
  */
 export default function BlockInspectorControls({attributes, setAttributes}) {
     const {events} = window.eventTicketsBlockSettings;
-    const {eventId, ticketsLabel, ticketsSoldOutMessage} = attributes;
+    const {eventId} = attributes;
 
-    const eventIds = events.map((event) => event.id);
     const eventOptions =
         events.map((event) => {
             return {label: event.name, value: `${event.id}`};
         }) ?? [];
-    const hasSelectedEvent = events.length > 0 && eventId && eventIds.includes(eventId);
 
     return (
         <InspectorControls>
@@ -40,24 +38,6 @@ export default function BlockInspectorControls({attributes, setAttributes}) {
                     </PanelRow>
                 )}
             </PanelBody>
-            {!!hasSelectedEvent && (
-                <PanelBody title={__('Tickets', 'give')} initialOpen={true}>
-                    <PanelRow>
-                        <TextControl
-                            label={__('Label', 'give')}
-                            value={ticketsLabel}
-                            onChange={(value) => setAttributes({ticketsLabel: value})}
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <TextareaControl
-                            label={__('Sold Out Message', 'give')}
-                            value={ticketsSoldOutMessage}
-                            onChange={(value) => setAttributes({ticketsSoldOutMessage: value})}
-                        />
-                    </PanelRow>
-                </PanelBody>
-            )}
         </InspectorControls>
     );
 }

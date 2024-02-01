@@ -7,6 +7,8 @@ export interface EventTicketsBlockSettings {
     events: EventTicketsBlockItem[];
     createEventUrl: string;
     listEventsUrl: string;
+    ticketsLabel: string;
+    soldOutMessage: string;
 }
 
 declare global {

@@ -4,7 +4,7 @@ import {SelectControl} from '@wordpress/components';
 /**
  * @unreleased
  */
-export default function BlockPlaceholderSelectEvent({attributes, setAttributes, selectEventRef}) {
+export default function BlockPlaceholderSelectEvent({attributes, setAttributes}) {
     const {events} = window.eventTicketsBlockSettings;
     const eventOptions =
         events.map((event) => {
