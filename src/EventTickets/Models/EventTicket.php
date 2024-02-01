@@ -4,6 +4,7 @@ namespace Give\EventTickets\Models;
 
 use DateTime;
 use Give\Donations\Factories\DonationNoteFactory;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationNoteType;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -28,6 +29,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
         'id' => 'int', // @todo Maybe use UUID instead of auto-incrementing integer
         'event_id' => 'int',
         'ticket_type' => 'int',
+        'donation_id' => 'int',
         'created_at' => DateTime::class,
         'updated_at' => DateTime::class,
     ];
@@ -37,7 +39,8 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     protected $relationships = [
         'event' => Relationship::BELONGS_TO,
-        'eventTicketType' => Relationship::BELONGS_TO,
+        'ticketType' => Relationship::BELONGS_TO,
+        'donation' => Relationship::BELONGS_TO,
     ];
 
     /**
@@ -137,9 +140,20 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      *
      * @return ModelQueryBuilder<EventTicketType>
      */
-    public function eventTicketType(): ModelQueryBuilder
+    public function ticketType(): ModelQueryBuilder
     {
         return give('eventTicketTypes')->queryById($this->ticket_type_id);
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<Donation>
+     */
+    public function donation(): ModelQueryBuilder
+    {
+        return give()->donations->queryById($this->ticket_type_id);
     }
 
     /**
@@ -153,6 +167,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
             'id' => (int)$object->id,
             'event_id' => (int)$object->event_id,
             'ticket_type_id' => (int)$object->ticket_type_id,
+            'donation_id' => (int)$object->donation_id,
             'created_at' => Temporal::toDateTime($object->created_at),
             'updated_at' => Temporal::toDateTime($object->updated_at),
         ]);

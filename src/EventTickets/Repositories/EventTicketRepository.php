@@ -28,6 +28,7 @@ class EventTicketRepository
     private $requiredProperties = [
         'event_id',
         'ticket_type_id',
+        'donation_id',
         'created_at',
         'updated_at',
     ];
@@ -69,6 +70,7 @@ class EventTicketRepository
                     'id' => $eventTicket->id,
                     'event_id' => $eventTicket->event_id,
                     'ticket_type_id' => $eventTicket->ticket_type_id,
+                    'donation_id' => $eventTicket->donation_id,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -109,6 +111,7 @@ class EventTicketRepository
                 ->update([
                     'event_id' => $eventTicket->event_id,
                     'ticket_type_id' => $eventTicket->ticket_type_id,
+                    'donation_id' => $eventTicket->donation_id,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
@@ -185,6 +188,7 @@ class EventTicketRepository
                 'id',
                 'event_id',
                 'ticket_type_id',
+                'donation_id',
                 'created_at',
                 'updated_at'
             );
@@ -214,5 +218,17 @@ class EventTicketRepository
     {
         return $this->prepareQuery()
             ->where('ticket_type_id', $ticketTypeId);
+    }
+    /**
+     * @unreleased
+     *
+     * @param int $donationId
+     *
+     * @return ModelQueryBuilder
+     */
+    public function queryByDonationId(int $donationId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('donation_id', $donationId);
     }
 }
