@@ -28,6 +28,8 @@ class EventTicketRepository
     private $requiredProperties = [
         'event_id',
         'ticket_type_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -57,7 +59,7 @@ class EventTicketRepository
 
         Hooks::doAction('givewp_events_event_ticket_creating', $eventTicket);
 
-        $dateCreated = Temporal::withoutMicroseconds($eventTicket->date_created ?: Temporal::getCurrentDateTime());
+        $createdDateTime = Temporal::withoutMicroseconds($eventTicket->created_at ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -67,7 +69,8 @@ class EventTicketRepository
                     'id' => $eventTicket->id,
                     'event_id' => $eventTicket->event_id,
                     'ticket_type_id' => $eventTicket->ticket_type_id,
-                    'date_created' => $dateCreated,
+                    'created_at' => $createdDateTime,
+                    'updated_at' => $createdDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -95,6 +98,8 @@ class EventTicketRepository
 
         Hooks::doAction('givewp_events_event_ticket_updating', $eventTicket);
 
+        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+
         DB::query('START TRANSACTION');
 
         try {
@@ -104,6 +109,7 @@ class EventTicketRepository
                 ->update([
                     'event_id' => $eventTicket->event_id,
                     'ticket_type_id' => $eventTicket->ticket_type_id,
+                    'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -179,7 +185,8 @@ class EventTicketRepository
                 'id',
                 'event_id',
                 'ticket_type_id',
-                'date_created'
+                'created_at',
+                'updated_at'
             );
     }
 

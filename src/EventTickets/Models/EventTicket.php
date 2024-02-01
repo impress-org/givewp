@@ -28,7 +28,8 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
         'id' => 'int', // @todo Maybe use UUID instead of auto-incrementing integer
         'event_id' => 'int',
         'ticket_type' => 'int',
-        'date_created' => DateTime::class,
+        'created_at' => DateTime::class,
+        'updated_at' => DateTime::class,
     ];
 
     /**
@@ -152,7 +153,8 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
             'id' => (int)$object->id,
             'event_id' => (int)$object->event_id,
             'ticket_type_id' => (int)$object->ticket_type_id,
-            'date_created' => Temporal::toDateTime($object->date_created),
+            'created_at' => Temporal::toDateTime($object->created_at),
+            'updated_at' => Temporal::toDateTime($object->updated_at),
         ]);
     }
 

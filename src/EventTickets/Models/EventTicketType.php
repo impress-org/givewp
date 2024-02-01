@@ -29,7 +29,8 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         'event_id' => 'int',
         'price' => Money::class,
         'max_available' => 'int',
-        'date_created' => DateTime::class,
+        'created_at' => DateTime::class,
+        'updated_at' => DateTime::class,
     ];
 
     /**
@@ -141,7 +142,8 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         return new EventTicketType([
             'id' => (int)$object->id,
             'event_id' => (int)$object->event_id,
-            'date_created' => $object->date_created ? Temporal::toDateTime($object->date_created) : null,
+            'created_at' => Temporal::toDateTime($object->created_at),
+            'updated_at' => Temporal::toDateTime($object->updated_at),
         ]);
     }
 

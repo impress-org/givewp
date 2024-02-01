@@ -43,7 +43,8 @@ class CreateEventTicketTypesTable extends Migration {
 			event_id INT UNSIGNED NOT NULL,
 			price INT UNSIGNED NULL,
 			max_available INT UNSIGNED NULL,
-			date_created DATETIME NOT NULL,
+			created_at DATETIME NOT NULL,
+			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)
 		) $charset";
 
