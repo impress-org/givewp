@@ -25,18 +25,28 @@ class EnqueueFormBuilderScripts
             'givewp-event-tickets-block',
             'eventTicketsBlockSettings',
             [
-                'events' => rand(0, 1) === 0 ? [] : [
+                'events' => [
                     [
                         'id' => 1,
-                        'name' => 'Event 1',
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'Event 2',
-                    ],
-                    [
-                        'id' => 3,
-                        'name' => 'Event 3',
+                        'title' => 'Event 1',
+                        'date' => '2024-01-10 10:00',
+                        'description' => 'Description goes here and truncate when it exceeds two lines',
+                        'tickets' => [
+                            [
+                                'id' => 1,
+                                'name' => 'Standard',
+                                'price' => 50,
+                                'quantity' => 5,
+                                'description' => 'Standard ticket description goes here',
+                            ],
+                            [
+                                'id' => 2,
+                                'name' => 'VIP',
+                                'price' => 100,
+                                'quantity' => 5,
+                                'description' => 'VIP ticket description goes here',
+                            ],
+                        ],
                     ],
                 ],
                 // TODO: Update this to fetch events from the database
