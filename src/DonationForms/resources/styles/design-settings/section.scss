@@ -1,0 +1,60 @@
+.givewp-design-settings--section-style {
+    &__default {
+        // This section intentionally left blank.
+    }
+
+    &__border {
+        .givewp-layouts-section__fieldset__legend > legend {
+            padding-bottom: var(--givewp-spacing-2);
+            margin-bottom: var(--givewp-spacing-6);
+            border-bottom: 1px solid;
+        }
+    }
+
+    &__solid {
+        .givewp-layouts-section {
+            padding-top: 0;
+            padding-inline: 0;
+
+            .givewp-section-nodes {
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+            }
+
+            &:last-child {
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+            }
+        }
+
+        .givewp-layouts-section__fieldset__legend {
+            & > p {
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+            }
+
+            & > legend {
+                background: var(--givewp-secondary-color);
+                padding: var(--givewp-spacing-6) 0;
+                padding-inline: clamp(var(--givewp-spacing-6), 7vw, var(--givewp-spacing-20));
+                font-size: 1.25rem;
+                color: var(--givewp-shades-white);
+                line-height: 1;
+            }
+        }
+    }
+
+    &__card {
+        .givewp-layouts-form {
+            background: transparent;
+        }
+
+        .givewp-layouts-section {
+            border-radius: .25rem;
+            margin: var(--givewp-spacing-4) 0;
+            outline: 1px solid var(--givewp-grey-25);
+            background: var(--givewp-shades-white);
+
+            &:last-child {
+                padding-top: var(--givewp-spacing-4);
+            }
+        }
+    }
+}
