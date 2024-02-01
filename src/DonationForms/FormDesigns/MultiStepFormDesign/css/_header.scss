@@ -154,12 +154,17 @@
     }
 
     &__center {
+        .givewp-layouts-headerDescription {
+            margin-bottom: 0;
+        }
+
         .givewp-donation-form__steps-body {
             padding-top: 1.5rem;
         }
 
         .givewp-layouts-headerTextWrapper {
             margin-bottom: 340px;
+            border: 1px solid transparent;
         }
 
         .givewp-layouts-headerTextWrapper::before {
