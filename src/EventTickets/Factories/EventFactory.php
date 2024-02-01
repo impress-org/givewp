@@ -24,7 +24,6 @@ class EventFactory extends ModelFactory
                 'post_excerpt' => $description,
                 'post_status' => 'publish',
             ]),
-            'form_id' => DonationForm::factory()->create()->id,
             'title' => $title,
             'description' => $description,
             'start_datetime' => $start_datetime,

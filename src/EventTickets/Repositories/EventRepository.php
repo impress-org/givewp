@@ -24,7 +24,7 @@ class EventRepository
      * @var string[]
      */
     private $requiredProperties = [
-        'form_id',
+        //
     ];
 
     /**
@@ -79,7 +79,6 @@ class EventRepository
             DB::table('give_events')
                 ->insert([
                     'id' => $event->id,
-                    'form_id' => $event->form_id,
                     'description' => $event->description,
                     'start_datetime' => $event->start_datetime,
                     'end_datetime' => $event->start_datetime,
@@ -132,7 +131,6 @@ class EventRepository
             DB::table('give_events')
                 ->where('id', $event->id)
                 ->update([
-                    'form_id' => $event->form_id,
                     'description' => $event->description,
                     'start_datetime' => $event->start_datetime,
                     'end_datetime' => $event->start_datetime,

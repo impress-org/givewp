@@ -25,7 +25,6 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      */
     protected $properties = [
         'id' => 'int',
-        'form_id' => 'int',
         'title' => 'string',
         'description' => 'string',
         'start_datetime' => DateTime::class,
@@ -134,7 +133,6 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     {
         return new Event([
             'id' => (int)$object->id,
-            'form_id' => (int)$object->form_id,
             'title' => (string)$object->title,
             'description' => (string)$object->description,
             'createdAt' => Temporal::toDateTime($object->createdAt),
