@@ -1,7 +1,7 @@
 export type EventTicketsBlockItem = {
     id: number;
-    name: string;
-}
+    title: string;
+};
 
 export interface EventTicketsBlockSettings {
     events: EventTicketsBlockItem[];

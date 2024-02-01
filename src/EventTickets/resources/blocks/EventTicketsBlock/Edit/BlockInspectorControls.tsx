@@ -13,7 +13,7 @@ export default function BlockInspectorControls({attributes, setAttributes}) {
 
     const eventOptions =
         events.map((event) => {
-            return {label: event.name, value: `${event.id}`};
+            return {label: event.title, value: `${event.id}`};
         }) ?? [];
 
     return (
