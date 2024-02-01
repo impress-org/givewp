@@ -4,6 +4,7 @@ namespace Give\Framework\Receipts;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Framework\FieldsAPI\Text;
 use Give\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
 use Give\Framework\Receipts\Properties\ReceiptDetailCollection;
@@ -245,6 +246,53 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'subscriptionDetails' => $subscriptionDetails->toArray(),
                 'additionalDetails' => $additionalDetails->toArray(),
             ]
+        );
+    }
+
+    /**
+     * @since 3.3.0
+     */
+    public function testShouldAddCustomFieldsToAdditionalDetails(): void
+    {
+        $field = Text::make('favorite_color')
+            ->showInAdmin()
+            ->defaultValue('Blue')
+            ->scope('custom_scope')
+            ->showInReceipt()
+            ->receiptLabel('Your favorite color:')
+            ->receiptValue(static function (Text $field, $donation) {
+                return $field->getDefaultValue();
+            })
+        ;
+
+         add_action('givewp_donation_form_schema', static function (\Give\Framework\FieldsAPI\DonationForm $form) use ($field) {
+            $form->insertAfter('email', $field);
+        });
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id
+        ]);
+
+        $initialReceipt = new DonationReceipt($donation);
+
+        $receipt = (new GenerateConfirmationPageReceipt())($initialReceipt);
+
+        $additionalDetails = new ReceiptDetailCollection();
+
+        $additionalDetails->addDetail(
+            new ReceiptDetail(
+                __('Your favorite color:', 'give'),
+                'Blue'
+            )
+        );
+
+        $this->assertContains(
+            $additionalDetails->toArray()[0],
+            $receipt->additionalDetails->toArray()
         );
     }
 }

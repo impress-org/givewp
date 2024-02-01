@@ -1,8 +1,8 @@
-import type {BillingAddressProps} from '@givewp/forms/propTypes';
-import {FC, useEffect, useState} from 'react';
-import {__} from '@wordpress/i18n';
-import {ErrorMessage} from '@hookform/error-message';
-import {useCallback} from '@wordpress/element';
+import type { BillingAddressProps } from "@givewp/forms/propTypes";
+import { FC, useEffect, useState } from "react";
+import { __ } from "@wordpress/i18n";
+import { ErrorMessage } from "@hookform/error-message";
+import { useCallback } from "@wordpress/element";
 
 /**
  * @since 3.0.0
@@ -43,6 +43,7 @@ async function getStates(url, country) {
 /**
  * This component is used to dynamically update the state field based on the country value
  *
+ * @unreleased Set current state value to the state input field
  * @since 3.0.0
  */
 function StateFieldContainer({
@@ -93,7 +94,7 @@ function StateFieldContainer({
             .then((data) => {
                 if (data.ok) {
                     setStatesLoading(false);
-                    setValue('state', null);
+                    setValue('state', '');
 
                     return data.json();
                 }
@@ -180,16 +181,13 @@ function StateFieldContainer({
             <label>
                 <Label label={stateLabel ?? __('State', 'give')} required={stateRequired} />
 
-                {statesLoading ? (
-                    <input type="text" disabled={true} value={__('Loading...', 'give')} />
-                ) : (
-                    <input
-                        type="text"
-                        value={''}
-                        onChange={updateStateValue}
-                        aria-invalid={fieldError ? 'true' : 'false'}
-                    />
-                )}
+                <input
+                    type="text"
+                    onChange={updateStateValue}
+                    aria-invalid={fieldError ? 'true' : 'false'}
+                    placeholder={statesLoading ? __('Loading...', 'give') : ''}
+                    disabled={statesLoading}
+                />
 
                 <HiddenStateField />
 

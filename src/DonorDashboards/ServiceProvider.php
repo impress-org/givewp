@@ -11,6 +11,7 @@ use Give\DonorDashboards\Profile as Profile;
 use Give\DonorDashboards\RequestHandler as RequestHandler;
 use Give\DonorDashboards\Routes\LoginRoute;
 use Give\DonorDashboards\Routes\LogoutRoute;
+use Give\DonorDashboards\Routes\PasswordResetRoute;
 use Give\DonorDashboards\Routes\VerifyEmailRoute;
 use Give\DonorDashboards\Shortcode as Shortcode;
 use Give\DonorDashboards\Tabs\DonationHistoryTab\Tab as DonationHistoryTab;
@@ -56,6 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('rest_api_init', LoginRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', LogoutRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', PasswordResetRoute::class, 'registerRoute');
 
         if (give_is_setting_enabled(give_get_option('email_access'))) {
             Hooks::addAction('rest_api_init', VerifyEmailRoute::class, 'registerRoute');
