@@ -19,7 +19,7 @@ class CreateEventTicketsTable extends Migration {
     }
 
     public static function title() {
-        return 'Create give_events table';
+        return 'Create give_event_tickets table';
     }
 
     /**
