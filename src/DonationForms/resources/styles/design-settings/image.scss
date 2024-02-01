@@ -99,10 +99,15 @@
             }
         }
 
-        .givewp-layouts-goal::after {
-            content: "";
+        .givewp-layouts-headerTextWrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .givewp-layouts-headerTextWrapper::before {
+            content: '';
             position: absolute;
-            top: -320px;
+            bottom: -390px;
             left: 0;
             width: 100%;
             height: 315px;

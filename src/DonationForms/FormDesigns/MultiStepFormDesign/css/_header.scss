@@ -158,9 +158,21 @@
             padding-top: 1.5rem;
         }
 
-        .givewp-layouts-goal {
-            position: relative;
-            margin-top: calc(350px + var(--givewp-spacing-2));
+        .givewp-layouts-headerTextWrapper {
+            margin-bottom: 340px;
+        }
+
+        .givewp-layouts-headerTextWrapper::before {
+            content: '';
+            position: absolute;
+            top: 115%;
+            left: 0;
+            width: 100%;
+            height: 315px;
+
+            background-image: var(--givewp-design-settings-background-image);
+            background-position: 50%;
+            background-size: cover;
             border-radius: 0.5rem;
         }
     }
