@@ -291,6 +291,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unreleased updated fields to add optional rules last so they can be dynamically validated.
      * @since 3.0.0
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
@@ -330,16 +331,16 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('city')
                     ->label($block->getAttribute('cityLabel'))
                     ->placeholder($block->getAttribute('cityPlaceholder'))
-                    ->rules('max:255', new BillingAddressCityRule());
+                    ->rules('max:255', new BillingAddressCityRule(), 'optional');
 
                 $group->getNodeByName('state')
                     ->label($block->getAttribute('stateLabel'))
-                    ->rules('max:255', new BillingAddressStateRule());
+                    ->rules('max:255', new BillingAddressStateRule(), 'optional');
 
                 $group->getNodeByName('zip')
                     ->label($block->getAttribute('zipLabel'))
                     ->placeholder($block->getAttribute('zipPlaceholder'))
-                    ->rules('max:255', new BillingAddressZipRule());
+                    ->rules('max:255', new BillingAddressZipRule(), 'optional');
             });
     }
 
