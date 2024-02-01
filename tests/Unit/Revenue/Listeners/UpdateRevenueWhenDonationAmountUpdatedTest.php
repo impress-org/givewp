@@ -18,7 +18,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased updated action to accept Donation model
+     * @since 3.3.0 updated action to accept Donation model
      * @since 2.20.1
      */
     public function testRevenueIsUpdatedWhenDonationIsUpdated(): void

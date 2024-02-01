@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.3.0
  */
 class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function testRevenueIsUpdatedWhenDonationIsUpdated(): void
     {
@@ -40,7 +40,7 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     private function getRevenueAmountForDonation(Donation $donation)
     {

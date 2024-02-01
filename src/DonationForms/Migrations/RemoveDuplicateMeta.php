@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 /**
  * Remove duplicate meta keys and set correct value for form earnings
  *
- * @unreleased
+ * @since 3.3.0
  */
 class RemoveDuplicateMeta extends Migration
 {
@@ -38,7 +38,7 @@ class RemoveDuplicateMeta extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.3.0
      */
     public function run()
     {

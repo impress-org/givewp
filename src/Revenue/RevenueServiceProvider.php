@@ -30,7 +30,7 @@ class RevenueServiceProvider implements ServiceProvider
     /**
      * @inheritDoc
      *
-     * @unreleased added support for givewp_donation_updated and updated give_updated_edited_donation implementation
+     * @since 3.3.0 added support for givewp_donation_updated and updated give_updated_edited_donation implementation
      * @since 2.9.0
      */
     public function boot()

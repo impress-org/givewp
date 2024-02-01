@@ -37,9 +37,9 @@
     ],
     "devDependencies": {
         "@types/lodash": "^4.14.199",
-        "@types/react": "^18.0.27",
+        "@types/react": "^18.0.38",
         "@types/react-datepicker": "^4.15.0",
-        "@types/react-dom": "^18.0.10",
+        "@types/react-dom": "^18.0.11",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
         "@wordpress/dependency-extraction-webpack-plugin": "^3.3.2",
@@ -69,6 +69,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.15.1",
         "@fortawesome/react-fontawesome": "^0.1.12",
         "@givewp/design-system-foundation": "^1.1.0",
+        "@givewp/form-builder-library": "^1.2.1",
         "@hookform/error-message": "^2.0.1",
         "@hookform/resolvers": "^2.9.10",
         "@paypal/paypal-js": "^5.1.4",
@@ -141,6 +142,7 @@
         "swr": "^2.0.1",
         "uiblocker": "latest",
         "use-immer": "^0.9.0",
+        "uuid": "^9.0.1",
         "vhtml": "^2.2.0"
     },
     "overrides": {
