@@ -1,4 +1,4 @@
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import {__} from '@wordpress/i18n';
 import {
     __experimentalNumberControl as NumberControl,
@@ -14,11 +14,11 @@ import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 
 const {goalTypeOptions} = getFormBuilderWindowData();
 
-const DonationGoalSettings = () => {
+const DonationGoal = ({dispatch}) => {
     const {
         settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
-    const dispatch = useFormStateDispatch();
+
     const {publishGoal, publishGoalType} = useDonationFormPubSub();
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
@@ -68,7 +68,7 @@ const DonationGoalSettings = () => {
                             value={goalType}
                             options={goalTypeOptions}
                             onChange={(goalType: string) => {
-                                dispatch(setFormSettings({goalType}))
+                                dispatch(setFormSettings({goalType}));
                                 publishGoalType(goalType);
                             }}
                             help={selectedGoalDescription}
@@ -81,7 +81,7 @@ const DonationGoalSettings = () => {
                                 min={0}
                                 value={goalAmount}
                                 onValueChange={(goalAmount) => {
-                                    dispatch(setFormSettings({goalAmount}))
+                                    dispatch(setFormSettings({goalAmount}));
                                     publishGoal({targetAmount: Number(goalAmount)});
                                 }}
                             />
@@ -91,7 +91,7 @@ const DonationGoalSettings = () => {
                                 min={0}
                                 value={goalAmount}
                                 onChange={(goalAmount) => {
-                                    dispatch(setFormSettings({goalAmount}))
+                                    dispatch(setFormSettings({goalAmount}));
                                     publishGoal({targetAmount: Number(goalAmount)});
                                 }}
                             />
@@ -103,4 +103,4 @@ const DonationGoalSettings = () => {
     );
 };
 
-export default DonationGoalSettings;
+export default DonationGoal;

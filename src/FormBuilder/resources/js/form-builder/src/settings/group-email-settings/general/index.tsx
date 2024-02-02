@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { PanelRow, SelectControl, TextControl, ToggleControl } from "@wordpress/components";
 import { SettingsSection } from "@givewp/form-builder-library";
-import LogoUpload from "@givewp/form-builder/settings/group-email-settings/email/logo-upload";
+import MediaLibrary from "../../../components/media-library";
 
 /**
  * @since 3.3.0
@@ -69,9 +69,14 @@ export default function EmailGeneralSettings({ settings, setSettings }) {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <LogoUpload
+                        <MediaLibrary
+                            label={__('Logo URL', 'give')}
                             value={emailLogo}
                             onChange={(emailLogo) => setSettings({ emailLogo })}
+                            help={__(
+                                'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.',
+                                'give'
+                            )}
                         />
                     </PanelRow>
                 </SettingsSection>

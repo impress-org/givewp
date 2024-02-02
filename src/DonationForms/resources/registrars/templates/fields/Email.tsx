@@ -11,7 +11,7 @@ export default function Email({
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
-        <label>
+        <label className={fieldError && 'givewp-field-error-label'}>
             <Label />
             {description && <FieldDescription description={description} />}
             <input
