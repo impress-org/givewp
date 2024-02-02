@@ -627,7 +627,7 @@ class FormMetaDecorator extends FormModelDecorator
         $label = give_get_meta($this->form->id, 'give_funds_label', true);
         $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
         $adminChoice = give_get_meta($this->form->id, 'give_funds_admin_choice', true);
-        $donorOptions = give_get_meta($this->form->id, 'give_funds_donor_choice', true);
+        $donorOptions = (array)give_get_meta($this->form->id, 'give_funds_donor_choice', true);
 
 
         $options = [];
