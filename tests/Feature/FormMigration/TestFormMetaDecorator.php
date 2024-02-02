@@ -57,4 +57,92 @@ class TestFormMetaDecorator extends TestCase {
 
         $this->assertFalse($formMetaDecorator->isLastNameRequired());
     }
+
+    /**
+     * @unreleased
+     */
+    public function testIsNameTitlePrefixEnabledShouldReturnTrue(): void
+    {
+        $formV2 = $this->createSimpleDonationForm(['meta' => [
+            '_give_name_title_prefix' => 'required',
+        ]]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertTrue($formMetaDecorator->isNameTitlePrefixEnabled());
+
+        give_update_option( 'name_title_prefix', 'required' );
+
+        $formV2 = $this->createSimpleDonationForm(['meta' => [
+            '_give_name_title_prefix' => 'optional',
+        ]]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertTrue($formMetaDecorator->isNameTitlePrefixEnabled());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testtestIsNameTitlePrefixEnabledShouldReturnFalse(): void
+    {
+        $formV2 = $this->createSimpleDonationForm(['meta' => [
+            '_give_name_title_prefix' => 'disabled',
+        ]]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertFalse($formMetaDecorator->isNameTitlePrefixEnabled());
+
+        give_update_option( 'name_title_prefix', 'optional' );
+
+        $formV2 = $this->createSimpleDonationForm(['meta' => [
+            '_give_name_title_prefix' => 'disabled',
+        ]]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertFalse($formMetaDecorator->isNameTitlePrefixEnabled());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasFundsShouldReturnFalse(): void
+    {
+        $formV2 = $this->createSimpleDonationForm();
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertFalse($formMetaDecorator->hasFunds());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasFundOptionsShouldReturnFalse(): void
+    {
+        $formV2 = $this->createSimpleDonationForm();
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertFalse($formMetaDecorator->hasFundOptions());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasFundsShouldReturnTrue(): void
+    {
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasFundOptionsShouldReturnTrue(): void
+    {
+        $this->markTestIncomplete();
+    }
 }

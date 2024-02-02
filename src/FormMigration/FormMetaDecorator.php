@@ -109,7 +109,7 @@ class FormMetaDecorator extends FormModelDecorator
                 return $onlyRecurringEnabled ? GoalType::DONORS_FROM_SUBSCRIPTIONS() : GoalType::DONORS();
             case 'donation': // @note v2: Singular
                 return $onlyRecurringEnabled ? GoalType::SUBSCRIPTIONS() : GoalType::DONATIONS();
-                // @note v3: Plural
+            // @note v3: Plural
             case 'amount':
             case 'percentage': // @note `percentage` is not supported in v3 - defaulting to `amount`
             default:
@@ -513,13 +513,13 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function isMailchimpEnabled(): bool
     {
-        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'),'true');
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'), 'true');
 
-        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'),'true');
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'), 'true');
 
         $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
 
-        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
     }
 
     /**
@@ -588,8 +588,8 @@ class FormMetaDecorator extends FormModelDecorator
      *
      * @since 3.0.0
      *
-     * @param string $key
-     * @param mixed $default
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     private function getMeta(string $key, $default = null)
@@ -619,51 +619,10 @@ class FormMetaDecorator extends FormModelDecorator
         return !empty($fundsAndDesignationsAttributes['options']);
     }
 
-     /**
-     * @since 3.3.0
-     */
-    public function getFundsAndDesignationsAttributes(): array
-    {
-        $attributes = [
-            'label' => '',
-            'fund' => [],
-            'options' => [],
-        ];
-
-        $label = give_get_meta($this->form->id, 'give_funds_label', true);
-        if (!empty($label)){
-            $attributes['label'] = $label;
-        }
-        $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
-        $adminChoice = give_get_meta($this->form->id, 'give_funds_admin_choice', true);
-        $donorOptions = give_get_meta($this->form->id, 'give_funds_donor_choice', true);
-        if (!empty($donorOptions)) {
-            foreach ($donorOptions as $fundId) {
-                $attributes['options'] = [
-                    'value' => $fundId,
-                    'label' => $this->getFundLabel($fundId),
-                    'checked' => !$isAdminChoice || $fundId === $adminChoice,
-                    'isDefault' => $this->isDefaultFund($fundId),
-                ];
-            }
-        }
-
-        if ($isAdminChoice) {
-            $attributes['fund'] = [
-                'value' => $adminChoice,
-                'label' => $this->getFundLabel($adminChoice),
-                'checked' => true,
-                'isDefault' => $this->isDefaultFund($adminChoice),
-            ];
-        }
-
-        return $attributes;
-    }
-
     /**
      * @since 3.3.0
      */
-    public function _getFundsAndDesignationsAttributes(): array
+    public function getFundsAndDesignationsAttributes(): array
     {
         $label = give_get_meta($this->form->id, 'give_funds_label', true);
         $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
@@ -672,23 +631,32 @@ class FormMetaDecorator extends FormModelDecorator
 
 
         $options = [];
-        foreach ($donorOptions as $fundId) {
-            $options[] = [
-                'value' => $fundId,
-                'label' => $this->getFundLabel($fundId),
-                'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
-                'isDefault' => $this->isDefaultFund($fundId),
-            ];
+        if (!empty($donorOptions)) {
+            foreach ($donorOptions as $fundId) {
+                $options[] = [
+                    'value' => $fundId,
+                    'label' => $this->getFundLabel($fundId),
+                    'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
+                    'isDefault' => $this->isDefaultFund($fundId),
+                ];
+            }
         }
 
-        return [
-            'label' => $label,
-            'fund' => $isAdminChoice ? [
+        $fund = [];
+        if ($isAdminChoice) {
+            $fund = [
                 'value' => $adminChoice,
                 'label' => $this->getFundLabel($adminChoice),
                 'checked' => true,
                 'isDefault' => $this->isDefaultFund($adminChoice),
-            ] : $options[0],
+            ];
+        } elseif (!empty($options)) {
+            $fund = $options[0];
+        }
+
+        return [
+            'label' => $label,
+            'fund' => $fund,
             'options' => $options,
         ];
     }
@@ -704,7 +672,7 @@ class FormMetaDecorator extends FormModelDecorator
             $wpdb->prepare("SELECT * FROM {$wpdb->give_funds} WHERE id = %d", $fundId)
         );
 
-        if ( ! $fund) {
+        if (!$fund) {
             return '';
         }
 
@@ -720,7 +688,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         $fund = $wpdb->get_row("SELECT id FROM {$wpdb->give_funds} WHERE is_default = 1");
 
-        if ( ! $fund) {
+        if (!$fund) {
             return false;
         }
 
