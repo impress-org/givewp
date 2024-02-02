@@ -15,9 +15,9 @@ trait LegacyDonationFormAdapter
     /**
      * @since 2.25.0
      */
-    public function createSimpleDonationForm(): DonationForm
+    public function createSimpleDonationForm(?array $args): DonationForm
     {
-        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_simple_form());
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_simple_form($args));
     }
 
     /**
