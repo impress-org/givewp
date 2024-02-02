@@ -14,7 +14,7 @@ class TestDonationOptions extends TestCase {
     /**
      * @unreleased
      */
-    public function testProcessShouldReturnModifiedDonationAmountField(): void
+    public function testProcessShouldUpdateDonationAmountBlockAttributes(): void
     {
         $meta = [
             '_give_price_option' => 'set',
@@ -44,7 +44,7 @@ class TestDonationOptions extends TestCase {
     /**
      * @unreleased
      */
-    public function testProcessShouldReturnModifiedDonationAmountFieldWithDonationLevels(): void
+    public function testProcessShouldUpdateDonationAmountBlockAttributesWithDonationLevels(): void
     {
         $meta = [
             '_give_custom_amount' => 'enabled',
