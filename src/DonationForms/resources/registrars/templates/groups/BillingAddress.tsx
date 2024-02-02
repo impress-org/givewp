@@ -202,6 +202,7 @@ function StateFieldContainer({
 }
 
 /**
+ * @unreleased Update city and zip components before rendering to display required asterisk
  * @since 3.0.0
  */
 export default function BillingAddress({
@@ -215,6 +216,9 @@ export default function BillingAddress({
     const [cityRequired, setCityRequired] = useState(false);
     const [zipRequired, setZipRequired] = useState(false);
 
+    const CityWithRequired = () => <City validationRules={{required: cityRequired}} />
+    const ZipWithRequired = () => <Zip validationRules={{required: zipRequired}} />
+
     return (
         <>
             <fieldset>
@@ -222,7 +226,7 @@ export default function BillingAddress({
                 <Country />
                 <Address1 />
                 <Address2 />
-                <City validationRules={{required: cityRequired}} />
+                <CityWithRequired />
                 <StateFieldContainer
                     apiUrl={apiUrl}
                     state={state}
@@ -230,7 +234,7 @@ export default function BillingAddress({
                     setZipRequired={setZipRequired}
                     nodeName={name}
                 />
-                <Zip validationRules={{required: zipRequired}} />
+                <ZipWithRequired />
             </fieldset>
         </>
     );

@@ -8,11 +8,11 @@ import {Button, Modal, PanelBody, PanelRow} from '@wordpress/components';
 import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/snippets/css';
 
-import "ace-builds/src-noconflict/theme-textmate";
-import {setFormSettings, useFormState, useFormStateDispatch} from "@givewp/form-builder/stores/form-state";
+import 'ace-builds/src-noconflict/theme-textmate';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
-const CustomStyleSettings = () => {
+const CustomStyles = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
@@ -69,7 +69,6 @@ const CustomStyleSettings = () => {
 };
 
 const CustomStyleCodeControl = () => {
-
     const {
         settings: {customCss},
     } = useFormState();
@@ -80,31 +79,31 @@ const CustomStyleCodeControl = () => {
         <AceEditor
             mode="css"
             theme="textmate"
-            onLoad={ ( editor ) => {
-                editor.renderer.setScrollMargin( 8, 8, 8, 8 );
-                editor.renderer.setPadding( 8 );
-            } }
+            onLoad={(editor) => {
+                editor.renderer.setScrollMargin(8, 8, 8, 8);
+                editor.renderer.setPadding(8);
+            }}
             onChange={debounce((customCss) => {
                 dispatch(setFormSettings({customCss}));
                 publishCss({customCss});
-            },500)}
+            }, 500)}
             showPrintMargin={false}
-            highlightActiveLine={ false }
+            highlightActiveLine={false}
             showGutter={true}
-            value={ customCss }
-            maxLines={ Infinity }
-            minLines={ 5 }
+            value={customCss}
+            maxLines={Infinity}
+            minLines={5}
             width="100%"
-            setOptions={ {
+            setOptions={{
                 enableBasicAutocompletion: true,
                 enableLiveAutocompletion: true,
                 enableSnippets: true,
                 showLineNumbers: true,
                 tabSize: 2,
-                useWorker: false
-            } }
+                useWorker: false,
+            }}
         />
-    )
-}
+    );
+};
 
-export default CustomStyleSettings
+export default CustomStyles;

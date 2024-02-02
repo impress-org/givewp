@@ -9,7 +9,7 @@ import {BaseControl, Button} from '@wordpress/components';
 import {upload} from '@wordpress/icons';
 import {__} from '@wordpress/i18n';
 
-export default ({value, onChange}) => {
+export default ({label, value, onChange, help}) => {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -42,11 +42,8 @@ export default ({value, onChange}) => {
     };
     return (
         <BaseControl
-            label={__('Logo URL', 'give')}
-            help={__(
-                'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.',
-                'give'
-            )}
+            label={label}
+            help={help}
         >
             <div className={'email-settings__logo-upload'}>
                 <input
