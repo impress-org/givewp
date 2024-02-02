@@ -24,9 +24,9 @@ trait LegacyDonationFormAdapter
     /**
      * @since 2.25.0
      */
-    public function createMultiLevelDonationForm(): DonationForm
+    public function createMultiLevelDonationForm(array $args = []): DonationForm
     {
-        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_multilevel_form());
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_multilevel_form($args));
     }
 
     /**

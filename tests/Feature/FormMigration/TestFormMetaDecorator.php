@@ -85,7 +85,7 @@ class TestFormMetaDecorator extends TestCase {
     /**
      * @unreleased
      */
-    public function testtestIsNameTitlePrefixEnabledShouldReturnFalse(): void
+    public function testIsNameTitlePrefixEnabledShouldReturnFalse(): void
     {
         $formV2 = $this->createSimpleDonationForm(['meta' => [
             '_give_name_title_prefix' => 'disabled',
