@@ -619,15 +619,56 @@ class FormMetaDecorator extends FormModelDecorator
         return !empty($fundsAndDesignationsAttributes['options']);
     }
 
-    /**
+     /**
      * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
     {
+        $attributes = [
+            'label' => '',
+            'fund' => [],
+            'options' => [],
+        ];
+
+        $label = give_get_meta($this->form->id, 'give_funds_label', true);
+        if (!empty($label)){
+            $attributes['label'] = $label;
+        }
+        $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
+        $adminChoice = give_get_meta($this->form->id, 'give_funds_admin_choice', true);
+        $donorOptions = give_get_meta($this->form->id, 'give_funds_donor_choice', true);
+        if (!empty($donorOptions)) {
+            foreach ($donorOptions as $fundId) {
+                $attributes['options'] = [
+                    'value' => $fundId,
+                    'label' => $this->getFundLabel($fundId),
+                    'checked' => !$isAdminChoice || $fundId === $adminChoice,
+                    'isDefault' => $this->isDefaultFund($fundId),
+                ];
+            }
+        }
+
+        if ($isAdminChoice) {
+            $attributes['fund'] = [
+                'value' => $adminChoice,
+                'label' => $this->getFundLabel($adminChoice),
+                'checked' => true,
+                'isDefault' => $this->isDefaultFund($adminChoice),
+            ];
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * @since 3.3.0
+     */
+    public function _getFundsAndDesignationsAttributes(): array
+    {
         $label = give_get_meta($this->form->id, 'give_funds_label', true);
         $isAdminChoice = 'admin_choice' === give_get_meta($this->form->id, 'give_funds_form_choice', true);
         $adminChoice = give_get_meta($this->form->id, 'give_funds_admin_choice', true);
-        $donorOptions = (array)give_get_meta($this->form->id, 'give_funds_donor_choice', true);
+        $donorOptions = give_get_meta($this->form->id, 'give_funds_donor_choice', true);
 
 
         $options = [];
