@@ -1,0 +1,109 @@
+.givewp-design-settings--textField-style {
+    &__line {
+        .givewp-layouts-section {
+            input[type='text'], input[type='email'], select[name="honorific"], .givewp-fields-amount__input-container {
+                background: var(--givewp-grey-5, #FAFAFA);
+                color: var(--givewp-grey-400, #8C8C8C);
+                border-top: 0;
+                border-left: 0;
+                border-right: 0;
+                border-radius: 0;
+            }
+
+            .givewp-fields-text, .givewp-fields-select-honorific, .givewp-fields-email {
+
+                label {
+                    position: relative;
+
+                    > span {
+                        visibility: hidden;
+                        position: absolute;
+                        top: .5rem;
+                        left: var(--givewp-spacing-4);
+                        color: var(--givewp-primary-color);
+                        font-size: .75rem !important;
+                    }
+
+                    input {
+                        padding-top: 2rem;
+                    }
+                }
+
+                label:focus-within span {
+                    visibility: visible;
+                }
+
+                label:focus-within input {
+                    box-shadow: none;
+                    border-bottom: 2px solid var(--givewp-primary-color);
+                }
+
+                label:focus-within input[type=text]:not([name=amount],
+                 [name=amount-custom])[aria-invalid=true], input[type=text]:not([name=amount],
+                  [name=amount-custom]):invalid, input[type=password][aria-invalid=true],
+                input[type=password]:invalid, input[type=email][aria-invalid=true],
+                input[type=email]:invalid, textarea[aria-invalid=true], textarea:invalid {
+                    border-bottom: 2px solid var(--givewp-red-500);
+                }
+
+                .givewp-field-error-label {
+                    > span {
+                        color: var(--givewp-red-500);
+                    }
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        height: 3.5rem;
+                        background-image: var(--icon-invalid);
+                        background-size: auto 1.5rem;
+                        padding-inline-start: var(--form-element-spacing-horizontal);
+                        padding-inline-end: calc(var(--form-element-spacing-horizontal) + 1.5rem);
+                        background-position: center right 0.75rem;
+                        background-repeat: no-repeat;
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+
+    &__box {
+        .givewp-layouts-section {
+            input[type='text'], input[type='email'],
+
+        , select [ name = "honorific" ] {
+            position: relative;
+        }
+
+            .givewp-fields-text, .givewp-fields-select-honorific, .givewp-fields-email {
+                label {
+                    position: relative;
+
+                    > span {
+                        visibility: hidden;
+                        position: absolute;
+                        top: -.7rem;
+                        left: .5rem;
+                        width: fit-content;
+                        font-size: 0.875rem !important;
+                        padding: 0 .25rem;
+                        background: var(--givewp-shades-white);
+                        color: var(--givewp-primary-color, #0B72D9);
+                        z-index: 999;
+                    }
+                }
+
+                label:focus-within span {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+
+    #amount-custom {
+        border: var(--givewp-red-500);
+    }
+}
