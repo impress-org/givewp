@@ -1,0 +1,35 @@
+version: '3.8'
+
+services: 
+  app:
+    image: tomrosert/wp-codespace:latest
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+
+  db:
+    image: mariadb:10.4
+    restart: unless-stopped
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - 81:80
+    environment:
+      PMA_HOST: db
+
+volumes:
+  mariadb-data:
