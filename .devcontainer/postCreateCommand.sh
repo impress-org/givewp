@@ -36,3 +36,6 @@ npm install
 # echo export PATH=\"\$PATH:$REPO_FOLDER/vendor/bin:$REPO_FOLDER/node_modules/.bin/\" >> ~/.bashrc
 # echo "cd $REPO_FOLDER/wordpress" >> ~/.bashrc
 # source ~/.bashrc
+
+# VIM
+apt install vim
