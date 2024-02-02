@@ -1,11 +1,14 @@
 #! /bin/bash
 REPO_FOLDER="/workspaces/$RepositoryName"
 
+echo $REPO_FOLDER
+echo $CODESPACE_NAME
+
 # Apache
 # sudo chmod 777 /etc/apache2/sites-available/000-default.conf
 # sudo sed "s@.*DocumentRoot.*@\tDocumentRoot $PWD/wordpress@" .devcontainer/000-default.conf > /etc/apache2/sites-available/000-default.conf
 # update-rc.d apache2 defaults 
-service apache2 start
+# service apache2 start
 
 # WordPress Core install
 cd /var/www/html
