@@ -2,8 +2,8 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/php
 {
 	"name": "PHP",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/php:0-8.2",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -19,14 +19,21 @@
 		}
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [80],
+	"forwardPorts": [
+		80,
+		81,
+		3306
+	],
 
-	// Use 'portsAttributes' to set default properties for specific forwarded ports. More info: https://code.visualstudio.com/docs/remote/devcontainerjson-reference.
 	"portsAttributes": {
+		"3306": {
+			"label": "Database (internal)"
+		},
 		"80": {
-			"label": "WordPress",
-			"onAutoForward": "notify"
+			"label": "WordPress"
+		},
+		"81": {
+			"label": "phpMyAdmin"
 		}
 	},
 
