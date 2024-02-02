@@ -27,6 +27,7 @@ class TestMigrationController extends TestCase
         $controller = new MigrationController($request);
 
         $response = $controller($formV2);
+
         $formV3Id = (int)(new GetMigratedFormId)($formV2->id);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
