@@ -74,6 +74,7 @@
         padding: 0 !important;
         border: none !important;
         background-color: transparent;
+        overflow: visible;
 
         &::backdrop {
             background-color: rgba(0, 0, 0, 0.6);
@@ -82,18 +83,23 @@
 
     &__close {
         position: absolute;
-        right: 3.5%;
-        top: 1.5%;
-        margin-right: auto;
+        right: 0;
+        top: 0.5rem;
+        margin-right: -2rem;
         padding: 0.5rem 0.5rem 0.25rem 0.5rem;
-        border: none !important;
-        background-color: transparent !important;
+        background-color: #ccc;
         cursor: pointer;
+        border: none !important;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+
+        &__icon {
+            width: 1rem;
+            height: 1rem;
+        }
 
         &:hover {
-            path {
-                fill: #0073aa;
-            }
+            background-color: #bbb;
         }
     }
 }
