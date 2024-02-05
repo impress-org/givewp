@@ -40,6 +40,7 @@ class CreateEventsTable extends Migration {
 
         $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			title TEXT NULL,
 			description TEXT NULL,
 			start_datetime DATETIME NULL,
 			end_datetime DATETIME NULL,
