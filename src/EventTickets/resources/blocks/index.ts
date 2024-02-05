@@ -1,3 +1,4 @@
+import {getBlockRegistrar} from '@givewp/form-builder/common/getWindowData';
 import eventTicketsBlock from './EventTicketsBlock';
 
-window.givewp.form.blocks.register(eventTicketsBlock.name, eventTicketsBlock.settings);
+getBlockRegistrar().register(eventTicketsBlock.name, eventTicketsBlock.settings);

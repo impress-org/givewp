@@ -2,8 +2,6 @@ import metadata from './block.json';
 import Icon from './Icon';
 import Edit from './Edit';
 
-import './styles.scss';
-
 /**
  * @unreleased
  */
