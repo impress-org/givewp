@@ -11,6 +11,9 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * @unreleased The class is extendable
+ */
 class ListDonations extends Endpoint
 {
     /**
@@ -27,6 +30,15 @@ class ListDonations extends Endpoint
      * @var DonationsListTable
      */
     protected $listTable;
+
+    /**
+     * @unreleased
+     * @access public
+     */
+    public function __construct(DonationsListTable $listTable)
+    {
+        $this->listTable = $listTable;
+    }
 
     /**
      * @inheritDoc
@@ -129,7 +141,6 @@ class ListDonations extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
-        $this->listTable = give(DonationsListTable::class);
 
         $donations = $this->getDonations();
         $donationsCount = $this->getTotalDonationsCount();
@@ -208,6 +219,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Make this method protected so it can be extended
      * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
@@ -215,7 +227,7 @@ class ListDonations extends Endpoint
      *
      * @return array{0: QueryBuilder, 1: array<DonationMetaKeys>}
      */
-    private function getWhereConditions(QueryBuilder $query): array
+    protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');

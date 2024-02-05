@@ -32,7 +32,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('locale', 'us-US');
         $mockRequest->set_param('testMode', give_is_test_mode());
 
-        $listDonations = new ListDonations();
+        $listDonations = Give(ListDonations::class);
 
         $response = $listDonations->handleRequest($mockRequest);
 
@@ -60,7 +60,7 @@ class TestListDonations extends TestCase
 
         $expectedItems = $this->getMockColumns($donations,$sortDirection);
 
-        $listDonations = new ListDonations();
+        $listDonations = Give(ListDonations::class);
 
         $response = $listDonations->handleRequest($mockRequest);
 
