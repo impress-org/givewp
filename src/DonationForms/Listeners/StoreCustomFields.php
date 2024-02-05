@@ -52,6 +52,18 @@ class StoreCustomFields
                 }
             }
         );
+
+        /**
+         * Fires after custom fields have been stored/processed
+         *
+         * @unreleased
+         *
+         * @param DonationForm $form
+         * @param array $customFields
+         * @param Donation $donation
+         * @param Subscription|null $subscription
+         */
+        do_action('givewp_donation_form_processing_custom_fields_stored', $form, $customFields, $donation, $subscription);
     }
 
     /**

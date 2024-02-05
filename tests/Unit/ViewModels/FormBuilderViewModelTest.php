@@ -23,6 +23,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
      * @since 3.0.0
      *
      * @return void
@@ -59,6 +60,7 @@ class FormBuilderViewModelTest extends TestCase
                     // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
                     'permalink' => add_query_arg(['p' => $formId], site_url('?post_type=give_forms')),
                     'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
+                    'baseUrl' => preg_replace('/^https?:\/\//', '', site_url()),
                 ],
                 'gateways' => $viewModel->getGateways(),
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
@@ -82,6 +84,7 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
+                'nameTitlePrefixes' => give_get_option('title_prefixes'),
             ],
             $viewModel->storageData($formId)
         );

@@ -16,6 +16,8 @@ use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormPage\TemplateHandler;
+use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
+use Give\DonationForms\Migrations\RemoveDuplicateMeta;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
@@ -23,6 +25,7 @@ use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -68,6 +71,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
 
         $this->dispatchDonateControllerListeners();
+
+        give(MigrationsRegister::class)->addMigrations([
+            CleanMultipleSlashesOnDB::class,
+            RemoveDuplicateMeta::class,
+        ]);
     }
 
     /**

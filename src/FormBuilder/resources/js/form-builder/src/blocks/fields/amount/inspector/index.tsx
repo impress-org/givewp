@@ -14,8 +14,8 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
-import Options from '@givewp/form-builder/components/OptionsPanel';
-import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {OptionsPanel} from '@givewp/form-builder-library';
+import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
@@ -121,32 +121,51 @@ const Inspector = ({attributes, setAttributes}) => {
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level) => ({
+            id: String(Math.floor(Math.random() * 1000000)),
             label: formatCurrencyAmount(level.toString()),
             value: level.toString(),
             checked: defaultLevel === level,
         }))
     );
 
+    const handleLevelAdded = () => {
+        const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
+        const newLevel = {
+            id: String(Math.floor(Math.random() * 1000000)),
+            label: formatCurrencyAmount(newLevelValue),
+            value: newLevelValue,
+            checked: false,
+        };
+
+        // If there are no levels, set the new level as the default.
+        if (!levels.length) {
+            newLevel.checked = true;
+            setAttributes({defaultLevel: Number(newLevelValue)});
+        }
+
+        setDonationLevels([...donationLevels, newLevel]);
+        setAttributes({levels: [...levels, Number(newLevelValue)]});
+    };
+
+    const handleLevelRemoved = (level: OptionProps, index: number) => {
+        const newLevels = levels.filter((_, i) => i !== index);
+        const newDonationLevels = donationLevels.filter((_, i) => i !== index);
+
+        if (level.checked && newDonationLevels.length > 0) {
+            newDonationLevels[0].checked = true;
+            setAttributes({defaultLevel: Number(newDonationLevels[0].value)});
+        }
+
+        setDonationLevels(newDonationLevels);
+        setAttributes({levels: newLevels});
+    };
+
     const handleLevelsChange = (options: OptionProps[]) => {
-        if (options.length > 1 && options[options.length - 1].value === '') {
-            const values = options.filter((option) => Number(option.value) > 0).map((option) => Number(option.value));
-            options[options.length - 1].value = String(2 * Math.max(...values));
-        } else if (options.length === 1 && options[0].value === '') {
-            options[0].value = '10';
-        }
-
         const checkedLevel = options.filter((option) => option.checked);
-
-        if (!!checkedLevel && checkedLevel.length === 1) {
-            setAttributes({defaultLevel: Number(checkedLevel[0].value)});
-        } else if (options.length > 0) {
-            options[0].checked = true;
-        }
-
-        setDonationLevels(options);
         const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
 
-        setAttributes({levels: newLevels});
+        setDonationLevels(options);
+        setAttributes({levels: newLevels, defaultLevel: Number(checkedLevel[0].value)});
     };
 
     const getDefaultBillingPeriodOptions = useCallback(
@@ -164,6 +183,8 @@ const Inspector = ({attributes, setAttributes}) => {
         },
         [recurringBillingPeriodOptions, recurringEnableOneTimeDonations]
     );
+
+    const {currency = 'USD'} = getFormBuilderWindowData();
 
     return (
         <InspectorControls>
@@ -229,11 +250,13 @@ const Inspector = ({attributes, setAttributes}) => {
 
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    <Options
-                        currency={true}
+                    <OptionsPanel
+                        currency={currency}
                         multiple={false}
                         options={donationLevels}
                         setOptions={handleLevelsChange}
+                        onAddOption={handleLevelAdded}
+                        onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
                     />
                 </PanelBody>

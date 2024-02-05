@@ -3,7 +3,9 @@
 namespace Give\DonationForms\Controllers;
 
 use Exception;
+use Give\DonationForms\Actions\GetOrCreateDonor;
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
@@ -20,6 +22,7 @@ class DonateController
     /**
      * First we create a donation and/or subscription, then move on to the gateway processing
      *
+     * @since 3.2.0 Pass the form ID to match updated signature for getOrCreateDonor().
      * @since 3.0.0
      *
      * @return void
@@ -27,19 +30,55 @@ class DonateController
      */
     public function donate(DonateControllerData $formData, PaymentGateway $gateway)
     {
+        /**
+         * Fires at the start of donation form processing, before any data is processed.
+         *
+         * @unreleased
+         *
+         * @param  DonateControllerData  $formData
+         * @param  string  $gatewayId
+         */
+        do_action('givewp_donation_form_processing_start', $formData, $gateway::id());
+
         $donor = $this->getOrCreateDonor(
+            $formData->formId,
             $formData->wpUserId,
             $formData->email,
             $formData->firstName,
-            $formData->lastName
+            $formData->lastName,
+            $formData->honorific
         );
 
         if ($formData->donationType->isSingle()) {
             $donation = $formData->toDonation($donor->id);
             $donation->save();
 
+            /**
+             * Internal hook that fires after a donation is created during the donate controller.
+             *
+             * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
             do_action('givewp_donate_controller_donation_created', $formData, $donation, null);
 
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('givewp_donation_form_processing_donation_created', $donation, null);
+
+            /**
+             * Filter for adding modifying custom $gatewayData sent to the $gateway->createPayment() method.
+             *
+             * @since 3.0.0
+             */
             $gatewayData = apply_filters(
                 "givewp_create_payment_gateway_data_{$gateway::id()}",
                 (new GetGatewayDataFromRequest)(),
@@ -59,10 +98,53 @@ class DonateController
             $donation = $formData->toInitialSubscriptionDonation($donor->id, $subscription->id);
             $donation->save();
 
+            /**
+             * Internal hook that fires after a donation is created in the donate controller.
+             *
+             * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Donation  $donation
+             * @param  Subscription  $subscription
+             */
             do_action('givewp_donate_controller_donation_created', $formData, $donation, $subscription);
 
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('givewp_donation_form_processing_donation_created', $donation, $subscription);
+
+            /**
+             * Internal hook that fires after a subscription is created in the donate controller.
+             *
+             * @since 3.0.0
+             *
+             * @param  DonateControllerData  $formData
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
+             */
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
+            /**
+             * Fires after a subscription is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
+             */
+            do_action('givewp_donation_form_processing_subscription_created', $subscription, $donation);
+
+            /**
+             * Filter for adding modifying custom $gatewayData sent to the $gateway->createSubscription() method.
+             *
+             * @since 3.0.0
+             */
             $gatewayData = apply_filters(
                 "givewp_create_subscription_gateway_data_{$gateway::id()}",
                 (new GetGatewayDataFromRequest)(),
@@ -76,45 +158,48 @@ class DonateController
     }
 
     /**
+     * @since 3.2.0 Added $formId to the signature for passing to do_action hooks. Added honorific and use GetOrCreateDonor action
      * @since 3.0.0
      *
-     * @param  int|null  $userId
-     * @param  string  $donorEmail
-     * @param  string  $firstName
-     * @param  string  $lastName
-     *
-     * @return Donor
      * @throws Exception
      */
     private function getOrCreateDonor(
-        int $userId,
+        int $formId,
+        ?int $userId,
         string $donorEmail,
         string $firstName,
-        string $lastName
+        string $lastName,
+        ?string $honorific
     ): Donor {
-        // first check if donor exists as a user
-        $donor = Donor::whereUserId($userId);
+        $getOrCreateDonorAction = new GetOrCreateDonor();
 
-        // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
-        if ($donor && !$donor->hasEmail($donorEmail)) {
-            $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
-            $donor->save();
-        }
+        $donor = $getOrCreateDonorAction(
+            $userId,
+            $donorEmail,
+            $firstName,
+            $lastName,
+            $honorific
+        );
 
-        // if donor is not a user than check for any donor matching this email
-        if (!$donor) {
-            $donor = Donor::whereEmail($donorEmail);
-        }
+        if ($getOrCreateDonorAction->donorCreated) {
+            /**
+             * Internal hook to differentiate when a v3 form creates a new donor.
+             *
+             * @since 3.2.0
+             * @param  Donor  $donor
+             * @param  int  $formId
+             */
+            do_action('givewp_donate_controller_donor_created', $donor, $formId);
 
-        // if no donor exists then create a new one using their personal information from the form.
-        if (!$donor) {
-            $donor = Donor::create([
-                'name' => trim("$firstName $lastName"),
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'email' => $donorEmail,
-                'userId' => $userId ?: null
-            ]);
+            /**
+             * Fires after a donor is created during donation form processing.
+             *
+             * @unreleased
+             *
+             * @param  Donor  $donor
+             * @param  int  $formId
+             */
+            do_action('givewp_donation_form_processing_donor_created', $donor, $formId);
         }
 
         return $donor;

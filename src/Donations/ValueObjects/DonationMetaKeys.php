@@ -6,6 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
+ * @since 3.2.0 added HONORIFIC
  * @since 2.20.0 add fee amount recovered and exchange rate
  * @since 2.19.6
  *
@@ -13,6 +14,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationMetaKeys CURRENCY()
  * @method static DonationMetaKeys GATEWAY()
  * @method static DonationMetaKeys DONOR_ID()
+ * @method static DonationMetaKeys HONORIFIC()
  * @method static DonationMetaKeys FIRST_NAME()
  * @method static DonationMetaKeys LAST_NAME()
  * @method static DonationMetaKeys EMAIL()
@@ -49,6 +51,7 @@ class DonationMetaKeys extends Enum
     const FEE_AMOUNT_RECOVERED = '_give_fee_amount';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
+    const HONORIFIC = '_give_donor_billing_title_prefix';
     const FIRST_NAME = '_give_donor_billing_first_name';
     const LAST_NAME = '_give_donor_billing_last_name';
     const EMAIL = '_give_payment_donor_email';

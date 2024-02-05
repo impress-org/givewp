@@ -13,6 +13,7 @@ use Give\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
+     * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
      *
      * @return string|null
@@ -26,7 +27,7 @@ class BlockRenderController
 
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
-        if ( ! $blockAttributes->formId) {
+        if (!$blockAttributes->formId) {
             return null;
         }
 
@@ -38,12 +39,14 @@ class BlockRenderController
         $embedId = $blockAttributes->blockId ?? '';
 
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
+        $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
+        $formViewUrl = $this->getFormViewUrl($donationForm);
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
+        return "<div class='root-data-givewp-embed' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
     }
 
     /**
@@ -81,6 +84,14 @@ class BlockRenderController
             return (new GenerateDonationConfirmationReceiptViewRouteUrl())($receiptId);
         }
 
+        return $this->getFormViewUrl($donationForm);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getFormViewUrl(DonationForm $donationForm): string
+    {
         return (new GenerateDonationFormViewRouteUrl())($donationForm->id);
     }
 

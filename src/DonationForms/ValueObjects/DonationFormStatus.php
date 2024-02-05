@@ -13,12 +13,14 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static DonationFormStatus PENDING()
  * @method static DonationFormStatus TRASH()
  * @method static DonationFormStatus UPGRADED()
+ * @method static DonationFormStatus PRIVATE()
  * @method bool isPublished()
  * @method bool isFuture()
  * @method bool isDraft()
  * @method bool isPending()
  * @method bool isTrash()
  * @method bool isUpgraded()
+ * @method bool isPrivate()
  */
 class DonationFormStatus extends Enum
 {
@@ -28,4 +30,5 @@ class DonationFormStatus extends Enum
     const PENDING = 'pending';
     const TRASH = 'trash';
     const UPGRADED = 'upgraded';
+    const PRIVATE = 'private';
 }

@@ -2,12 +2,19 @@
 
 namespace Give\DonationForms\Properties;
 
-use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
+use Give\DonationForms\ValueObjects\DesignSettingsImageStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
+use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
+/**
+ * @since      3.2.0 Remove addSlashesRecursive method
+ * @since      3.0.0
+ */
 class FormSettings implements Arrayable, Jsonable
 {
     /**
@@ -63,9 +70,10 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $goalAmount;
     /**
+     * @since 3.2.0 Added registrationNotification property.
      * @var string
      */
-    public $registration;
+    public $registrationNotification;
     /**
      * @var string
      */
@@ -175,6 +183,43 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageUrl;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageStyle;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsLogoUrl;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsLogoPosition;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsSectionStyle;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsTextFieldStyle;
+
+    /**
+     * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -193,14 +238,14 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = !empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
+        $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
         $self->designId = $array['designId'] ?? null;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
-        $self->registration = $array['registration'] ?? 'none';
+        $self->registrationNotification = $array['registrationNotification'] ?? false;
         $self->customCss = $array['customCss'] ?? '';
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
@@ -215,7 +260,7 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
-        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus(
+        $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();
 
@@ -248,6 +293,24 @@ class FormSettings implements Arrayable, Jsonable
             $array['pdfSettings']
         ) ? $array['pdfSettings'] : [];
 
+        $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
+        $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
+            $array['designSettingsImageStyle']
+        ) : DesignSettingsImageStyle::BACKGROUND();
+
+        $self->designSettingsLogoUrl = $array['designSettingsLogoUrl'] ?? '';
+        $self->designSettingsLogoPosition = ! empty($array['designSettingsLogoPosition']) ? new DesignSettingsLogoPosition(
+            $array['designSettingsLogoPosition']
+        ) : DesignSettingsLogoPosition::LEFT();
+
+        $self->designSettingsSectionStyle = ! empty($array['designSettingsSectionStyle']) ? new DesignSettingsSectionStyle(
+            $array['designSettingsSectionStyle']
+        ) : DesignSettingsSectionStyle::DEFAULT();
+
+        $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
+            $array['designSettingsTextFieldStyle']
+        ) : DesignSettingsTextFieldStyle::DEFAULT();
+
         return $self;
     }
 
@@ -270,6 +333,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
+     * @since 3.2.0 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
     public function toJson($options = 0): string
@@ -279,16 +343,8 @@ class FormSettings implements Arrayable, Jsonable
                 $this->toArray(),
                 [
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
-                    'emailTemplateOptions' => array_map([$this, 'addSlashesRecursive'], $this->emailTemplateOptions),
                 ]
             )
         );
-    }
-
-    public function addSlashesRecursive($value)
-    {
-        return is_array($value)
-            ? array_map([$this, 'addSlashesRecursive'], $value)
-            : addslashes($value);
     }
 }

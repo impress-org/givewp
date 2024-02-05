@@ -136,9 +136,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 		// Set parent defaults.
 		parent::__construct(
 			[
-				'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
-				'plural'   => give_get_forms_label_plural(),      // Plural name of the listed records.
-				'ajax'     => false,                              // Does this table support ajax?
+				'singular' => 'form',    // Singular name of the listed records.
+				'plural'   => 'forms',   // Plural name of the listed records.
+				'ajax'     => false,     // Does this table support ajax?
 			]
 		);
 

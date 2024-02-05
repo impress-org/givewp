@@ -765,7 +765,7 @@ export default {
 		 * @param {string} errors Error list HTML.
 		 */
 		addErrors: function( $form, errors ) {
-			$form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( errors );
+			$form.find( '#give-purchase-button' ).before( errors );
 		},
 
 		/**
@@ -826,7 +826,7 @@ export default {
 		 * @param {object} $form Javascript form selector.
 		 */
 		resetDonationButton: function( $form ) {
-			const $submitButton = $form.find( '#give_purchase_submit input[type="submit"].give-submit' );
+			const $submitButton = $form.find( '#give-purchase-button' );
 			const $container = $submitButton.closest( 'div' );
 
 			//There was an error / remove old errors and prepend new ones
