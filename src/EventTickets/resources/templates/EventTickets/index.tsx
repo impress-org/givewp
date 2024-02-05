@@ -1,6 +1,6 @@
-import EventTicketsHeader from './components/EventTicketsHeader';
-import EventTicketsDescription from './components/EventTicketsDescription';
-import EventTicketsList from './components/EventTicketsList';
+import EventTicketsHeader from '../../components/EventTicketsHeader';
+import EventTicketsDescription from '../../components/EventTicketsDescription';
+import EventTicketsList from '../../components/EventTicketsList';
 import {Event} from './types';
 
 import './styles.scss';
@@ -32,7 +32,7 @@ export default function EventTicketsField({
             <EventTicketsList
                 tickets={tickets}
                 ticketsLabel={ticketsLabel}
-          ,      soldOutMessage={soldOutMessage}
+                soldOutMessage={soldOutMessage}
                 config={config}
             />
         </div>
