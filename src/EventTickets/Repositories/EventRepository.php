@@ -54,7 +54,7 @@ class EventRepository
 
         Hooks::doAction('givewp_events_event_creating', $event);
 
-        $createdDateTime = Temporal::withoutMicroseconds($event->createdAt ?: Temporal::getCurrentDateTime());
+        $createdDateTime = Temporal::withoutMicroseconds($event->created_at ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -63,11 +63,11 @@ class EventRepository
                 ->insert([
                     'id' => $event->id,
                     'description' => $event->description,
-                    'start_datetime' => $event->start_datetime,
-                    'end_datetime' => $event->start_datetime,
-                    'ticket_close_datetime' => $event->ticket_close_datetime,
-                    'created_at' => $createdDateTime,
-                    'updated_at' => $createdDateTime,
+                    'start_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
+                    'end_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
+                    'ticket_close_datetime' => $event->ticket_close_datetime->format('Y-m-d H:i:s'),
+                    'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
+                    'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -107,10 +107,10 @@ class EventRepository
                 ->where('id', $event->id)
                 ->update([
                     'description' => $event->description,
-                    'start_datetime' => $event->start_datetime,
-                    'end_datetime' => $event->start_datetime,
-                    'ticket_close_datetime' => $event->ticket_close_datetime,
-                    'updated_at' => $updatedTimeDate,
+                    'start_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
+                    'end_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
+                    'ticket_close_datetime' => $event->ticket_close_datetime->format('Y-m-d H:i:s'),
+                    'updated_at' => $updatedTimeDate->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
