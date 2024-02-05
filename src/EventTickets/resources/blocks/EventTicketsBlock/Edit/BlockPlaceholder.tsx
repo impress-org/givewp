@@ -1,6 +1,7 @@
 import moment from 'moment';
 import {plus, reset as minus} from '@wordpress/icons';
 import {Icon} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
 import {getWindowData} from '@givewp/form-builder/common';
 
 /**
@@ -15,7 +16,7 @@ export default function BlockPlaceholder({attributes}) {
     }
 
     const fullDate = moment(event.date).format('dddd, MMMM Do, h:mma z');
-    const [date, month] = moment(event.date).format('DD MMM').split(' ');
+    const [day, month] = moment(event.date).format('DD MMM').split(' ');
     const locale = document.querySelector('html').getAttribute('lang');
     const {currency} = getWindowData();
 
@@ -25,7 +26,7 @@ export default function BlockPlaceholder({attributes}) {
             <div className={`${classNamePrefix}`}>
                 <div className={`${classNamePrefix}__header`}>
                     <div className={`${classNamePrefix}__header__date`}>
-                        {date} <span>{month}</span>
+                        {day} <span>{month}</span>
                     </div>
                     <h4 className={`${classNamePrefix}__header__title`}>{event.title}</h4>
                     <p className={`${classNamePrefix}__header__full-date`}>{fullDate}</p>
@@ -63,7 +64,7 @@ export default function BlockPlaceholder({attributes}) {
                                         </button>
                                     </div>
                                     <p className={`${classNamePrefix}__tickets__ticket__quantity__availability`}>
-                                        {ticket.quantity} remaining
+                                        {ticket.quantity} {__('remaining', 'give')}
                                     </p>
                                 </div>
                             </div>

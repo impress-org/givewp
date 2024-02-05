@@ -35,6 +35,7 @@ module.exports = {
         donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
         donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
         eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
+        eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
         stripePaymentElementGateway: srcPath(
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
