@@ -39,11 +39,13 @@ class CreateEventsTable extends Migration {
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
-			id INT UNSIGNED NOT NULL,
+			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			description TEXT NULL,
 			start_datetime DATETIME NULL,
 			end_datetime DATETIME NULL,
 			ticket_close_datetime DATETIME NULL,
+            created_at DATETIME NOT NULL,
+			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)
 		) $charset";
 

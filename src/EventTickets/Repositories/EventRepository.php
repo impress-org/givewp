@@ -54,28 +54,11 @@ class EventRepository
 
         Hooks::doAction('givewp_events_event_creating', $event);
 
-        $dateCreated = Temporal::withoutMicroseconds($event->createdAt ?: Temporal::getCurrentDateTime());
-        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
-        $dateUpdated = $donation->updatedAt ?? $dateCreated;
-        $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
+        $createdDateTime = Temporal::withoutMicroseconds($event->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
         try {
-            DB::table('posts')
-                ->insert([
-                    'post_date' => $dateCreatedFormatted,
-                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                    'post_modified' => $dateUpdatedFormatted,
-                    'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
-                    'post_status' => 'publish',
-                    'post_type' => 'give_event',
-                ]);
-
-            $event->id = DB::last_insert_id();
-            $event->createdAt = $dateCreated;
-            $event->updatedAt = $dateUpdated;
-
             DB::table('give_events')
                 ->insert([
                     'id' => $event->id,
@@ -83,6 +66,8 @@ class EventRepository
                     'start_datetime' => $event->start_datetime,
                     'end_datetime' => $event->start_datetime,
                     'ticket_close_datetime' => $event->ticket_close_datetime,
+                    'created_at' => $createdDateTime,
+                    'updated_at' => $createdDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -91,6 +76,9 @@ class EventRepository
 
             throw new $exception('Failed creating an event');
         }
+
+        $event->created_at = $createdDateTime;
+        $event->updated_at = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -110,24 +98,11 @@ class EventRepository
 
         Hooks::doAction('givewp_events_event_updating', $event);
 
-        $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
-        $nowFormatted = Temporal::getFormattedDateTime($now);
+        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
         try {
-
-            DB::table('posts')
-                ->where('ID', $event->id)
-                ->update([
-                    'post_title' => $event->title,
-                    'post_content' => $event->description,
-                    'post_modified' => $nowFormatted,
-                    'post_modified_gmt' => get_gmt_from_date($nowFormatted),
-                    'post_status' => $event->status,
-                    'post_type' => 'give_event',
-                ]);
-
             DB::table('give_events')
                 ->where('id', $event->id)
                 ->update([
@@ -135,6 +110,7 @@ class EventRepository
                     'start_datetime' => $event->start_datetime,
                     'end_datetime' => $event->start_datetime,
                     'ticket_close_datetime' => $event->ticket_close_datetime,
+                    'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -144,7 +120,7 @@ class EventRepository
             throw new $exception('Failed updating an event');
         }
 
-        $event->updatedAt = $now;
+        $event->updatedAt = $updatedTimeDate;
 
         DB::query('COMMIT');
 
@@ -166,10 +142,6 @@ class EventRepository
         Hooks::doAction('givewp_events_event_deleting', $event);
 
         try {
-            DB::table('posts')
-                ->where('id', $event->id)
-                ->delete();
-
             DB::table('give_events')
                 ->where('id', $event->id)
                 ->delete();
@@ -211,17 +183,16 @@ class EventRepository
     {
         $builder = new ModelQueryBuilder(Event::class);
 
-        return $builder->from('posts', 'posts')
+        return $builder->from('give_events')
             ->select(
-                ['posts.ID', 'id'],
-                ['post_title', 'title'],
-                ['post_excerpt', 'description'],
-                ['post_date', 'createdAt'],
-                ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                'events.*'
-            )
-            ->leftJoin('give_events', 'posts.ID', 'events.id', 'events')
-            ->where('post_type', 'give_event');
+                'id',
+                'title',
+                'description',
+                'start_datetime',
+                'end_datetime',
+                'ticket_close_datetime',
+                'created_at',
+                'updated_at'
+            );
     }
 }
