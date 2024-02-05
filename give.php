@@ -237,7 +237,7 @@ final class Give
         FormMigrationServiceProvider::class,
         //TODO: merge this service provider
         Give\PaymentGateways\Gateways\ServiceProvider::class,
-
+        Give\EventTickets\ServiceProvider::class,
     ];
 
     /**
