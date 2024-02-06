@@ -21,11 +21,11 @@ export default function EventTicketsListItem({ticket, selectedQuantity, handleSe
             </div>
             <div className={'givewp-event-tickets__tickets__ticket__quantity'}>
                 <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                    <button onClick={() => handleButtonClick(selectedQuantity - 1)}>
+                    <button onClick={handleButtonClick(selectedQuantity - 1)}>
                         <Icon icon={minus} />
                     </button>
                     <input type="text" value={selectedQuantity} />
-                    <button onClick={() => handleButtonClick(selectedQuantity + 1)}>
+                    <button onClick={handleButtonClick(selectedQuantity + 1)}>
                         <Icon icon={plus} />
                     </button>
                 </div>
