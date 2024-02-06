@@ -58,4 +58,22 @@
     }
 
     @import "../../../templates/EventTickets/styles.scss";
+
+    .givewp-event-tickets {
+        border: 1px solid var(--givewp-grey-500);
+        border-radius: 0.3125rem;
+        padding: var(--givewp-spacing-2);
+
+        &__header {
+            padding: 0;
+
+            &::before {
+                display: none;
+            }
+
+            &__date {
+                color: var(--givewp-grey-900);
+            }
+        }
+    }
 }

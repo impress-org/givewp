@@ -30,7 +30,7 @@ class EnqueueFormBuilderScripts
                         'id' => 1,
                         'title' => 'Event 1',
                         'date' => '2024-01-10 10:00',
-                        'description' => 'Description goes here and truncate when it exceeds two lines',
+                        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
                         'tickets' => [
                             [
                                 'id' => 1,

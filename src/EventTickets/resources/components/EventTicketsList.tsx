@@ -13,13 +13,13 @@ export default function EventTicketsList({tickets, ticketsLabel, soldOutMessage,
             let amount = 0;
 
             Object.keys(selectedTickets).forEach((ticketId) => {
-                const ticket = tickets.find((ticket) => ticket.id === ticketId);
+                const ticket = tickets.find((ticket) => ticket.id === Number(ticketId));
                 const quantity = selectedTickets[ticketId];
 
                 if (quantity > 0) {
                     donationSummary.addItem({
                         id: `eventTickets-${ticketId}`,
-                        label: ticket.name,
+                        label: `Ticket (${ticket.name})`,
                         value: formatter.format(ticket.price * quantity),
                     });
                     amount += ticket.price * quantity;
@@ -37,19 +37,19 @@ export default function EventTicketsList({tickets, ticketsLabel, soldOutMessage,
         }
     }, [tickets, selectedTickets]);
 
-    const selectedAmount = (ticketId) => selectedTickets[ticketId] || 0;
-    const handleSelect = (ticketId, ticketQuantity) => (quantity) => {
-        if (quantity < 0) {
-            quantity = 0;
+    const selectedQuantity = (ticketId) => selectedTickets[ticketId] || 0;
+    const handleSelect = (ticketId, ticketQuantity) => (selectedQuantity) => {
+        if (selectedQuantity < 0) {
+            selectedQuantity = 0;
         }
 
-        if (quantity > ticketQuantity) {
-            quantity = ticketQuantity;
+        if (selectedQuantity > ticketQuantity) {
+            selectedQuantity = ticketQuantity;
         }
 
         setSelectedTickets({
             ...selectedTickets,
-            [ticketId]: quantity,
+            [ticketId]: selectedQuantity,
         });
     };
 
@@ -60,7 +60,7 @@ export default function EventTicketsList({tickets, ticketsLabel, soldOutMessage,
                 return (
                     <EventTicketsListItem
                         ticket={ticket}
-                        selectedAmount={selectedAmount(ticket.id)}
+                        selectedQuantity={selectedQuantity(ticket.id)}
                         handleSelect={handleSelect(ticket.id, ticket.quantity)}
                         currency={currency}
                     />
