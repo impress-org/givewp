@@ -98,6 +98,7 @@ function AppPreview() {
                     '--givewp-design-settings-background-image',
                     'url(' + settings['designSettingsImageUrl'] + ')'
                 );
+                updateDesignSettingsClassName('givewp-design-settings--image-style', 'background');
             }
 
             if (!settings['designSettingsImageUrl']) {
