@@ -30,7 +30,9 @@
     @import "base-overrides";
 }
 
-@import "design-settings/image";
-@import "design-settings/logo";
-@import "design-settings/section";
-@import "design-settings/text-field";
+@layer base-design-settings {
+    @import "design-settings/image";
+    @import "design-settings/logo";
+    @import "design-settings/section";
+    @import "design-settings/text-field";
+}
