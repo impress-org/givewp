@@ -184,6 +184,7 @@ export interface HeaderProps {
 export interface HeaderImageProps {
     image: string;
     style: string;
+    alt: string;
 }
 
 export interface HeaderDescriptionProps {

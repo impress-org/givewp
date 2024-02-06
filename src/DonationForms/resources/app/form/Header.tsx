@@ -27,6 +27,7 @@ export default function Header({form}) {
             <HeaderTemplate
                 HeaderImage={() => (
                     <HeaderImage
+                        alt={form.settings?.formTitle}
                         image={form.settings?.designSettingsImageUrl}
                         style={form.settings?.designSettingsImageStyle}
                     />
