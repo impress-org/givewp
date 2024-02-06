@@ -25,13 +25,15 @@ export default function Header({form}) {
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
-                HeaderImage={() => (
-                    <HeaderImage
-                        alt={form.settings?.formTitle}
-                        image={form.settings?.designSettingsImageUrl}
-                        style={form.settings?.designSettingsImageStyle}
-                    />
-                )}
+                HeaderImage={() =>
+                    form.settings?.designSettingsImageUrl && (
+                        <HeaderImage
+                            alt={form.settings?.formTitle}
+                            image={form.settings?.designSettingsImageUrl}
+                            style={form.settings?.designSettingsImageStyle}
+                        />
+                    )
+                }
                 Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
                 Description={() =>
                     form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />
