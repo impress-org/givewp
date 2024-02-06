@@ -11,6 +11,16 @@
             img {
                 display: none;
             }
+
+            .givewp-layouts {
+                &-headerTitle > h2, &-headerDescription p {
+                    color: var(--givewp-shades-white);
+                }
+
+                &-headerDescription {
+                    padding: 0 2rem;
+                }
+            }
         }
 
         .givewp-donation-form__steps-body {
@@ -34,16 +44,6 @@
                 background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
                 background-position: 50%;
                 background-size: cover;
-
-                .givewp-layouts {
-                    &-headerTitle > h2, &-headerDescription p {
-                        color: var(--givewp-shades-white);
-                    }
-
-                    &-headerDescription {
-                        padding: 0 2rem;
-                    }
-                }
             }
 
             .givewp-layouts .givewp-layouts-goal {
@@ -53,19 +53,28 @@
     }
 
     &__center {
+        .givewp-form-secure-badge + .givewp-layouts-headerImage {
+            margin-bottom: -1.25rem;
+        }
+
+        .givewp-layouts-headerImage {
+            width: 100%;
+            min-width: 100%;
+            border-radius: .5rem;
+            margin-bottom: .25rem;
+        }
+
         .givewp-design-settings-image--center {
+            display: block;
+            border-radius: .5rem;
+            min-width: 100%;
+            height: 311px;
+
             img {
+                width: 100%;
+                height: 100%;
                 border-radius: .5rem;
-            }
-        }
-
-        .givewp-layouts-goal {
-            margin-top: -1rem;
-        }
-
-        .givewp-donation-form__steps-body {
-            .givewp-layouts-goal {
-                margin-top: .5rem;
+                object-fit: cover;
             }
         }
 
@@ -82,7 +91,7 @@
         .givewp-layouts-header {
             margin-top: 310px;
             color: var(--givewp-grey-900);
-            border-radius: none;
+            border-radius: 0;
         }
 
         .givewp-design-settings-image--above {
@@ -91,6 +100,8 @@
             left: 0;
             width: 100%;
             padding: 0 var(--givewp-spacing-2);
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
 
             img {
                 height: 320px;
@@ -99,6 +110,33 @@
                 border-top-left-radius: 0.5rem;
                 border-top-right-radius: 0.5rem;
                 box-shadow: var(--givewp-shadow-xs);
+            }
+        }
+
+        .givewp-layouts-headerDescription + .givewp-layouts-headerImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: var(--two-panel-header-width);
+            padding: 0;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+
+            .givewp-design-settings-image--above {
+                position: relative;
+                min-width: 100%;
+                padding: 0;
+
+                img {
+                    height: 320px;
+                    width: 100%;
+                    padding: 0;
+                    object-fit: cover;
+                    border-top-left-radius: 0.5rem;
+                    border-top-right-radius: 0.5rem;
+                    box-shadow: var(--givewp-shadow-xs);
+                }
             }
         }
 
