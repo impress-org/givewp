@@ -54,12 +54,6 @@
     }
 
     &__center {
-        .givewp-layouts-goal {
-            margin-top: 320px;
-            position: relative;
-            border-radius: 0;
-        }
-
         .givewp-layouts-header {
             @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
                 background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
