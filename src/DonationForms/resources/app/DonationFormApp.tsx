@@ -45,7 +45,7 @@ const initialState = {
 /**
  * @since 3.0.0
  */
-function App({form}: { form: DonationForm }) {
+function App({form}: {form: DonationForm}) {
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
@@ -78,51 +78,25 @@ function App({form}: { form: DonationForm }) {
  * @since 3.1.0
  */
 function AppPreview() {
-    const {
-        subscribeToGoal,
-        subscribeToColors,
-        subscribeToSettings,
-        subscribeToCss,
-        unsubscribeAll
-    } = useDonationFormPubSub();
+    const {subscribeToGoal, subscribeToColors, subscribeToSettings, subscribeToCss, unsubscribeAll} =
+        useDonationFormPubSub();
 
     const [formState, setFormState] = useState<DonationForm>(form);
 
     useEffect(() => {
         subscribeToSettings((settings) => {
-            if (settings['designSettingsSectionStyle']) {
-                updateDesignSettingsClassName(
-                    'givewp-design-settings--section-style',
-                    settings['designSettingsSectionStyle']
-                );
-            }
+            // if (settings['designSettingsSectionStyle']) {
+            //     updateDesignSettingsClassName(
+            //         'givewp-design-settings--section-style',
+            //         settings['designSettingsSectionStyle']
+            //     );
+            // }
+            //
 
             if (settings['designSettingsImageUrl']) {
                 root.style.setProperty(
                     '--givewp-design-settings-background-image',
                     'url(' + settings['designSettingsImageUrl'] + ')'
-                );
-
-                const style = settings['designSettingsImageStyle'] ? settings['designSettingsImageStyle'] : 'background';
-
-                updateDesignSettingsClassName('givewp-design-settings--image-style', style);
-            }
-
-            if (settings['designSettingsLogoUrl']) {
-                root.style.setProperty(
-                    '--givewp-design-settings-logo',
-                    'url(' + settings['designSettingsLogoUrl'] + ')'
-                );
-                root.classList.add('givewp-design-settings--logo');
-
-                const position = settings['designSettingsLogoPosition'] ? settings['designSettingsLogoPosition'] : 'left';
-                updateDesignSettingsClassName('givewp-design-settings--logo-position', position);
-            }
-
-            if (settings['designSettingsTextFieldStyle']) {
-                updateDesignSettingsClassName(
-                    'givewp-design-settings--textField-style',
-                    settings['designSettingsTextFieldStyle']
                 );
             }
 
@@ -130,21 +104,20 @@ function AppPreview() {
                 // reset/remove classnames on delete
                 root.style.setProperty('--givewp-design-settings-background-image', '');
                 updateDesignSettingsClassName('givewp-design-settings--image-style', '');
-
-                // reconstruct branding container & logo container
-                root.classList.add('givewp-design-settings--logo');
-                root.style.setProperty(
-                    '--givewp-design-settings-logo',
-                    'url(' + settings['designSettingsLogoUrl'] + ')'
-                );
-                updateDesignSettingsClassName('givewp-design-settings--logo-position', settings['designSettingsLogoPosition']);
             }
 
-            // reset/remove classnames on delete
-            if (!settings['designSettingsLogoUrl']) {
-                root.style.setProperty('--givewp-design-settings-logo', '');
-                root.classList.remove('givewp-design-settings--logo');
-                updateDesignSettingsClassName('givewp-design-settings--logo-position', '');
+            if (settings['designSettingsImageStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--image-style',
+                    settings['designSettingsImageStyle']
+                );
+            }
+
+            if (settings['designSettingsTextFieldStyle']) {
+                updateDesignSettingsClassName(
+                    'givewp-design-settings--textField-style',
+                    settings['designSettingsTextFieldStyle']
+                );
             }
 
             setFormState((prevState) => {
