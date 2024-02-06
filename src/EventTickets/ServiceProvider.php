@@ -46,6 +46,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
 
         Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
