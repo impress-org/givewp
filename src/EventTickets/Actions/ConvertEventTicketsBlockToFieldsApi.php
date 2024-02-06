@@ -15,7 +15,7 @@ class ConvertEventTicketsBlockToFieldsApi
      */
     public function __invoke(BlockModel $block, int $formId)
     {
-        return EventTickets::make('eventTickets')
+        return EventTickets::make($block->getShortName() . '-' . $block->getAttribute('eventId'))
             ->tap(function (EventTickets $eventTicketsField) use ($block, $formId) {
 
                 $eventTicketsField
