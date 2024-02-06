@@ -10,16 +10,12 @@ const HeaderTemplate = withTemplateWrapper(formTemplates.layouts.header);
 const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitle);
 const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
-
-const headerTextWrapperTemplate = formTemplates.layouts.headerTextWrapper;
-
-
+const HeaderImage = withTemplateWrapper(formTemplates.layouts.headerImage);
 
 /**
  * @since 3.0.0
  */
 export default function Header({form}) {
-
     const formatGoalAmount = useCallback((amount: number) => {
         return amountFormatter(form.currency, {
             maximumFractionDigits: 0,
@@ -29,7 +25,12 @@ export default function Header({form}) {
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
-                TextWrapper={headerTextWrapperTemplate}
+                HeaderImage={() => (
+                    <HeaderImage
+                        image={form.settings?.designSettingsImageUrl}
+                        style={form.settings?.designSettingsImageStyle}
+                    />
+                )}
                 Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
                 Description={() =>
                     form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />

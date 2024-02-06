@@ -13,19 +13,17 @@ const SecureBadge = () => {
 };
 
 /**
+ * @unreleased add header image
  * @since 3.0.0
  */
-export default function Header({TextWrapper, Title, Description, Goal}) {
+export default function Header({HeaderImage, Title, Description, Goal}) {
     return (
         <>
-            <TextWrapper>
-                <Title />
-                <Description />
-            </TextWrapper>
+            <Title />
+            <Description />
             <SecureBadge />
+            <HeaderImage />
             <Goal />
         </>
     );
 }
-
-
