@@ -28,6 +28,17 @@
                 background: none;
             }
 
+            .givewp-layouts {
+                &-headerTitle > h2, &-headerDescription p {
+                    position: relative;
+                    z-index: 999;
+                }
+            }
+            
+            .givewp-layouts .givewp-layouts-goal {
+                margin-top: 5rem;
+            }
+
             .givewp-design-settings-image--background {
                 position: absolute;
                 top: 0;
@@ -44,10 +55,6 @@
                 background-image: var(--tint, linear-gradient(transparent, transparent)), var(--givewp-design-settings-background-image);
                 background-position: 50%;
                 background-size: cover;
-            }
-
-            .givewp-layouts .givewp-layouts-goal {
-                margin-top: 12rem;
             }
         }
     }
