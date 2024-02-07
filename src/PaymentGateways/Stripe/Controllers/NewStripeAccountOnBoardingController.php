@@ -168,8 +168,7 @@ class NewStripeAccountOnBoardingController
         $isDonationFormPage = isset($_GET['give_tab'], $_GET['post_type'])
                               && $_GET['post_type'] === 'give_forms'
                               && $_GET['give_tab'] !== 'stripe_form_account_options';
-        $isSettingPage = isset($_GET['post_type'], $_GET['page'], $_GET['tab'], $_GET['section'])
-                         && $_GET['post_type'] === 'give_forms'
+        $isSettingPage = isset($_GET['page'], $_GET['tab'], $_GET['section'])
                          && $_GET['page'] === 'give-settings'
                          && Give_Admin_Settings::is_setting_page('gateways', 'stripe-settings');
 
