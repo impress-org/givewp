@@ -33,7 +33,7 @@ class NewStripeAccountOnBoardingController
      * @unreleased Handle Stripe connect account on-boarding redirect on specific pages.
      *             Admin redirect to following page:
      *             1. GiveWP stripe settings page.
-     *             2. Legacy donation form edit form.
+     *             2. V2 donation form edit form.
      * @since 2.13.0
      */
     public function __invoke()
