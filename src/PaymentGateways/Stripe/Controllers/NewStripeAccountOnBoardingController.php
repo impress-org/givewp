@@ -162,7 +162,7 @@ class NewStripeAccountOnBoardingController
      *
      * @unreleased
      */
-    protected function canProcessRequestOnCurrentPage($url): bool
+    protected function canProcessRequestOnCurrentPage(string $url): bool
     {
         // Check if request is from edit.php or post.php page.
         if (false === strpos($url, 'wp-admin/post.php') && false === strpos($url, 'wp-admin/edit.php')) {
