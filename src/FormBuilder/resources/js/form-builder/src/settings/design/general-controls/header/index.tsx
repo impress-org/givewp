@@ -13,14 +13,13 @@ export default function Header({dispatch, publishSettings}) {
             showDescription,
             description,
             designSettingsImageUrl,
-            designSettingsImageStyle,
+            designSettingsImageStyle = 'background',
         },
     } = useFormState();
 
     const resetSettings = () => {
         const reset = {
             designSettingsImageUrl: '',
-            designSettingsImageStyle: '',
         };
 
         dispatch(setFormSettings(reset));
@@ -147,12 +146,12 @@ export default function Header({dispatch, publishSettings}) {
                                 dispatch(
                                     setFormSettings({
                                         designSettingsImageUrl,
-                                        designSettingsImageStyle: 'background',
+                                        designSettingsImageStyle,
                                     })
                                 );
                                 publishSettings({
                                     designSettingsImageUrl,
-                                    designSettingsImageStyle: 'background',
+                                    designSettingsImageStyle,
                                 });
                             }}
                             reset={resetSettings}

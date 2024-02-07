@@ -90,6 +90,13 @@ function AppPreview() {
                     '--givewp-design-settings-background-image',
                     'url(' + settings['designSettingsImageUrl'] + ')'
                 );
+
+                if (settings['designSettingsImageStyle']) {
+                    updateDesignSettingsClassName(
+                        'givewp-design-settings--image-style',
+                        settings['designSettingsImageStyle']
+                    );
+                }
             }
 
             if (!settings['designSettingsImageUrl']) {
@@ -97,28 +104,6 @@ function AppPreview() {
                 root.style.setProperty('--givewp-design-settings-background-image', '');
                 updateDesignSettingsClassName('givewp-design-settings--image-style', '');
             }
-
-            if (settings['designSettingsImageStyle']) {
-                updateDesignSettingsClassName(
-                    'givewp-design-settings--image-style',
-                    settings['designSettingsImageStyle']
-                );
-            }
-
-            // if (settings['designSettingsSectionStyle']) {
-            //     updateDesignSettingsClassName(
-            //         'givewp-design-settings--section-style',
-            //         settings['designSettingsSectionStyle']
-            //     );
-            // }
-            //
-
-            // if (settings['designSettingsTextFieldStyle']) {
-            //     updateDesignSettingsClassName(
-            //         'givewp-design-settings--textField-style',
-            //         settings['designSettingsTextFieldStyle']
-            //     );
-            // }
 
             setFormState((prevState) => {
                 return {
