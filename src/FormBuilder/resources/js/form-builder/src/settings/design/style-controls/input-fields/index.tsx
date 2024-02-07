@@ -2,6 +2,11 @@ import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 
+/**
+ * @note this is currently not in use.
+ *
+ * @unreleased
+ */
 export default function InputFields({dispatch, publishSettings}) {
     const {
         settings: {
