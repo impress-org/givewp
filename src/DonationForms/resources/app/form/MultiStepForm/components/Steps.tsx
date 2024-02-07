@@ -38,5 +38,5 @@ export default function Steps({steps}: { steps: StepObject[] }) {
         );
     });
 
-    return <StepsWrapper>{stepElements}</StepsWrapper>
+    return <StepsWrapper steps={steps}>{stepElements}</StepsWrapper>
 }
