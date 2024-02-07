@@ -30,11 +30,24 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
+     * @unreleased Handle Stripe connect account on-boarding redirect on specific pages.
+     *             Admin redirect to following page:
+     *             1. GiveWP stripe settings page.
+     *             2. Legacy donation form edit form.
      * @since 2.13.0
      */
     public function __invoke()
     {
         if (!current_user_can('manage_give_settings')) {
+            return;
+        }
+
+        $isDonationFormPage = isset($_GET['give_tab']) && $_GET['give_tab'] !== 'stripe_form_account_options';
+        $isSettingPage = isset($_GET['tab'], $_GET['tab'])
+                         && Give_Admin_Settings::is_setting_page('gateways', 'stripe-settings');
+
+        // Exit if admin is not redirect to the GiveWP settings page or donation form page.
+        if (! $isDonationFormPage && ! $isSettingPage) {
             return;
         }
 
