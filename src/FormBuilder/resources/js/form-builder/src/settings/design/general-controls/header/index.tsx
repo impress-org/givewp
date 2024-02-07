@@ -14,8 +14,6 @@ export default function Header({dispatch, publishSettings}) {
             description,
             designSettingsImageUrl,
             designSettingsImageStyle,
-            designSettingsLogoUrl,
-            designSettingsLogoPosition,
         },
     } = useFormState();
 
@@ -23,8 +21,6 @@ export default function Header({dispatch, publishSettings}) {
         const reset = {
             designSettingsImageUrl: '',
             designSettingsImageStyle: '',
-            designSettingsLogoUrl,
-            designSettingsLogoPosition,
         };
 
         dispatch(setFormSettings(reset));
@@ -43,16 +39,12 @@ export default function Header({dispatch, publishSettings}) {
                                 showHeader: !showHeader,
                                 designSettingsImageUrl,
                                 designSettingsImageStyle,
-                                designSettingsLogoUrl,
-                                designSettingsLogoPosition,
                             })
                         );
                         publishSettings({
                             showHeader: !showHeader,
                             designSettingsImageUrl,
                             designSettingsImageStyle,
-                            designSettingsLogoUrl,
-                            designSettingsLogoPosition,
                         });
                     }}
                 />
@@ -70,16 +62,12 @@ export default function Header({dispatch, publishSettings}) {
                                         showHeading: !showHeading,
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
                                 publishSettings({
                                     showHeading: !showHeading,
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                         />
@@ -94,16 +82,12 @@ export default function Header({dispatch, publishSettings}) {
                                         showDescription: !showDescription,
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
                                 publishSettings({
                                     showDescription: !showDescription,
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                         />
@@ -119,16 +103,12 @@ export default function Header({dispatch, publishSettings}) {
                                             heading,
                                             designSettingsImageUrl,
                                             designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
                                     publishSettings({
                                         heading,
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                             />
@@ -145,16 +125,12 @@ export default function Header({dispatch, publishSettings}) {
                                             description,
                                             designSettingsImageUrl,
                                             designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
                                     publishSettings({
                                         description,
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                             />
@@ -172,16 +148,12 @@ export default function Header({dispatch, publishSettings}) {
                                     setFormSettings({
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
 
                                 publishSettings({
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                             reset={resetSettings}
@@ -200,16 +172,12 @@ export default function Header({dispatch, publishSettings}) {
                                         setFormSettings({
                                             designSettingsImageUrl,
                                             designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
 
                                     publishSettings({
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                                 value={designSettingsImageStyle}

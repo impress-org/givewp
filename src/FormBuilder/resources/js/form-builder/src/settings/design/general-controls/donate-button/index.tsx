@@ -25,16 +25,12 @@ export default function DonateButton({dispatch, publishSettings}) {
                                 donateButtonCaption,
                                 designSettingsImageUrl,
                                 designSettingsImageStyle,
-                                designSettingsLogoUrl,
-                                designSettingsLogoPosition,
                             })
                         );
                         publishSettings({
                             donateButtonCaption,
                             designSettingsImageUrl,
                             designSettingsImageStyle,
-                            designSettingsLogoUrl,
-                            designSettingsLogoPosition,
                         });
                     }}
                     help={__('Enter the text you want to display on the donation button.', 'give')}
