@@ -90,12 +90,6 @@ function AppPreview() {
                     '--givewp-design-settings-background-image',
                     'url(' + settings['designSettingsImageUrl'] + ')'
                 );
-
-                const imageStyle = settings['designSettingsImageStyle']
-                    ? settings['designSettingsImageStyle']
-                    : 'background';
-
-                updateDesignSettingsClassName('givewp-design-settings--image-style', imageStyle);
             }
 
             if (!settings['designSettingsImageUrl']) {

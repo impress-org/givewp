@@ -3,6 +3,7 @@ import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, Toggle
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import {upload} from '@wordpress/icons';
 import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
+import {useEffect} from 'react';
 
 export default function Header({dispatch, publishSettings}) {
     const {
@@ -27,6 +28,11 @@ export default function Header({dispatch, publishSettings}) {
         publishSettings(reset);
     };
 
+    useEffect(() => {
+        console.log(designSettingsImageStyle);
+    }, [designSettingsImageStyle]);
+
+    console.log(designSettingsImageStyle);
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
             <PanelRow>
@@ -61,13 +67,13 @@ export default function Header({dispatch, publishSettings}) {
                                     setFormSettings({
                                         showHeading: !showHeading,
                                         designSettingsImageUrl,
-                                        designSettingsImageStyle,
+                                        designSettingsImageStyle: 'background',
                                     })
                                 );
                                 publishSettings({
                                     showHeading: !showHeading,
                                     designSettingsImageUrl,
-                                    designSettingsImageStyle,
+                                    designSettingsImageStyle: 'background',
                                 });
                             }}
                         />
@@ -147,12 +153,12 @@ export default function Header({dispatch, publishSettings}) {
                                 dispatch(
                                     setFormSettings({
                                         designSettingsImageUrl,
-                                        designSettingsImageStyle,
+                                        designSettingsImageStyle: 'background',
                                     })
                                 );
                                 publishSettings({
                                     designSettingsImageUrl,
-                                    designSettingsImageStyle,
+                                    designSettingsImageStyle: 'background',
                                 });
                             }}
                             reset={resetSettings}
