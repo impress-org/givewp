@@ -40,7 +40,7 @@ class NewStripeAccountOnBoardingController
             return;
         }
 
-        if (! $this->canProcessRequestOnCurrentPage()) {
+        if (wp_doing_ajax() || ! $this->canProcessRequestOnCurrentPage($_SERVER['REQUEST_URI'])) {
             return;
         }
 
@@ -161,16 +161,38 @@ class NewStripeAccountOnBoardingController
      *  2. V2 donation form edit form.
      *
      * @unreleased
-     * @return bool
      */
-    private function canProcessRequestOnCurrentPage(): bool
+    protected function canProcessRequestOnCurrentPage($url): bool
     {
-        $isDonationFormPage = isset($_GET['give_tab'], $_GET['post_type'])
-                              && $_GET['post_type'] === 'give_forms'
-                              && $_GET['give_tab'] !== 'stripe_form_account_options';
-        $isSettingPage = isset($_GET['page'], $_GET['tab'], $_GET['section'])
-                         && $_GET['page'] === 'give-settings'
-                         && Give_Admin_Settings::is_setting_page('gateways', 'stripe-settings');
+        // Check if request is from edit.php or post.php page.
+        if (false === strpos($url, 'wp-admin/post.php') && false === strpos($url, 'wp-admin/edit.php')) {
+            return false;
+        }
+
+        $path = wp_parse_url($url);
+
+        // Result should be in array and should have query string.
+        if (! is_array($path) || ! isset($path['query'])) {
+            return false;
+        }
+
+        $queryParams = wp_parse_args($path['query']);
+
+        if (empty($queryParams)) {
+            return false;
+        }
+
+        // Check if request is from V2 donation form edit page.
+        $isDonationFormPage = isset($queryParams['post'], $queryParams['give_tab'])
+                              && get_post_type(absint($queryParams['post'])) === 'give_forms'
+                              && $queryParams['give_tab'] === 'stripe_form_account_options';
+
+        // Check if request is from GiveWP stripe settings page.
+        $isSettingPage = isset($queryParams['page'], $queryParams['post_type'], $queryParams['tab'], $queryParams['section'])
+                         && $queryParams['post_type'] === 'give_forms'
+                         && $queryParams['page'] === 'give-settings'
+                         && $queryParams['tab'] === 'gateways'
+                         && $queryParams['section'] === 'stripe-settings';
 
         return $isDonationFormPage || $isSettingPage;
     }
