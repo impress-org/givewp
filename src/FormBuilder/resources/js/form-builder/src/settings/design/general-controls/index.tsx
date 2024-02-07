@@ -6,7 +6,7 @@ import Header from '@givewp/form-builder/settings/design/general-controls/header
 import Layout from '@givewp/form-builder/settings/design/general-controls/layout';
 import {getWindowData} from '@givewp/form-builder/common';
 import DonateButton from '@givewp/form-builder/settings/design/general-controls/donate-button';
-import MultiStep from '@givewp/form-builder/settings/design/general-controls/multi-step';
+import MultiStepButtons from '@givewp/form-builder/settings/design/general-controls/multi-step';
 import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
 
 const {formDesigns} = getWindowData();
@@ -35,8 +35,8 @@ export default function GeneralControls() {
                 formDesigns={formDesigns}
                 designId={designId}
             />
-            {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
+            {design?.isMultiStep && <MultiStepButtons dispatch={dispatch} publishSettings={publishSettings} />}
             <DonationGoal dispatch={dispatch} />
             {!design?.isMultiStep && <DonateButton dispatch={dispatch} publishSettings={publishSettings} />}
         </DesignSettings>

@@ -2,7 +2,7 @@ import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 
-export default function MultiStep({dispatch, publishSettings}) {
+export default function MultiStepButtons({dispatch, publishSettings}) {
     const {
         settings: {multiStepNextButtonText, multiStepFirstButtonText, donateButtonCaption},
     } = useFormState();
