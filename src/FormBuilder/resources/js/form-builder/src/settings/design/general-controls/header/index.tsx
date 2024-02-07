@@ -3,7 +3,6 @@ import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, Toggle
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import {upload} from '@wordpress/icons';
 import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
-import {useEffect} from 'react';
 
 export default function Header({dispatch, publishSettings}) {
     const {
@@ -28,11 +27,6 @@ export default function Header({dispatch, publishSettings}) {
         publishSettings(reset);
     };
 
-    useEffect(() => {
-        console.log(designSettingsImageStyle);
-    }, [designSettingsImageStyle]);
-
-    console.log(designSettingsImageStyle);
     return (
         <PanelBody title={__('Header', 'give')} initialOpen={false}>
             <PanelRow>
