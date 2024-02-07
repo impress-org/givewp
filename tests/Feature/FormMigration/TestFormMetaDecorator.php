@@ -7,6 +7,11 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
+/**
+ * @unreleased
+ *
+ * @covers \Give\FormMigration\FormMetaDecorator
+ */
 class TestFormMetaDecorator extends TestCase {
     use RefreshDatabase, LegacyDonationFormAdapter;
 

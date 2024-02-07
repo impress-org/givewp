@@ -2,14 +2,17 @@
 
 namespace Give\Tests\Feature\FormMigration\Steps;
 
-use Give\DonationForms\Properties\FormSettings;
-use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\DonationGoal;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
+/**
+ * @unreleased
+ *
+ * @covers \Give\FormMigration\Steps\DonationGoal
+ */
 class TestDonationGoal extends TestCase
 {
     use RefreshDatabase, LegacyDonationFormAdapter;

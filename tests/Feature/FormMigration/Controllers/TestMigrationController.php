@@ -11,6 +11,12 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
+
+/**
+ * @unreleased
+ *
+ * @covers \Give\FormMigration\Controllers\MigrationController
+ */
 class TestMigrationController extends TestCase
 {
     use RefreshDatabase, LegacyDonationFormAdapter;

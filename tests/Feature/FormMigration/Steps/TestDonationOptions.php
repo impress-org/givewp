@@ -8,6 +8,11 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
+/**
+ * @unreleased
+ *
+ * @covers \Give\FormMigration\Steps\DonationOptions
+ */
 class TestDonationOptions extends TestCase {
     use RefreshDatabase, LegacyDonationFormAdapter;
 
