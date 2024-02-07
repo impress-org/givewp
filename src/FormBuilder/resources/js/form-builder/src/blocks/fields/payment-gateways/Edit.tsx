@@ -1,6 +1,7 @@
 import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {applyFilters} from '@wordpress/hooks';
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -33,7 +34,13 @@ export default function Edit(props: BlockEditProps<any>) {
         >
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                 {gateways
-                    .filter((gateway) => gateway.enabled)
+                    .filter((gateway) =>
+                        applyFilters(
+                            `givewp_form_builder_payment_gateway_enabled_${gateway.id}`,
+                            gateway.enabled,
+                            gateway
+                        )
+                    )
                     .map((gateway) => (
                         <GatewayItem
                             key={gateway.id}
