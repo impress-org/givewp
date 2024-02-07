@@ -114,12 +114,12 @@ function AppPreview() {
                 );
             }
 
-            if (settings['designSettingsTextFieldStyle']) {
-                updateDesignSettingsClassName(
-                    'givewp-design-settings--textField-style',
-                    settings['designSettingsTextFieldStyle']
-                );
-            }
+            // if (settings['designSettingsTextFieldStyle']) {
+            //     updateDesignSettingsClassName(
+            //         'givewp-design-settings--textField-style',
+            //         settings['designSettingsTextFieldStyle']
+            //     );
+            // }
 
             setFormState((prevState) => {
                 return {
