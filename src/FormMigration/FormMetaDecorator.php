@@ -620,6 +620,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased added additional checks to ensure that the form has funds and fund options
      * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
