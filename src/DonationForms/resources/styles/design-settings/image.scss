@@ -60,7 +60,6 @@
         .givewp-layouts-headerImage {
             width: 100%;
             min-width: 100%;
-            border-radius: .5rem;
             margin-bottom: .25rem;
         }
 
@@ -73,7 +72,7 @@
             img {
                 width: 100%;
                 height: 100%;
-                border-radius: .5rem;
+                border-radius: var(--givewp-rounded-4);
                 object-fit: cover;
             }
         }
