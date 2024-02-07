@@ -5,6 +5,7 @@ namespace Give\EventTickets\Factories;
 use DateTime;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\EventTickets\Models\Event;
+use Give\Framework\Support\ValueObjects\Money;
 
 class EventTicketTypeFactory extends ModelFactory
 {
