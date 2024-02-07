@@ -150,7 +150,6 @@ export default function Header({dispatch, publishSettings}) {
                                         designSettingsImageStyle,
                                     })
                                 );
-
                                 publishSettings({
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,

@@ -85,20 +85,17 @@ function AppPreview() {
 
     useEffect(() => {
         subscribeToSettings((settings) => {
-            // if (settings['designSettingsSectionStyle']) {
-            //     updateDesignSettingsClassName(
-            //         'givewp-design-settings--section-style',
-            //         settings['designSettingsSectionStyle']
-            //     );
-            // }
-            //
-
             if (settings['designSettingsImageUrl']) {
                 root.style.setProperty(
                     '--givewp-design-settings-background-image',
                     'url(' + settings['designSettingsImageUrl'] + ')'
                 );
-                updateDesignSettingsClassName('givewp-design-settings--image-style', 'background');
+
+                const imageStyle = settings['designSettingsImageStyle']
+                    ? settings['designSettingsImageStyle']
+                    : 'background';
+
+                updateDesignSettingsClassName('givewp-design-settings--image-style', imageStyle);
             }
 
             if (!settings['designSettingsImageUrl']) {
@@ -113,6 +110,14 @@ function AppPreview() {
                     settings['designSettingsImageStyle']
                 );
             }
+
+            // if (settings['designSettingsSectionStyle']) {
+            //     updateDesignSettingsClassName(
+            //         'givewp-design-settings--section-style',
+            //         settings['designSettingsSectionStyle']
+            //     );
+            // }
+            //
 
             // if (settings['designSettingsTextFieldStyle']) {
             //     updateDesignSettingsClassName(

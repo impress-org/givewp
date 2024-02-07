@@ -4,6 +4,9 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 
 export default function Layout({dispatch, publishSettings, formDesigns, designId}) {
     const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id, label: name}));
+    const {
+        settings: {designSettingsImageUrl, designSettingsImageStyle},
+    } = useFormState();
 
     return (
         <PanelBody title={__('Donation Form', 'give')} initialOpen={true}>
@@ -11,7 +14,19 @@ export default function Layout({dispatch, publishSettings, formDesigns, designId
                 <SelectControl
                     label={__('Form layout', 'give')}
                     value={designId}
-                    onChange={(designId: string) => dispatch(setFormSettings({designId}))}
+                    onChange={(designId: string) => {
+                        dispatch(
+                            setFormSettings({
+                                designId,
+                                designSettingsImageUrl,
+                                designSettingsImageStyle,
+                            })
+                        );
+                        publishSettings({
+                            designSettingsImageUrl,
+                            designSettingsImageStyle,
+                        });
+                    }}
                     options={designOptions}
                     help={__(
                         'Change the appearance of your donation form on your site. Each option has a different layout.',
