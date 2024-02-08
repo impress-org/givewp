@@ -2,18 +2,18 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
+use PayPalCheckoutSdk\Orders\OrdersPatchRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
-use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
-
 use PayPalHttp\HttpException;
-
 use PayPalHttp\IOException;
 
 use function give_record_gateway_error as logError;
@@ -187,6 +187,42 @@ class PayPalOrder
                 sprintf(
                     '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
                     print_r($request->body, true),
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+            );
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return mixed
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function updateOrder($orderId, Donation $donation)
+    {
+        $updateRequest = new OrdersPatchRequest($orderId);
+
+        $updateRequest->body = [
+            'op' => 'replace',
+            'path' => "/purchase_units/@reference_id=='default'/amount",
+            'value' => [
+                'value' => $donation->amount->formatToDecimal(),
+                'currency_code' => $donation->amount->getCurrency()->getCode(),
+            ],
+        ];
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($updateRequest)->result->id;
+        } catch (Exception $ex) {
+            logError(
+                'Update PayPal Commerce order failure',
+                sprintf(
+                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+                    print_r($updateRequest->body, true),
                     print_r(json_decode($ex->getMessage(), true), true)
                 )
             );
