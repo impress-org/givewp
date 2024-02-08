@@ -218,16 +218,16 @@ class PayPalOrder
         //$referenceId = get_post_field('post_name', $formId);
 
         // https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php#L13-L46
-        $requestBody = [
+        /*$requestBody = [
             'op' => 'replace',
             'path' => "/purchase_units/@reference_id=='default'/amount",
             'value' => [
                 'currency_code' => $donationCurrency,
                 'value' => $donationAmount,
             ],
-        ];
+        ];*/
 
-        /*$requestBody = [
+        $requestBody = [
             0 => [
                 'op' => 'replace',
                 'path' => '/intent',
@@ -235,11 +235,40 @@ class PayPalOrder
             ],
             1 => [
                 'op' => 'replace',
-                'path' => "/purchase_units/@reference_id=='default'/amount",
+                'path' => "/purchase_units/@reference_id=='default'",
                 'value' => [
+                    'amount' => [
+                        'currency_code' => $donationCurrency,
+                        'value' => $donationAmount,
+                    ],
+                ],
+            ],
+        ];
+
+        if ($this->settings->isTransactionTypeDonation()) {
+            $requestBody[1]['value']['items'] = [
+                [
+                    'name' => get_post_field('post_name', $formId),
+                    'unit_amount' => [
+                        'value' => $donationAmount,
+                        'currency_code' => $donationCurrency,
+                    ],
+                    'quantity' => 1,
+                    'category' => 'DONATION',
+                ],
+            ];
+
+            $requestBody[1]['value']['amount']['breakdown'] = [
+                'item_total' => [
                     'currency_code' => $donationCurrency,
                     'value' => $donationAmount,
-                    'breakdown' =>
+                ],
+            ];
+        }
+
+        /*
+
+         'breakdown' =>
                         [
                             'item_total' =>
                                 [
@@ -252,9 +281,7 @@ class PayPalOrder
                                     'value' => '0.00',
                                 ],
                         ],
-                ],
-            ],
-        ];*/
+         */
 
         $patchRequest->body = $requestBody;
 
