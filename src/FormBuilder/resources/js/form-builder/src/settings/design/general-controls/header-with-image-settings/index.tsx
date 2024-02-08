@@ -4,6 +4,11 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 import {upload} from '@wordpress/icons';
 import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
 
+/**
+ * @note currently not in use
+ *
+ * @unreleased
+ */
 export default function HeaderWithImageSettings({dispatch, publishSettings}) {
     const {
         settings: {
