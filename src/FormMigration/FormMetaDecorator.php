@@ -620,7 +620,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased added additional checks to ensure that the form has funds and fund options
+     * @since 3.4.0 added additional checks to ensure that the form has funds and fund options
      * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
@@ -697,7 +697,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      *
      * @return string 'global', 'enabled', 'disabled'
      */
@@ -707,7 +707,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidTitle(): string
     {
@@ -715,7 +715,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidDescription(): string
     {
@@ -723,7 +723,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidLongExplanationEnabled(): bool
     {
@@ -731,7 +731,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidLongExplanation(): string
     {
@@ -739,7 +739,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidCheckboxLabel(): string
     {
@@ -747,7 +747,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidAgreementText(): string
     {
@@ -755,7 +755,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidDeclarationForm(): string
     {

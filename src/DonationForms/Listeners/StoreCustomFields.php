@@ -56,7 +56,7 @@ class StoreCustomFields
         /**
          * Fires after custom fields have been stored/processed
          *
-         * @unreleased
+         * @since 3.4.0
          *
          * @param DonationForm $form
          * @param array $customFields

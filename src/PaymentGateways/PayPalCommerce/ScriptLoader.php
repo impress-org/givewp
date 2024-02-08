@@ -291,7 +291,7 @@ EOT;
     /**
      * This function should return form id from page, post content.
      *
-     * @unreleased Check if $attributes is a valid array before trying to use it as it were
+     * @since 3.4.0 Check if $attributes is a valid array before trying to use it as it were
      * @since 3.2.0
      */
     private function getFormIdFromPostContent(): ?int

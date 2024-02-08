@@ -132,7 +132,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
- * @unreleased Add additional validations to check if the form is valid and has the 'published' status.
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
  * @since  1.0
  *
@@ -210,7 +210,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
- * @unreleased Add additional validations to check if the form is valid and has the 'published' status.
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.

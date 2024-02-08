@@ -30,7 +30,7 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
-     * @unreleased Handle Stripe connect account on-boarding redirect on specific pages.
+     * @since 3.4.0 Handle Stripe connect account on-boarding redirect on specific pages.
      *
      * @since 2.13.0
      */
@@ -160,7 +160,7 @@ class NewStripeAccountOnBoardingController
      *  1. GiveWP stripe settings page.
      *  2. V2 donation form edit form.
      *
-     * @unreleased
+     * @since 3.4.0
      */
     protected function canProcessRequestOnCurrentPage(string $url): bool
     {

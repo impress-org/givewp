@@ -15,7 +15,7 @@ if ( empty( $donation ) ) {
 /**
  * Double-Validation: Check for $donation global.
  *
- * @unreleased Add additional validations to check if the form is valid and has the 'published' status.
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  */
 if ( ! is_object($donation) || ! ShortcodeUtils::isValidDonation($donation->ID)) {
 	Give_Notices::print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );

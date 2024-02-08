@@ -7,7 +7,7 @@ import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary'
 /**
  * @note currently not in use
  *
- * @unreleased
+ * @since 3.4.0
  */
 export default function HeaderWithImageSettings({dispatch, publishSettings}) {
     const {

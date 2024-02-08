@@ -433,7 +433,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     private function updateDesignSettingsClassNames(array &$classNames)
     {

@@ -32,7 +32,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased updated to check for metaKey first and then fallback to name
+     * @since 3.4.0 updated to check for metaKey first and then fallback to name
      * @since 3.3.0 updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
      */

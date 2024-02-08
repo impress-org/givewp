@@ -4,7 +4,7 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 
 /**
  * @note currently unused
- * @unreleased
+ * @since 3.4.0
  */
 export default function InputFields({dispatch, publishSettings}) {
     const {

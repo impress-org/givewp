@@ -43,7 +43,7 @@ async function getStates(url, country) {
 /**
  * This component is used to dynamically update the state field based on the country value
  *
- * @unreleased Set current state value to the state input field
+ * @since 3.4.0 Set current state value to the state input field
  * @since 3.0.0
  */
 function StateFieldContainer({
@@ -202,7 +202,7 @@ function StateFieldContainer({
 }
 
 /**
- * @unreleased Update city and zip components before rendering to display required asterisk
+ * @since 3.4.0 Update city and zip components before rendering to display required asterisk
  * @since 3.0.0
  */
 export default function BillingAddress({

@@ -33,7 +33,7 @@ class DonateController
         /**
          * Fires at the start of donation form processing, before any data is processed.
          *
-         * @unreleased
+         * @since 3.4.0
          *
          * @param  DonateControllerData  $formData
          * @param  string  $gatewayId
@@ -67,7 +67,7 @@ class DonateController
             /**
              * Fires after a donation is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
@@ -112,7 +112,7 @@ class DonateController
             /**
              * Fires after a donation is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
@@ -133,7 +133,7 @@ class DonateController
             /**
              * Fires after a subscription is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Subscription  $subscription
              * @param  Donation  $donation
@@ -194,7 +194,7 @@ class DonateController
             /**
              * Fires after a donor is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donor  $donor
              * @param  int  $formId

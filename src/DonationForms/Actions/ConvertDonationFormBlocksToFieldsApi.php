@@ -291,7 +291,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased updated fields to add optional rules last so they can be dynamically validated.
+     * @since 3.4.0 updated fields to add optional rules last so they can be dynamically validated.
      * @since 3.0.0
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node

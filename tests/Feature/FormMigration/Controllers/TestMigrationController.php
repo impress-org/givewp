@@ -13,7 +13,7 @@ use WP_REST_Server;
 
 
 /**
- * @unreleased
+ * @since 3.4.0
  *
  * @covers \Give\FormMigration\Controllers\MigrationController
  */
@@ -22,7 +22,7 @@ class TestMigrationController extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testShouldMigrateFormV2ToV3(): void
     {
@@ -51,7 +51,7 @@ class TestMigrationController extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 3.4.0
      */
     public function getMockRequest(string $method): WP_REST_Request
     {

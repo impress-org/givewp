@@ -183,37 +183,37 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsImageUrl;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsImageStyle;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsLogoUrl;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsLogoPosition;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsSectionStyle;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsTextFieldStyle;

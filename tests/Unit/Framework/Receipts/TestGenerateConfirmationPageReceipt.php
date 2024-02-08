@@ -297,7 +297,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testShouldAddCustomFieldsUsingMetaKayToAdditionalDetails(): void
     {

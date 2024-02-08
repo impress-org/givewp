@@ -6,7 +6,7 @@ import {TabSelector} from '@givewp/form-builder/components/sidebar/TabSelector';
 type designTabState = DesignSettings.General | DesignSettings.Styles;
 
 /**
- * @unreleased add FormDesignSetting tabs.
+ * @since 3.4.0 add FormDesignSetting tabs.
  */
 const Sidebar = ({toggleShowSidebar}) => {
     const [selected, setSelected] = useState<designTabState>(DesignSettings.General);

@@ -1,7 +1,7 @@
 import {FormSettings} from '@givewp/form-builder/types';
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 function updateDesignSettingsClassName(root: HTMLElement, block, element) {
     root.classList.forEach((className) => {
@@ -14,7 +14,7 @@ function updateDesignSettingsClassName(root: HTMLElement, block, element) {
 
 /**
  * @note currently not in use
- * @unreleased
+ * @since 3.4.0
  */
 export default function setDesignSettings(root: HTMLElement, settings: FormSettings) {
     if (settings['designSettingsSectionStyle']) {

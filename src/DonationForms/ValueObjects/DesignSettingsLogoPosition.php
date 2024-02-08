@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 3.4.0
  *
  * @method static DesignSettingsLogoPosition LEFT()
  * @method static DesignSettingsLogoPosition CENTER()

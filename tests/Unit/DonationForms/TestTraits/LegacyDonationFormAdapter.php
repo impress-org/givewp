@@ -13,7 +13,7 @@ use Give_Helper_Form;
 trait LegacyDonationFormAdapter
 {
     /**
-     * @unreleased added $args parameter
+     * @since 3.4.0 added $args parameter
      * @since 2.25.0
      */
     public function createSimpleDonationForm(array $args = []): DonationForm

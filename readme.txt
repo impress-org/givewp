@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.3.1
+Stable tag: 3.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,24 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.4.0: February 8th, 2024 =
+* Fix: Resolved several issues with the billing address block including dynamically requiring certain fields and allowing state/county field input
+* Fix: Resolved an issue with multi step form layout where the title was missing on the first step when show header was disabled
+* Fix: Resolved errors when adding/removing a sub-site in a WP multisite environment (open-source contribution by @Genevieve-K)
+* Fix: Resolved an issue with form modals and some gateways that redirect offsite to display the confirmation page after a donation
+* Fix: Resolved a fields api compatability issue with showInReceipt metaKey
+* Fix: Resolved a nonce validation issue with translated values (open-source contribution by @Genevieve-K)
+* Fix: Resolved a PHP 8 compatability issue with the system info page (open-source contribution by @JeromeBeckett)
+* Fix: Resolved several styling issues with the form modal block
+* Fix: Updated Stripe connect redirect to be limited to specific pages
+* New: Added form migration step for the GiveWP Gift Aid add-on
+* New: Added new filter `givewp_stripe_payment_element_appearance_options` to modify the Stripe Payment Element gateway appearance options
+* New: Added donation form processing lifecycle actions for more programmatic control over form processing
+* Enhancement: Made donation list table programmatically extendable (open-source contribution by @pulsovi)
+* Enhancement: Improved the flexibility of donation confirmation page detail values to allow sanitized html
+* Enhancement: Added new filter to the gateways block to control visibility
+* Enhancement: Made several improvements to the give importer for third-parties and admin
+
 = 3.3.1: January 23rd, 2024 =
 * Fix: Resolved an issue checking for the GiveWP Funds and Designations add-on information during form migrations  
 

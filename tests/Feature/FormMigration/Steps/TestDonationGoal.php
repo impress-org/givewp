@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.4.0
  *
  * @covers \Give\FormMigration\Steps\DonationGoal
  */
@@ -18,7 +18,7 @@ class TestDonationGoal extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationFormDonationGoalSettings(): void
     {

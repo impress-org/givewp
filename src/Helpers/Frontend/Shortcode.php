@@ -27,7 +27,7 @@ class Shortcode
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public static function isValidDonation(int $donationId): bool
     {
@@ -35,7 +35,7 @@ class Shortcode
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public static function isValidForm(int $formId): bool
     {
@@ -43,7 +43,7 @@ class Shortcode
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public static function isPublishedForm(int $formId): bool
     {

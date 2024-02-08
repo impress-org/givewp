@@ -10,7 +10,7 @@ const {formDesigns} = getWindowData();
 const getDesign = (designId: string) => formDesigns[designId];
 
 /**
- * @unreleased abstract design controls.
+ * @since 3.4.0 abstract design controls.
  */
 export default function StyleControls() {
     const dispatch = useFormStateDispatch();

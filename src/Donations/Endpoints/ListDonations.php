@@ -13,7 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased The class is extendable
+ * @since 3.4.0 The class is extendable
  */
 class ListDonations extends Endpoint
 {
@@ -33,7 +33,7 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @access public
      */
     public function __construct(DonationsListTable $listTable)
@@ -220,7 +220,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Make this method protected so it can be extended
+     * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
      * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0

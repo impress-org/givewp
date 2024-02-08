@@ -88,7 +88,7 @@ class BlockRenderController
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     private function getFormViewUrl(DonationForm $donationForm): string
     {

@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.4.0
  *
  * @covers \Give\FormMigration\Steps\DonationOptions
  */
@@ -17,7 +17,7 @@ class TestDonationOptions extends TestCase {
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributes(): void
     {
@@ -47,7 +47,7 @@ class TestDonationOptions extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributesWithDonationLevels(): void
     {

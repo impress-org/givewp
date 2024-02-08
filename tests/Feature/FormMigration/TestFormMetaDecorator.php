@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.4.0
  *
  * @covers \Give\FormMigration\FormMetaDecorator
  */
@@ -16,7 +16,7 @@ class TestFormMetaDecorator extends TestCase {
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testIsLastNameRequiredShouldReturnTrue(): void
     {
@@ -40,7 +40,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testIsLastNameRequiredShouldReturnFalse(): void
     {
@@ -64,7 +64,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testIsNameTitlePrefixEnabledShouldReturnTrue(): void
     {
@@ -88,7 +88,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testIsNameTitlePrefixEnabledShouldReturnFalse(): void
     {
@@ -112,7 +112,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testHasFundsShouldReturnFalse(): void
     {
@@ -124,7 +124,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testHasFundOptionsShouldReturnFalse(): void
     {
@@ -136,7 +136,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testHasFundsShouldReturnTrue(): void
     {
@@ -144,7 +144,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function testHasFundOptionsShouldReturnTrue(): void
     {
