@@ -30,22 +30,28 @@ class NewStripeAccountOnBoardingController
     }
 
     /**
+     * @unreleased Handle Stripe connect account on-boarding redirect on specific pages.
+     *
      * @since 2.13.0
      */
     public function __invoke()
     {
-        if (!current_user_can('manage_give_settings')) {
+        if (! current_user_can('manage_give_settings')) {
+            return;
+        }
+
+        if (wp_doing_ajax() || ! $this->canProcessRequestOnCurrentPage($_SERVER['REQUEST_URI'])) {
             return;
         }
 
         $requestedData = NewStripeAccountOnBoardingDto::fromArray(give_clean($_GET));
 
-        if (!$requestedData->hasValidateData()) {
+        if (! $requestedData->hasValidateData()) {
             return;
         }
 
         $stripe_accounts = give_stripe_get_all_accounts();
-        $secret_key = !give_is_test_mode() ? $requestedData->stripeAccessToken : $requestedData->stripeAccessTokenTest;
+        $secret_key = ! give_is_test_mode() ? $requestedData->stripeAccessToken : $requestedData->stripeAccessTokenTest;
 
         Stripe::setApiKey($secret_key);
 
@@ -69,7 +75,7 @@ class NewStripeAccountOnBoardingController
             return;
         }
 
-        $account_name = !empty($account_details->business_profile->name) ?
+        $account_name = ! empty($account_details->business_profile->name) ?
             $account_details->business_profile->name :
             $account_details->settings->dashboard->display_name;
         $account_slug = $account_details->id;
@@ -77,7 +83,7 @@ class NewStripeAccountOnBoardingController
         $account_country = $account_details->country;
 
         // Set first Stripe account as default.
-        if (!$stripe_accounts) {
+        if (! $stripe_accounts) {
             give_update_option('_give_stripe_default_account', $account_slug);
         }
 
@@ -101,7 +107,7 @@ class NewStripeAccountOnBoardingController
             $this->settings->addNewStripeAccount($accountDetailModel);
 
             if ($requestedData->formId) {
-                if (!Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
+                if (! Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
                     Settings::setDefaultStripeAccountSlugForDonationForm(
                         $requestedData->formId,
                         $accountDetailModel->accountSlug
@@ -145,5 +151,49 @@ class NewStripeAccountOnBoardingController
 
             return;
         }
+    }
+
+    /**
+     * Check if the request can be processed on the current page.
+     *
+     * Admin redirect to following page:
+     *  1. GiveWP stripe settings page.
+     *  2. V2 donation form edit form.
+     *
+     * @unreleased
+     */
+    protected function canProcessRequestOnCurrentPage(string $url): bool
+    {
+        // Check if request is from edit.php or post.php page.
+        if (false === strpos($url, 'wp-admin/post.php') && false === strpos($url, 'wp-admin/edit.php')) {
+            return false;
+        }
+
+        $path = wp_parse_url($url);
+
+        // Result should be in array and should have query string.
+        if (! is_array($path) || ! isset($path['query'])) {
+            return false;
+        }
+
+        $queryParams = wp_parse_args($path['query']);
+
+        if (empty($queryParams)) {
+            return false;
+        }
+
+        // Check if request is from V2 donation form edit page.
+        $isDonationFormPage = isset($queryParams['post'], $queryParams['give_tab'])
+                              && get_post_type(absint($queryParams['post'])) === 'give_forms'
+                              && $queryParams['give_tab'] === 'stripe_form_account_options';
+
+        // Check if request is from GiveWP stripe settings page.
+        $isSettingPage = isset($queryParams['page'], $queryParams['post_type'], $queryParams['tab'], $queryParams['section'])
+                         && $queryParams['post_type'] === 'give_forms'
+                         && $queryParams['page'] === 'give-settings'
+                         && $queryParams['tab'] === 'gateways'
+                         && $queryParams['section'] === 'stripe-settings';
+
+        return $isDonationFormPage || $isSettingPage;
     }
 }
