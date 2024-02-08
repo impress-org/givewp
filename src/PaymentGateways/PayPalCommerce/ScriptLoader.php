@@ -3,9 +3,9 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
 /**
@@ -291,7 +291,7 @@ EOT;
     /**
      * This function should return form id from page, post content.
      *
-     *
+     * @unreleased Check if $attributes is a valid array before trying to use it as it were
      * @since 3.2.0
      */
     private function getFormIdFromPostContent(): ?int
@@ -316,7 +316,7 @@ EOT;
             ) {
                 $attributes = shortcode_parse_atts($matches[3]);
 
-                if (array_key_exists('id', $attributes)) {
+                if (is_array($attributes) && array_key_exists('id', $attributes)) {
                     $formId = $attributes['id'];
                 }
             }

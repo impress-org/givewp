@@ -25,4 +25,28 @@ class Shortcode
 
         return '';
     }
+
+    /**
+     * @unreleased
+     */
+    public static function isValidDonation(int $donationId): bool
+    {
+        return ! empty($donationId) && 'give_payment' === get_post_type($donationId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function isValidForm(int $formId): bool
+    {
+        return ! empty($formId) && 'give_forms' === get_post_type($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function isPublishedForm(int $formId): bool
+    {
+        return self::isValidForm($formId) && 'publish' === get_post_status($formId);
+    }
 }
