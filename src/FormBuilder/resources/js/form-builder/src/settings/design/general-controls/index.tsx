@@ -31,7 +31,6 @@ export default function GeneralControls() {
         >
             <Layout
                 dispatch={dispatch}
-                publishSettings={publishSettings}
                 formDesigns={formDesigns}
                 designId={designId}
             />
