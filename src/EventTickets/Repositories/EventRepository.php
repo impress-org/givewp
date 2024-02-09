@@ -37,7 +37,7 @@ class EventRepository
     public function getById(int $id)
     {
         return $this->prepareQuery()
-            ->where('posts.id', $id)
+            ->where('id', $id)
             ->get();
     }
 
