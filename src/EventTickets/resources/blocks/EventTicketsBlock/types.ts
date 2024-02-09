@@ -3,7 +3,7 @@ import {Ticket} from '../../components/types';
 export type EventSettings = {
     id: number;
     title: string;
-    date: string; // ISO 8601 format date string
+    date: Date;
     description: string;
     tickets: Ticket[];
 };

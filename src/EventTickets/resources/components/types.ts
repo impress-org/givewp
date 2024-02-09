@@ -4,7 +4,7 @@ export type Event = {
     id: number;
     name: string;
     title: string;
-    date: string; // ISO 8601 format date string
+    date: Date;
     description: string;
     tickets: Ticket[];
     ticketsLabel: string;
