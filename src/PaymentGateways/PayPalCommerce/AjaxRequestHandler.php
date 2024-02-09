@@ -161,7 +161,7 @@ class AjaxRequestHandler
                 'tab' => 'gateways',
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
-                'mode' => $mode
+                'mode' => $mode,
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
@@ -306,6 +306,24 @@ class AjaxRequestHandler
             // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
             $this->returnErrorOnFailedApproveOrderResponse($result);
             wp_send_json_success(['order' => $result,]);
+        } catch (\Exception $ex) {
+            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function updateOrderAmount()
+    {
+        $this->validateFrontendRequest();
+
+        $orderId = give_clean($_GET['order']);
+
+        try {
+            give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+
+            wp_send_json_success(['order' => $orderId,]);
         } catch (\Exception $ex) {
             wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
         }
