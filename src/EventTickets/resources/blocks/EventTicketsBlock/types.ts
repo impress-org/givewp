@@ -1,4 +1,6 @@
-export type Event = {
+import {Ticket} from '../../components/types';
+
+export type EventSettings = {
     id: number;
     title: string;
     date: string; // ISO 8601 format date string
@@ -6,16 +8,8 @@ export type Event = {
     tickets: Ticket[];
 };
 
-export type Ticket = {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    description: string;
-};
-
 export interface EventTicketsBlockSettings {
-    events: Event[];
+    events: EventSettings[];
     createEventUrl: string;
     listEventsUrl: string;
     ticketsLabel: string;

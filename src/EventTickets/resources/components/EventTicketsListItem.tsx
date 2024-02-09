@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {plus, reset as minus} from '@wordpress/icons';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
-export default function EventTicketsListItem({ticket, selectedQuantity, handleSelect, currency}) {
+export default function EventTicketsListItem({ticket, currency, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
     const ticketPrice = formatter.format(Number(ticket.price));
 
@@ -21,16 +21,16 @@ export default function EventTicketsListItem({ticket, selectedQuantity, handleSe
             </div>
             <div className={'givewp-event-tickets__tickets__ticket__quantity'}>
                 <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                    <button onClick={handleButtonClick(selectedQuantity - 1)}>
+                    <button onClick={handleButtonClick(selectedTickets - 1)}>
                         <Icon icon={minus} />
                     </button>
-                    <input type="text" value={selectedQuantity} />
-                    <button onClick={handleButtonClick(selectedQuantity + 1)}>
+                    <input type="text" value={selectedTickets} />
+                    <button onClick={handleButtonClick(selectedTickets + 1)}>
                         <Icon icon={plus} />
                     </button>
                 </div>
                 <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
-                    {ticket.quantity - selectedQuantity} {__('remaining', 'give')}
+                    {ticket.quantity - selectedTickets} {__('remaining', 'give')}
                 </p>
             </div>
         </div>

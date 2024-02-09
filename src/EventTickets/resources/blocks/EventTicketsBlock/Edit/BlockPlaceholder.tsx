@@ -10,9 +10,6 @@ export default function BlockPlaceholder({attributes}) {
     const {events, ticketsLabel, soldOutMessage} = window.eventTicketsBlockSettings;
     const event = events.find((event) => event.id === attributes.eventId);
     const {currency} = getWindowData();
-    const config = {
-        currency,
-    };
 
     if (!event || !event.tickets.length) {
         return null;
@@ -29,7 +26,7 @@ export default function BlockPlaceholder({attributes}) {
                     tickets={event.tickets}
                     ticketsLabel={ticketsLabel}
                     soldOutMessage={soldOutMessage}
-                    config={config}
+                    currency={currency}
                 />
             </div>
         </div>
