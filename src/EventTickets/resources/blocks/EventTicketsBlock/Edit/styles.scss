@@ -1,3 +1,5 @@
+@import "../../../templates/EventTickets/styles.scss";
+
 .givewp-event-tickets-block__placeholder {
     &--no-events,
     &--select-event {
@@ -56,8 +58,6 @@
             }
         }
     }
-
-    @import "../../../templates/EventTickets/styles.scss";
 
     .givewp-event-tickets {
         border: 1px solid var(--givewp-grey-500);
