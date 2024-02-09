@@ -96,83 +96,51 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
+     * @unreleased Extract the amount parameters to a separate method
      * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
      * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
      *
-     * @param array $array
-     *
-     * @return string
-     * @throws Exception
+     * @throws Exception|HttpException|IOException
      */
-    public function createOrder($array)
+    public function createOrder(array $array): string
     {
         $this->validateCreateOrderArguments($array);
 
         $request = new OrdersCreateRequest();
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-        $formId = (int)$array['formId'];
-        $donationCurrency = give_get_currency($formId);
-        $donationAmount = give_maybe_sanitize_amount(
-            $array['donationAmount'],
-            ['currency' => give_get_currency($formId)]
-        );
         $request->body = [
             'intent' => 'CAPTURE',
             'payment_source' => [
                 "paypal" => [
                     'name' => [
                         "given_name" => $array['payer']['firstName'],
-                        "surname" => $array['payer']['lastName']
+                        "surname" => $array['payer']['lastName'],
                     ],
-                    "email_address" => $array['payer']['email']
-                ]
+                    "email_address" => $array['payer']['email'],
+                ],
             ],
             'purchase_units' => [
-                [
-                    //'reference_id' => get_post_field('post_name', $formId),
-                    'description' => $array['formTitle'],
-                    'amount' => [
-                        'value' => $donationAmount,
-                        'currency_code' => $donationCurrency,
-                    ],
-                    'payee' => [
-                        'email_address' => $this->merchantDetails->merchantId,
-                        'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
-                    ],
-                    'payment_instruction' => [
-                        'disbursement_mode' => 'INSTANT',
-                    ],
-                ],
+                array_merge(
+                    $this->getAmountParameters($array),
+                    [
+                        'description' => $array['formTitle'],
+                        'payee' => [
+                            'email_address' => $this->merchantDetails->merchantId,
+                            'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
+                        ],
+                        'payment_instruction' => [
+                            'disbursement_mode' => 'INSTANT',
+                        ],
+                    ]
+                ),
             ],
             'application_context' => [
                 'shipping_preference' => 'NO_SHIPPING',
                 'user_action' => 'PAY_NOW',
             ],
         ];
-
-        // Set PayPal transaction as donation.
-        if ($this->settings->isTransactionTypeDonation()) {
-            $request->body['purchase_units'][0]['items'] = [
-                [
-                    'name' => get_post_field('post_name', $formId),
-                    'unit_amount' => [
-                        'value' => $donationAmount,
-                        'currency_code' => $donationCurrency,
-                    ],
-                    'quantity' => 1,
-                    'category' => 'DONATION',
-                ],
-            ];
-
-            $request->body['purchase_units'][0]['amount']['breakdown'] = [
-                'item_total' => [
-                    'currency_code' => $donationCurrency,
-                    'value' => $donationAmount,
-                ],
-            ];
-        }
 
         if (! empty($array['payer']['address'])) {
             $request->body['payment_source']['paypal']['address'] = $array['payer']['address'];
@@ -196,57 +164,34 @@ class PayPalOrder
 
     /**
      * @unreleased
-     *
-     * @return mixed
-     *
-     * @throws Exception|HttpException|IOException
      */
-    public function updateOrderAmount($orderId, array $array)
+    private function getAmountParameters($array): array
     {
-        $this->validateCreateOrderArguments($array);
-
-        //$order = $this->getOrder($orderId);
-
-        $patchRequest = new OrdersPatchRequest($orderId);
-
         $formId = (int)$array['formId'];
         $donationCurrency = give_get_currency($formId);
         $donationAmount = give_maybe_sanitize_amount(
             $array['donationAmount'],
             ['currency' => give_get_currency($formId)]
         );
-        //$referenceId = get_post_field('post_name', $formId);
 
-        // https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php#L13-L46
-        /*$requestBody = [
-            'op' => 'replace',
-            'path' => "/purchase_units/@reference_id=='default'/amount",
-            'value' => [
-                'currency_code' => $donationCurrency,
+        /**
+         * To make an update, you must provide a reference_id. If you OMIT THIS VALUE WITH AN ORDER THAT CONTAINS
+         * ONLY ONE PURCHASE UNIT, PayPal sets the value to default which enables you to use the path:
+         * "/purchase_units/@reference_id=='default'/{attribute-or-object}".
+         *
+         * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
+         */
+        $amountParameters = [
+            //'reference_id' => get_post_field('post_name', $formId),
+            'amount' => [
                 'value' => $donationAmount,
-            ],
-        ];*/
-
-        $requestBody = [
-            0 => [
-                'op' => 'replace',
-                'path' => '/intent',
-                'value' => 'CAPTURE',
-            ],
-            1 => [
-                'op' => 'replace',
-                'path' => "/purchase_units/@reference_id=='default'",
-                'value' => [
-                    'amount' => [
-                        'currency_code' => $donationCurrency,
-                        'value' => $donationAmount,
-                    ],
-                ],
+                'currency_code' => $donationCurrency,
             ],
         ];
 
+        // Set PayPal transaction as donation.
         if ($this->settings->isTransactionTypeDonation()) {
-            $requestBody[1]['value']['items'] = [
+            $amountParameters['items'] = [
                 [
                     'name' => get_post_field('post_name', $formId),
                     'unit_amount' => [
@@ -258,7 +203,7 @@ class PayPalOrder
                 ],
             ];
 
-            $requestBody[1]['value']['amount']['breakdown'] = [
+            $amountParameters['amount']['breakdown'] = [
                 'item_total' => [
                     'currency_code' => $donationCurrency,
                     'value' => $donationAmount,
@@ -266,33 +211,36 @@ class PayPalOrder
             ];
         }
 
-        /*
+        return $amountParameters;
+    }
 
-         'breakdown' =>
-                        [
-                            'item_total' =>
-                                [
-                                    'currency_code' => $donationCurrency,
-                                    'value' => $donationAmount,
-                                ],
-                            'tax_total' =>
-                                [
-                                    'currency_code' => $donationCurrency,
-                                    'value' => '0.00',
-                                ],
-                        ],
-         */
+    /**
+     * @unreleased
+     *
+     * @see https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php
+     *
+     * @return mixed
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function updateOrderAmount($orderId, array $array)
+    {
+        $this->validateCreateOrderArguments($array);
 
-        $patchRequest->body = $requestBody;
+        $patchRequest = new OrdersPatchRequest($orderId);
 
-        /*$patchRequest->body = [
-            'op' => 'replace',
-            'path' => "/purchase_units/@reference_id=='$referenceId'/amount",
-            'value' => [
-                'value' => $donationAmount,
-                'currency_code' => $donationCurrency,
+        $patchRequest->body = [
+            0 => [
+                'op' => 'replace',
+                'path' => '/intent',
+                'value' => 'CAPTURE',
             ],
-        ];*/
+            1 => [
+                'op' => 'replace',
+                'path' => "/purchase_units/@reference_id=='default'",
+                'value' => $this->getAmountParameters($array),
+            ],
+        ];
 
         try {
             return $this->paypalClient->getHttpClient()->execute($patchRequest)->result->id;
