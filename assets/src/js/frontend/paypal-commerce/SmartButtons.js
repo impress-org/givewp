@@ -244,8 +244,8 @@ class SmartButtons extends PaymentMethod {
     /**
      * Order approve event handler for smart buttons.
      *
-     * @unrelease Add 'update_amount' query string to the ajax URL
-     * @unrelease Handle custom error.
+     * @unreleased Add 'update_amount' query string to the ajax URL
+     * @since 3.1.2 Handle custom error.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.
