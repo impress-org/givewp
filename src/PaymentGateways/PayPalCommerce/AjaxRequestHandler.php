@@ -234,30 +234,6 @@ class AjaxRequestHandler
         $this->validateFrontendRequest();
         $data = $this->getOrderData();
 
-        /*$postData = give_clean($_POST);
-        $formId = absint($postData['give-form-id']);
-        $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
-
-        $data = [
-            'formId' => $formId,
-            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
-            'donationAmount' => isset($postData['give-amount']) ?
-                (float)apply_filters(
-                    'give_donation_total',
-                    give_maybe_sanitize_amount(
-                        $postData['give-amount'],
-                        ['currency' => give_get_currency($formId)]
-                    )
-                ) :
-                '0.00',
-            'payer' => [
-                'firstName' => $postData['give_first'],
-                'lastName' => $postData['give_last'],
-                'email' => $postData['give_email'],
-                'address' => $donorAddress,
-            ]
-        ];*/
-
         try {
             $result = give(PayPalOrder::class)->createOrder($data);
 
@@ -318,9 +294,12 @@ class AjaxRequestHandler
         $this->validateFrontendRequest();
 
         $orderId = give_clean($_GET['order']);
+        $updateAmount = filter_var(give_clean($_GET['update_amount']), FILTER_VALIDATE_BOOLEAN);
 
         try {
-            $result = give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+            if ($updateAmount) {
+                give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+            }
 
             $result = give(PayPalOrder::class)->approveOrder($orderId);
             // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
