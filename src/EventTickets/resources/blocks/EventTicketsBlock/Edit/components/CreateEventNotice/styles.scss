@@ -1,0 +1,31 @@
+.givewp-event-tickets-block__create-event-notice {
+    margin-bottom: var(--givewp-spacing-4);
+
+    .components-notice {
+        margin: 0;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+        &__content {
+            margin: 0;
+
+            h4, p {
+                font-size: 0.75rem;
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            p {
+                color: var(--givewp-grey-700);
+                margin-top: var(--givewp-spacing-2);
+
+                a {
+                    color: var(--givewp-grey-900);
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+}
