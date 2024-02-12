@@ -34,11 +34,16 @@
 }
 
 .interface-interface-skeleton__content {
-    width: 720px;
+    width: 100%;
     margin: auto;
     padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
+
+    #form-blocks-canvas {
+        width: 720px;
+        margin: 0 auto;
+    }
 
     @media screen and (max-width: 782px) {
         padding: 1rem 0;
@@ -228,3 +233,34 @@
 .givewp-support-link.components-external-link > svg {
     display: none; /* Hide included icon, in favor of menu item icon. */
 }
+
+.givewp-block-editor-design-sidebar {
+    &__settings {
+        .components-panel__body > div {
+            border-top: 0;
+            padding: 0 !important;
+        }
+
+        .block-editor-tools-panel-color-gradient-settings__item.first {
+            margin-top: 0;
+        }
+    }
+}
+
+.givewp-block-editor-sidebar {
+    &__tabs {
+        flex: 1 1 0;
+        justify-content: center;
+
+        li {
+            flex: 1;
+
+            > .components-button {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}
+

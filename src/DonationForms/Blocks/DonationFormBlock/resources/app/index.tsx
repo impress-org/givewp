@@ -19,12 +19,12 @@ type DonationFormBlockAppProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 const inlineRedirectRoutes = ['donation-confirmation-receipt-view'];
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 const isRedirect = (url: string) => {
     const redirectUrl = new URL(url);
@@ -34,7 +34,7 @@ const isRedirect = (url: string) => {
 }
 
 /**
- * @unreleased add logic for inline redirects.
+ * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0
  */

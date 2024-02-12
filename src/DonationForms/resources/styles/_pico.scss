@@ -80,6 +80,10 @@ a:focus, [role=link]:focus {
   --background-color: transparent;
 }
 
+form {
+    margin: 0;
+}
+
 ul li {
   list-style: disc;
 }

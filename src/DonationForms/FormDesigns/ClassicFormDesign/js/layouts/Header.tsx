@@ -15,11 +15,13 @@ const SecureBadge = () => {
 /**
  * @since 3.0.0
  */
-export default function Header({Title, Description, Goal}) {
+export default function Header({TextWrapper, Title, Description, Goal}) {
     return (
         <>
-            <Title />
-            <Description />
+            <TextWrapper>
+                <Title />
+                <Description />
+            </TextWrapper>
             <SecureBadge />
             <Goal />
         </>

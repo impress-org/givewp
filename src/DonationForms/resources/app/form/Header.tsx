@@ -11,6 +11,8 @@ const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitl
 const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
+const headerTextWrapperTemplate = formTemplates.layouts.headerTextWrapper;
+
 
 
 /**
@@ -27,6 +29,7 @@ export default function Header({form}) {
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
+                TextWrapper={headerTextWrapperTemplate}
                 Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
                 Description={() =>
                     form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />

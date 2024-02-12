@@ -15,7 +15,7 @@ type ModalFormProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.4.0
  * @since 3.2.0 include types. update BEM classnames.
  * @since 3.0.0
  */
@@ -58,6 +58,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, openByDefau
                             onClick={toggleModal}
                         >
                             <svg
+                                className="givewp-donation-form-modal__close__icon"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 width="24"
@@ -65,7 +66,11 @@ export default function ModalForm({dataSrc, embedId, openFormButton, openByDefau
                                 aria-hidden="true"
                                 focusable="false"
                             >
-                                <path d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path>
+                                <path
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"
+                                ></path>
                             </svg>
                         </button>
                         <IframeResizer
