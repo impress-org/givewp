@@ -5,6 +5,9 @@ namespace Give\EventTickets\Models;
 use DateTime;
 use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\ValueObjects\DonationNoteType;
+use Give\EventTickets\Repositories\EventRepository;
+use Give\EventTickets\Repositories\EventTicketRepository;
+use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -27,6 +30,8 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int',
         'event_id' => 'int',
+        'title' => 'string',
+        'description' => 'string',
         'price' => Money::class,
         'max_available' => 'int',
         'created_at' => DateTime::class,
@@ -48,7 +53,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public static function find($id)
     {
-        return give('eventTicketTypes')->getById($id);
+        return give(EventTicketTypeRepository::class)->getById($id);
     }
 
     /**
@@ -58,7 +63,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public static function findByEvent($eventId): ModelQueryBuilder
     {
-        return give()->events->tickets->queryByEventId($eventId);
+        return give(EventRepository::class)->queryByEventId($eventId);
     }
 
     /**
@@ -71,7 +76,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     {
         $event = new static($attributes);
 
-        give('eventTicketTypes')->insert($event);
+        give(EventTicketTypeRepository::class)->insert($event);
 
         return $event;
     }
@@ -85,9 +90,9 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     public function save()
     {
         if (!$this->id) {
-            give('eventTicketTypes')->insert($this);
+            give(EventTicketTypeRepository::class)->insert($this);
         } else{
-            give('eventTicketTypes')->update($this);
+            give(EventTicketTypeRepository::class)->update($this);
         }
     }
 
@@ -98,7 +103,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function delete(): bool
     {
-        return give('eventTicketTypes')->delete($this);
+        return give(EventTicketTypeRepository::class)->delete($this);
     }
 
     /**
@@ -108,7 +113,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public static function query(): ModelQueryBuilder
     {
-        return give('eventTicketTypes')->prepareQuery();
+        return give(EventTicketTypeRepository::class)->prepareQuery();
     }
 
     /**
@@ -118,7 +123,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function event(): ModelQueryBuilder
     {
-        return give()->events->queryById($this->event_id);
+        return give(EventRepository::class)->queryById($this->event_id);
     }
 
 
@@ -129,7 +134,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function eventTickets(): ModelQueryBuilder
     {
-        return give('eventTickets')->queryByEventId($this->id);
+        return give(EventTicketRepository::class)->queryByEventId($this->id);
     }
 
     /**
@@ -142,6 +147,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         return new EventTicketType([
             'id' => (int)$object->id,
             'event_id' => (int)$object->event_id,
+            'price' => Money::fromDecimal($object->price, give_get_currency()),
             'created_at' => Temporal::toDateTime($object->created_at),
             'updated_at' => Temporal::toDateTime($object->updated_at),
         ]);
