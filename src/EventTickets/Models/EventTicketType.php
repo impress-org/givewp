@@ -30,7 +30,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int',
         'event_id' => 'int',
-        'title' => 'string',
+        'label' => 'string',
         'description' => 'string',
         'price' => Money::class,
         'max_available' => 'int',
