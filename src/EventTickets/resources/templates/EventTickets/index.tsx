@@ -21,7 +21,7 @@ export default function EventTicketsField({
             {description && <EventTicketsDescription description={description} />}
 
             <EventTicketsListHOC
-                name={name}
+                name={'event-tickets'}
                 tickets={tickets}
                 ticketsLabel={ticketsLabel}
                 soldOutMessage={soldOutMessage}
