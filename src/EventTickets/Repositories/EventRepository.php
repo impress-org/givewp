@@ -37,7 +37,7 @@ class EventRepository
     public function getById(int $id)
     {
         return $this->prepareQuery()
-            ->where('posts.id', $id)
+            ->where('id', $id)
             ->get();
     }
 
@@ -62,10 +62,11 @@ class EventRepository
             DB::table('give_events')
                 ->insert([
                     'id' => $event->id,
+                    'title' => $event->title,
                     'description' => $event->description,
-                    'start_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
-                    'end_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
-                    'ticket_close_datetime' => $event->ticket_close_datetime->format('Y-m-d H:i:s'),
+                    'start_datetime' => $event->start_datetime ? $event->start_datetime->format('Y-m-d H:i:s') : null,
+                    'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
+                    'ticket_close_datetime' => $event->ticket_close_datetime ? $event->ticket_close_datetime->format('Y-m-d H:i:s') : null,
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);

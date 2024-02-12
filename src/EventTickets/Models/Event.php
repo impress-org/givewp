@@ -5,6 +5,9 @@ namespace Give\EventTickets\Models;
 use DateTime;
 use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\ValueObjects\DonationNoteType;
+use Give\EventTickets\Repositories\EventRepository;
+use Give\EventTickets\Repositories\EventTicketRepository;
+use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -49,7 +52,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public static function find($id)
     {
-        return give()->events->getById($id);
+        return give(EventRepository::class)->getById($id);
     }
 
 
@@ -63,7 +66,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     {
         $event = new static($attributes);
 
-        give()->events->insert($event);
+        give(EventRepository::class)->insert($event);
 
         return $event;
     }
@@ -77,9 +80,9 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     public function save()
     {
         if (!$this->id) {
-            give()->events->insert($this);
+            give(EventRepository::class)->insert($this);
         } else{
-            give()->events->update($this);
+            give(EventRepository::class)->update($this);
         }
     }
 
@@ -90,7 +93,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function delete(): bool
     {
-        return give()->events->delete($this);
+        return give(EventRepository::class)->delete($this);
     }
 
     /**
@@ -100,7 +103,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public static function query(): ModelQueryBuilder
     {
-        return give('events')->prepareQuery();
+        return give(EventRepository::class)->prepareQuery();
     }
 
     /**
@@ -108,9 +111,9 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      *
      * @return ModelQueryBuilder<EventTicketType>
      */
-    public function eventTicketTypes(): ModelQueryBuilder
+    public function ticketTypes(): ModelQueryBuilder
     {
-        return give('eventTicketTypes')->queryByEventId($this->id);
+        return give(EventTicketTypeRepository::class)->queryByEventId($this->id);
     }
 
     /**
@@ -120,7 +123,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function eventTickets(): ModelQueryBuilder
     {
-        return give('eventTickets')->queryByEventId($this->id);
+        return give(EventTicketRepository::class)->queryByEventId($this->id);
     }
 
     /**

@@ -66,7 +66,9 @@ class EventTicketTypeRepository
                 ->insert([
                     'id' => $eventTicketType->id,
                     'event_id' => $eventTicketType->event_id,
-                    'price' => $eventTicketType->price,
+                    'label' => $eventTicketType->label,
+                    'description' => $eventTicketType->description,
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
                     'max_available' => $eventTicketType->max_available,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
@@ -107,6 +109,10 @@ class EventTicketTypeRepository
                 ->where('id', $eventTicketType->id)
                 ->update([
                     'event_id' => $eventTicketType->event_id,
+                    'label' => $eventTicketType->label,
+                    'description' => $eventTicketType->description,
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
+                    'max_available' => $eventTicketType->max_available,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
@@ -182,6 +188,8 @@ class EventTicketTypeRepository
             ->select(
                 'id',
                 'event_id',
+                'label',
+                'description',
                 'price',
                 'max_available',
                 'created_at',
