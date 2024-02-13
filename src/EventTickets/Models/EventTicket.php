@@ -114,7 +114,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function delete(): bool
     {
-        give(EventTicketRepository::class)->delete($this);
+        return give(EventTicketRepository::class)->delete($this);
     }
 
     /**
