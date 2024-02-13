@@ -102,7 +102,6 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
      * @since 3.0.0
      *
      * @return Node|null
