@@ -367,7 +367,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased updated to be field specific and prevent overwriting of existing values
+     * @since 3.4.1 updated to be field specific and prevent overwriting of existing values
      * @since 3.0.0
      */
     protected function mapGenericBlockAttributesToField(BlockModel $block, Field $field): Node

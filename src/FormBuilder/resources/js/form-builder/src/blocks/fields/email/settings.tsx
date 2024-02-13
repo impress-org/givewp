@@ -7,7 +7,7 @@ import {Path, SVG} from '@wordpress/components';
 import {BlockEditProps} from '@wordpress/blocks';
 
 /**
- * @unreleased updated default required attribute to be true on block and edit component
+ * @since 3.4.1 updated default required attribute to be true on block and edit component
  * @since 3.0.0
  */
 const settings: FieldBlock['settings'] = {
