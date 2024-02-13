@@ -13,6 +13,10 @@ use Give\Framework\FieldsAPI\Text;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @since 3.0.0
+ * @covers \Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi
+ */
 final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 {
     use RefreshDatabase;
@@ -20,10 +24,9 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     /**
      * @since 3.0.0
      *
-     * @return void
      * @throws Exception
      */
-    public function testShouldReturnFormSchema()
+    public function testShouldReturnFormSchema(): void
     {
         $block = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
@@ -52,7 +55,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $blocks = BlockCollection::make([$block]);
 
-        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        [$formSchema, $blockNodeRelationships] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');
@@ -74,10 +77,9 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     /**
      * @since 3.0.0
      *
-     * @return void
      * @throws Exception
      */
-    public function testShouldReturnFormSchemaUsingFilter()
+    public function testShouldReturnFormSchemaUsingFilter(): void
     {
         $section = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
@@ -118,7 +120,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             3
         );
 
-        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        [$formSchema, $blockNodeRelationships] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');
@@ -130,5 +132,51 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
         );
 
         $this->assertEquals($formSchema, $form);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMapGenericFieldAttributesShouldRespectExistingRules(): void
+    {
+        $section = BlockModel::make([
+            'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
+            'name' => 'givewp/section',
+            'isValid' => true,
+            'attributes' => [
+                'title' => 'custom section title',
+                'description' => 'custom section description',
+            ],
+            'innerBlocks' => [
+                [
+                    'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
+                    'name' => 'givewp/givewp-custom-block',
+                    'isValid' => true,
+                    'attributes' => [
+                        'label' => 'GiveWP Custom Block',
+                        'required' => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        $formId = 1;
+
+        $blocks = BlockCollection::make([$section]);
+
+        add_filter(
+            'givewp_donation_form_block_render_givewp/givewp-custom-block',
+            static function ($node, BlockModel $block, int $blockIndex) {
+                return Email::make('givewp-custom-block')->required();
+            },
+            10,
+            3
+        );
+
+        [$form] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+
+        $this->assertTrue($form->getNodeByName('givewp-custom-block')->isRequired());
     }
 }
