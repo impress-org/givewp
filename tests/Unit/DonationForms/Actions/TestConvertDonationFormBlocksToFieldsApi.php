@@ -156,7 +156,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'GiveWP Custom Block',
-                        'required' => false,
+                        'isRequired' => false,
                     ],
                 ],
             ],
