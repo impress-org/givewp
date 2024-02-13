@@ -32,7 +32,7 @@ class GiftAid extends FormMigrationStep
             'longExplanationEnabled' => $this->formV2->getGiftAidLongExplanationEnabled(),
             'linkText' => __('Tell me more', 'give-gift-aid'),
             'modalHeader' => __('What is Gift Aid?', 'give-gift-aid'),
-            'longExplanation' => $this->formV2->getGiftAidLongExplanation(),
+            'longExplanation' => str_replace(__('What is Gift Aid?', 'give-gift-aid'), '', $this->formV2->getGiftAidLongExplanation()),
             'checkboxLabel' => $this->formV2->getGiftAidCheckboxLabel(),
             'agreementText' => $this->formV2->getGiftAidAgreementText(),
             'declarationForm' => $this->formV2->getGiftAidDeclarationForm(),
@@ -42,6 +42,7 @@ class GiftAid extends FormMigrationStep
             'name' => 'givewp-gift-aid/gift-aid',
             'attributes' => $giftAidSettings,
         ]);
+
         $this->fieldBlocks->insertAfter('givewp/donation-amount', $giftAidBlock);
     }
 }
