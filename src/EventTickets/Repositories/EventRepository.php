@@ -24,7 +24,8 @@ class EventRepository
      * @var string[]
      */
     private $requiredProperties = [
-        //
+        'title',
+        'startDateTime',
     ];
 
     /**
@@ -54,7 +55,7 @@ class EventRepository
 
         Hooks::doAction('givewp_events_event_creating', $event);
 
-        $createdDateTime = Temporal::withoutMicroseconds($event->created_at ?: Temporal::getCurrentDateTime());
+        $createdDateTime = Temporal::withoutMicroseconds($event->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -64,9 +65,8 @@ class EventRepository
                     'id' => $event->id,
                     'title' => $event->title,
                     'description' => $event->description,
-                    'start_datetime' => $event->start_datetime ? $event->start_datetime->format('Y-m-d H:i:s') : null,
-                    'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
-                    'ticket_close_datetime' => $event->ticket_close_datetime ? $event->ticket_close_datetime->format('Y-m-d H:i:s') : null,
+                    'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
+                    'end_datetime' => $event->endDateTime ? $event->endDateTime->format('Y-m-d H:i:s') : null,
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
@@ -78,8 +78,8 @@ class EventRepository
             throw new $exception('Failed creating an event');
         }
 
-        $event->created_at = $createdDateTime;
-        $event->updated_at = $createdDateTime;
+        $event->createdAt = $createdDateTime;
+        $event->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -108,9 +108,8 @@ class EventRepository
                 ->where('id', $event->id)
                 ->update([
                     'description' => $event->description,
-                    'start_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
-                    'end_datetime' => $event->start_datetime->format('Y-m-d H:i:s'),
-                    'ticket_close_datetime' => $event->ticket_close_datetime->format('Y-m-d H:i:s'),
+                    'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
+                    'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
                     'updated_at' => $updatedTimeDate->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
@@ -191,7 +190,6 @@ class EventRepository
                 'description',
                 'start_datetime',
                 'end_datetime',
-                'ticket_close_datetime',
                 'created_at',
                 'updated_at'
             );

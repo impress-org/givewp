@@ -3,8 +3,8 @@
 namespace Give\EventTickets\Migrations;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
@@ -31,6 +31,7 @@ class CreateEventsTable extends Migration {
 
     /**
      * @inheritdoc
+     * @throws DatabaseMigrationException
      */
     public function run() {
         global $wpdb;
@@ -44,7 +45,6 @@ class CreateEventsTable extends Migration {
 			description TEXT NULL,
 			start_datetime DATETIME NULL,
 			end_datetime DATETIME NULL,
-			ticket_close_datetime DATETIME NULL,
             created_at DATETIME NOT NULL,
 			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)

@@ -26,11 +26,9 @@ class EventTicketRepository
      * @var string[]
      */
     private $requiredProperties = [
-        'event_id',
-        'ticket_type_id',
-        'donation_id',
-        'created_at',
-        'updated_at',
+        'eventId',
+        'ticketTypeId',
+        'donationId',
     ];
 
     /**
@@ -60,17 +58,16 @@ class EventTicketRepository
 
         Hooks::doAction('givewp_events_event_ticket_creating', $eventTicket);
 
-        $createdDateTime = Temporal::withoutMicroseconds($eventTicket->created_at ?: Temporal::getCurrentDateTime());
+        $createdDateTime = Temporal::withoutMicroseconds($eventTicket->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_event_tickets')
                 ->insert([
-                    'id' => $eventTicket->id,
-                    'event_id' => $eventTicket->event_id,
-                    'ticket_type_id' => $eventTicket->ticket_type_id,
-                    'donation_id' => $eventTicket->donation_id,
+                    'event_id' => $eventTicket->eventId,
+                    'ticket_type_id' => $eventTicket->ticketTypeId,
+                    'donation_id' => $eventTicket->donationId,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -109,9 +106,9 @@ class EventTicketRepository
             DB::table('give_event_tickets')
                 ->where('id', $eventTicket->id)
                 ->update([
-                    'event_id' => $eventTicket->event_id,
-                    'ticket_type_id' => $eventTicket->ticket_type_id,
-                    'donation_id' => $eventTicket->donation_id,
+                    'event_id' => $eventTicket->eventId,
+                    'ticket_type_id' => $eventTicket->ticketTypeId,
+                    'donation_id' => $eventTicket->donationId,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
