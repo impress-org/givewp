@@ -67,11 +67,11 @@ class EnqueueFormBuilderScripts
         }
 
         foreach ($ticketTypes as $ticketType) {
-            $ticketTypeArray = $ticketType->toArray();
-            $ticketTypeArray['price'] = $ticketTypeArray['price']->formatToDecimal();
+            $ticketType = $ticketType->toArray();
+            $ticketType['price'] = $ticketType['price']->formatToDecimal();
 
-            if (isset($eventData[$ticketType->event_id])) {
-                $eventData[$ticketType->event_id]['ticketTypes'][] = $ticketTypeArray;
+            if (isset($eventData[$ticketType['event_id']])) {
+                $eventData[$ticketType['event_id']]['ticketTypes'][] = $ticketType;
             }
         }
 
