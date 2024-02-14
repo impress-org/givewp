@@ -60,15 +60,16 @@ class EventTicketTypeRepository
         try {
             DB::table('give_event_ticket_types')
                 ->insert([
-                    'id' => $eventTicketType->id,
                     'event_id' => $eventTicketType->event_id,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToMinorAmount(),
+                    'price' => $eventTicketType->price->formatToDecimal(),
                     'max_available' => $eventTicketType->max_available,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
+
+            $eventTicketType->id = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

@@ -2,7 +2,7 @@
 
 namespace Give\EventTickets\Repositories;
 
-use Give\Donations\Models\DonationNote;
+use Give\EventTickets\Models\Event;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -10,7 +10,6 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\EventTickets\Models\Event;
 
 /**
  * @unreleased
@@ -61,7 +60,6 @@ class EventRepository
         try {
             DB::table('give_events')
                 ->insert([
-                    'id' => $event->id,
                     'title' => $event->title,
                     'description' => $event->description,
                     'start_datetime' => $event->start_datetime ? $event->start_datetime->format('Y-m-d H:i:s') : null,
@@ -70,6 +68,8 @@ class EventRepository
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
+
+            $event->id = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
