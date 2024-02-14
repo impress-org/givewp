@@ -3,6 +3,8 @@
  * This template is used to display the donation summary with [give_receipt]
  */
 
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+
 global $give_receipt_args, $donation;
 
 // Validation: Ensure $donation var is set.
@@ -10,8 +12,12 @@ if ( empty( $donation ) ) {
 	$donation = ! empty( $give_receipt_args['id'] ) ? get_post( $give_receipt_args['id'] ) : 0;
 }
 
-// Double-Validation: Check for $donation global.
-if ( empty( $donation ) ) {
+/**
+ * Double-Validation: Check for $donation global.
+ *
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
+ */
+if ( ! is_object($donation) || ! ShortcodeUtils::isValidDonation($donation->ID)) {
 	Give_Notices::print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
 	return;
 }

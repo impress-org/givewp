@@ -23,8 +23,9 @@ class PerFormGateways extends FormMigrationStep
             foreach ($perFormGateways as $key => $checked) {
                 if (in_array($key, $compatibleGateways)) {
                     $gateways[] = [
-                        'key' => $key,
+                        'id' => $key,
                         'label' => give_get_gateway_checkout_label($key),
+                        'value' => $key,
                         'checked' => (bool)$checked,
                     ];
                 }

@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 3.4.0
  */
 export default function HeaderTextWrapper({children}) {
     const {designSettingsImageStyle} = window.givewp.form.hooks.useDonationFormSettings();
