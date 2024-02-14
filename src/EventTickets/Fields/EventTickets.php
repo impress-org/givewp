@@ -9,7 +9,7 @@ class EventTickets extends Field
     protected $title;
     protected $date;
     protected $description;
-    protected $tickets = [];
+    protected $ticketTypes = [];
 
     const TYPE = 'eventTickets';
 
@@ -67,17 +67,17 @@ class EventTickets extends Field
     /**
      * @unreleased
      */
-    public function getTickets(): array
+    public function getTicketTypes(): array
     {
-        return $this->tickets;
+        return $this->ticketTypes;
     }
 
     /**
      * @unreleased
      */
-    public function tickets(array $tickets): EventTickets
+    public function ticketTypes(array $ticketTypes): EventTickets
     {
-        $this->tickets = $tickets;
+        $this->ticketTypes = $ticketTypes;
         return $this;
     }
 

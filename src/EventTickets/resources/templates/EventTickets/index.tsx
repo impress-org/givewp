@@ -6,11 +6,12 @@ import {Event} from '../../components/types';
 import './styles.scss';
 
 export default function EventTicketsField({
+    name,
     id,
     title,
     date,
     description,
-    tickets,
+    ticketTypes,
     ticketsLabel,
     soldOutMessage,
 }: Event) {
@@ -20,12 +21,7 @@ export default function EventTicketsField({
 
             {description && <EventTicketsDescription description={description} />}
 
-            <EventTicketsListHOC
-                name={'event-tickets'}
-                tickets={tickets}
-                ticketsLabel={ticketsLabel}
-                soldOutMessage={soldOutMessage}
-            />
+            <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />
         </div>
     );
 }

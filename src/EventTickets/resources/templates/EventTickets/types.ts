@@ -1,10 +1,9 @@
-import {Ticket} from '../../components/types';
+import {TicketType} from '../../components/types';
 
 export type EventTicketsListHOCProps = {
     name: string;
-    tickets: Ticket[];
+    ticketTypes: TicketType[];
     ticketsLabel: string;
-    soldOutMessage: string;
 };
 
 export interface OnSelectTicketProps {

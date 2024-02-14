@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import EventTicketsList from '../../components/EventTicketsList';
 import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
 
-export default function EventTicketsListHOC({name, tickets, ticketsLabel, soldOutMessage}: EventTicketsListHOCProps) {
+export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: EventTicketsListHOCProps) {
     const [selectedTickets, setSelectedTickets] = useState([]);
     const {useWatch, useCurrencyFormatter, useDonationSummary, useFormContext} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
@@ -14,13 +14,13 @@ export default function EventTicketsListHOC({name, tickets, ticketsLabel, soldOu
         let amount = 0;
 
         Object.keys(selectedTickets).forEach((ticketId) => {
-            const ticket = tickets.find((ticket) => ticket.id === Number(ticketId));
+            const ticket = ticketTypes.find((ticketType) => ticketType.id === Number(ticketId));
             const quantity = selectedTickets[ticketId]?.quantity ?? 0;
 
             if (quantity > 0) {
                 donationSummary.addItem({
                     id: `eventTickets-${ticketId}`,
-                    label: `Ticket (${ticket.name})`,
+                    label: `Ticket (${ticket.label})`,
                     value: formatter.format(ticket.price * quantity),
                 });
                 amount += ticket.price * quantity;
@@ -36,15 +36,15 @@ export default function EventTicketsListHOC({name, tickets, ticketsLabel, soldOu
         }
 
         setValue(name, JSON.stringify(Object.values(selectedTickets)));
-    }, [tickets, selectedTickets]);
+    }, [ticketTypes, selectedTickets]);
 
-    const onSelectTicket: OnSelectTicketProps = (ticketId, ticketQuantity, ticketPrice) => (selectedQuantity) => {
+    const onSelectTicket: OnSelectTicketProps = (ticketId, ticketMaxAvailable, ticketPrice) => (selectedQuantity) => {
         if (selectedQuantity < 0) {
             selectedQuantity = 0;
         }
 
-        if (selectedQuantity > ticketQuantity) {
-            selectedQuantity = ticketQuantity;
+        if (selectedQuantity > ticketMaxAvailable) {
+            selectedQuantity = ticketMaxAvailable;
         }
 
         setSelectedTickets((selectedTickets) => {
@@ -64,9 +64,8 @@ export default function EventTicketsListHOC({name, tickets, ticketsLabel, soldOu
 
     return (
         <EventTicketsList
-            tickets={tickets}
+            ticketTypes={ticketTypes}
             ticketsLabel={ticketsLabel}
-            soldOutMessage={soldOutMessage}
             currency={currency}
             selectedTickets={selectedTickets}
             handleSelect={onSelectTicket}

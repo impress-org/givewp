@@ -2,23 +2,28 @@ import EventTicketsListItem from './EventTicketsListItem';
 import {EventTicketsListProps} from './types';
 
 export default function EventTicketsList({
-    tickets,
+    ticketTypes,
     ticketsLabel,
-    soldOutMessage,
     currency,
     selectedTickets = [],
     handleSelect = null,
 }: EventTicketsListProps) {
+    if (!ticketTypes?.length) {
+        return null;
+    }
+
     return (
         <div className={'givewp-event-tickets__tickets'}>
             <h4>{ticketsLabel}</h4>
-            {tickets.map((ticket) => {
+            {ticketTypes.map((ticketType) => {
                 return (
                     <EventTicketsListItem
-                        ticket={ticket}
-                        selectedTickets={selectedTickets[ticket.id]?.quantity ?? 0}
+                        ticketType={ticketType}
+                        selectedTickets={selectedTickets[ticketType.id]?.quantity ?? 0}
                         handleSelect={
-                            handleSelect ? handleSelect(ticket.id, ticket.quantity, ticket.price) : () => null
+                            handleSelect
+                                ? handleSelect(ticketType.id, ticketType.max_available, ticketType.price)
+                                : () => null
                         }
                         currency={currency}
                     />
