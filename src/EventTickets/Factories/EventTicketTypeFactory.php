@@ -4,6 +4,7 @@ namespace Give\EventTickets\Factories;
 
 use DateTime;
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\ValueObjects\EventTicketTypeStatus;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Support\ValueObjects\Money;
 
@@ -20,6 +21,7 @@ class EventTicketTypeFactory extends ModelFactory
             'description' => $this->faker->paragraph(),
             'price' => Money::fromDecimal($this->faker->numberBetween(10, 100), give_get_currency()),
             'maxTicketsAvailable' => $this->faker->numberBetween(20, 100),
+            'status' => EventTicketTypeStatus::ENABLED(),
             'createdAt' => new DateTime(),
             'updatedAt' => new DateTime(),
         ];

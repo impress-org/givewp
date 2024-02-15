@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Repositories;
 
 use Give\EventTickets\Models\EventTicketType;
+use Give\EventTickets\ValueObjects\EventTicketTypeStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -57,6 +58,7 @@ class EventTicketTypeRepository
         Hooks::doAction('givewp_events_event_ticket_type_creating', $eventTicketType);
 
         $createdDateTime = Temporal::withoutMicroseconds($eventTicketType->createdAt ?: Temporal::getCurrentDateTime());
+        $status = $eventTicketType->status ? $eventTicketType->status->getValue() : EventTicketTypeStatus::ENABLED();
 
         DB::query('START TRANSACTION');
 
@@ -68,6 +70,7 @@ class EventTicketTypeRepository
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
                     'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
+                    'status' => $status,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -100,6 +103,7 @@ class EventTicketTypeRepository
         Hooks::doAction('givewp_events_event_ticket_type_updating', $eventTicketType);
 
         $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $status = $eventTicketType->status ? $eventTicketType->status->getValue() : EventTicketTypeStatus::ENABLED();
 
         DB::query('START TRANSACTION');
 
@@ -113,6 +117,7 @@ class EventTicketTypeRepository
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
                     'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
+                    'status' => $status,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {

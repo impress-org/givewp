@@ -7,6 +7,7 @@ use Give\EventTickets\Factories\EventTicketTypeFactory;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
+use Give\EventTickets\ValueObjects\EventTicketTypeStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -31,6 +32,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         'description' => 'string',
         'price' => Money::class,
         'maxTicketsAvailable' => 'int',
+        'status' => EventTicketTypeStatus::class,
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -148,6 +150,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
             'description' => $object->description,
             'price' => Money::fromDecimal($object->price, give_get_currency()),
             'maxTicketsAvailable' => (int)$object->max_tickets_available,
+            'status' => new EventTicketTypeStatus($object->status),
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);
