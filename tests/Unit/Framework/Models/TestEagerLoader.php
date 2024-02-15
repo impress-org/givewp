@@ -48,7 +48,7 @@ class TestEagerLoader extends TestCase
          * 3. To get the subscriptions
          */
         $this->assertQueryCount(3, function() {
-            $eagerLoaderQuery = new EagerLoader(Donor::class, 'subscriptions', Subscription::class, 'customer_id', 'donorId');
+            $eagerLoaderQuery = new EagerLoader(Donor::class, Subscription::class, 'subscriptions', 'customer_id', 'donorId');
             $eagerLoaderQuery->getAll();
         });
     }
