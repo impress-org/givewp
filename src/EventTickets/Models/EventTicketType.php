@@ -47,18 +47,14 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
 
     /**
      * @unreleased
-     *
-     * @return EventTicketType|null
      */
-    public static function find($id)
+    public static function find($id): ?EventTicketType
     {
         return give(EventTicketTypeRepository::class)->getById($id);
     }
 
     /**
      * @unreleased
-     *
-     * @return ModelQueryBuilder
      */
     public static function findByEvent($eventId): ModelQueryBuilder
     {
@@ -68,7 +64,6 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return $this
      * @throws Exception|InvalidArgumentException
      */
     public static function create(array $attributes): EventTicketType
@@ -83,10 +78,9 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return void
      * @throws Exception|InvalidArgumentException
      */
-    public function save()
+    public function save(): void
     {
         if (!$this->id) {
             give(EventTicketTypeRepository::class)->insert($this);
