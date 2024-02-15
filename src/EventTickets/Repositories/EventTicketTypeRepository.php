@@ -26,7 +26,7 @@ class EventTicketTypeRepository
         'eventId',
         'label',
         'price',
-        'max_available',
+        'ticketsTotal',
     ];
 
     /**
@@ -67,7 +67,7 @@ class EventTicketTypeRepository
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->maxAvailable,
+                    'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -112,7 +112,7 @@ class EventTicketTypeRepository
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->maxAvailable,
+                    'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
@@ -191,7 +191,7 @@ class EventTicketTypeRepository
                 'label',
                 'description',
                 'price',
-                'max_available',
+                'total_tickets',
                 'created_at',
                 'updated_at'
             );

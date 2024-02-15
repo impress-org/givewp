@@ -44,8 +44,8 @@ class CreateEventTicketTypesTable extends Migration {
 			event_id INT UNSIGNED NOT NULL,
 			label TEXT NULL,
 			description TEXT NULL,
-			price INT UNSIGNED NULL,
-			max_available INT UNSIGNED NULL,
+			price DECIMAL(18,10) NOT NULL,
+			max_tickets_available INT UNSIGNED NULL,
 			created_at DATETIME NOT NULL,
 			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)

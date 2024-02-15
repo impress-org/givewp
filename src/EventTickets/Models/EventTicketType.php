@@ -30,7 +30,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         'label' => 'string',
         'description' => 'string',
         'price' => Money::class,
-        'totalTickets' => 'int',
+        'maxTicketsAvailable' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -147,7 +147,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
             'label' => $object->label,
             'description' => $object->description,
             'price' => Money::fromDecimal($object->price, give_get_currency()),
-            'maxAvailable' => (int)$object->max_available,
+            'maxTicketsAvailable' => (int)$object->max_tickets_available,
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);
