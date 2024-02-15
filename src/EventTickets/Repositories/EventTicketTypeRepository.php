@@ -189,7 +189,8 @@ class EventTicketTypeRepository
                 'label',
                 'description',
                 'price',
-                'total_tickets',
+                'max_tickets_available',
+                'status',
                 'created_at',
                 'updated_at'
             );
