@@ -63,7 +63,7 @@ class EventTicketTypeRepository
                     'event_id' => $eventTicketType->event_id,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToDecimal(),
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
                     'max_available' => $eventTicketType->max_available,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
