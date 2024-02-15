@@ -198,6 +198,17 @@ class EventTicketRepository
         return $this->prepareQuery()
             ->where('ticket_type_id', $ticketTypeId);
     }
+
+    /**
+     * @unreleased
+     */
+    public function countByTicketTypeId(int $ticketTypeId): int
+    {
+        return $this->prepareQuery()
+            ->where('ticket_type_id', $ticketTypeId)
+            ->count();
+    }
+
     /**
      * @unreleased
      *
