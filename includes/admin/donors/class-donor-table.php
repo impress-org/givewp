@@ -72,7 +72,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-     * @unreleased Escape search attribute.
+     * @unreleased Escape search query string.
 	 * @since 2.4.0
 	 * @return void
 	 */
@@ -483,7 +483,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
-     * @unreleased Escape search attribute.
+     * @unreleased Escape search query string.
 	 * @since  1.8.1
 	 * @access public
 	 *
