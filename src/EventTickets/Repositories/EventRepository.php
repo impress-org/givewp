@@ -72,6 +72,8 @@ class EventRepository
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
+
+            $event->id = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
