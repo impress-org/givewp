@@ -359,6 +359,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Retrieves the search query string.
 	 *
 	 * @access public
+     * @unreleased Scape "s" later
 	 * @since  1.0
 	 *
 	 * @return mixed string If search is present, false otherwise.
@@ -369,9 +370,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return false;
 		}
 
-		$search = esc_attr( $_GET['s'] );
+        $search = esc_attr(urldecode(trim($_GET['s'])));
 
-		return ! empty( $search ) ? urldecode( trim( $search ) ) : false;
+        return ! empty($search) ? $search : false;
 	}
 
 	/**
