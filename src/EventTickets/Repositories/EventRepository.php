@@ -70,7 +70,7 @@ class EventRepository
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
-            $event->id = DB::last_insert_id();
+            $eventId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -79,6 +79,7 @@ class EventRepository
             throw new $exception('Failed creating an event');
         }
 
+        $event->id = $eventId;
         $event->createdAt = $createdDateTime;
         $event->updatedAt = $createdDateTime;
 
@@ -100,7 +101,7 @@ class EventRepository
 
         Hooks::doAction('givewp_events_event_updating', $event);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -111,7 +112,7 @@ class EventRepository
                     'description' => $event->description,
                     'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
                     'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
-                    'updated_at' => $updatedTimeDate->format('Y-m-d H:i:s'),
+                    'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -121,7 +122,7 @@ class EventRepository
             throw new $exception('Failed updating an event');
         }
 
-        $event->updatedAt = $updatedTimeDate;
+        $event->updatedAt = $updatedDateTime;
 
         DB::query('COMMIT');
 

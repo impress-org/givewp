@@ -75,7 +75,7 @@ class EventTicketTypeRepository
                     'updated_at' => $createdDateTime,
                 ]);
 
-            $eventTicketType->id = DB::last_insert_id();
+            $eventTicketTypeId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -83,6 +83,10 @@ class EventTicketTypeRepository
 
             throw new $exception('Failed creating an event ticket type');
         }
+
+        $eventTicketType->id = $eventTicketTypeId;
+        $eventTicketType->createdAt = $createdDateTime;
+        $eventTicketType->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -102,7 +106,7 @@ class EventTicketTypeRepository
 
         Hooks::doAction('givewp_events_event_ticket_type_updating', $eventTicketType);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $status = $eventTicketType->status ? $eventTicketType->status->getValue() : EventTicketTypeStatus::ENABLED();
 
         DB::query('START TRANSACTION');
@@ -118,7 +122,7 @@ class EventTicketTypeRepository
                     'price' => $eventTicketType->price->formatToDecimal(),
                     'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
                     'status' => $status,
-                    'updated_at' => $updatedTimeDate,
+                    'updated_at' => $updatedDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -127,6 +131,8 @@ class EventTicketTypeRepository
 
             throw new $exception('Failed updating an event ticket type');
         }
+
+        $eventTicketType->updatedAt = $updatedDateTime;
 
         DB::query('COMMIT');
 

@@ -69,7 +69,7 @@ class EventTicketRepository
                     'updated_at' => $createdDateTime,
                 ]);
 
-            $eventTicket->id = DB::last_insert_id();
+            $eventTicketId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -77,6 +77,10 @@ class EventTicketRepository
 
             throw new $exception('Failed creating an event ticket');
         }
+
+        $eventTicket->id = $eventTicketId;
+        $eventTicket->createdAt = $createdDateTime;
+        $eventTicket->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -96,7 +100,7 @@ class EventTicketRepository
 
         Hooks::doAction('givewp_events_event_ticket_updating', $eventTicket);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -108,7 +112,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'updated_at' => $updatedTimeDate,
+                    'updated_at' => $updatedDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -117,6 +121,8 @@ class EventTicketRepository
 
             throw new $exception('Failed updating an event ticket');
         }
+
+        $eventTicket->updatedAt = $updatedDateTime;
 
         DB::query('COMMIT');
 
