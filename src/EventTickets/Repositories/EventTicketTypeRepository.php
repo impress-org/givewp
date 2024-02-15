@@ -32,12 +32,8 @@ class EventTicketTypeRepository
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return EventTicketType|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?EventTicketType
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -47,11 +43,9 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(EventTicketType $eventTicketType)
+    public function insert(EventTicketType $eventTicketType): void
     {
         $this->validate($eventTicketType);
 
@@ -96,11 +90,9 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(EventTicketType $eventTicketType)
+    public function update(EventTicketType $eventTicketType): void
     {
         $this->validate($eventTicketType);
 
@@ -142,9 +134,6 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(EventTicketType $eventTicketType): bool
@@ -174,12 +163,8 @@ class EventTicketTypeRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicketType $eventTicketType
-     *
-     * @return void
      */
-    private function validate(EventTicketType $eventTicketType)
+    private function validate(EventTicketType $eventTicketType): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicketType->$key)) {
@@ -189,6 +174,8 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return ModelQueryBuilder<EventTicketType>
      */
     public function prepareQuery(): ModelQueryBuilder
@@ -210,10 +197,6 @@ class EventTicketTypeRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {

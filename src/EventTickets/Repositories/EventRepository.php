@@ -29,12 +29,8 @@ class EventRepository
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return Event|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?Event
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -44,11 +40,9 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(Event $event)
+    public function insert(Event $event): void
     {
         $this->validate($event);
 
@@ -91,11 +85,9 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(Event $event)
+    public function update(Event $event): void
     {
         $this->validate($event);
 
@@ -132,9 +124,6 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(Event $event): bool
@@ -164,12 +153,8 @@ class EventRepository
 
     /**
      * @unreleased
-     *
-     * @param Event $event
-     *
-     * @return void
      */
-    private function validate(Event $event)
+    private function validate(Event $event): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($event->$key)) {
@@ -179,6 +164,8 @@ class EventRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return ModelQueryBuilder<Event>
      */
     public function prepareQuery(): ModelQueryBuilder

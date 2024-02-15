@@ -30,12 +30,8 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return EventTicket|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?EventTicket
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -44,8 +40,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicket $eventTicket
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -90,8 +84,6 @@ class EventTicketRepository
     /**
      * @unreleased
      *
-     * @param EventTicket $eventTicket
-     *
      * @throws Exception|InvalidArgumentException
      */
     public function update(EventTicket $eventTicket)
@@ -132,9 +124,6 @@ class EventTicketRepository
     /**
      * @unreleased
      *
-     * @param EventTicket $eventTicket
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(EventTicket $eventTicket): bool
@@ -164,12 +153,8 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicket $eventTicket
-     *
-     * @return void
      */
-    private function validate(EventTicket $eventTicket)
+    private function validate(EventTicket $eventTicket): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicket->$key)) {
@@ -198,10 +183,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {
@@ -211,10 +192,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByTicketTypeId(int $ticketTypeId): ModelQueryBuilder
     {
