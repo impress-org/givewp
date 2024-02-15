@@ -106,7 +106,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder<Event>
+     * @return ModelQueryBuilder<EventTicketType>
      */
     public static function query(): ModelQueryBuilder
     {
@@ -131,7 +131,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function eventTickets(): ModelQueryBuilder
     {
-        return give(EventTicketRepository::class)->queryByEventId($this->id);
+        return give(EventTicketRepository::class)->queryByEventId($this->eventId);
     }
 
     /**

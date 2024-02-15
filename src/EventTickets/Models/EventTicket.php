@@ -27,7 +27,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int', // @todo Maybe use UUID instead of auto-incrementing integer
         'eventId' => 'int',
-        'ticketType' => 'int',
+        'ticketTypeId' => 'int',
         'donationId' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
@@ -117,7 +117,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder<Event>
+     * @return ModelQueryBuilder<EventTicket>
      */
     public static function query(): ModelQueryBuilder
     {
@@ -131,7 +131,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function event(): ModelQueryBuilder
     {
-        return give(EventRepository::class)->queryById($this->event_id);
+        return give(EventRepository::class)->queryById($this->eventId);
     }
 
     /**
@@ -141,7 +141,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function ticketType(): ModelQueryBuilder
     {
-        return give(EventTicketTypeRepository::class)->queryById($this->ticket_type_id);
+        return give(EventTicketTypeRepository::class)->queryById($this->ticketTypeId);
     }
 
 
@@ -152,7 +152,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function donation(): ModelQueryBuilder
     {
-        return give()->donations->queryById($this->ticket_type_id);
+        return give()->donations->queryById($this->donationId);
     }
 
     /**
