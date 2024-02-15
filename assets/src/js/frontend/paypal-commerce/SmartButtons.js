@@ -149,11 +149,12 @@ class SmartButtons extends PaymentMethod {
      * @unreleased
      */
     observeAmount() {
-        const giveAmount = this.form.querySelector('#give-amount');
+        const $this = this;
+        const giveAmount = $this.form.querySelector('#give-amount');
 
         if (!!giveAmount) {
             const observer = new MutationObserver(function (mutations) {
-                this.updateOrderAmount = true;
+                $this.updateOrderAmount = true;
             });
 
             const config = {
