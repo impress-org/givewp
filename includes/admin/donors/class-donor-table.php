@@ -72,6 +72,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
+     * @unreleased Escape search attribute.
 	 * @since 2.4.0
 	 * @return void
 	 */
@@ -85,7 +86,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 		?>
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
-				<input type="text" id="give-donors-search-input" placeholder="<?php _e( 'Name, Email, or Donor ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+                <input type="text" id="give-donors-search-input" placeholder="<?php
+                _e('Name, Email, or Donor ID', 'give'); ?>" name="s" value="<?php
+                echo esc_attr($search); ?>">
 				<?php
 				submit_button(
 					__( 'Search', 'give' ),
@@ -359,7 +362,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * Retrieves the search query string.
 	 *
 	 * @access public
-     * @unreleased Scape "s" later
+     * @unreleased Remove escape function
 	 * @since  1.0
 	 *
 	 * @return mixed string If search is present, false otherwise.
@@ -370,7 +373,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return false;
 		}
 
-        $search = esc_attr(urldecode(trim($_GET['s'])));
+        $search = urldecode(trim($_GET['s']));
 
         return ! empty($search) ? $search : false;
 	}
@@ -480,6 +483,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Get donor query.
 	 *
+     * @unreleased Escape search attribute.
 	 * @since  1.8.1
 	 * @access public
 	 *
@@ -505,7 +509,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'donor'      => $donor,
-			's'          => $search,
+            's' => esc_sql($search),
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
