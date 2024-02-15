@@ -3,7 +3,7 @@
 namespace Give\Tests\Unit\Donors\Endpoints;
 
 use Exception;
-use Give\Donors\Endpoints\ListDonors;
+use Give\Donors\Endpoints\ListEvents;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
 use Give\Tests\TestCase;
@@ -31,7 +31,7 @@ class TestListDonors extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
 
-        $listDonors = new ListDonors();
+        $listDonors = new ListEvents();
 
         $response = $listDonors->handleRequest($mockRequest);
 
@@ -58,7 +58,7 @@ class TestListDonors extends TestCase
 
         $expectedItems = $this->getMockColumns($donors,$sortDirection);
 
-        $listDonors = new ListDonors();
+        $listDonors = new ListEvents();
 
         $response = $listDonors->handleRequest($mockRequest);
 

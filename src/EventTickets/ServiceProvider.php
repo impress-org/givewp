@@ -4,6 +4,7 @@ namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\EventTickets\Hooks\DonationFormBlockRender;
+use Give\EventTickets\Hooks\EventTicketsAdminPage;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
@@ -17,12 +18,13 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function register(): void
     {
-        if( ! FeatureFlag::eventTickets() ) {
+        if (!FeatureFlag::eventTickets()) {
             return;
         }
 
@@ -37,21 +39,66 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function boot(): void
     {
-        if( ! FeatureFlag::eventTickets() ) {
+        if (!FeatureFlag::eventTickets()) {
             return;
         }
 
-        give( MigrationsRegister::class )->addMigrations([
+        $this->registerMigrations();
+        $this->registerRoutes();
+        $this->registerEventTicketsAdminPage();
+        $this->registerFormExtension();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerMigrations(): void
+    {
+        give(MigrationsRegister::class)->addMigrations([
             Migrations\CreateEventsTable::class,
             Migrations\CreateEventTicketTypesTable::class,
             Migrations\CreateEventTicketsTable::class,
         ]);
+    }
 
+    /**
+     * @unreleased
+     */
+    private function registerRoutes(): void
+    {
+        Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventForms::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerEventTicketsAdminPage(): void
+    {
+        Hooks::addAction('admin_menu', EventTicketsAdminPage::class, 'registerMenuItem', 15);
+
+        if (EventTicketsAdminPage::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', EventTicketsAdminPage::class, 'loadScripts');
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerFormExtension()
+    {
         Hooks::addAction('givewp_form_builder_enqueue_scripts', Actions\EnqueueFormBuilderScripts::class);
         Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
         Hooks::addFilter(
@@ -61,14 +108,5 @@ class ServiceProvider implements ServiceProviderInterface
             10,
             4
         );
-
-        Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEventForms::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
     }
 }
