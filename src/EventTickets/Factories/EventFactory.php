@@ -19,6 +19,7 @@ class EventFactory extends ModelFactory
             'description' => $this->faker->paragraph(),
             'startDateTime' => $startDateTime,
             'endDateTime' => $startDateTime->modify('+1 hour'),
+            'ticketCloseDateTime' => null,
             'createdAt' => new DateTime(),
             'updatedAt' => new DateTime(),
         ];

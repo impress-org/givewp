@@ -45,6 +45,7 @@ class CreateEventsTable extends Migration {
 			description TEXT NULL,
 			start_datetime DATETIME NULL,
 			end_datetime DATETIME NULL,
+			ticket_close_datetime DATETIME NULL,
             created_at DATETIME NOT NULL,
 			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)

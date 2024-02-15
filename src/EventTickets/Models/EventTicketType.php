@@ -3,20 +3,17 @@
 namespace Give\EventTickets\Models;
 
 use DateTime;
-use Give\Donations\Factories\DonationNoteFactory;
-use Give\Donations\ValueObjects\DonationNoteType;
+use Give\EventTickets\Factories\EventTicketTypeFactory;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
-use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\EventTickets\Factories\EventTicketTypeFactory;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
@@ -150,7 +147,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
             'label' => $object->label,
             'description' => $object->description,
             'price' => Money::fromDecimal($object->price, give_get_currency()),
-            'totalTickets' => (int)$object->total_tickets,
+            'maxAvailable' => (int)$object->max_available,
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);

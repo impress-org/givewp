@@ -2,7 +2,7 @@
 
 namespace Give\EventTickets\Repositories;
 
-use Give\Donations\Models\DonationNote;
+use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -10,8 +10,6 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\EventTickets\Models\Event;
-use Give\EventTickets\Models\EventTicketType;
 
 /**
  * @unreleased
@@ -28,7 +26,7 @@ class EventTicketTypeRepository
         'eventId',
         'label',
         'price',
-        'total_tickets',
+        'max_available',
     ];
 
     /**
@@ -68,8 +66,8 @@ class EventTicketTypeRepository
                     'event_id' => $eventTicketType->eventId,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToDecimal(),
-                    'total_tickets' => $eventTicketType->totalTickets,
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
+                    'max_available' => $eventTicketType->maxAvailable,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -111,8 +109,8 @@ class EventTicketTypeRepository
                     'event_id' => $eventTicketType->eventId,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToDecimal(),
-                    'total_tickets' => $eventTicketType->totalTickets,
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
+                    'max_available' => $eventTicketType->maxAvailable,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
@@ -191,7 +189,7 @@ class EventTicketTypeRepository
                 'label',
                 'description',
                 'price',
-                'total_tickets',
+                'max_available',
                 'created_at',
                 'updated_at'
             );
