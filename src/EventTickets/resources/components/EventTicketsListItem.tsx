@@ -30,7 +30,7 @@ export default function EventTicketsListItem({ticketType, currency, selectedTick
                     </button>
                 </div>
                 <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
-                    {ticketType.max_available - selectedTickets} {__('remaining', 'give')}
+                    {ticketType.totalTickets - selectedTickets} {__('remaining', 'give')}
                 </p>
             </div>
         </div>

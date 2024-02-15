@@ -38,13 +38,13 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
         setValue(name, JSON.stringify(Object.values(selectedTickets)));
     }, [ticketTypes, selectedTickets]);
 
-    const onSelectTicket: OnSelectTicketProps = (ticketId, ticketMaxAvailable, ticketPrice) => (selectedQuantity) => {
+    const onSelectTicket: OnSelectTicketProps = (ticketId, totalTickets, ticketPrice) => (selectedQuantity) => {
         if (selectedQuantity < 0) {
             selectedQuantity = 0;
         }
 
-        if (selectedQuantity > ticketMaxAvailable) {
-            selectedQuantity = ticketMaxAvailable;
+        if (selectedQuantity > totalTickets) {
+            selectedQuantity = totalTickets;
         }
 
         setSelectedTickets((selectedTickets) => {

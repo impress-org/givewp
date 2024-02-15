@@ -7,5 +7,5 @@ export type EventTicketsListHOCProps = {
 };
 
 export interface OnSelectTicketProps {
-    (ticketId: number, ticketQuantity: number, ticketPrice: number): (selectedQuantity: number) => void;
+    (ticketId: number, totalTickets: number, ticketPrice: number): (selectedQuantity: number) => void;
 }

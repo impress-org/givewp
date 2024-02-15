@@ -4,7 +4,7 @@ export type Event = {
     id: number;
     name: string;
     title: string;
-    date: Date;
+    startDateTime: Date;
     description: string;
     ticketTypes: TicketType[];
     ticketsLabel: string;
@@ -15,7 +15,7 @@ export type TicketType = {
     id: number;
     label: string;
     description: string;
-    max_available: number;
+    totalTickets: number;
     price: number;
 };
 
