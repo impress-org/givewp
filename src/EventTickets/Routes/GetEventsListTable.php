@@ -109,7 +109,7 @@ class GetEventsListTable
             'id' => $event->id,
             'title' => $this->formatColumnTitle($event),
             'description' => $event->description,
-            'startDate' => $event->start_datetime->format('m/d/Y g:i a'),
+            'startDateTime' => $event->startDateTime->format('m/d/Y g:i a'),
             'ticketsSold' => $event->eventTickets()->count(),
         ];
     }
