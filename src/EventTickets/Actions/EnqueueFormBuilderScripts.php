@@ -70,8 +70,8 @@ class EnqueueFormBuilderScripts
             $ticketType = $ticketType->toArray();
             $ticketType['price'] = $ticketType['price']->formatToDecimal();
 
-            if (isset($eventData[$ticketType['event_id']])) {
-                $eventData[$ticketType['event_id']]['ticketTypes'][] = $ticketType;
+            if (isset($eventData[$ticketType['eventId']])) {
+                $eventData[$ticketType['eventId']]['ticketTypes'][] = $ticketType;
             }
         }
 
