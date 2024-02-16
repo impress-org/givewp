@@ -30,7 +30,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         'label' => 'string',
         'description' => 'string',
         'price' => Money::class,
-        'totalTickets' => 'int',
+        'maxAvailable' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
