@@ -8,44 +8,41 @@ use Give\EventTickets\Models\Event;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @since 2.24.0
+ * @unreleased
  *
  * @extends ModelColumn<Event>
  */
-class BillingPeriodColumn extends ModelColumn
+class DescriptionColumn extends ModelColumn
 {
-
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public static function getId(): string
     {
-        return 'billingPeriod';
+        return 'description';
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function getLabel(): string
     {
-        return __('Billing period', 'give');
+        return __('Description', 'give');
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      *
      * @param Event $model
      */
     public function getCellValue($model): string
     {
-        $label = $model->period->label($model->frequency);
-
-        return ($model->frequency > 1) ? sprintf( $label, $model->frequency) : $label;
+        return wpautop($model->description);
     }
 }

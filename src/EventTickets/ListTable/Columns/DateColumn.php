@@ -12,8 +12,10 @@ use Give\Framework\ListTable\ModelColumn;
  *
  * @extends ModelColumn<Event>
  */
-class AmountColumn extends ModelColumn
+class DateColumn extends ModelColumn
 {
+
+    protected $sortColumn = 'startDateTime';
 
     /**
      * @since 2.24.0
@@ -22,7 +24,7 @@ class AmountColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'amount';
+        return 'startDateTime';
     }
 
     /**
@@ -32,7 +34,7 @@ class AmountColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Amount', 'give');
+        return __('Start Date', 'give');
     }
 
     /**
@@ -44,9 +46,8 @@ class AmountColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
-        return sprintf(
-            '<div class="amount"><span>%s</span></div>',
-            $model->amount->formatToLocale($locale)
-        );
+        $format = _x('m/d/Y \a\t g:ia', 'date format', 'give');
+
+        return $model->startDateTime->format($format);
     }
 }

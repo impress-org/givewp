@@ -8,7 +8,7 @@ use Give\EventTickets\Models\Event;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @since 2.24.0
+ * @unreleased
  *
  * @extends ModelColumn<Event>
  */
@@ -18,9 +18,9 @@ class IdColumn extends ModelColumn
     protected $sortColumn = 'id';
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public static function getId(): string
     {
@@ -28,9 +28,9 @@ class IdColumn extends ModelColumn
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function getLabel(): string
     {
@@ -38,9 +38,9 @@ class IdColumn extends ModelColumn
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      *
      * @param Event $model
      */

@@ -8,52 +8,48 @@ use Give\EventTickets\Models\Event;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @since 2.24.0
+ * @unreleased
  *
  * @extends ModelColumn<Event>
  */
-class DonorColumn extends ModelColumn
+class TitleColumn extends ModelColumn
 {
+    protected $sortColumn = 'title';
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public static function getId(): string
     {
-        return 'donor';
+        return 'title';
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function getLabel(): string
     {
-        return __('Donor name', 'give');
+        return __('Event', 'give');
     }
 
     /**
-     * @since 2.24.0
-     *
      * @inheritDoc
+     *
+     * @unreleased
      *
      * @param Event $model
      */
     public function getCellValue($model): string
     {
-        $name = array_filter( [
-            $model->donor->firstName,
-            $model->donor->lastName,
-        ] );
-
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->donorId"),
-            __('View donor information', 'give'),
-            trim(implode(' ', $name))
+            admin_url("edit.php?post_type=give_forms&page=give-event-tickets&action=edit&event_id={$model->id}"),
+            __('Visit event page', 'give'),
+            $model->title
         );
     }
 }
