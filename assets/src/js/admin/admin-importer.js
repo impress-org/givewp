@@ -138,9 +138,27 @@ function give_import_donation_valid_csv() {
  */
 function give_on_donation_import_ajax() {
     const $form = jQuery('form.tools-setting-page-import');
+    //console.log('$form: ', $form);
     const formData = new FormData($form[0]);
-    const fields = JSON.stringify(Object.fromEntries(formData));
+    //console.log('formData: ', formData);
+
+    const entries = Object.fromEntries(formData);
+    entries.mapto = JSON.stringify(extractAllItems(entries.mapto));
+    entries.mapto = extractAllItems(entries.mapto);
+    console.log('entries.mapto: ', entries.mapto);
+    console.log('entries: ', entries);
+    const fields = JSON.stringify(entries);
     console.log('fields: ', fields);
+
+    function extractAllItems(str) {
+        const re = /"(.*?)"/g;
+        const result = [];
+        let current;
+        while ((current = re.exec(str))) {
+            result.push(current.pop());
+        }
+        return result.length > 0 ? result : [str];
+    }
 
     /**
      * Do not allow user to reload the page
