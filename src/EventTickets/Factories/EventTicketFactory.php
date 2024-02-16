@@ -3,24 +3,26 @@
 namespace Give\EventTickets\Factories;
 
 use DateTime;
+use Exception;
 use Give\Donations\Models\Donation;
-use Give\Framework\Models\Factories\ModelFactory;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
+use Give\Framework\Models\Factories\ModelFactory;
 
 class EventTicketFactory extends ModelFactory
 {
     /**
      * @unreleased
+     * @throws Exception
      */
     public function definition(): array
     {
         return [
-            'event_id' => Event::factory()->create()->id,
-            'ticket_type_id' => EventTicketType::factory()->create()->id,
-            'donation_id' => Donation::factory()->create()->id,
-            'created_at' => new DateTime(),
-            'updated_at' => new DateTime(),
+            'eventId' => Event::factory()->create()->id,
+            'ticketTypeId' => EventTicketType::factory()->create()->id,
+            'donationId' => Donation::factory()->create()->id,
+            'createdAt' => new DateTime(),
+            'updatedAt' => new DateTime(),
         ];
     }
 }
