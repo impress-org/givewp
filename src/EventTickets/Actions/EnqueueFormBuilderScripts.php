@@ -62,7 +62,11 @@ class EnqueueFormBuilderScripts
         $eventData = [];
 
         foreach ($events as $event) {
-            $eventData[$event->id] = $event->toArray();
+            $eventData[$event->id] = array_map(function($propertyValue) {
+                return $propertyValue instanceof \DateTime
+                    ? $propertyValue->format('Y-m-d H:i:s')
+                    : $propertyValue;
+            }, $event->toArray());
             $eventData[$event->id]['ticketTypes'] = [];
         }
 

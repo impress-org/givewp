@@ -25,7 +25,7 @@ class ConvertEventTicketsBlockToFieldsApi
                     $ticketType['price'] = $ticketType['price']->formatToDecimal();
 
                     return $ticketType;
-                }, $event->ticketTypes()->getAll());
+                }, $event->ticketTypes()->getAll() ?? []);
 
                 $eventTicketsField
                     ->title($event->title)
