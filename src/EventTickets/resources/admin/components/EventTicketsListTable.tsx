@@ -4,8 +4,8 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
-import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {EventTicketsRowActions} from './EventTicketsRowActions';
+import styles from './EventTicketsListTable.module.scss';
 
 declare global {
     interface Window {
@@ -41,11 +41,11 @@ const bulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following subscriptions?', 'give')}</p>
+                <p>{__('Really delete the following events?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
+                    {selected.map((eventId, index) => (
+                        <li key={eventId}>
+                            <IdBadge id={eventId} />{' '}
                             <span>
                                 {__('from ', 'give')} <Interweave content={names[index]} />
                             </span>
@@ -63,11 +63,20 @@ const bulkActions: Array<BulkActionsConfig> = [
  * @unreleased
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`;
+    const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-events-icon.svg`;
     return (
-        <div>
+        <div className={styles.container}>
             <img src={imagePath} alt={__('No event created yet', 'give')} />
             <h3>{__('No event created yet', 'give')}</h3>
+            <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first event.', 'give')}</p>
+            <p>
+                <a
+                    href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
+                    className={`button button-primary ${styles.button}`}
+                >
+                    {__('Create event', 'give')}
+                </a>
+            </p>
         </div>
     );
 };
@@ -80,12 +89,13 @@ export default function EventTicketsListTable() {
             pluralName={__('events', 'give')}
             apiSettings={window.GiveEventTickets}
             filterSettings={filters}
+            bulkActions={bulkActions}
             rowActions={EventTicketsRowActions}
             listTableBlankSlate={ListTableBlankSlate()}
         >
             <a
-                className={tableStyles.addFormButton}
-                href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&action=new`}
+                className={`button button-primary ${styles.addEventButton}`}
+                href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
             >
                 {__('Create event', 'give')}
             </a>
