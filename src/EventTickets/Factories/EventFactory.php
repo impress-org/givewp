@@ -3,7 +3,6 @@
 namespace Give\EventTickets\Factories;
 
 use DateTime;
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Models\Factories\ModelFactory;
 
 class EventFactory extends ModelFactory
@@ -13,16 +12,16 @@ class EventFactory extends ModelFactory
      */
     public function definition(): array
     {
-        $start_datetime = $this->faker->dateTimeThisYear('+6 months');
+        $startDateTime = $this->faker->dateTimeThisYear('+6 months');
 
         return [
             'title' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph(),
-            'start_datetime' => $start_datetime,
-            'end_datetime' => $start_datetime->modify('+1 hour'),
-            'ticket_close_datetime' => $start_datetime->modify('-1 day'),
-            'created_at' => new DateTime(),
-            'updated_at' => new DateTime(),
+            'startDateTime' => $startDateTime,
+            'endDateTime' => $startDateTime->modify('+1 hour'),
+            'ticketCloseDateTime' => null,
+            'createdAt' => new DateTime(),
+            'updatedAt' => new DateTime(),
         ];
     }
 }

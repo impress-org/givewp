@@ -26,13 +26,13 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     protected $properties = [
         'id' => 'int',
-        'event_id' => 'int',
+        'eventId' => 'int',
         'label' => 'string',
         'description' => 'string',
         'price' => Money::class,
-        'max_available' => 'int',
-        'created_at' => DateTime::class,
-        'updated_at' => DateTime::class,
+        'maxAvailable' => 'int',
+        'createdAt' => DateTime::class,
+        'updatedAt' => DateTime::class,
     ];
 
     /**
@@ -120,7 +120,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function event(): ModelQueryBuilder
     {
-        return give(EventRepository::class)->queryById($this->event_id);
+        return give(EventRepository::class)->queryById($this->eventId);
     }
 
 
@@ -131,7 +131,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function eventTickets(): ModelQueryBuilder
     {
-        return give(EventTicketRepository::class)->queryByEventId($this->id);
+        return give(EventTicketRepository::class)->queryByEventId($this->eventId);
     }
 
     /**
@@ -143,13 +143,13 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     {
         return new EventTicketType([
             'id' => (int)$object->id,
-            'event_id' => (int)$object->event_id,
+            'eventId' => (int)$object->event_id,
             'label' => $object->label,
             'description' => $object->description,
-            'max_available' => (int)$object->max_available,
             'price' => Money::fromDecimal($object->price, give_get_currency()),
-            'created_at' => Temporal::toDateTime($object->created_at),
-            'updated_at' => Temporal::toDateTime($object->updated_at),
+            'maxAvailable' => (int)$object->max_available,
+            'createdAt' => Temporal::toDateTime($object->created_at),
+            'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);
     }
 

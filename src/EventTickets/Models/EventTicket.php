@@ -3,21 +3,18 @@
 namespace Give\EventTickets\Models;
 
 use DateTime;
-use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationNoteType;
+use Give\EventTickets\Factories\EventTicketFactory;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
-use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\EventTickets\Factories\EventTicketFactory;
 
 /**
  * @unreleased
@@ -29,11 +26,11 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     protected $properties = [
         'id' => 'int', // @todo Maybe use UUID instead of auto-incrementing integer
-        'event_id' => 'int',
-        'ticket_type' => 'int',
-        'donation_id' => 'int',
-        'created_at' => DateTime::class,
-        'updated_at' => DateTime::class,
+        'eventId' => 'int',
+        'ticketTypeId' => 'int',
+        'donationId' => 'int',
+        'createdAt' => DateTime::class,
+        'updatedAt' => DateTime::class,
     ];
 
     /**
@@ -120,7 +117,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder<Event>
+     * @return ModelQueryBuilder<EventTicket>
      */
     public static function query(): ModelQueryBuilder
     {
@@ -134,7 +131,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function event(): ModelQueryBuilder
     {
-        return give(EventRepository::class)->queryById($this->event_id);
+        return give(EventRepository::class)->queryById($this->eventId);
     }
 
     /**
@@ -144,7 +141,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function ticketType(): ModelQueryBuilder
     {
-        return give(EventTicketTypeRepository::class)->queryById($this->ticket_type_id);
+        return give(EventTicketTypeRepository::class)->queryById($this->ticketTypeId);
     }
 
 
@@ -155,7 +152,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function donation(): ModelQueryBuilder
     {
-        return give()->donations->queryById($this->ticket_type_id);
+        return give()->donations->queryById($this->donationId);
     }
 
     /**
@@ -167,11 +164,11 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     {
         return new Event([
             'id' => (int)$object->id,
-            'event_id' => (int)$object->event_id,
-            'ticket_type_id' => (int)$object->ticket_type_id,
-            'donation_id' => (int)$object->donation_id,
-            'created_at' => Temporal::toDateTime($object->created_at),
-            'updated_at' => Temporal::toDateTime($object->updated_at),
+            'eventId' => (int)$object->event_id,
+            'ticketTypeId' => (int)$object->ticket_type_id,
+            'donationId' => (int)$object->donation_id,
+            'createdAt' => Temporal::toDateTime($object->created_at),
+            'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);
     }
 

@@ -23,7 +23,10 @@ class EventTicketTypeRepository
      * @var string[]
      */
     private $requiredProperties = [
-        'event_id',
+        'eventId',
+        'label',
+        'price',
+        'maxAvailable',
     ];
 
     /**
@@ -53,18 +56,18 @@ class EventTicketTypeRepository
 
         Hooks::doAction('givewp_events_event_ticket_type_creating', $eventTicketType);
 
-        $createdDateTime = Temporal::withoutMicroseconds($eventTicketType->created_at ?: Temporal::getCurrentDateTime());
+        $createdDateTime = Temporal::withoutMicroseconds($eventTicketType->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_event_ticket_types')
                 ->insert([
-                    'event_id' => $eventTicketType->event_id,
+                    'event_id' => $eventTicketType->eventId,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->max_available,
+                    'max_available' => $eventTicketType->maxAvailable,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
@@ -105,11 +108,11 @@ class EventTicketTypeRepository
             DB::table('give_event_ticket_types')
                 ->where('id', $eventTicketType->id)
                 ->update([
-                    'event_id' => $eventTicketType->event_id,
+                    'event_id' => $eventTicketType->eventId,
                     'label' => $eventTicketType->label,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->max_available,
+                    'max_available' => $eventTicketType->maxAvailable,
                     'updated_at' => $updatedTimeDate,
                 ]);
         } catch (Exception $exception) {
