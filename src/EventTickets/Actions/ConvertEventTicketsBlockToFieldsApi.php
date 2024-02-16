@@ -29,7 +29,7 @@ class ConvertEventTicketsBlockToFieldsApi
 
                 $eventTicketsField
                     ->title($event->title)
-                    ->date($event->startDateTime->format('Y-m-d H:i:s'))
+                    ->startDateTime($event->startDateTime->format('Y-m-d H:i:s'))
                     ->description($event->description)
                     ->ticketTypes($ticketTypes);
 
