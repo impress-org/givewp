@@ -167,8 +167,8 @@ class ListEvents extends Endpoint
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('name', $search);
-                $query->orWhereLike('email', $search);
+                $query->whereLike('title', $search);
+                $query->orWhereLike('description', $search);
             }
         }
 
