@@ -47,7 +47,7 @@ class TitleColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-event-tickets&action=edit&event_id={$model->id}"),
+            admin_url("edit.php?post_type=give_forms&page=give-event-tickets&id={$model->id}"),
             __('Visit event page', 'give'),
             $model->title
         );
