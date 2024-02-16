@@ -11,23 +11,18 @@ export default function BlockPlaceholder({attributes}) {
     const event = events.find((event) => event.id === attributes.eventId);
     const {currency} = getWindowData();
 
-    if (!event || !event.tickets.length) {
+    if (!event) {
         return null;
     }
 
     return (
         <div className={'givewp-event-tickets-block__placeholder'}>
             <div className={'givewp-event-tickets'}>
-                <EventTicketsHeader title={event.title} date={event.date} />
+                <EventTicketsHeader title={event.title} date={event.startDateTime} />
 
                 {event.description && <EventTicketsDescription description={event.description} />}
 
-                <EventTicketsList
-                    tickets={event.tickets}
-                    ticketsLabel={ticketsLabel}
-                    soldOutMessage={soldOutMessage}
-                    currency={currency}
-                />
+                <EventTicketsList ticketTypes={event.ticketTypes} ticketsLabel={ticketsLabel} currency={currency} />
             </div>
         </div>
     );

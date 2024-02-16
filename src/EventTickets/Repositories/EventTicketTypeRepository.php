@@ -71,6 +71,8 @@ class EventTicketTypeRepository
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
+
+            $eventTicketType->id = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

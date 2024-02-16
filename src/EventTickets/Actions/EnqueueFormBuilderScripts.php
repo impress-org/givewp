@@ -2,6 +2,8 @@
 
 namespace Give\EventTickets\Actions;
 
+use Give\EventTickets\Models\Event;
+use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\EnqueueScript;
 
 /**
@@ -25,31 +27,7 @@ class EnqueueFormBuilderScripts
             'givewp-event-tickets-block',
             'eventTicketsBlockSettings',
             [
-                'events' => [
-                    [
-                        'id' => 1,
-                        'title' => 'Event 1',
-                        'date' => '2024-01-10 10:00',
-                        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                        'tickets' => [
-                            [
-                                'id' => 1,
-                                'name' => 'Standard',
-                                'price' => 50,
-                                'quantity' => 5,
-                                'description' => 'Standard ticket description goes here',
-                            ],
-                            [
-                                'id' => 2,
-                                'name' => 'VIP',
-                                'price' => 100,
-                                'quantity' => 5,
-                                'description' => 'VIP ticket description goes here',
-                            ],
-                        ],
-                    ],
-                ],
-                // TODO: Update this to fetch events from the database
+                'events' => $this->getEvents(),
                 'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&action=new'),
                 //TODO: Update this with the correct URL
                 'listEventsUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets'),
@@ -74,5 +52,29 @@ class EnqueueFormBuilderScripts
             [],
             $scriptAsset['version']
         );
+    }
+
+    private function getEvents(): array
+    {
+        $events = Event::query()->getAll();
+        $ticketTypes = EventTicketType::query()->getAll();
+
+        $eventData = [];
+
+        foreach ($events as $event) {
+            $eventData[$event->id] = $event->toArray();
+            $eventData[$event->id]['ticketTypes'] = [];
+        }
+
+        foreach ($ticketTypes as $ticketType) {
+            $ticketType = $ticketType->toArray();
+            $ticketType['price'] = $ticketType['price']->formatToDecimal();
+
+            if (isset($eventData[$ticketType['eventId']])) {
+                $eventData[$ticketType['eventId']]['ticketTypes'][] = $ticketType;
+            }
+        }
+
+        return array_values($eventData);
     }
 }

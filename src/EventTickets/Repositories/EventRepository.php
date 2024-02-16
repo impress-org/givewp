@@ -61,7 +61,6 @@ class EventRepository
         try {
             DB::table('give_events')
                 ->insert([
-                    'id' => $event->id,
                     'title' => $event->title,
                     'description' => $event->description,
                     'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
@@ -72,6 +71,8 @@ class EventRepository
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
+
+            $event->id = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

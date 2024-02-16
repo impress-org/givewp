@@ -6,26 +6,22 @@ import {Event} from '../../components/types';
 import './styles.scss';
 
 export default function EventTicketsField({
+    name,
     id,
     title,
-    date,
+    startDateTime,
     description,
-    tickets,
+    ticketTypes,
     ticketsLabel,
     soldOutMessage,
 }: Event) {
     return (
         <div className={'givewp-event-tickets'}>
-            <EventTicketsHeader title={title} date={date} />
+            <EventTicketsHeader title={title} startDateTime={startDateTime} />
 
             {description && <EventTicketsDescription description={description} />}
 
-            <EventTicketsListHOC
-                name={'event-tickets'}
-                tickets={tickets}
-                ticketsLabel={ticketsLabel}
-                soldOutMessage={soldOutMessage}
-            />
+            <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />
         </div>
     );
 }

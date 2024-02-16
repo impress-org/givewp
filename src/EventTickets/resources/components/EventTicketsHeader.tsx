@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-export default function EventTicketsHeader({title, date}) {
-    const fullDate = moment(date).format('dddd, MMMM Do, h:mma z');
-    const day = moment(date).format('DD');
-    const month = moment(date).format('MMM');
+export default function EventTicketsHeader({title, startDateTime}) {
+    const fullDate = moment(startDateTime).format('dddd, MMMM Do, h:mma z');
+    const day = moment(startDateTime).format('DD');
+    const month = moment(startDateTime).format('MMM');
 
     return (
         <div className={'givewp-event-tickets__header'}>

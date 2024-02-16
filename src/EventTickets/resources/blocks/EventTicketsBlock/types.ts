@@ -1,11 +1,11 @@
-import {Ticket} from '../../components/types';
+import {TicketType} from '../../components/types';
 
 export type EventSettings = {
     id: number;
     title: string;
-    date: Date;
+    startDateTime: Date;
     description: string;
-    tickets: Ticket[];
+    ticketTypes: TicketType[];
 };
 
 export interface EventTicketsBlockSettings {
