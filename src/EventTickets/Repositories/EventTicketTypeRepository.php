@@ -26,7 +26,7 @@ class EventTicketTypeRepository
         'eventId',
         'label',
         'price',
-        'max_available',
+        'maxAvailable',
     ];
 
     /**
