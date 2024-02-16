@@ -1,10 +1,6 @@
-import {StrictMode} from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import EventTicketsListTable from './components/EventTicketsListTable';
 
-ReactDOM.render(
-    <StrictMode>
-        <EventTicketsListTable />
-    </StrictMode>,
-    document.getElementById('give-admin-event-tickets-root')
-);
+const container = document.getElementById('give-admin-event-tickets-root');
+const root = createRoot(container!);
+root.render(<EventTicketsListTable />);
