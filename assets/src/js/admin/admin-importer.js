@@ -183,7 +183,7 @@ function give_on_donation_import_ajax() {
             next: next,
             total: total,
             per_page: per_page,
-            fields: fields,
+            fields: $form.serialize(), //fields,
         },
         dataType: 'json',
         success: function (response) {

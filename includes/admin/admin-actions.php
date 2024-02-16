@@ -699,11 +699,8 @@ function give_donation_import_callback() {
 	$import_setting = [];
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
-    $output = json_decode(wp_unslash($fields), true);
-    /*$test = json_encode($output['mapto']);
-    $test = json_decode($test);
-    $test = json_decode($test, true);*/
-    //parse_str( $fields, $output );
+    //$output = json_decode(wp_unslash($fields), true);
+    parse_str($fields, $output);
 
 	$import_setting['create_user'] = $output['create_user'];
 	$import_setting['mode']        = $output['mode'];
@@ -733,7 +730,13 @@ function give_donation_import_callback() {
 
 	// Processing done here.
 	$raw_data                  = give_get_donation_data_from_csv( $output['csv'], $start, $end, $delimiter );
-    $raw_key = $output['mapto']; //json_decode(wp_unslash($output['mapto']), true); //maybe_unserialize( $output['mapto'] );
+
+    $raw_key = is_serialized($output['mapto'])
+        /** @unreleased  Avoid insecure usage of `unserialize` when the data could be submitted by the user. */
+        ? @unserialize(trim($output['mapto']), ['allowed_classes' => false])
+        : $output['mapto'];
+
+    //$raw_key = $output['mapto']; //json_decode(wp_unslash($output['mapto']), true); //maybe_unserialize( $output['mapto'] );
 	$import_setting['raw_key'] = $raw_key;
 
 	if ( ! empty( $output['dry_run'] ) ) {
