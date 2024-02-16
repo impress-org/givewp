@@ -699,7 +699,8 @@ function give_donation_import_callback() {
 	$import_setting = [];
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
-	parse_str( $fields, $output );
+    $output = json_decode(wp_unslash($fields), true);
+    //parse_str( $fields, $output );
 
 	$import_setting['create_user'] = $output['create_user'];
 	$import_setting['mode']        = $output['mode'];
@@ -729,7 +730,7 @@ function give_donation_import_callback() {
 
 	// Processing done here.
 	$raw_data                  = give_get_donation_data_from_csv( $output['csv'], $start, $end, $delimiter );
-	$raw_key                   = maybe_unserialize( $output['mapto'] );
+    $raw_key = $output['mapto']; //maybe_unserialize( $output['mapto'] );
 	$import_setting['raw_key'] = $raw_key;
 
 	if ( ! empty( $output['dry_run'] ) ) {
