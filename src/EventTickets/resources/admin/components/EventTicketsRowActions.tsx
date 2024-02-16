@@ -5,14 +5,14 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import {useSWRConfig} from 'swr';
 import ListTableApi from '@givewp/components/ListTable/api';
 
-const subscriptionsApi = new ListTableApi(window.GiveSubscriptions);
+const eventTicketsApi = new ListTableApi(window.GiveEventTickets);
 
 export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await subscriptionsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        const response = await eventTicketsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
@@ -20,7 +20,7 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
 
     const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const confirmDelete = (selected) => <p>{sprintf(__('Really delete event #%d?', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
@@ -29,7 +29,7 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
     return (
         <>
             <RowAction
-                href={`edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`}
+                href={`edit.php?post_type=give_forms&page=give-event-tickets&id=${item.id}`}
                 displayText={__('Edit', 'give')}
             />
             <RowAction

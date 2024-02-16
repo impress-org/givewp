@@ -4,7 +4,8 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
-import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {EventTicketsRowActions} from './EventTicketsRowActions';
 
 declare global {
     interface Window {
@@ -12,7 +13,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             table: {columns: Array<object>};
-            paymentMode: boolean;
+            adminUrl: string;
             pluginUrl: string;
         };
     }
@@ -36,8 +37,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         value: 'delete',
         type: 'danger',
         action: async (selected) => {
-            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            return response;
+            return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
         },
         confirm: (selected, names) => (
             <>
@@ -55,61 +55,22 @@ const bulkActions: Array<BulkActionsConfig> = [
             </>
         ),
     },
-    ...(() => {
-        const subscriptionStatuses = {
-            active: __('Set To Active', 'give'),
-            expired: __('Set To Expired', 'give'),
-            completed: __('Set To Completed', 'give'),
-            cancelled: __('Set To Cancelled', 'give'),
-            pending: __('Set To Pending', 'give'),
-            failing: __('Set To Failing', 'give'),
-            suspended: __('Set To Suspended', 'give'),
-            abandoned: __('Set To Abandoned', 'give'),
-        };
-
-        return Object.entries(subscriptionStatuses).map(([value, label]) => {
-            return {
-                label,
-                value,
-                action: async (selected) =>
-                    await API.fetchWithArgs(
-                        '/setStatus',
-                        {
-                            ids: selected.join(','),
-                            status: value,
-                        },
-                        'POST'
-                    ),
-                confirm: (selected, names) => (
-                    <>
-                        <p>{__('Set status for the following donations?', 'give')}</p>
-                        <ul role="document" tabIndex={0}>
-                            {selected.map((donationId, index) => (
-                                <li key={donationId}>
-                                    <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
-                                    <Interweave content={names[index]} />
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                ),
-            };
-        });
-    })(),
 ];
 
 /**
  * Displays a blank slate for the EventTickets table.
- * @since 2.27.0
+ *
+ * @unreleased
  */
-const ListTableBlankSlate = (
-    <BlankSlate
-        imagePath={`${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
-        description={__('No events found', 'give')}
-        href={'https://docs.givewp.com/subscriptions'}
-        linkText={__('Recurring Donations.', 'give')}
-    />
-);
+const ListTableBlankSlate = () => {
+    const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`;
+    return (
+        <div>
+            <img src={imagePath} alt={__('No event created yet', 'give')} />
+            <h3>{__('No event created yet', 'give')}</h3>
+        </div>
+    );
+};
 
 export default function EventTicketsListTable() {
     return (
@@ -119,8 +80,15 @@ export default function EventTicketsListTable() {
             pluralName={__('events', 'give')}
             apiSettings={window.GiveEventTickets}
             filterSettings={filters}
-            listTableBlankSlate={ListTableBlankSlate}
+            rowActions={EventTicketsRowActions}
+            listTableBlankSlate={ListTableBlankSlate()}
         >
+            <a
+                className={tableStyles.addFormButton}
+                href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&action=new`}
+            >
+                {__('Create event', 'give')}
+            </a>
         </ListTablePage>
     );
 }
