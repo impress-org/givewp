@@ -5,6 +5,8 @@ namespace Give\ServiceProviders;
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
+use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
+use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\PayPalCommerce\AccountAdminNotices;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
@@ -23,8 +25,6 @@ use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
-use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
-use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -241,6 +241,14 @@ class PaymentGateways implements ServiceProvider
             'wp_ajax_nopriv_give_paypal_commerce_approve_order',
             AjaxRequestHandler::class,
             'approveOrder'
+        );
+
+        Hooks::addAction('wp_ajax_give_paypal_commerce_update_order_amount', AjaxRequestHandler::class,
+            'updateOrderAmount');
+        Hooks::addAction(
+            'wp_ajax_nopriv_give_paypal_commerce_update_order_amount',
+            AjaxRequestHandler::class,
+            'updateOrderAmount'
         );
 
         Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');
