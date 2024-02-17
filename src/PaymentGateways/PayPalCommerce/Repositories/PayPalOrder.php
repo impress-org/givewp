@@ -96,7 +96,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
-     * @unreleased Extract the amount parameters to a separate method
+     * @since 3.4.2 Extract the amount parameters to a separate method
      * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
      * @since 2.16.2 Conditionally set transaction as donation or standard transaction in PayPal.
@@ -163,7 +163,7 @@ class PayPalOrder
     }
 
     /**
-     * @unreleased
+     * @since 3.4.2
      */
     private function getAmountParameters($array): array
     {
@@ -215,7 +215,7 @@ class PayPalOrder
     }
 
     /**
-     * @unreleased
+     * @since 3.4.2
      *
      * @see https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php
      *

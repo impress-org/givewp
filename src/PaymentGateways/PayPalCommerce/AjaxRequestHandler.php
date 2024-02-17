@@ -252,7 +252,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @unreleased
+     * @since 3.4.2
      */
     private function getOrderData(): array
     {
@@ -312,7 +312,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @unreleased
+     * @since 3.4.2
      */
     public function updateOrderAmount()
     {
