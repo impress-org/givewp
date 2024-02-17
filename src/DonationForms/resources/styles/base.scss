@@ -29,3 +29,7 @@
 @layer base-overrides {
     @import "base-overrides";
 }
+
+@layer base-design-settings {
+    @import "design-settings/image";
+}
