@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {HeaderProps} from '@givewp/forms/propTypes';
 
 /**
  * @since 3.0.0
@@ -15,7 +16,7 @@ const SecureBadge = () => {
 /**
  * @since 3.0.0
  */
-export default function Header({HeaderImage, Title, Description, Goal}) {
+export default function Header({HeaderImage, Title, Description, Goal}: HeaderProps) {
     const {designSettingsImageStyle, designSettingsImageUrl} = window.givewp.form.hooks.useDonationFormSettings();
 
     if (!designSettingsImageUrl) {
