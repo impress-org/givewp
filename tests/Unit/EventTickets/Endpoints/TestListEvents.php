@@ -30,9 +30,9 @@ class TestListEvents extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
 
-        $listDonations = give(ListEvents::class);
+        $listEvents = give(ListEvents::class);
 
-        $response = $listDonations->handleRequest($mockRequest);
+        $response = $listEvents->handleRequest($mockRequest);
 
         $this->assertSameSize($events, $response->data['items']);
     }
@@ -56,9 +56,9 @@ class TestListEvents extends TestCase
 
         $expectedItems = $this->getMockColumns($events, $sortDirection);
 
-        $listDonations = give(ListEvents::class);
+        $listEvents = give(ListEvents::class);
 
-        $response = $listDonations->handleRequest($mockRequest);
+        $response = $listEvents->handleRequest($mockRequest);
 
         $this->assertSame($expectedItems, $response->data['items']);
     }
@@ -70,7 +70,7 @@ class TestListEvents extends TestCase
     {
         return new WP_REST_Request(
             WP_REST_Server::READABLE,
-            '/wp/v2/admin/events'
+            '/wp/v2/admin/event-tickets'
         );
     }
 
