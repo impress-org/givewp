@@ -14,6 +14,7 @@ const SecureBadge = () => {
 };
 
 /**
+ * @unreleased add HeaderImage
  * @since 3.0.0
  */
 export default function Header({HeaderImage, Title, Description, Goal}: HeaderProps) {
@@ -59,7 +60,7 @@ function HeaderImageTemplates({designSettingsImageStyle, HeaderImage, Title, Des
             return (
                 <>
                     <HeaderImage />
-                    <div className={'givewp-layouts givewp-layouts-headerContent'}>
+                    <div className={'givewp-layouts-header__content'}>
                         <Title />
                         <Description />
                         <SecureBadge />

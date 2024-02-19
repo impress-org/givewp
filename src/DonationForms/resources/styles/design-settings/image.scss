@@ -67,7 +67,7 @@
                         }
                     }
 
-                    .givewp-layouts-headerContent {
+                    .givewp-layouts-header__content {
                         display: flex;
                         flex-direction: column;
                         gap: var(--givewp-spacing-6);
@@ -80,6 +80,11 @@
                 }
 
                 &--center {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: var(--givewp-spacing-6);
+
                     @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
                         background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
                     }
@@ -87,11 +92,6 @@
                     .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                         color: var(--givewp-grey-900);
                     }
-
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: var(--givewp-spacing-6);
 
                     .givewp-layouts-headerImage {
                         width: 100%;
