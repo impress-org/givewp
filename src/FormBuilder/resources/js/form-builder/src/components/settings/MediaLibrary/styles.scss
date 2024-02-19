@@ -12,7 +12,8 @@
 
         &:hover {
             svg {
-                visibility: visible
+                visibility: visible;
+                pointer-events: none;
             }
         }
 
