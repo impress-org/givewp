@@ -28,7 +28,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int',
         'eventId' => 'int',
-        'label' => 'string',
+        'title' => 'string',
         'description' => 'string',
         'price' => Money::class,
         'maxTicketsAvailable' => 'int',
@@ -148,7 +148,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         return new EventTicketType([
             'id' => (int)$object->id,
             'eventId' => (int)$object->event_id,
-            'label' => $object->label,
+            'title' => $object->title,
             'description' => $object->description,
             'price' => Money::fromDecimal($object->price, give_get_currency()),
             'maxTicketsAvailable' => (int)$object->max_tickets_available,

@@ -25,7 +25,7 @@ class EventTicketTypeRepository
      */
     private $requiredProperties = [
         'eventId',
-        'label',
+        'title',
         'price',
         'maxTicketsAvailable',
     ];
@@ -60,7 +60,7 @@ class EventTicketTypeRepository
             DB::table('give_event_ticket_types')
                 ->insert([
                     'event_id' => $eventTicketType->eventId,
-                    'label' => $eventTicketType->label,
+                    'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
                     'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
@@ -109,7 +109,7 @@ class EventTicketTypeRepository
                 ->where('id', $eventTicketType->id)
                 ->update([
                     'event_id' => $eventTicketType->eventId,
-                    'label' => $eventTicketType->label,
+                    'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
                     'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
@@ -186,7 +186,7 @@ class EventTicketTypeRepository
             ->select(
                 'id',
                 'event_id',
-                'label',
+                'title',
                 'description',
                 'price',
                 'max_tickets_available',
