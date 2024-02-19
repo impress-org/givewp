@@ -17,25 +17,29 @@
             }
 
             &__templates {
-                &--background {
-                    display: flex;
-                    flex-direction: column;
-                    gap: var(--givewp-spacing-6);
-                    width: 100%;
+                &--above, &--background, &--center {
+                    .givewp-layouts-headerImage {
+                        width: 100%;
 
+                        img {
+                            object-fit: cover;
+                            min-width: 100%;
+                            border-top-left-radius: 0.5rem;
+                            border-top-right-radius: 0.5rem;
+                        }
+                    }
+                }
+
+                &--background {
                     .givewp-layouts-headerImage {
                         margin-top: -1.5rem;
-                    }
 
-                    .givewp-layouts-headerImage > img {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        height: 100%;
-                        width: 100%;
-                        object-fit: cover;
-                        border-top-left-radius: 0.5rem;
-                        border-top-right-radius: 0.5rem;
+                        img {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            height: 100%;
+                        }
                     }
 
                     div:not(.givewp-layouts-headerImage), aside {
@@ -56,14 +60,8 @@
                     }
 
                     .givewp-layouts-headerImage {
-                        width: 100%;
-
                         img {
-                            object-fit: cover;
-                            min-width: 100%;
                             height: 320px;
-                            border-top-left-radius: 0.5rem;
-                            border-top-right-radius: 0.5rem;
                         }
                     }
 
@@ -80,11 +78,6 @@
                 }
 
                 &--center {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: var(--givewp-spacing-6);
-
                     @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
                         background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
                     }
@@ -94,11 +87,7 @@
                     }
 
                     .givewp-layouts-headerImage {
-                        width: 100%;
-
                         img {
-                            object-fit: cover;
-                            min-width: 100%;
                             height: 311px;
                             border-radius: var(--givewp-rounded-4);
                         }
