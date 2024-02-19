@@ -11,7 +11,7 @@
                 gap: var(--givewp-spacing-6);
                 width: 100%;
 
-                @media screen and (min-width: 32.5rem) {
+                @media screen and (min-width: 32rem) {
                     padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
                 }
             }
@@ -73,7 +73,7 @@
                         gap: var(--givewp-spacing-6);
                         padding: var(--givewp-spacing-6);
 
-                        @media screen and (min-width: 32.5rem) {
+                        @media screen and (min-width: 32rem) {
                             padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
                         }
                     }
