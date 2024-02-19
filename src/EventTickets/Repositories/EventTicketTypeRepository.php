@@ -27,7 +27,7 @@ class EventTicketTypeRepository
         'eventId',
         'title',
         'price',
-        'maxTicketsAvailable',
+        'capacity',
     ];
 
     /**
@@ -63,7 +63,7 @@ class EventTicketTypeRepository
                     'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
-                    'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
+                    'capacity' => $eventTicketType->capacity,
                     'status' => $status,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
@@ -112,7 +112,7 @@ class EventTicketTypeRepository
                     'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToDecimal(),
-                    'max_tickets_available' => $eventTicketType->maxTicketsAvailable,
+                    'capacity' => $eventTicketType->capacity,
                     'status' => $status,
                     'updated_at' => $updatedDateTime,
                 ]);
@@ -189,7 +189,7 @@ class EventTicketTypeRepository
                 'title',
                 'description',
                 'price',
-                'max_tickets_available',
+                'capacity',
                 'status',
                 'created_at',
                 'updated_at'
