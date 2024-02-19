@@ -24,8 +24,12 @@ class DonationFormBlockRender
      * @return EventTickets The EventTickets field instance.
      * @throws EmptyNameException
      */
-    public function __invoke($node, BlockModel $block, int $blockIndex, int $formId): EventTickets
+    public function __invoke(?Node $node, BlockModel $block, int $blockIndex, int $formId): ?Node
     {
+        if ( ! $block->getAttribute('eventId')) {
+            return $node;
+        }
+
         return (give(ConvertEventTicketsBlockToFieldsApi::class))($block, $formId);
     }
 }

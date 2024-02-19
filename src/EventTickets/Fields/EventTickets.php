@@ -7,9 +7,9 @@ use Give\Framework\FieldsAPI\Field;
 class EventTickets extends Field
 {
     protected $title;
-    protected $date;
+    protected $startDateTime;
     protected $description;
-    protected $tickets = [];
+    protected $ticketTypes = [];
 
     const TYPE = 'eventTickets';
 
@@ -33,17 +33,17 @@ class EventTickets extends Field
     /**
      * @unreleased
      */
-    public function getDate(): string
+    public function getStartDateTime(): string
     {
-        return $this->date;
+        return $this->startDateTime;
     }
 
     /**
      * @unreleased
      */
-    public function date(string $date): EventTickets
+    public function startDateTime(string $date): EventTickets
     {
-        $this->date = $date;
+        $this->startDateTime = $date;
         return $this;
     }
 
@@ -67,17 +67,17 @@ class EventTickets extends Field
     /**
      * @unreleased
      */
-    public function getTickets(): array
+    public function getTicketTypes(): array
     {
-        return $this->tickets;
+        return $this->ticketTypes;
     }
 
     /**
      * @unreleased
      */
-    public function tickets(array $tickets): EventTickets
+    public function ticketTypes(array $ticketTypes): EventTickets
     {
-        $this->tickets = $tickets;
+        $this->ticketTypes = $ticketTypes;
         return $this;
     }
 
