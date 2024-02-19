@@ -11,13 +11,8 @@
         flex-direction: column;
         align-items: center;
         gap: var(--givewp-spacing-6);
-        padding: var(--givewp-spacing-6);
         color: #fff;
         text-align: center;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
-        }
 
         + .givewp-layouts-form {
             border-top-right-radius: 0;

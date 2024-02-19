@@ -2,7 +2,7 @@
     .givewp-layouts {
         &-header {
             position: relative;
-            padding: 0 !important;
+            padding: 0;
 
             &__templates, &__templates--background, &__templates--center {
                 display: flex;
