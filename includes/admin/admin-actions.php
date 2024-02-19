@@ -678,9 +678,26 @@ function give_import_page_link_callback() {
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 
 /**
+ * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
+ *
+ * @unreleased
+ *
+ * @param string $data Data that might be unserialized.
+ *
+ * @return mixed Unserialized data can be any type.
+ */
+function give_maybe_safe_unserialize($data)
+{
+    return is_serialized($data)
+        ? @unserialize(trim($data), ['allowed_classes' => false])
+        : $data;
+}
+
+/**
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
+ * @unreleased Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
  */
@@ -709,10 +726,7 @@ function give_donation_import_callback() {
 	$import_setting['dry_run']     = $output['dry_run'];
 
 	// Parent key id.
-	$main_key = is_serialized( $output['main_key'] )
-		/** @since 2.26.0 Avoid insecure usage of `unserialize` when the data could be submitted by the user. */
-		? @unserialize( trim( $output['main_key'] ), ['allowed_classes' => false] )
-		: $output['main_key'];
+    $main_key = give_maybe_safe_unserialize($output['main_key']);
 
 	$current    = absint( $_REQUEST['current'] );
 	$total_ajax = absint( $_REQUEST['total_ajax'] );
@@ -728,8 +742,8 @@ function give_donation_import_callback() {
 	}
 
 	// Processing done here.
-	$raw_data                  = give_get_donation_data_from_csv( $output['csv'], $start, $end, $delimiter );
-	$raw_key                   = maybe_unserialize( $output['mapto'] );
+	$raw_data                  = give_get_donation_data_from_csv( $output['csv'], $start, $end, $delimiter);
+    $raw_key = give_maybe_safe_unserialize($output['mapto']);
 	$import_setting['raw_key'] = $raw_key;
 
 	if ( ! empty( $output['dry_run'] ) ) {
