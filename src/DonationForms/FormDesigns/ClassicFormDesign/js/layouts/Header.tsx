@@ -34,7 +34,7 @@ export default function Header({HeaderImage, Title, Description, Goal}: HeaderPr
     return (
         <div className={`givewp-layouts-header__templates--${designSettingsImageStyle}`}>
             <HeaderImageTemplates
-                designSettingsImageStyle={designSettingsImageStyle}
+                imagePosition={designSettingsImageStyle}
                 HeaderImage={HeaderImage}
                 Title={Title}
                 Description={Description}
@@ -44,8 +44,8 @@ export default function Header({HeaderImage, Title, Description, Goal}: HeaderPr
     );
 }
 
-function HeaderImageTemplates({designSettingsImageStyle, HeaderImage, Title, Description, Goal}) {
-    switch (designSettingsImageStyle) {
+function HeaderImageTemplates({imagePosition, HeaderImage, Title, Description, Goal}) {
+    switch (imagePosition) {
         case 'background':
             return (
                 <>
