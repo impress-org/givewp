@@ -1,13 +1,16 @@
 .givewp-layouts {
     &-header {
         text-align: center;
+        padding-bottom: 2rem;
     }
 
     &-headerTitle {
         margin-bottom: var(--givewp-spacing-3);
+        color: var(--givewp-grey-900);
     }
 
     &-headerDescription {
         margin-bottom: var(--givewp-spacing-10);
+        color: var(--givewp-grey-700);
     }
 }
