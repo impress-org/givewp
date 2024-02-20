@@ -201,16 +201,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     */
-    public function countByTicketTypeId(int $ticketTypeId): int
-    {
-        return $this->prepareQuery()
-            ->where('ticket_type_id', $ticketTypeId)
-            ->count();
-    }
-
-    /**
-     * @unreleased
      *
      * @param int $donationId
      *

@@ -132,14 +132,6 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
 
     /**
      * @unreleased
-     */
-    public function countSoldTickets(): int
-    {
-        return give(EventTicketRepository::class)->countByTicketTypeId($this->id);
-    }
-
-    /**
-     * @unreleased
      *
      * @param object $object
      */
