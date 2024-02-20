@@ -44,14 +44,14 @@ class SalesCountColumn extends ModelColumn
     public function getCellValue($model): string
     {
         $soldTicketsCount = $model->eventTickets()->count() ?? 0;
-        $maxTicketsAvailable = array_reduce($model->ticketTypes()->getAll() ?? [], function ($acc, $ticketType) {
-            return $acc + $ticketType->maxTicketsAvailable;
+        $capacity = array_reduce($model->ticketTypes()->getAll() ?? [], function ($acc, $ticketType) {
+            return $acc + $ticketType->capacity;
         }, 0);
 
         return sprintf(
             __('%1$d out of %2$d', 'give'),
             $soldTicketsCount,
-            $maxTicketsAvailable
+            $capacity
         );
     }
 }

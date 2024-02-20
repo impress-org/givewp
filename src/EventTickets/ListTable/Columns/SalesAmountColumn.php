@@ -48,18 +48,18 @@ class SalesAmountColumn extends ModelColumn
         foreach ($model->ticketTypes()->getAll() ?? [] as $ticketType) {
             $ticketTypes[$ticketType->id] = [
                 'price' => $ticketType->price->formatToDecimal(),
-                'maxTicketsAvailable' => $ticketType->maxTicketsAvailable,
+                'capacity' => $ticketType->capacity,
             ];
         }
 
         $salesTotal = array_reduce($model->eventTickets()->getAll() ?? [], function ($acc, $eventTicket) use ($ticketTypes) {
             return $acc + $ticketTypes[$eventTicket->ticketTypeId]['price'];
         }, 0);
-        $maxTicketsAvailableTotal = array_reduce($ticketTypes, function ($acc, $ticketType) {
-            return $acc + ($ticketType['maxTicketsAvailable'] * $ticketType['price']);
+        $capacityTotal = array_reduce($ticketTypes, function ($acc, $ticketType) {
+            return $acc + ($ticketType['capacity'] * $ticketType['price']);
         }, 0);
 
-        $salesPercentage = $maxTicketsAvailableTotal > 0 ? max(min($salesTotal / $maxTicketsAvailableTotal, 100), 0) : 0;
+        $salesPercentage = $capacityTotal > 0 ? max(min($salesTotal / $capacityTotal, 100), 0) : 0;
 
         $template = '
             <div
@@ -81,7 +81,7 @@ class SalesAmountColumn extends ModelColumn
             $salesPercentage,
             Money::fromDecimal($salesTotal, give_get_currency())->formatToLocale($locale),
             __('of', 'give'),
-            Money::fromDecimal($maxTicketsAvailableTotal, give_get_currency())->formatToLocale($locale)
+            Money::fromDecimal($capacityTotal, give_get_currency())->formatToLocale($locale)
         );
     }
 }
