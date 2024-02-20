@@ -59,6 +59,9 @@ class EventRepository
                     'description' => $event->description,
                     'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
                     'end_datetime' => $event->endDateTime ? $event->endDateTime->format('Y-m-d H:i:s') : null,
+                    'ticket_close_datetime' => $event->ticketCloseDateTime ? $event->ticketCloseDateTime->format(
+                        'Y-m-d H:i:s'
+                    ) : null,
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
@@ -103,6 +106,9 @@ class EventRepository
                     'description' => $event->description,
                     'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
                     'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
+                    'ticket_close_datetime' => $event->ticket_close_datetime ? $event->ticket_close_datetime->format(
+                        'Y-m-d H:i:s'
+                    ) : null,
                     'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
@@ -178,6 +184,7 @@ class EventRepository
                 'description',
                 'start_datetime',
                 'end_datetime',
+                'ticket_close_datetime',
                 'created_at',
                 'updated_at'
             );

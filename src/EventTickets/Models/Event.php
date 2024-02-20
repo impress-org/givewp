@@ -29,6 +29,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
         'description' => 'string',
         'startDateTime' => DateTime::class,
         'endDateTime' => DateTime::class,
+        'ticketCloseDateTime' => DateTime::class,
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -135,6 +136,9 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
             'description' => (string)$object->description,
             'startDateTime' => $object->start_datetime ? Temporal::toDateTime($object->start_datetime) : null,
             'endDateTime' => $object->end_datetime ? Temporal::toDateTime($object->end_datetime) : null,
+            'ticketCloseDateTime' => $object->ticket_close_datetime ? Temporal::toDateTime(
+                $object->ticket_close_datetime
+            ) : null,
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);
