@@ -32,7 +32,9 @@ export default function Header({HeaderImage, Title, Description, Goal}: HeaderPr
     }
 
     return (
-        <div className={`givewp-layouts-header__templates--${designSettingsImageStyle}`}>
+        <div
+            className={`givewp-layouts-header__templates givewp-layouts-header__templates--${designSettingsImageStyle}`}
+        >
             <HeaderImageTemplates
                 imagePosition={designSettingsImageStyle}
                 HeaderImage={HeaderImage}

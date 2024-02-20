@@ -3,6 +3,7 @@
         &-header {
             position: relative;
             padding: 0;
+            gap: 0;
 
             &__templates, &__templates--background, &__templates--center {
                 display: flex;
@@ -16,20 +17,20 @@
                 }
             }
 
-            &__templates {
-                &--above, &--background, &--center {
-                    .givewp-layouts-headerImage {
-                        width: 100%;
+            &__templates--above, &__templates--background, &__templates--center {
+                .givewp-layouts-headerImage {
+                    width: 100%;
 
-                        img {
-                            object-fit: cover;
-                            min-width: 100%;
-                            border-top-left-radius: 0.5rem;
-                            border-top-right-radius: 0.5rem;
-                        }
+                    img {
+                        object-fit: cover;
+                        min-width: 100%;
+                        border-top-left-radius: 0.5rem;
+                        border-top-right-radius: 0.5rem;
                     }
                 }
+            }
 
+            &__templates {
                 &--background {
                     .givewp-layouts-headerImage {
                         margin-top: -1.5rem;
@@ -48,8 +49,10 @@
                     }
                 }
 
-                &--above {
+                &--templates, &--above {
+                    padding: 0;
                     width: 100%;
+                    gap: 0;
 
                     @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
                         background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
