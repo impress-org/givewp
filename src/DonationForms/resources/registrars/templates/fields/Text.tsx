@@ -11,7 +11,7 @@ export default function Text({
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
-        <label>
+        <label className={fieldError && 'givewp-field-error-label'}>
             <Label />
             {description && <FieldDescription description={description} />}
             <input type="text" aria-invalid={fieldError ? 'true' : 'false'} placeholder={placeholder} {...inputProps} />

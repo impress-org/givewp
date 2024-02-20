@@ -295,4 +295,49 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             $receipt->additionalDetails->toArray()
         );
     }
+
+    /**
+     * @since 3.4.0
+     */
+    public function testShouldAddCustomFieldsUsingMetaKayToAdditionalDetails(): void
+    {
+        $field = Text::make('favoriteColor')
+            ->label('Your favorite color:')
+            ->defaultValue('Blue')
+            ->metaKey('_favorite_color')
+            ->showInReceipt()
+        ;
+
+         add_action('givewp_donation_form_schema', static function (\Give\Framework\FieldsAPI\DonationForm $form) use ($field) {
+            $form->insertAfter('email', $field);
+        });
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id
+        ]);
+
+        give_update_payment_meta($donation->id, '_favorite_color', 'Blue');
+
+        $initialReceipt = new DonationReceipt($donation);
+
+        $receipt = (new GenerateConfirmationPageReceipt())($initialReceipt);
+
+        $additionalDetails = new ReceiptDetailCollection();
+
+        $additionalDetails->addDetail(
+            new ReceiptDetail(
+                __('Your favorite color:', 'give'),
+                'Blue'
+            )
+        );
+
+        $this->assertContains(
+            $additionalDetails->toArray()[0],
+            $receipt->additionalDetails->toArray()
+        );
+    }
 }
