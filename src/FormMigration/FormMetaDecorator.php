@@ -761,4 +761,12 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return $this->getMeta('give_gift_aid_declaration_form');
     }
+
+    /**
+     * @unreleased
+     */
+    public function getFeaturedImage(): string
+    {
+        return wp_get_attachment_image_src($this->getMeta('_thumbnail_id'), 'full')[0] ?? '';
+    }
 }
