@@ -26,12 +26,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup initial PayPal Script on basis of first form on webpage.
     loadPayPalSDKScriptForDonationForm($formWraps[0].querySelector('.give-form'));
 
+    // Attach tracking events to all forms except those displays in modal.
     $formWraps.forEach($formWrap => {
         const $form = $formWrap.querySelector('.give-form');
+
+        // If form displays in model do not setup payment methods.
+        // Payment methods will be setup on button click, after form loads in model.
+        if( $formWrap.classList.contains('give-display-button-only') || $formWrap.classList.contains('give-display-modal') ) {
+           return;
+        }
+
         setRecurringFieldTrackerToReloadPaypalSDK($form);
         setFormCurrencyTrackerToReloadPaypalSDK($form);
         setupGatewayLoadEventToRenderPaymentMethods($form);
     });
+
+    // Attach tracking events to forms displays in modal.
+    jQuery('.give-form-wrap.give-display-button-only button.give-btn-modal,.give-form-wrap.give-display-modal button.give-btn-modal')
+        .on('click', function () {
+
+            // Wait for modal to open and form to load in modal.
+            const timer = window.setInterval(() => {
+                const $form = document.querySelector('.mfp-content form.give-form');
+
+                if ($form) {
+                   return;
+                }
+
+                // Setup payment methods if PayPal Donations is selected.
+                if (DonationForm.isPayPalCommerceSelected(jQuery($form))) {
+                    setupPaymentMethod($form);
+                }
+
+                setRecurringFieldTrackerToReloadPaypalSDK($form);
+                setFormCurrencyTrackerToReloadPaypalSDK($form);
+                setupGatewayLoadEventToRenderPaymentMethods($form);
+                window.clearInterval(timer);
+            }, 100);
+        });
 
     // On form submit prevent submission for PayPal commerce.
     // Form submission will be take care internally by smart buttons or advanced card fields.
@@ -95,15 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
      * @since 2.9.0
      */
     function setupPaymentMethods() {
-        $formWraps.forEach($formWrap => {
-            const $form = $formWrap.querySelector('.give-form');
-
+        const setup = ($form) => {
             if (!DonationForm.isPayPalCommerceSelected(jQuery($form))) {
                 return;
             }
 
             setupPaymentMethod($form);
+        };
+
+        // Setup payment methods for all forms, except those displays in modal.
+        $formWraps.forEach($formWrap => {
+            const $form = $formWrap.querySelector('.give-form');
+
+            if( $form ) {
+                setup($form);
+            }
         });
+
+        // Setup payment methods for form displays in modal.
+        const $donationFormInModel = document.querySelector('.mfp-content form.give-form');
+        if ($donationFormInModel) {
+            setup($donationFormInModel);
+        }
     }
 
     /**
