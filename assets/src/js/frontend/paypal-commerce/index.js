@@ -36,9 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
            return;
         }
 
-        setRecurringFieldTrackerToReloadPaypalSDK($form);
-        setFormCurrencyTrackerToReloadPaypalSDK($form);
-        setupGatewayLoadEventToRenderPaymentMethods($form);
+        trackDonorActivityToRerenderPaymentMethods($form);
     });
 
     // Attach tracking events to forms displays in modal.
@@ -58,9 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     setupPaymentMethod($form);
                 }
 
-                setRecurringFieldTrackerToReloadPaypalSDK($form);
-                setFormCurrencyTrackerToReloadPaypalSDK($form);
-                setupGatewayLoadEventToRenderPaymentMethods($form);
+                trackDonorActivityToRerenderPaymentMethods($form);
+
                 window.clearInterval(timer);
             }, 100);
         });
@@ -76,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return false;
     });
+
+    /**
+     * Track donor activity to rerender payment methods.
+     *
+     * @unreleased
+     * @param {Element} $form Form selector.
+     */
+    function trackDonorActivityToRerenderPaymentMethods($form){
+        setRecurringFieldTrackerToReloadPaypalSDK($form);
+        setFormCurrencyTrackerToReloadPaypalSDK($form);
+        setupGatewayLoadEventToRenderPaymentMethods($form);
+    }
 
     /**
      * Setup recurring field tracker to reload paypal sdk.
@@ -138,6 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Setup payment methods for all forms, except those displays in modal.
         $formWraps.forEach($formWrap => {
             const $form = $formWrap.querySelector('.give-form');
+
+            // If form displays in model do not setup payment methods.
+            // Payment methods will be setup on button click, after form loads in model.
+            if( $formWrap.classList.contains('give-display-button-only') || $formWrap.classList.contains('give-display-modal') ) {
+                return;
+            }
 
             if( $form ) {
                 setup($form);
