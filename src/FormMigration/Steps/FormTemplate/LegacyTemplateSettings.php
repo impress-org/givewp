@@ -19,6 +19,7 @@ class LegacyTemplateSettings extends FormMigrationStep
         ] = $this->formV2->getFormTemplateSettings();
 
         $this->displaySettings($displaySettings);
+        $this->formV3->settings->designSettingsImageUrl = $this->formV2->getFeaturedImage();
     }
 
     protected function displaySettings($settings)
