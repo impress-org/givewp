@@ -66,9 +66,8 @@ class SequoiaTemplateSettings extends FormMigrationStep
             ->__invoke(new DesignHeaderSettings($enabled, $headline, $description));
 
         $this->formV3->settings->multiStepFirstButtonText = $donateLabel;
-
-        // @note `image` is not supported in v3 forms (defers to the Form Design).
-
+        $this->formV3->settings->designSettingsImageUrl = !empty($image) ? $image : $this->formV2->getFeaturedImage();
+        $this->formV3->settings->designSettingsImageStyle = 'center';
     }
 
     protected function paymentAmount($settings)
