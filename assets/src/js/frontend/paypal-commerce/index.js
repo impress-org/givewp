@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Attach tracking events to forms displays in modal.
-    jQuery('.give-form-wrap.give-display-button-only button.give-btn-modal,.give-form-wrap.give-display-modal button.give-btn-modal')
+    jQuery('.give-form-wrap.give-display-button-only button.give-btn-modal, .give-form-wrap.give-display-modal button.give-btn-modal')
         .on('click', function () {
 
             // Wait for modal to open and form to load in modal.
             const timer = window.setInterval(() => {
                 const $form = document.querySelector('.mfp-content form.give-form');
 
-                if ($form) {
+                if (! $form) {
                    return;
                 }
 
