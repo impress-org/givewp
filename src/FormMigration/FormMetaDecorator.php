@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -760,5 +761,18 @@ class FormMetaDecorator extends FormModelDecorator
     public function getGiftAidDeclarationForm(): string
     {
         return $this->getMeta('give_gift_aid_declaration_form');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getFormFeaturedImage(): string
+    {
+        $formId = $this->form->id;
+        $templateOptions = FormTemplateUtils::getOptions($formId);
+
+        return ! empty($templateOptions['introduction']['image']) ?
+            $templateOptions['introduction']['image'] :
+            get_the_post_thumbnail_url($formId, 'full');
     }
 }
