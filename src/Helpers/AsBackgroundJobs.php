@@ -86,7 +86,7 @@ class AsBackgroundJobs
      *
      * @return int Total deleted actions.
      */
-    private function deleteActionsByGroup(string $group, string $status = ''): int
+    public function deleteActionsByGroup(string $group, string $status = ''): int
     {
         $actions = self::getActionsByGroup($group, $status, 'ids');
 
