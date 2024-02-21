@@ -5,9 +5,11 @@ namespace Give\Helpers;
 use ActionScheduler;
 
 /**
+ * @see https://actionscheduler.org/
+ *
  * @unreleased
  */
-class ActionSchedulerHelpers
+class AsBackgroundJobs
 {
     /**
      * @unreleased
@@ -33,7 +35,6 @@ class ActionSchedulerHelpers
                 'args' => $args,
                 'group' => $group,
                 'per_page' => 1,
-                'order' => 'DESC',
             ],
             'ids'
         );
