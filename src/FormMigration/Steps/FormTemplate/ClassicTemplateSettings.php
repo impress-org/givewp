@@ -54,6 +54,8 @@ class ClassicTemplateSettings extends FormMigrationStep
             ->__invoke(new DesignHeaderSettings($displayHeader, $mainHeading, $description));
 
         $this->formV3->settings->primaryColor = $primaryColor;
+        $this->formV3->settings->designSettingsImageUrl =
+            !empty($headerBackgroundImage) ? $headerBackgroundImage : $this->formV2->getFeaturedImage();
 
         // @note What do we do with `secondaryColor` in v3 (which is not a feature of v2)?
     }
