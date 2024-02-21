@@ -1,15 +1,15 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\EventHandlers;
+namespace Give\PaymentGateways\EventHandlers;
 
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased
  */
-class DonationProcessing
+class DonationCompleted
 {
     /**
      * @unreleased
@@ -19,7 +19,7 @@ class DonationProcessing
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
 
-        if ( ! $donation || $donation->status->isProcessing()) {
+        if ( ! $donation || $donation->status->isComplete()) {
             return;
         }
 
@@ -27,6 +27,6 @@ class DonationProcessing
             return;
         }
 
-        (new UpdateDonationStatus())($donation, DonationStatus::PROCESSING(), $message);
+        (new UpdateDonationStatus())($donation, DonationStatus::COMPLETE(), $message);
     }
 }

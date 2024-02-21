@@ -1,16 +1,16 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\EventHandlers;
+namespace Give\PaymentGateways\EventHandlers;
 
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased
  */
-class DonationPending
+class DonationRefunded
 {
     /**
      * @unreleased
@@ -21,7 +21,7 @@ class DonationPending
     {
         $donation = give(DonationRepository::class)->getByGatewayTransactionId($gatewayTransactionId);
 
-        if ( ! $donation || $donation->status->isPending()) {
+        if ( ! $donation || $donation->status->isRefunded()) {
             return;
         }
 
@@ -29,6 +29,6 @@ class DonationPending
             return;
         }
 
-        (new UpdateDonationStatus())($donation, DonationStatus::PENDING(), $message);
+        (new UpdateDonationStatus())($donation, DonationStatus::REFUNDED(), $message);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\EventHandlers;
+namespace Give\PaymentGateways\EventHandlers;
 
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased

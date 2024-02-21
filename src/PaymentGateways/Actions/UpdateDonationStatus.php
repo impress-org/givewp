@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\Actions;
+namespace Give\PaymentGateways\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;

@@ -1,25 +1,27 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\EventHandlers;
+namespace Give\PaymentGateways\EventHandlers;
 
+use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased
  */
-class DonationCompleted
+class DonationFailed
 {
     /**
      * @unreleased
+     *
      * @throws Exception
      */
     public function __invoke(string $gatewayTransactionId, $skipRecurringDonations = false, string $message = '')
     {
-        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+        $donation = give(DonationRepository::class)->getByGatewayTransactionId($gatewayTransactionId);
 
-        if ( ! $donation || $donation->status->isComplete()) {
+        if ( ! $donation || $donation->status->isFailed()) {
             return;
         }
 
@@ -27,6 +29,6 @@ class DonationCompleted
             return;
         }
 
-        (new UpdateDonationStatus())($donation, DonationStatus::COMPLETE(), $message);
+        (new UpdateDonationStatus())($donation, DonationStatus::FAILED(), $message);
     }
 }
