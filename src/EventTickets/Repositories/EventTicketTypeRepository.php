@@ -68,8 +68,8 @@ class EventTicketTypeRepository
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
                     'max_available' => $eventTicketType->maxAvailable,
-                    'created_at' => $createdDateTime,
-                    'updated_at' => $createdDateTime,
+                    'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
+                    'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
             $eventTicketType->id = DB::last_insert_id();
@@ -80,6 +80,9 @@ class EventTicketTypeRepository
 
             throw new $exception('Failed creating an event ticket type');
         }
+
+        $eventTicketType->createdAt = $createdDateTime;
+        $eventTicketType->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
