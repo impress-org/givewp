@@ -5,7 +5,6 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
-use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -766,13 +765,23 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @unreleased
      */
-    public function getFormFeaturedImage(): string
+    public function getFormFeaturedImage()
     {
-        $formId = $this->form->id;
-        $templateOptions = FormTemplateUtils::getOptions($formId);
+        $templateSettings = $this->getFormTemplateSettings();
 
-        return ! empty($templateOptions['introduction']['image']) ?
-            $templateOptions['introduction']['image'] :
-            get_the_post_thumbnail_url($formId, 'full');
+        if ( ! empty($templateSettings['introduction']['image'])) {
+            // Sequoia Template (Multi-Step)
+            $featuredImage = $templateSettings['introduction']['image'];
+        } elseif ( ! empty($templateSettings['visual_appearance']['header_background_image'])) {
+            // Classic Template - it doesn't use the featured image from the WP default setting as a fallback
+            $featuredImage = $templateSettings['visual_appearance']['header_background_image'];
+        } elseif ( ! isset($templateSettings['visual_appearance']['header_background_image'])) {
+            // Legacy Template or Sequoia Template without the ['introduction']['image'] setting
+            $featuredImage = get_the_post_thumbnail_url($this->form->id, 'full');
+        } else {
+            $featuredImage = '';
+        }
+
+        return $featuredImage;
     }
 }
