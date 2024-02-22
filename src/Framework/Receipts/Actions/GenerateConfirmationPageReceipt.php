@@ -12,6 +12,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\TemplateTags\DonationTemplateTags;
 use Give\Log\Log;
 
@@ -25,6 +26,7 @@ class GenerateConfirmationPageReceipt
         $this->fillSettings($receipt);
         $this->fillDonorDetails($receipt);
         $this->fillDonationDetails($receipt);
+        $this->fillEventTicketsDetails($receipt);
         $this->fillSubscriptionDetails($receipt);
         $this->fillAdditionalDetails($receipt);
 
@@ -144,6 +146,18 @@ class GenerateConfirmationPageReceipt
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
                     ['amount' => $receipt->donation->feeAmountRecovered->formatToDecimal()]
+                )
+            );
+        }
+
+        if ($receipt->donation->eventTickets) {
+            $receipt->donationDetails->addDetail(
+                new ReceiptDetail(
+                    __('Event Tickets', 'give'),
+                    Money::fromDecimal(
+                        array_sum(array_column($receipt->donation->eventTickets, 'amount')),
+                        $receipt->donation->amount->getCurrency()
+                    )->formatToLocale()
                 )
             );
         }
@@ -356,5 +370,21 @@ class GenerateConfirmationPageReceipt
     {
         return give_do_email_tags($content, ['payment_id' => $donation->id, 'form_id' => $donation->formId]
         );
+    }
+
+    private function fillEventTicketsDetails(DonationReceipt $receipt)
+    {
+        if ($receipt->donation->eventTickets) {
+            $eventTickets = $receipt->donation->eventTickets;
+
+            foreach ($eventTickets as $eventTicket) {
+                $receipt->eventTicketsDetails->addDetail(
+                    new ReceiptDetail(
+                        'Ticket (' . ($eventTicket['ticketId'] === 1 ? 'Standard' : 'VIP') . ')',
+                        $eventTicket['quantity']
+                    )
+                );
+            }
+        }
     }
 }
