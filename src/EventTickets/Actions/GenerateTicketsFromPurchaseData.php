@@ -12,19 +12,26 @@ use Give\EventTickets\Models\EventTicket;
 class GenerateTicketsFromPurchaseData
 {
     /**
+     * @unreleased
      * @var Donation
      */
     protected $donation;
 
+    /**
+     * @unreleased
+     */
     public function __construct(Donation $donation)
     {
         $this->donation = $donation;
     }
 
+    /**
+     * @unreleased
+     */
     public function __invoke(TicketPurchaseData $data)
     {
         for($i = 0; $i < $data->quantity; $i++) {
-            $ticket = EventTicket::create([
+            EventTicket::create([
                 'eventId' => $data->ticketType->eventId,
                 'ticketTypeId' => $data->ticketType->id,
                 'donationId' => $this->donation->id,
