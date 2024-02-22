@@ -245,7 +245,7 @@ class TestFormMetaDecorator extends TestCase {
         // Test 1 - The featured image from the WP default setting is NOT set
         $this->assertEmpty($formMetaDecorator->getFormFeaturedImage());
 
-        // Test 3 - The featured image from the WP default setting is set
+        // Test 2 - The featured image from the WP default setting is set
         $thumbnailId = $this->uploadTestImage();
         set_post_thumbnail($formV2->id, $thumbnailId);
         $this->assertNotEmpty($formMetaDecorator->getFormFeaturedImage());
