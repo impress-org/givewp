@@ -5,6 +5,7 @@ export default function EventTicketsList({
     ticketTypes,
     ticketsLabel,
     currency,
+    currencyRate,
     selectedTickets = [],
     handleSelect = null,
 }: EventTicketsListProps) {
@@ -26,6 +27,7 @@ export default function EventTicketsList({
                                 : () => null
                         }
                         currency={currency}
+                        currencyRate={currencyRate}
                     />
                 );
             })}

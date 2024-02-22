@@ -5,10 +5,16 @@ import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
 
 export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: EventTicketsListHOCProps) {
     const [selectedTickets, setSelectedTickets] = useState([]);
-    const {useWatch, useCurrencyFormatter, useDonationSummary, useFormContext} = window.givewp.form.hooks;
+    const {useWatch, useCurrencyFormatter, useDonationFormSettings, useDonationSummary, useFormContext} =
+        window.givewp.form.hooks;
+    const {currencySwitcherSettings} = useDonationFormSettings();
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
-    const formatter = useCurrencyFormatter(currency);
+    const currencySettings = currencySwitcherSettings.find((setting) => setting.id === currency);
+    const currencyRate = (currencySettings?.exchangeRate ?? Number('1.00')) || 1;
+    const currencyFormatter = useCurrencyFormatter(currency, {
+        minimumFractionDigits: currencySettings.exchangeRateFractionDigits,
+    });
     const donationSummary = useDonationSummary();
 
     useEffect(() => {
@@ -19,11 +25,11 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
             const quantity = selectedTickets[ticketId]?.quantity ?? 0;
 
             if (quantity > 0) {
-                const itemPrice = ticket.price * quantity;
+                const itemPrice = ticket.price * quantity * currencyRate;
                 donationSummary.addItem({
                     id: `eventTickets-${ticketId}`,
                     label: `Ticket (${ticket.title})`,
-                    value: itemPrice > 0 ? formatter.format(itemPrice / 100) : __('Free', 'give'),
+                    value: itemPrice > 0 ? currencyFormatter.format(itemPrice / 100) : __('Free', 'give'),
                 });
                 amount += itemPrice;
             } else {
@@ -38,7 +44,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
         }
 
         setValue(name, JSON.stringify(Object.values(selectedTickets)));
-    }, [ticketTypes, selectedTickets]);
+    }, [ticketTypes, selectedTickets, currency]);
 
     const onSelectTicket: OnSelectTicketProps = (ticketId, ticketsAvailable, ticketPrice) => (selectedQuantity) => {
         if (selectedQuantity < 0) {
@@ -53,7 +59,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
             selectedTickets[ticketId] = {
                 ticketId,
                 quantity: selectedQuantity,
-                amount: selectedQuantity * ticketPrice,
+                amount: selectedQuantity * ticketPrice * currencyRate,
             };
 
             return {...selectedTickets};
@@ -65,6 +71,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
             ticketTypes={ticketTypes}
             ticketsLabel={ticketsLabel}
             currency={currency}
+            currencyRate={currencyRate}
             selectedTickets={selectedTickets}
             handleSelect={onSelectTicket}
         />
