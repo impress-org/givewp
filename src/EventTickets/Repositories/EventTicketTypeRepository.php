@@ -71,8 +71,8 @@ class EventTicketTypeRepository
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
                     'capacity' => $eventTicketType->capacity,
-                    'created_at' => $createdDateTime,
-                    'updated_at' => $createdDateTime,
+                    'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
+                    'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
             $eventTicketTypeId = DB::last_insert_id();
@@ -118,7 +118,7 @@ class EventTicketTypeRepository
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
                     'capacity' => $eventTicketType->capacity,
-                    'updated_at' => $updatedDateTime,
+                    'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

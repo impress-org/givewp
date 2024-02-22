@@ -68,8 +68,8 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'created_at' => $createdDateTime,
-                    'updated_at' => $createdDateTime,
+                    'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
+                    'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
             $eventTicketId = DB::last_insert_id();
@@ -113,7 +113,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'updated_at' => $updatedDateTime,
+                    'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
