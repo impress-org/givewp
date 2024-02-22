@@ -40,6 +40,15 @@ class EventTicketRepository
 
     /**
      * @unreleased
+     */
+    public function queryById(int $id): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('id', $id);
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exception|InvalidArgumentException
      */

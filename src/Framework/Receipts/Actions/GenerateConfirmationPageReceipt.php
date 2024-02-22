@@ -150,14 +150,22 @@ class GenerateConfirmationPageReceipt
             );
         }
 
-        if ($receipt->donation->eventTickets) {
+        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
+
+        if ( ! empty($eventTickets)) {
+            $currency = $receipt->donation->amount->getCurrency();
+            $totalAmountValue = array_reduce($eventTickets, function ($acc, $eventTicket) {
+                $ticketType = $eventTicket->ticketType()->get();
+
+                return $acc + $ticketType->price->getAmount();
+            }, 0);
+
+            $totalAmount = new Money($totalAmountValue, $currency);
+
             $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Event Tickets', 'give'),
-                    Money::fromDecimal(
-                        array_sum(array_column($receipt->donation->eventTickets, 'amount')),
-                        $receipt->donation->amount->getCurrency()
-                    )->formatToLocale()
+                    $totalAmount->formatToLocale()
                 )
             );
         }
@@ -377,23 +385,32 @@ class GenerateConfirmationPageReceipt
      */
     private function fillEventTicketsDetails(DonationReceipt $receipt): void
     {
-        if ($receipt->donation->eventTickets) {
-            $eventTickets = $receipt->donation->eventTickets;
+        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
 
-            foreach ($eventTickets as $eventTicket) {
-                $event = $eventTicket->event();
+        if (empty($eventTickets)) {
+            return;
+        }
 
-                $receipt->eventTicketsDetails->addDetail(
-                    new ReceiptDetail(
-                        sprintf(
-                            __('%s - %s', 'give'),
-                            $event->title,
-                            $eventTicket->ticketType()->title
-                        ),
-                        $eventTicket['quantity']
-                    )
-                );
+        $event = $eventTickets[0]->event()->get();
+        $ticketTypes = [];
+
+        foreach ($eventTickets as $eventTicket) {
+            $ticketType = $eventTicket->ticketType()->get();
+            $ticketTypeId = $ticketType->id;
+
+            if (isset($ticketTypes[$ticketTypeId])) {
+                $ticketTypes[$ticketTypeId]['quantity'] += 1;
+            } else {
+                $ticketTypes[$ticketTypeId] = [
+                    'title' => $ticketType->title,
+                    'quantity' => 1,
+                ];
             }
+        }
+
+        foreach ($ticketTypes as $ticketType) {
+            $detailString = sprintf(__('%s - %s', 'give'), $event->title, $ticketType['title']);
+            $receipt->eventTicketsDetails->addDetail(new ReceiptDetail($detailString, $ticketType['quantity']));
         }
     }
 }

@@ -160,9 +160,9 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
      *
      * @param object $object
      */
-    public static function fromQueryBuilderObject($object): Event
+    public static function fromQueryBuilderObject($object): EventTicket
     {
-        return new Event([
+        return new EventTicket([
             'id' => (int)$object->id,
             'eventId' => (int)$object->event_id,
             'ticketTypeId' => (int)$object->ticket_type_id,
