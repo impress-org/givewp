@@ -1,3 +1,4 @@
+/* Classic */
 .givewp-donation-form {
     .givewp-layouts {
         &-header {
@@ -104,3 +105,114 @@
         }
     }
 }
+
+/* Multi Step */
+.givewp-donation-form__steps-body {
+    padding: 0;
+
+    .givewp-layouts-multiStepForm, .givewp-layouts-header__templates-ms {
+        padding: 2rem 2rem 0 2rem;
+    }
+
+    .givewp-donation-form__steps-button-next {
+        width: calc(100% - 4rem);
+        margin: 0 auto;
+    }
+
+    .givewp-layouts-multiStepForm__form {
+        .givewp-donation-form__steps-button-next {
+            width: 100%;
+        }
+    }
+
+    .givewp-layouts-headerTitle {
+        color: var(--givewp-grey-900);
+    }
+
+    .givewp-layouts-headerDescription {
+        color: var(--givewp-grey-700);
+    }
+
+    .givewp-layouts-header__templates-ms {
+        .givewp-layouts-headerImage {
+            width: 100%;
+
+            img {
+                object-fit: cover;
+                min-width: 100%;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
+        }
+
+
+        &--background {
+            padding: 0;
+
+            .givewp-layouts-header {
+                &__content {
+                    position: relative;
+                    padding: 2rem 2rem .5rem 2rem;
+                    margin-bottom: var(--givewp-spacing-4);
+
+                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                        color: var(--givewp-shades-white);
+                    }
+
+                }
+
+                &__goal {
+                    padding: 0 2rem;
+                }
+            }
+
+
+            div:not(.givewp-layouts-headerImage), aside {
+                position: relative;
+                z-index: 999;
+            }
+
+            .givewp-layouts-headerImage {
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                }
+            }
+        }
+
+        &--above {
+            padding: 0;
+
+            .givewp-layouts-header__content {
+                padding: 0 2rem;
+            }
+
+            .givewp-layouts-headerImage {
+                margin-bottom: var(--givewp-spacing-6);
+
+                img {
+                    height: 320px;
+                }
+            }
+        }
+
+        &--center {
+            padding: 2rem 2rem 0 2rem;
+
+            .givewp-layouts-headerImage {
+                img {
+                    border-radius: var(--givewp-rounded-4);
+
+                }
+            }
+
+            .givewp-layouts-goal {
+                margin-top: var(--givewp-spacing-1);
+            }
+        }
+    }
+}
+
