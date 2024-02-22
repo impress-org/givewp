@@ -13,9 +13,10 @@ export type Event = {
 
 export type TicketType = {
     id: number;
-    label: string;
+    title: string;
     description: string;
-    totalTickets: number;
+    capacity: number;
+    ticketsAvailable: number;
     price: number;
 };
 

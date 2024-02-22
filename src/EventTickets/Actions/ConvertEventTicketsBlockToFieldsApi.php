@@ -21,8 +21,13 @@ class ConvertEventTicketsBlockToFieldsApi
                 $eventId = $block->getAttribute('eventId');
                 $event = give(EventRepository::class)->getById($eventId);
                 $ticketTypes = array_map(function ($ticketType) {
+                    $soldCount = $ticketType->eventTickets()->where(
+                        'ticket_type_id',
+                        $ticketType->id
+                    )->count() ?? 0;
                     $ticketType = $ticketType->toArray();
-                    $ticketType['price'] = $ticketType['price']->formatToDecimal();
+                    $ticketType['price'] = $ticketType['price']->formatToMinorAmount() ?? 0;
+                    $ticketType['ticketsAvailable'] = $ticketType['capacity'] - $soldCount;
 
                     return $ticketType;
                 }, $event->ticketTypes()->getAll() ?? []);
