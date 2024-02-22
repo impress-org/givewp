@@ -29,12 +29,8 @@ class EventRepository
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return Event|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?Event
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -44,11 +40,9 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(Event $event)
+    public function insert(Event $event): void
     {
         $this->validate($event);
 
@@ -72,7 +66,7 @@ class EventRepository
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
-            $event->id = DB::last_insert_id();
+            $eventId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -81,6 +75,7 @@ class EventRepository
             throw new $exception('Failed creating an event');
         }
 
+        $event->id = $eventId;
         $event->createdAt = $createdDateTime;
         $event->updatedAt = $createdDateTime;
 
@@ -92,17 +87,15 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(Event $event)
+    public function update(Event $event): void
     {
         $this->validate($event);
 
         Hooks::doAction('givewp_events_event_updating', $event);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -116,7 +109,7 @@ class EventRepository
                     'ticket_close_datetime' => $event->ticket_close_datetime ? $event->ticket_close_datetime->format(
                         'Y-m-d H:i:s'
                     ) : null,
-                    'updated_at' => $updatedTimeDate->format('Y-m-d H:i:s'),
+                    'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -126,7 +119,7 @@ class EventRepository
             throw new $exception('Failed updating an event');
         }
 
-        $event->updatedAt = $updatedTimeDate;
+        $event->updatedAt = $updatedDateTime;
 
         DB::query('COMMIT');
 
@@ -136,9 +129,6 @@ class EventRepository
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(Event $event): bool
@@ -168,12 +158,8 @@ class EventRepository
 
     /**
      * @unreleased
-     *
-     * @param Event $event
-     *
-     * @return void
      */
-    private function validate(Event $event)
+    private function validate(Event $event): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($event->$key)) {
@@ -183,6 +169,8 @@ class EventRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return ModelQueryBuilder<Event>
      */
     public function prepareQuery(): ModelQueryBuilder

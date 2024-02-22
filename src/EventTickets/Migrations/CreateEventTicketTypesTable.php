@@ -42,10 +42,10 @@ class CreateEventTicketTypesTable extends Migration {
         $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			event_id INT UNSIGNED NOT NULL,
-			label TEXT NULL,
+			title TEXT NULL,
 			description TEXT NULL,
-			price INT UNSIGNED NULL,
-			max_available INT UNSIGNED NULL,
+			price INT UNSIGNED NOT NULL,
+			capacity INT UNSIGNED NULL,
 			created_at DATETIME NOT NULL,
 			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)
