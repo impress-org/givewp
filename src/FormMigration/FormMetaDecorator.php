@@ -90,7 +90,9 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $template = $this->getFormTemplate();
 
-        return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+        $templateSettings = give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+
+        return is_array($templateSettings) ? $templateSettings : [];
     }
 
     public function isDonationGoalEnabled(): bool
