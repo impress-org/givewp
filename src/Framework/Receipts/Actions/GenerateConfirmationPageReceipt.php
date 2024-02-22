@@ -372,15 +372,24 @@ class GenerateConfirmationPageReceipt
         );
     }
 
-    private function fillEventTicketsDetails(DonationReceipt $receipt)
+    /**
+     * @unreleased
+     */
+    private function fillEventTicketsDetails(DonationReceipt $receipt): void
     {
         if ($receipt->donation->eventTickets) {
             $eventTickets = $receipt->donation->eventTickets;
 
             foreach ($eventTickets as $eventTicket) {
+                $event = $eventTicket->event();
+
                 $receipt->eventTicketsDetails->addDetail(
                     new ReceiptDetail(
-                        'Ticket (' . ($eventTicket['ticketId'] === 1 ? 'Standard' : 'VIP') . ')',
+                        sprintf(
+                            __('%s - %s', 'give'),
+                            $event->title,
+                            $eventTicket->ticketType()->title
+                        ),
                         $eventTicket['quantity']
                     )
                 );
