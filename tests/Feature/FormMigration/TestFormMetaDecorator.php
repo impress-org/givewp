@@ -150,4 +150,118 @@ class TestFormMetaDecorator extends TestCase {
     {
         $this->markTestIncomplete();
     }
+
+    /**
+     * @unreleased
+     */
+    public function testGetFormFeaturedImageForSequoiaTemplate()
+    {
+        $fakeImageUrl = 'https://example.com/image.jpg';
+
+        $templateName = 'sequoia';
+        $templateSettings = [
+            'introduction' => [
+                'image' => $fakeImageUrl,
+            ],
+        ];
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                "_give_form_template" => $templateName,
+                "_give_{$templateName}_form_template_settings" => $templateSettings,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test 1 - Image is present in the form settings
+        $this->assertEquals($fakeImageUrl, $formMetaDecorator->getFormFeaturedImage());
+
+        // Test 2 - Image is NOT present in the form settings
+        $templateSettings['introduction']['image'] = '';
+        give_update_meta($formV2->id, "_give_{$templateName}_form_template_settings", $templateSettings);
+        $this->assertEmpty($formMetaDecorator->getFormFeaturedImage());
+
+        // Test 3 - The featured image from the WP default setting is used as a fallback
+        $thumbnailId = $this->uploadTestImage();
+        set_post_thumbnail($formV2->id, $thumbnailId);
+        $this->assertNotEmpty($formMetaDecorator->getFormFeaturedImage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetFormFeaturedImageForClassicTemplate()
+    {
+        $fakeImageUrl = 'https://example.com/image.jpg';
+
+        $templateName = 'classic';
+        $templateSettings = [
+            'visual_appearance' => [
+                'header_background_image' => $fakeImageUrl,
+            ],
+        ];
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                "_give_form_template" => $templateName,
+                "_give_{$templateName}_form_template_settings" => $templateSettings,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test 1 - Image is present in the form settings
+        $this->assertEquals($fakeImageUrl, $formMetaDecorator->getFormFeaturedImage());
+
+        // Test 2 - Image is NOT present in the form settings
+        $templateSettings['visual_appearance']['header_background_image'] = '';
+        give_update_meta($formV2->id, "_give_{$templateName}_form_template_settings", $templateSettings);
+        $this->assertEmpty($formMetaDecorator->getFormFeaturedImage());
+
+        // Test 3 - The featured image from the WP default setting is NOT used as a fallback
+        $thumbnailId = $this->uploadTestImage();
+        set_post_thumbnail($formV2->id, $thumbnailId);
+        $this->assertEmpty($formMetaDecorator->getFormFeaturedImage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetFormFeaturedImageForLegacyTemplate()
+    {
+        $templateName = 'legacy';
+        $templateSettings = [];
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                "_give_form_template" => $templateName,
+                "_give_{$templateName}_form_template_settings" => $templateSettings,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test 1 - The featured image from the WP default setting is NOT set
+        $this->assertEmpty($formMetaDecorator->getFormFeaturedImage());
+
+        // Test 3 - The featured image from the WP default setting is set
+        $thumbnailId = $this->uploadTestImage();
+        set_post_thumbnail($formV2->id, $thumbnailId);
+        $this->assertNotEmpty($formMetaDecorator->getFormFeaturedImage());
+    }
+
+    /**
+     * @see https://core.trac.wordpress.org/browser/branches/4.5/tests/phpunit/tests/post/attachments.php#L24
+     *
+     * @unreleased
+     */
+    private function uploadTestImage()
+    {
+        $filename = (DIR_TESTDATA . '/images/test-image.jpg');
+        $contents = file_get_contents($filename);
+        $upload = wp_upload_bits(basename($filename), null, $contents);
+
+        return $this->_make_attachment($upload);
+    }
 }
