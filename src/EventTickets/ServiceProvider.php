@@ -3,10 +3,13 @@
 namespace Give\EventTickets;
 
 use Give\EventTickets\Hooks\DonationFormBlockRender;
+use Give\EventTickets\Models\Event;
+use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -59,5 +62,32 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
+
+        add_action('admin_init', function() {
+            if(!Event::query()->count()) {
+                $event = Event::create([
+                    'title' => 'Sample Event',
+                    'description' => 'This is a sample event',
+                    'startDateTime' => new \DateTime(),
+                    'endDateTime' => (new \DateTime())->setTime(23, 59, 59)
+                ]);
+
+                EventTicketType::create([
+                    'eventId' => $event->id,
+                    'label' => 'Free Ticket',
+                    'description' => 'This is a free ticket',
+                    'price' => new Money(0, give_get_currency()),
+                    'maxAvailable' => 100
+                ]);
+
+                EventTicketType::create([
+                    'eventId' => $event->id,
+                    'label' => 'Paid Ticket',
+                    'description' => 'This is a paid ticket',
+                    'price' => new Money(2200, give_get_currency()),
+                    'maxAvailable' => 100
+                ]);
+            }
+        });
     }
 }

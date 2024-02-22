@@ -22,10 +22,13 @@ class ConvertEventTicketsBlockToFieldsApi
                 $event = give(EventRepository::class)->getById($eventId);
                 $ticketTypes = array_map(function ($ticketType) {
                     $ticketType = $ticketType->toArray();
+                    $ticketType['totalTickets'] = $ticketType['maxAvailable'];
                     $ticketType['price'] = $ticketType['price']->formatToDecimal();
 
                     return $ticketType;
                 }, $event->ticketTypes()->getAll() ?? []);
+
+                ray($ticketTypes);
 
                 $eventTicketsField
                     ->title($event->title)
