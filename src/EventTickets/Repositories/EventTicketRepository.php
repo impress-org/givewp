@@ -30,12 +30,8 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return EventTicket|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?EventTicket
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -44,8 +40,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicket $eventTicket
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -69,7 +63,7 @@ class EventTicketRepository
                     'updated_at' => $createdDateTime,
                 ]);
 
-            $eventTicket->id = DB::last_insert_id();
+            $eventTicketId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -77,6 +71,10 @@ class EventTicketRepository
 
             throw new $exception('Failed creating an event ticket');
         }
+
+        $eventTicket->id = $eventTicketId;
+        $eventTicket->createdAt = $createdDateTime;
+        $eventTicket->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -86,8 +84,6 @@ class EventTicketRepository
     /**
      * @unreleased
      *
-     * @param EventTicket $eventTicket
-     *
      * @throws Exception|InvalidArgumentException
      */
     public function update(EventTicket $eventTicket)
@@ -96,7 +92,7 @@ class EventTicketRepository
 
         Hooks::doAction('givewp_events_event_ticket_updating', $eventTicket);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -108,7 +104,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'updated_at' => $updatedTimeDate,
+                    'updated_at' => $updatedDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -118,6 +114,8 @@ class EventTicketRepository
             throw new $exception('Failed updating an event ticket');
         }
 
+        $eventTicket->updatedAt = $updatedDateTime;
+
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_events_event_ticket_updated', $eventTicket);
@@ -126,9 +124,6 @@ class EventTicketRepository
     /**
      * @unreleased
      *
-     * @param EventTicket $eventTicket
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(EventTicket $eventTicket): bool
@@ -158,12 +153,8 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicket $eventTicket
-     *
-     * @return void
      */
-    private function validate(EventTicket $eventTicket)
+    private function validate(EventTicket $eventTicket): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicket->$key)) {
@@ -192,10 +183,6 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {
@@ -205,16 +192,13 @@ class EventTicketRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByTicketTypeId(int $ticketTypeId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('ticket_type_id', $ticketTypeId);
     }
+
     /**
      * @unreleased
      *

@@ -27,10 +27,10 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     protected $properties = [
         'id' => 'int',
         'eventId' => 'int',
-        'label' => 'string',
+        'title' => 'string',
         'description' => 'string',
         'price' => Money::class,
-        'maxAvailable' => 'int',
+        'capacity' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -45,18 +45,14 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
 
     /**
      * @unreleased
-     *
-     * @return EventTicketType|null
      */
-    public static function find($id)
+    public static function find($id): ?EventTicketType
     {
         return give(EventTicketTypeRepository::class)->getById($id);
     }
 
     /**
      * @unreleased
-     *
-     * @return ModelQueryBuilder
      */
     public static function findByEvent($eventId): ModelQueryBuilder
     {
@@ -66,7 +62,6 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return $this
      * @throws Exception|InvalidArgumentException
      */
     public static function create(array $attributes): EventTicketType
@@ -81,10 +76,9 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @unreleased
      *
-     * @return void
      * @throws Exception|InvalidArgumentException
      */
-    public function save()
+    public function save(): void
     {
         if (!$this->id) {
             give(EventTicketTypeRepository::class)->insert($this);
@@ -131,7 +125,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
      */
     public function eventTickets(): ModelQueryBuilder
     {
-        return give(EventTicketRepository::class)->queryByEventId($this->eventId);
+      return give(EventTicketRepository::class)->queryByEventId($this->eventId);
     }
 
     /**
@@ -144,10 +138,10 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
         return new EventTicketType([
             'id' => (int)$object->id,
             'eventId' => (int)$object->event_id,
-            'label' => $object->label,
+            'title' => $object->title,
             'description' => $object->description,
-            'price' => Money::fromDecimal($object->price, give_get_currency()),
-            'maxAvailable' => (int)$object->max_available,
+            'price' => new Money($object->price, give_get_currency()),
+            'capacity' => (int)$object->capacity,
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);

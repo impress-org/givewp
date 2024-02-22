@@ -24,19 +24,15 @@ class EventTicketTypeRepository
      */
     private $requiredProperties = [
         'eventId',
-        'label',
+        'title',
         'price',
-        'maxAvailable',
+        'capacity',
     ];
 
     /**
      * @unreleased
-     *
-     * @param int $id
-     *
-     * @return EventTicketType|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?EventTicketType
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -46,11 +42,9 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(EventTicketType $eventTicketType)
+    public function insert(EventTicketType $eventTicketType): void
     {
         $this->validate($eventTicketType);
 
@@ -64,15 +58,15 @@ class EventTicketTypeRepository
             DB::table('give_event_ticket_types')
                 ->insert([
                     'event_id' => $eventTicketType->eventId,
-                    'label' => $eventTicketType->label,
+                    'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->maxAvailable,
+                    'capacity' => $eventTicketType->capacity,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
                 ]);
 
-            $eventTicketType->id = DB::last_insert_id();
+            $eventTicketTypeId = DB::last_insert_id();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -80,6 +74,10 @@ class EventTicketTypeRepository
 
             throw new $exception('Failed creating an event ticket type');
         }
+
+        $eventTicketType->id = $eventTicketTypeId;
+        $eventTicketType->createdAt = $createdDateTime;
+        $eventTicketType->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
@@ -89,17 +87,15 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(EventTicketType $eventTicketType)
+    public function update(EventTicketType $eventTicketType): void
     {
         $this->validate($eventTicketType);
 
         Hooks::doAction('givewp_events_event_ticket_type_updating', $eventTicketType);
 
-        $updatedTimeDate = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $updatedDateTime = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -109,11 +105,11 @@ class EventTicketTypeRepository
                 ->where('id', $eventTicketType->id)
                 ->update([
                     'event_id' => $eventTicketType->eventId,
-                    'label' => $eventTicketType->label,
+                    'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
                     'price' => $eventTicketType->price->formatToMinorAmount(),
-                    'max_available' => $eventTicketType->maxAvailable,
-                    'updated_at' => $updatedTimeDate,
+                    'capacity' => $eventTicketType->capacity,
+                    'updated_at' => $updatedDateTime,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -123,6 +119,8 @@ class EventTicketTypeRepository
             throw new $exception('Failed updating an event ticket type');
         }
 
+        $eventTicketType->updatedAt = $updatedDateTime;
+
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_events_event_ticket_type_updated', $eventTicketType);
@@ -131,9 +129,6 @@ class EventTicketTypeRepository
     /**
      * @unreleased
      *
-     * @param EventTicketType $eventTicketType
-     *
-     * @return bool
      * @throws Exception
      */
     public function delete(EventTicketType $eventTicketType): bool
@@ -163,12 +158,8 @@ class EventTicketTypeRepository
 
     /**
      * @unreleased
-     *
-     * @param EventTicketType $eventTicketType
-     *
-     * @return void
      */
-    private function validate(EventTicketType $eventTicketType)
+    private function validate(EventTicketType $eventTicketType): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($eventTicketType->$key)) {
@@ -178,6 +169,8 @@ class EventTicketTypeRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return ModelQueryBuilder<EventTicketType>
      */
     public function prepareQuery(): ModelQueryBuilder
@@ -188,10 +181,10 @@ class EventTicketTypeRepository
             ->select(
                 'id',
                 'event_id',
-                'label',
+                'title',
                 'description',
                 'price',
-                'max_available',
+                'capacity',
                 'created_at',
                 'updated_at'
             );
@@ -199,10 +192,6 @@ class EventTicketTypeRepository
 
     /**
      * @unreleased
-     *
-     * @param int $eventId
-     *
-     * @return ModelQueryBuilder
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {
