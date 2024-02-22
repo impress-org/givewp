@@ -28,8 +28,6 @@ class ConvertEventTicketsBlockToFieldsApi
                     return $ticketType;
                 }, $event->ticketTypes()->getAll() ?? []);
 
-                ray($ticketTypes);
-
                 $eventTicketsField
                     ->title($event->title)
                     ->startDateTime($event->startDateTime->format('Y-m-d H:i:s'))
