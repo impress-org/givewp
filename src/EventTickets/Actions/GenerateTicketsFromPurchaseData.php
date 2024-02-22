@@ -29,8 +29,6 @@ class GenerateTicketsFromPurchaseData
                 'ticketTypeId' => $data->ticketType->id,
                 'donationId' => $this->donation->id,
             ]);
-
-            ray($ticket->toArray());
         }
     }
 }
