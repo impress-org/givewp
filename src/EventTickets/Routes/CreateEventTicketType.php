@@ -42,7 +42,7 @@ class CreateEventTicketType implements RestRoute
                         },
                         'required' => true,
                     ],
-                    'label' => [
+                    'title' => [
                         'type' => 'string',
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
@@ -80,7 +80,7 @@ class CreateEventTicketType implements RestRoute
     {
         $ticketType = EventTicketType::create([
             'eventId' => $request->get_param('event_id'),
-            'label' => $request->get_param('label'),
+            'title' => $request->get_param('title'),
             'description' => $request->get_param('description'),
             'price' => new Money($request->get_param('price'), give_get_currency()),
             'maxAvailable' => $request->get_param('capacity'),
