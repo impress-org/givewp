@@ -258,7 +258,7 @@ class TestFormMetaDecorator extends TestCase {
      */
     private function uploadTestImage()
     {
-        $filename = (DIR_TESTDATA . '/images/test-image.jpg');
+        $filename = (GIVE_PLUGIN_DIR . 'assets/dist/images/give-placeholder.jpg');
         $contents = file_get_contents($filename);
         $upload = wp_upload_bits(basename($filename), null, $contents);
 
