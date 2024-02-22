@@ -108,6 +108,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added support for event tickets
      * @since 3.0.0
      *
      * @return void
