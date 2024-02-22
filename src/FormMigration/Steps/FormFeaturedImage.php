@@ -16,7 +16,9 @@ class FormFeaturedImage extends FormMigrationStep
     {
         if ($formV2FeaturedImage = $this->formV2->getFormFeaturedImage()) {
             $this->formV3->settings->designSettingsImageUrl = $formV2FeaturedImage;
-            $this->formV3->settings->designSettingsImageStyle = 'center';
+            if ('sequoia' === $this->formV2->getFormTemplate()) {
+                $this->formV3->settings->designSettingsImageStyle = 'center';
+            }
         }
     }
 }
