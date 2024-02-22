@@ -781,7 +781,7 @@ class FormMetaDecorator extends FormModelDecorator
             // Legacy Template or Sequoia Template without the ['introduction']['image'] setting
             $featuredImage = get_the_post_thumbnail_url($this->form->id, 'full');
         } else {
-            $featuredImage = '';
+            $featuredImage = null;
         }
 
         return $featuredImage;
