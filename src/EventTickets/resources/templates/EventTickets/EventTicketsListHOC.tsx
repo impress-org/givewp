@@ -50,15 +50,11 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
         }
 
         setSelectedTickets((selectedTickets) => {
-            if (selectedQuantity === 0) {
-                delete selectedTickets[ticketId];
-            } else {
-                selectedTickets[ticketId] = {
-                    ticketId,
-                    quantity: selectedQuantity,
-                    amount: selectedQuantity * ticketPrice,
-                };
-            }
+            selectedTickets[ticketId] = {
+                ticketId,
+                quantity: selectedQuantity,
+                amount: selectedQuantity * ticketPrice,
+            };
 
             return {...selectedTickets};
         });
