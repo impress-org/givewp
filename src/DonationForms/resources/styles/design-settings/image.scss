@@ -119,6 +119,12 @@
         margin: 0 auto;
     }
 
+    .givewp-layouts-multiStepForm__form {
+        .givewp-donation-form__steps-button-next {
+            width: 100%;
+        }
+    }
+
     .givewp-layouts-headerTitle {
         color: var(--givewp-grey-900);
     }
