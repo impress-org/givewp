@@ -16,7 +16,7 @@ class EventActions extends Endpoint
     /**
      * @var string
      */
-    protected $endpoint = 'admin/forms/(?P<action>[\S]+)';
+    protected $endpoint = 'admin/event-tickets/(?P<action>[\S]+)';
 
     /**
      * @inheritDoc

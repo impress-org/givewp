@@ -47,19 +47,26 @@ class SalesAmountColumn extends ModelColumn
         $ticketTypes = [];
         foreach ($model->ticketTypes()->getAll() ?? [] as $ticketType) {
             $ticketTypes[$ticketType->id] = [
-                'price' => $ticketType->price->formatToDecimal(),
+                'price' => $ticketType->price,
                 'capacity' => $ticketType->capacity,
             ];
         }
 
-        $salesTotal = array_reduce($model->eventTickets()->getAll() ?? [], function ($acc, $eventTicket) use ($ticketTypes) {
-            return $acc + $ticketTypes[$eventTicket->ticketTypeId]['price'];
-        }, 0);
-        $capacityTotal = array_reduce($ticketTypes, function ($acc, $ticketType) {
-            return $acc + ($ticketType['capacity'] * $ticketType['price']);
-        }, 0);
+        $salesTotal = array_reduce(
+            $model->eventTickets()->getAll() ?? [],
+            function (Money $acc, $eventTicket) use ($ticketTypes) {
+                return $acc->add($ticketTypes[$eventTicket->ticketTypeId]['price']);
+            },
+            new Money(0, give_get_currency())
+        );
+        $capacityTotal = array_reduce($ticketTypes, function (Money $acc, $ticketType) {
+            return $acc->add($ticketType['price']->multiply($ticketType['capacity']));
+        }, new Money(0, give_get_currency()));
 
-        $salesPercentage = $capacityTotal > 0 ? max(min($salesTotal / $capacityTotal, 100), 0) : 0;
+        $salesPercentage = $capacityTotal->formatToMinorAmount() > 0 ? max(
+            min($salesTotal->formatToMinorAmount() / $capacityTotal->formatToMinorAmount(), 100),
+            0
+        ) : 0;
 
         $template = '
             <div
@@ -79,9 +86,9 @@ class SalesAmountColumn extends ModelColumn
             $template,
             $model->id,
             $salesPercentage,
-            Money::fromDecimal($salesTotal, give_get_currency())->formatToLocale($locale),
+            $salesTotal->formatToLocale($locale),
             __('of', 'give'),
-            Money::fromDecimal($capacityTotal, give_get_currency())->formatToLocale($locale)
+            $capacityTotal->formatToLocale($locale)
         );
     }
 }
