@@ -140,7 +140,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
             'eventId' => (int)$object->event_id,
             'title' => $object->title,
             'description' => $object->description,
-            'price' => Money::fromDecimal($object->price, give_get_currency()),
+            'price' => new Money($object->price, give_get_currency()),
             'capacity' => (int)$object->capacity,
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),

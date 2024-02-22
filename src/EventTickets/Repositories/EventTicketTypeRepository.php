@@ -60,7 +60,7 @@ class EventTicketTypeRepository
                     'event_id' => $eventTicketType->eventId,
                     'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToDecimal(),
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
                     'capacity' => $eventTicketType->capacity,
                     'created_at' => $createdDateTime,
                     'updated_at' => $createdDateTime,
@@ -107,7 +107,7 @@ class EventTicketTypeRepository
                     'event_id' => $eventTicketType->eventId,
                     'title' => $eventTicketType->title,
                     'description' => $eventTicketType->description,
-                    'price' => $eventTicketType->price->formatToDecimal(),
+                    'price' => $eventTicketType->price->formatToMinorAmount(),
                     'capacity' => $eventTicketType->capacity,
                     'updated_at' => $updatedDateTime,
                 ]);
@@ -185,7 +185,6 @@ class EventTicketTypeRepository
                 'description',
                 'price',
                 'capacity',
-                'status',
                 'created_at',
                 'updated_at'
             );
