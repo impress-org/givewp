@@ -65,8 +65,8 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'created_at' => $createdDateTime,
-                    'updated_at' => $createdDateTime,
+                    'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
+                    'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
 
             $eventTicket->id = DB::last_insert_id();
@@ -77,6 +77,9 @@ class EventTicketRepository
 
             throw new $exception('Failed creating an event ticket');
         }
+
+        $eventTicket->createdAt = $createdDateTime;
+        $eventTicket->updatedAt = $createdDateTime;
 
         DB::query('COMMIT');
 
