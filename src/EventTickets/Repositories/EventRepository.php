@@ -103,10 +103,11 @@ class EventRepository
             DB::table('give_events')
                 ->where('id', $event->id)
                 ->update([
+                    'title' => $event->title,
                     'description' => $event->description,
                     'start_datetime' => $event->startDateTime->format('Y-m-d H:i:s'),
-                    'end_datetime' => $event->end_datetime ? $event->end_datetime->format('Y-m-d H:i:s') : null,
-                    'ticket_close_datetime' => $event->ticket_close_datetime ? $event->ticket_close_datetime->format(
+                    'end_datetime' => $event->endDateTime ? $event->endDateTime->format('Y-m-d H:i:s') : null,
+                    'ticket_close_datetime' => $event->ticketCloseDateTime ? $event->ticketCloseDateTime->format(
                         'Y-m-d H:i:s'
                     ) : null,
                     'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),

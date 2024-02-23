@@ -2,6 +2,7 @@
 
 namespace Give\EventTickets;
 
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\EventTickets\Hooks\DonationFormBlockRender;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
@@ -21,6 +22,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(): void
     {
+        if( ! FeatureFlag::eventTickets() ) {
+            return;
+        }
+
         global $wpdb;
         $wpdb->give_events = "{$wpdb->prefix}give_events";
         $wpdb->give_event_tickets = "{$wpdb->prefix}give_event_tickets";
@@ -37,6 +42,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
+        if( ! FeatureFlag::eventTickets() ) {
+            return;
+        }
+
         give( MigrationsRegister::class )->addMigrations([
             Migrations\CreateEventsTable::class,
             Migrations\CreateEventTicketTypesTable::class,
@@ -52,7 +61,7 @@ class ServiceProvider implements ServiceProviderInterface
             10,
             4
         );
-
+        Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
