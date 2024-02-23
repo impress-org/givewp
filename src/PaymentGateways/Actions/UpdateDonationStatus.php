@@ -2,11 +2,12 @@
 
 namespace Give\PaymentGateways\Actions;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @unreleased
@@ -46,6 +47,34 @@ class UpdateDonationStatus
                 'Gateway Transaction Id' => $gatewayTransactionId,
             ]
         );
+
+        if ($this->isInvalidSubscriptionFirstPayment($donation) &&
+            ! $donation->subscription->status->isCancelled()) {
+            $donation->subscription->status = SubscriptionStatus::CANCELLED();
+            $donation->subscription->save();
+
+            PaymentGatewayLog::info(
+                sprintf("The subscription was canceled because the first payment wasn't finished. Subscription ID: %s.",
+                    $donation->subscription->id),
+                [
+                    'Payment Gateway' => $donation->gatewayId,
+                    'First Payment Status' => $donation->status->getValue(),
+                    'First Payment ID' => $donation->id,
+                    'First Payment Gateway Transaction ID' => $donation->gatewayTransactionId,
+                    'Gateway Subscription Id' => $donation->subscription->gatewaySubscriptionId,
+                    'Subscription ID' => $donation->subscription->id,
+                ]
+            );
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isInvalidSubscriptionFirstPayment(Donation $donation): bool
+    {
+        return $donation->type->isSubscription() &&
+               ($donation->status->isAbandoned() || $donation->status->isCancelled());
     }
 
     /**
