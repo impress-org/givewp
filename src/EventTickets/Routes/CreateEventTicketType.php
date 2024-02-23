@@ -83,7 +83,7 @@ class CreateEventTicketType implements RestRoute
             'title' => $request->get_param('title'),
             'description' => $request->get_param('description'),
             'price' => new Money($request->get_param('price'), give_get_currency()),
-            'maxAvailable' => $request->get_param('capacity'),
+            'capacity' => $request->get_param('capacity'),
         ]);
 
         return new WP_REST_Response($ticketType->toArray(), 201);
