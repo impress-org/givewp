@@ -11,8 +11,12 @@ class FeatureFlagRepository
 
     public function enabled($feature): bool
     {
-        return give_is_setting_enabled(
-            give_get_option("enable_$feature", true)
-        );
+        // Workaround so that the updated option is available at the start of the request.
+        $option = isset($_POST["enable_$feature"])
+            ? give_clean($_POST["enable_$feature"])
+            : give_get_option("enable_$feature", true);
+
+        return give_is_setting_enabled($option);
+
     }
 }
