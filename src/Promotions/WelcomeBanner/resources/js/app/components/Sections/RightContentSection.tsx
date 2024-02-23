@@ -16,13 +16,10 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
             <h2>{__('Spotlight on awesome features', 'give')}</h2>
             <div className={'givewp-welcome-banner-right-content__media-container'}>
                 <SpotLight
-                    title={__('Design mode', 'give')}
-                    description={__(
-                        'See exactly what your form looks like for potential donors using the “Design” tab of the builder. Changes are visible immediately.',
-                        'give'
-                    )}
+                    title={__('Header Image', 'give')}
+                    description={__('You can add and customize an image on the header of your donation form.', 'give')}
                 >
-                    <VideoPlayer src={`${assets}/design-mode.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
+                    <VideoPlayer src={`${assets}/header-image.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
                 </SpotLight>
 
                 <SpotLight
