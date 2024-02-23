@@ -4,10 +4,9 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
-use Give\EventTickets\Models\EventTicket;
-use Give\Framework\Models\Model;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @unreleased
@@ -27,7 +26,7 @@ class UpdateEvent implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'GET',
+                    'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => '__return_true',
                 ],
