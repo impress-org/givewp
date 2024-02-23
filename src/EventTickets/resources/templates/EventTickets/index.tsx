@@ -17,7 +17,7 @@ export default function EventTicketsField({
 }: Event) {
     return (
         <div className={'givewp-event-tickets'}>
-            <EventTicketsHeader title={title} startDateTime={startDateTime} />
+            <EventTicketsHeader title={title} startDateTime={new Date(startDateTime)} />
 
             {description && <EventTicketsDescription description={description} />}
 
