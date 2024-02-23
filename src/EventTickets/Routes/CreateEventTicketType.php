@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
+use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Support\ValueObjects\Money;
@@ -86,6 +87,6 @@ class CreateEventTicketType implements RestRoute
             'capacity' => $request->get_param('capacity'),
         ]);
 
-        return new WP_REST_Response($ticketType->toArray(), 201);
+        return new WP_REST_Response(EventTicketTypeData::make($ticketType), 201);
     }
 }
