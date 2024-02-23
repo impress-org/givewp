@@ -68,8 +68,10 @@ class GetEventForms implements RestRoute
 
         $forms = DonationForm::query()
             ->whereLike('give_formmeta_attach_meta_fields.meta_value', '%"name":"givewp/event-tickets"%')
-            ->whereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern}%") // When the eventId is the only block attribute.
-            ->orWhereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern,%") // When the eventId is the NOT only block attribute.
+            ->where(function($query) use ($eventIdPattern) {
+                $query->whereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern}%") // When the eventId is the only block attribute.
+                    ->orWhereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern,%"); // When the eventId is the NOT only block attribute.
+            })
             ->paginate(
                 $request->get_param('per_page'),
                 $request->get_param('page')
