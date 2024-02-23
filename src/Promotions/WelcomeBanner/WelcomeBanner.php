@@ -13,7 +13,11 @@ class WelcomeBanner
 
         $option = get_option('givewp_welcome_banner_dismiss');
 
-        return $pagenow === 'plugins.php' && !$option;
+        $newStartDate = strtotime('2024-02-26 00:00');
+
+        $showBanner = $option < $newStartDate;
+
+        return $pagenow === 'plugins.php' && ! $option && $showBanner;
     }
 
     /**
@@ -41,8 +45,8 @@ class WelcomeBanner
             'givewp-welcome-banner',
             'WelcomeBanner',
             [
-                'root' => esc_url_raw(rest_url('give-api/v2/welcome-banner')),
-                'nonce' => wp_create_nonce('wp_rest'),
+                'root'   => esc_url_raw(rest_url('give-api/v2/welcome-banner')),
+                'nonce'  => wp_create_nonce('wp_rest'),
                 'action' => 'givewp_welcome_banner_dismiss',
                 'assets' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/welcome-banner',
             ]
