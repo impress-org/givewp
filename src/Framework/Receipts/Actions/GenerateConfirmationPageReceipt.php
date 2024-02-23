@@ -6,6 +6,7 @@ use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\EventTickets\Models\EventTicket;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
@@ -155,18 +156,18 @@ class GenerateConfirmationPageReceipt
 
         if ( ! empty($eventTickets)) {
             $currency = $receipt->donation->amount->getCurrency();
-            $totalAmountValue = array_reduce($eventTickets, function ($acc, $eventTicket) {
+            $total = array_reduce($eventTickets, function(Money $carry, EventTicket $eventTicket) {
                 $ticketType = $eventTicket->ticketType()->get();
 
-                return $acc + $ticketType->price->getAmount();
-            }, 0);
-
-            $totalAmount = new Money($totalAmountValue, $currency);
+                return $carry->add(
+                    $ticketType->price
+                );
+            }, new Money(0, $currency));
 
             $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Event Tickets', 'give'),
-                    $totalAmount->formatToLocale()
+                    $total->formatToLocale()
                 )
             );
         }
