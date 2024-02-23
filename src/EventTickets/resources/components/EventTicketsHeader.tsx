@@ -3,7 +3,7 @@ import {format} from 'date-fns';
 export default function EventTicketsHeader({title, startDateTime}) {
     const fullDate = format(startDateTime, 'EEEE, MMMM do, hh:mmaaa');
     const day = format(startDateTime, 'dd');
-    const month = format(startDateTime, 'EEE');
+    const month = format(startDateTime, 'MMM');
 
     return (
         <div className={'givewp-event-tickets__header'}>
