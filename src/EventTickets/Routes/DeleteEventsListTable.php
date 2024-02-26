@@ -1,22 +1,32 @@
 <?php
 
-namespace Give\EventTickets\Endpoints;
+namespace Give\EventTickets\Routes;
 
-use Give\DonationForms\V2\Endpoints\Endpoint;
+use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\EventTickets\Repositories\EventRepository;
-use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @unreleased
  */
-class EventActions extends Endpoint
+class DeleteEventsListTable
 {
     /**
      * @var string
      */
-    protected $endpoint = 'admin/event-tickets/(?P<action>[\S]+)';
+    protected $endpoint = 'events-tickets/events/list-table';
+
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
+
+    /**
+     * @var EventTicketsListTable
+     */
+    protected $listTable;
 
     /**
      * @inheritDoc
@@ -28,18 +38,11 @@ class EventActions extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods' => ['POST', 'UPDATE', 'DELETE'],
+                    'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
-                    'action' => [
-                        'type' => 'string',
-                        'required' => true,
-                        'enum' => [
-                            'delete',
-                        ],
-                    ],
                     'ids' => [
                         'type' => 'string',
                         'required' => true,
@@ -59,24 +62,6 @@ class EventActions extends Endpoint
     }
 
     /**
-     * @inheritDoc
-     *
-     * @unreleased
-     */
-    public function permissionsCheck()
-    {
-        if ( ! current_user_can('edit_give_forms')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Events', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
-    }
-
-    /**
      * @unreleased
      */
     public function handleRequest(WP_REST_Request $request): WP_Rest_Response
@@ -85,14 +70,9 @@ class EventActions extends Endpoint
         $errors = [];
         $successes = [];
 
-        switch ($request->get_param('action')) {
-            case 'delete':
-                foreach ($ids as $id) {
-                    $eventDeleted = give(EventRepository::class)->delete($id);
-                    $eventDeleted ? $successes[] = $id : $errors[] = $id;
-                }
-
-                break;
+        foreach ($ids as $id) {
+            $eventDeleted = give(EventRepository::class)->delete($id);
+            $eventDeleted ? $successes[] = $id : $errors[] = $id;
         }
 
         return new WP_REST_Response(array('errors' => $errors, 'successes' => $successes));
@@ -101,6 +81,8 @@ class EventActions extends Endpoint
 
     /**
      * Split string
+     *
+     * @unreleased
      *
      * @return string[]
      */
@@ -111,5 +93,19 @@ class EventActions extends Endpoint
         }
 
         return [trim($ids)];
+    }
+
+        /**
+     * @unreleased
+     *
+     * @return bool|\WP_Error
+     */
+    public function permissionsCheck()
+    {
+        return current_user_can('delete_posts')?: new \WP_Error(
+            'rest_forbidden',
+            esc_html__("You don't have permission to delete Events", 'give'),
+            ['status' => is_user_logged_in() ? 403 : 401]
+        );
     }
 }

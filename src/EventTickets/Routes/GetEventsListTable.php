@@ -1,19 +1,23 @@
 <?php
 
-namespace Give\EventTickets\Endpoints;
+namespace Give\EventTickets\Routes;
 
 use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
-class ListEvents extends Endpoint
+/**
+ * @unreleased
+ */
+class GetEventsListTable
 {
     /**
      * @var string
      */
-    protected $endpoint = 'admin/event-tickets';
+    protected $endpoint = 'events-tickets/events/list-table';
 
     /**
      * @var WP_REST_Request
@@ -27,61 +31,50 @@ class ListEvents extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @unreleased
      */
-    public function registerRoute()
+    public function registerRoute(): void
     {
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
             [
                 [
-                    'methods' => 'GET',
+                    'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
                     'page' => [
                         'type' => 'integer',
-                        'required' => false,
                         'default' => 1,
                         'minimum' => 1
                     ],
                     'perPage' => [
                         'type' => 'integer',
-                        'required' => false,
                         'default' => 30,
                         'minimum' => 1
                     ],
                     'search' => [
                         'type' => 'string',
-                        'required' => false
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                     'sortColumn' => [
                         'type' => 'string',
-                        'required' => false,
+                        'default' => 'id',
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
                     'sortDirection' => [
                         'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc'
-                        ],
+                        'default' => 'asc',
+                        'enum' => ['asc', 'desc'],
                     ],
                     'locale' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => get_locale(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns'
-                        ],
                     ],
                 ],
             ]
@@ -173,5 +166,19 @@ class ListEvents extends Endpoint
         }
 
         return $query;
+    }
+
+        /**
+     * @unreleased
+     *
+     * @return bool|\WP_Error
+     */
+    public function permissionsCheck()
+    {
+        return current_user_can('edit_posts')?: new \WP_Error(
+            'rest_forbidden',
+            esc_html__("You don't have permission to view Events", 'give'),
+            ['status' => is_user_logged_in() ? 403 : 401]
+        );
     }
 }
