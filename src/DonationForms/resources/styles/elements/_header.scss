@@ -1,12 +1,11 @@
 .givewp-layouts {
     &-header {
-        background-color: var(--givewp-shades-white);
         padding-bottom: 2rem;
     }
 
     &-headerTitle {
         h2 {
-            color: var(--givewp-grey-900);
+            color: inherit;
             font-size: var(--givewp-font-size-heading-md);
             line-height: 1.25;
             font-weight: bold;
@@ -20,7 +19,6 @@
         gap: var(--givewp-spacing-4);
         font-size: 1.125rem;
         font-weight: 500;
-        color: var(--givewp-grey-700);
 
         * {
             font-size: inherit;

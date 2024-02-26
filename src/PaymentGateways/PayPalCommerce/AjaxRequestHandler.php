@@ -161,7 +161,7 @@ class AjaxRequestHandler
                 'tab' => 'gateways',
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
-                'mode' => $mode
+                'mode' => $mode,
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
@@ -232,30 +232,7 @@ class AjaxRequestHandler
     public function createOrder()
     {
         $this->validateFrontendRequest();
-
-        $postData = give_clean($_POST);
-        $formId = absint($postData['give-form-id']);
-        $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
-
-        $data = [
-            'formId' => $formId,
-            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
-            'donationAmount' => isset($postData['give-amount']) ?
-                (float)apply_filters(
-                    'give_donation_total',
-                    give_maybe_sanitize_amount(
-                        $postData['give-amount'],
-                        ['currency' => give_get_currency($formId)]
-                    )
-                ) :
-                '0.00',
-            'payer' => [
-                'firstName' => $postData['give_first'],
-                'lastName' => $postData['give_last'],
-                'email' => $postData['give_email'],
-                'address' => $donorAddress,
-            ]
-        ];
+        $data = $this->getOrderData();
 
         try {
             $result = give(PayPalOrder::class)->createOrder($data);
@@ -275,6 +252,36 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since 3.4.2
+     */
+    private function getOrderData(): array
+    {
+        $postData = give_clean($_POST);
+        $formId = absint($postData['give-form-id']);
+        $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
+
+        return [
+            'formId' => $formId,
+            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
+            'donationAmount' => isset($postData['give-amount']) ?
+                (float)apply_filters(
+                    'give_donation_total',
+                    give_maybe_sanitize_amount(
+                        $postData['give-amount'],
+                        ['currency' => give_get_currency($formId)]
+                    )
+                ) :
+                '0.00',
+            'payer' => [
+                'firstName' => $postData['give_first'],
+                'lastName' => $postData['give_last'],
+                'email' => $postData['give_email'],
+                'address' => $donorAddress,
+            ],
+        ];
+    }
+
+    /**
      * Approve order.
      *
      * @todo: handle payment capture error on frontend.
@@ -287,13 +294,36 @@ class AjaxRequestHandler
         $this->validateFrontendRequest();
 
         $orderId = give_clean($_GET['order']);
+        $updateAmount = filter_var(give_clean($_GET['update_amount']), FILTER_VALIDATE_BOOLEAN);
 
         try {
+            if ($updateAmount) {
+                give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+            }
+
             $result = give(PayPalOrder::class)->approveOrder($orderId);
             // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
             // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
             $this->returnErrorOnFailedApproveOrderResponse($result);
             wp_send_json_success(['order' => $result,]);
+        } catch (\Exception $ex) {
+            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
+        }
+    }
+
+    /**
+     * @since 3.4.2
+     */
+    public function updateOrderAmount()
+    {
+        $this->validateFrontendRequest();
+
+        $orderId = give_clean($_GET['order']);
+
+        try {
+            give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+
+            wp_send_json_success(['order' => $orderId,]);
         } catch (\Exception $ex) {
             wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
         }
