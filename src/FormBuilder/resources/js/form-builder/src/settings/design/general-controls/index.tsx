@@ -34,8 +34,8 @@ export default function GeneralControls() {
                 formDesigns={formDesigns}
                 designId={designId}
             />
-            {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
+            {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <DonationGoal dispatch={dispatch} />
             {!design?.isMultiStep && <DonateButton dispatch={dispatch} publishSettings={publishSettings} />}
         </DesignSettings>
