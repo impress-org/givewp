@@ -107,8 +107,9 @@
 }
 
 /* Multi Step */
-.givewp-donation-form__steps-body {
+.givewp-donation-form__steps-body, .givewp-donation-form > .givewp-layouts-header {
     padding: 0;
+    background: #fff;
 
     .givewp-layouts-multiStepForm, .givewp-layouts-header__templates-ms {
         padding: 2rem 2rem 0 2rem;
@@ -216,3 +217,9 @@
     }
 }
 
+/* Two-Panel */
+.givewp-donation-form > .givewp-layouts-header {
+    .givewp-layouts-header__templates-ms {
+        padding-bottom: 2rem;
+    }
+}
