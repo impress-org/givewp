@@ -16,7 +16,7 @@ export default function LeftContentSection({assets}: LeftContentSectionProps) {
         <section className={'givewp-welcome-banner-left-content'}>
             <Row>
                 <header className={'givewp-welcome-banner-row__header'}>
-                    <h1>{__("What's new in GiveWP 3.0", 'give')}</h1>
+                    <h1>{__('What’s new in the Visual Form Builder', 'give')}</h1>
                     <p>
                         {__(
                             'GiveWP 3.0 introduces an enhanced forms experience powered by the new Visual Donations Form Builder.',
@@ -43,7 +43,7 @@ export default function LeftContentSection({assets}: LeftContentSectionProps) {
             </Row>
 
             <Row>
-                <h2>{__('GiveWP 3.0 Updates', 'give')}</h2>
+                <h2>{__('New Updates', 'give')}</h2>
                 <p>
                     {__(
                         'The team is still working on some new features, add-on and payment gateway compatibility to make your form experience better.',
