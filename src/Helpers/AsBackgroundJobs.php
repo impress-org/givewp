@@ -29,21 +29,12 @@ class AsBackgroundJobs
         bool $unique = false,
         int $priority = 10
     ): int {
-        $enqueuedAction = as_get_scheduled_actions(
-            [
-                'hook' => $hook,
-                'args' => $args,
-                'group' => $group,
-                'per_page' => 1,
-            ],
-            'ids'
-        );
-
         /**
          * We are checking if an action with the same hook, args, and group already was enqueued previously
          * to prevent duplicated jobs. IMPORTANT: this is different from the $unique parameter which is used
          * only to restrict the creation of multiple actions with the same hook.
          */
+        $enqueuedAction = self::getActionByHookArgsGroup($hook, $args, $group, 'ids');
         if (empty($enqueuedAction)) {
             return as_enqueue_async_action($hook, $args, $group, $unique, $priority);
         } else {
@@ -54,16 +45,48 @@ class AsBackgroundJobs
     /**
      * @unreleased
      *
+     * @param string $hook         The hook to trigger.
+     * @param array  $args         Arguments to pass when the hook triggers.
      * @param string $group        The group to assign this job to.
-     * @param string $status       ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
+     * @param string $status       ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
+     *
+     * @return array
+     */
+    public static function getActionByHookArgsGroup(
+        string $hook,
+        array $args,
+        string $group,
+        string $returnFormat = OBJECT,
+        string $status = ''
+    ): array {
+        $args = [
+            'hook' => $hook,
+            'args' => $args,
+            'group' => $group,
+            'per_page' => 1,
+        ];
+
+        if ( ! empty($status)) {
+            $args['status'] = $status;
+        }
+
+        return as_get_scheduled_actions($args, $returnFormat);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $group        The group to assign this job to.
+     * @param string $returnFormat OBJECT, ARRAY_A, or ids.
+     * @param string $status ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
      *
      * @return array
      */
     public static function getActionsByGroup(
         string $group,
-        string $status = '',
-        string $returnFormat = OBJECT
+        string $returnFormat = OBJECT,
+        string $status = ''
     ): array {
         $args = [
             'group' => $group,
@@ -86,9 +109,9 @@ class AsBackgroundJobs
      *
      * @return int Total deleted actions.
      */
-    public function deleteActionsByGroup(string $group, string $status = ''): int
+    public static function deleteActionsByGroup(string $group, string $status = ''): int
     {
-        $actions = self::getActionsByGroup($group, $status, 'ids');
+        $actions = self::getActionsByGroup($group, 'ids', $status);
 
         $deletedActions = 0;
         foreach ($actions as $actionID) {
