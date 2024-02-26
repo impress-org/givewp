@@ -34,7 +34,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
         (!src.endsWith('.mp4') && !src.endsWith('.mov'));
 
     return (
-        <div className={'givewp-welcome-banner-video'}>
+        <div className={'givewp-welcome-banner-video'} onClick={togglePlay}>
             <div className={'givewp-welcome-banner-video-container'}>
                 {useFallbackImage ? (
                     <div className={'givewp-welcome-banner-video-fallback'}>
@@ -45,7 +45,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
                 )}
 
                 {!useFallbackImage && (
-                    <button className="play-button" onClick={togglePlay}>
+                    <button className="play-button">
                         {isPlaying ? (
                             <img src={`${assets}/pause-icon.svg`} alt="Pause" />
                         ) : (
