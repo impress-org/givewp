@@ -15,9 +15,9 @@ class WelcomeBanner
 
         $newStartDate = strtotime('2024-02-26 00:00');
 
-        $showBanner = $option < $newStartDate;
+        $showBanner = ! $option || ($option < $newStartDate);
 
-        return $pagenow === 'plugins.php' && ! $option && $showBanner;
+        return $pagenow === 'plugins.php' && $showBanner;
     }
 
     /**
