@@ -19,7 +19,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                     title={__('Header Image', 'give')}
                     description={__('You can add and customize an image on the header of your donation form.', 'give')}
                 >
-                    <VideoPlayer src={`${assets}/header-image.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
+                    <VideoPlayer src={`${assets}/header-image.mp4`} fallbackImage={`${assets}/header-image.min.png`} />
                 </SpotLight>
 
                 <SpotLight
