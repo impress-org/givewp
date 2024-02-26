@@ -11,22 +11,13 @@
         flex-direction: column;
         align-items: center;
         gap: var(--givewp-spacing-6);
-        padding: var(--givewp-spacing-6);
         color: #fff;
         text-align: center;
-
-        @media screen and (min-width: $desktopMinWidth) {
-            padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
-        }
 
         + .givewp-layouts-form {
             border-top-right-radius: 0;
             border-top-left-radius: 0;
         }
-    }
-
-    &-headerTitle h2, &-headerDescription {
-        color: var(--givewp-shades-white);
     }
 }
 
@@ -42,29 +33,5 @@
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.43;
+    margin: 0 auto;
 }
-
-.givewp-design-settings--image-style {
-    &__above {
-        .givewp-layouts-header {
-            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-            }
-        }
-    }
-
-    &__center {
-        .givewp-layouts-goal {
-            margin-top: 320px;
-            position: relative;
-            border-radius: 0;
-        }
-
-        .givewp-layouts-header {
-            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-            }
-        }
-    }
-}
-
