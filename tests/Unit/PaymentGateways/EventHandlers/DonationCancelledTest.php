@@ -7,12 +7,15 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\EventHandlers\DonationCancelled;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  */
 class DonationCancelledTest extends TestCase
 {
+    use RefreshDatabase;
+    
     /**
      * @unreleased
      *

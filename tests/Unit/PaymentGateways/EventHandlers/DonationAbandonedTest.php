@@ -7,12 +7,15 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\EventHandlers\DonationAbandoned;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  */
 class DonationAbandonedTest extends TestCase
 {
+    use RefreshDatabase;
+    
     /**
      * @unreleased
      *
