@@ -3,8 +3,9 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
-use Give\EventTickets\Hooks\DonationFormBlockRender;
-use Give\EventTickets\Hooks\EventTicketsAdminPage;
+use Give\EventTickets\Actions\EnqueueListTableScripts;
+use Give\EventTickets\Actions\RegisterEventsMenuItem;
+use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
@@ -87,11 +88,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerEventTicketsAdminPage(): void
     {
-        Hooks::addAction('admin_menu', EventTicketsAdminPage::class, 'registerMenuItem', 15);
-
-        if (EventTicketsAdminPage::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', EventTicketsAdminPage::class, 'loadScripts');
-        }
+        Hooks::addAction('admin_menu', RegisterEventsMenuItem::class, '__invoke', 15);
+        Hooks::addAction('admin_enqueue_scripts', EnqueueListTableScripts::class);
     }
 
     /**
@@ -103,7 +101,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
         Hooks::addFilter(
             'givewp_donation_form_block_render_givewp/event-tickets',
-            DonationFormBlockRender::class,
+            RenderDonationFormBlock::class,
             '__invoke',
             10,
             4

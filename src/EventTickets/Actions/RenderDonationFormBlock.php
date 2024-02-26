@@ -1,18 +1,13 @@
 <?php
-namespace Give\EventTickets\Hooks;
 
-use Give\EventTickets\Actions\ConvertEventTicketsBlockToFieldsApi;
+namespace Give\EventTickets\Actions;
+
 use Give\EventTickets\Fields\EventTickets;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 
-/**
- * Class DonationFormBlockRender
- *
- * @unreleased
- */
-class DonationFormBlockRender
+class RenderDonationFormBlock
 {
     /**
      * Renders the EventTickets field for the donation form block.
