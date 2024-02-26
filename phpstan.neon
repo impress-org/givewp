@@ -11,6 +11,7 @@ parameters:
     scanDirectories:
         - includes/
         - vendor/vendor-prefixed/
+        - vendor/woocommerce/action-scheduler
     scanFiles:
         - vendor/wordpress/wordpress/src/wp-includes/compat.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
