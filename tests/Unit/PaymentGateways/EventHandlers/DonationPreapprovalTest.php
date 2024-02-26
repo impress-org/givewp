@@ -1,33 +1,33 @@
 <?php
 
-namespace Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationCancelled;
+use Give\PaymentGateways\EventHandlers\DonationPreapproval;
 use Give\Tests\TestCase;
 
 /**
  * @unreleased
  */
-class TestDonationCancelled extends TestCase
+class DonationPreapprovalTest extends TestCase
 {
     /**
      * @unreleased
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToCancelled()
+    public function testShouldSetStatusToPreapproval()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
             'gatewayTransactionId' => 'gateway-transaction-id',
-            'status' => DonationStatus::COMPLETE(),
+            'status' => DonationStatus::PROCESSING(),
         ]);
 
         try {
-            give(DonationCancelled::class)($donation->gatewayTransactionId);
+            give(DonationPreapproval::class)($donation->gatewayTransactionId);
         } catch (Exception $e) {
             //ignore exception;
         }
@@ -35,6 +35,6 @@ class TestDonationCancelled extends TestCase
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isCancelled());
+        $this->assertTrue($donation->status->isPreapproval());
     }
 }

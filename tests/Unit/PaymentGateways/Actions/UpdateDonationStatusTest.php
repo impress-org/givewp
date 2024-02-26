@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\PaymentGateways\Actions;
+namespace Give\Tests\Unit\PaymentGateways\Actions;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -14,7 +14,7 @@ use Give\Tests\TestCase;
 /**
  * @unreleased
  */
-class TestUpdateDonationStatus extends TestCase
+class UpdateDonationStatusTest extends TestCase
 {
     /**
      * @unreleased

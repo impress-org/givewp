@@ -1,24 +1,24 @@
 <?php
 
-namespace Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationFailed;
+use Give\PaymentGateways\EventHandlers\DonationProcessing;
 use Give\Tests\TestCase;
 
 /**
  * @unreleased
  */
-class TestDonationFailed extends TestCase
+class DonationProcessingTest extends TestCase
 {
     /**
      * @unreleased
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToFailed()
+    public function testShouldSetStatusToProcessing()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
@@ -27,7 +27,7 @@ class TestDonationFailed extends TestCase
         ]);
 
         try {
-            give(DonationFailed::class)($donation->gatewayTransactionId);
+            give(DonationProcessing::class)($donation->gatewayTransactionId);
         } catch (Exception $e) {
             //ignore exception;
         }
@@ -35,6 +35,6 @@ class TestDonationFailed extends TestCase
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isFailed());
+        $this->assertTrue($donation->status->isProcessing());
     }
 }

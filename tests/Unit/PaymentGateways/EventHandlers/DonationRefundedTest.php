@@ -1,24 +1,24 @@
 <?php
 
-namespace Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationRevoked;
+use Give\PaymentGateways\EventHandlers\DonationRefunded;
 use Give\Tests\TestCase;
 
 /**
  * @unreleased
  */
-class TestDonationRevoked extends TestCase
+class DonationRefundedTest extends TestCase
 {
     /**
      * @unreleased
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToRevoked()
+    public function testShouldSetStatusToRefunded()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
@@ -27,7 +27,7 @@ class TestDonationRevoked extends TestCase
         ]);
 
         try {
-            give(DonationRevoked::class)($donation->gatewayTransactionId);
+            give(DonationRefunded::class)($donation->gatewayTransactionId);
         } catch (Exception $e) {
             //ignore exception;
         }
@@ -35,6 +35,6 @@ class TestDonationRevoked extends TestCase
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isRevoked());
+        $this->assertTrue($donation->status->isRefunded());
     }
 }

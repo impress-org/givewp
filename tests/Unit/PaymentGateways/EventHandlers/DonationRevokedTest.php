@@ -1,33 +1,33 @@
 <?php
 
-namespace Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationCompleted;
+use Give\PaymentGateways\EventHandlers\DonationRevoked;
 use Give\Tests\TestCase;
 
 /**
  * @unreleased
  */
-class TestDonationCompleted extends TestCase
+class DonationRevokedTest extends TestCase
 {
     /**
      * @unreleased
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToCompleted()
+    public function testShouldSetStatusToRevoked()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
             'gatewayTransactionId' => 'gateway-transaction-id',
-            'status' => DonationStatus::PENDING(),
+            'status' => DonationStatus::COMPLETE(),
         ]);
 
         try {
-            give(DonationCompleted::class)($donation->gatewayTransactionId);
+            give(DonationRevoked::class)($donation->gatewayTransactionId);
         } catch (Exception $e) {
             //ignore exception;
         }
@@ -35,6 +35,6 @@ class TestDonationCompleted extends TestCase
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isComplete());
+        $this->assertTrue($donation->status->isRevoked());
     }
 }
