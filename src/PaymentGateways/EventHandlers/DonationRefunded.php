@@ -2,9 +2,9 @@
 
 namespace Give\PaymentGateways\EventHandlers;
 
+use Exception;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
