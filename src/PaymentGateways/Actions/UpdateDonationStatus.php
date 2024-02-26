@@ -22,7 +22,6 @@ class UpdateDonationStatus
     public function __invoke(
         Donation $donation,
         DonationStatus $status,
-        string $gatewayTransactionId,
         string $message = ''
     ) {
         $donation->status = $status;
@@ -44,7 +43,7 @@ class UpdateDonationStatus
             $message . ' ' . sprintf('Donation ID: %s.', $donation->id),
             [
                 'Payment Gateway' => $donation->gatewayId,
-                'Gateway Transaction Id' => $gatewayTransactionId,
+                'Gateway Transaction Id' => $donation->gatewayTransactionId,
             ]
         );
 
