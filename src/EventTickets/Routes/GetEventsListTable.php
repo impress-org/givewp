@@ -2,9 +2,12 @@
 
 namespace Give\EventTickets\Routes;
 
-use Give\EventTickets\Models\Event;
+use Give\EventTickets\ListTable\EventTicketsListTable;
+use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @unreleased
@@ -17,16 +20,28 @@ class GetEventsListTable
     protected $endpoint = 'events-tickets/events/list-table';
 
     /**
-     * @inheritDoc
+     * @var WP_REST_Request
      */
-    public function registerRoute()
+    protected $request;
+
+    /**
+     * @var EventTicketsListTable
+     */
+    protected $listTable;
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function registerRoute(): void
     {
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
             [
                 [
-                    'methods' => 'GET',
+                    'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
@@ -56,6 +71,11 @@ class GetEventsListTable
                         'default' => 'asc',
                         'enum' => ['asc', 'desc'],
                     ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => get_locale(),
+                    ],
                 ],
             ]
         );
@@ -63,39 +83,28 @@ class GetEventsListTable
 
     /**
      * @unreleased
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
-        $query = Event::query()
-            ->orderBy(
-                $request->get_param('sortColumn') ?: 'id',
-                $request->get_param('sortDirection') ?: 'asc'
-            );
+        $this->request = $request;
+        $this->listTable = give(EventTicketsListTable::class);
 
-        if($search = $request->get_param('search')) {
-            $query
-                ->whereLike('title', "%$search%")
-                ->orWhereLike('description', "%$search%");
+        $events = $this->getEvents();
+        $eventsCount = $this->getTotalEventsCount();
+        $pageCount = (int)ceil($eventsCount / $request->get_param('perPage'));
+
+        if ('model' === $this->request->get_param('return')) {
+            $items = $events;
+        } else {
+            $this->listTable->items($events, $this->request->get_param('locale') ?? '');
+            $items = $this->listTable->getItems();
         }
-
-        $events = $query
-            ->paginate(
-                $request->get_param('perPage'),
-                $request->get_param('page')
-            );
 
         return new WP_REST_Response(
             [
-                'items' => array_map(
-                    [$this, 'transformEventToRow'],
-                    $events->getAll() ?: []
-                ),
-                'totalItems' => $count = $events->count(),
-                'totalPages' => ceil($count / $request->get_param('perPage')),
+                'items' => $items,
+                'totalItems' => $eventsCount,
+                'totalPages' => $pageCount
             ]
         );
     }
@@ -103,31 +112,63 @@ class GetEventsListTable
     /**
      * @unreleased
      */
-    protected function transformEventToRow(Event $event): array
+    public function getEvents(): array
     {
-        return [
-            'id' => $event->id,
-            'title' => $this->formatColumnTitle($event),
-            'description' => $event->description,
-            'startDateTime' => $event->startDateTime->format('m/d/Y g:i a'),
-            'ticketsSold' => $event->eventTickets()->count(),
-        ];
+        $page = $this->request->get_param('page');
+        $perPage = $this->request->get_param('perPage');
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+
+        $query = give()->events->prepareQuery();
+        $query = $this->getWhereConditions($query);
+
+        foreach ($sortColumns as $sortColumn) {
+            $query->orderBy($sortColumn, $sortDirection);
+        }
+
+        $query->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        $events = $query->getAll();
+
+        if (!$events) {
+            return [];
+        }
+
+        return $events;
     }
 
     /**
      * @unreleased
      */
-    protected function formatColumnTitle(Event $event): string
+    public function getTotalEventsCount(): int
     {
-        return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-events&view=overview&id=$event->id"),
-            __('View event details', 'give'),
-            $event->title
-        );
+        $query = DB::table('give_events');
+        $query = $this->getWhereConditions($query);
+
+        return $query->count();
     }
 
     /**
+     * @unreleased
+     */
+    private function getWhereConditions(QueryBuilder $query): QueryBuilder
+    {
+        $search = $this->request->get_param('search');
+
+        if ($search) {
+            if (ctype_digit($search)) {
+                $query->where('id', $search);
+            } else {
+                $query->whereLike('title', $search);
+                $query->orWhereLike('description', $search);
+            }
+        }
+
+        return $query;
+    }
+
+        /**
      * @unreleased
      *
      * @return bool|\WP_Error

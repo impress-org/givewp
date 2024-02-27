@@ -3,7 +3,9 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
-use Give\EventTickets\Hooks\DonationFormBlockRender;
+use Give\EventTickets\Actions\EnqueueListTableScripts;
+use Give\EventTickets\Actions\RegisterEventsMenuItem;
+use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
@@ -17,12 +19,13 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function register(): void
     {
-        if( ! FeatureFlag::eventTickets() ) {
+        if (!FeatureFlag::eventTickets()) {
             return;
         }
 
@@ -37,31 +40,39 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
      * @inheritDoc
+     *
+     * @unreleased
      */
     public function boot(): void
     {
-        if( ! FeatureFlag::eventTickets() ) {
+        if (!FeatureFlag::eventTickets()) {
             return;
         }
 
-        give( MigrationsRegister::class )->addMigrations([
+        $this->registerMigrations();
+        $this->registerRoutes();
+        $this->registerEventTicketsAdminPage();
+        $this->registerFormExtension();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerMigrations(): void
+    {
+        give(MigrationsRegister::class)->addMigrations([
             Migrations\CreateEventsTable::class,
             Migrations\CreateEventTicketTypesTable::class,
             Migrations\CreateEventTicketsTable::class,
         ]);
+    }
 
-        Hooks::addAction('givewp_form_builder_enqueue_scripts', Actions\EnqueueFormBuilderScripts::class);
-        Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
-        Hooks::addFilter(
-            'givewp_donation_form_block_render_givewp/event-tickets',
-            DonationFormBlockRender::class,
-            '__invoke',
-            10,
-            4
-        );
-
+    /**
+     * @unreleased
+     */
+    private function registerRoutes(): void
+    {
         Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
@@ -70,5 +81,30 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerEventTicketsAdminPage(): void
+    {
+        Hooks::addAction('admin_menu', RegisterEventsMenuItem::class, '__invoke', 15);
+        Hooks::addAction('admin_enqueue_scripts', EnqueueListTableScripts::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerFormExtension()
+    {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', Actions\EnqueueFormBuilderScripts::class);
+        Hooks::addAction('givewp_donation_form_enqueue_scripts', Actions\EnqueueDonationFormScripts::class);
+        Hooks::addFilter(
+            'givewp_donation_form_block_render_givewp/event-tickets',
+            RenderDonationFormBlock::class,
+            '__invoke',
+            10,
+            4
+        );
     }
 }

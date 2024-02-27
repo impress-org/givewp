@@ -1,11 +1,9 @@
 <?php
 
-namespace Give\Tests\Unit\EventTickets\Routes;
+namespace Unit\EventTickets\Routes;
 
 use Exception;
-use Give\Donations\Endpoints\ListDonations;
-use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\Models\Donation;
+use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Routes\GetEventsListTable;
 use Give\Tests\TestCase;
@@ -19,31 +17,22 @@ class GetEventsListTableTest extends TestCase
 
     /**
      * @unreleased
-     */
-    protected function getMockRequest(): WP_REST_Request
-    {
-        return new WP_REST_Request(
-            WP_REST_Server::READABLE,
-            '/give-api/v2/event-tickets/events/list-table'
-        );
-    }
-
-    /**
-     * @unreleased
      *
-     * @return void
      * @throws Exception
      */
-    public function testShouldReturnAllWhenLessThanPerPage()
+    public function testShouldReturnListWithSameSize(): void
     {
-        $perPage = 5;
-        $events = Event::factory()->count($perPage - 1)->create();
+        $events = Event::factory()->count(5)->create();
 
         $mockRequest = $this->getMockRequest();
+        // set_params
         $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', $perPage);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
 
-        $response = (new GetEventsListTable)->handleRequest($mockRequest);
+        $listEvents = give(GetEventsListTable::class);
+
+        $response = $listEvents->handleRequest($mockRequest);
 
         $this->assertSameSize($events, $response->data['items']);
     }
@@ -51,20 +40,62 @@ class GetEventsListTableTest extends TestCase
     /**
      * @unreleased
      *
-     * @return void
      * @throws Exception
      */
-    public function testShouldReturnLimitedByPerPage()
+    public function testShouldReturnListWithSameData(): void
     {
-        $perPage = 5;
-        $events = Event::factory()->count($perPage + 1)->create();
-
+        $events = Event::factory()->count(5)->create();
+        $sortDirection = ['asc', 'desc'][round(rand(0, 1))];
         $mockRequest = $this->getMockRequest();
+        // set_params
         $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', $perPage);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('sortColumn', 'id');
+        $mockRequest->set_param('sortDirection', $sortDirection);
 
-        $response = (new GetEventsListTable)->handleRequest($mockRequest);
+        $expectedItems = $this->getMockColumns($events, $sortDirection);
 
-        $this->assertEquals($perPage, count($response->data['items']));
+        $listEvents = give(GetEventsListTable::class);
+
+        $response = $listEvents->handleRequest($mockRequest);
+
+        $this->assertSame($expectedItems, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMockRequest(): WP_REST_Request
+    {
+        return new WP_REST_Request(
+            WP_REST_Server::READABLE,
+            '/wp/v2/admin/event-tickets'
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getMockColumns(array $events, string $sortDirection = 'desc'): array
+    {
+        $listTable = new EventTicketsListTable();
+        $columns = $listTable->getColumns();
+
+        $expectedItems = [];
+        foreach ($events as $event) {
+            $expectedItem = [];
+            foreach ($columns as $column) {
+                $expectedItem[$column::getId()] = $column->getCellValue($event);
+            }
+            $expectedItems[] = $expectedItem;
+        }
+
+        if ($sortDirection === 'desc') {
+            $expectedItems = array_reverse($expectedItems);
+        }
+
+        return $expectedItems;
     }
 }
+
