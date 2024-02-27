@@ -54,17 +54,17 @@ class SalesAmountColumn extends ModelColumn
 
         $salesTotal = array_reduce(
             $model->eventTickets()->getAll() ?? [],
-            function (Money $acc, $eventTicket) use ($ticketTypes) {
-                return $acc->add($ticketTypes[$eventTicket->ticketTypeId]['price']);
+                function (Money $carry, $eventTicket) use ($ticketTypes) {
+                    return $carry->add($ticketTypes[$eventTicket->ticketTypeId]['price']);
             },
             new Money(0, give_get_currency())
         );
-        $capacityTotal = array_reduce($ticketTypes, function (Money $acc, $ticketType) {
-            return $acc->add($ticketType['price']->multiply($ticketType['capacity']));
+        $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
+            return $carry->add($ticketType['price']->multiply($ticketType['capacity']));
         }, new Money(0, give_get_currency()));
 
-        $salesPercentage = $capacityTotal->formatToMinorAmount() > 0 ? max(
-            min($salesTotal->formatToMinorAmount() / $capacityTotal->formatToMinorAmount(), 100),
+        $salesPercentage = $maxCapacitySales->formatToMinorAmount() > 0 ? max(
+            min($salesTotal->formatToMinorAmount() / $maxCapacitySales->formatToMinorAmount(), 100),
             0
         ) : 0;
 
@@ -88,7 +88,7 @@ class SalesAmountColumn extends ModelColumn
             $salesPercentage,
             $salesTotal->formatToLocale($locale),
             __('of', 'give'),
-            $capacityTotal->formatToLocale($locale)
+            $maxCapacitySales->formatToLocale($locale)
         );
     }
 }
