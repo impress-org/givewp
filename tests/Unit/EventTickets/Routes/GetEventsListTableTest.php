@@ -1,17 +1,17 @@
 <?php
 
-namespace Give\Tests\Unit\EventTickets\Endpoints;
+namespace Unit\EventTickets\Routes;
 
 use Exception;
-use Give\EventTickets\Endpoints\ListEvents;
 use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Routes\GetEventsListTable;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
 
-class TestListEvents extends TestCase
+class GetEventsListTableTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -30,7 +30,7 @@ class TestListEvents extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
 
-        $listEvents = give(ListEvents::class);
+        $listEvents = give(GetEventsListTable::class);
 
         $response = $listEvents->handleRequest($mockRequest);
 
@@ -56,7 +56,7 @@ class TestListEvents extends TestCase
 
         $expectedItems = $this->getMockColumns($events, $sortDirection);
 
-        $listEvents = give(ListEvents::class);
+        $listEvents = give(GetEventsListTable::class);
 
         $response = $listEvents->handleRequest($mockRequest);
 
