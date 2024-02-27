@@ -37,7 +37,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         value: 'delete',
         type: 'danger',
         action: async (selected) => {
-            return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
+            return await API.fetchWithArgs('', {ids: selected.join(',')}, 'DELETE');
         },
         confirm: (selected, names) => (
             <>
