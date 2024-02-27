@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Views;
+namespace Give\EventTickets\Routes;
 
 use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\EventTickets\Repositories\EventRepository;
