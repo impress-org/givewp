@@ -55,6 +55,9 @@ final class EventTicketTypeData
      */
     public $ticketsAvailable;
 
+    /**
+     * @unreleased
+     */
     public static function make(EventTicketType $ticketType)
     {
         $self = new self();
