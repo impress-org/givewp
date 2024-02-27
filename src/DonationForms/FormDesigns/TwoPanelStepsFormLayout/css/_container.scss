@@ -10,10 +10,6 @@
     padding: 0;
     width: 100%;
 
-    @media screen and (max-width: 79rem) {
-        --two-panel-header-width: 35rem;
-    }
-
     @media screen and (max-width: 71.5rem) {
         border: solid 1px var(--givewp-grey-25);
         border-radius: var(--givewp-rounded-8);
