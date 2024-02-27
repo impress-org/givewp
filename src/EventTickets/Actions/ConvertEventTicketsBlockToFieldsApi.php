@@ -2,6 +2,7 @@
 namespace Give\EventTickets\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Fields\EventTickets;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\Framework\Blocks\BlockModel;
@@ -21,10 +22,7 @@ class ConvertEventTicketsBlockToFieldsApi
                 $eventId = $block->getAttribute('eventId');
                 $event = give(EventRepository::class)->getById($eventId);
                 $ticketTypes = array_map(function ($ticketType) {
-                    $ticketType = $ticketType->toArray();
-                    $ticketType['price'] = $ticketType['price']->formatToDecimal();
-
-                    return $ticketType;
+                    return EventTicketTypeData::make($ticketType)->toArray();
                 }, $event->ticketTypes()->getAll() ?? []);
 
                 $eventTicketsField

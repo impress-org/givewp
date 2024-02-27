@@ -43,6 +43,21 @@ final class EventTicketTypeData
      */
     public $capacity;
 
+    /**
+     * @unreleased
+     * @var int
+     */
+    public $salesCount;
+
+    /**
+     * @unreleased
+     * @var int
+     */
+    public $ticketsAvailable;
+
+    /**
+     * @unreleased
+     */
     public static function make(EventTicketType $ticketType)
     {
         $self = new self();
@@ -53,7 +68,17 @@ final class EventTicketTypeData
         $self->description = $ticketType->description;
         $self->price = $ticketType->price->formatToMinorAmount();
         $self->capacity = $ticketType->capacity;
+        $self->salesCount = $ticketType->eventTickets()->count();
+        $self->ticketsAvailable = $self->capacity - $self->salesCount;
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 }

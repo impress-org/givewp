@@ -16,9 +16,9 @@ class EventTicketTypeFactory extends ModelFactory
     {
         return [
             'eventId' => Event::factory()->create()->id,
-            'label' => $this->faker->words(3, true),
+            'title' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph(),
-            'price' => new Money($this->faker->numberBetween(10, 100), give_get_currency()),
+            'price' => new Money($this->faker->numberBetween(1000, 10000), give_get_currency()),
             'capacity' => $this->faker->numberBetween(20, 100),
             'createdAt' => new DateTime(),
             'updatedAt' => new DateTime(),

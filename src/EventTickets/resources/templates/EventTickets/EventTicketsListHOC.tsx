@@ -1,3 +1,4 @@
+import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import EventTicketsList from '../../components/EventTicketsList';
 import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
@@ -18,19 +19,20 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
             const quantity = selectedTickets[ticketId]?.quantity ?? 0;
 
             if (quantity > 0) {
+                const itemPrice = ticket.price * quantity;
                 donationSummary.addItem({
                     id: `eventTickets-${ticketId}`,
-                    label: `Ticket (${ticket.label})`,
-                    value: formatter.format(ticket.price * quantity),
+                    label: `Ticket (${ticket.title})`,
+                    value: itemPrice > 0 ? formatter.format(itemPrice / 100) : __('Free', 'give'),
                 });
-                amount += ticket.price * quantity;
+                amount += itemPrice;
             } else {
                 donationSummary.removeItem(`eventTickets-${ticketId}`);
             }
         });
 
         if (amount > 0) {
-            donationSummary.addToTotal('eventTickets', amount);
+            donationSummary.addToTotal('eventTickets', amount / 100);
         } else {
             donationSummary.removeFromTotal('eventTickets');
         }
@@ -38,25 +40,21 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
         setValue(name, JSON.stringify(Object.values(selectedTickets)));
     }, [ticketTypes, selectedTickets]);
 
-    const onSelectTicket: OnSelectTicketProps = (ticketId, totalTickets, ticketPrice) => (selectedQuantity) => {
+    const onSelectTicket: OnSelectTicketProps = (ticketId, ticketsAvailable, ticketPrice) => (selectedQuantity) => {
         if (selectedQuantity < 0) {
             selectedQuantity = 0;
         }
 
-        if (selectedQuantity > totalTickets) {
-            selectedQuantity = totalTickets;
+        if (selectedQuantity > ticketsAvailable) {
+            selectedQuantity = ticketsAvailable;
         }
 
         setSelectedTickets((selectedTickets) => {
-            if (selectedQuantity === 0) {
-                delete selectedTickets[ticketId];
-            } else {
-                selectedTickets[ticketId] = {
-                    ticketId,
-                    quantity: selectedQuantity,
-                    amount: selectedQuantity * ticketPrice,
-                };
-            }
+            selectedTickets[ticketId] = {
+                ticketId,
+                quantity: selectedQuantity,
+                amount: selectedQuantity * ticketPrice,
+            };
 
             return {...selectedTickets};
         });

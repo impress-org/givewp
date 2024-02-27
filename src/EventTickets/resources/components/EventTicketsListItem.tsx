@@ -5,7 +5,7 @@ import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
 export default function EventTicketsListItem({ticketType, currency, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
-    const ticketPrice = formatter.format(Number(ticketType.price));
+    const ticketPrice = ticketType.price > 0 ? formatter.format(Number(ticketType.price) / 100) : __('Free', 'give');
 
     const handleButtonClick = (quantity) => (e) => {
         e.preventDefault();
@@ -15,7 +15,7 @@ export default function EventTicketsListItem({ticketType, currency, selectedTick
     return (
         <div className={'givewp-event-tickets__tickets__ticket'} key={ticketType.id}>
             <div className={'givewp-event-tickets__tickets__ticket__description'}>
-                <h5>{ticketType.label}</h5>
+                <h5>{ticketType.title}</h5>
                 <p>{ticketPrice}</p>
                 <p>{ticketType.description}</p>
             </div>
@@ -30,7 +30,7 @@ export default function EventTicketsListItem({ticketType, currency, selectedTick
                     </button>
                 </div>
                 <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
-                    {ticketType.totalTickets - selectedTickets} {__('remaining', 'give')}
+                    {ticketType.ticketsAvailable - selectedTickets} {__('remaining', 'give')}
                 </p>
             </div>
         </div>

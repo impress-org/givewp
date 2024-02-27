@@ -22,7 +22,7 @@ export default function EventTicketsList({
                         selectedTickets={selectedTickets[ticketType.id]?.quantity ?? 0}
                         handleSelect={
                             handleSelect
-                                ? handleSelect(ticketType.id, ticketType.totalTickets, ticketType.price)
+                                ? handleSelect(ticketType.id, ticketType.ticketsAvailable, ticketType.price)
                                 : () => null
                         }
                         currency={currency}
