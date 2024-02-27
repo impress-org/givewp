@@ -48,7 +48,7 @@ class DeleteEventsListTable
                         'required' => true,
                         'validate_callback' => function ($ids) {
                             foreach ($this->splitString($ids) as $id) {
-                                if ( ! $this->validateInt($id)) {
+                                if ( ! filter_var($id, FILTER_VALIDATE_INT)) {
                                     return false;
                                 }
                             }
