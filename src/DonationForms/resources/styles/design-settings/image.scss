@@ -25,8 +25,8 @@
                     img {
                         object-fit: cover;
                         min-width: 100%;
-                        border-top-left-radius: 0.5rem;
-                        border-top-right-radius: 0.5rem;
+                        border-top-left-radius: var(--givewp-rounded-8);
+                        border-top-right-radius: var(--givewp-rounded-8);
                     }
                 }
             }
@@ -134,8 +134,8 @@
             img {
                 object-fit: cover;
                 min-width: 100%;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
+                border-top-left-radius: var(--givewp-rounded-8);
+                border-top-right-radius: var(--givewp-rounded-8);
             }
         }
 
@@ -237,6 +237,7 @@
                     bottom: 0;
                     height: 100%;
                     min-height: 100%;
+                    border-radius: var(--givewp-rounded-8);
                 }
             }
         }
