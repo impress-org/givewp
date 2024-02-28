@@ -2,6 +2,11 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import ErrorMessages from './ErrorMessages';
 import styles from './FormModal.module.scss';
 
+/**
+ * Form Modal Component renders a modal with a form inside with styled elements
+ *
+ * @unreleased
+ */
 export default function FormModal({
     isOpen,
     handleClose,

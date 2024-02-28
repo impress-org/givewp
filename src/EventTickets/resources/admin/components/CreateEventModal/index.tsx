@@ -20,6 +20,11 @@ const getNextSharpHour = (hoursToAdd: number) => {
     return nowWithOffset.toISOString().slice(0, -5);
 };
 
+/**
+ * Create Event Modal
+ *
+ * @unreleased
+ */
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState(false);
     const openModal = () => setOpen(true);

@@ -72,15 +72,14 @@
                 list-style: disc;
                 margin-bottom: var(--givewp-spacing-6);
                 margin-top: 0;
+                padding-left: var(--givewp-spacing-4);
 
                 li {
                     color: var(--givewp-red-500);
                     font-size: 0.875rem;
                     font-weight: 500;
                     line-height: 1.5;
-                    margin: 0 {
-                        left: var(--givewp-spacing-4);
-                    }
+                    margin: 0;
                 }
             }
         }
