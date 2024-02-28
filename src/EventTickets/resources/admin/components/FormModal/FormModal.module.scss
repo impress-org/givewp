@@ -32,6 +32,11 @@
                     &::placeholder {
                         color: var(--givewp-grey-400);
                     }
+
+                    &[aria-invalid="true"] {
+                        border-color: var(--givewp-red-500);
+                        outline-color: var(--givewp-red-500);
+                    }
                 }
 
                 button[type="submit"].button {

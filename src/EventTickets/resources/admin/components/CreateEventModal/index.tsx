@@ -5,11 +5,6 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import styles from './CreateEventModal.module.scss';
 import FormModal from '../FormModal';
 
-const errorMessages = {
-    title: __('The event must have a name!', 'give'),
-    startDateTime: __('The event must have a start date!', 'give'),
-};
-
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState(false);
     const openModal = () => setOpen(true);
@@ -56,14 +51,14 @@ export default function CreateEventModal() {
                 title={__('Create your event', 'give')}
                 handleSubmit={handleSubmit(onSubmit)}
                 errors={errors}
-                errorMessages={errorMessages}
                 className={styles.createEventForm}
             >
                 <div className="givewp-event-tickets__form-row">
                     <label htmlFor="title">{__('Event Name', 'give')}</label>
                     <input
                         type="text"
-                        {...register('title', {required: true})}
+                        {...register('title', {required: __('The event must have a name!', 'give')})}
+                        aria-invalid={errors.title ? 'true' : 'false'}
                         placeholder={__('Enter event name', 'give')}
                     />
                 </div>
@@ -77,7 +72,8 @@ export default function CreateEventModal() {
                         <input
                             type="datetime-local"
                             defaultValue={new Date().toISOString().substring(0, 16)}
-                            {...register('startDateTime', {required: true})}
+                            {...register('startDateTime', {required: __('The event must have a start date!', 'give')})}
+                            aria-invalid={errors.startDateTime ? 'true' : 'false'}
                         />
                     </div>
                     <div className="givewp-event-tickets__form-column">

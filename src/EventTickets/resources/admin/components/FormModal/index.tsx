@@ -8,7 +8,6 @@ export default function FormModal({
     title,
     handleSubmit,
     errors,
-    errorMessages,
     className,
     children,
 }: FormModalProps) {
@@ -21,7 +20,7 @@ export default function FormModal({
             wrapperClassName={styles.formModal}
         >
             <form className={`givewp-event-tickets__form ${className}`} onSubmit={handleSubmit}>
-                <ErrorMessages errors={errors} errorMessages={errorMessages} />
+                <ErrorMessages errors={errors} />
 
                 {children}
             </form>
@@ -35,7 +34,6 @@ interface FormModalProps {
     title: string;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     errors: Record<string, any>;
-    errorMessages: { [key: string]: string };
     className: string;
     children: JSX.Element | JSX.Element[];
 }

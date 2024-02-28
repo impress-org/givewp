@@ -1,20 +1,19 @@
-import {FieldErrors} from 'react-hook-form';
+import {FieldError, FieldErrors} from 'react-hook-form';
 
-export default function ErrorMessages({errors, errorMessages}: ErrorMessagesProps) {
+export default function ErrorMessages({errors}: ErrorMessagesProps) {
+    if (!(Object.values(errors).length > 0)) return null;
+
     return (
         <>
-            {Object.keys(errors).length > 0 && (
-                <ul className="givewp-event-tickets__form-errors">
-                    {Object.keys(errors).map((key) => (
-                        <li key={key}>{errorMessages[key]}</li>
-                    ))}
-                </ul>
-            )}
+            <ul className="givewp-event-tickets__form-errors">
+                {Object.values(errors).map((error: FieldError, key) => (
+                    <li key={key}>{error?.message}</li>
+                ))}
+            </ul>
         </>
     );
 }
 
 interface ErrorMessagesProps {
     errors: FieldErrors;
-    errorMessages: { [key: string]: string };
 }
