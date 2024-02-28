@@ -4,32 +4,17 @@ import {__} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './CreateEventModal.module.scss';
 import {SubmitHandler, useForm} from 'react-hook-form';
-
-const fetcher = (endpoint: string, data: any, method = 'GET', signal = null) => {
-    const {apiNonce, apiRoot} = window.GiveEventTickets;
-    const url = new URL(apiRoot.replace('/list-table', '') + endpoint);
-    for (const [param, value] of Object.entries(data)) {
-        value !== '' && url.searchParams.set(param, value as string);
-    }
-    return fetch(url.href, {
-        method: method,
-        signal: signal,
-        headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': apiNonce,
-        },
-    }).then((res) => {
-        if (!res.ok) {
-            throw new Error();
-        }
-        return res.json();
-    });
-};
+import ListTableApi from '@givewp/components/ListTable/api';
 
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState(false);
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
+
+    const apiSettings = window.GiveEventTickets;
+    // Remove the /list-table from the apiRoot. This is a hack to make the API work while we don't refactor other list tables.
+    apiSettings.apiRoot = apiSettings.apiRoot.replace('/list-table', '');
+    const API = new ListTableApi(apiSettings);
 
     // useForm hook for form management
     const {
@@ -45,12 +30,15 @@ export default function CreateEventModal() {
             data.startDateTime += ':00';
             data.endDateTime += ':00';
 
-            const response = await fetcher('', data, 'POST');
+            const response = await API.fetchWithArgs('', data, 'POST');
             closeModal();
             reset();
-            window.location.href = window.GiveEventTickets.adminUrl + 'edit.php?post_type=give_forms&page=give-event-tickets&id=' + response.id;
+            window.location.href =
+                window.GiveEventTickets.adminUrl +
+                'edit.php?post_type=give_forms&page=give-event-tickets&id=' +
+                response.id;
         } catch (error) {
-            console.error("Error submitting event data", error);
+            console.error('Error submitting event data', error);
         }
     };
 
