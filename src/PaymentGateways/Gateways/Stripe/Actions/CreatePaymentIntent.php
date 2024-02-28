@@ -50,7 +50,7 @@ class CreatePaymentIntent
                 'amount' => $donation->amount->formatToMinorAmount(),
                 'currency' => $donation->amount->getCurrency(),
                 'payment_method_types' => ['card'],
-                'statement_descriptor' => give_stripe_get_statement_descriptor(),
+                'statement_descriptor_suffix' => give_stripe_get_statement_descriptor(),
                 'description' => $donationSummary->getSummaryWithDonor(),
                 'metadata' => give_stripe_prepare_metadata($donation->id),
                 'customer' => $giveStripeCustomer->get_id(),
