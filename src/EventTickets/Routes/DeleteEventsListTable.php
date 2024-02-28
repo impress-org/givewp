@@ -4,6 +4,7 @@ namespace Give\EventTickets\Routes;
 
 use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\EventTickets\Repositories\EventRepository;
+use Give\Framework\Exceptions\Primitives\Exception;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -63,6 +64,7 @@ class DeleteEventsListTable
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function handleRequest(WP_REST_Request $request): WP_Rest_Response
     {
@@ -71,7 +73,7 @@ class DeleteEventsListTable
         $successes = [];
 
         foreach ($ids as $id) {
-            $eventDeleted = give(EventRepository::class)->delete($id);
+            $eventDeleted = give(EventRepository::class)->getById($id)->delete();
             $eventDeleted ? $successes[] = $id : $errors[] = $id;
         }
 

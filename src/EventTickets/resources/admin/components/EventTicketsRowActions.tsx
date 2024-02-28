@@ -18,7 +18,7 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
         return response;
     };
 
-    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '', item.id, 'DELETE');
 
     const confirmDelete = (selected) => <p>{sprintf(__('Really delete event #%d?', 'give'), item.id)}</p>;
 
