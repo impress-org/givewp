@@ -1,10 +1,14 @@
-// Importing necessary hooks and SWR function
 import {useState} from 'react';
-import {__} from '@wordpress/i18n';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import styles from './CreateEventModal.module.scss';
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {__} from '@wordpress/i18n';
 import ListTableApi from '@givewp/components/ListTable/api';
+import styles from './CreateEventModal.module.scss';
+import FormModal from '../FormModal';
+
+const errorMessages = {
+    title: __('The event must have a name!', 'give'),
+    startDateTime: __('The event must have a start date!', 'give'),
+};
 
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState(false);
@@ -20,7 +24,6 @@ export default function CreateEventModal() {
     const {
         register,
         handleSubmit,
-        watch,
         formState: {errors},
         reset,
     } = useForm<Inputs>();
@@ -47,48 +50,50 @@ export default function CreateEventModal() {
             <a className={`button button-primary ${styles.createEventButton}`} onClick={openModal}>
                 {__('Create event', 'give')}
             </a>
-            <ModalDialog
+            <FormModal
                 isOpen={isOpen}
-                showHeader={true}
                 handleClose={closeModal}
                 title={__('Create your event', 'give')}
+                handleSubmit={handleSubmit(onSubmit)}
+                errors={errors}
+                errorMessages={errorMessages}
+                className={styles.createEventForm}
             >
-                <form className={styles.createEventForm} onSubmit={handleSubmit(onSubmit)}>
-                    <div className={styles.formRow}>
-                        <label htmlFor="event-name">{__('Event Name', 'give')}</label>
-                        <input type="text" {...register('title', {required: true})} />
+                <div className="givewp-event-tickets__form-row">
+                    <label htmlFor="title">{__('Event Name', 'give')}</label>
+                    <input
+                        type="text"
+                        {...register('title', {required: true})}
+                        placeholder={__('Enter event name', 'give')}
+                    />
+                </div>
+                <div className="givewp-event-tickets__form-row">
+                    <label htmlFor="description">{__('Description', 'give')}</label>
+                    <textarea {...register('description')} rows={4} />
+                </div>
+                <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
+                    <div className="givewp-event-tickets__form-column">
+                        <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
+                        <input
+                            type="datetime-local"
+                            defaultValue={new Date().toISOString().substring(0, 16)}
+                            {...register('startDateTime', {required: true})}
+                        />
                     </div>
-                    <div className={styles.formRow}>
-                        <label htmlFor="event-description">{__('Description', 'give')}</label>
-                        <textarea {...register('description')} />
+                    <div className="givewp-event-tickets__form-column">
+                        <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
+                        <input
+                            type="datetime-local"
+                            defaultValue={new Date().toISOString().substring(0, 16)}
+                            {...register('endDateTime')}
+                        />
                     </div>
-                    <div className={styles.formRow}>
-                        <div className={styles.formColumn}>
-                            <label htmlFor="event-date">{__('Start date and time', 'give')}</label>
-                            <input
-                                type="datetime-local"
-                                defaultValue={new Date().toISOString().substring(0, 16)}
-                                {...register('startDateTime', {required: true})}
-                            />
-                        </div>
-                        <div className={styles.formColumn}>
-                            <label htmlFor="event-time">{__('End date and time', 'give')}</label>
-                            <input
-                                type="datetime-local"
-                                defaultValue={new Date().toISOString().substring(0, 16)}
-                                {...register('endDateTime')}
-                            />
-                        </div>
-                    </div>
+                </div>
 
-                    {errors.title && <span>{__('The event must have a name!', 'give')}</span>}
-                    {errors.startDateTime && <span>{__('The event must have a start date!', 'give')}</span>}
-
-                    <button type="submit" className={`button button-primary ${styles.submitButton}`}>
-                        {__('Save event', 'give')}
-                    </button>
-                </form>
-            </ModalDialog>
+                <button type="submit" className="button button-primary">
+                    {__('Save event', 'give')}
+                </button>
+            </FormModal>
         </>
     );
 }
