@@ -5,6 +5,21 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import styles from './CreateEventModal.module.scss';
 import FormModal from '../FormModal';
 
+/**
+ * Get the next sharp hour in ISO format
+ *
+ * @unreleased
+ */
+const getNextSharpHour = (hoursToAdd: number) => {
+    const now = new Date();
+    const offsetInMs = now.getTimezoneOffset() * 60 * 1000;
+    const nowWithOffset = new Date(now.getTime() - offsetInMs);
+
+    nowWithOffset.setHours(nowWithOffset.getHours() + hoursToAdd, 0, 0, 0);
+
+    return nowWithOffset.toISOString().slice(0, -5);
+};
+
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState(false);
     const openModal = () => setOpen(true);
@@ -71,18 +86,14 @@ export default function CreateEventModal() {
                         <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
                         <input
                             type="datetime-local"
-                            defaultValue={new Date().toISOString().substring(0, 16)}
+                            defaultValue={getNextSharpHour(1)}
                             {...register('startDateTime', {required: __('The event must have a start date!', 'give')})}
                             aria-invalid={errors.startDateTime ? 'true' : 'false'}
                         />
                     </div>
                     <div className="givewp-event-tickets__form-column">
                         <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
-                        <input
-                            type="datetime-local"
-                            defaultValue={new Date().toISOString().substring(0, 16)}
-                            {...register('endDateTime')}
-                        />
+                        <input type="datetime-local" defaultValue={getNextSharpHour(2)} {...register('endDateTime')} />
                     </div>
                 </div>
 
