@@ -21,9 +21,11 @@ class UpdateDonationStatusTest extends TestCase
     /**
      * @unreleased
      *
+     * @dataProvider donationStatus
+     *
      * @throws Exception
      */
-    public function testShouldUpdateStatus()
+    public function testShouldUpdateStatus(string $constant, DonationStatus $status)
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
@@ -31,15 +33,11 @@ class UpdateDonationStatusTest extends TestCase
             'status' => DonationStatus::PENDING(),
         ]);
 
-        try {
-            give(UpdateDonationStatus::class)($donation, DonationStatus::COMPLETE());
-        } catch (Exception $e) {
-            //ignore exception;
-        }
+        give(UpdateDonationStatus::class)($donation, $status);
 
         $donation = Donation::find($donation->id); // Re-fetch
 
-        $this->assertTrue($donation->status->isComplete());
+        $this->assertTrue($donation->status->equals($status));
     }
 
     /**
@@ -75,5 +73,18 @@ class UpdateDonationStatusTest extends TestCase
         give(UpdateDonationStatus::class)($donation, DonationStatus::ABANDONED());
         $subscription = Subscription::find($subscription->id); // Re-fetch
         $this->assertTrue($subscription->status->isCancelled());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function donationStatus(): array
+    {
+        $values = [];
+        foreach (DonationStatus::values() as $key => $value) {
+            $values[] = [$key, $value];
+        }
+
+        return $values;
     }
 }
