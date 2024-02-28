@@ -44,6 +44,9 @@ class UpdateDonationStatus
             [
                 'Payment Gateway' => $donation->gatewayId,
                 'Gateway Transaction Id' => $donation->gatewayTransactionId,
+                'Donation' => $donation->id,
+                'Subscription' => $donation->subscriptionId,
+                'Gateway Subscription Id' => ! $donation->type->isSingle() ? $donation->subscription->gatewaySubscriptionId : null,
             ]
         );
 
