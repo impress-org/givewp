@@ -3,7 +3,7 @@ import ErrorMessages from './ErrorMessages';
 import styles from './FormModal.module.scss';
 
 /**
- * Form Modal Component renders a modal with a form inside with styled elements
+ * Form Modal component that renders a modal with a styled form inside
  *
  * @unreleased
  */

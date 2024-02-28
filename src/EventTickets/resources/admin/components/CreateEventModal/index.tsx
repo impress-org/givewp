@@ -6,6 +6,18 @@ import styles from './CreateEventModal.module.scss';
 import FormModal from '../FormModal';
 
 /**
+ * Auto open modal if the URL has the query parameter id as new
+ *
+ * @unreleased
+ */
+const autoOpenModal = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const id = queryParams.get('id');
+
+    return id === 'new';
+};
+
+/**
  * Get the next sharp hour in ISO format
  *
  * @unreleased
@@ -21,12 +33,12 @@ const getNextSharpHour = (hoursToAdd: number) => {
 };
 
 /**
- * Create Event Modal
+ * Create Event Modal component
  *
  * @unreleased
  */
 export default function CreateEventModal() {
-    const [isOpen, setOpen] = useState(false);
+    const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
 
