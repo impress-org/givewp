@@ -6,6 +6,7 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import {EventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
+import CreateEventModal from '../CreateEventModal';
 
 declare global {
     interface Window {
@@ -93,12 +94,7 @@ export default function EventTicketsListTable() {
             rowActions={EventTicketsRowActions}
             listTableBlankSlate={ListTableBlankSlate()}
         >
-            <a
-                className={`button button-primary ${styles.addEventButton}`}
-                href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
-            >
-                {__('Create event', 'give')}
-            </a>
+            <CreateEventModal />
         </ListTablePage>
     );
 }
