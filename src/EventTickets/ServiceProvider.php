@@ -3,6 +3,7 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\EventTickets\Actions\EnqueueEventDetailsScripts;
 use Give\EventTickets\Actions\EnqueueListTableScripts;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
@@ -52,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->registerMigrations();
         $this->registerRoutes();
-        $this->registerEventTicketsAdminPage();
+        $this->registerMenus();
         $this->registerFormExtension();
     }
 
@@ -87,10 +88,9 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerEventTicketsAdminPage(): void
+    private function registerMenus(): void
     {
         Hooks::addAction('admin_menu', RegisterEventsMenuItem::class, '__invoke', 15);
-        Hooks::addAction('admin_enqueue_scripts', EnqueueListTableScripts::class);
     }
 
     /**

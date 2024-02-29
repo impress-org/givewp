@@ -2,23 +2,22 @@
 
 namespace Give\EventTickets\Actions;
 
-use Give\EventTickets\ListTable\EventTicketsListTable;
+use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventRepository;
 use Give\Helpers\EnqueueScript;
 
-class EnqueueListTableScripts
+class EnqueueEventDetailsScripts
 {
-    public function __invoke()
+    public function __invoke(Event $event)
     {
         $data = [
-            'apiRoot' => esc_url_raw(rest_url('give-api/v2/events-tickets/events/list-table')),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/events-tickets/events')),
             'apiNonce' => wp_create_nonce('wp_rest'),
-            'table' => give(EventTicketsListTable::class)->toArray(),
             'adminUrl' => admin_url(),
-            'paymentMode' => give_is_test_mode(),
-            'pluginUrl' => GIVE_PLUGIN_URL,
+            'event' => $event->toArray(),
         ];
 
-        EnqueueScript::make('give-admin-event-tickets', 'assets/dist/js/give-admin-event-tickets.js')
+        EnqueueScript::make('give-admin-event-tickets-details', 'assets/dist/js/give-admin-event-tickets-details.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveEventTickets', $data)->enqueue();
