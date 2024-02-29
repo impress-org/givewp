@@ -1,9 +1,13 @@
 <?php
+
 namespace Give\EventTickets\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\EventTickets\DataTransferObjects\TicketPurchaseData;
 use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Fields\EventTickets;
+use Give\EventTickets\Models\EventTicket;
+use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
@@ -32,11 +36,12 @@ class ConvertEventTicketsBlockToFieldsApi
                     ->ticketTypes($ticketTypes);
 
                 $eventTicketsField->scope(function (EventTickets $field, $value, Donation $donation) {
-                    if (empty($value)) {
-                        return;
-                    }
 
-                    // (new UpdateDonationWithEventTickets())($value, $donation, $field);
+                    $ticketPurchaseData = array_map(function ($data) {
+                        return TicketPurchaseData::fromFieldValueObject($data);
+                    }, json_decode($value));
+
+                    array_walk($ticketPurchaseData, new GenerateTicketsFromPurchaseData($donation));
                 });
 
                 return $eventTicketsField;
