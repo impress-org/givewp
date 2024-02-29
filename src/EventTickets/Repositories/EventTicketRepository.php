@@ -40,6 +40,15 @@ class EventTicketRepository
 
     /**
      * @unreleased
+     */
+    public function queryById(int $id): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('id', $id);
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -104,7 +113,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
-                    'updated_at' => $updatedDateTime,
+                    'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

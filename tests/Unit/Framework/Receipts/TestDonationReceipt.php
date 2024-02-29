@@ -74,6 +74,7 @@ class TestDonationReceipt extends TestCase
                 ],
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
+                'eventTicketsDetails' => [],
                 'subscriptionDetails' => [],
                 'additionalDetails' => [],
             ]
@@ -96,6 +97,7 @@ class TestDonationReceipt extends TestCase
                 'settings' => [],
                 'donorDetails' => [],
                 'donationDetails' => [],
+                'eventTicketsDetails' => [],
                 'subscriptionDetails' => [],
                 'additionalDetails' => [],
             ]

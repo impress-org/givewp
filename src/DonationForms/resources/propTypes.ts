@@ -210,6 +210,7 @@ export interface DonationReceiptProps {
     donorDetails: ReceiptDetail[];
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];
+    eventTicketsDetails: ReceiptDetail[];
     additionalDetails: ReceiptDetail[];
 }
 

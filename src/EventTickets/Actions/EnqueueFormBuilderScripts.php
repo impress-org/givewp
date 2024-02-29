@@ -28,10 +28,8 @@ class EnqueueFormBuilderScripts
             'eventTicketsBlockSettings',
             [
                 'events' => $this->getEvents(),
-                'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&action=new'),
-                //TODO: Update this with the correct URL
+                'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&id=new'),
                 'listEventsUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets'),
-                //TODO: Update this with the correct URL
                 'ticketsLabel' => apply_filters(
                     'givewp_event_tickets_block/tickets_label',
                     __('Select Tickets', 'give')
@@ -71,8 +69,13 @@ class EnqueueFormBuilderScripts
         }
 
         foreach ($ticketTypes as $ticketType) {
+            $soldCount = $ticketType->eventTickets()->where(
+                'ticket_type_id',
+                $ticketType->id
+            )->count() ?? 0;
             $ticketType = $ticketType->toArray();
-            $ticketType['price'] = $ticketType['price']->formatToDecimal();
+            $ticketType['price'] = $ticketType['price']->formatToMinorAmount() || 0;
+            $ticketType['ticketsAvailable'] = $ticketType['capacity'] - $soldCount;
 
             if (isset($eventData[$ticketType['eventId']])) {
                 $eventData[$ticketType['eventId']]['ticketTypes'][] = $ticketType;

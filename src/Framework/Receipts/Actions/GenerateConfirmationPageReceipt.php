@@ -6,12 +6,14 @@ use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\EventTickets\Models\EventTicket;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\TemplateTags\DonationTemplateTags;
 use Give\Log\Log;
 
@@ -25,6 +27,7 @@ class GenerateConfirmationPageReceipt
         $this->fillSettings($receipt);
         $this->fillDonorDetails($receipt);
         $this->fillDonationDetails($receipt);
+        $this->fillEventTicketsDetails($receipt);
         $this->fillSubscriptionDetails($receipt);
         $this->fillAdditionalDetails($receipt);
 
@@ -106,6 +109,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added support for event tickets
      * @since 3.0.0
      *
      * @return void
@@ -144,6 +148,26 @@ class GenerateConfirmationPageReceipt
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
                     ['amount' => $receipt->donation->feeAmountRecovered->formatToDecimal()]
+                )
+            );
+        }
+
+        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
+
+        if ( ! empty($eventTickets)) {
+            $currency = $receipt->donation->amount->getCurrency();
+            $total = array_reduce($eventTickets, function(Money $carry, EventTicket $eventTicket) {
+                $ticketType = $eventTicket->ticketType()->get();
+
+                return $carry->add(
+                    $ticketType->price
+                );
+            }, new Money(0, $currency));
+
+            $receipt->donationDetails->addDetail(
+                new ReceiptDetail(
+                    __('Event Tickets', 'give'),
+                    $total->formatToLocale()
                 )
             );
         }
@@ -356,5 +380,39 @@ class GenerateConfirmationPageReceipt
     {
         return give_do_email_tags($content, ['payment_id' => $donation->id, 'form_id' => $donation->formId]
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function fillEventTicketsDetails(DonationReceipt $receipt): void
+    {
+        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
+
+        if (empty($eventTickets)) {
+            return;
+        }
+
+        $event = $eventTickets[0]->event()->get();
+        $ticketTypes = [];
+
+        foreach ($eventTickets as $eventTicket) {
+            $ticketType = $eventTicket->ticketType()->get();
+            $ticketTypeId = $ticketType->id;
+
+            if (isset($ticketTypes[$ticketTypeId])) {
+                $ticketTypes[$ticketTypeId]['quantity'] += 1;
+            } else {
+                $ticketTypes[$ticketTypeId] = [
+                    'title' => $ticketType->title,
+                    'quantity' => 1,
+                ];
+            }
+        }
+
+        foreach ($ticketTypes as $ticketType) {
+            $detailString = sprintf(__('%s - %s', 'give'), $event->title, $ticketType['title']);
+            $receipt->eventTicketsDetails->addDetail(new ReceiptDetail($detailString, $ticketType['quantity']));
+        }
     }
 }
