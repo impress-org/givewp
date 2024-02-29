@@ -7,6 +7,9 @@ const apiSettings = window.GiveEventTicketsDetails;
 apiSettings.apiRoot = apiSettings.apiRoot.replace('/list-table', '');
 const eventTicketsApi = new ListTableApi(apiSettings);
 
+/**
+ * @unreleased
+ */
 export function EventSectionRowActions({item, setUpdateErrors}) {
     const fetchAndUpdateErrors = async (endpoint, id, method) => {
         const response = await eventTicketsApi.fetchWithArgs(endpoint, {ids: [id]}, method);

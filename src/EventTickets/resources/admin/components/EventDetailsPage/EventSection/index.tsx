@@ -3,6 +3,9 @@ import {format} from 'date-fns';
 import styles from './EventSection.module.scss';
 import {EventSectionRowActions} from './EventSectionRowActions';
 
+/**
+ * @unreleased
+ */
 export default function EventSection({setUpdateErrors}) {
     const {event} = window.GiveEventTicketsDetails;
     const startDateTime = new Date(event.startDateTime.date);

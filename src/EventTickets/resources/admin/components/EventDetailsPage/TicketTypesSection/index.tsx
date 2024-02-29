@@ -1,5 +1,8 @@
 import {__} from '@wordpress/i18n';
 
+/**
+ * @unreleased
+ */
 export default function TicketTypesSection() {
     return (
         <section>
