@@ -67,7 +67,7 @@ const ListTableBlankSlate = () => {
             <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first event.', 'give')}</p>
             <p>
                 <a
-                    href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
+                    href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&new=event`}
                     className={`button button-primary ${styles.button}`}
                 >
                     {__('Create event', 'give')}
