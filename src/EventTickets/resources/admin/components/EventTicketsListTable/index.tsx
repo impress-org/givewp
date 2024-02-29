@@ -6,17 +6,12 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import {EventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
+import {GiveEventTickets} from './types';
 import CreateEventModal from '../CreateEventModal';
 
 declare global {
     interface Window {
-        GiveEventTickets: {
-            apiNonce: string;
-            apiRoot: string;
-            table: {columns: Array<object>};
-            adminUrl: string;
-            pluginUrl: string;
-        };
+        GiveEventTickets: GiveEventTickets;
     }
 }
 

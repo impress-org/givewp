@@ -2,6 +2,13 @@ import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {GiveIcon} from '@givewp/components';
 import styles from './EventDetailsPage.module.scss';
+import {GiveEventTickets} from './types';
+
+declare global {
+    interface Window {
+        GiveEventTickets: GiveEventTickets;
+    }
+}
 
 export default function EventDetailsPage() {
     return (
