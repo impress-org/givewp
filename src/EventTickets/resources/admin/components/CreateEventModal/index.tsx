@@ -12,9 +12,9 @@ import FormModal from '../FormModal';
  */
 const autoOpenModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
-    const id = queryParams.get('id');
+    const newParam = queryParams.get('new');
 
-    return id === 'new';
+    return newParam === 'event';
 };
 
 /**
