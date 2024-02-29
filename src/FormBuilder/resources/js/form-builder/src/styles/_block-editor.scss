@@ -13,8 +13,9 @@
 }
 
 .interface-interface-skeleton__body {
-    width: calc(100% - var(--givewp-sidebar-width));
+    width: 100%;
     background-color: var(--givewp-gray-10);
+    overflow: hidden;
 }
 
 .interface-interface-skeleton__secondary-sidebar {
