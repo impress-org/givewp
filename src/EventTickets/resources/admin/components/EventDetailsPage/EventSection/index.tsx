@@ -2,6 +2,7 @@ import {__, _x} from '@wordpress/i18n';
 import {format} from 'date-fns';
 import styles from './EventSection.module.scss';
 import {EventSectionRowActions} from './EventSectionRowActions';
+import locale from '../../../../date-fns-locale';
 
 /**
  * @unreleased
@@ -22,8 +23,8 @@ export default function EventSection({setUpdateErrors}) {
     const tableContent = {
         title: event.title,
         description: event.description,
-        startDateTime: format(startDateTime, dateFormat),
-        endDateTime: format(endDateTime, dateFormat),
+        startDateTime: format(startDateTime, dateFormat, {locale}),
+        endDateTime: format(endDateTime, dateFormat, {locale}),
     };
 
     return (
