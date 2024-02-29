@@ -53,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->registerMigrations();
         $this->registerRoutes();
-        $this->registerEventTicketsAdminPage();
+        $this->registerMenus();
         $this->registerFormExtension();
     }
 
@@ -87,11 +87,9 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerEventTicketsAdminPage(): void
+    private function registerMenus(): void
     {
         Hooks::addAction('admin_menu', RegisterEventsMenuItem::class, '__invoke', 15);
-        Hooks::addAction('admin_enqueue_scripts', EnqueueListTableScripts::class);
-        Hooks::addAction('admin_enqueue_scripts', EnqueueEventDetailsScripts::class);
     }
 
     /**

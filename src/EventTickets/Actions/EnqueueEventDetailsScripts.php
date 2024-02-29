@@ -2,23 +2,14 @@
 
 namespace Give\EventTickets\Actions;
 
+use Give\EventTickets\Models\Event;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\Helpers\EnqueueScript;
 
 class EnqueueEventDetailsScripts
 {
-    public function __invoke()
+    public function __invoke(Event $event)
     {
-        if (!$this->isShowing()) {
-            return;
-        }
-
-        $event = give(EventRepository::class)->getById((int) $_GET['id']);
-
-        if (!$event) {
-            wp_die(__('Event not found', 'give-event-tickets'), 404);
-        }
-
         $data = [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/events-tickets/events')),
             'apiNonce' => wp_create_nonce('wp_rest'),
@@ -39,15 +30,5 @@ class EnqueueEventDetailsScripts
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
-    }
-
-    /**
-     * Helper function to determine if current page is Give Event Tickets admin page
-     *
-     * @unreleased
-     */
-    private function isShowing(): bool
-    {
-        return isset($_GET['page']) && $_GET['page'] === 'give-event-tickets' && ! isset($_GET['view']) && isset($_GET['id']) && $_GET['id'] > 0;
     }
 }
