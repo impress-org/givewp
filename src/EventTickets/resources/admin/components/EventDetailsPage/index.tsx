@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {GiveIcon} from '@givewp/components';
@@ -14,6 +15,11 @@ declare global {
 }
 
 export default function EventDetailsPage() {
+    const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
+        errors: [],
+        successes: [],
+    });
+
     return (
         <>
             <article className={styles.page}>
@@ -33,7 +39,7 @@ export default function EventDetailsPage() {
                 </header>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <EventSection />
+                    <EventSection setUpdateErrors={setUpdateErrors} />
                     <TicketTypesSection />
                     <DonationFormsSection />
                 </div>

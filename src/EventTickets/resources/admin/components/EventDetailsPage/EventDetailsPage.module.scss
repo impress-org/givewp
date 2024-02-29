@@ -99,6 +99,10 @@
 
 .pageContent {
     padding: 0 1.5em 1.5em 1.5em;
+
+    section {
+        margin-bottom: var(--givewp-spacing-14);
+    }
 }
 
 :global(#give-admin-event-tickets-root) {
