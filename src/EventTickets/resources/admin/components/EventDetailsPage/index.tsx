@@ -3,6 +3,9 @@ import {__} from '@wordpress/i18n';
 import {GiveIcon} from '@givewp/components';
 import styles from './EventDetailsPage.module.scss';
 import {GiveEventTickets} from './types';
+import EventSection from './EventSection';
+import TicketTypesSection from './TicketTypesSection';
+import DonationFormsSection from './DonationFormsSection';
 
 declare global {
     interface Window {
@@ -29,7 +32,11 @@ export default function EventDetailsPage() {
                     </div>
                 </header>
                 <div className={cx('wp-header-end', 'hidden')} />
-                <div className={styles.pageContent}>{window.GiveEventTickets.event.title}</div>
+                <div className={styles.pageContent}>
+                    <EventSection />
+                    <TicketTypesSection />
+                    <DonationFormsSection />
+                </div>
             </article>
         </>
     );
