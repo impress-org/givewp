@@ -35,8 +35,10 @@
 }
 
 .interface-interface-skeleton__content {
-    width: 720px;
-    margin: 0 auto auto;
+    display: block;
+    height: 100vh;
+    width: 100%;
+    margin: auto;
     padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
