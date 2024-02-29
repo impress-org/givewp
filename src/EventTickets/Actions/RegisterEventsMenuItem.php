@@ -2,6 +2,9 @@
 
 namespace Give\EventTickets\Actions;
 
+use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventRepository;
+
 /**
  * @unreleased
  */
@@ -26,6 +29,18 @@ class RegisterEventsMenuItem
      */
     public function render()
     {
+        if(isset($_GET['id'])) {
+            $event = Event::find(absint($_GET['id']));
+
+            if (!$event) {
+                wp_die(__('Event not found', 'give-event-tickets'), 404);
+            }
+
+            give(EnqueueEventDetailsScripts::class)($event);
+        } else {
+            give(EnqueueListTableScripts::class)();
+        }
+
         echo '<div id="give-admin-event-tickets-root"></div>';
     }
 }
