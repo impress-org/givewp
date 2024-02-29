@@ -3,7 +3,6 @@
 namespace Give\EventTickets\Actions;
 
 use Give\EventTickets\Models\Event;
-use Give\EventTickets\Repositories\EventRepository;
 use Give\Helpers\EnqueueScript;
 
 class EnqueueEventDetailsScripts
@@ -20,7 +19,7 @@ class EnqueueEventDetailsScripts
         EnqueueScript::make('give-admin-event-tickets-details', 'assets/dist/js/give-admin-event-tickets-details.js')
             ->loadInFooter()
             ->registerTranslations()
-            ->registerLocalizeData('GiveEventTickets', $data)->enqueue();
+            ->registerLocalizeData('GiveEventTicketsDetails', $data)->enqueue();
 
         wp_enqueue_style(
             'give-admin-ui-font',
