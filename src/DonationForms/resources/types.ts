@@ -62,6 +62,7 @@ export interface DonationConfirmationReceiptServerExports {
         };
         donorDetails: ReceiptDetail[];
         donationDetails: ReceiptDetail[];
+        eventTicketsDetails: ReceiptDetail[];
         subscriptionDetails: ReceiptDetail[];
         additionalDetails: ReceiptDetail[];
     };
