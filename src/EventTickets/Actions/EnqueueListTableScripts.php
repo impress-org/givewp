@@ -9,10 +9,6 @@ class EnqueueListTableScripts
 {
     public function __invoke()
     {
-        if (!$this->isShowing()) {
-            return;
-        }
-
         $data = [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/events-tickets/events/list-table')),
             'apiNonce' => wp_create_nonce('wp_rest'),
@@ -35,15 +31,5 @@ class EnqueueListTableScripts
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
-    }
-
-    /**
-     * Helper function to determine if current page is Give Event Tickets admin page
-     *
-     * @unreleased
-     */
-    private function isShowing(): bool
-    {
-        return isset($_GET['page']) && $_GET['page'] === 'give-event-tickets' && ! isset($_GET['view']);
     }
 }

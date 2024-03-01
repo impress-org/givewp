@@ -3,6 +3,7 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\EventTickets\Actions\EnqueueEventDetailsScripts;
 use Give\EventTickets\Actions\EnqueueListTableScripts;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
@@ -52,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->registerMigrations();
         $this->registerRoutes();
-        $this->registerEventTicketsAdminPage();
+        $this->registerMenus();
         $this->registerFormExtension();
     }
 
@@ -75,6 +76,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\DeleteEventsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventForms::class, 'registerRoute');
@@ -86,10 +88,9 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerEventTicketsAdminPage(): void
+    private function registerMenus(): void
     {
         Hooks::addAction('admin_menu', RegisterEventsMenuItem::class, '__invoke', 15);
-        Hooks::addAction('admin_enqueue_scripts', EnqueueListTableScripts::class);
     }
 
     /**

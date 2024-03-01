@@ -29,7 +29,7 @@ class EnqueueFormBuilderScripts
             'eventTicketsBlockSettings',
             [
                 'events' => $this->getEvents(),
-                'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&id=new'),
+                'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&new=event'),
                 'listEventsUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets'),
                 'ticketsLabel' => apply_filters(
                     'givewp_event_tickets_block/tickets_label',

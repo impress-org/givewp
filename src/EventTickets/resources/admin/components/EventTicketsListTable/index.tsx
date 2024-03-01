@@ -6,16 +6,12 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import {EventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
+import {GiveEventTickets} from './types';
+import CreateEventModal from '../CreateEventModal';
 
 declare global {
     interface Window {
-        GiveEventTickets: {
-            apiNonce: string;
-            apiRoot: string;
-            table: {columns: Array<object>};
-            adminUrl: string;
-            pluginUrl: string;
-        };
+        GiveEventTickets: GiveEventTickets;
     }
 }
 
@@ -71,7 +67,7 @@ const ListTableBlankSlate = () => {
             <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first event.', 'give')}</p>
             <p>
                 <a
-                    href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
+                    href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&new=event`}
                     className={`button button-primary ${styles.button}`}
                 >
                     {__('Create event', 'give')}
@@ -93,12 +89,7 @@ export default function EventTicketsListTable() {
             rowActions={EventTicketsRowActions}
             listTableBlankSlate={ListTableBlankSlate()}
         >
-            <a
-                className={`button button-primary ${styles.addEventButton}`}
-                href={`${window.GiveEventTickets.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&id=new`}
-            >
-                {__('Create event', 'give')}
-            </a>
+            <CreateEventModal />
         </ListTablePage>
     );
 }
