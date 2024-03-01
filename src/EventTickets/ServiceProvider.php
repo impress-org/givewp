@@ -83,6 +83,8 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\UpdateEvent::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\UpdateEventTicketType::class, 'registerRoute');
     }
 
     /**
