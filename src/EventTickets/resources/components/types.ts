@@ -30,6 +30,7 @@ export type EventTicketsListProps = {
     ticketTypes: TicketType[];
     ticketsLabel: string;
     currency: string;
+    currencyRate: number;
     selectedTickets?: SelectedTicket[];
     handleSelect?: OnSelectTicketProps;
 };

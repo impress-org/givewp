@@ -3,9 +3,10 @@ import {__} from '@wordpress/i18n';
 import {plus, reset as minus} from '@wordpress/icons';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
-export default function EventTicketsListItem({ticketType, currency, selectedTickets, handleSelect}) {
+export default function EventTicketsListItem({ticketType, currency, currencyRate, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
-    const ticketPrice = ticketType.price > 0 ? formatter.format(Number(ticketType.price) / 100) : __('Free', 'give');
+    const ticketPrice =
+        ticketType.price > 0 ? formatter.format((Number(ticketType.price) * currencyRate) / 100) : __('Free', 'give');
 
     const handleButtonClick = (quantity) => (e) => {
         e.preventDefault();

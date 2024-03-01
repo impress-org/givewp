@@ -22,7 +22,12 @@ export default function BlockPlaceholder({attributes}) {
 
                 {event.description && <EventTicketsDescription description={event.description} />}
 
-                <EventTicketsList ticketTypes={event.ticketTypes} ticketsLabel={ticketsLabel} currency={currency} />
+                <EventTicketsList
+                    ticketTypes={event.ticketTypes}
+                    ticketsLabel={ticketsLabel}
+                    currency={currency}
+                    currencyRate={1}
+                />
             </div>
         </div>
     );

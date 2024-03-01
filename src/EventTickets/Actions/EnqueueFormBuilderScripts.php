@@ -2,6 +2,7 @@
 
 namespace Give\EventTickets\Actions;
 
+use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\EnqueueScript;
@@ -69,17 +70,7 @@ class EnqueueFormBuilderScripts
         }
 
         foreach ($ticketTypes as $ticketType) {
-            $soldCount = $ticketType->eventTickets()->where(
-                'ticket_type_id',
-                $ticketType->id
-            )->count() ?? 0;
-            $ticketType = $ticketType->toArray();
-            $ticketType['price'] = $ticketType['price']->formatToMinorAmount() || 0;
-            $ticketType['ticketsAvailable'] = $ticketType['capacity'] - $soldCount;
-
-            if (isset($eventData[$ticketType['eventId']])) {
-                $eventData[$ticketType['eventId']]['ticketTypes'][] = $ticketType;
-            }
+            $eventData[$ticketType->eventId]['ticketTypes'][] = EventTicketTypeData::make($ticketType)->toArray();
         }
 
         return array_values($eventData);
