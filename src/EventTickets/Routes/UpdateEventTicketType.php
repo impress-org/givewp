@@ -37,7 +37,7 @@ class UpdateEventTicketType implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return EventTicketType::find($eventId);
                         },
                         'required' => true,
                     ],
