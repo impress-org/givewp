@@ -219,6 +219,18 @@ class FormSettings implements Arrayable, Jsonable
     public $designSettingsTextFieldStyle;
 
     /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageColor;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageOpacity;
+
+    /**
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
