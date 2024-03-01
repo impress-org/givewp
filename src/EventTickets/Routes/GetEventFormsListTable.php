@@ -205,7 +205,7 @@ class GetEventFormsListTable
         return [
             'id' => $form->id,
             'title' => "<a href='{get_edit_link($form->id)}'>{$form->title}</a>",
-            'count' => $soldTicketsCount,
+            'count' => "<span>{$soldTicketsCount}</span>",
         ];
     }
 }
