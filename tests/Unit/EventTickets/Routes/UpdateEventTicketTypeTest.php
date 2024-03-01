@@ -11,6 +11,7 @@ use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Routes\GetEventsListTable;
 use Give\EventTickets\Routes\UpdateEvent;
 use Give\EventTickets\Routes\UpdateEventTicketType;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -52,5 +53,24 @@ class UpdateEventTicketTypeTest extends TestCase
         $response = (new UpdateEventTicketType())->handleRequest($mockRequest);
 
         $this->assertEquals('New Title', EventTicketType::find($ticketType->id)->title);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldUpdateTicketTypePrice()
+    {
+        $ticketType = EventTicketType::factory()->create([
+            'price' => new Money(1000, 'USD'),
+        ]);
+
+        $mockRequest = $this->getMockRequest($ticketType->id);
+        $mockRequest->set_param('price', 2000);
+        $response = (new UpdateEventTicketType())->handleRequest($mockRequest);
+
+        $this->assertEquals(2000, EventTicketType::find($ticketType->id)->price->formatToMinorAmount());
     }
 }
