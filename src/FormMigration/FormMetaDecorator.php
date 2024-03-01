@@ -765,7 +765,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function getFormFeaturedImage()
     {

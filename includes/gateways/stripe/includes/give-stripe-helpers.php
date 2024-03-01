@@ -842,7 +842,7 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
 /**
  * This helper function is used to process Stripe payments.
  *
- * @unreleased remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
+ * @since 3.5.0 remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
  * @since 2.33.0 no longer store the payment intent secret
  * @since 2.5.0
  *

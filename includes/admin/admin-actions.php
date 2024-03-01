@@ -680,7 +680,7 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 /**
  * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
  *
- * @unreleased
+ * @since 3.5.0
  *
  * @param string $data Data that might be unserialized.
  *
@@ -697,7 +697,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
- * @unreleased Extract safe unserialize logic to a function and use it in other places.
+ * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
  */

@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Track donor activity to rerender payment methods.
      *
-     * @unreleased
+     * @since 3.5.0
      * @param {Element} $form Form selector.
      */
     function trackDonorActivityToRerenderPaymentMethods($form){
