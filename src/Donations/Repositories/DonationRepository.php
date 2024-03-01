@@ -542,6 +542,21 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     */
+    public function getAllDonationIdsByFormId(int $formId)
+    {
+        return array_column(
+            DB::table('give_donationmeta')
+                ->select('donation_id')
+                ->where('meta_key', DonationMetaKeys::FORM_ID)
+                ->where('meta_value', $formId)
+                ->getAll(),
+            'donation_id'
+        );
+    }
+
+    /**
      * @since 2.23.1 Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
