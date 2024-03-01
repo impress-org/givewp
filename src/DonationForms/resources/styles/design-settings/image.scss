@@ -35,6 +35,8 @@
                 &--background {
                     .givewp-layouts-headerImage {
                         margin-top: -1.5rem;
+                        width: 100%;
+                        height: auto;
 
                         img {
                             position: absolute;
@@ -44,7 +46,7 @@
                         }
                     }
 
-                    div:not(.givewp-layouts-headerImage), aside {
+                    div:not(.givewp-layouts-headerImage, .givewp-layouts-headerImage__overlay), aside {
                         position: relative;
                         z-index: 999;
                     }
@@ -64,6 +66,8 @@
                     }
 
                     .givewp-layouts-headerImage {
+                        position: relative;
+
                         img {
                             height: 320px;
                         }
@@ -91,7 +95,16 @@
                     }
 
                     .givewp-layouts-headerImage {
+                        position: relative;
+
+                        &__overlay {
+                            &:before {
+                                border-radius: var(--givewp-rounded-4);
+                            }
+                        }
+
                         img {
+                            border: 1px solid var(--givewp-image-color);
                             height: 311px;
                             border-radius: var(--givewp-rounded-4);
                         }
@@ -167,7 +180,7 @@
             }
 
 
-            div:not(.givewp-layouts-headerImage), aside {
+            div:not(.givewp-layouts-headerImage,, .givewp-layouts-headerImage__overlay), aside {
                 position: relative;
                 z-index: 999;
             }
@@ -191,6 +204,8 @@
             }
 
             .givewp-layouts-headerImage {
+                position: relative;
+
                 margin-bottom: var(--givewp-spacing-6);
 
                 img {
@@ -203,6 +218,14 @@
             padding: 2rem 2rem 0 2rem;
 
             .givewp-layouts-headerImage {
+                position: relative;
+
+                &__overlay {
+                    &:before {
+                        border-radius: var(--givewp-rounded-4);
+                    }
+                }
+
                 img {
                     border-radius: var(--givewp-rounded-4);
 
@@ -216,3 +239,20 @@
     }
 }
 
+.givewp-layouts-headerImage {
+
+    &__overlay:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: var(--givewp-rounded-4);
+        border-top-right-radius: var(--givewp-rounded-4);
+        background: var(--givewp-image-color);
+        border: 1px solid var(--givewp-image-color);
+        opacity: calc(var(--givewp-image-opacity) / 100);
+        z-index: 999;
+    }
+}

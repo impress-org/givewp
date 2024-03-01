@@ -31,6 +31,8 @@ export default function Header({form}) {
                         <HeaderImageTemplate
                             url={form.settings?.designSettingsImageUrl}
                             alt={form.settings?.formTitle}
+                            color={form.settings?.designSettingsImageColor}
+                            opacity={form.settings?.designSettingsImageOpacity}
                         />
                     )
                 }

@@ -184,6 +184,8 @@ export interface HeaderProps {
 export interface HeaderImageProps {
     url: string;
     alt: string;
+    color: string;
+    opacity: string;
 }
 
 export interface HeaderDescriptionProps {
