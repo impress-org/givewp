@@ -1,0 +1,19 @@
+.innerPageListTable {
+    table {
+        tr {
+            th, td {
+                padding-inline: var(--givewp-spacing-9);
+
+                &:first-child {
+                    display: none;
+                }
+            }
+        }
+
+        thead {
+            th {
+                color: var(--givewp-grey-700);
+            }
+        }
+    }
+}

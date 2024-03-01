@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {ShowConfirmModalContext} from './index';
+import {ShowConfirmModalContext} from '../InnerPageListTable';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import {useSWRConfig} from 'swr';
