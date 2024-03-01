@@ -165,7 +165,7 @@ class GetEventFormsListTable
     }
 
 
-        /**
+    /**
      * @unreleased
      *
      * @return bool|\WP_Error
