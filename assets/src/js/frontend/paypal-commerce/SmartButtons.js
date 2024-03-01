@@ -11,7 +11,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * Setup properties.
      *
-     * @unreleased Add the updateOrderAmount property
+     * @since 3.5.0 Add the updateOrderAmount property
      * @since 2.9.0
      */
     setupProperties() {
@@ -146,7 +146,7 @@ class SmartButtons extends PaymentMethod {
 
     /**
      * Watching for changes in the amount field input after the user has clicked on the smart buttons
-     * @unreleased
+     * @since 3.5.0
      */
     observeAmount() {
         const $this = this;
@@ -245,7 +245,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * Order approve event handler for smart buttons.
      *
-     * @unreleased Add 'update_amount' query string to the ajax URL
+     * @since 3.5.0 Add 'update_amount' query string to the ajax URL
      * @since 3.1.2 Handle custom error.
      * @since 2.9.0
      *

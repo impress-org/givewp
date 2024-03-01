@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.5.0
  */
 class FormFeaturedImage extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function process()
     {
