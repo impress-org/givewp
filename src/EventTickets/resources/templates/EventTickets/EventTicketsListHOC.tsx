@@ -13,7 +13,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
     const currencySettings = currencySwitcherSettings.find((setting) => setting.id === currency);
     const currencyRate = (currencySettings?.exchangeRate ?? Number('1.00')) || 1;
     const currencyFormatter = useCurrencyFormatter(currency, {
-        minimumFractionDigits: currencySettings.exchangeRateFractionDigits,
+        minimumFractionDigits: currencySettings?.exchangeRateFractionDigits,
     });
     const donationSummary = useDonationSummary();
 
