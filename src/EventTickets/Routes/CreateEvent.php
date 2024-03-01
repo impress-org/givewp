@@ -4,6 +4,8 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Models\EventTicketType;
+use Give\Framework\Support\ValueObjects\Money;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -78,6 +80,13 @@ class CreateEvent implements RestRoute
             'description' => $request->get_param('description'),
             'startDateTime' => $request->get_param('startDateTime'),
             'endDateTime' => $request->get_param('endDateTime'),
+        ]);
+
+        EventTicketType::create([
+            'title' => 'General Admission',
+            'price' => new Money(1000, give_get_currency()),
+            'capacity' => 100,
+            'eventId' => $event->id,
         ]);
 
         return new WP_REST_Response($event->toArray(), 201);
