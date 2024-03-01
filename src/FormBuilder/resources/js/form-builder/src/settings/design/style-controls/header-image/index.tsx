@@ -15,15 +15,23 @@ export default function HeaderImage({dispatch}) {
             return removeOverlay();
         }
 
+        if (!designSettingsImageOpacity) {
+            dispatch(
+                setFormSettings({
+                    designSettingsImageOpacity: '25',
+                })
+            );
+            publishSettings({designSettingsImageOpacity: '25'});
+        }
+
         dispatch(setFormSettings({designSettingsImageColor}));
         publishSettings({designSettingsImageColor});
     };
 
     const removeOverlay = () => {
-        dispatch(setFormSettings({designSettingsImageColor: '', designSettingsImageOverlay: ''}));
+        dispatch(setFormSettings({designSettingsImageColor: ''}));
         publishSettings({
             designSettingsImageColor: '',
-            designSettingsImageOpacity: '',
         });
     };
 
@@ -46,9 +54,7 @@ export default function HeaderImage({dispatch}) {
             {designSettingsImageColor && (
                 <BaseControl id={'givewp-header-image-filter__range-control'} label={__('Overlay Opacity', 'give')}>
                     <RangeControl
-                        currentInput={25}
-                        initialPosition={25}
-                        value={Number(designSettingsImageOpacity)}
+                        value={designSettingsImageOpacity ? Number(designSettingsImageOpacity) : 25}
                         onChange={(designSettingsImageOpacity: number) => {
                             dispatch(setFormSettings({designSettingsImageOpacity: String(designSettingsImageOpacity)}));
                             publishSettings({
