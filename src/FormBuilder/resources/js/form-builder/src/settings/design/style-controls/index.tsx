@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import Color from './color';
 import CustomStyles from './custom-styles';
-import SectionSettings from './section';
+import HeaderImage from './header-image';
 import DesignSettings from '@givewp/form-builder/components/settings/DesignSettings';
 import {getWindowData} from '@givewp/form-builder/common';
 
@@ -14,6 +14,7 @@ const getDesign = (designId: string) => formDesigns[designId];
  */
 export default function StyleControls() {
     const dispatch = useFormStateDispatch();
+
     const {
         settings: {designId},
     } = useFormState();
@@ -29,6 +30,7 @@ export default function StyleControls() {
             )}
         >
             <Color dispatch={dispatch} />
+            <HeaderImage dispatch={dispatch} />
             <CustomStyles />
         </DesignSettings>
     );
