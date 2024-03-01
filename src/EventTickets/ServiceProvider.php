@@ -3,8 +3,6 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
-use Give\EventTickets\Actions\EnqueueEventDetailsScripts;
-use Give\EventTickets\Actions\EnqueueListTableScripts;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Repositories\EventRepository;
@@ -82,6 +80,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\GetEventForms::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypes::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetEventTicketTypesListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventTicketTypeTickets::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\UpdateEvent::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\UpdateEventTicketType::class, 'registerRoute');
