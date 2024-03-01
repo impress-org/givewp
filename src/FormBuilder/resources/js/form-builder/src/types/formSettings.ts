@@ -48,6 +48,6 @@ export type FormSettings = {
     designSettingsLogoPosition: string;
     designSettingsSectionStyle: string;
     designSettingsTextFieldStyle: string;
-    designSettingsImageOpacity: number;
+    designSettingsImageOpacity: string;
     designSettingsImageColor: string;
 };

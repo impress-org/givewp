@@ -12,10 +12,10 @@ export default function HeaderImage({dispatch}) {
     const {publishSettings} = useDonationFormPubSub();
 
     const removeBlankSlate = () => {
-        dispatch(setFormSettings({designSettingsImageColor: '#000'}));
+        dispatch(setFormSettings({designSettingsImageColor: '#000', designSettingsImageOpacity: '25'}));
         publishSettings({
             designSettingsImageColor: '#000',
-            designSettingsImageOpacity: 25,
+            designSettingsImageOpacity: '25',
         });
     };
 
@@ -51,11 +51,11 @@ export default function HeaderImage({dispatch}) {
                     <RangeControl
                         currentInput={25}
                         initialPosition={25}
-                        value={designSettingsImageOpacity}
+                        value={Number(designSettingsImageOpacity)}
                         onChange={(designSettingsImageOpacity: number) => {
-                            dispatch(setFormSettings({designSettingsImageOpacity}));
+                            dispatch(setFormSettings({designSettingsImageOpacity: String(designSettingsImageOpacity)}));
                             publishSettings({
-                                designSettingsImageOpacity,
+                                designSettingsImageOpacity: String(designSettingsImageOpacity),
                             });
                         }}
                         min={0}
