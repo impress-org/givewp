@@ -16,10 +16,8 @@ export default function StyleControls() {
     const dispatch = useFormStateDispatch();
 
     const {
-        settings: {designId},
+        settings: {},
     } = useFormState();
-
-    const isClassicTemplate = !getDesign(designId).isMultiStep;
 
     return (
         <DesignSettings
