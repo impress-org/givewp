@@ -10,24 +10,22 @@ const apiSettings: ApiSettingsProps = {
     ...window.GiveEventTicketsDetails,
     table: window.GiveEventTicketsDetails.ticketTypesTable,
 };
-apiSettings.apiRoot = apiSettings.apiRoot.replace('/list-table', '');
+apiSettings.apiRoot += `/event/ticket-type`;
 const eventTicketsApi = new ListTableApi(apiSettings);
 
 export function TicketTypesRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
-    console.log(item);
-
-    const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await eventTicketsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+    const fetchAndUpdateErrors = async (parameters, endpoint, args = {}, method) => {
+        const response = await eventTicketsApi.fetchWithArgs(endpoint, args, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
     };
 
     // Todo: Set correct endpoint
-    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '', item.id, 'DELETE');
+    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/' + item.id, {}, 'DELETE');
 
     const confirmDelete = (selected) => <p>{sprintf(__('Really delete ticket #%d?', 'give'), item.id)}</p>;
 

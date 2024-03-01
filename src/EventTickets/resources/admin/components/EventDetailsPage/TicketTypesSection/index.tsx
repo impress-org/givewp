@@ -38,7 +38,7 @@ export default function TicketTypesSection() {
     apiSettings.apiRoot += `/event/${apiSettings.event.id}/ticket-types/list-table`;
 
     return (
-        <section className={styles.ticketTypesSection}>
+        <section>
             <h2>{__('Tickets', 'give')}</h2>
             <InnerPageListTable
                 apiSettings={apiSettings}
