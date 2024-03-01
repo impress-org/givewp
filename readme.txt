@@ -266,7 +266,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Security: Resolved a couple potential security vulnerabilities
 * New: Added the ability to add a header image to forms in the Visual Form Builder
 * Fix: Resolved an issue with new Stripe accounts having trouble making credit card donations
-* Fix: Resolved a PayPal Donations issue where the donation buttons didn't show up in a modal form when using Option-Based Form Editor forms
+* Fix: Resolved a PayPal Donations issue where the donation buttons didn't show up in the modal view of an Option-Based Form Editor form
 
 = 3.4.2: February 19th, 2024 =
 * Fix: Resolved an issue with PayPal donations that ensures the correct donation amount will be used after filling out payment details and modifying the original amount.  
