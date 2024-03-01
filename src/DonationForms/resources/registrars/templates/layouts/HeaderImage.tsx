@@ -7,10 +7,12 @@ export default function HeaderImage({url, alt, color, opacity}: HeaderImageProps
     // @ts-ignore
     return (
         <>
-            <div
-                style={{'--givewp-image-color': color, '--givewp-image-opacity': opacity}}
-                className={'givewp-layouts-headerImage__overlay'}
-            />
+            {color && (
+                <div
+                    style={{'--givewp-image-color': color, '--givewp-image-opacity': opacity}}
+                    className={'givewp-layouts-headerImage__overlay'}
+                />
+            )}
             <img src={url} alt={alt} />
         </>
     );
