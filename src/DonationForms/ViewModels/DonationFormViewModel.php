@@ -87,6 +87,14 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased
+     */
+    public function imageColor(): string
+    {
+        return $this->formSettings->designSettingsImageColor ?? '';
+    }
+
+    /**
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()
@@ -104,6 +112,7 @@ class DonationFormViewModel
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
+            --givewp-image-color:{$this->imageColor()};
             }"
         );
 
@@ -186,7 +195,7 @@ class DonationFormViewModel
         $totalCountLabel = $this->getCountLabel($goalType);
 
         return [
-            'totalRevenue' => $totalRevenue,
+            'totalRevenue'    => $totalRevenue,
             'totalCountValue' => $totalCountValue,
             'totalCountLabel' => $totalCountLabel,
         ];
@@ -211,25 +220,25 @@ class DonationFormViewModel
         $formDesign = $this->getFormDesign($this->designId());
 
         return [
-            'donateUrl' => $donateUrl,
-            'validateUrl' => $validateUrl,
-            'authUrl' => $authUrl,
+            'donateUrl'            => $donateUrl,
+            'validateUrl'          => $validateUrl,
+            'authUrl'              => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view',
             ],
-            'registeredGateways' => $formDataGateways,
-            'form' => array_merge($formApi->jsonSerialize(), [
+            'registeredGateways'   => $formDataGateways,
+            'form'                 => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData(),
-                'design' => $formDesign ? [
-                    'id' => $formDesign::id(),
-                    'name' => $formDesign::name(),
+                'goal'     => $donationFormGoalData->toArray(),
+                'stats'    => $this->formStatsData(),
+                'design'   => $formDesign ? [
+                    'id'          => $formDesign::id(),
+                    'name'        => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
                 ] : null,
             ]),
-            'previewMode' => $this->previewMode,
+            'previewMode'          => $this->previewMode,
         ];
     }
 
