@@ -1,4 +1,4 @@
-.givewp-header-styles {
+.givewp-header-image-filter {
     &__button {
         display: flex;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
@@ -9,9 +9,21 @@
         border: 1px solid grey;
     }
 
+    .block-editor-panel-color-gradient-settings {
+        border: none;
+        padding-top: 0 !important;
+    }
+
+    .components-base-control {
+        margin-bottom: 0;
+    }
+
+    .components-base-control__label {
+        font-weight: normal;
+    }
+
     .components-range-control__root {
         flex-direction: row-reverse;
-        //justify-content: space-between;
         gap: var(--givewp-spacing-3);
 
         .components-range-control__number, .components-number-control {

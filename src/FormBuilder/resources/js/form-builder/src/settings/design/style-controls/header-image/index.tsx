@@ -1,6 +1,5 @@
-import {BaseControl, Button, PanelBody, RangeControl} from '@wordpress/components';
+import {BaseControl, PanelBody, RangeControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import EmptyIcon from '@givewp/form-builder/components/icons/empty';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
@@ -11,43 +10,41 @@ export default function HeaderImage({dispatch}) {
     } = useFormState();
     const {publishSettings} = useDonationFormPubSub();
 
-    const removeBlankSlate = () => {
-        dispatch(setFormSettings({designSettingsImageColor: '#000', designSettingsImageOpacity: '25'}));
+    const handleColorChange = (designSettingsImageColor: string) => {
+        if (!designSettingsImageColor) {
+            return removeOverlay();
+        }
+
+        dispatch(setFormSettings({designSettingsImageColor}));
+        publishSettings({designSettingsImageColor});
+    };
+
+    const removeOverlay = () => {
+        dispatch(setFormSettings({designSettingsImageColor: '', designSettingsImageOverlay: ''}));
         publishSettings({
-            designSettingsImageColor: '#000',
-            designSettingsImageOpacity: '25',
+            designSettingsImageColor: '',
+            designSettingsImageOpacity: '',
         });
     };
 
     return (
-        <PanelBody className={'givewp-header-styles'} title={__('Header Image', 'give')}>
-            <BaseControl id={'givewp-header-styles-duotone-control'} label={__('Filter', 'give')}>
-                {designSettingsImageColor ? (
-                    <PanelColorSettings
-                        colorSettings={[
-                            {
-                                value: designSettingsImageColor,
-                                onChange: (designSettingsImageColor: string) => {
-                                    dispatch(setFormSettings({designSettingsImageColor}));
-                                    publishSettings({
-                                        designSettingsImageColor,
-                                    });
-                                },
-                                label: __('Image Overlay Color', 'give'),
-                                disableCustomColors: false,
-                                colors: SETTINGS_DEFAULTS.colors,
-                            },
-                        ]}
-                    />
-                ) : (
-                    <Button className={'givewp-header-styles__button'} onClick={removeBlankSlate} icon={<EmptyIcon />}>
-                        {__('Duotone', 'give')}
-                    </Button>
-                )}
+        <PanelBody className={'givewp-header-image-filter'} title={__('Header Image', 'give')}>
+            <BaseControl id={'givewp-header-image-filter__control'} label={__('Color', 'give')}>
+                <PanelColorSettings
+                    colorSettings={[
+                        {
+                            value: designSettingsImageColor,
+                            onChange: handleColorChange,
+                            label: __('Overlay', 'give'),
+                            disableCustomColors: false,
+                            colors: SETTINGS_DEFAULTS.colors,
+                        },
+                    ]}
+                />
             </BaseControl>
 
             {designSettingsImageColor && (
-                <BaseControl id={'givewp-header-styles-range-control'} label={__('Opacity', 'give')}>
+                <BaseControl id={'givewp-header-image-filter__range-control'} label={__('Overlay Opacity', 'give')}>
                     <RangeControl
                         currentInput={25}
                         initialPosition={25}
