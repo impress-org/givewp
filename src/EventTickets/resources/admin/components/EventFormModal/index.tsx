@@ -5,17 +5,22 @@ import styles from './EventFormModal.module.scss';
 import FormModal from '../FormModal';
 
 /**
- * Get the next sharp hour in ISO format
+ * Get the next sharp hour
  *
  * @unreleased
  */
 const getNextSharpHour = (hoursToAdd: number) => {
-    const now = new Date();
-    now.setHours(now.getHours() + hoursToAdd, 0, 0, 0);
+    const date = new Date();
+    date.setHours(date.getHours() + hoursToAdd, 0, 0, 0);
 
-    return getDateString(now);
+    return date;
 };
 
+/**
+ * Format a given date to be used in datetime inputs
+ *
+ * @unreleased
+ */
 const getDateString = (date: Date) => {
     if (!date) {
         return;
@@ -43,8 +48,8 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
         defaultValues: {
             title: event?.title ?? '',
             description: event?.description ?? '',
-            startDateTime: getDateString(event?.startDateTime) ?? getNextSharpHour(1),
-            endDateTime: getDateString(event?.endDateTime) ?? getNextSharpHour(2),
+            startDateTime: getDateString(event?.startDateTime ?? getNextSharpHour(1)),
+            endDateTime: getDateString(event?.endDateTime ?? getNextSharpHour(2)),
         },
     });
 
