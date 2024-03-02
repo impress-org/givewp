@@ -194,6 +194,7 @@ class GetEventFormsListTable
 
     private function formatColumns(DonationForm $form): array
     {
+        $formEditLink = get_edit_post_link($form->id);
         $donationIds = give()->donations->getAllDonationIdsByFormId($form->id) ?? [];
         $soldTicketsCount = count($donationIds) > 0
             ? EventTicket::query()
@@ -204,7 +205,7 @@ class GetEventFormsListTable
 
         return [
             'id' => $form->id,
-            'title' => "<a href='{get_edit_link($form->id)}'>{$form->title}</a>",
+            'title' => "<a href='{$formEditLink}'>{$form->title}</a>",
             'count' => "<span>{$soldTicketsCount}</span>",
         ];
     }
