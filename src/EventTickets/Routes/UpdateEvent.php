@@ -90,6 +90,6 @@ class UpdateEvent implements RestRoute
 
         $event->save();
 
-        return new WP_REST_Response();
+        return new WP_REST_Response($event->toArray(), 200);
     }
 }
