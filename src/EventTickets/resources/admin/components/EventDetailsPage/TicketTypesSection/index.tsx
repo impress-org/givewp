@@ -21,11 +21,7 @@ const BlankSlate = () => {
             <h3>{__('No ticket created yet', 'give')}</h3>
             <p className={styles.helpMessage}>{__('Create a ticket to complete your event setup.', 'give')}</p>
             <p>
-                {/*Todo: Set an onClick event to open the CreateTicketTypeModal*/}
-                <a
-                    href={`${window.GiveEventTicketsDetails.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&new=event`}
-                    className={`button button-primary ${styles.button}`}
-                >
+                <a onClick={() => openModal()} className={`button button-primary ${styles.button}`}>
                     {__('Create ticket', 'give')}
                 </a>
             </p>
