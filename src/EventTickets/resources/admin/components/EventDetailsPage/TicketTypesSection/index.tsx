@@ -41,12 +41,15 @@ export default function TicketTypesSection() {
         event: {ticketTypes},
     } = window.GiveEventTicketsDetails;
     const [data, setData] = useState(ticketTypes);
+    const [isOpen, setOpen] = useState<boolean>(false);
 
-    const tableHeaders = {
-        id: __('ID', 'give'),
-        title: __('Ticket', 'give'),
-        count: __('No. of tickets sold', 'give'),
-        price: __('Price', 'give'),
+    const openModal = (ticket: Ticket | null) => {
+        setTicketData(ticket);
+        setOpen(true);
+    };
+    const closeModal = (response = null) => {
+        setOpen(false);
+    };
     };
 
     const formattedData = data.map((ticketType) => {
@@ -61,7 +64,10 @@ export default function TicketTypesSection() {
     return (
         <section>
             <h2>{__('Tickets', 'give')}</h2>
+            <TicketTypeFormContext.Provider value={{ticketData, setTicketData}}>
             <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
+                <TicketTypeFormModal apiSettings={apiSettings} isOpen={isOpen} handleClose={closeModal} />
+            </TicketTypeFormContext.Provider>
         </section>
     );
 }
