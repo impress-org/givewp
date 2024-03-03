@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 import styles from './DonationFormsSection.module.scss';
 import {ApiSettingsProps} from '../types';
 import InnerPageListTable from '../InnerPageListTable';
@@ -9,21 +10,19 @@ import InnerPageListTable from '../InnerPageListTable';
  * @unreleased
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
+    const helpMessage = createInterpolateElement(
+        __(
+            '<a>To link an event to a donation form</a>, add an event block to a donation form in the visual form builder.',
+            'give'
+        ),
+        {
+            a: <a href="https://givewp.com/documentation/" target="_blank" rel="noreferrer" />,
+        }
+    );
     return (
         <div className={styles.container}>
-            <img src={imagePath} alt={__('No ticket created yet', 'give')} />
-            <h3>{__('No ticket created yet', 'give')}</h3>
-            <p className={styles.helpMessage}>{__('Create a ticket to complete your event setup.', 'give')}</p>
-            <p>
-                {/*Todo: Set an onClick event to open the CreateTicketTypeModal*/}
-                <a
-                    href={`${window.GiveEventTicketsDetails.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&new=event`}
-                    className={`button button-primary ${styles.button}`}
-                >
-                    {__('Create ticket', 'give')}
-                </a>
-            </p>
+            <h3>{__('No linked form yet', 'give')}</h3>
+            <p className={styles.helpMessage}>{helpMessage}</p>
         </div>
     );
 };
