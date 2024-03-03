@@ -36,7 +36,7 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
                 onClick={confirmModal}
                 actionId={item.id}
                 displayText={__('Delete', 'give')}
-                hiddenText={item.name}
+                hiddenText={item.title}
                 highlight
             />
         </>

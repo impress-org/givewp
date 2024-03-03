@@ -33,7 +33,7 @@ const getDateString = (date: Date) => {
 };
 
 /**
- * Create Event Modal component
+ * Event Form Modal component
  *
  * @unreleased
  */
@@ -73,7 +73,7 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
             title={title}
             handleSubmit={handleSubmit(onSubmit)}
             errors={errors}
-            className={styles.createEventForm}
+            className={styles.eventForm}
         >
             <div className="givewp-event-tickets__form-row">
                 <label htmlFor="title">{__('Event Name', 'give')}</label>
