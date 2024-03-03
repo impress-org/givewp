@@ -102,6 +102,13 @@
 
     section {
         margin-bottom: var(--givewp-spacing-14);
+        position: relative;
+
+        h2 {
+            font-size: 1.125rem;
+            line-height: 1.56;
+            margin: 0 0 var(--givewp-spacing-2);
+        }
     }
 }
 

@@ -63,7 +63,12 @@ export default function TicketTypesSection() {
 
     return (
         <section>
-            <h2>{__('Tickets', 'give')}</h2>
+            <div className={styles.sectionHeader}>
+                <h2>{__('Tickets', 'give')}</h2>
+                <a className={`button button-primary ${styles.createTicketButton}`} onClick={() => openModal()}>
+                    {__('Add Ticket', 'give')}
+                </a>
+            </div>
             <TicketTypeFormContext.Provider value={{ticketData, setTicketData}}>
             <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
                 <TicketTypeFormModal apiSettings={apiSettings} isOpen={isOpen} handleClose={closeModal} />

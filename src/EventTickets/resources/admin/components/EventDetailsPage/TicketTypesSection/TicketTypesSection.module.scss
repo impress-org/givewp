@@ -34,3 +34,25 @@
         text-align: center;
     }
 }
+
+.sectionHeader {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--givewp-spacing-2);
+
+    h2 {
+        margin: 0;
+    }
+}
+
+:global(#give-admin-event-tickets-root) {
+    .createTicketButton {
+        border-radius: 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.43;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        text-align: center;
+    }
+}
