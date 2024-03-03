@@ -3,7 +3,6 @@
 namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
-use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_REST_Request;
@@ -91,6 +90,6 @@ class UpdateEventTicketType implements RestRoute
 
         $ticketType->save();
 
-        return new WP_REST_Response();
+        return new WP_REST_Response($ticketType->toArray(), 200);
     }
 }
