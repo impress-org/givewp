@@ -14,7 +14,13 @@ declare global {
     }
 }
 
+const tabs = {
+    overview: __('Overview', 'give'),
+    attendees: __('Attendees', 'give'),
+};
+
 export default function EventDetailsPage() {
+    const [activeTab, setActiveTab] = useState<'overview' | 'attendees'>('overview');
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
         successes: [],
@@ -38,10 +44,29 @@ export default function EventDetailsPage() {
                     </div>
                 </header>
                 <div className={cx('wp-header-end', 'hidden')} />
+
+                <nav className={styles.tabsNav}>
+                    {Object.keys(tabs).map((tab) => (
+                        <button
+                            key={tab}
+                            className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
+                            onClick={() => setActiveTab(tab as 'overview' | 'attendees')}
+                        >
+                            {tabs[tab]}
+                        </button>
+                    ))}
+                </nav>
+
                 <div className={styles.pageContent}>
-                    <EventSection setUpdateErrors={setUpdateErrors} />
-                    <TicketTypesSection />
-                    <DonationFormsSection />
+                    {activeTab === 'attendees' ? (
+                        <p>Attendees</p>
+                    ) : (
+                        <>
+                            <EventSection setUpdateErrors={setUpdateErrors} />
+                            <TicketTypesSection />
+                            <DonationFormsSection />
+                        </>
+                    )}
                 </div>
             </article>
         </>

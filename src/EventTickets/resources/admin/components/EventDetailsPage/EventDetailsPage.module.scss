@@ -97,8 +97,38 @@
     font-weight: 600;
 }
 
+.tabsNav {
+    background: var(--givewp-grey-100);
+    display: flex;
+    padding: 0 var(--givewp-spacing-6);
+}
+
+.tabButton {
+    background: none;
+    border: 0;
+    color: var(--givewp-grey-900);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+
+    &:hover {
+        background-color: var(--givewp-grey-50);
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &.activeTab {
+        background-color: var(--givewp-grey-5);
+        box-shadow: inset 0 4px 0 var(--givewp-green-500);
+    }
+}
+
 .pageContent {
-    padding: 0 1.5em 1.5em 1.5em;
+    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
 
     section {
         margin-bottom: var(--givewp-spacing-14);
