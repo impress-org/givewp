@@ -41,7 +41,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     protected $relationships = [
         'tickets' => Relationship::HAS_MANY,
         'ticketTypes' => Relationship::HAS_MANY,
-        'forms' => Relationship::HAS_MANY,
+        'forms' => Relationship::BELONGS_TO_MANY,
     ];
 
     /**
