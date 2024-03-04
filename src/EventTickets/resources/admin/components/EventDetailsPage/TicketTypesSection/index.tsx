@@ -1,6 +1,7 @@
 import {__, sprintf} from '@wordpress/i18n';
 import styles from './TicketTypesSection.module.scss';
 import SectionTable from '../SectionTable';
+import {useState} from 'react';
 
 const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.languages[0], {
     style: 'currency',
@@ -36,6 +37,7 @@ export default function TicketTypesSection() {
     const {
         event: {ticketTypes},
     } = window.GiveEventTicketsDetails;
+    const [data, setData] = useState(ticketTypes);
 
     const tableHeaders = {
         id: __('ID', 'give'),
@@ -44,7 +46,7 @@ export default function TicketTypesSection() {
         price: __('Price', 'give'),
     };
 
-    const data = ticketTypes.map((ticketType) => {
+    const formattedData = data.map((ticketType) => {
         return {
             ...ticketType,
             count: sprintf(__('%d of %d', 'give'), ticketType.salesCount, ticketType.capacity),
@@ -56,7 +58,7 @@ export default function TicketTypesSection() {
     return (
         <section>
             <h2>{__('Tickets', 'give')}</h2>
-            <SectionTable tableHeaders={tableHeaders} data={data} blankSlate={<BlankSlate />} />
+            <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
         </section>
     );
 }
