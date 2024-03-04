@@ -28,6 +28,7 @@ const BlankSlate = () => {
 
 export default function DonationFormsSection() {
     const {
+        adminUrl,
         event: {forms},
     } = window.GiveEventTicketsDetails;
 
@@ -36,10 +37,17 @@ export default function DonationFormsSection() {
         title: __('Name', 'give'),
     };
 
+    const data = forms.map((form) => {
+        return {
+            id: form.id,
+            title: <a href={`${adminUrl}post.php?post=${form.id}&action=edit`}>{form.title}</a>,
+        };
+    });
+
     return (
         <section>
             <h2>{__('Tickets', 'give')}</h2>
-            <SectionTable tableHeaders={tableHeaders} data={forms} blankSlate={<BlankSlate />} />
+            <SectionTable tableHeaders={tableHeaders} data={data} blankSlate={<BlankSlate />} />
         </section>
     );
 }
