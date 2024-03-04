@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Actions;
 
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\ViewModels\EventDetails;
 use Give\Helpers\EnqueueScript;
 
 class EnqueueEventDetailsScripts
@@ -14,7 +15,8 @@ class EnqueueEventDetailsScripts
             'apiNonce' => wp_create_nonce('wp_rest'),
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'event' => $event->toArray(),
+            'currencyCode' => give_get_currency(),
+            'event' => (new EventDetails($event))->exports(),
         ];
 
         EnqueueScript::make('give-admin-event-tickets-details', 'assets/dist/js/give-admin-event-tickets-details.js')
