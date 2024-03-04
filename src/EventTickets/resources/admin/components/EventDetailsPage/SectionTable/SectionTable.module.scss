@@ -29,6 +29,14 @@
 }
 
 .tableRow {
+    &:nth-child(even) {
+        background-color: #f6f7f7;
+    }
+
+    &:nth-child(odd) {
+        background-color: #fff;
+    }
+
     &:hover .tableRowActions {
         opacity: 1;
     }
@@ -95,6 +103,16 @@
     &.description {
         font-weight: 400;
     }
+}
+
+.statusMessage {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
 }
 
 @media (hover: hover) and (pointer: fine) {
