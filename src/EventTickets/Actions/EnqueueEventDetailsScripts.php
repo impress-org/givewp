@@ -33,4 +33,34 @@ class EnqueueEventDetailsScripts
 
         wp_enqueue_style('givewp-design-system-foundation');
     }
+
+    /**
+     * Return an array in the format of a ListTable for the ticket types list table
+     *
+     * @unreleased
+     */
+    private function getTicketTypesListTable(): array
+    {
+        return [
+            'id' => 'event-ticket-types',
+            'columns' => [
+                [
+                    'id' => 'id',
+                    'label' => __('ID', 'give'),
+                ],
+                [
+                    'id' => 'title',
+                    'label' => __('Ticket', 'give'),
+                ],
+                [
+                    'id' => 'count',
+                    'label' => __('No. of tickets sold', 'give'),
+                ],
+                [
+                    'id' => 'price',
+                    'label' => __('Price', 'give'),
+                ],
+            ],
+        ];
+    }
 }

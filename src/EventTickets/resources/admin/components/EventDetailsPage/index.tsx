@@ -7,6 +7,7 @@ import {GiveEventTicketsDetails} from './types';
 import EventSection from './EventSection';
 import TicketTypesSection from './TicketTypesSection';
 import DonationFormsSection from './DonationFormsSection';
+import AttendeesSection from './AttendeesSection';
 
 declare global {
     interface Window {
@@ -59,7 +60,7 @@ export default function EventDetailsPage() {
 
                 <div className={styles.pageContent}>
                     {activeTab === 'attendees' ? (
-                        <p>Attendees</p>
+                        <AttendeesSection />
                     ) : (
                         <>
                             <EventSection setUpdateErrors={setUpdateErrors} />
