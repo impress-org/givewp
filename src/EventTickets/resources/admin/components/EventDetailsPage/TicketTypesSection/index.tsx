@@ -33,6 +33,9 @@ const BlankSlate = () => {
     );
 };
 
+/**
+ * @unreleased
+ */
 export default function TicketTypesSection() {
     const {
         event: {ticketTypes},
