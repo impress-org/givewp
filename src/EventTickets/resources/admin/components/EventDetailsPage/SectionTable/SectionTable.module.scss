@@ -29,11 +29,11 @@
 }
 
 .tableRow {
-    &:nth-child(even) {
+    &:nth-child(odd) {
         background-color: #f6f7f7;
     }
 
-    &:nth-child(odd) {
+    &:nth-child(even) {
         background-color: #fff;
     }
 
