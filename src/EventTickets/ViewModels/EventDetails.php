@@ -36,12 +36,11 @@ class EventDetails
 
             'ticketTypes' => array_map(function (EventTicketType $ticketType) {
                 return EventTicketTypeData::make($ticketType)->toArray();
-            }, $this->event->ticketTypes),
+            }, $this->event->ticketTypes()->getAll() ?? []),
 
             'forms' => array_map(function (DonationForm $form) {
                 return ['id' => $form->id, 'title' => $form->title];
-            }, $this->event->forms),
-
+            }, $this->event->forms()->getAll() ?? []),
         ]);
     }
 }
