@@ -3,6 +3,7 @@
 namespace Give\EventTickets\ViewModels;
 
 use Give\DonationForms\Models\DonationForm;
+use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 
@@ -34,7 +35,7 @@ class EventDetails
         return array_merge($this->event->toArray(), [
 
             'ticketTypes' => array_map(function (EventTicketType $ticketType) {
-                return $ticketType->toArray();
+                return EventTicketTypeData::make($ticketType)->toArray();
             }, $this->event->ticketTypes),
 
             'forms' => array_map(function (DonationForm $form) {
