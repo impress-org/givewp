@@ -3,8 +3,6 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
-use Give\EventTickets\Actions\EnqueueEventDetailsScripts;
-use Give\EventTickets\Actions\EnqueueListTableScripts;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Repositories\EventRepository;

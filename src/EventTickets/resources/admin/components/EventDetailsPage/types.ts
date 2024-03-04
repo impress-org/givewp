@@ -1,3 +1,5 @@
+import {ListTableColumn} from '@givewp/components';
+
 export interface GiveEventTicketsDetails {
     apiNonce: string;
     apiRoot: string;
@@ -18,6 +20,14 @@ export interface GiveEventTicketsDetails {
         createdAt: string;
         updatedAt: string;
     };
+    ticketTypesTable: {id: string; columns: ListTableColumn[]};
     adminUrl: string;
     pluginUrl: string;
 }
+
+export type ApiSettingsProps = GiveEventTicketsDetails & {
+    table: {
+        id: string;
+        columns: ListTableColumn[];
+    };
+};

@@ -3,8 +3,6 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 
 const apiSettings = window.GiveEventTicketsDetails;
-// Remove the /list-table from the apiRoot. This is a hack to make the API work while we don't refactor other list tables.
-apiSettings.apiRoot = apiSettings.apiRoot.replace('/list-table', '');
 const eventTicketsApi = new ListTableApi(apiSettings);
 
 /**
@@ -17,7 +15,7 @@ export function EventSectionRowActions({item, setUpdateErrors}) {
         return response;
     };
 
-    const deleteItem = async (itemId) => await fetchAndUpdateErrors('/list-table', itemId, 'DELETE');
+    const deleteItem = async (itemId) => await fetchAndUpdateErrors('/events/list-table', itemId, 'DELETE');
 
     const confirmModal = async () => {
         const confirmDelete = confirm(sprintf(__('Really delete event #%d?', 'give'), item.id));
