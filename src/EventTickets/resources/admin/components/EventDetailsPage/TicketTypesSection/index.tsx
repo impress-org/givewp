@@ -1,16 +1,18 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import styles from './TicketTypesSection.module.scss';
-import {ApiSettingsProps} from '../types';
-import {TicketTypesRowActions} from './TicketTypesRowActions';
-import InnerPageListTable from '../InnerPageListTable';
-// import CreateEventModal from '../CreateEventModal';
+import SectionTable from '../SectionTable';
+
+const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.languages[0], {
+    style: 'currency',
+    currency: 'USD',
+});
 
 /**
  * Displays a blank slate for the EventTickets table.
  *
  * @unreleased
  */
-const ListTableBlankSlate = () => {
+const BlankSlate = () => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
     return (
         <div className={styles.container}>
@@ -31,23 +33,30 @@ const ListTableBlankSlate = () => {
 };
 
 export default function TicketTypesSection() {
-    const apiSettings: ApiSettingsProps = {
-        ...window.GiveEventTicketsDetails,
-        table: window.GiveEventTicketsDetails.ticketTypesTable,
+    const {
+        event: {ticketTypes},
+    } = window.GiveEventTicketsDetails;
+
+    const tableHeaders = {
+        id: __('ID', 'give'),
+        title: __('Ticket', 'give'),
+        count: __('No. of tickets sold', 'give'),
+        price: __('Price', 'give'),
     };
-    apiSettings.apiRoot += `/event/${apiSettings.event.id}/ticket-types/list-table`;
+
+    const data = ticketTypes.map((ticketType) => {
+        return {
+            ...ticketType,
+            count: sprintf(__('%d of %d', 'give'), ticketType.salesCount, ticketType.capacity),
+            price: amountFormatter.format(ticketType.price / 100),
+        };
+    });
+
 
     return (
         <section>
             <h2>{__('Tickets', 'give')}</h2>
-            <InnerPageListTable
-                apiSettings={apiSettings}
-                singleName={__('ticket', 'give')}
-                pluralName={__('tickets', 'give')}
-                title={__('Tickets', 'give')}
-                rowActions={TicketTypesRowActions}
-                listTableBlankSlate={ListTableBlankSlate}
-            />
+            <SectionTable tableHeaders={tableHeaders} data={data} blankSlate={<BlankSlate />} />
         </section>
     );
 }

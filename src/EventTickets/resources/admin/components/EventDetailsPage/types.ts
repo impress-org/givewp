@@ -19,11 +19,20 @@ export interface GiveEventTicketsDetails {
         };
         createdAt: string;
         updatedAt: string;
+        ticketTypes: TicketType[];
     };
-    ticketTypesTable: {id: string; columns: ListTableColumn[]};
     adminUrl: string;
     pluginUrl: string;
 }
+
+export type TicketType = {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    capacity: number;
+    salesCount: number;
+};
 
 export type ApiSettingsProps = GiveEventTicketsDetails & {
     table: {
