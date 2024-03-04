@@ -6,6 +6,7 @@ use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
+use Give\EventTickets\ViewModels\EventDetails;
 use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -33,8 +34,10 @@ class EventDetailsTest extends TestCase
         ]));
         $form->save();
 
-        $this->assertEquals($form->id, $event->forms[0]->id);
-        $this->assertEquals($form->title, $event->forms[0]->title);
+        $eventDetails = (new EventDetails($event))->exports();
+
+        $this->assertEquals($form->id, $eventDetails['forms'][0]['id']);
+        $this->assertEquals($form->title, $eventDetails['forms'][0]['title']);
     }
 
     /**
@@ -47,9 +50,27 @@ class EventDetailsTest extends TestCase
     {
         $ticketType = EventTicketType::factory()->create();
 
-        $event = Event::find($ticketType->eventId);
+        $eventDetails = (new EventDetails(
+            Event::find($ticketType->eventId)
+        ))->exports();
 
-        $this->assertEquals($ticketType->id, $event->ticketTypes[0]->id);
-        $this->assertEquals($ticketType->title, $event->ticketTypes[0]->title);
+        $this->assertEquals($ticketType->id, $eventDetails['ticketTypes'][0]['id']);
+        $this->assertEquals($ticketType->title, $eventDetails['ticketTypes'][0]['title']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testNoErrorsWhenEmptyRelationship()
+    {
+        $eventDetails = (new EventDetails(
+            Event::factory()->create()
+        ))->exports();
+
+        $this->assertEmpty($eventDetails['ticketTypes']);
+        $this->assertEmpty($eventDetails['forms']);
     }
 }
