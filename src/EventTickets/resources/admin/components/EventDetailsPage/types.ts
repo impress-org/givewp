@@ -24,6 +24,7 @@ export type Event = {
     createdAt: string;
     updatedAt: string;
     ticketTypes: TicketType[];
+    forms: DonationForms[];
 };
 
 export type TicketType = {
@@ -35,3 +36,7 @@ export type TicketType = {
     salesCount: number;
 };
 
+export type DonationForms = {
+    id: number;
+    title: string;
+};

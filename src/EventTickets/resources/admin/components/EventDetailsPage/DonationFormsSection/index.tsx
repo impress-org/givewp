@@ -1,15 +1,14 @@
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import styles from './DonationFormsSection.module.scss';
-import {ApiSettingsProps} from '../types';
-import InnerPageListTable from '../InnerPageListTable';
+import SectionTable from '../SectionTable';
 
 /**
- * Displays a blank slate for the EventTickets table.
+ * Displays a blank slate for the Donation Forms table.
  *
  * @unreleased
  */
-const ListTableBlankSlate = () => {
+const BlankSlate = () => {
     const helpMessage = createInterpolateElement(
         __(
             '<a>To link an event to a donation form</a>, add an event block to a donation form in the visual form builder.',
@@ -28,23 +27,19 @@ const ListTableBlankSlate = () => {
 };
 
 export default function DonationFormsSection() {
-    const apiSettings: ApiSettingsProps = {
-        ...window.GiveEventTicketsDetails,
-        table: window.GiveEventTicketsDetails.donationFormsTable,
+    const {
+        event: {forms},
+    } = window.GiveEventTicketsDetails;
+
+    const tableHeaders = {
+        id: __('ID', 'give'),
+        title: __('Name', 'give'),
     };
-    apiSettings.apiRoot += `/event/${apiSettings.event.id}/forms/list-table`;
 
     return (
         <section>
-            <h2>{__('Donation Forms', 'give')}</h2>
-            <InnerPageListTable
-                apiSettings={apiSettings}
-                singleName={__('donation form', 'give')}
-                pluralName={__('donation forms', 'give')}
-                title={__('Donation Forms', 'give')}
-                rowActions={() => null}
-                listTableBlankSlate={ListTableBlankSlate}
-            />
+            <h2>{__('Tickets', 'give')}</h2>
+            <SectionTable tableHeaders={tableHeaders} data={forms} blankSlate={<BlankSlate />} />
         </section>
     );
 }
