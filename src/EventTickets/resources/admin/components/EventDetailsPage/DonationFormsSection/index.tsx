@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import styles from './DonationFormsSection.module.scss';
 import SectionTable from '../SectionTable';
+import {useState} from 'react';
 
 /**
  * Displays a blank slate for the Donation Forms table.
@@ -31,13 +32,14 @@ export default function DonationFormsSection() {
         adminUrl,
         event: {forms},
     } = window.GiveEventTicketsDetails;
+    const [data, setData] = useState(forms);
 
     const tableHeaders = {
         id: __('ID', 'give'),
         title: __('Name', 'give'),
     };
 
-    const data = forms.map((form) => {
+    const formattedData = data.map((form) => {
         return {
             id: form.id,
             title: <a href={`${adminUrl}post.php?post=${form.id}&action=edit`}>{form.title}</a>,
@@ -47,7 +49,7 @@ export default function DonationFormsSection() {
     return (
         <section>
             <h2>{__('Tickets', 'give')}</h2>
-            <SectionTable tableHeaders={tableHeaders} data={data} blankSlate={<BlankSlate />} />
+            <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
         </section>
     );
 }
