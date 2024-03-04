@@ -39,8 +39,8 @@ export default function DonationFormsSection() {
             <h2>{__('Donation Forms', 'give')}</h2>
             <InnerPageListTable
                 apiSettings={apiSettings}
-                singleName={__('Donation Form', 'give')}
-                pluralName={__('Donation Forms', 'give')}
+                singleName={__('donation form', 'give')}
+                pluralName={__('donation forms', 'give')}
                 title={__('Donation Forms', 'give')}
                 rowActions={() => null}
                 listTableBlankSlate={ListTableBlankSlate}
