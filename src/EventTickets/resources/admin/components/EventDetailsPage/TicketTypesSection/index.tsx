@@ -42,8 +42,8 @@ export default function TicketTypesSection() {
             <h2>{__('Tickets', 'give')}</h2>
             <InnerPageListTable
                 apiSettings={apiSettings}
-                singleName={__('Ticket', 'give')}
-                pluralName={__('Tickets', 'give')}
+                singleName={__('ticket', 'give')}
+                pluralName={__('tickets', 'give')}
                 title={__('Tickets', 'give')}
                 rowActions={TicketTypesRowActions}
                 listTableBlankSlate={ListTableBlankSlate}
