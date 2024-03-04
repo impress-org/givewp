@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Models;
 
 use DateTime;
+use Give\DonationForms\Models\DonationForm;
 use Give\EventTickets\Factories\EventFactory;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
@@ -40,6 +41,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     protected $relationships = [
         'tickets' => Relationship::HAS_MANY,
         'ticketTypes' => Relationship::HAS_MANY,
+        'forms' => Relationship::BELONGS_TO_MANY,
     ];
 
     /**
@@ -121,6 +123,18 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     public function eventTickets(): ModelQueryBuilder
     {
         return give(EventTicketRepository::class)->queryByEventId($this->id);
+    }
+
+    public function forms(): ModelQueryBuilder
+    {
+        $eventIdPattern = sprintf('"eventId":%s', $this->id);
+
+        return DonationForm::query()
+            ->whereLike('give_formmeta_attach_meta_fields.meta_value', '%"name":"givewp/event-tickets"%')
+            ->where(function($query) use ($eventIdPattern) {
+                $query->whereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern}%") // When the eventId is the only block attribute.
+                ->orWhereLike('give_formmeta_attach_meta_fields.meta_value', "%$eventIdPattern,%"); // When the eventId is the NOT only block attribute.
+            });
     }
 
     /**
