@@ -21,7 +21,7 @@ export default function SectionTable({tableHeaders, data, blankSlate = null}) {
                         <tr className={styles.tableRow} key={index}>
                             {tableKeys.map((key) => (
                                 <td className={`${styles.tableCell} ${styles[key] ?? ''}`} key={key}>
-                                    {row[key]}
+                                    {key === 'id' ? <span className={styles.idBadge}>{row[key]}</span> : row[key]}
                                 </td>
                             ))}
                         </tr>

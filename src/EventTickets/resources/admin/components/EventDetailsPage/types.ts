@@ -1,5 +1,3 @@
-import {ListTableColumn} from '@givewp/components';
-
 export interface GiveEventTicketsDetails {
     apiNonce: string;
     apiRoot: string;
@@ -37,9 +35,3 @@ export type TicketType = {
     salesCount: number;
 };
 
-export type ApiSettingsProps = GiveEventTicketsDetails & {
-    table: {
-        id: string;
-        columns: ListTableColumn[];
-    };
-};
