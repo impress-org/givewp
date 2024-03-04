@@ -4,7 +4,7 @@ import SectionTable from '../SectionTable';
 
 const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.languages[0], {
     style: 'currency',
-    currency: 'USD',
+    currency: window.GiveEventTicketsDetails.currencyCode,
 });
 
 /**
