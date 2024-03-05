@@ -1,8 +1,12 @@
-import {__} from '@wordpress/i18n';
+import {__, _x} from '@wordpress/i18n';
 import styles from './AttendeesSection.module.scss';
 import {GiveEventTicketsDetails} from '../types';
 import {useState} from 'react';
 import SectionTable from '../SectionTable';
+import locale from '../../../../date-fns-locale';
+import {format} from 'date-fns';
+
+const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details page', 'give');
 
 /**
  * Displays a blank slate for the Attendees table.
@@ -21,21 +25,28 @@ const BlankSlate = () => {
 
 export default function AttendeesSection() {
     const {
-        event: {tickets},
+        event: {ticketTypes, tickets},
     }: GiveEventTicketsDetails = window.GiveEventTicketsDetails;
     const [data, setData] = useState(tickets);
+
+    const getTicketTypeById = (id: number) =>
+        ticketTypes.find((type) => type.id === id)?.title || __('Unknown', 'give');
 
     const tableHeaders = {
         id: __('ID', 'give'),
         attendeeName: __('Name', 'give'),
         attendeeEmail: __('Email', 'give'),
+        ticketType: __('Ticket Type', 'give'),
+        date: __('Purchase Date', 'give'),
     };
 
-    const formattedData = data.map((ticketType) => {
+    const formattedData = data.map((ticket) => {
         return {
-            ...ticketType,
-            attendeeName: ticketType.attendee.name,
-            attendeeEmail: ticketType.attendee.email,
+            ...ticket,
+            attendeeName: ticket.attendee.name,
+            attendeeEmail: ticket.attendee.email,
+            ticketType: getTicketTypeById(ticket.ticketTypeId),
+            date: format(new Date(ticket.createdAt.date), dateFormat, {locale}),
         };
     });
 

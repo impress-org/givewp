@@ -45,8 +45,14 @@ export type DonationForm = {
 
 export type Ticket = {
     id: number;
+    ticketTypeId: number;
     attendee: {
         name: string;
         email: string;
+    };
+    createdAt: {
+        date: string;
+        timezone_type: number;
+        timezone: string;
     };
 };
