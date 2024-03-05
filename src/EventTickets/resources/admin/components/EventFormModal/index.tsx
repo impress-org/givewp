@@ -23,10 +23,6 @@ const getNextSharpHour = (hoursToAdd: number) => {
  * @unreleased
  */
 const getDateString = (date: Date) => {
-    if (!date || !(date instanceof Date)) {
-        throw new Error('getDateString function requires a valid Date object as an argument.');
-    }
-
     const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
     const dateWithOffset = new Date(date.getTime() - offsetInMilliseconds);
 
