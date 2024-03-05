@@ -16,7 +16,7 @@ const BlankSlate = () => {
             'give'
         ),
         {
-            a: <a href="https://givewp.com/documentation/" target="_blank" rel="noreferrer" />,
+            a: <a href="https://docs.givewp.com/events-documentation" target="_blank" rel="noreferrer" />,
         }
     );
     return (
