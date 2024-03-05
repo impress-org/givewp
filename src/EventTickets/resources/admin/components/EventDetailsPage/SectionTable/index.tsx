@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import styles from '../SectionTable/SectionTable.module.scss';
 
 export default function SectionTable({tableHeaders, data, blankSlate = null}) {
@@ -10,7 +11,7 @@ export default function SectionTable({tableHeaders, data, blankSlate = null}) {
                 <thead>
                     <tr>
                         {tableKeys.map((key) => (
-                            <th className={styles.tableColumnHeader} key={key}>
+                            <th className={cx(styles.tableColumnHeader, {[styles.idColumn]: key === 'id'})} key={key}>
                                 {tableHeaders[key]}
                             </th>
                         ))}

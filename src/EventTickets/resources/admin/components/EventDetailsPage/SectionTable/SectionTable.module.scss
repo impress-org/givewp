@@ -22,6 +22,10 @@
     padding: var(--givewp-spacing-5) var(--givewp-spacing-9);
     text-align: start;
     vertical-align: middle;
+
+    &.idColumn {
+        width: 12rem;
+    }
 }
 
 .tableContent {
