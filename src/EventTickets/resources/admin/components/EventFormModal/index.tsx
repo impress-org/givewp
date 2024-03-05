@@ -26,8 +26,8 @@ const getDateString = (date: Date) => {
         throw new Error('getDateString function requires a valid Date object as an argument.');
     }
 
-    const offsetInMs = date.getTimezoneOffset() * 60 * 1000;
-    const dateWithOffset = new Date(date.getTime() - offsetInMs);
+    const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
+    const dateWithOffset = new Date(date.getTime() - offsetInMilliseconds);
 
     return dateWithOffset.toISOString().slice(0, -8);
 };
