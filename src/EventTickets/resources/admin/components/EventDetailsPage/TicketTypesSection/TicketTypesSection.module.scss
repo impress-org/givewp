@@ -48,7 +48,7 @@
 
 :global(#give-admin-event-tickets-root) {
     .createTicketButton {
-        border-radius: 0;
+        border-radius: var(--givewp-rounded-2);
         font-size: 0.875rem;
         font-weight: 600;
         line-height: 1.43;
