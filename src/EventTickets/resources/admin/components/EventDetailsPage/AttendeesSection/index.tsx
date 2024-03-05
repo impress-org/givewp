@@ -1,27 +1,15 @@
 import {__} from '@wordpress/i18n';
-import {FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import styles from './AttendeesSection.module.scss';
-import InnerPageListTable from '../InnerPageListTable';
-import {ApiSettingsProps} from '../types';
+import {GiveEventTicketsDetails} from '../types';
 import {useState} from 'react';
-import {AttendeesRowActions} from './AttendeesRowActions';
-
-const filters: Array<FilterConfig> = [
-    {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Search by name', 'give'),
-        ariaLabel: __('search attendees', 'give'),
-    },
-];
+import SectionTable from '../SectionTable';
 
 /**
  * Displays a blank slate for the Attendees table.
  *
  * @unreleased
  */
-const ListTableBlankSlate = () => {
+const BlankSlate = () => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-attendees-icon.svg`;
     return (
         <div className={styles.container}>
@@ -31,32 +19,29 @@ const ListTableBlankSlate = () => {
     );
 };
 
-export default function AttendeesListTable() {
-    const [isOpen, setOpen] = useState<boolean>(false);
-    const openModal = (attendee = null) => {
-        setOpen(true);
-    };
-    const closeModal = (response = null) => {
-        setOpen(false);
+export default function AttendeesSection() {
+    const {
+        event: {tickets},
+    }: GiveEventTicketsDetails = window.GiveEventTicketsDetails;
+    const [data, setData] = useState(tickets);
+
+    const tableHeaders = {
+        id: __('ID', 'give'),
+        attendeeName: __('Name', 'give'),
+        attendeeEmail: __('Email', 'give'),
     };
 
-    const apiSettings = window.GiveEventTicketsDetails;
-
-    const listTableApiSettings: ApiSettingsProps = {
-        ...apiSettings,
-        table: window.GiveEventTicketsDetails.attendeesTable,
-        apiRoot: `${apiSettings.apiRoot}/event/${apiSettings.event.id}/tickets/list-table`,
-    };
+    const formattedData = data.map((ticketType) => {
+        return {
+            ...ticketType,
+            attendeeName: ticketType.attendee.name,
+            attendeeEmail: ticketType.attendee.email,
+        };
+    });
 
     return (
-        <InnerPageListTable
-            title={__('Attendees', 'give')}
-            singleName={__('attendee', 'give')}
-            pluralName={__('attendees', 'give')}
-            apiSettings={listTableApiSettings}
-            filterSettings={filters}
-            rowActions={AttendeesRowActions(openModal)}
-            listTableBlankSlate={ListTableBlankSlate}
-        />
+        <section>
+            <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
+        </section>
     );
 }

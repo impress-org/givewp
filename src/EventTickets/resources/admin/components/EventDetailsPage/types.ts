@@ -25,6 +25,7 @@ export type Event = {
     updatedAt: string;
     ticketTypes: TicketType[];
     forms: DonationForm[];
+    tickets: Ticket[];
 };
 
 export type TicketType = {
@@ -40,4 +41,12 @@ export type TicketType = {
 export type DonationForm = {
     id: number;
     title: string;
+};
+
+export type Ticket = {
+    id: number;
+    attendee: {
+        name: string;
+        email: string;
+    };
 };
