@@ -3,12 +3,9 @@
 namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
-use Give\Donations\Models\Donation;
-use Give\EventTickets\Actions\AttachAttendeeNamesToTicketData;
+use Give\EventTickets\Actions\AttachAttendeeDataToTicketData;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicket;
-use Give\Framework\Models\Model;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -77,7 +74,7 @@ class GetEventTickets implements RestRoute
 
         return new WP_REST_Response(
             array_map(
-                new AttachAttendeeNamesToTicketData($tickets),
+                new AttachAttendeeDataToTicketData($tickets),
                 $tickets
             )
         );

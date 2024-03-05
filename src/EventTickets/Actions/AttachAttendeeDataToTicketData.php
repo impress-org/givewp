@@ -8,13 +8,13 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 /**
  * @unreleased
  */
-class AttachAttendeeNamesToTicketData
+class AttachAttendeeDataToTicketData
 {
     /**
      * @unreleased
      * @var array
      */
-    protected $attendeeNameLookup;
+    protected $attendeeDataLookup;
 
     /**
      * @unreleased
@@ -22,8 +22,8 @@ class AttachAttendeeNamesToTicketData
      */
     public function __construct(array $tickets)
     {
-        $this->attendeeNameLookup = array_reduce($this->getAttendeeDataForTickets($tickets), function($lookup, $data) {
-            $lookup[$data->donationId] = $data->attendee;
+        $this->attendeeDataLookup = array_reduce($this->getAttendeeDataForTickets($tickets), function ($lookup, $data) {
+            $lookup[$data->donationId] = ['name' => $data->attendeeName, 'email' => $data->attendeeEmail];
             return $lookup;
         }, []);
     }
@@ -34,7 +34,7 @@ class AttachAttendeeNamesToTicketData
     public function __invoke(EventTicket $ticket): array
     {
         return array_merge($ticket->toArray(), [
-            'attendee' => $this->attendeeNameLookup[$ticket->donationId] ?? null,
+            'attendee' => $this->attendeeDataLookup[$ticket->donationId] ?? null,
         ]);
     }
 
@@ -51,7 +51,8 @@ class AttachAttendeeNamesToTicketData
             ->from('posts', 'Donation')
             ->select(
                 ['Donation.ID', 'donationId'],
-                ['Donor.name', 'attendee']
+                ['Donor.name', 'attendeeName'],
+                ['Donor.email', 'attendeeEmail']
             )
             ->join(function($builder) {
                 $builder
