@@ -17,7 +17,7 @@ const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.la
  *
  * @unreleased
  */
-const BlankSlate = (openModal) => () => {
+const BlankSlate = ({openModal}) => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
     return (
         <div className={styles.container}>
@@ -97,7 +97,7 @@ export default function TicketTypesSection() {
                     <SectionTable
                         tableHeaders={tableHeaders}
                         data={formattedData}
-                        blankSlate={BlankSlate(openModal)}
+                        blankSlate={<BlankSlate openModal={openModal} />}
                         rowActions={TicketTypesRowActions({tickets: data, openEditModal: openModal})}
                     />
                     <TicketTypeFormModal
