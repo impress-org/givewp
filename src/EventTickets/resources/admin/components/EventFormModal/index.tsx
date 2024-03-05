@@ -25,7 +25,16 @@ const getDateString = (date: Date) => {
     const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
     const dateWithOffset = new Date(date.getTime() - offsetInMilliseconds);
 
-    return dateWithOffset.toISOString().slice(0, -5);
+    return removeTimezoneFromDateISOString(dateWithOffset.toISOString());
+};
+
+/**
+ * Remove timezone from date string
+ *
+ * @unreleased
+ */
+const removeTimezoneFromDateISOString = (date: string) => {
+    return date.slice(0, -5);
 };
 
 /**
@@ -57,7 +66,7 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
             inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
-           
+
             const endpoint = event?.id ? `/event/${event.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
