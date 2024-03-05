@@ -4,6 +4,7 @@ import {useState} from 'react';
 import EventFormModal from '../../EventFormModal';
 import locale from '../../../../date-fns-locale';
 import SectionTable from '../SectionTable';
+import {EventSectionRowActions} from './EventSectionRowActions';
 
 const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details page', 'give');
 
@@ -42,7 +43,11 @@ export default function EventSection({setUpdateErrors}) {
     return (
         <section>
             <h2>{__('Event', 'give')}</h2>
-            <SectionTable tableHeaders={tableHeaders} data={formattedData} />
+            <SectionTable
+                tableHeaders={tableHeaders}
+                data={formattedData}
+                rowActions={EventSectionRowActions({event: data, openEditModal: openModal})}
+            />
             <EventFormModal
                 isOpen={isOpen}
                 handleClose={closeModal}

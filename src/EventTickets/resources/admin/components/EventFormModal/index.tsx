@@ -48,8 +48,12 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
         defaultValues: {
             title: event?.title ?? '',
             description: event?.description ?? '',
-            startDateTime: getDateString(new Date(event?.startDateTime?.date) ?? getNextSharpHour(1)),
-            endDateTime: getDateString(new Date(event?.endDateTime?.date) ?? getNextSharpHour(2)),
+            startDateTime: getDateString(
+                event?.startDateTime?.date ? new Date(event?.startDateTime?.date) : getNextSharpHour(1)
+            ),
+            endDateTime: getDateString(
+                event?.endDateTime?.date ? new Date(event?.endDateTime?.date) : getNextSharpHour(2)
+            ),
         },
     });
 
