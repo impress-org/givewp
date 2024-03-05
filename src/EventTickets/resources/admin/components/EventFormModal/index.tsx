@@ -1,5 +1,6 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
+import {formatISO, parseISO} from 'date-fns';
 import styles from './EventFormModal.module.scss';
 import FormModal from '../FormModal';
 import EventTicketsApi from '../api';
@@ -59,8 +60,8 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
 
     const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
         try {
-            inputs.startDateTime += ':00';
-            inputs.endDateTime += ':00';
+            inputs.startDateTime = formatISO(parseISO(inputs.startDateTime), {representation: 'complete'});
+            inputs.endDateTime = formatISO(parseISO(inputs.endDateTime), {representation: 'complete'});
 
             const endpoint = event?.id ? `/event/${event.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
