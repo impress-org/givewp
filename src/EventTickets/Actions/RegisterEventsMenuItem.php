@@ -3,7 +3,6 @@
 namespace Give\EventTickets\Actions;
 
 use Give\EventTickets\Models\Event;
-use Give\EventTickets\Repositories\EventRepository;
 
 /**
  * @unreleased
@@ -15,7 +14,7 @@ class RegisterEventsMenuItem
         add_submenu_page(
             'edit.php?post_type=give_forms',
             esc_html__('Events', 'give'),
-            esc_html__('Events', 'give') . ' <span class="give-menu-badge">Beta</span>',
+            esc_html__('Events', 'give') . ' <span class="update-plugins">BETA</span>',
             'edit_give_forms',
             'give-event-tickets',
             [$this, 'render']
