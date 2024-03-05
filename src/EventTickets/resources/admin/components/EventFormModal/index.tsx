@@ -1,8 +1,8 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
-import ListTableApi from '@givewp/components/ListTable/api';
 import styles from './EventFormModal.module.scss';
 import FormModal from '../FormModal';
+import EventTicketsApi from '../api';
 
 /**
  * Get the next sharp hour
@@ -38,7 +38,7 @@ const getDateString = (date: Date) => {
  * @unreleased
  */
 export default function EventFormModal({isOpen, handleClose, apiSettings, title, event}: EventModalProps) {
-    const API = new ListTableApi(apiSettings);
+    const API = new EventTicketsApi(apiSettings);
 
     const {
         register,
@@ -48,21 +48,22 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
         defaultValues: {
             title: event?.title ?? '',
             description: event?.description ?? '',
-            startDateTime: getDateString(event?.startDateTime ?? getNextSharpHour(1)),
-            endDateTime: getDateString(event?.endDateTime ?? getNextSharpHour(2)),
+            startDateTime: getDateString(new Date(event?.startDateTime?.date) ?? getNextSharpHour(1)),
+            endDateTime: getDateString(new Date(event?.endDateTime?.date) ?? getNextSharpHour(2)),
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
         try {
-            data.startDateTime += ':00';
-            data.endDateTime += ':00';
+            inputs.startDateTime += ':00';
+            inputs.endDateTime += ':00';
 
             const endpoint = event?.id ? `/event/${event.id}` : '';
-            const response = await API.fetchWithArgs(endpoint, data, 'POST');
+            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
+
             handleClose(response);
         } catch (error) {
-            console.error('Error submitting event data', error);
+            console.error('Error submitting event event', error);
         }
     };
 
@@ -119,8 +120,18 @@ type Event = {
     id?: number;
     title: string;
     description: string;
-    startDateTime: Date;
-    endDateTime: Date;
+    startDateTime: {
+        date: string;
+        timezone_type: number;
+        timezone: string;
+    };
+    endDateTime: {
+        date: string;
+        timezone_type: number;
+        timezone: string;
+    };
+    createdAt: string;
+    updatedAt: string;
 };
 
 type Inputs = {
