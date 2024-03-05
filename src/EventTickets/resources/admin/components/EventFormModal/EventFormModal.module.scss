@@ -1,5 +1,5 @@
-:global(#give-admin-event-tickets-root) {
-    .createEventButton {
+.eventForm {
+    .submitButton {
         border-radius: 0;
         font-size: 0.875rem;
         font-weight: 600;
@@ -8,3 +8,4 @@
         text-align: center;
     }
 }
+
