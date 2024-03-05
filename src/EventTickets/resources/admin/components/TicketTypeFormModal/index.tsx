@@ -1,20 +1,20 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
-import ListTableApi from '@givewp/components/ListTable/api';
 import styles from './TicketTypeFormModal.module.scss';
 import FormModal from '../FormModal';
 import {useTicketTypeForm} from './ticketTypeFormContext';
 import {Inputs, TicketModalProps} from './types';
 import {useEffect} from 'react';
+import EventTicketsApi from '../api';
 
 /**
  * Ticket Form Modal component
  *
  * @unreleased
  */
-export default function TicketTypeFormModal({isOpen, handleClose, apiSettings}: TicketModalProps) {
+export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, eventId}: TicketModalProps) {
     const {ticketData} = useTicketTypeForm();
-    const API = new ListTableApi(apiSettings);
+    const API = new EventTicketsApi(apiSettings);
 
     const {
         register,
@@ -25,19 +25,21 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings}: 
 
     useEffect(() => {
         reset({
-            title: ticketData?.title,
-            description: ticketData?.description,
-            price: ticketData?.price,
-            capacity: ticketData?.capacity
+            title: ticketData?.title || '',
+            description: ticketData?.description || '',
+            price: ticketData?.price || null,
+            capacity: ticketData?.capacity || null,
         });
     }, [ticketData, reset]);
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             data.price = data.price * 100;
+            data.capacity = data.capacity || 0;
 
-            const endpoint = ticketData?.id ? `/ticket-type/${ticketData.id}` : `/event/${apiSettings?.event?.id}/ticket-types`;
+            const endpoint = ticketData?.id ? `/ticket-type/${ticketData.id}` : `/event/${eventId}/ticket-types`;
             const response = await API.fetchWithArgs(endpoint, data, 'POST');
+
             handleClose(response);
         } catch (error) {
             console.error('Error submitting ticket data', error);
@@ -71,7 +73,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings}: 
             <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="price">{__('Price', 'give')}</label>
-                    <input type="number"{...register('price')} />
+                    <input type="number" {...register('price')} />
                 </div>
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="capacity">{__('Capacity', 'give')}</label>

@@ -2,6 +2,10 @@ import {__, sprintf} from '@wordpress/i18n';
 import styles from './TicketTypesSection.module.scss';
 import SectionTable from '../SectionTable';
 import {useState} from 'react';
+import TicketTypeFormModal from '../../TicketTypeFormModal';
+import {TicketTypeFormContext} from '../../TicketTypeFormModal/ticketTypeFormContext';
+import {TicketTypesRowActions} from './TicketTypesRowActions';
+import {GiveEventTicketsDetails} from '../types';
 
 const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.languages[0], {
     style: 'currency',
@@ -13,7 +17,7 @@ const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.la
  *
  * @unreleased
  */
-const BlankSlate = () => {
+const BlankSlate = (openModal) => () => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
     return (
         <div className={styles.container}>
@@ -34,28 +38,51 @@ const BlankSlate = () => {
  */
 export default function TicketTypesSection() {
     const {
+        apiRoot,
+        apiNonce,
+        event,
         event: {ticketTypes},
-    } = window.GiveEventTicketsDetails;
+    }: GiveEventTicketsDetails = window.GiveEventTicketsDetails;
     const [data, setData] = useState(ticketTypes);
-    const [isOpen, setOpen] = useState<boolean>(false);
+    const [ticketData, setTicketData] = useState(null);
 
-    const openModal = (ticket: Ticket | null) => {
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const openModal = (ticket = null) => {
         setTicketData(ticket);
         setOpen(true);
     };
     const closeModal = (response = null) => {
+        if (response?.id) {
+            setData((prevData) => {
+                const filteredData = prevData.filter((ticket) => ticket.id !== response.id);
+                const insertIndex = filteredData.findIndex((ticket) => response.id < ticket.id);
+                const targetIndex = insertIndex === -1 ? filteredData.length : insertIndex;
+
+                return [...filteredData.slice(0, targetIndex), response, ...filteredData.slice(targetIndex)];
+            });
+        }
+
         setOpen(false);
     };
+
+    const tableHeaders = {
+        id: __('ID', 'give'),
+        title: __('Ticket', 'give'),
+        count: __('No. of tickets sold', 'give'),
+        price: __('Price', 'give'),
     };
 
     const formattedData = data.map((ticketType) => {
         return {
             ...ticketType,
-            count: sprintf(__('%d of %d', 'give'), ticketType.salesCount, ticketType.capacity),
-            price: amountFormatter.format(ticketType.price / 100),
+            count: sprintf(
+                __('%d of %s', 'give'),
+                ticketType.salesCount,
+                ticketType.capacity > 0 ? ticketType.capacity : __('Unlimited', 'give')
+            ),
+            price: ticketType.price > 0 ? amountFormatter.format(ticketType.price / 100) : __('Free', 'give'),
         };
     });
-
 
     return (
         <section>
@@ -66,8 +93,20 @@ export default function TicketTypesSection() {
                 </a>
             </div>
             <TicketTypeFormContext.Provider value={{ticketData, setTicketData}}>
-            <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
-                <TicketTypeFormModal apiSettings={apiSettings} isOpen={isOpen} handleClose={closeModal} />
+                <>
+                    <SectionTable
+                        tableHeaders={tableHeaders}
+                        data={formattedData}
+                        blankSlate={BlankSlate(openModal)}
+                        rowActions={TicketTypesRowActions({tickets: data, openEditModal: openModal})}
+                    />
+                    <TicketTypeFormModal
+                        apiSettings={{apiRoot, apiNonce}}
+                        isOpen={isOpen}
+                        handleClose={closeModal}
+                        eventId={event?.id}
+                    />
+                </>
             </TicketTypeFormContext.Provider>
         </section>
     );

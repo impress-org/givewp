@@ -1,9 +1,11 @@
-export type Ticket = {
+export type TicketType = {
     id?: number;
+    eventId?: number;
     title: string;
     description: string;
     price: number;
     capacity: number;
+    salesCount: number;
 };
 
 export type Inputs = {
@@ -19,14 +21,11 @@ export interface TicketModalProps {
     apiSettings: {
         apiRoot: string;
         apiNonce: string;
-        event: {
-            id: number;
-        };
     };
-    ticket?: Ticket;
+    eventId: number;
 }
 
 export interface TicketTypeFormContextType {
-    ticketData: Ticket | null;
-    setTicketData: (data: Ticket | null) => void;
+    ticketData: TicketType | null;
+    setTicketData: (data: TicketType | null) => void;
 }

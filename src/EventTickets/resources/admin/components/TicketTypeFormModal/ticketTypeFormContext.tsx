@@ -1,12 +1,14 @@
 import {createContext, useContext} from 'react';
-import {Ticket, TicketTypeFormContextType} from './types';
+import {TicketTypeFormContextType} from './types';
 
-const defaultTicketData: Ticket = {
+const defaultTicketData = {
     id: undefined,
+    eventId: undefined,
     title: '',
     description: '',
     price: undefined,
     capacity: undefined,
+    salesCount: 0,
 };
 
 export const TicketTypeFormContext = createContext<TicketTypeFormContextType>({
