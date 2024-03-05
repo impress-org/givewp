@@ -47,6 +47,10 @@ class AttachAttendeeDataToTicketData
      */
     protected function getAttendeeDataForTickets(array $tickets): array
     {
+        if (empty($tickets)) {
+            return [];
+        }
+        
         return (new QueryBuilder)
             ->from('posts', 'Donation')
             ->select(
