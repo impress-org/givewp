@@ -74,10 +74,16 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="price">{__('Price', 'give')}</label>
                     <input type="number" {...register('price')} />
+                    <span>
+                        {__('Leave empty for', 'give')} <strong>{__('free', 'give')}</strong>
+                    </span>
                 </div>
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="capacity">{__('Capacity', 'give')}</label>
                     <input type="number" {...register('capacity')} />
+                    <span>
+                        {__('Leave empty for', 'give')} <strong>{__('unlimited', 'give')}</strong>
+                    </span>
                 </div>
             </div>
 
