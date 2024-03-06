@@ -179,14 +179,14 @@ export interface HeaderProps {
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
     Goal: FC<GoalProps | {}>;
-    isMultiStep: boolean
+    isMultiStep: boolean;
 }
 
 export interface HeaderImageProps {
     url: string;
     alt: string;
     color: string;
-    opacity: number;
+    opacity: string;
 }
 
 export interface HeaderDescriptionProps {
