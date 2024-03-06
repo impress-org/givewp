@@ -18,11 +18,11 @@ export default function EventSection({setUpdateErrors}) {
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
     const closeModal = (response = null) => {
-        setOpen(false);
-
         if (response?.id) {
             setData(response);
         }
+
+        setOpen(false);
     };
 
     const tableHeaders = {

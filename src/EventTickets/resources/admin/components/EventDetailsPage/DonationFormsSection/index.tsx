@@ -51,7 +51,7 @@ export default function DonationFormsSection() {
 
     return (
         <section>
-            <h2>{__('Tickets', 'give')}</h2>
+            <h2>{__('Donation Forms', 'give')}</h2>
             <SectionTable tableHeaders={tableHeaders} data={formattedData} blankSlate={<BlankSlate />} />
         </section>
     );

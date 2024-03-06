@@ -87,7 +87,7 @@
     color: var(--givewp-grey-700);
     font-size: 0.875em;
     font-weight: 600;
-    padding: var(--givewp-spacing-4) var(--givewp-spacing-9) var(--givewp-spacing-7);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-9) var(--givewp-spacing-10);
     position: relative;
     vertical-align: middle;
 
@@ -98,10 +98,6 @@
             text-decoration: underline;
             transition: all 0.05s ease-in-out;
         }
-    }
-
-    &.title {
-        line-height: 2rem;
     }
 
     &.description {
