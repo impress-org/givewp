@@ -1,0 +1,26 @@
+.givewp-donation-form {
+    --two-panel-header-width: 42.5rem;
+
+    align-items: flex-start;
+    gap: var(--givewp-spacing-2);
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    max-width: calc(var(--two-panel-header-width) + 35.5rem);
+    padding: 0;
+    width: 100%;
+
+    @media screen and (max-width: 71.5rem) {
+        border: solid 1px var(--givewp-grey-25);
+        border-radius: var(--givewp-rounded-8);
+        box-shadow: var(--givewp-shadow-sm);
+        flex-direction: column;
+        gap: 0;
+        max-width: 35rem;
+    }
+
+    @media screen and (max-width: 36rem) {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+}
