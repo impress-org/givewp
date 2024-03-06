@@ -35,8 +35,6 @@ class App
      */
     public function getOutput($attributes)
     {
-        $attributes = give_clean($attributes);
-
         $url = get_site_url() . '/?give-embed=donor-dashboard';
 
         $queryArgs = [];
