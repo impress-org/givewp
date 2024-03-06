@@ -9,7 +9,7 @@ export default function HeaderImage({url, alt, color, opacity}: HeaderImageProps
         <>
             {color && (
                 <div
-                    style={{'--givewp-image-color': color, '--givewp-image-opacity': opacity}}
+                    style={{'--givewp-image-color': color, '--givewp-image-opacity': opacity} as React.CSSProperties}
                     className={'givewp-layouts-headerImage__overlay'}
                 />
             )}
