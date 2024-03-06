@@ -7,7 +7,7 @@ import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities/getCurrentStepObject';
 
 /**
- * @unreleased updated with steps props and showStepsHeader conditional
+ * @since 3.4.0 updated with steps props and showStepsHeader conditional
  * @since 3.0.0
  */
 export default function StepsWrapper({steps, children}: {steps: StepObject[]; children: ReactNode}) {

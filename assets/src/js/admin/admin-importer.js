@@ -179,7 +179,7 @@ function give_on_donation_import_ajax() {
 				give_on_donation_import_ajax();
 			} else {
 				/**
-				 * Now user is allow to reload the page.
+				 * Now user is allowed to reload the page.
 				 *
 				 * @since 1.8.14
 				 */
@@ -187,22 +187,30 @@ function give_on_donation_import_ajax() {
 				window.location = response.url;
 			}
 		},
-		error: function() {
-			/**
-			 * Now user is allow to reload the page.
-			 *
-			 * @since 1.8.14
-			 */
-			give_setting_edit = false;
+        error: function(xhr, textStatus, errorThrown) {
+            /**
+             * Now user is allowed to reload the page.
+             *
+             * @since 1.8.14
+             */
+            give_setting_edit = false;
 
-			new GiveErrorAlert( {
-				modalContent: {
-					title: Give.fn.getGlobalVar( 'import_failed' ),
-					desc: Give.fn.getGlobalVar( 'error_message' ),
-					cancelBtnTitle: Give.fn.getGlobalVar( 'ok' ),
-				},
-			} ).render();
-		},
+            // Prepare the error message
+            let errorMessage = Give.fn.getGlobalVar('error_message');
+            if (xhr && xhr.responseText) {
+                errorMessage += "\n\n" + xhr.responseText;
+            } else {
+                errorMessage += "\n\n" + textStatus + ": " + errorThrown;
+            }
+
+            new GiveErrorAlert({
+                modalContent: {
+                    title: Give.fn.getGlobalVar('import_failed'),
+                    desc: errorMessage,
+                    cancelBtnTitle: Give.fn.getGlobalVar('ok'),
+                },
+            }).render();
+        },
 	} );
 }
 

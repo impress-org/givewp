@@ -175,14 +175,16 @@ export interface GoalAchievedProps {
 }
 
 export interface HeaderProps {
-    TextWrapper: FC<TextWrapProps | {}>;
+    HeaderImage: FC<HeaderImageProps | {}>;
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
     Goal: FC<GoalProps | {}>;
+    isMultiStep: boolean
 }
 
-export interface TextWrapProps {
-    children: ReactNode;
+export interface HeaderImageProps {
+    url: string;
+    alt: string;
 }
 
 export interface HeaderDescriptionProps {

@@ -132,8 +132,10 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
  * @since  1.0
+ *
 
  * @param array $atts Shortcode attributes
  *
@@ -152,7 +154,22 @@ function give_form_shortcode( $atts ) {
 
 	// Set form id.
 	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
-	$formId     = absint( $atts['id'] );
+    $formId = absint($atts['id']);
+
+    if ( ! ShortcodeUtils::isValidForm($formId)) {
+        ob_start();
+        Give_Notices::print_frontend_notice(__('The shortcode is missing a valid Donation Form ID attribute.', 'give'),
+            true);
+
+        return ob_get_clean();
+    }
+
+    if ( ! ShortcodeUtils::isPublishedForm($formId)) {
+        ob_start();
+        Give_Notices::print_frontend_notice(__('The form is not published.', 'give'), true);
+
+        return ob_get_clean();
+    }
 
     _give_redirect_form_id($formId, $atts['id']);
 
@@ -193,6 +210,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
+ * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -216,13 +234,17 @@ function give_goal_shortcode( $atts ) {
 	// get the Give Form.
 	ob_start();
 
-	// Sanity check 1: ensure there is an ID Provided.
-	if ( empty( $atts['id'] ) ) {
-		Give_Notices::print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
-	}
+    $formId = (int)$atts['id'];
 
-	// Sanity check 2: Check the form even has Goals enabled.
-	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
+    // Sanity check 1: ensure there is an ID Provided.
+    if ( ! ShortcodeUtils::isValidForm($formId)) {
+        Give_Notices::print_frontend_notice(__('The shortcode is missing a valid Donation Form ID attribute.', 'give'),
+            true);
+    } elseif // Sanity check 2: ensure the form is published.
+    ( ! ShortcodeUtils::isPublishedForm($formId)) {
+        Give_Notices::print_frontend_notice(__('The form is not published.', 'give'), true);
+    } elseif // Sanity check 3: Check the form even has Goals enabled.
+    ( ! give_is_setting_enabled(give_get_meta($atts['id'], '_give_goal_option', true))) {
 
 		Give_Notices::print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {

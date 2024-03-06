@@ -13,7 +13,7 @@ const {formDesigns} = getWindowData();
 const getDesign = (designId: string) => formDesigns[designId];
 
 /**
- * @unreleased abstract design controls.
+ * @since 3.4.0 abstract design controls.
  */
 export default function GeneralControls() {
     const {
@@ -31,12 +31,11 @@ export default function GeneralControls() {
         >
             <Layout
                 dispatch={dispatch}
-                publishSettings={publishSettings}
                 formDesigns={formDesigns}
                 designId={designId}
             />
-            {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <Header dispatch={dispatch} publishSettings={publishSettings} />
+            {design?.isMultiStep && <MultiStep dispatch={dispatch} publishSettings={publishSettings} />}
             <DonationGoal dispatch={dispatch} />
             {!design?.isMultiStep && <DonateButton dispatch={dispatch} publishSettings={publishSettings} />}
         </DesignSettings>

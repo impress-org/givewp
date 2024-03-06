@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
-import {upload} from '@wordpress/icons';
 import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
+import {upload} from '@wordpress/icons';
 
 export default function Header({dispatch, publishSettings}) {
     const {
@@ -13,18 +13,13 @@ export default function Header({dispatch, publishSettings}) {
             showDescription,
             description,
             designSettingsImageUrl,
-            designSettingsImageStyle,
-            designSettingsLogoUrl,
-            designSettingsLogoPosition,
+            designSettingsImageStyle = 'background',
         },
     } = useFormState();
 
     const resetSettings = () => {
         const reset = {
             designSettingsImageUrl: '',
-            designSettingsImageStyle: '',
-            designSettingsLogoUrl,
-            designSettingsLogoPosition,
         };
 
         dispatch(setFormSettings(reset));
@@ -41,18 +36,10 @@ export default function Header({dispatch, publishSettings}) {
                         dispatch(
                             setFormSettings({
                                 showHeader: !showHeader,
-                                designSettingsImageUrl,
-                                designSettingsImageStyle,
-                                designSettingsLogoUrl,
-                                designSettingsLogoPosition,
                             })
                         );
                         publishSettings({
                             showHeader: !showHeader,
-                            designSettingsImageUrl,
-                            designSettingsImageStyle,
-                            designSettingsLogoUrl,
-                            designSettingsLogoPosition,
                         });
                     }}
                 />
@@ -68,18 +55,10 @@ export default function Header({dispatch, publishSettings}) {
                                 dispatch(
                                     setFormSettings({
                                         showHeading: !showHeading,
-                                        designSettingsImageUrl,
-                                        designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
                                 publishSettings({
                                     showHeading: !showHeading,
-                                    designSettingsImageUrl,
-                                    designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                         />
@@ -92,18 +71,10 @@ export default function Header({dispatch, publishSettings}) {
                                 dispatch(
                                     setFormSettings({
                                         showDescription: !showDescription,
-                                        designSettingsImageUrl,
-                                        designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
                                 publishSettings({
                                     showDescription: !showDescription,
-                                    designSettingsImageUrl,
-                                    designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                         />
@@ -117,18 +88,10 @@ export default function Header({dispatch, publishSettings}) {
                                     dispatch(
                                         setFormSettings({
                                             heading,
-                                            designSettingsImageUrl,
-                                            designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
                                     publishSettings({
                                         heading,
-                                        designSettingsImageUrl,
-                                        designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                             />
@@ -143,23 +106,16 @@ export default function Header({dispatch, publishSettings}) {
                                     dispatch(
                                         setFormSettings({
                                             description,
-                                            designSettingsImageUrl,
-                                            designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
                                     publishSettings({
                                         description,
-                                        designSettingsImageUrl,
-                                        designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                             />
                         </PanelRow>
                     )}
+
                     <PanelRow>
                         <MediaLibrary
                             id="givewp-header-media-library-control"
@@ -172,16 +128,12 @@ export default function Header({dispatch, publishSettings}) {
                                     setFormSettings({
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     })
                                 );
 
                                 publishSettings({
                                     designSettingsImageUrl,
                                     designSettingsImageStyle,
-                                    designSettingsLogoUrl,
-                                    designSettingsLogoPosition,
                                 });
                             }}
                             reset={resetSettings}
@@ -200,16 +152,12 @@ export default function Header({dispatch, publishSettings}) {
                                         setFormSettings({
                                             designSettingsImageUrl,
                                             designSettingsImageStyle,
-                                            designSettingsLogoUrl,
-                                            designSettingsLogoPosition,
                                         })
                                     );
 
                                     publishSettings({
                                         designSettingsImageUrl,
                                         designSettingsImageStyle,
-                                        designSettingsLogoUrl,
-                                        designSettingsLogoPosition,
                                     });
                                 }}
                                 value={designSettingsImageStyle}

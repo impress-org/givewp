@@ -71,7 +71,7 @@ class LegacyPaymentGatewayAdapter
         /**
          * Fires at the start of donation form processing, before any data is processed.
          *
-         * @unreleased
+         * @since 3.4.0
          *
          * @param  FormData  $formData
          * @param  string  $gatewayId
@@ -122,7 +122,7 @@ class LegacyPaymentGatewayAdapter
             /**
              * Fires after a donation is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
@@ -132,7 +132,7 @@ class LegacyPaymentGatewayAdapter
             /**
              * Fires after a subscription is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Subscription  $subscription
              * @param  Donation  $donation
@@ -183,7 +183,7 @@ class LegacyPaymentGatewayAdapter
             /**
              * Fires after a donation is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donation  $donation
              * @param  Subscription|null  $subscription
@@ -324,7 +324,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased add $formId and do_action
+     * @since 3.4.0 add $formId and do_action
      * @since 3.2.0 add honorific and use GetOrCreateDonor action
      * @since 2.21.0
      *
@@ -352,7 +352,7 @@ class LegacyPaymentGatewayAdapter
             /**
              * Fires after a donor is created during donation form processing.
              *
-             * @unreleased
+             * @since 3.4.0
              *
              * @param  Donor  $donor
              * @param  int  $formId

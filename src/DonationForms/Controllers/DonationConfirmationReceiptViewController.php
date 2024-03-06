@@ -30,7 +30,7 @@ class DonationConfirmationReceiptViewController
         /**
          * Fires before the donation confirmation receipt view is rendered.
          *
-         * @unreleased
+         * @since 3.4.0
          *
          * @param Donation $donation
          */

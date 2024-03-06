@@ -90,7 +90,9 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $template = $this->getFormTemplate();
 
-        return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+        $templateSettings = give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+
+        return is_array($templateSettings) ? $templateSettings : [];
     }
 
     public function isDonationGoalEnabled(): bool
@@ -109,7 +111,7 @@ class FormMetaDecorator extends FormModelDecorator
                 return $onlyRecurringEnabled ? GoalType::DONORS_FROM_SUBSCRIPTIONS() : GoalType::DONORS();
             case 'donation': // @note v2: Singular
                 return $onlyRecurringEnabled ? GoalType::SUBSCRIPTIONS() : GoalType::DONATIONS();
-                // @note v3: Plural
+            // @note v3: Plural
             case 'amount':
             case 'percentage': // @note `percentage` is not supported in v3 - defaulting to `amount`
             default:
@@ -513,13 +515,13 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function isMailchimpEnabled(): bool
     {
-        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'),'true');
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_enable'), 'true');
 
-        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'),'true');
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_mailchimp_disable'), 'true');
 
         $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
 
-        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
     }
 
     /**
@@ -588,8 +590,8 @@ class FormMetaDecorator extends FormModelDecorator
      *
      * @since 3.0.0
      *
-     * @param string $key
-     * @param mixed $default
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     private function getMeta(string $key, $default = null)
@@ -620,6 +622,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 3.4.0 added additional checks to ensure that the form has funds and fund options
      * @since 3.3.0
      */
     public function getFundsAndDesignationsAttributes(): array
@@ -631,23 +634,32 @@ class FormMetaDecorator extends FormModelDecorator
 
 
         $options = [];
-        foreach ($donorOptions as $fundId) {
-            $options[] = [
-                'value' => $fundId,
-                'label' => $this->getFundLabel($fundId),
-                'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
-                'isDefault' => $this->isDefaultFund($fundId),
-            ];
+        if (!empty($donorOptions)) {
+            foreach ($donorOptions as $fundId) {
+                $options[] = [
+                    'value' => $fundId,
+                    'label' => $this->getFundLabel($fundId),
+                    'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
+                    'isDefault' => $this->isDefaultFund($fundId),
+                ];
+            }
         }
 
-        return [
-            'label' => $label,
-            'fund' => $isAdminChoice ? [
+        $fund = [];
+        if ($isAdminChoice) {
+            $fund = [
                 'value' => $adminChoice,
                 'label' => $this->getFundLabel($adminChoice),
                 'checked' => true,
                 'isDefault' => $this->isDefaultFund($adminChoice),
-            ] : $options[0],
+            ];
+        } elseif (!empty($options)) {
+            $fund = $options[0];
+        }
+
+        return [
+            'label' => $label,
+            'fund' => $fund,
             'options' => $options,
         ];
     }
@@ -663,7 +675,7 @@ class FormMetaDecorator extends FormModelDecorator
             $wpdb->prepare("SELECT * FROM {$wpdb->give_funds} WHERE id = %d", $fundId)
         );
 
-        if ( ! $fund) {
+        if (!$fund) {
             return '';
         }
 
@@ -679,7 +691,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         $fund = $wpdb->get_row("SELECT id FROM {$wpdb->give_funds} WHERE is_default = 1");
 
-        if ( ! $fund) {
+        if (!$fund) {
             return false;
         }
 
@@ -687,7 +699,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      *
      * @return string 'global', 'enabled', 'disabled'
      */
@@ -697,7 +709,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidTitle(): string
     {
@@ -705,7 +717,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidDescription(): string
     {
@@ -713,7 +725,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidLongExplanationEnabled(): bool
     {
@@ -721,7 +733,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidLongExplanation(): string
     {
@@ -729,7 +741,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidCheckboxLabel(): string
     {
@@ -737,7 +749,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidAgreementText(): string
     {
@@ -745,10 +757,33 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.4.0
      */
     public function getGiftAidDeclarationForm(): string
     {
         return $this->getMeta('give_gift_aid_declaration_form');
+    }
+
+    /**
+     * @since 3.5.0
+     */
+    public function getFormFeaturedImage()
+    {
+        $templateSettings = $this->getFormTemplateSettings();
+
+        if ( ! empty($templateSettings['introduction']['image'])) {
+            // Sequoia Template (Multi-Step)
+            $featuredImage = $templateSettings['introduction']['image'];
+        } elseif ( ! empty($templateSettings['visual_appearance']['header_background_image'])) {
+            // Classic Template - it doesn't use the featured image from the WP default setting as a fallback
+            $featuredImage = $templateSettings['visual_appearance']['header_background_image'];
+        } elseif ( ! isset($templateSettings['visual_appearance']['header_background_image'])) {
+            // Legacy Template or Sequoia Template without the ['introduction']['image'] setting
+            $featuredImage = get_the_post_thumbnail_url($this->form->id, 'full');
+        } else {
+            $featuredImage = null;
+        }
+
+        return $featuredImage;
     }
 }

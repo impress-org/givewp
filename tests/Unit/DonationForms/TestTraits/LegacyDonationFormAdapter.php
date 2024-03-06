@@ -13,19 +13,20 @@ use Give_Helper_Form;
 trait LegacyDonationFormAdapter
 {
     /**
+     * @since 3.4.0 added $args parameter
      * @since 2.25.0
      */
-    public function createSimpleDonationForm(): DonationForm
+    public function createSimpleDonationForm(array $args = []): DonationForm
     {
-        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_simple_form());
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_simple_form($args));
     }
 
     /**
      * @since 2.25.0
      */
-    public function createMultiLevelDonationForm(): DonationForm
+    public function createMultiLevelDonationForm(array $args = []): DonationForm
     {
-        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_multilevel_form());
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_multilevel_form($args));
     }
 
     /**

@@ -49,6 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\Mailchimp::class,
                 Steps\FundsAndDesignations::class,
                 Steps\GiftAid::class,
+                Steps\FormFeaturedImage::class,
             ]);
         });
     }
