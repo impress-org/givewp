@@ -222,7 +222,7 @@ class PayPalAuth
      *
      * Sample PayPal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
      *
-     * @unreleased removed app_id from required keys as PayPal no longer supplies it
+     * @since 3.5.1 removed app_id from required keys as PayPal no longer supplies it
      * @since 2.25.0
      *
      * @param array $accessToken Access token response from PayPal.

@@ -152,7 +152,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function testGetFormFeaturedImageForSequoiaTemplate()
     {
@@ -189,7 +189,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function testGetFormFeaturedImageForClassicTemplate()
     {
@@ -226,7 +226,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function testGetFormFeaturedImageForLegacyTemplate()
     {
@@ -254,7 +254,7 @@ class TestFormMetaDecorator extends TestCase {
     /**
      * @see https://core.trac.wordpress.org/browser/branches/4.5/tests/phpunit/tests/post/attachments.php#L24
      *
-     * @unreleased
+     * @since 3.5.0
      */
     private function uploadTestImage()
     {

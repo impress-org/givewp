@@ -135,7 +135,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      *
      * @throws Exception
      */
