@@ -202,6 +202,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased added includeHeaderInMultiStep to form design export
      * @since 3.0.0
      */
     public function exports(): array
@@ -236,6 +237,7 @@ class DonationFormViewModel
                     'id'          => $formDesign::id(),
                     'name'        => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
+                    'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
             'previewMode'          => $this->previewMode,

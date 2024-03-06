@@ -337,7 +337,7 @@ class DonationFormsAdminPage
             'MailChimp' => class_exists('Give_MailChimp'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
             'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
-            //            'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
+            'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
             'Gift Aid' => class_exists('Give_Gift_Aid'),
             //            'MailChimp' => class_exists('Give_MailChimp'),
             //            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),

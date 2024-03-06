@@ -25,8 +25,8 @@
                     img {
                         object-fit: cover;
                         min-width: 100%;
-                        border-top-left-radius: 0.5rem;
-                        border-top-right-radius: 0.5rem;
+                        border-top-left-radius: var(--givewp-rounded-8);
+                        border-top-right-radius: var(--givewp-rounded-8);
                     }
                 }
             }
@@ -110,7 +110,7 @@
                     }
 
                     .givewp-layouts-goal {
-                        margin-top: -1.35rem;
+                        margin-top: -1.25rem;
                     }
                 }
             }
@@ -119,8 +119,9 @@
 }
 
 /* Multi Step */
-.givewp-donation-form__steps-body {
+.givewp-donation-form__steps-body, .givewp-donation-form > .givewp-layouts-header {
     padding: 0;
+    background: #fff;
 
     .givewp-layouts-multiStepForm, .givewp-layouts-header__templates-ms {
         padding: 2rem 2rem 0 2rem;
@@ -137,13 +138,6 @@
         }
     }
 
-    .givewp-layouts-headerTitle {
-        color: var(--givewp-grey-900);
-    }
-
-    .givewp-layouts-headerDescription {
-        color: var(--givewp-grey-700);
-    }
 
     .givewp-layouts-header__templates-ms {
         .givewp-layouts-headerImage {
@@ -152,9 +146,17 @@
             img {
                 object-fit: cover;
                 min-width: 100%;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
+                border-top-left-radius: var(--givewp-rounded-8);
+                border-top-right-radius: var(--givewp-rounded-8);
             }
+        }
+
+        .givewp-layouts-headerTitle {
+            color: var(--givewp-grey-900);
+        }
+
+        .givewp-layouts-headerDescription {
+            color: var(--givewp-grey-700);
         }
 
 
@@ -179,7 +181,7 @@
             }
 
 
-            div:not(.givewp-layouts-headerImage,, .givewp-layouts-headerImage__overlay), aside {
+            div:not(.givewp-layouts-headerImage,, .givewp-layouts-headerImage__overlay, .givewp-layouts-header__content), aside {
                 position: relative;
                 z-index: 999;
             }
@@ -227,7 +229,7 @@
 
                 img {
                     border-radius: var(--givewp-rounded-4);
-
+                    max-height: 320px;
                 }
             }
 

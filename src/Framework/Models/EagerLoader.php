@@ -12,38 +12,38 @@ use ReflectionClass;
  * "eager" loading queries the database for the relationship of all queried models, with a single query.
  * This prevents a "N+1" problem, where a query is executed for each model, but using query optimization.
  *
- * @unreleased
+ * @since 3.5.0
  *
  * @template M
  */
 class EagerLoader
 {
     /**
-     * @unreleased
+     * @since 3.5.0
      * @var ReflectionClass<M>
      */
     protected $reflection;
 
     /**
-     * @unreleased
+     * @since 3.5.0
      * @var ModelQueryBuilder
      */
     protected $modelQuery;
 
     /**
-     * @unreleased
+     * @since 3.5.0
      * @var ModelQueryBuilder
      */
     protected $eagerLoadedQuery;
 
     /**
-     * @unreleased
+     * @since 3.5.0
      * @var string
      */
     protected $relationshipKey;
 
     /**
-     * @unreleased
+     * @since 3.5.0
      * @var string
      */
     protected $foreignKey;
@@ -54,7 +54,7 @@ class EagerLoader
     protected $foreignAttribute;
 
     /**
-     * @unreleased
+     * @since 3.5.0
      *
      * @param class-string<M> $modelClass
      * @param class-string<M> $eagerLoadedModelClass
@@ -81,7 +81,7 @@ class EagerLoader
     }
 
     /**
-     * @unreleased
+     * @since 3.5.0
      */
     public function __call($name, $arguments)
     {
@@ -93,7 +93,7 @@ class EagerLoader
      * This method wraps the `get()` method of the underlying ModelQueryBuilder.
      * It uses the results to query the related models and pre-set the cachedRelations property.
      *
-     * @unreleased
+     * @since 3.5.0
      *
      * @return M|null
      */
@@ -114,7 +114,7 @@ class EagerLoader
      * This method wraps the `getAll()` method of the underlying ModelQueryBuilder.
      * It uses the results to query the related models and pre-set the cachedRelations property.
      *
-     * @unreleased
+     * @since 3.5.0
      *
      * @return M[]|null
      */
@@ -139,7 +139,7 @@ class EagerLoader
      * The cachedRelations property is protected and cannot be accessed directly.
      * This method uses reflection to set the cachedRelations property on the model.
      *
-     * @unreleased
+     * @since 3.5.0
      *
      * @param Model $model
      * @param array $eagerLoadedModels

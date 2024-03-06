@@ -179,6 +179,7 @@ export interface HeaderProps {
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
     Goal: FC<GoalProps | {}>;
+    isMultiStep: boolean
 }
 
 export interface HeaderImageProps {
