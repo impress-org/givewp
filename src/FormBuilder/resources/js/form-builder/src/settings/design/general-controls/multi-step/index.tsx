@@ -36,7 +36,7 @@ export default function MultiStep({dispatch, publishSettings}) {
             </PanelRow>
             <PanelRow>
                 <TextControl
-                    label={__('Button caption', 'give')}
+                    label={__('Donate Button', 'give')}
                     value={donateButtonCaption}
                     onChange={(donateButtonCaption) => {
                         dispatch(

@@ -90,7 +90,9 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $template = $this->getFormTemplate();
 
-        return give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+        $templateSettings = give_get_meta($this->form->id, "_give_{$template}_form_template_settings", true);
+
+        return is_array($templateSettings) ? $templateSettings : [];
     }
 
     public function isDonationGoalEnabled(): bool
@@ -760,5 +762,28 @@ class FormMetaDecorator extends FormModelDecorator
     public function getGiftAidDeclarationForm(): string
     {
         return $this->getMeta('give_gift_aid_declaration_form');
+    }
+
+    /**
+     * @since 3.5.0
+     */
+    public function getFormFeaturedImage()
+    {
+        $templateSettings = $this->getFormTemplateSettings();
+
+        if ( ! empty($templateSettings['introduction']['image'])) {
+            // Sequoia Template (Multi-Step)
+            $featuredImage = $templateSettings['introduction']['image'];
+        } elseif ( ! empty($templateSettings['visual_appearance']['header_background_image'])) {
+            // Classic Template - it doesn't use the featured image from the WP default setting as a fallback
+            $featuredImage = $templateSettings['visual_appearance']['header_background_image'];
+        } elseif ( ! isset($templateSettings['visual_appearance']['header_background_image'])) {
+            // Legacy Template or Sequoia Template without the ['introduction']['image'] setting
+            $featuredImage = get_the_post_thumbnail_url($this->form->id, 'full');
+        } else {
+            $featuredImage = null;
+        }
+
+        return $featuredImage;
     }
 }

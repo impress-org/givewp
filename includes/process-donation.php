@@ -331,6 +331,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  * Donation Form Validate Fields.
  *
  * @access private
+ * @since 3.5.0 validate serialized fields
  * @since  1.0
  *
  * @return bool|array
@@ -343,6 +344,11 @@ function give_donation_form_validate_fields() {
 	if ( ! empty( $post_data['give-honeypot'] ) ) {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
 	}
+
+    // Validate serialized fields.
+    if (give_donation_form_has_serialized_fields($post_data)) {
+        give_set_error('invalid_serialized_fields', esc_html__('Serialized fields detected. Go away!', 'give'));
+    }
 
 	// Check spam detect.
 	if (
@@ -404,6 +410,47 @@ function give_donation_form_validate_fields() {
 
 	// Return collected data.
 	return $valid_data;
+}
+
+/**
+ * Detect serialized fields.
+ *
+ * @since 3.5.0
+ */
+function give_donation_form_has_serialized_fields(array $post_data): bool
+{
+    $post_data_keys = [
+        'give-form-id',
+        'give-gateway',
+        'card_name',
+        'card_number',
+        'card_cvc',
+        'card_exp_month',
+        'card_exp_year',
+        'card_address',
+        'card_address_2',
+        'card_city',
+        'card_state',
+        'billing_country',
+        'card_zip',
+        'give_email',
+        'give_first',
+        'give_last',
+        'give_user_login',
+        'give_user_pass',
+    ];
+
+    foreach ($post_data as $key => $value) {
+        if ( ! in_array($key, $post_data_keys, true)) {
+            continue;
+        }
+
+        if (is_serialized($value)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
