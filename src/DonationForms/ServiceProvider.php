@@ -14,6 +14,7 @@ use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteD
 use Give\DonationForms\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
+use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
@@ -161,6 +162,7 @@ class ServiceProvider implements ServiceProviderInterface
             try {
                 $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
                 $formDesignRegistrar->registerDesign(MultiStepFormDesign::class);
+                $formDesignRegistrar->registerDesign(TwoPanelStepsFormLayout::class);
             } catch (Exception $e) {
                 Log::error('Error registering form designs', [
                     'message' => $e->getMessage(),
