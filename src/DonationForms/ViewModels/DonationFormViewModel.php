@@ -86,13 +86,6 @@ class DonationFormViewModel
         return $this->formSettings->secondaryColor ?? '';
     }
 
-    /**
-     * @unreleased
-     */
-    public function imageColor(): string
-    {
-        return $this->formSettings->designSettingsImageColor ?? '';
-    }
 
     /**
      * @since 3.0.0
@@ -112,7 +105,6 @@ class DonationFormViewModel
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
-            --givewp-image-color:{$this->imageColor()};
             }"
         );
 
@@ -234,9 +226,9 @@ class DonationFormViewModel
                 'goal'     => $donationFormGoalData->toArray(),
                 'stats'    => $this->formStatsData(),
                 'design'   => $formDesign ? [
-                    'id'          => $formDesign::id(),
-                    'name'        => $formDesign::name(),
-                    'isMultiStep' => $formDesign->isMultiStep(),
+                    'id'                       => $formDesign::id(),
+                    'name'                     => $formDesign::name(),
+                    'isMultiStep'              => $formDesign->isMultiStep(),
                     'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
