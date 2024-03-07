@@ -21,7 +21,7 @@ class SubscriptionCompleted
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription || $subscription->status->isCompleted()) {
+        if ( ! $subscription || $subscription->status->isCompleted()) {
             return;
         }
 

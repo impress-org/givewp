@@ -21,7 +21,7 @@ class SubscriptionExpired
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription || $subscription->status->isExpired()) {
+        if ( ! $subscription || $subscription->status->isExpired()) {
             return;
         }
 
