@@ -66,7 +66,7 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(SubscriptionFirstDonationCompleted::class)($donation->gatewayTransactionId, false);
+        give(SubscriptionFirstDonationCompleted::class)($donation->gatewayTransactionId, 'test', false);
 
         $subscription = Subscription::find($subscription->id); // Re-fetch
         $donation = Donation::find($donation->id); // Re-fetch

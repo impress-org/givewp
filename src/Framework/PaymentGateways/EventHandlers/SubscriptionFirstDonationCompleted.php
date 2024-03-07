@@ -17,7 +17,7 @@ class SubscriptionFirstDonationCompleted
     /**
      * @unreleased
      */
-    public function __invoke(string $gatewayTransactionId, bool $setSubscriptionActive = true, string $message = '')
+    public function __invoke(string $gatewayTransactionId, string $message = '', bool $setSubscriptionActive = true)
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
 
