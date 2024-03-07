@@ -380,7 +380,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Stripe Payment Element gateway for Stripe with support for many types of payment methods
 * New: Existing forms can be migrated and upgrade to use the Form Builder
 
-= [See GiveWP's full changelog on Github](https://github.com/impress-org/givewp/blob/master/CHANGELOG.md) =
+= [See GiveWP's full changelog on Github](https://github.com/impress-org/givewp/blob/master/changelog.txt) =
 
 
 == Upgrade Notice ==
