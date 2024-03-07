@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\ActionScheduler;
+namespace Give\Framework\Support\Facades\ActionScheduler;
 
 use ActionScheduler;
 
@@ -9,7 +9,7 @@ use ActionScheduler;
  *
  * @unreleased
  */
-class AsBackgroundJobs
+class AsBackgroundJobsFacade
 {
     /**
      * @unreleased
@@ -22,7 +22,7 @@ class AsBackgroundJobs
      *
      * @return int The action ID. Zero if there was an error scheduling the action.
      */
-    public static function enqueueAsyncAction(
+    public function enqueueAsyncAction(
         string $hook,
         array $args,
         string $group,
@@ -34,7 +34,7 @@ class AsBackgroundJobs
          * to prevent duplicated jobs. IMPORTANT: this is different from the $unique parameter which is used
          * only to restrict the creation of multiple actions with the same hook.
          */
-        $enqueuedAction = self::getActionByHookArgsGroup($hook, $args, $group, 'ids');
+        $enqueuedAction = $this->getActionByHookArgsGroup($hook, $args, $group, 'ids');
         if (empty($enqueuedAction)) {
             return as_enqueue_async_action($hook, $args, $group, $unique, $priority);
         } else {
@@ -53,7 +53,7 @@ class AsBackgroundJobs
      *
      * @return array
      */
-    public static function getActionByHookArgsGroup(
+    public function getActionByHookArgsGroup(
         string $hook,
         array $args,
         string $group,
@@ -83,11 +83,8 @@ class AsBackgroundJobs
      *
      * @return array
      */
-    public static function getActionsByGroup(
-        string $group,
-        string $returnFormat = OBJECT,
-        string $status = ''
-    ): array {
+    public function getActionsByGroup(string $group, string $returnFormat = OBJECT, string $status = ''): array
+    {
         $args = [
             'group' => $group,
             'per_page' => 0,
@@ -109,9 +106,9 @@ class AsBackgroundJobs
      *
      * @return int Total deleted actions.
      */
-    public static function deleteActionsByGroup(string $group, string $status = ''): int
+    public function deleteActionsByGroup(string $group, string $status = ''): int
     {
-        $actions = self::getActionsByGroup($group, 'ids', $status);
+        $actions = $this->getActionsByGroup($group, 'ids', $status);
 
         $deletedActions = 0;
         foreach ($actions as $actionID) {
