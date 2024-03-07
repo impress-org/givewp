@@ -13,6 +13,9 @@ const getDesign = (designId: string) => formDesigns[designId];
  * @since 3.4.0 abstract design controls.
  */
 export default function StyleControls() {
+    const {
+        settings: {designSettingsImageUrl},
+    } = useFormState();
     const dispatch = useFormStateDispatch();
 
     const {
@@ -28,8 +31,7 @@ export default function StyleControls() {
             )}
         >
             <Color dispatch={dispatch} />
-            <HeaderImage dispatch={dispatch} />
-            <CustomStyles />
+            {designSettingsImageUrl && <HeaderImage dispatch={dispatch} />} <CustomStyles />
         </DesignSettings>
     );
 }
