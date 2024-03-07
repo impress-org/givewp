@@ -40,10 +40,13 @@ class Shortcode
     /**
      * Returns Shortcode markup
      *
+     * @unreleased Sanitize attributes
      * @since 2.10.0
      **/
     public function renderCallback($attributes)
     {
+        $attributes = give_clean($attributes);
+
         $attributes = shortcode_atts(
             [
                 'accent_color' => '#68bb6c',
