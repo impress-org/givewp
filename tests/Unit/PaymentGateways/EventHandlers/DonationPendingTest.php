@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\EventHandlers\DonationPending;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -15,7 +16,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 class DonationPendingTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * @unreleased
      *
@@ -29,15 +30,30 @@ class DonationPendingTest extends TestCase
             'status' => DonationStatus::PREAPPROVAL(),
         ]);
 
-        try {
-            give(DonationPending::class)($donation->gatewayTransactionId);
-        } catch (Exception $e) {
-            //ignore exception;
-        }
+        give(DonationPending::class)($donation->gatewayTransactionId);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
         $this->assertTrue($donation->status->isPending());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldNotSetStatusToPendingWhenRecurring()
+    {
+        $donation = Subscription::factory()->createWithDonation()->initialDonation();
+        $donation->gatewayTransactionId = 'gateway-transaction-id';
+        $donation->save();
+
+        give(DonationPending::class)($donation->gatewayTransactionId, true);
+
+        // re-fetch donation
+        $donation = Donation::find($donation->id);
+
+        $this->assertNotTrue($donation->status->isPending());
     }
 }
