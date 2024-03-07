@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Actions;
+namespace Give\Framework\PaymentGateways\Actions;
 
 use Exception;
 use Give\Donations\Models\Donation;

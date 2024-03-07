@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationRefunded;
+use Give\Framework\PaymentGateways\EventHandlers\DonationPending;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @unreleased
  */
-class DonationRefundedTest extends TestCase
+class DonationPendingTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,20 +22,20 @@ class DonationRefundedTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToRefunded()
+    public function testShouldSetStatusToPending()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
             'gatewayTransactionId' => 'gateway-transaction-id',
-            'status' => DonationStatus::COMPLETE(),
+            'status' => DonationStatus::PREAPPROVAL(),
         ]);
 
-        give(DonationRefunded::class)($donation->gatewayTransactionId);
+        give(DonationPending::class)($donation->gatewayTransactionId);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isRefunded());
+        $this->assertTrue($donation->status->isPending());
     }
 
     /**
@@ -43,17 +43,17 @@ class DonationRefundedTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldNotSetStatusToRefundedWhenRecurring()
+    public function testShouldNotSetStatusToPendingWhenRecurring()
     {
         $donation = Subscription::factory()->createWithDonation()->initialDonation();
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(DonationRefunded::class)($donation->gatewayTransactionId, true);
+        give(DonationPending::class)($donation->gatewayTransactionId, true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertNotTrue($donation->status->isRefunded());
+        $this->assertNotTrue($donation->status->isPending());
     }
 }

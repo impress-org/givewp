@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationRevoked;
+use Give\Framework\PaymentGateways\EventHandlers\DonationRevoked;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;

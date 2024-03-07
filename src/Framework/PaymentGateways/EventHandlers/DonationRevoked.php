@@ -1,15 +1,15 @@
 <?php
 
-namespace Give\PaymentGateways\EventHandlers;
+namespace Give\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased
  */
-class DonationPreapproval
+class DonationRevoked
 {
     /**
      * @unreleased
@@ -19,7 +19,7 @@ class DonationPreapproval
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
 
-        if ( ! $donation || $donation->status->isPreapproval()) {
+        if ( ! $donation || $donation->status->isRevoked()) {
             return;
         }
 
@@ -27,6 +27,6 @@ class DonationPreapproval
             return;
         }
 
-        (new UpdateDonationStatus())($donation, DonationStatus::PREAPPROVAL(), $message);
+        (new UpdateDonationStatus())($donation, DonationStatus::REVOKED(), $message);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationCancelled;
+use Give\Framework\PaymentGateways\EventHandlers\DonationRefunded;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @unreleased
  */
-class DonationCancelledTest extends TestCase
+class DonationRefundedTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,7 +22,7 @@ class DonationCancelledTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToCancelled()
+    public function testShouldSetStatusToRefunded()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
@@ -30,12 +30,12 @@ class DonationCancelledTest extends TestCase
             'status' => DonationStatus::COMPLETE(),
         ]);
 
-        give(DonationCancelled::class)($donation->gatewayTransactionId);
+        give(DonationRefunded::class)($donation->gatewayTransactionId);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isCancelled());
+        $this->assertTrue($donation->status->isRefunded());
     }
 
     /**
@@ -43,17 +43,17 @@ class DonationCancelledTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldNotSetStatusToCancelledWhenRecurring()
+    public function testShouldNotSetStatusToRefundedWhenRecurring()
     {
         $donation = Subscription::factory()->createWithDonation()->initialDonation();
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(DonationCancelled::class)($donation->gatewayTransactionId, true);
+        give(DonationRefunded::class)($donation->gatewayTransactionId, true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertNotTrue($donation->status->isCancelled());
+        $this->assertNotTrue($donation->status->isRefunded());
     }
 }

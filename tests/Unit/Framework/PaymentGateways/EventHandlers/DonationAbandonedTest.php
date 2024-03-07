@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationPending;
+use Give\Framework\PaymentGateways\EventHandlers\DonationAbandoned;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @unreleased
  */
-class DonationPendingTest extends TestCase
+class DonationAbandonedTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,20 +22,20 @@ class DonationPendingTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToPending()
+    public function testShouldSetStatusToAbandoned()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
             'gatewayTransactionId' => 'gateway-transaction-id',
-            'status' => DonationStatus::PREAPPROVAL(),
+            'status' => DonationStatus::PENDING(),
         ]);
 
-        give(DonationPending::class)($donation->gatewayTransactionId);
+        give(DonationAbandoned::class)($donation->gatewayTransactionId);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isPending());
+        $this->assertTrue($donation->status->isAbandoned());
     }
 
     /**
@@ -43,17 +43,17 @@ class DonationPendingTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldNotSetStatusToPendingWhenRecurring()
+    public function testShouldNotSetStatusToAbandonedWhenRecurring()
     {
         $donation = Subscription::factory()->createWithDonation()->initialDonation();
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(DonationPending::class)($donation->gatewayTransactionId, true);
+        give(DonationAbandoned::class)($donation->gatewayTransactionId, true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertNotTrue($donation->status->isPending());
+        $this->assertNotTrue($donation->status->isAbandoned());
     }
 }

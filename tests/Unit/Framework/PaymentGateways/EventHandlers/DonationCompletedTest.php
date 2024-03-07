@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\PaymentGateways\EventHandlers;
+namespace Give\Tests\Unit\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\EventHandlers\DonationPreapproval;
+use Give\Framework\PaymentGateways\EventHandlers\DonationCompleted;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -13,7 +13,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @unreleased
  */
-class DonationPreapprovalTest extends TestCase
+class DonationCompletedTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,20 +22,20 @@ class DonationPreapprovalTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldSetStatusToPreapproval()
+    public function testShouldSetStatusToCompleted()
     {
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
             'gatewayTransactionId' => 'gateway-transaction-id',
-            'status' => DonationStatus::PROCESSING(),
+            'status' => DonationStatus::PENDING(),
         ]);
 
-        give(DonationPreapproval::class)($donation->gatewayTransactionId);
+        give(DonationCompleted::class)($donation->gatewayTransactionId);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertTrue($donation->status->isPreapproval());
+        $this->assertTrue($donation->status->isComplete());
     }
 
     /**
@@ -43,17 +43,18 @@ class DonationPreapprovalTest extends TestCase
      *
      * @throws Exception
      */
-    public function testShouldNotSetStatusToPreapprovalWhenRecurring()
+    public function testShouldNotSetStatusToCompletedWhenRecurring()
     {
         $donation = Subscription::factory()->createWithDonation()->initialDonation();
         $donation->gatewayTransactionId = 'gateway-transaction-id';
+        $donation->status = DonationStatus::PENDING();
         $donation->save();
 
-        give(DonationPreapproval::class)($donation->gatewayTransactionId, true);
+        give(DonationCompleted::class)($donation->gatewayTransactionId, true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
 
-        $this->assertNotTrue($donation->status->isPreapproval());
+        $this->assertNotTrue($donation->status->isComplete());
     }
 }
