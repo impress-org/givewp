@@ -21,12 +21,10 @@ class SubscriptionCancelled
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription) {
-            (new UpdateSubscriptionStatus())(
-                $subscription,
-                SubscriptionStatus::CANCELLED(),
-                $message
-            );
+        if ( ! $subscription || $subscription->status->isCancelled()) {
+            return;
         }
+
+        (new UpdateSubscriptionStatus())($subscription, SubscriptionStatus::CANCELLED(), $message);
     }
 }

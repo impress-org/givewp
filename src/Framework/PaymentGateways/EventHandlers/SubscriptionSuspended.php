@@ -21,12 +21,10 @@ class SubscriptionSuspended
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription) {
-            (new UpdateSubscriptionStatus())(
-                $subscription,
-                SubscriptionStatus::SUSPENDED(),
-                $message
-            );
+        if ($subscription || $subscription->status->isSuspended()) {
+            return;
         }
+
+        (new UpdateSubscriptionStatus())($subscription, SubscriptionStatus::SUSPENDED(), $message);
     }
 }

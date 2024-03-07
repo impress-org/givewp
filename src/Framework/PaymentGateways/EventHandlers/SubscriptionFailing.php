@@ -21,12 +21,10 @@ class SubscriptionFailing
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription) {
-            (new UpdateSubscriptionStatus())(
-                $subscription,
-                SubscriptionStatus::FAILING(),
-                $message
-            );
+        if ($subscription || $subscription->status->isFailing()) {
+            return;
         }
+
+        (new UpdateSubscriptionStatus())($subscription, SubscriptionStatus::FAILING(), $message);
     }
 }

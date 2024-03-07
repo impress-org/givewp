@@ -17,18 +17,22 @@ class SubscriptionActive
      *
      * @throws Exception
      */
-    public function __invoke(string $gatewaySubscriptionId, string $message = '')
+    public function __invoke(
+        string $gatewaySubscriptionId,
+        string $message = '',
+        bool $initialDonationShouldBeCompleted = false
+    )
     {
         $subscription = give(SubscriptionRepository::class)->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ($subscription &&
-            ! empty($subscription->initialDonation()->gatewayTransactionId) &&
-            $subscription->initialDonation()->status->isComplete()) {
-            (new UpdateSubscriptionStatus())(
-                $subscription,
-                SubscriptionStatus::ACTIVE(),
-                $message
-            );
+        if ( ! $subscription || $subscription->status->isActive()) {
+            return;
         }
+
+        if ($initialDonationShouldBeCompleted && ! $subscription->initialDonation()->status->isComplete()) {
+            return;
+        }
+
+        (new UpdateSubscriptionStatus())($subscription, SubscriptionStatus::ACTIVE(), $message);
     }
 }
