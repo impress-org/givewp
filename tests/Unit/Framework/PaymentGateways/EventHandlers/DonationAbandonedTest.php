@@ -49,7 +49,7 @@ class DonationAbandonedTest extends TestCase
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(DonationAbandoned::class)($donation->gatewayTransactionId, true);
+        give(DonationAbandoned::class)($donation->gatewayTransactionId, 'test', true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);

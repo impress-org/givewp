@@ -49,7 +49,7 @@ class DonationPreapprovalTest extends TestCase
         $donation->gatewayTransactionId = 'gateway-transaction-id';
         $donation->save();
 
-        give(DonationPreapproval::class)($donation->gatewayTransactionId, true);
+        give(DonationPreapproval::class)($donation->gatewayTransactionId, 'test', true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);

@@ -15,7 +15,7 @@ class DonationAbandoned
      * @unreleased
      * @throws Exception
      */
-    public function __invoke(string $gatewayTransactionId, $skipRecurringDonations = false, string $message = '')
+    public function __invoke(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
 

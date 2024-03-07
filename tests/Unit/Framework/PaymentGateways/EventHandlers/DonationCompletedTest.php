@@ -50,7 +50,7 @@ class DonationCompletedTest extends TestCase
         $donation->status = DonationStatus::PENDING();
         $donation->save();
 
-        give(DonationCompleted::class)($donation->gatewayTransactionId, true);
+        give(DonationCompleted::class)($donation->gatewayTransactionId, 'test', true);
 
         // re-fetch donation
         $donation = Donation::find($donation->id);
