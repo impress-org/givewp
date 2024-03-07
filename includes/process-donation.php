@@ -331,7 +331,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  * Donation Form Validate Fields.
  *
  * @access private
- * @unreleased validate serialized fields
+ * @since 3.5.0 validate serialized fields
  * @since  1.0
  *
  * @return bool|array
@@ -415,7 +415,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
- * @unreleased
+ * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {

@@ -1,15 +1,21 @@
 import type {HeaderProps} from '@givewp/forms/propTypes';
+import cx from 'classnames';
 
 /**
- * @unreleased add HeaderImage
+ * @since 3.5.0 add HeaderImage
  * @since 3.0.0
  */
-export default function Header({HeaderImage, Title, Description, Goal}: HeaderProps) {
-    const {designSettingsImageStyle, designSettingsImageUrl} = window.givewp.form.hooks.useDonationFormSettings();
+export default function Header({ HeaderImage, Title, Description, Goal, isMultiStep }: HeaderProps) {
+    const { designSettingsImageStyle, designSettingsImageUrl } = window.givewp.form.hooks.useDonationFormSettings();
 
     if (!designSettingsImageUrl) {
         return (
-            <div className={`givewp-layouts-header__templates-ms`}>
+            <div className={
+                cx({
+                        'givewp-layouts-header__templates': !isMultiStep,
+                        'givewp-layouts-header__templates-ms': isMultiStep
+                    }
+                )}>
                 <Title />
                 <Description />
                 <Goal />
@@ -19,7 +25,12 @@ export default function Header({HeaderImage, Title, Description, Goal}: HeaderPr
 
     return (
         <div
-            className={`givewp-layouts-header__templates-ms givewp-layouts-header__templates-ms--${designSettingsImageStyle}`}
+            className={cx({
+                'givewp-layouts-header__templates': !isMultiStep,
+                [`givewp-layouts-header__templates--${designSettingsImageStyle}`]: !isMultiStep,
+                'givewp-layouts-header__templates-ms': isMultiStep,
+                [`givewp-layouts-header__templates-ms--${designSettingsImageStyle}`]: isMultiStep
+            })}
         >
             <HeaderImageTemplates
                 imagePosition={designSettingsImageStyle}
@@ -32,7 +43,7 @@ export default function Header({HeaderImage, Title, Description, Goal}: HeaderPr
     );
 }
 
-function HeaderImageTemplates({imagePosition, HeaderImage, Title, Description, Goal}) {
+function HeaderImageTemplates({ imagePosition, HeaderImage, Title, Description, Goal }) {
     switch (imagePosition) {
         case 'background':
             return (
