@@ -10,18 +10,51 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @unreleased
+ */
 class SubscriptionActiveTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased Rename "setStatus" to "__invoke"
-     * @since      2.3.0
+     * @unreleased
      *
-     * @return void
      * @throws Exception
      */
     public function testShouldSetStatusToActive()
+    {
+        $subscription = $this->getSubscriptionWithPendingInitialDonation();
+
+        give(SubscriptionActive::class)($subscription->gatewaySubscriptionId);
+
+        $subscription = Subscription::find($subscription->id); // re-fetch subscription
+
+        $this->assertTrue($subscription->status->isActive());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldNotSetStatusToActive()
+    {
+        $subscription = $this->getSubscriptionWithPendingInitialDonation();
+
+        give(SubscriptionActive::class)($subscription->gatewaySubscriptionId, 'test', true);
+
+        $subscription = Subscription::find($subscription->id); // re-fetch subscription
+
+        $this->assertNotTrue($subscription->status->isActive());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function getSubscriptionWithPendingInitialDonation(): Subscription
     {
         /** @var Subscription $subscription */
         $subscription = Subscription::factory()->createWithDonation([
@@ -30,13 +63,10 @@ class SubscriptionActiveTest extends TestCase
         ]);
 
         $subscriptionInitialDonation = $subscription->initialDonation();
-        $subscriptionInitialDonation->status = DonationStatus::COMPLETE();
+        $subscriptionInitialDonation->status = DonationStatus::PENDING();
         $subscriptionInitialDonation->gatewayTransactionId = 'gateway-transaction-id';
         $subscriptionInitialDonation->save();
 
-        give(SubscriptionActive::class)($subscription->gatewaySubscriptionId);
-
-        $subscription = Subscription::find($subscription->id); // re-fetch subscription
-        $this->assertTrue($subscription->status->isActive());
+        return $subscription;
     }
 }
