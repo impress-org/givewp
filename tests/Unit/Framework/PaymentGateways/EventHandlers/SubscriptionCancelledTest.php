@@ -9,15 +9,16 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @unreleased
+ */
 class SubscriptionCancelledTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased Rename "setStatus" to "__invoke"
-     * @since      2.3.0
+     * @unreleased
      *
-     * @return void
      * @throws Exception
      */
     public function testShouldSetStatusToCancelled()
