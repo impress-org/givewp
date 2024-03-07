@@ -41,6 +41,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
             const response = await API.fetchWithArgs(endpoint, data, 'POST');
 
             handleClose(response);
+            reset();
         } catch (error) {
             console.error('Error submitting ticket data', error);
         }
