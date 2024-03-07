@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Helpers;
+namespace Give\Framework\ActionScheduler;
 
 use ActionScheduler;
 
