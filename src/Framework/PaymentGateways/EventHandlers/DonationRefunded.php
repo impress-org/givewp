@@ -3,7 +3,6 @@
 namespace Give\Framework\PaymentGateways\EventHandlers;
 
 use Exception;
-use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
 
@@ -19,7 +18,7 @@ class DonationRefunded
      */
     public function __invoke(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
-        $donation = give(DonationRepository::class)->getByGatewayTransactionId($gatewayTransactionId);
+        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
 
         if ( ! $donation || $donation->status->isRefunded()) {
             return;
