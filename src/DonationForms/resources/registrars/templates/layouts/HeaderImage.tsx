@@ -4,7 +4,6 @@ import {HeaderImageProps} from '@givewp/forms/propTypes';
  * @since 3.5.0
  */
 export default function HeaderImage({url, alt, color, opacity}: HeaderImageProps) {
-    // @ts-ignore
     return (
         <>
             {color && (
