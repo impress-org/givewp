@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\PaymentGateways\Actions;
+namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions;
 
 use Exception;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;

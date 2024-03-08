@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\Framework\PaymentGateways\Actions;
+namespace Give\Tests\Unit\Framework\PaymentGateways\Webhooks\EventHandlers\Actions;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;

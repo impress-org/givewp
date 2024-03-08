@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Tests\Unit\Framework\PaymentGateways\Actions;
+namespace Give\Tests\Unit\Framework\PaymentGateways\Webhooks\EventHandlers\Actions;
 
 use Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateSubscriptionStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscriptionStatus;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;

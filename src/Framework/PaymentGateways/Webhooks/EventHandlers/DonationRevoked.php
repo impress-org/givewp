@@ -4,7 +4,7 @@ namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers;
 
 use Exception;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\PaymentGateways\Actions\UpdateDonationStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 
 /**
  * @unreleased

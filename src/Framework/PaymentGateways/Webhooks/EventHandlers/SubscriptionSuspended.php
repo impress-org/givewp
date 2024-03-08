@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers;
 
 use Exception;
-use Give\Framework\PaymentGateways\Actions\UpdateSubscriptionStatus;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscriptionStatus;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
