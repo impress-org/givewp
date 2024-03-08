@@ -41,7 +41,7 @@ class UpdateSubscriptionStatus
 
 
     /**
-     * @since 2.2.0
+     * @unreleased
      */
     protected function getMessageFromStatus(SubscriptionStatus $status): string
     {

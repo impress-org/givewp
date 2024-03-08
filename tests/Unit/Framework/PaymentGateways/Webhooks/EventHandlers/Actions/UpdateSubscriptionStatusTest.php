@@ -17,8 +17,7 @@ class UpdateSubscriptionStatusTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased   Remove the "$gatewaySubscriptionId" parameter from UpdateSubscriptionStatus action
-     * @since        2.3.0
+     * @unreleased
      *
      * @dataProvider subscriptionStatus
      *
@@ -41,7 +40,7 @@ class UpdateSubscriptionStatusTest extends TestCase
     }
 
     /**
-     * @since 2.3.0
+     * @unreleased
      */
     public function subscriptionStatus(): array
     {
