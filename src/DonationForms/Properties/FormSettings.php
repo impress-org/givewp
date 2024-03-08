@@ -323,9 +323,9 @@ class FormSettings implements Arrayable, Jsonable
             $array['designSettingsTextFieldStyle']
         ) : DesignSettingsTextFieldStyle::DEFAULT();
 
-        $self->designSettingsImageColor = $array['designSettingsImageColor'];
+        $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
 
-        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'];
+        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
 
         return $self;
     }
