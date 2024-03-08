@@ -5,7 +5,6 @@ namespace Give\Tests\Unit\Framework\PaymentGateways\Webhooks\EventHandlers;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionFirstDonationCompleted;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -26,8 +25,6 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
      */
     public function testShouldUpdateDonationAndSubscriptionStatuses()
     {
-        $this->maybeSkip();
-
         $subscription = Subscription::factory()->createWithDonation();
         $donation = $subscription->initialDonation();
 
@@ -54,8 +51,6 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
      */
     public function testShouldUpdateOnlyDonationStatus()
     {
-        $this->maybeSkip();
-
         $subscription = Subscription::factory()->createWithDonation();
         $donation = $subscription->initialDonation();
 
@@ -73,15 +68,5 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
 
         $this->assertTrue($subscription->status->isPending());
         $this->assertTrue($donation->status->isComplete());
-    }
-
-    /**
-     * @unreleased
-     */
-    private function maybeSkip()
-    {
-        if ( ! class_exists(UpdateDonationStatus::class)) {
-            $this->markTestSkipped('UpdateSubscriptionStatus class does not exist in GiveWP');
-        }
     }
 }
