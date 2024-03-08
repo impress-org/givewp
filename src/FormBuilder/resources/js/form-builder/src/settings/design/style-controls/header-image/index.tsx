@@ -4,6 +4,9 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
+/**
+ * @unreleased
+ */
 export default function HeaderImage({dispatch}) {
     const {
         settings: {designSettingsImageOpacity, designSettingsImageColor},
