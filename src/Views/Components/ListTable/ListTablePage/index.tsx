@@ -84,7 +84,7 @@ export default function ListTablePage({
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
-    const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
+    const [filters, setFilters] = useState(getInitialFilterState(filterSettings, apiSettings));
     const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
         confirm: (selected) => {},
         action: (selected) => {},
