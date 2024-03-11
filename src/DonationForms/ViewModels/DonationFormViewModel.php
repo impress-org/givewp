@@ -86,7 +86,6 @@ class DonationFormViewModel
         return $this->formSettings->secondaryColor ?? '';
     }
 
-
     /**
      * @since 3.0.0
      */
@@ -187,7 +186,7 @@ class DonationFormViewModel
         $totalCountLabel = $this->getCountLabel($goalType);
 
         return [
-            'totalRevenue'    => $totalRevenue,
+            'totalRevenue' => $totalRevenue,
             'totalCountValue' => $totalCountValue,
             'totalCountLabel' => $totalCountLabel,
         ];
@@ -213,26 +212,26 @@ class DonationFormViewModel
         $formDesign = $this->getFormDesign($this->designId());
 
         return [
-            'donateUrl'            => $donateUrl,
-            'validateUrl'          => $validateUrl,
-            'authUrl'              => $authUrl,
+            'donateUrl' => $donateUrl,
+            'validateUrl' => $validateUrl,
+            'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view',
             ],
-            'registeredGateways'   => $formDataGateways,
-            'form'                 => array_merge($formApi->jsonSerialize(), [
+            'registeredGateways' => $formDataGateways,
+            'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal'     => $donationFormGoalData->toArray(),
-                'stats'    => $this->formStatsData(),
-                'design'   => $formDesign ? [
-                    'id'                       => $formDesign::id(),
-                    'name'                     => $formDesign::name(),
-                    'isMultiStep'              => $formDesign->isMultiStep(),
+                'goal' => $donationFormGoalData->toArray(),
+                'stats' => $this->formStatsData(),
+                'design' => $formDesign ? [
+                    'id' => $formDesign::id(),
+                    'name' => $formDesign::name(),
+                    'isMultiStep' => $formDesign->isMultiStep(),
                     'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
-            'previewMode'          => $this->previewMode,
+            'previewMode' => $this->previewMode,
         ];
     }
 
