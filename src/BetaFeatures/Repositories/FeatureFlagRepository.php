@@ -9,7 +9,7 @@ class FeatureFlagRepository
      */
     public function eventTickets(): bool
     {
-        return $this->enabled('event_tickets', true);
+        return $this->enabled('event_tickets', false);
     }
 
     /**
