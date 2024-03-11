@@ -11,7 +11,7 @@ class RegisterSettingSection
 {
     public function __invoke($sections)
     {
-        $sections['beta'] = apply_filters('givewp_settings_section_title_beta', 'Beta Features', 'give');
+        $sections['beta'] = apply_filters('givewp_settings_section_title_beta', __('Beta Features', 'give'));
         return $sections;
     }
 }
