@@ -48,4 +48,5 @@ export type FormSettings = {
     designSettingsLogoPosition: string;
     designSettingsSectionStyle: string;
     designSettingsTextFieldStyle: string;
+    formExcerpt: string;
 };

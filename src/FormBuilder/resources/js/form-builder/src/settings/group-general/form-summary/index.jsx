@@ -1,14 +1,14 @@
-import { PanelRow, SelectControl, TextControl } from "@wordpress/components";
-import { __ } from "@wordpress/i18n";
+import {PanelRow, SelectControl, TextareaControl, TextControl} from '@wordpress/components';
+import {__} from '@wordpress/i18n';
 
-import { isFormPageEnabled, PageSlugControl } from "./page-slug";
-import { cleanForSlug } from "@wordpress/url";
+import {isFormPageEnabled, PageSlugControl} from './page-slug';
+import {cleanForSlug} from '@wordpress/url';
 
 /**
  * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const FormSummarySettings = ({settings, setSettings}) => {
-    const {formTitle, pageSlug, formStatus, newFormStatus} = settings;
+    const {formTitle, pageSlug, formStatus, newFormStatus, formExcerpt} = settings;
     const isPublished = ['publish', 'private'].includes(formStatus);
     const isTitleSlug = !isPublished && cleanForSlug(formTitle) === pageSlug;
 
@@ -49,6 +49,33 @@ const FormSummarySettings = ({settings, setSettings}) => {
                         {label: __('Private', 'give'), value: 'private'},
                     ]}
                     onChange={(newFormStatus) => setSettings({newFormStatus})}
+                />
+            </PanelRow>
+
+            <PanelRow>
+                <TextareaControl
+                    label={'Excerpt'}
+                    help={
+                        __(
+                            'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.',
+                            'give'
+                        ) /*createInterpolateElement(
+                        __(
+                            'Excerpts are optional hand-crafted summaries of your content that can be used in your theme. <a>Learn more about manual excerpts</a>.',
+                            'give'
+                        ),
+                        {
+                            a: (
+                                <a
+                                    href="https://wordpress.org/documentation/article/what-is-an-excerpt-classic-editor/"
+                                    target="_blank"
+                                />
+                            ),
+                        }
+                    )*/
+                    }
+                    value={formExcerpt}
+                    onChange={(formExcerpt) => setSettings({formExcerpt})}
                 />
             </PanelRow>
         </>

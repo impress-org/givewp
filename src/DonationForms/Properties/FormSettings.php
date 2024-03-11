@@ -219,6 +219,12 @@ class FormSettings implements Arrayable, Jsonable
     public $designSettingsTextFieldStyle;
 
     /**
+     * @unreleased
+     * @var string
+     */
+    public $formExcerpt;
+
+    /**
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -310,6 +316,8 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
             $array['designSettingsTextFieldStyle']
         ) : DesignSettingsTextFieldStyle::DEFAULT();
+
+        $self->formExcerpt = $array['formExcerpt'] ?? '';
 
         return $self;
     }
