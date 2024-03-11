@@ -1,0 +1,41 @@
+.givewp-donation-form-modal {
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+
+    &__dialog {
+        width: 100%;
+        margin: auto;
+        max-height: 90%;
+        overflow-y: scroll;
+    }
+
+    &__close {
+        display: flex;
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        padding: 1.5rem;
+        width: fit-content;
+        background: #fff;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-top-right-radius: 0.5rem;
+        z-index: 999;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
+
+        &:hover {
+            border: 1px solid grey;
+        }
+    }
+}
