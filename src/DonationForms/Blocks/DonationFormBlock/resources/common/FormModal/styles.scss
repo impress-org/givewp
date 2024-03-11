@@ -12,15 +12,15 @@
     &__dialog {
         width: 100%;
         margin: auto;
-        max-height: 90%;
+        max-height: 95%;
         overflow-y: scroll;
     }
 
     &__close {
         display: flex;
         position: absolute;
-        top: .5rem;
-        right: .5rem;
+        top: 2.25rem;
+        right: .25rem;
         padding: 1.5rem;
         width: fit-content;
         background: #fff;
