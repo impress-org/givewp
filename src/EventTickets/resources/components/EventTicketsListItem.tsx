@@ -7,6 +7,8 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
     const formatter = useCurrencyFormatter(currency);
     const ticketPrice =
         ticketType.price > 0 ? formatter.format((Number(ticketType.price) * currencyRate) / 100) : __('Free', 'give');
+    const remainingTickets =
+        ticketType.ticketsAvailable !== null ? ticketType.ticketsAvailable - selectedTickets : null;
 
     const handleButtonClick = (quantity) => (e) => {
         e.preventDefault();
@@ -21,18 +23,26 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                 <p>{ticketType.description}</p>
             </div>
             <div className={'givewp-event-tickets__tickets__ticket__quantity'}>
-                <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                    <button onClick={handleButtonClick(selectedTickets - 1)}>
-                        <Icon icon={minus} />
-                    </button>
-                    <input type="text" value={selectedTickets} />
-                    <button onClick={handleButtonClick(selectedTickets + 1)}>
-                        <Icon icon={plus} />
-                    </button>
-                </div>
-                <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
-                    {ticketType.ticketsAvailable - selectedTickets} {__('remaining', 'give')}
-                </p>
+                {remainingTickets === null || remainingTickets > 0 ? (
+                    <>
+                        <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
+                            <button onClick={handleButtonClick(selectedTickets - 1)}>
+                                <Icon icon={minus} />
+                            </button>
+                            <input type="text" value={selectedTickets} />
+                            <button onClick={handleButtonClick(selectedTickets + 1)}>
+                                <Icon icon={plus} />
+                            </button>
+                        </div>
+                        {remainingTickets > 0 && (
+                            <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
+                                {remainingTickets} {__('remaining', 'give')}
+                            </p>
+                        )}
+                    </>
+                ) : (
+                    <p>{__('Sold out', 'give')}</p>
+                )}
             </div>
         </div>
     );
