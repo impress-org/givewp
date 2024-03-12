@@ -11,6 +11,7 @@ use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Framework\Support\ValueObjects\Money;
 
 class ConvertEventTicketsBlockToFieldsApi
 {
@@ -42,6 +43,14 @@ class ConvertEventTicketsBlockToFieldsApi
                     }, json_decode($value));
 
                     array_walk($ticketPurchaseData, new GenerateTicketsFromPurchaseData($donation));
+
+                    $donation->amount = array_reduce($ticketPurchaseData, function (Money $carry, TicketPurchaseData $purchaseData) {
+                        return $carry->add(
+                            $purchaseData->ticketType->price->multiply($purchaseData->quantity)
+                        );
+                    }, $donation->amount);
+
+                    $donation->save();
                 });
 
                 return $eventTicketsField;
