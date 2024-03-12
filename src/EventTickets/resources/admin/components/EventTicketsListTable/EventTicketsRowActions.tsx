@@ -25,6 +25,11 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
     const confirmDelete = (selected) => <p>{sprintf(__('Really delete event #%d?', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
+        if (salesCount > 0) {
+            alert(__('This event cannot be deleted because it has donations associated with it.', 'give'));
+            return;
+        }
+        
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
     };
 
@@ -34,15 +39,13 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
                 href={`edit.php?post_type=give_forms&page=give-event-tickets&id=${item.id}`}
                 displayText={__('Edit', 'give')}
             />
-            {salesCount === 0 && (
-                <RowAction
-                    onClick={confirmModal}
-                    actionId={item.id}
-                    displayText={__('Delete', 'give')}
-                    hiddenText={item.title}
-                    highlight
-                />
-            )}
+            <RowAction
+                onClick={confirmModal}
+                actionId={item.id}
+                displayText={__('Delete', 'give')}
+                hiddenText={item.title}
+                highlight
+            />
         </>
     );
 }
