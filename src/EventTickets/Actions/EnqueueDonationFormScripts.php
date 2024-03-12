@@ -2,8 +2,6 @@
 
 namespace Give\EventTickets\Actions;
 
-use Give\Framework\EnqueueScript;
-
 /**
  * @unreleased
  */
@@ -13,13 +11,13 @@ class EnqueueDonationFormScripts
     {
         $scriptAsset = require GIVE_PLUGIN_DIR . 'build/eventTicketsTemplate.asset.php';
 
-        (new EnqueueScript(
+        wp_enqueue_script(
             'givewp-event-tickets-template',
-            'build/eventTicketsTemplate.js',
-            GIVE_PLUGIN_DIR,
-            GIVE_PLUGIN_URL,
-            'give'
-        ))->enqueue();
+            GIVE_PLUGIN_URL . 'build/eventTicketsTemplate.js',
+            $scriptAsset['dependencies'],
+            false,
+            true
+        );
 
         wp_enqueue_style(
             'givewp-event-tickets-template',
