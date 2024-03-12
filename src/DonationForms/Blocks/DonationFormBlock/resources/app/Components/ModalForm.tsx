@@ -3,6 +3,7 @@ import IframeResizer from 'iframe-resizer-react';
 
 import '../../editor/styles/index.scss';
 import FormModal from '../../common/FormModal';
+import useFormWidth from '../../editor/hooks/useFormWidth';
 
 type ModalFormProps = {
     dataSrc: string;
@@ -14,6 +15,7 @@ type ModalFormProps = {
 };
 
 /**
+ * @unreleased
  * @since 3.4.0
  * @since 3.2.0 include types. update BEM classnames.
  * @since 3.0.0
@@ -27,6 +29,7 @@ export default function ModalForm({
     formViewUrl,
 }: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
+    const {formWidth, getFormWidth} = useFormWidth();
 
     const resetDataSrcUrl = () => {
         if (isFormRedirect) {
@@ -40,9 +43,9 @@ export default function ModalForm({
                 id={embedId}
                 src={dataSrcUrl}
                 checkOrigin={false}
+                onLoad={getFormWidth}
                 style={{
-                    width: '1px',
-                    minWidth: '100%',
+                    width: `${formWidth}px`,
                     border: 'none',
                 }}
             />
