@@ -16,6 +16,22 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
             <h2>{__('Spotlight on awesome features', 'give')}</h2>
             <div className={'givewp-welcome-banner-right-content__media-container'}>
                 <SpotLight
+                    title={
+                        <>
+                            {__('Event tickets', 'give')} <span className={'givewp-beta-icon'}>BETA</span>
+                        </>
+                    }
+                    description={__(
+                        'Easily connect your events to your donation form. To enable this go to Settings > General > New feature and enable event tickets',
+                        'give'
+                    )}
+                >
+                    <VideoPlayer
+                        src={`${assets}/event-tickets.mp4`}
+                        fallbackImage={`${assets}/event-tickets.min.png`}
+                    />
+                </SpotLight>
+                <SpotLight
                     title={__('Design mode', 'give')}
                     description={__(
                         'See exactly what your form looks like for potential donors using the “Design” tab of the builder. Changes are visible immediately.',
@@ -23,20 +39,6 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                     )}
                 >
                     <VideoPlayer src={`${assets}/design-mode.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
-                </SpotLight>
-
-                <SpotLight
-                    title={
-                        <>
-                            {__('Event tickets', 'give')} <span className={'givewp-beta-icon'}>BETA</span>
-                        </>
-                    }
-                    description={__('Easily create and manage your events, and connect to your donation form.', 'give')}
-                >
-                    <VideoPlayer
-                        src={`${assets}/event-tickets.mp4`}
-                        fallbackImage={`${assets}/event-tickets.min.png`}
-                    />
                 </SpotLight>
             </div>
         </section>
