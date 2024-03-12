@@ -3,7 +3,6 @@ import {useSelect} from '@wordpress/data';
 
 import '../styles/index.scss';
 import FormModal from '../../common/FormModal';
-import useFormWidth from '../hooks/useFormWidth';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
@@ -31,7 +30,6 @@ export default function DonationFormBlockPreview({
 }: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
-    const {formWidth, getFormWidth} = useFormWidth();
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
@@ -48,9 +46,8 @@ export default function DonationFormBlockPreview({
             <IframeResizer
                 src={`/?givewp-route=donation-form-view&form-id=${formId}`}
                 checkOrigin={false}
-                onLoad={getFormWidth}
                 style={{
-                    width: `${formWidth}px`,
+                    minWidth: '100%',
                     pointerEvents: enableIframe,
                 }}
             />

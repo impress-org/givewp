@@ -13,7 +13,9 @@
         position: relative;
         margin: auto;
         max-height: 85%;
+        width: 100%;
         padding-right: 3rem;
+        padding-top: 4rem;
         overflow-y: scroll;
 
         &:focus {
@@ -24,8 +26,8 @@
     &__close {
         display: flex;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: .25rem;
+        right: 50%;
         padding: .75rem;
         width: fit-content;
         background: #fff;
