@@ -5,7 +5,7 @@ import EventTicketsApi from '../../api';
 const apiSettings = window.GiveEventTicketsDetails;
 const eventTicketsApi = new EventTicketsApi(apiSettings);
 
-export function TicketTypesRowActions({tickets, openEditModal}) {
+export function TicketTypesRowActions({tickets, setTickets, openEditModal}) {
     return (row) => {
         const ticket = tickets.find((ticket) => ticket.id === row.id);
 
@@ -20,15 +20,14 @@ export function TicketTypesRowActions({tickets, openEditModal}) {
             });
         };
 
-        const deleteItem = async (selected) =>
-            eventTicketsApi.fetchWithArgs('/event/ticket-type/' + ticket.id, {}, 'DELETE');
+        const deleteItem = async (selected) => eventTicketsApi.fetchWithArgs('/ticket-type/' + ticket.id, {}, 'DELETE');
 
         const confirmModal = async () => {
             const confirmDelete = confirm(sprintf(__('Really delete ticket #%d?', 'give'), ticket.id));
 
             if (confirmDelete) {
                 if (await deleteItem(ticket.id)) {
-                    // Refresh data
+                    setTickets((tickets) => tickets.filter((t) => t.id !== ticket.id));
                 }
             }
         };
@@ -36,13 +35,15 @@ export function TicketTypesRowActions({tickets, openEditModal}) {
         return (
             <>
                 <RowAction onClick={handleEditClick} displayText={__('Edit', 'give')} />
-                <RowAction
-                    onClick={confirmModal}
-                    actionId={ticket.id}
-                    displayText={__('Delete', 'give')}
-                    hiddenText={ticket.title}
-                    highlight
-                />
+                {ticket.salesCount === 0 && (
+                    <RowAction
+                        onClick={confirmModal}
+                        actionId={ticket.id}
+                        displayText={__('Delete', 'give')}
+                        hiddenText={ticket.title}
+                        highlight
+                    />
+                )}
             </>
         );
     };

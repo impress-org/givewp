@@ -98,7 +98,11 @@ export default function TicketTypesSection() {
                         tableHeaders={tableHeaders}
                         data={formattedData}
                         blankSlate={<BlankSlate openModal={openModal} />}
-                        rowActions={TicketTypesRowActions({tickets: data, openEditModal: openModal})}
+                        rowActions={TicketTypesRowActions({
+                            tickets: data,
+                            setTickets: setData,
+                            openEditModal: openModal,
+                        })}
                     />
                     <TicketTypeFormModal
                         apiSettings={{apiRoot, apiNonce}}
