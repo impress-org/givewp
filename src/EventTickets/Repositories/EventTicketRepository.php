@@ -2,12 +2,14 @@
 
 namespace Give\EventTickets\Repositories;
 
+use Give\Donations\Models\Donation;
 use Give\EventTickets\Models\EventTicket;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -219,5 +221,22 @@ class EventTicketRepository
     {
         return $this->prepareQuery()
             ->where('donation_id', $donationId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getTotalByDonation(Donation $donation): Money
+    {
+        $eventTickets = $this->queryByDonationId($donation->id)->getAll();
+        $currency = $donation->amount->getCurrency();
+
+        return array_reduce($eventTickets, static function (Money $carry, EventTicket $eventTicket) {
+            $ticketType = $eventTicket->ticketType()->get();
+
+            return $carry->add(
+                $ticketType->price
+            );
+        }, new Money(0, $currency));
     }
 }

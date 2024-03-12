@@ -140,7 +140,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
+                    ['amount' => apply_filters('givewp_generate_confirmation_page_receipt_detail_donation_amount', $receipt->donation->intendedAmount()->formatToDecimal(), $receipt)]
                 ),
             ]
         );
