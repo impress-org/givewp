@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('give_admin_field_beta_features_feedback_link', function () {
             echo sprintf(
-                '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
+                '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" alt="feedback link icon" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
                 GIVE_PLUGIN_URL . 'assets/dist/images/admin/feedback-icon.svg',
                 __('How can we improve this feature?', 'give'),
                 __('Submit your feedback.', 'give')
