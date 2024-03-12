@@ -62,9 +62,13 @@ class CreateEventTicketType implements RestRoute
                     ],
                     'capacity' => [
                         'type' => 'integer',
-                        'required' => true,
-                        'sanitize_callback' => 'absint',
-                        'validate_callback' => 'rest_is_integer',
+                        'required' => false,
+                        'sanitize_callback' => function ($value) {
+                            return $value === 'null' ? null : absint($value);
+                        },
+                        'validate_callback' => function ($value) {
+                            return $value === 'null' || rest_is_integer($value);
+                        },
                     ],
                 ],
             ]

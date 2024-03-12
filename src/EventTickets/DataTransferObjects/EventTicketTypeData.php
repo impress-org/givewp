@@ -69,7 +69,7 @@ final class EventTicketTypeData
         $self->price = $ticketType->price->formatToMinorAmount();
         $self->capacity = $ticketType->capacity;
         $self->salesCount = $ticketType->eventTickets()->count();
-        $self->ticketsAvailable = $self->capacity - $self->salesCount;
+        $self->ticketsAvailable = ! is_null($self->capacity) ? $self->capacity - $self->salesCount : null;
 
         return $self;
     }

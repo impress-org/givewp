@@ -26,7 +26,6 @@ class EventTicketTypeRepository
         'eventId',
         'title',
         'price',
-        'capacity',
     ];
 
     /**
