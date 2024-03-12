@@ -62,7 +62,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                 <label htmlFor="title">{__('Ticket Name', 'give')}</label>
                 <input
                     type="text"
-                    {...register('title', {required: __('The ticket must have a name!', 'give')})}
+                    {...register('title', {required: __('The ticket name is required.', 'give')})}
                     aria-invalid={errors.title ? 'true' : 'false'}
                     placeholder={__('Enter ticket name', 'give')}
                 />
@@ -83,7 +83,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                     <label htmlFor="capacity">{__('Capacity', 'give')}</label>
                     <input
                         type="number"
-                        {...register('capacity', {required: __('The ticket must have a capacity!', 'give')})}
+                        {...register('capacity', {required: __('The ticket capacity is required.', 'give')})}
                     />
                 </div>
             </div>
