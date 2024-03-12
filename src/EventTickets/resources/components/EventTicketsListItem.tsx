@@ -38,7 +38,7 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                         </p>
                     </>
                 ) : (
-                    <p>{__('Sold out', 'give')}</p>
+                    <span>{__('Sold out', 'give')}</span>
                 )}
             </div>
         </div>
