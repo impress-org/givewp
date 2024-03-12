@@ -42,6 +42,7 @@ const Feedback = () => {
                         </div>
                         <div>
                             <a
+                                target="_blank"
                                 href={feedbackUrl}
                                 rel="noopener noreferrer"
                                 onClick={closeCallback}
