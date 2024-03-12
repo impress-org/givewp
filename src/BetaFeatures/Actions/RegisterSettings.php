@@ -24,6 +24,7 @@ class RegisterSettings
     {
         return [
             ['id' => 'give_title_beta_features_1', 'type' => 'title'],
+            ['id' => 'give_beta_features_banner', 'type' => 'beta_features'],
             [
                 'name' => __('Event Tickets', 'give'),
                 'desc' => __(

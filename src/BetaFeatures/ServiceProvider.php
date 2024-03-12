@@ -38,6 +38,10 @@ class ServiceProvider implements ServiceProviderInterface
         add_filter('givewp_settings_section_title_beta', function ($title) {
             return $this->getTitleWithNotificationCounter($title);
         });
+
+        add_action('give_admin_field_beta_features', function(){
+            echo sprintf('<div class="give-admin-beta-features-message"><p><span class="givewp-beta-icon">BETA</span> %s</p></div>', __('Beta features are a way to test out upcoming features.  They are nearly complete, yet still under development and may require changes in the future.'));
+        });
     }
 
     /**
