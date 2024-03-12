@@ -68,3 +68,6 @@ define( 'WP_TESTS_TITLE', 'Test Blog' );
 define( 'WP_PHP_BINARY', 'php' );
 
 define( 'WPLANG', '' );
+
+// needed in order to run event ticket unit tests while in beta
+define('GIVE_FEATURE_ENABLE_EVENT_TICKETS', true);

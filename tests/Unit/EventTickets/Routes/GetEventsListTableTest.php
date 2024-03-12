@@ -17,17 +17,6 @@ class GetEventsListTableTest extends TestCase
 
     /**
      * @unreleased
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        // enable event tickets while in beta mode
-        give_update_option('enable_event_tickets', 'enabled');
-    }
-
-    /**
-     * @unreleased
      *
      * @throws Exception
      */
