@@ -26,15 +26,16 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                 </SpotLight>
 
                 <SpotLight
-                    title={__('Custom Paragraph and Sections', 'give')}
-                    description={__(
-                        'Add custom paragraphs or add whole sections anywhere in your form, no code required.',
-                        'give'
-                    )}
+                    title={
+                        <>
+                            {__('Event tickets', 'give')} <span className={'givewp-beta-icon'}>BETA</span>
+                        </>
+                    }
+                    description={__('Easily create and manage your events, and connect to your donation form.', 'give')}
                 >
                     <VideoPlayer
-                        src={`${assets}/custom-fields.mp4`}
-                        fallbackImage={`${assets}/custom-fields.min.png`}
+                        src={`${assets}/event-tickets.mp4`}
+                        fallbackImage={`${assets}/event-tickets.min.png`}
                     />
                 </SpotLight>
             </div>
