@@ -26,7 +26,7 @@ class RegisterSettings
             ['id' => 'give_title_beta_features_1', 'type' => 'title'],
             ['id' => 'give_beta_features_banner', 'type' => 'beta_features'],
             [
-                'name' => sprintf('%s <span class="givewp-beta-icon">BETA</span>',__('Event Tickets', 'give') ),
+                'name' => __('Event Tickets', 'give'),
                 'desc' => __(
                     'If enabled, you’ll be get access to the event tickets feature where you can create and manage events, and link them to your donation form. Since this is in a beta, your feedback is crucial to help us improve and make the experience better before making it public.',
                     'give'
