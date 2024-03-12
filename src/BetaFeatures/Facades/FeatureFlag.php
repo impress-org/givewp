@@ -2,16 +2,24 @@
 
 namespace Give\BetaFeatures\Facades;
 
+use Give\BetaFeatures\Repositories\FeatureFlagRepository;
 use Give\Framework\Support\Facades\Facade;
 
 /**
+ * @unreleased
+ *
+ * @method static void resetNotificationCount()
+ * @method static int getNotificationCount()
  * @method static bool eventTickets()
  * @method static bool enabled(string $feature)
  */
 class FeatureFlag extends Facade
 {
-    protected function getFacadeAccessor()
+    /**
+     * @unreleased
+     */
+    protected function getFacadeAccessor(): string
     {
-        return \Give\BetaFeatures\Repositories\FeatureFlagRepository::class;
+        return FeatureFlagRepository::class;
     }
 }

@@ -3,12 +3,17 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageDonationTotal;
+use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageEventTicketDetails;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
+use Give\EventTickets\Actions\UpdateDonationConfirmationPageReceiptDonationAmount;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -107,5 +112,10 @@ class ServiceProvider implements ServiceProviderInterface
             10,
             4
         );
+
+        //TODO: write unit tests for these actions
+        Hooks::addAction('givewp_generate_confirmation_page_receipt_before_donation_total', AddEventTicketsToDonationConfirmationPageDonationTotal::class);
+        Hooks::addAction('givewp_generate_confirmation_page_receipt_fill_event_ticket_details', AddEventTicketsToDonationConfirmationPageEventTicketDetails::class);
+        Hooks::addFilter('givewp_generate_confirmation_page_receipt_detail_donation_amount', UpdateDonationConfirmationPageReceiptDonationAmount::class, '__invoke', 10, 2);
     }
 }

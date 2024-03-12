@@ -2,6 +2,8 @@
 
 namespace Give\BetaFeatures\Actions;
 
+use Give\BetaFeatures\Facades\FeatureFlag;
+
 /**
  * @unreleased
  */
@@ -12,6 +14,8 @@ class RegisterSettings
         if('beta' !== give_get_current_setting_section()) {
             return $settings;
         }
+
+        FeatureFlag::resetNotificationCount();
 
         return $this->getSettings();
     }
@@ -28,7 +32,7 @@ class RegisterSettings
                 ),
                 'id' => 'enable_event_tickets',
                 'type' => 'radio_inline',
-                'default' => 'enabled',
+                'default' => 'disabled',
                 'options' => [
                     'enabled' => __('Enabled', 'give'),
                     'disabled' => __('Disabled', 'give'),

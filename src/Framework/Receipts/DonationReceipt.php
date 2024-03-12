@@ -34,6 +34,9 @@ class DonationReceipt implements Arrayable, Jsonable
      * @var ReceiptDetailCollection
      */
     public $subscriptionDetails;
+    /**
+     * @var ReceiptDetailCollection
+     */
     public $eventTicketsDetails;
 
     /**

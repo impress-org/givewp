@@ -10,9 +10,13 @@ class FeatureFlagRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testEventTicketsShouldBeEnabledByDefault()
+    public function testEventTicketsShouldNotBeEnabledByDefault()
     {
-        $this->assertTrue(FeatureFlag::eventTickets());
+        if (defined('GIVE_FEATURE_ENABLE_EVENT_TICKETS')){
+            $this->markTestSkipped();
+        } else {
+            $this->assertFalse(FeatureFlag::eventTickets());
+        }
     }
 
     public function testShouldReturnDisabledWhenNotSet()
