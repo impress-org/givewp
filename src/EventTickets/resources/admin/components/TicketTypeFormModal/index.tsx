@@ -27,15 +27,15 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
         reset({
             title: ticketData?.title || '',
             description: ticketData?.description || '',
-            price: ticketData?.price || null,
-            capacity: ticketData?.capacity || null,
+            price: ticketData?.price > 0 ? ticketData?.price : null,
+            capacity: ticketData?.capacity !== null ? ticketData?.capacity : null,
         });
     }, [ticketData, reset]);
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             data.price = data.price * 100;
-            data.capacity = data.capacity || 0;
+            data.capacity = data?.capacity || null;
 
             const endpoint = ticketData?.id ? `/ticket-type/${ticketData.id}` : `/event/${eventId}/ticket-types`;
             const response = await API.fetchWithArgs(endpoint, data, 'POST');
@@ -74,14 +74,14 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
             <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="price">{__('Price', 'give')}</label>
-                    <input type="number" {...register('price')} />
+                    <input type="number" {...register('price')} min={0} />
                     <span>
                         {__('Leave empty for', 'give')} <strong>{__('free', 'give')}</strong>
                     </span>
                 </div>
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="capacity">{__('Capacity', 'give')}</label>
-                    <input type="number" {...register('capacity')} />
+                    <input type="number" {...register('capacity')} min={ticketData?.salesCount ?? 0} />
                     <span>
                         {__('Leave empty for', 'give')} <strong>{__('unlimited', 'give')}</strong>
                     </span>

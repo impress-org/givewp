@@ -50,6 +50,10 @@ class SalesAmountColumn extends ModelColumn
                 'price' => $ticketType->price,
                 'capacity' => $ticketType->capacity,
             ];
+
+            if (is_null($ticketType->capacity)) {
+                $maxCapacitySales = __('Unlimited', 'give');
+            }
         }
 
         $salesTotal = array_reduce(
@@ -59,14 +63,19 @@ class SalesAmountColumn extends ModelColumn
             },
             new Money(0, give_get_currency())
         );
-        $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
-            return $carry->add($ticketType['price']->multiply($ticketType['capacity']));
-        }, new Money(0, give_get_currency()));
 
-        $salesPercentage = $maxCapacitySales->formatToMinorAmount() > 0 ? max(
-            min($salesTotal->formatToMinorAmount() / $maxCapacitySales->formatToMinorAmount(), 100),
-            0
-        ) : 0;
+        $salesPercentage = $salesTotal->getAmount() > 0 ? 100 : 0;
+
+        if ( ! isset($maxCapacitySales)) {
+            $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
+                return $carry->add($ticketType['price']->multiply($ticketType['capacity']));
+            }, new Money(0, give_get_currency()));
+
+            $salesPercentage = $maxCapacitySales->formatToMinorAmount() > 0 ? max(
+                min($salesTotal->formatToMinorAmount() / $maxCapacitySales->formatToMinorAmount(), 100),
+                0
+            ) : 0;
+        }
 
         $template = '
             <div
@@ -88,7 +97,7 @@ class SalesAmountColumn extends ModelColumn
             $salesPercentage,
             $salesTotal->formatToLocale($locale),
             __('of', 'give'),
-            $maxCapacitySales->formatToLocale($locale)
+            $maxCapacitySales instanceof Money ? $maxCapacitySales->formatToLocale($locale) : $maxCapacitySales
         );
     }
 }

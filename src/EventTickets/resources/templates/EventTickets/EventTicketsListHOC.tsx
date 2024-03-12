@@ -51,7 +51,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
             selectedQuantity = 0;
         }
 
-        if (selectedQuantity > ticketsAvailable) {
+        if (ticketsAvailable > 0 && selectedQuantity > ticketsAvailable) {
             selectedQuantity = ticketsAvailable;
         }
 
