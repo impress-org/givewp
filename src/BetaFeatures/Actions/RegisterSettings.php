@@ -40,6 +40,7 @@ class RegisterSettings
                 ],
             ],
             ['id' => 'give_title_beta_features_2', 'type' => 'sectionend'],
+            ['id' => 'give_beta_features_feedback_link', 'type' => 'beta_features_feedback_link'],
         ];
     }
 }
