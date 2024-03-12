@@ -11,6 +11,8 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
+    const salesCount = parseInt(item?.salesCount?.match(/^\d+/)[0], 10);
+
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const response = await eventTicketsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
@@ -23,6 +25,11 @@ export function EventTicketsRowActions({item, setUpdateErrors, parameters}) {
     const confirmDelete = (selected) => <p>{sprintf(__('Really delete event #%d?', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
+        if (salesCount > 0) {
+            alert(__('This event cannot be deleted because it has donations associated with it.', 'give'));
+            return;
+        }
+        
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
     };
 

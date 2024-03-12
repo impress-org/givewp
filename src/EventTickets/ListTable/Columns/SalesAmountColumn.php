@@ -22,7 +22,7 @@ class SalesAmountColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'sales-amount';
+        return 'salesAmount';
     }
 
     /**
