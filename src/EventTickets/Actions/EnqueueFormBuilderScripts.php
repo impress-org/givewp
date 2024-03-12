@@ -70,6 +70,10 @@ class EnqueueFormBuilderScripts
         }
 
         foreach ($ticketTypes as $ticketType) {
+            if ( ! isset($eventData[$ticketType->eventId])) {
+                continue;
+            }
+
             $eventData[$ticketType->eventId]['ticketTypes'][] = EventTicketTypeData::make($ticketType)->toArray();
         }
 
