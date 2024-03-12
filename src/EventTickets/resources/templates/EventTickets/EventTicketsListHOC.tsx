@@ -28,7 +28,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
                 const itemPrice = ticket.price * quantity * currencyRate;
                 donationSummary.addItem({
                     id: `eventTickets-${ticketId}`,
-                    label: `Ticket (${ticket.title})`,
+                    label: `Ticket (${ticket.title}) x${quantity}`,
                     value: itemPrice > 0 ? currencyFormatter.format(itemPrice / 100) : __('Free', 'give'),
                 });
                 amount += itemPrice;
