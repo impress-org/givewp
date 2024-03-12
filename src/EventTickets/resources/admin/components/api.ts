@@ -19,11 +19,20 @@ export default class EventTicketsApi {
             method: method,
             signal: signal,
             headers: this.headers,
-        }).then((res) => {
-            if (!res.ok) {
-                throw new Error();
-            }
-            return res.json();
-        });
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error();
+                }
+                return res.text();
+            })
+            .then((text) => {
+                try {
+                    return text ? JSON.parse(text) : {};
+                } catch (error) {
+                    console.error('Failed to parse JSON:', error);
+                    return {};
+                }
+            });
     };
 }
