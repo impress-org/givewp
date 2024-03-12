@@ -9,7 +9,7 @@ class FeatureFlagRepository
      */
     public function eventTickets(): bool
     {
-        if (defined('GIVE_FEATURE_ENABLE_EVENT_TICKETS') && GIVE_FEATURE_ENABLE_EVENT_TICKETS){
+        if (defined('GIVE_FEATURE_ENABLE_EVENT_TICKETS')){
             return GIVE_FEATURE_ENABLE_EVENT_TICKETS === true;
         }
 
