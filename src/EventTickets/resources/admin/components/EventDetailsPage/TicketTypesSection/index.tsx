@@ -78,7 +78,7 @@ export default function TicketTypesSection() {
             count: sprintf(
                 __('%d of %s', 'give'),
                 ticketType.salesCount,
-                ticketType.capacity > 0 ? ticketType.capacity : __('Unlimited', 'give')
+                ticketType.capacity ?? __('Unlimited', 'give')
             ),
             price: ticketType.price > 0 ? amountFormatter.format(ticketType.price / 100) : __('Free', 'give'),
         };

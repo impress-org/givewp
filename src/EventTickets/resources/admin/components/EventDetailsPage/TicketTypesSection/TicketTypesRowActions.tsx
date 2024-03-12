@@ -10,13 +10,9 @@ export function TicketTypesRowActions({tickets, openEditModal}) {
         const ticket = tickets.find((ticket) => ticket.id === row.id);
 
         const handleEditClick = () => {
-            const {id, title, description, price, capacity} = ticket;
             openEditModal({
-                id,
-                title,
-                description,
-                price: price / 100,
-                capacity,
+                ...ticket,
+                price: ticket?.price / 100,
             });
         };
 
