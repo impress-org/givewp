@@ -228,7 +228,7 @@ class EventTicketRepository
      */
     public function getTotalByDonation(Donation $donation): Money
     {
-        $eventTickets = $this->queryByDonationId($donation->id)->getAll();
+        $eventTickets = $this->queryByDonationId($donation->id)->getAll() ?? [];
         $currency = $donation->amount->getCurrency();
 
         return array_reduce($eventTickets, static function (Money $carry, EventTicket $eventTicket) {
