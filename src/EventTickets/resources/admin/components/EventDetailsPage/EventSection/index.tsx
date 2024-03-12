@@ -5,6 +5,7 @@ import EventFormModal from '../../EventFormModal';
 import locale from '../../../../date-fns-locale';
 import SectionTable from '../SectionTable';
 import {EventSectionRowActions} from './EventSectionRowActions';
+import styles from './EventSection.module.scss';
 
 const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details page', 'give');
 
@@ -41,7 +42,7 @@ export default function EventSection({setUpdateErrors}) {
     ];
 
     return (
-        <section>
+        <section id={styles.eventSection}>
             <h2>{__('Event', 'give')}</h2>
             <SectionTable
                 tableHeaders={tableHeaders}
