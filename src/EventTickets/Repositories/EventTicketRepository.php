@@ -220,4 +220,14 @@ class EventTicketRepository
         return $this->prepareQuery()
             ->where('donation_id', $donationId);
     }
+
+    /**
+     * @unreleased
+     */
+    public function tableExists(): bool
+    {
+        $tableName = DB::prefix('give_event_tickets');
+
+        return (bool)DB::get_var(DB::prepare("SHOW TABLES LIKE '%s'", $tableName));
+    }
 }

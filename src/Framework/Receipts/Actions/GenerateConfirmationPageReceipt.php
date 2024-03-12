@@ -6,15 +6,12 @@ use Exception;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
-use Give\EventTickets\Models\EventTicket;
-use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\TemplateTags\DonationTemplateTags;
 use Give\Log\Log;
 
@@ -69,11 +66,15 @@ class GenerateConfirmationPageReceipt
                     ]);
                 }
             } elseif ($field->getScope()->isDonor()) {
-                if (!metadata_exists('donor', $donation->donor->id,$field->getMetaKey() ?? $field->getName())) {
+                if (!metadata_exists('donor', $donation->donor->id, $field->getMetaKey() ?? $field->getName())) {
                     continue;
                 }
 
-                $value = give()->donor_meta->get_meta($donation->donor->id, $field->getMetaKey() ?? $field->getName(), true);
+                $value = give()->donor_meta->get_meta(
+                    $donation->donor->id,
+                    $field->getMetaKey() ?? $field->getName(),
+                    true
+                );
             } elseif ($field->getScope()->isDonation()) {
                 if (!metadata_exists('donation', $donation->id, $field->getMetaKey() ?? $field->getName())) {
                     continue;
@@ -98,8 +99,8 @@ class GenerateConfirmationPageReceipt
                 $donation
             );
 
-            if (!empty($label)){
-                 $receiptDetails[] = new ReceiptDetail(
+            if (!empty($label)) {
+                $receiptDetails[] = new ReceiptDetail(
                     $label,
                     $value ?? ''
                 );
@@ -153,25 +154,7 @@ class GenerateConfirmationPageReceipt
             );
         }
 
-        $eventTickets = give(EventTicketRepository::class)->queryByDonationId($receipt->donation->id)->getAll();
-
-        if ( ! empty($eventTickets)) {
-            $currency = $receipt->donation->amount->getCurrency();
-            $total = array_reduce($eventTickets, function(Money $carry, EventTicket $eventTicket) {
-                $ticketType = $eventTicket->ticketType()->get();
-
-                return $carry->add(
-                    $ticketType->price
-                );
-            }, new Money(0, $currency));
-
-            $receipt->donationDetails->addDetail(
-                new ReceiptDetail(
-                    __('Event Tickets', 'give'),
-                    $total->formatToLocale()
-                )
-            );
-        }
+        do_action('givewp_generate_confirmation_page_receipt_before_donation_total', $receipt);
 
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
@@ -388,32 +371,6 @@ class GenerateConfirmationPageReceipt
      */
     private function fillEventTicketsDetails(DonationReceipt $receipt): void
     {
-        $eventTickets = give(EventTicketRepository::class)->queryByDonationId($receipt->donation->id)->getAll();
-
-        if (empty($eventTickets)) {
-            return;
-        }
-
-        $event = $eventTickets[0]->event()->get();
-        $ticketTypes = [];
-
-        foreach ($eventTickets as $eventTicket) {
-            $ticketType = $eventTicket->ticketType()->get();
-            $ticketTypeId = $ticketType->id;
-
-            if (isset($ticketTypes[$ticketTypeId])) {
-                $ticketTypes[$ticketTypeId]['quantity'] += 1;
-            } else {
-                $ticketTypes[$ticketTypeId] = [
-                    'title' => $ticketType->title,
-                    'quantity' => 1,
-                ];
-            }
-        }
-
-        foreach ($ticketTypes as $ticketType) {
-            $detailString = sprintf(__('%s - %s', 'give'), $event->title, $ticketType['title']);
-            $receipt->eventTicketsDetails->addDetail(new ReceiptDetail($detailString, $ticketType['quantity']));
-        }
+        do_action('givewp_generate_confirmation_page_receipt_fill_event_ticket_details', $receipt);
     }
 }

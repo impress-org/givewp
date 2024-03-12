@@ -3,6 +3,8 @@
 namespace Give\EventTickets;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageDonationTotal;
+use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageEventTicketDetails;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Repositories\EventRepository;
@@ -107,5 +109,8 @@ class ServiceProvider implements ServiceProviderInterface
             10,
             4
         );
+
+        Hooks::addAction('givewp_generate_confirmation_page_receipt_before_donation_total', AddEventTicketsToDonationConfirmationPageDonationTotal::class);
+        Hooks::addAction('givewp_generate_confirmation_page_receipt_fill_event_ticket_details', AddEventTicketsToDonationConfirmationPageEventTicketDetails::class);
     }
 }
