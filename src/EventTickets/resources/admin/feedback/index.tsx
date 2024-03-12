@@ -5,7 +5,7 @@ import FeedbackButton from './FeedbackButton';
 
 import {Container as PopupContainer, Content as PopupContent, Header as PopupHeader} from './popup';
 
-const feedbackUrl = 'https://docs.givewp.com/nextgenfeedback';
+const feedbackUrl = 'https://feedback.givewp.com/events-beta-feedback';
 
 const HIDE_FEEDBACK = 'givewpEventTicketsBetaFeedback';
 
