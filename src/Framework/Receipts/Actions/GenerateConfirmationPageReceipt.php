@@ -7,6 +7,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\EventTickets\Models\EventTicket;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
@@ -152,7 +153,7 @@ class GenerateConfirmationPageReceipt
             );
         }
 
-        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
+        $eventTickets = give(EventTicketRepository::class)->queryByDonationId($receipt->donation->id)->getAll();
 
         if ( ! empty($eventTickets)) {
             $currency = $receipt->donation->amount->getCurrency();
@@ -387,7 +388,7 @@ class GenerateConfirmationPageReceipt
      */
     private function fillEventTicketsDetails(DonationReceipt $receipt): void
     {
-        $eventTickets = give()->eventTickets->queryByDonationId($receipt->donation->id)->getAll();
+        $eventTickets = give(EventTicketRepository::class)->queryByDonationId($receipt->donation->id)->getAll();
 
         if (empty($eventTickets)) {
             return;
