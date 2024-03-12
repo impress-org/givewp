@@ -32,7 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_get_sections_general', Actions\RegisterSettingSection::class);
 
         add_filter('givewp_settings_menu_title_give-settings', function ($title) {
-            return $this->getTitleWithNotificationCounter($title);
+            return $this->getTitleWithNotificationCounter($title, 'menu-counter');
         });
 
         add_filter('givewp_settings_section_title_beta', function ($title) {
@@ -53,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    public function getTitleWithNotificationCounter($title): string
+    public function getTitleWithNotificationCounter($title, $className = ''): string
     {
         $count = FeatureFlag::getNotificationCount();
 
@@ -62,7 +62,8 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $counter = sprintf(
-            '<span class="givewp-feature-flag-notification-counter count-%s"><span class="count">%s</span></span>',
+            ' <span class="%s givewp-feature-flag-notification-counter count-%s"><span class="count">%s</span></span>',
+            $className,
             $count,
             number_format_i18n($count)
         );
