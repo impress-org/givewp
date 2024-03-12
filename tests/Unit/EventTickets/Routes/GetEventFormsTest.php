@@ -3,14 +3,10 @@
 namespace Give\Tests\Unit\EventTickets\Routes;
 
 use Exception;
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\DonationForms\Models\DonationForm;
-use Give\Donations\Endpoints\ListDonations;
-use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\Models\Donation;
 use Give\EventTickets\Models\Event;
 use Give\EventTickets\Routes\GetEventForms;
-use Give\EventTickets\Routes\GetEventsListTable;
-use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -20,6 +16,17 @@ use WP_REST_Server;
 class GetEventFormsTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        // enable event tickets while in beta mode
+        give_update_option('enable_event_tickets', 'enabled');
+    }
 
     /**
      * @unreleased
@@ -98,7 +105,7 @@ class GetEventFormsTest extends TestCase
 
         $event2 = Event::factory()->create();
         // Create possible collision in JSON search, ie 1 vs 11.
-        $collisionId = (int) ($event->id . $event->id);
+        $collisionId = (int)($event->id . $event->id);
         Event::query()
             ->where('id', $event2->id)
             ->update(['id' => $collisionId]);

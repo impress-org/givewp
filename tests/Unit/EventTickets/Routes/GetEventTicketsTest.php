@@ -16,6 +16,17 @@ class GetEventTicketsTest extends TestCase
     /**
      * @unreleased
      */
+    public function setUp()
+    {
+        parent::setUp();
+
+        // enable event tickets while in beta mode
+        give_update_option('enable_event_tickets', 'enabled');
+    }
+
+    /**
+     * @unreleased
+     */
     protected function getMockRequest(int $eventId): WP_REST_Request
     {
         $request = new WP_REST_Request(
