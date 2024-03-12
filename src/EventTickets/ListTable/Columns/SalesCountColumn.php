@@ -21,7 +21,7 @@ class SalesCountColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'sales-count';
+        return 'salesCount';
     }
 
     /**

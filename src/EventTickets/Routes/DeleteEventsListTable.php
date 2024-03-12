@@ -73,6 +73,13 @@ class DeleteEventsListTable
         $successes = [];
 
         foreach ($ids as $id) {
+            $soldTicketsCount = give(EventRepository::class)->getById($id)->eventTickets()->count() ?? 0;
+
+            if ($soldTicketsCount > 0) {
+                $errors[] = $id;
+                continue;
+            }
+            
             $eventDeleted = give(EventRepository::class)->getById($id)->delete();
             $eventDeleted ? $successes[] = $id : $errors[] = $id;
         }
