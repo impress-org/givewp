@@ -75,11 +75,7 @@ export default function TicketTypesSection() {
     const formattedData = data.map((ticketType) => {
         return {
             ...ticketType,
-            count: sprintf(
-                __('%d of %s', 'give'),
-                ticketType.salesCount,
-                ticketType.capacity > 0 ? ticketType.capacity : __('Unlimited', 'give')
-            ),
+            count: sprintf(__('%d of %s', 'give'), ticketType.salesCount, ticketType.capacity),
             price: ticketType.price > 0 ? amountFormatter.format(ticketType.price / 100) : __('Free', 'give'),
         };
     });

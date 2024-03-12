@@ -28,7 +28,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
             title: ticketData?.title || '',
             description: ticketData?.description || '',
             price: ticketData?.price || null,
-            capacity: ticketData?.capacity || null,
+            capacity: ticketData?.capacity || 50,
         });
     }, [ticketData, reset]);
 
@@ -62,7 +62,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                 <label htmlFor="title">{__('Ticket Name', 'give')}</label>
                 <input
                     type="text"
-                    {...register('title', {required: __('The ticket must have a name!', 'give')})}
+                    {...register('title', {required: __('The ticket name is required.', 'give')})}
                     aria-invalid={errors.title ? 'true' : 'false'}
                     placeholder={__('Enter ticket name', 'give')}
                 />
@@ -81,10 +81,10 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                 </div>
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="capacity">{__('Capacity', 'give')}</label>
-                    <input type="number" {...register('capacity')} />
-                    <span>
-                        {__('Leave empty for', 'give')} <strong>{__('unlimited', 'give')}</strong>
-                    </span>
+                    <input
+                        type="number"
+                        {...register('capacity', {required: __('The ticket capacity is required.', 'give')})}
+                    />
                 </div>
             </div>
 
