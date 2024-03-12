@@ -40,18 +40,12 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('give_admin_field_beta_features', function(){
-            echo sprintf(
-                '<div class="give-admin-beta-features-message"><p><span class="givewp-beta-icon">BETA</span> %s</p></div>',
-                __(
-                    'Beta features are a way to test out upcoming features. They are nearly complete, yet still under development and may require changes in the future.',
-                    'give'
-                )
-            );
+            echo sprintf('<div class="give-admin-beta-features-message"><p><span class="givewp-beta-icon">BETA</span> %s</p></div>', __('Beta features are a way to get early access to new features. These features are functional but will be updated frequently. Updates may include changes to the feature settings, admin screens, design and database.', 'give'));
         });
 
         add_action('give_admin_field_beta_features_feedback_link', function () {
             echo sprintf(
-                '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
+                '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" alt="feedback link icon" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
                 GIVE_PLUGIN_URL . 'assets/dist/images/admin/feedback-icon.svg',
                 __('How can we improve this feature?', 'give'),
                 __('Submit your feedback.', 'give')
