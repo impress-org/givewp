@@ -43,13 +43,23 @@ class SalesCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        $ticketTypes = $model->ticketTypes()->getAll() ?? [];
         $soldTicketsCount = $model->eventTickets()->count() ?? 0;
-        $capacity = array_reduce($model->ticketTypes()->getAll() ?? [], function (int $carry, $ticketType) {
-            return $carry + $ticketType->capacity;
-        }, 0);
+
+        $hasUnlimitedCapacity = array_filter($ticketTypes, function ($ticketType) {
+            return is_null($ticketType->capacity);
+        });
+
+        if ( ! empty($hasUnlimitedCapacity)) {
+            $capacity = __('Unlimited', 'give');
+        } else {
+            $capacity = array_reduce($ticketTypes, function (int $carry, $ticketType) {
+                return $carry + $ticketType->capacity;
+            }, 0);
+        }
 
         return sprintf(
-            __('%1$d out of %2$d', 'give'),
+            __('%1$d of %2$s', 'give'),
             $soldTicketsCount,
             $capacity
         );
