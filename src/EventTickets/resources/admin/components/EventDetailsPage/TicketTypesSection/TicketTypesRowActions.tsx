@@ -23,6 +23,11 @@ export function TicketTypesRowActions({tickets, setTickets, openEditModal}) {
         const deleteItem = async (selected) => eventTicketsApi.fetchWithArgs('/ticket-type/' + ticket.id, {}, 'DELETE');
 
         const confirmModal = async () => {
+            if (ticket.salesCount > 0) {
+                alert(__('This ticket type cannot be deleted because it has donations associated with it.', 'give'));
+                return;
+            }
+
             const confirmDelete = confirm(sprintf(__('Really delete ticket #%d?', 'give'), ticket.id));
 
             if (confirmDelete) {
@@ -35,7 +40,6 @@ export function TicketTypesRowActions({tickets, setTickets, openEditModal}) {
         return (
             <>
                 <RowAction onClick={handleEditClick} displayText={__('Edit', 'give')} />
-                {ticket.salesCount === 0 && (
                     <RowAction
                         onClick={confirmModal}
                         actionId={ticket.id}
@@ -43,7 +47,6 @@ export function TicketTypesRowActions({tickets, setTickets, openEditModal}) {
                         hiddenText={ticket.title}
                         highlight
                     />
-                )}
             </>
         );
     };
