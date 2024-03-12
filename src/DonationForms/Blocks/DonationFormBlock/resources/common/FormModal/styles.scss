@@ -15,6 +15,10 @@
         max-height: 85%;
         padding-right: 3rem;
         overflow-y: scroll;
+
+        &:focus {
+            outline: none;
+        }
     }
 
     &__close {
