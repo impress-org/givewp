@@ -76,6 +76,7 @@ class FormBuilderViewModel
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
+            'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
         ];
     }
 

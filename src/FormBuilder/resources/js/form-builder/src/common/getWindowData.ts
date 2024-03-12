@@ -48,6 +48,7 @@ interface FormBuilderWindowData {
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
     nameTitlePrefixes: string[];
+    isExcerptEnabled: boolean;
 }
 
 /**
@@ -62,7 +63,7 @@ declare const window: {
                 [key: string]: Component;
             };
         };
-    }
+    };
 } & Window;
 
 /**
