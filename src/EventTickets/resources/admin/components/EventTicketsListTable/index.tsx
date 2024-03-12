@@ -8,6 +8,7 @@ import {EventTicketsRowActions} from './EventTicketsRowActions';
 import styles from './EventTicketsListTable.module.scss';
 import {GiveEventTickets} from './types';
 import CreateEventModal from '../CreateEventModal';
+import Feedback from '../../feedback';
 
 declare global {
     interface Window {
@@ -79,17 +80,20 @@ const ListTableBlankSlate = () => {
 
 export default function EventTicketsListTable() {
     return (
-        <ListTablePage
-            title={__('Events', 'give')}
-            singleName={__('event', 'give')}
-            pluralName={__('events', 'give')}
-            apiSettings={window.GiveEventTickets}
-            filterSettings={filters}
-            bulkActions={bulkActions}
-            rowActions={EventTicketsRowActions}
-            listTableBlankSlate={ListTableBlankSlate()}
-        >
-            <CreateEventModal />
-        </ListTablePage>
+        <>
+            <Feedback />
+            <ListTablePage
+                title={__('Events', 'give')}
+                singleName={__('event', 'give')}
+                pluralName={__('events', 'give')}
+                apiSettings={window.GiveEventTickets}
+                filterSettings={filters}
+                bulkActions={bulkActions}
+                rowActions={EventTicketsRowActions}
+                listTableBlankSlate={ListTableBlankSlate()}
+            >
+                <CreateEventModal />
+            </ListTablePage>
+        </>
     );
 }
