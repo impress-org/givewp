@@ -8,6 +8,7 @@ type RightContentSectionProps = {
 };
 
 /**
+ * @unreleased Replace custom fields spotlight with event tickets
  * @since 3.0.0
  */
 export default function RightContentSection({assets}: RightContentSectionProps) {
