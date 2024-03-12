@@ -75,6 +75,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\CreateEvent::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\CreateEventTicketType::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\DeleteEventsListTable::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\DeleteEventTicketType::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEvents::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetEventForms::class, 'registerRoute');
