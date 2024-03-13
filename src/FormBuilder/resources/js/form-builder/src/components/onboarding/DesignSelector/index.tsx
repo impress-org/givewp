@@ -11,7 +11,7 @@ import twoPanelStepsDesignScreenshot from './images/two-panel-steps-design-scree
 import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 /**
- * @since 3.6.0 Added Two-Panel (Steps) design option
+ * @since 3.6.0 Added Two-Panel design option
  * @since 3.0.0
  */
 export default ({onContinue}) => {
@@ -73,8 +73,8 @@ export default ({onContinue}) => {
                         selected={selectedDesign === 'two-panel-steps'}
                         onSelected={() => onDesignSelected('two-panel-steps')}
                         image={twoPanelStepsDesignScreenshot}
-                        alt={__('Two-Panel (Steps) form design', 'give')}
-                        title={__('Two-Panel (Steps)', 'give')}
+                        alt={__('Two Panel form design', 'give')}
+                        title={__('Two Panel', 'give')}
                         description={__(
                             'This has a side-by-side layout which breaks the sections of the donation process into steps.',
                             'give'

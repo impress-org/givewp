@@ -24,7 +24,7 @@ class TwoPanelStepsFormLayout extends FormDesign
      */
     public static function name(): string
     {
-        return __('Two Panel (Steps)', 'give');
+        return __('Two Panel', 'give');
     }
 
     /**
