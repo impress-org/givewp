@@ -52,6 +52,21 @@ class ModelQueryBuilder extends QueryBuilder
     }
 
     /**
+     * @unreleased
+     *
+     * @param int $perPage
+     * @param int $page
+     *
+     * @return ModelQueryBuilder
+     */
+    public function paginate($perPage, $page = 1): ModelQueryBuilder
+    {
+        return $this
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+    }
+
+    /**
      * Get row
      *
      * @since 2.19.6

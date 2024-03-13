@@ -1,0 +1,37 @@
+.container {
+    text-align: center;
+    color: #424242;
+    margin: var(--givewp-spacing-2) 0;
+
+    img {
+        margin-bottom: 1rem;
+    }
+
+    > h3 {
+        font-size: 1.125rem;
+        line-height: 1.22;
+        margin: 0;
+        padding: 0;
+    }
+
+    > p:last-child {
+        margin-bottom: 0;
+    }
+
+    .helpMessage {
+        font-size:0.875rem;
+        font-weight: 400;
+        line-height: 1.57;
+        max-width: 22rem;
+    }
+
+    .button {
+        border-radius: var(--givewp-rounded-4);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        min-width: 13.75rem;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-8);
+        text-align: center;
+    }
+}

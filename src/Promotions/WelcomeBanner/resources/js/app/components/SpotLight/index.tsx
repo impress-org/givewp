@@ -1,7 +1,7 @@
 import './styles.scss';
 
 type SpotLightProps = {
-    title: string;
+    title: string | JSX.Element;
     description: string;
     children: any;
 };
