@@ -263,8 +263,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.6.0: March 13th, 2024 =
-* New: Introduced a new beta feature called "Event Tickets" that is open for feedback! If enabled, you can create and manage events, and link them to your donation form.
-* New: Added a new form builder layout called "Two Panel (Steps)" that offers a side-by-side appearance included with a multi-step form. 
+* New: Introduced a new beta feature called "Event Tickets" that is open for feedback! If enabled, you can create events and sell tickets on your donation forms.
+* New: Added a new form builder layout called "Two Panel" that offers a side-by-side appearance and a multi-step donation experience.
 * New: Added a new setting in the form builder styles tab for the header image overlay 
 
 = 3.5.1: March 6th, 2024 =
