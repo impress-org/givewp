@@ -28,7 +28,7 @@ class RegisterSettings
             [
                 'name' => __('Event Tickets', 'give'),
                 'desc' => __(
-                    'If enabled, you’ll be get access to the event tickets feature where you can create and manage events, and link them to your donation form. Since this is in a beta, your feedback is crucial to help us improve and make the experience better before making it public.',
+                    'If enabled, you’ll be get access to the event tickets feature where you can create events and sell tickets on your donation forms. Since this is in a beta, your feedback is crucial to help us improve and make the experience better before making it public.',
                     'give'
                 ),
                 'id' => 'enable_event_tickets',
