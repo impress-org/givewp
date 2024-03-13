@@ -152,7 +152,9 @@ class IframeContentView
         </body>
         </html>
         <?php
-        return ob_get_clean();
+        $return = ob_get_clean();
+
+        return $return;
     }
 
     /**

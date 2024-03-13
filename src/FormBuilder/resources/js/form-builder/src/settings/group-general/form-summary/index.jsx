@@ -8,6 +8,7 @@ import {getWindowData} from '@givewp/form-builder/common';
 const {isExcerptEnabled} = getWindowData();
 
 /**
+ * @unreleased Added formExcerpt text area
  * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const FormSummarySettings = ({settings, setSettings}) => {
@@ -59,25 +60,10 @@ const FormSummarySettings = ({settings, setSettings}) => {
                 <PanelRow>
                     <TextareaControl
                         label={'Excerpt'}
-                        help={
-                            __(
-                                'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.',
-                                'give'
-                            ) /*createInterpolateElement(
-                        __(
-                            'Excerpts are optional hand-crafted summaries of your content that can be used in your theme. <a>Learn more about manual excerpts</a>.',
+                        help={__(
+                            'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.',
                             'give'
-                        ),
-                        {
-                            a: (
-                                <a
-                                    href="https://wordpress.org/documentation/article/what-is-an-excerpt-classic-editor/"
-                                    target="_blank"
-                                />
-                            ),
-                        }
-                    )*/
-                        }
+                        )}
                         value={formExcerpt}
                         onChange={(formExcerpt) => setSettings({formExcerpt})}
                     />
