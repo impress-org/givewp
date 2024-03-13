@@ -49,5 +49,7 @@ export type FormSettings = {
     designSettingsLogoPosition: string;
     designSettingsSectionStyle: string;
     designSettingsTextFieldStyle: string;
+    designSettingsImageOpacity: string;
+    designSettingsImageColor: string;
     formExcerpt: string;
 };

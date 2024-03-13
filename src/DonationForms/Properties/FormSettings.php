@@ -222,10 +222,22 @@ class FormSettings implements Arrayable, Jsonable
      * @unreleased
      * @var string
      */
+    public $designSettingsImageColor;
+
+    /**
+     * @unreleased
+     * @var string
+     */
+    public $designSettingsImageOpacity;
+     * @unreleased
+     * @var string
+     */
     public $formExcerpt;
 
     /**
      * @unreleased Added formExcerpt
+
+    /**
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -317,6 +329,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
             $array['designSettingsTextFieldStyle']
         ) : DesignSettingsTextFieldStyle::DEFAULT();
+
+        $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
+
+        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
 
         $self->formExcerpt = $array['formExcerpt'] ?? '';
 
