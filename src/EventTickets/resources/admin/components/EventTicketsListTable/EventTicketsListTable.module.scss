@@ -1,3 +1,26 @@
+.listTable {
+    :global {
+        table {
+            tbody {
+                tr {
+                    td {
+                        &:nth-child(4) {
+                            p {
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
+
 .container {
     text-align: center;
     color: #424242;

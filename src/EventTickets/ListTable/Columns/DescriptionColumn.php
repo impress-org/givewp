@@ -37,12 +37,20 @@ class DescriptionColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @unreleased Truncate description to 200 characters
      * @since 3.6.0
      *
      * @param Event $model
      */
     public function getCellValue($model): string
     {
-        return wpautop($model->description);
+        $maxChars = 200;
+        $truncatedDescription = mb_substr($model->description, 0, $maxChars);
+
+        if (mb_strlen($model->description) > $maxChars) {
+            $truncatedDescription .= '...';
+        }
+
+        return wpautop($truncatedDescription);
     }
 }
