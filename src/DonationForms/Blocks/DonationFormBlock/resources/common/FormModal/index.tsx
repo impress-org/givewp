@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTrigger, Modal as ModalOverlay} from 'react-aria-components';
+import {Button, Dialog, Modal} from 'react-aria-components';
 import './styles.scss';
 import ModalCloseIcon from './ModalClose';
 
@@ -6,27 +6,26 @@ type FormModalProps = {
     children: any;
     openFormButton: string;
     onChange?: () => void;
+    isOpen?: boolean;
 };
 
 /**
  * @unreleased
  */
-export default function FormModal({openFormButton, children, onChange}: FormModalProps) {
+export default function FormModal({openFormButton, children, onChange, isOpen}: FormModalProps) {
     return (
-        <DialogTrigger onOpenChange={onChange}>
-            <Button className={'givewp-donation-form-modal__open'}>{openFormButton}</Button>
-            <ModalOverlay className={'givewp-donation-form-modal__overlay'}>
+        <>
+            <Button className={'givewp-donation-form-modal__open'} onPress={onChange}>
+                {openFormButton}
+            </Button>
+            <Modal className={'givewp-donation-form-modal__overlay'} isOpen={isOpen}>
                 <Dialog className={'givewp-donation-form-modal__dialog'}>
-                    {({close}) => (
-                        <>
-                            {children}
-                            <Button className="givewp-donation-form-modal__close" onPress={close}>
-                                <ModalCloseIcon />
-                            </Button>
-                        </>
-                    )}
+                    {children}
+                    <Button className="givewp-donation-form-modal__close" onPress={onChange}>
+                        <ModalCloseIcon />
+                    </Button>
                 </Dialog>
-            </ModalOverlay>
-        </DialogTrigger>
+            </Modal>
+        </>
     );
 }

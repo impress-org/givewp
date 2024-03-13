@@ -20,15 +20,21 @@ type ModalFormProps = {
  */
 export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedirect, formViewUrl}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
+    const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
 
     const resetDataSrcUrl = () => {
-        if (isFormRedirect) {
+        if (!isOpen && isFormRedirect) {
             setDataSrcUrl(formViewUrl);
         }
     };
 
+    const toggleModal = () => {
+        setIsOpen(!isOpen);
+        resetDataSrcUrl();
+    };
+
     return (
-        <FormModal onChange={resetDataSrcUrl} openFormButton={openFormButton}>
+        <FormModal isOpen={isOpen} onChange={toggleModal} openFormButton={openFormButton}>
             <IframeResizer
                 id={embedId}
                 src={dataSrcUrl}
