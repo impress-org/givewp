@@ -8,6 +8,7 @@ type RightContentSectionProps = {
 };
 
 /**
+ * @unreleased Replace custom fields spotlight with event tickets
  * @since 3.0.0
  */
 export default function RightContentSection({assets}: RightContentSectionProps) {
@@ -16,6 +17,22 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
             <h2>{__('Spotlight on awesome features', 'give')}</h2>
             <div className={'givewp-welcome-banner-right-content__media-container'}>
                 <SpotLight
+                    title={
+                        <>
+                            {__('Event tickets', 'give')} <span className={'givewp-beta-icon'}>BETA</span>
+                        </>
+                    }
+                    description={__(
+                        'Easily connect your events to your donation form. To enable this go to Settings > General > Beta Features and enable event tickets',
+                        'give'
+                    )}
+                >
+                    <VideoPlayer
+                        src={`${assets}/event-tickets.mp4`}
+                        fallbackImage={`${assets}/event-tickets.min.png`}
+                    />
+                </SpotLight>
+                <SpotLight
                     title={__('Design mode', 'give')}
                     description={__(
                         'See exactly what your form looks like for potential donors using the “Design” tab of the builder. Changes are visible immediately.',
@@ -23,19 +40,6 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                     )}
                 >
                     <VideoPlayer src={`${assets}/design-mode.mp4`} fallbackImage={`${assets}/design-mode.min.png`} />
-                </SpotLight>
-
-                <SpotLight
-                    title={__('Custom Paragraph and Sections', 'give')}
-                    description={__(
-                        'Add custom paragraphs or add whole sections anywhere in your form, no code required.',
-                        'give'
-                    )}
-                >
-                    <VideoPlayer
-                        src={`${assets}/custom-fields.mp4`}
-                        fallbackImage={`${assets}/custom-fields.min.png`}
-                    />
                 </SpotLight>
             </div>
         </section>
