@@ -31,14 +31,21 @@ const isRedirect = (url: string) => {
     const redirectUrlParams = new URLSearchParams(redirectUrl.search);
 
     return isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
-}
+};
 
 /**
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0
  */
-function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, formUrl, formViewUrl}: DonationFormBlockAppProps) {
+function DonationFormBlockApp({
+    formFormat,
+    dataSrc,
+    embedId,
+    openFormButton,
+    formUrl,
+    formViewUrl,
+}: DonationFormBlockAppProps) {
     const isFormRedirect = isRedirect(dataSrc);
 
     if (formFormat === 'newTab') {
@@ -50,7 +57,15 @@ function DonationFormBlockApp({formFormat, dataSrc, embedId, openFormButton, for
     }
 
     if (formFormat === 'modal' || formFormat === 'reveal') {
-        return <ModalForm openFormButton={openFormButton} dataSrc={dataSrc} embedId={embedId} openByDefault={isFormRedirect} isFormRedirect={isFormRedirect} formViewUrl={formViewUrl} />;
+        return (
+            <ModalForm
+                openFormButton={openFormButton}
+                dataSrc={dataSrc}
+                embedId={embedId}
+                isFormRedirect={isFormRedirect}
+                formViewUrl={formViewUrl}
+            />
+        );
     }
 
     return (
