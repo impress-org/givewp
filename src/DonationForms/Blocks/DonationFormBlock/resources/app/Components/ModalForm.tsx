@@ -22,6 +22,9 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
 
+    // Offline gateways like Stripe refresh the page and need to programmatically
+    // open the confirmation page from the modal.
+
     const resetDataSrcUrl = () => {
         if (!isOpen && isFormRedirect) {
             setDataSrcUrl(formViewUrl);
