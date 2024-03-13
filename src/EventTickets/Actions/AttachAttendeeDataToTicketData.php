@@ -17,13 +17,21 @@ class AttachAttendeeDataToTicketData
     protected $attendeeDataLookup;
 
     /**
+     * @unreleased Add donorUrl to the attendee data
      * @since 3.6.0
+     *
      * @param EventTicket[] $tickets
      */
     public function __construct(array $tickets)
     {
         $this->attendeeDataLookup = array_reduce($this->getAttendeeDataForTickets($tickets), function ($lookup, $data) {
-            $lookup[$data->donationId] = ['name' => $data->attendeeName, 'email' => $data->attendeeEmail];
+            $lookup[$data->donationId] = [
+                'name' => $data->attendeeName,
+                'email' => $data->attendeeEmail,
+                'donorUrl' => $data->donorIr ? admin_url(
+                    "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$data->donorId"
+                ) : null,
+            ];
             return $lookup;
         }, []);
     }
@@ -55,6 +63,7 @@ class AttachAttendeeDataToTicketData
             ->from('posts', 'Donation')
             ->select(
                 ['Donation.ID', 'donationId'],
+                ['Donor.id', 'donorId'],
                 ['Donor.name', 'attendeeName'],
                 ['Donor.email', 'attendeeEmail']
             )

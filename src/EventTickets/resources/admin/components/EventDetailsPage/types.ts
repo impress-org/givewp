@@ -49,6 +49,7 @@ export type Ticket = {
     attendee: {
         name: string;
         email: string;
+        donorUrl: string;
     };
     createdAt: {
         date: string;
