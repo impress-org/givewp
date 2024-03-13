@@ -229,7 +229,8 @@ class FormSettings implements Arrayable, Jsonable
      * @var string
      */
     public $designSettingsImageOpacity;
-     * @unreleased
+
+    /* @unreleased
      * @var string
      */
     public $formExcerpt;
