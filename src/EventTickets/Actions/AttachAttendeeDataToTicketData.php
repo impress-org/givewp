@@ -28,7 +28,7 @@ class AttachAttendeeDataToTicketData
             $lookup[$data->donationId] = [
                 'name' => $data->attendeeName,
                 'email' => $data->attendeeEmail,
-                'donorUrl' => $data->donorIr ? admin_url(
+                'donorUrl' => $data->donorId ? admin_url(
                     "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$data->donorId"
                 ) : null,
             ];
