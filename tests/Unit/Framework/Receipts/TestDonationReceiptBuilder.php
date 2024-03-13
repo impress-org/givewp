@@ -110,6 +110,7 @@ class TestDonationReceiptBuilder extends TestCase
                 'settings' => $settings,
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
+                'eventTicketsDetails' => [],
                 'subscriptionDetails' => [],
                 'additionalDetails' => $additionalDetails->toArray(),
             ]

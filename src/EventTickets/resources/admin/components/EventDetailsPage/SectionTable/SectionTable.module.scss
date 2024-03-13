@@ -1,0 +1,143 @@
+.tableGroup {
+    background-color: #fff;
+    border: 0.0625em solid #ddd;
+    border-radius: 0.3125em;
+    overflow: auto;
+    position: relative;
+    max-inline-size: 100%;
+    box-shadow: 0 0 0.5625em rgb(68 68 68 / 0.05);
+}
+
+.table {
+    border-radius: inherit;
+    border-spacing: 0;
+    inline-size: 100%;
+    table-layout: fixed;
+}
+
+.tableColumnHeader {
+    border-bottom: 0.0625em solid #ddd;
+    color: var(--givewp-grey-700);
+    font-size: 1rem;
+    padding: var(--givewp-spacing-5) var(--givewp-spacing-9);
+    text-align: start;
+    vertical-align: middle;
+
+    &.idColumn {
+        width: 12rem;
+    }
+}
+
+.tableContent {
+    overflow: auto;
+}
+
+.tableRow {
+    &:nth-child(odd) {
+        background-color: #f6f7f7;
+    }
+
+    &:nth-child(even) {
+        background-color: #fff;
+    }
+
+    &:hover .tableRowActions {
+        opacity: 1;
+    }
+}
+
+.tableRowActions {
+    position: absolute;
+    inset-block-end: 1rem;
+
+    display: flex;
+    align-items: center;
+    column-gap: 1.25rem;
+    word-break: keep-all;
+    transition: opacity 150ms ease-in-out;
+
+    > * {
+        position: relative;
+        color: #0878b0;
+        font-weight: 400;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    > * + ::before {
+        position: absolute;
+        content: "";
+        inset-block: auto;
+        inset-inline-start: calc(-.6725rem);
+        block-size: 110%;
+        inline-size: 0.125rem;
+        background-color: #dedede;
+    }
+
+    > a {
+        text-decoration: none;
+    }
+
+    &:focus-within {
+        opacity: 1;
+    }
+}
+
+.tableCell {
+    color: var(--givewp-grey-700);
+    font-size: 0.875em;
+    font-weight: 600;
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-9) var(--givewp-spacing-10);
+    position: relative;
+    vertical-align: middle;
+
+    & a {
+        text-decoration: none;
+
+        &:focus, &:hover, &:active {
+            text-decoration: underline;
+            transition: all 0.05s ease-in-out;
+        }
+    }
+
+    &.description {
+        font-weight: 400;
+    }
+}
+
+.idBadge {
+    display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: 0.0625rem solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+    width: fit-content;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}
+
+.statusMessage {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .tableRowActions {
+        opacity: 0;
+    }
+}
