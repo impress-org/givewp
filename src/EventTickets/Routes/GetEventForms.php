@@ -9,7 +9,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class GetEventForms implements RestRoute
 {
@@ -57,7 +57,7 @@ class GetEventForms implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return WP_REST_Response
      *

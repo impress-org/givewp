@@ -3,7 +3,7 @@ import Icon from './Icon';
 import Edit from './Edit';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 const settings = {
     ...metadata,

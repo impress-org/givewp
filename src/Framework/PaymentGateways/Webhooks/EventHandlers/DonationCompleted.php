@@ -7,12 +7,12 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class DonationCompleted
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @throws Exception
      */
     public function __invoke(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)

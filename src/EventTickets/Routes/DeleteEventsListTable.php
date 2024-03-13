@@ -10,7 +10,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class DeleteEventsListTable
 {
@@ -63,7 +63,7 @@ class DeleteEventsListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @throws Exception
      */
     public function handleRequest(WP_REST_Request $request): WP_Rest_Response
@@ -79,7 +79,7 @@ class DeleteEventsListTable
                 $errors[] = $id;
                 continue;
             }
-            
+
             $eventDeleted = give(EventRepository::class)->getById($id)->delete();
             $eventDeleted ? $successes[] = $id : $errors[] = $id;
         }
@@ -91,7 +91,7 @@ class DeleteEventsListTable
     /**
      * Split string
      *
-     * @unreleased
+     * @since 3.6.0
      *
      * @return string[]
      */
@@ -105,7 +105,7 @@ class DeleteEventsListTable
     }
 
         /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return bool|\WP_Error
      */

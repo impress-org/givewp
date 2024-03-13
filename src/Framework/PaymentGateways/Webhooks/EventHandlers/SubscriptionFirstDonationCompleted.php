@@ -10,12 +10,12 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscrip
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class SubscriptionFirstDonationCompleted
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(string $gatewayTransactionId, string $message = '', bool $setSubscriptionActive = true)
     {

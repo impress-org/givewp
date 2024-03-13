@@ -10,12 +10,12 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateDonationStatus
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -71,7 +71,7 @@ class UpdateDonationStatus
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function isInvalidSubscriptionFirstPayment(Donation $donation): bool
     {
@@ -80,7 +80,7 @@ class UpdateDonationStatus
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     protected function getMessageFromStatus(DonationStatus $status): string
     {

@@ -111,7 +111,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased added support for event tickets
+     * @since 3.6.0 added support for event tickets
      * @since 3.0.0
      *
      * @return void
@@ -367,7 +367,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function fillEventTicketsDetails(DonationReceipt $receipt): void
     {

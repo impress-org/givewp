@@ -17,7 +17,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class Event extends Model implements ModelCrud /*, ModelHasFactory */
 {
@@ -45,7 +45,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     ];
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return Event|null
      */
@@ -56,7 +56,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
 
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return $this
      * @throws Exception|InvalidArgumentException
@@ -71,7 +71,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -86,7 +86,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -96,7 +96,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<Event>
      */
@@ -106,7 +106,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<EventTicketType>
      */
@@ -116,7 +116,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<EventTicket>
      */
@@ -138,7 +138,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param object $object
      */
@@ -159,7 +159,7 @@ class Event extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function factory(): EventFactory
     {

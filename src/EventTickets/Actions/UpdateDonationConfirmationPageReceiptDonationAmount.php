@@ -7,14 +7,14 @@ use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateDonationConfirmationPageReceiptDonationAmount
 {
     /**
      * Subtract event tickets total from donation amount line item
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(string $amount, DonationReceipt $receipt): string
     {

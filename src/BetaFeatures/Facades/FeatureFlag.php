@@ -6,7 +6,7 @@ use Give\BetaFeatures\Repositories\FeatureFlagRepository;
 use Give\Framework\Support\Facades\Facade;
 
 /**
- * @unreleased
+ * @since 3.6.0
  *
  * @method static void resetNotificationCount()
  * @method static int getNotificationCount()
@@ -16,7 +16,7 @@ use Give\Framework\Support\Facades\Facade;
 class FeatureFlag extends Facade
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     protected function getFacadeAccessor(): string
     {

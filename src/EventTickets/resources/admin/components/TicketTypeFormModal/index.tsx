@@ -10,7 +10,7 @@ import EventTicketsApi from '../api';
 /**
  * Ticket Form Modal component
  *
- * @unreleased
+ * @since 3.6.0
  */
 export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, eventId}: TicketModalProps) {
     const {ticketData} = useTicketTypeForm();

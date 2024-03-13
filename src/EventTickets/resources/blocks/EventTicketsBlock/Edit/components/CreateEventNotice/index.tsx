@@ -5,7 +5,7 @@ import {createInterpolateElement} from '@wordpress/element';
 import './styles.scss';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function CreateEventNotice() {
     return (

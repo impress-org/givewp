@@ -12,7 +12,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class EventTicketFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @throws Exception
      */
     public function definition(): array

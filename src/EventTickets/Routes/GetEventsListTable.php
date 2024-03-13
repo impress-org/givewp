@@ -10,7 +10,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class GetEventsListTable
 {
@@ -32,7 +32,7 @@ class GetEventsListTable
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function registerRoute(): void
     {
@@ -82,7 +82,7 @@ class GetEventsListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -110,7 +110,7 @@ class GetEventsListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getEvents(): array
     {
@@ -139,7 +139,7 @@ class GetEventsListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTotalEventsCount(): int
     {
@@ -150,7 +150,7 @@ class GetEventsListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
@@ -169,7 +169,7 @@ class GetEventsListTable
     }
 
         /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return bool|\WP_Error
      */

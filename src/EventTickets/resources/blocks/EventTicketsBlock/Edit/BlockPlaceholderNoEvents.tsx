@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function BlockPlaceholderNoEvents() {
     return (

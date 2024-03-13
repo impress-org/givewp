@@ -10,7 +10,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class EventTicketTypeFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function definition(): array
     {

@@ -8,7 +8,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class EventFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function definition(): array
     {

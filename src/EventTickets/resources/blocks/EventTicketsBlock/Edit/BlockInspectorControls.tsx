@@ -5,7 +5,7 @@ import {__} from '@wordpress/i18n';
 import CreateEventNotice from './components/CreateEventNotice';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function BlockInspectorControls({attributes, setAttributes}) {
     const {events} = window.eventTicketsBlockSettings;

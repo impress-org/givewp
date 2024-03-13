@@ -6,7 +6,7 @@ import EventFormModal from '../EventFormModal';
 /**
  * Auto open modal if the URL has the query parameter id as new
  *
- * @unreleased
+ * @since 3.6.0
  */
 const autoOpenModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -18,7 +18,7 @@ const autoOpenModal = () => {
 /**
  * Create Event Modal component
  *
- * @unreleased
+ * @since 3.6.0
  */
 export default function CreateEventModal() {
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());

@@ -12,13 +12,13 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventTicketTypeRepository
 {
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @var string[]
      */
@@ -30,7 +30,7 @@ class EventTicketTypeRepository
     ];
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getById(int $id): ?EventTicketType
     {
@@ -40,7 +40,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryById(int $id): ModelQueryBuilder
     {
@@ -49,7 +49,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -94,7 +94,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -136,7 +136,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -166,7 +166,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function validate(EventTicketType $eventTicketType): void
     {
@@ -178,7 +178,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<EventTicketType>
      */
@@ -200,7 +200,7 @@ class EventTicketTypeRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {

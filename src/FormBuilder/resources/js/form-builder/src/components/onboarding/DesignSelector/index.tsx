@@ -11,7 +11,7 @@ import twoPanelStepsDesignScreenshot from './images/two-panel-steps-design-scree
 import {setFormSettings, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 /**
- * @unreleased Added Two-Panel (Steps) design option
+ * @since 3.6.0 Added Two-Panel (Steps) design option
  * @since 3.0.0
  */
 export default ({onContinue}) => {

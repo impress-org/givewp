@@ -11,7 +11,7 @@ const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details 
 /**
  * Displays a blank slate for the Attendees table.
  *
- * @unreleased
+ * @since 3.6.0
  */
 const BlankSlate = () => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-attendees-icon.svg`;

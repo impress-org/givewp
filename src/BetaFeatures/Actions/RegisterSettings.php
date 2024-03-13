@@ -5,7 +5,7 @@ namespace Give\BetaFeatures\Actions;
 use Give\BetaFeatures\Facades\FeatureFlag;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class RegisterSettings
 {

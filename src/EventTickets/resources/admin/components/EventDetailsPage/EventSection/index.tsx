@@ -10,7 +10,7 @@ import styles from './EventSection.module.scss';
 const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details page', 'give');
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function EventSection({setUpdateErrors}) {
     const {apiRoot, apiNonce, event} = window.GiveEventTicketsDetails;

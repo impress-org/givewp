@@ -4,7 +4,7 @@ import EventTicketsList from '../../../components/EventTicketsList';
 import {getWindowData} from '@givewp/form-builder/common';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function BlockPlaceholder({attributes}) {
     const {events, ticketsLabel, soldOutMessage} = window.eventTicketsBlockSettings;

@@ -7,18 +7,18 @@ use Give\EventTickets\DataTransferObjects\TicketPurchaseData;
 use Give\EventTickets\Models\EventTicket;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class GenerateTicketsFromPurchaseData
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var Donation
      */
     protected $donation;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __construct(Donation $donation)
     {
@@ -26,7 +26,7 @@ class GenerateTicketsFromPurchaseData
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(TicketPurchaseData $data)
     {

@@ -8,55 +8,55 @@ final class EventTicketTypeData
 {
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $id;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $eventId;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var string
      */
     public $title;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var string
      */
     public $description;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $price;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $capacity;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $salesCount;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     public $ticketsAvailable;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function make(EventTicketType $ticketType)
     {
@@ -75,7 +75,7 @@ final class EventTicketTypeData
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function toArray(): array
     {

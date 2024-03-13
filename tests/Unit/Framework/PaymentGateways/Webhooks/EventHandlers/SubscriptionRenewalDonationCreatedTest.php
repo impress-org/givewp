@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class SubscriptionRenewalDonationCreatedTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */

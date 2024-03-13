@@ -40,7 +40,7 @@ class Shortcode
     /**
      * Returns Shortcode markup
      *
-     * @unreleased Sanitize attributes
+     * @since 3.6.0 Sanitize attributes
      * @since 2.10.0
      **/
     public function renderCallback($attributes)

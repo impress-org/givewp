@@ -9,19 +9,19 @@ use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventDetails
 {
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var Event
      */
     protected $event;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __construct(Event $event)
     {
@@ -29,7 +29,7 @@ class EventDetails
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function exports(): array
     {

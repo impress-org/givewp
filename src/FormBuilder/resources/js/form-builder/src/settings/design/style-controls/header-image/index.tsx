@@ -5,7 +5,7 @@ import {PanelColorSettings, SETTINGS_DEFAULTS} from '@wordpress/block-editor';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function HeaderImage({dispatch}) {
     const {

@@ -18,14 +18,14 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function register(): void
     {
@@ -46,7 +46,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function boot(): void
     {
@@ -61,7 +61,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function registerMigrations(): void
     {
@@ -73,7 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function registerRoutes(): void
     {
@@ -92,7 +92,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function registerMenus(): void
     {
@@ -100,7 +100,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function registerFormExtension()
     {

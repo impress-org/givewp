@@ -9,7 +9,7 @@ use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 3.6.0
  *
  * @extends ModelColumn<Event>
  */
@@ -18,7 +18,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public static function getId(): string
     {
@@ -28,7 +28,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function getLabel(): string
     {
@@ -38,7 +38,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      *
      * @param Event $model
      */

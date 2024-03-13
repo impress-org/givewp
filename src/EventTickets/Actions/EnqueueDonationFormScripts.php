@@ -5,12 +5,12 @@ namespace Give\EventTickets\Actions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EnqueueDonationFormScripts
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(): void
     {

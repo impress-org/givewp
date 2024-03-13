@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {SelectControl} from '@wordpress/components';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function BlockPlaceholderSelectEvent({attributes, setAttributes}) {
     const {events} = window.eventTicketsBlockSettings;

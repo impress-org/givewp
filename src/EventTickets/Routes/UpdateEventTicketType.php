@@ -11,7 +11,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateEventTicketType implements RestRoute
 {
@@ -70,7 +70,7 @@ class UpdateEventTicketType implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return WP_REST_Response
      *

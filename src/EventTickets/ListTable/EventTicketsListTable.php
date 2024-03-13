@@ -11,12 +11,12 @@ use Give\Framework\ListTable\ListTable;
 use Give\Subscriptions\ListTable\Columns\IdColumn;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventTicketsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @inheritDoc
      */
@@ -26,7 +26,7 @@ class EventTicketsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @inheritDoc
      */
@@ -43,7 +43,7 @@ class EventTicketsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @inheritDoc
      */

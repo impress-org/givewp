@@ -6,24 +6,24 @@ use Give\EventTickets\Models\EventTicketType;
 use stdClass;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class TicketPurchaseData
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var int
      */
     protected $quantity;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var EventTicketType
      */
     protected $ticketType;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __get($name)
     {
@@ -31,7 +31,7 @@ class TicketPurchaseData
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function fromFieldValueObject(stdClass $object): self
     {

@@ -15,7 +15,7 @@ const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.la
 /**
  * Displays a blank slate for the EventTickets table.
  *
- * @unreleased
+ * @since 3.6.0
  */
 const BlankSlate = ({openModal}) => {
     const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
@@ -34,7 +34,7 @@ const BlankSlate = ({openModal}) => {
 };
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function TicketTypesSection() {
     const {

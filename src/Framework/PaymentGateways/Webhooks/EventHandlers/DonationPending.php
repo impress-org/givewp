@@ -7,12 +7,12 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class DonationPending
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */

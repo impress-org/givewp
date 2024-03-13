@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class DonationPendingTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -39,7 +39,7 @@ class DonationPendingTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */

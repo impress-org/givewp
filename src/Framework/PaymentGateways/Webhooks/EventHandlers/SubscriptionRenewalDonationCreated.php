@@ -10,12 +10,12 @@ use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class SubscriptionRenewalDonationCreated
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(
         string $gatewaySubscriptionId,

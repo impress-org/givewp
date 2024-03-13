@@ -5,7 +5,7 @@ namespace Give\Framework\Support\Facades\ActionScheduler;
 use Give\Framework\Support\Facades\Facade;
 
 /**
- * @unreleased
+ * @since 3.6.0
  *
  * @method static int enqueueAsyncAction(string $hook, array $args, string $group, bool $unique = false, int $priority = 10)
  * @method static array getActionByHookArgsGroup(string $hook, array $args, string $group, string $returnFormat = OBJECT, string $status = '')

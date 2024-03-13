@@ -8,7 +8,7 @@ use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\EnqueueScript;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EnqueueFormBuilderScripts
 {

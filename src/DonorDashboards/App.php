@@ -27,7 +27,7 @@ class App
     }
 
     /**
-     * @unreleased Escape attributes
+     * @since 3.6.0 Escape attributes
      *
      * @param array $attributes
      *

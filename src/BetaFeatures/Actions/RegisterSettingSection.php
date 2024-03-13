@@ -3,12 +3,12 @@
 namespace Give\BetaFeatures\Actions;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class RegisterSettingSection
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke($sections)
     {

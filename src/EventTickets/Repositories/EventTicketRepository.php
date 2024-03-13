@@ -14,13 +14,13 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventTicketRepository
 {
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @var string[]
      */
@@ -31,7 +31,7 @@ class EventTicketRepository
     ];
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getById(int $id): ?EventTicket
     {
@@ -41,7 +41,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryById(int $id): ModelQueryBuilder
     {
@@ -50,7 +50,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -93,7 +93,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -133,7 +133,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -163,7 +163,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
     {
@@ -193,7 +193,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {
@@ -202,7 +202,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryByTicketTypeId(int $ticketTypeId): ModelQueryBuilder
     {
@@ -211,7 +211,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param int $donationId
      *
@@ -224,7 +224,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTotalByDonation(Donation $donation): Money
     {

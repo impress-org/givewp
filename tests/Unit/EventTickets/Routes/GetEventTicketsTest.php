@@ -14,7 +14,7 @@ class GetEventTicketsTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     protected function getMockRequest(int $eventId): WP_REST_Request
     {

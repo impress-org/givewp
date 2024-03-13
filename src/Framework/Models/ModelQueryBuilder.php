@@ -52,7 +52,7 @@ class ModelQueryBuilder extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param int $perPage
      * @param int $page

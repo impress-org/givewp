@@ -8,7 +8,7 @@ use Give\EventTickets\Models\Event;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 3.6.0
  *
  * @extends ModelColumn<Event>
  */
@@ -17,7 +17,7 @@ class DescriptionColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public static function getId(): string
     {
@@ -27,7 +27,7 @@ class DescriptionColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function getLabel(): string
     {
@@ -37,7 +37,7 @@ class DescriptionColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.6.0
      *
      * @param Event $model
      */

@@ -7,7 +7,7 @@ import EventTicketsApi from '../api';
 /**
  * Get the next sharp hour
  *
- * @unreleased
+ * @since 3.6.0
  */
 const getNextSharpHour = (hoursToAdd: number) => {
     const date = new Date();
@@ -19,7 +19,7 @@ const getNextSharpHour = (hoursToAdd: number) => {
 /**
  * Format a given date to be used in datetime inputs
  *
- * @unreleased
+ * @since 3.6.0
  */
 const getDateString = (date: Date) => {
     const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
@@ -31,7 +31,7 @@ const getDateString = (date: Date) => {
 /**
  * Remove timezone from date string
  *
- * @unreleased
+ * @since 3.6.0
  */
 const removeTimezoneFromDateISOString = (date: string) => {
     return date.slice(0, -5);
@@ -40,7 +40,7 @@ const removeTimezoneFromDateISOString = (date: string) => {
 /**
  * Event Form Modal component
  *
- * @unreleased
+ * @since 3.6.0
  */
 export default function EventFormModal({isOpen, handleClose, apiSettings, title, event}: EventModalProps) {
     const API = new EventTicketsApi(apiSettings);

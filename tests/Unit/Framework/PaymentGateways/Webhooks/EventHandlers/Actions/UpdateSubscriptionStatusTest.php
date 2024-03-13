@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateSubscriptionStatusTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @dataProvider subscriptionStatus
      *
@@ -40,7 +40,7 @@ class UpdateSubscriptionStatusTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function subscriptionStatus(): array
     {

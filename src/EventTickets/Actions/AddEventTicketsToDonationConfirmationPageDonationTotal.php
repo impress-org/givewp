@@ -9,12 +9,12 @@ use Give\Framework\Receipts\Properties\ReceiptDetail;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class AddEventTicketsToDonationConfirmationPageDonationTotal
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(DonationReceipt $receipt): void
     {

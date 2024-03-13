@@ -11,7 +11,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class DeleteEventTicketType implements RestRoute
 {
@@ -47,7 +47,7 @@ class DeleteEventTicketType implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -69,7 +69,7 @@ class DeleteEventTicketType implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return bool|WP_Error
      */

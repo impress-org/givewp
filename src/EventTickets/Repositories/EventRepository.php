@@ -12,13 +12,13 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventRepository
 {
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @var string[]
      */
@@ -28,7 +28,7 @@ class EventRepository
     ];
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getById(int $id): ?Event
     {
@@ -38,7 +38,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function queryById(int $id): ModelQueryBuilder
     {
@@ -47,7 +47,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -94,7 +94,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -137,7 +137,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -167,7 +167,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function validate(Event $event): void
     {
@@ -179,7 +179,7 @@ class EventRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<Event>
      */

@@ -22,7 +22,7 @@ class UpdateEventTicketTypeTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     protected function getMockRequest($id): WP_REST_Request
     {
@@ -37,7 +37,7 @@ class UpdateEventTicketTypeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception
@@ -56,7 +56,7 @@ class UpdateEventTicketTypeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception

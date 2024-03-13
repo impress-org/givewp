@@ -17,7 +17,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
 {
@@ -44,7 +44,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     ];
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function find($id): ?EventTicketType
     {
@@ -52,7 +52,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function findByEvent($eventId): ModelQueryBuilder
     {
@@ -60,7 +60,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -74,7 +74,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -88,7 +88,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -98,7 +98,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<EventTicketType>
      */
@@ -108,7 +108,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<Event>
      */
@@ -119,7 +119,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
 
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return ModelQueryBuilder<EventTicket>
      */
@@ -129,7 +129,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param object $object
      */
@@ -148,7 +148,7 @@ class EventTicketType extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public static function factory(): EventTicketTypeFactory
     {

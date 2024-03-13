@@ -6,18 +6,18 @@ use Give\EventTickets\Models\EventTicket;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class AttachAttendeeDataToTicketData
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @var array
      */
     protected $attendeeDataLookup;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @param EventTicket[] $tickets
      */
     public function __construct(array $tickets)
@@ -29,7 +29,7 @@ class AttachAttendeeDataToTicketData
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(EventTicket $ticket): array
     {
@@ -41,7 +41,7 @@ class AttachAttendeeDataToTicketData
     /**
      * This query relates donors names to tickets through donations.
      *
-     * @unreleased
+     * @since 3.6.0
      *
      * @param EventTicket[] $tickets
      */
@@ -50,7 +50,7 @@ class AttachAttendeeDataToTicketData
         if (empty($tickets)) {
             return [];
         }
-        
+
         return (new QueryBuilder)
             ->from('posts', 'Donation')
             ->select(

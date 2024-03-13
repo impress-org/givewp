@@ -8,12 +8,12 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateSubscriptionStatus
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -41,7 +41,7 @@ class UpdateSubscriptionStatus
 
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     protected function getMessageFromStatus(SubscriptionStatus $status): string
     {

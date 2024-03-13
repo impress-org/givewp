@@ -57,7 +57,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 /**
  * Displays a blank slate for the EventTickets table.
  *
- * @unreleased
+ * @since 3.6.0
  */
 const ListTableBlankSlate = () => {
     const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-events-icon.svg`;

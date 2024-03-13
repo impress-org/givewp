@@ -16,7 +16,7 @@ class GetEventsListTableTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -38,7 +38,7 @@ class GetEventsListTableTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -64,7 +64,7 @@ class GetEventsListTableTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getMockRequest(): WP_REST_Request
     {
@@ -75,7 +75,7 @@ class GetEventsListTableTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getMockColumns(array $events, string $sortDirection = 'desc'): array
     {

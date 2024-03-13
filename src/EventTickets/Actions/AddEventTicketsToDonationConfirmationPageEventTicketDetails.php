@@ -7,12 +7,12 @@ use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\Properties\ReceiptDetail;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class AddEventTicketsToDonationConfirmationPageEventTicketDetails
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function __invoke(DonationReceipt $receipt): void
     {

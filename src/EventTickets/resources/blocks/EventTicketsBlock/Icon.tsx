@@ -2,7 +2,7 @@ import {Icon} from '@wordpress/icons';
 import {Path, SVG} from '@wordpress/components';
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function BlockIcon() {
     return (

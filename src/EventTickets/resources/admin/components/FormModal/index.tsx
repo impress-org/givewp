@@ -5,7 +5,7 @@ import styles from './FormModal.module.scss';
 /**
  * Form Modal component that renders a modal with a styled form inside
  *
- * @unreleased
+ * @since 3.6.0
  */
 export default function FormModal({
     isOpen,

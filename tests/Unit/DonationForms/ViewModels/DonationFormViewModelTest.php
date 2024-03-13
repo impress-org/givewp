@@ -20,7 +20,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased added includeHeaderInMultiStep to form design exports
+     * @since 3.6.0 added includeHeaderInMultiStep to form design exports
      * @since 3.0.0
      */
     public function testExportsShouldReturnExpectedArrayOfData()

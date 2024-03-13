@@ -16,7 +16,7 @@ class EventDetailsTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception
@@ -41,7 +41,7 @@ class EventDetailsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception
@@ -59,7 +59,7 @@ class EventDetailsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @return void
      * @throws Exception

@@ -5,7 +5,7 @@ namespace Give\BetaFeatures\Repositories;
 class FeatureFlagRepository
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function eventTickets(): bool
     {
@@ -19,7 +19,7 @@ class FeatureFlagRepository
     /**
      * In the future this will be dynamic, however right now we need a simple iteration of a notifications counter.
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function getNotificationCount(): int
     {
@@ -27,7 +27,7 @@ class FeatureFlagRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function resetNotificationCount(): void
     {
@@ -35,7 +35,7 @@ class FeatureFlagRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function enabled($feature, $default = false): bool
     {

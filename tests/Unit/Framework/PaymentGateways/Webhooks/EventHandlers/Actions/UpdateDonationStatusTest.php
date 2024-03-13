@@ -12,14 +12,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class UpdateDonationStatusTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @dataProvider donationStatus
      *
@@ -41,7 +41,7 @@ class UpdateDonationStatusTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws Exception
      */
@@ -76,7 +76,7 @@ class UpdateDonationStatusTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function donationStatus(): array
     {

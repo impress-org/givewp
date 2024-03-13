@@ -7,12 +7,12 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      * @inheritDoc
      */
     public function register(): void
@@ -21,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      * @inheritDoc
      */
     public function boot(): void
@@ -54,7 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     private function setFeatureFlagNotificationCounter(): void
     {
@@ -64,7 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTitleWithNotificationCounter($title, $className = ''): string
     {

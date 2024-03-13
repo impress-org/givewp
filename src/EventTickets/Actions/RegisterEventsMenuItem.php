@@ -5,7 +5,7 @@ namespace Give\EventTickets\Actions;
 use Give\EventTickets\Models\Event;
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 class RegisterEventsMenuItem
 {
@@ -24,7 +24,7 @@ class RegisterEventsMenuItem
     /**
      * Render admin page container
      *
-     * @unreleased
+     * @since 3.6.0
      */
     public function render()
     {

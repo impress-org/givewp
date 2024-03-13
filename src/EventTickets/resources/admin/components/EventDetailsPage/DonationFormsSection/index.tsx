@@ -7,7 +7,7 @@ import {useState} from 'react';
 /**
  * Displays a blank slate for the Donation Forms table.
  *
- * @unreleased
+ * @since 3.6.0
  */
 const BlankSlate = () => {
     const helpMessage = createInterpolateElement(
@@ -28,7 +28,7 @@ const BlankSlate = () => {
 };
 
 /**
- * @unreleased
+ * @since 3.6.0
  */
 export default function DonationFormsSection() {
     const {

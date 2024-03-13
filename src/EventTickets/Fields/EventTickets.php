@@ -14,7 +14,7 @@ class EventTickets extends Field
     const TYPE = 'eventTickets';
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTitle(): string
     {
@@ -22,7 +22,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function title(string $title): EventTickets
     {
@@ -31,7 +31,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getStartDateTime(): string
     {
@@ -39,7 +39,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function startDateTime(string $date): EventTickets
     {
@@ -48,7 +48,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getDescription(): string
     {
@@ -56,7 +56,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function description(string $description): EventTickets
     {
@@ -65,7 +65,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTicketTypes(): array
     {
@@ -73,7 +73,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function ticketTypes(array $ticketTypes): EventTickets
     {
@@ -82,7 +82,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getTicketsLabel(): string
     {
@@ -93,7 +93,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      */
     public function getSoldOutMessage(): string
     {

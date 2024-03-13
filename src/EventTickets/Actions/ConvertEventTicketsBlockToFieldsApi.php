@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @throws EmptyNameException
      */

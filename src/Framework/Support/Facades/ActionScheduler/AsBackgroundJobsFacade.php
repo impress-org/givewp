@@ -7,12 +7,12 @@ use ActionScheduler;
 /**
  * @see https://actionscheduler.org/
  *
- * @unreleased
+ * @since 3.6.0
  */
 class AsBackgroundJobsFacade
 {
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param string $hook     The hook to trigger.
      * @param array  $args     Arguments to pass when the hook triggers.
@@ -43,7 +43,7 @@ class AsBackgroundJobsFacade
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param string $hook         The hook to trigger.
      * @param array  $args         Arguments to pass when the hook triggers.
@@ -75,7 +75,7 @@ class AsBackgroundJobsFacade
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param string $group        The group to assign this job to.
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
@@ -99,7 +99,7 @@ class AsBackgroundJobsFacade
     }
 
     /**
-     * @unreleased
+     * @since 3.6.0
      *
      * @param string $group  The group to assign this job to.
      * @param string $status ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
