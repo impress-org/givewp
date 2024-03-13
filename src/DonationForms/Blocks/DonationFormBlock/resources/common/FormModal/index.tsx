@@ -5,8 +5,8 @@ import ModalCloseIcon from './ModalClose';
 type FormModalProps = {
     children: any;
     openFormButton: string;
+    isOpen: boolean;
     onChange?: () => void;
-    isOpen?: boolean;
 };
 
 /**
