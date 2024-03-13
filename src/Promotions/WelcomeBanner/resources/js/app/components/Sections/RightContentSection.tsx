@@ -23,7 +23,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
                         </>
                     }
                     description={__(
-                        'Easily connect your events to your donation form. To enable this go to Settings > General > New feature and enable event tickets',
+                        'Easily connect your events to your donation form. To enable this go to Settings > General > Beta Features and enable event tickets',
                         'give'
                     )}
                 >
