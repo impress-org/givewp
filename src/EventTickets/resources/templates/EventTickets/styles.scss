@@ -1,6 +1,7 @@
 .givewp-event-tickets {
 
     &__header {
+        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
         color: var(--givewp-grey-900);
         column-gap: var(--givewp-spacing-2);
         display: grid;
@@ -10,21 +11,9 @@
         position: relative;
         z-index: 1;
 
-        &::before {
-            background-color: var(--givewp-primary-color);
-            content: "";
-            height: 100%;
-            left: 0;
-            opacity: 0.1;
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: -1;
-        }
-
         &__date {
             align-items: center;
-            background-color: var(--givewp-grey-25);
+            background-color: var(--givewp-grey-5);
             border-radius: var(--givewp-rounded-4);
             color: var(--givewp-primary-color);
             display: flex;
@@ -173,6 +162,16 @@
                     font-size: 0.75rem;
                     line-height: 1.5;
                     margin: 0;
+                }
+
+                &__sold-out {
+                    background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+                    border-radius: var(--givewp-rounded-4);
+                    color: var(--givewp-primary-color);
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    line-height: 1.5;
+                    padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
                 }
             }
         }
