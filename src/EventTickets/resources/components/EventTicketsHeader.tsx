@@ -11,8 +11,6 @@ export default function EventTicketsHeader({title, startDateTime, endDateTime}) 
     const month = format(startDateTime, 'MMM');
     const hasEnded = endDateTime < new Date();
 
-    console.log(endDateTime);
-
     return (
         <div className={'givewp-event-tickets__header'}>
             <div className={'givewp-event-tickets__header__date'}>
