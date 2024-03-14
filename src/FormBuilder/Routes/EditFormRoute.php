@@ -19,6 +19,8 @@ class EditFormRoute
     public function __invoke()
     {
         if (isset($_GET['post'], $_GET['action']) && 'edit' === $_GET['action']) {
+            // This conditional will be also triggered by WP edit bulk action
+            // WP sends an array of IDs so if that is the case here, we can skip this
             if ( ! is_array($_GET['post'])) {
                 $post = get_post(abs($_GET['post']));
                 if ('give_forms' === $post->post_type && Utils::isV3Form($post->ID)) {
