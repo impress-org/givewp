@@ -4,6 +4,7 @@ import EventTicketsList from '../../../components/EventTicketsList';
 import {getWindowData} from '@givewp/form-builder/common';
 
 /**
+ * @unreleased Hide tickets once the event has ended.
  * @since 3.6.0
  */
 export default function BlockPlaceholder({attributes}) {

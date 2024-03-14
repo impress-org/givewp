@@ -1,6 +1,10 @@
 import {__} from '@wordpress/i18n';
 import {format} from 'date-fns';
 
+/**
+ * @unreleased Show "ENDED" badge once the event has ended.
+ * @since 3.6.0
+ */
 export default function EventTicketsHeader({title, startDateTime, endDateTime}) {
     const fullDate = format(startDateTime, 'EEEE, MMMM do, hh:mmaaa');
     const day = format(startDateTime, 'dd');
