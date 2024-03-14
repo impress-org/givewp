@@ -18,7 +18,11 @@ export default function BlockPlaceholder({attributes}) {
     return (
         <div className={'givewp-event-tickets-block__placeholder'}>
             <div className={'givewp-event-tickets'}>
-                <EventTicketsHeader title={event.title} startDateTime={new Date(event.startDateTime)} />
+                <EventTicketsHeader
+                    title={event.title}
+                    startDateTime={new Date(event.startDateTime)}
+                    endDateTime={new Date(event.endDateTime)}
+                />
 
                 {event.description && <EventTicketsDescription description={event.description} />}
 

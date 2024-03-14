@@ -51,6 +51,24 @@
             line-height: 1.5;
             margin: 0;
         }
+
+        &__ended {
+            align-items: center;
+            display: flex;
+            grid-column: 3 / 4;
+            grid-row: 1 / 3;
+
+            span {
+                background-color: var(--givewp-primary-color);
+                border-radius: var(--givewp-rounded-4);
+                color: var(--givewp-shades-white);
+                font-size: 0.75rem;
+                font-weight: 600;
+                line-height: 1.5;
+                padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+                text-transform: uppercase;
+            }
+        }
     }
 
     &__description {
