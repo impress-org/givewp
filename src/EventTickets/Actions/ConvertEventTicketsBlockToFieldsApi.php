@@ -14,6 +14,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @unreleased Set event end date and time.
      * @since 3.6.0
      *
      * @throws EmptyNameException
