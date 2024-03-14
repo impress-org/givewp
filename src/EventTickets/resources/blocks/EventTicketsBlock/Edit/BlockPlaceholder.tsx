@@ -15,23 +15,25 @@ export default function BlockPlaceholder({attributes}) {
         return null;
     }
 
+    const startDateTimeObj = new Date(event.startDateTime);
+    const endDateTimeObj = new Date(event.endDateTime);
+    const hasEnded = endDateTimeObj < new Date();
+
     return (
         <div className={'givewp-event-tickets-block__placeholder'}>
             <div className={'givewp-event-tickets'}>
-                <EventTicketsHeader
-                    title={event.title}
-                    startDateTime={new Date(event.startDateTime)}
-                    endDateTime={new Date(event.endDateTime)}
-                />
+                <EventTicketsHeader title={event.title} startDateTime={startDateTimeObj} endDateTime={endDateTimeObj} />
 
                 {event.description && <EventTicketsDescription description={event.description} />}
 
-                <EventTicketsList
-                    ticketTypes={event.ticketTypes}
-                    ticketsLabel={ticketsLabel}
-                    currency={currency}
-                    currencyRate={1}
-                />
+                {!hasEnded && (
+                    <EventTicketsList
+                        ticketTypes={event.ticketTypes}
+                        ticketsLabel={ticketsLabel}
+                        currency={currency}
+                        currencyRate={1}
+                    />
+                )}
             </div>
         </div>
     );

@@ -15,17 +15,17 @@ export default function EventTicketsField({
     ticketTypes,
     ticketsLabel,
 }: Event) {
+    const startDateTimeObj = new Date(startDateTime);
+    const endDateTimeObj = new Date(endDateTime);
+    const hasEnded = endDateTimeObj < new Date();
+
     return (
         <div className={'givewp-event-tickets'}>
-            <EventTicketsHeader
-                title={title}
-                startDateTime={new Date(startDateTime)}
-                endDateTime={new Date(endDateTime)}
-            />
+            <EventTicketsHeader title={title} startDateTime={startDateTimeObj} endDateTime={endDateTimeObj} />
 
             {description && <EventTicketsDescription description={description} />}
 
-            <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />
+            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />}
         </div>
     );
 }
