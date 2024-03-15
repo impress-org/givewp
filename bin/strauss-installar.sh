@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Function to get the latest release version from GitHub API
-get_latest_release() {
-    curl --silent "https://api.github.com/repos/BrianHenryIE/strauss/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
-}
-
 # Function to check if the .phar file or .txt file does not exist, or if the latest release version is not installed
 is_update_needed() {
     local latest_release=$1
@@ -21,7 +16,7 @@ download_and_install() {
 # Main script execution
 main() {
     local latest_release
-    latest_release=$(get_latest_release)
+    latest_release="0.16.0" # strauss release version
     if is_update_needed "$latest_release"; then
         download_and_install "$latest_release"
     fi
