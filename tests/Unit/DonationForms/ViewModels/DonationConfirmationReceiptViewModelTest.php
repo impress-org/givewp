@@ -1,12 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\DonationForms\VieModels;
+namespace Give\Tests\Unit\DonationForms\ViewModels;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ViewModels\DonationConfirmationReceiptViewModel;
 use Give\Donations\Models\Donation;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Tests\TestCase;

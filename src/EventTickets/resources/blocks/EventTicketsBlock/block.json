@@ -1,0 +1,15 @@
+{
+    "name": "givewp/event-tickets",
+    "title": "Event Tickets",
+    "description": "Sell event tickets for your cause",
+    "category": "input",
+    "icon": "yes",
+    "supports": {
+        "multiple": false
+    },
+    "attributes": {
+        "eventId": {
+            "type": "number"
+        }
+    }
+}

@@ -183,40 +183,52 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsImageUrl;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsImageStyle;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsLogoUrl;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsLogoPosition;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsSectionStyle;
 
     /**
-     * @unreleased
+     * @since 3.4.0
      * @var string
      */
     public $designSettingsTextFieldStyle;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageColor;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageOpacity;
 
     /**
      * @since 3.2.0 Added registrationNotification
@@ -310,6 +322,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
             $array['designSettingsTextFieldStyle']
         ) : DesignSettingsTextFieldStyle::DEFAULT();
+
+        $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
+
+        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
 
         return $self;
     }

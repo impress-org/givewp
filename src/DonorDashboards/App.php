@@ -27,6 +27,8 @@ class App
     }
 
     /**
+     * @since 3.6.0 Escape attributes
+     *
      * @param array $attributes
      *
      * @return string
@@ -38,7 +40,7 @@ class App
         $queryArgs = [];
 
         if (isset($attributes['accent_color'])) {
-            $queryArgs['accent-color'] = urlencode($attributes['accent_color']);
+            $queryArgs['accent-color'] = urlencode(esc_attr($attributes['accent_color']));
         }
 
         if (isset($_GET['give_nl'])) {
@@ -55,7 +57,7 @@ class App
 
         $url = esc_url(add_query_arg($queryArgs, $url));
 
-        $loader = $this->getIframeLoader($attributes['accent_color']);
+        $loader = $this->getIframeLoader(esc_attr($attributes['accent_color']));
 
         return sprintf(
             '<div style="position: relative; max-width: 100%%;"><iframe

@@ -68,7 +68,7 @@ function give_add_settings_subpage()
     $give_settings_page = add_submenu_page(
         'edit.php?post_type=give_forms',
         esc_html__('GiveWP Settings', 'give'),
-        esc_html__('Settings', 'give'),
+        apply_filters('givewp_settings_menu_title_give-settings',esc_html__('Settings', 'give')),
         'manage_give_settings',
         'give-settings',
         [

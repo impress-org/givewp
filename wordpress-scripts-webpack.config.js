@@ -34,6 +34,8 @@ module.exports = {
         donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
         donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
         donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
+        eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
+        eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
         stripePaymentElementGateway: srcPath(
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
@@ -51,6 +53,7 @@ module.exports = {
         classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
         classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
         multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
+        twoPanelStepsFormLayoutCss: srcPath('DonationForms/FormDesigns/TwoPanelStepsFormLayout/css/main.scss'),
         donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
         baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
         formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),

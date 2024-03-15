@@ -842,6 +842,7 @@ function give_stripe_is_source_type( $id, $type = 'src' ) {
 /**
  * This helper function is used to process Stripe payments.
  *
+ * @since 3.5.0 remove descriptor as Stripe automatically adds it, per Stripe API changes (https://support.stripe.com/questions/use-of-the-statement-descriptor-parameter-on-paymentintents-for-card-charges)
  * @since 2.33.0 no longer store the payment intent secret
  * @since 2.5.0
  *
@@ -930,7 +931,6 @@ function give_stripe_process_payment( $donation_data, $stripe_gateway ) {
 					'amount'               => $stripe_gateway->format_amount( $donation_data['price'] ),
 					'currency'             => give_get_currency( $form_id ),
 					'payment_method_types' => [ 'card' ],
-					'statement_descriptor' => give_stripe_get_statement_descriptor(),
 					'description'          => give_payment_gateway_donation_summary( $donation_data ),
 					'metadata'             => $stripe_gateway->prepare_metadata( $donation_id ),
 					'customer'             => $stripe_customer_id,

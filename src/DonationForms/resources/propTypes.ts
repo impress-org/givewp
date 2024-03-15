@@ -175,14 +175,18 @@ export interface GoalAchievedProps {
 }
 
 export interface HeaderProps {
-    TextWrapper: FC<TextWrapProps | {}>;
+    HeaderImage: FC<HeaderImageProps | {}>;
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
     Goal: FC<GoalProps | {}>;
+    isMultiStep: boolean;
 }
 
-export interface TextWrapProps {
-    children: ReactNode;
+export interface HeaderImageProps {
+    url: string;
+    alt: string;
+    color: string;
+    opacity: string;
 }
 
 export interface HeaderDescriptionProps {
@@ -210,6 +214,7 @@ export interface DonationReceiptProps {
     donorDetails: ReceiptDetail[];
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];
+    eventTicketsDetails: ReceiptDetail[];
     additionalDetails: ReceiptDetail[];
 }
 

@@ -104,8 +104,6 @@ class DonationFormViewModel
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
-            --givewp-design-settings-logo:url('{$this->formSettings->designSettingsLogoUrl}');
-            --givewp-design-settings-background-image:url('{$this->formSettings->designSettingsImageUrl}');
             }"
         );
 
@@ -188,13 +186,14 @@ class DonationFormViewModel
         $totalCountLabel = $this->getCountLabel($goalType);
 
         return [
-            'totalRevenue'    => $totalRevenue,
+            'totalRevenue' => $totalRevenue,
             'totalCountValue' => $totalCountValue,
             'totalCountLabel' => $totalCountLabel,
         ];
     }
 
     /**
+     * @since 3.6.0 added includeHeaderInMultiStep to form design export
      * @since 3.0.0
      */
     public function exports(): array
@@ -213,25 +212,26 @@ class DonationFormViewModel
         $formDesign = $this->getFormDesign($this->designId());
 
         return [
-            'donateUrl'            => $donateUrl,
-            'validateUrl'          => $validateUrl,
-            'authUrl'              => $authUrl,
+            'donateUrl' => $donateUrl,
+            'validateUrl' => $validateUrl,
+            'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view',
             ],
-            'registeredGateways'   => $formDataGateways,
-            'form'                 => array_merge($formApi->jsonSerialize(), [
+            'registeredGateways' => $formDataGateways,
+            'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal'     => $donationFormGoalData->toArray(),
-                'stats'    => $this->formStatsData(),
-                'design'   => $formDesign ? [
-                    'id'          => $formDesign::id(),
-                    'name'        => $formDesign::name(),
+                'goal' => $donationFormGoalData->toArray(),
+                'stats' => $this->formStatsData(),
+                'design' => $formDesign ? [
+                    'id' => $formDesign::id(),
+                    'name' => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
+                    'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
-            'previewMode'          => $this->previewMode,
+            'previewMode' => $this->previewMode,
         ];
     }
 
@@ -276,21 +276,6 @@ class DonationFormViewModel
         if ($this->previewMode) {
             $classNames[] = 'givewp-donation-form--preview';
         }
-
-        if ($this->formSettings->designSettingsImageUrl) {
-            $classNames[] = 'givewp-design-settings--image';
-            $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
-        }
-
-        if ($this->formSettings->designSettingsLogoUrl) {
-            $classNames[] = 'givewp-design-settings--logo';
-            $classNames[] = 'givewp-design-settings--logo-position__' . $this->formSettings->designSettingsLogoPosition;
-        }
-
-        $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
-
-        $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
-
         ?>
 
         <div data-theme="light" id="root-givewp-donation-form"
@@ -447,5 +432,25 @@ class DonationFormViewModel
         );
 
         Language::setScriptTranslations($handle);
+    }
+
+    /**
+     * @since 3.4.0
+     */
+    private function updateDesignSettingsClassNames(array &$classNames)
+    {
+        if ($this->formSettings->designSettingsImageUrl) {
+            $classNames[] = 'givewp-design-settings--image';
+            $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
+        }
+
+        if ($this->formSettings->designSettingsLogoUrl) {
+            $classNames[] = 'givewp-design-settings--logo';
+            $classNames[] = 'givewp-design-settings--logo-position__' . $this->formSettings->designSettingsLogoPosition;
+        }
+
+        $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
+
+        $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
     }
 }

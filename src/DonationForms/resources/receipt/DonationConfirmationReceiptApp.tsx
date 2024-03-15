@@ -71,6 +71,7 @@ function DonationConfirmationReceiptApp() {
             donorDetails={receipt.donorDetails}
             donationDetails={prepareDetails(receipt.donationDetails)}
             subscriptionDetails={prepareDetails(receipt.subscriptionDetails)}
+            eventTicketsDetails={prepareDetails(receipt.eventTicketsDetails)}
             additionalDetails={prepareDetails(receipt.additionalDetails)}
         />
     );

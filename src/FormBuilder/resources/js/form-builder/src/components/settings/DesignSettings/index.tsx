@@ -8,7 +8,7 @@ type DesignSettings = {
 };
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 export default function DesignSettings({title, description, children}: DesignSettings) {
     return (

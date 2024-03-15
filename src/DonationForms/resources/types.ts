@@ -62,6 +62,7 @@ export interface DonationConfirmationReceiptServerExports {
         };
         donorDetails: ReceiptDetail[];
         donationDetails: ReceiptDetail[];
+        eventTicketsDetails: ReceiptDetail[];
         subscriptionDetails: ReceiptDetail[];
         additionalDetails: ReceiptDetail[];
     };
@@ -231,6 +232,7 @@ export interface Form extends Group {
         id: string;
         name: string;
         isMultiStep: boolean;
+        includeHeaderInMultiStep: boolean;
     };
     nodes: Section[];
     currencySwitcherSettings?: CurrencySwitcherSetting[];

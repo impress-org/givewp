@@ -1030,3 +1030,65 @@ a.give-delete {
     }
 
 }
+
+// copied from wp built-in .menu-counter
+.givewp-feature-flag-notification-counter {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #d63638;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+    z-index: 26;
+}
+// copied from wp built-in .menu-counter
+.givewp-beta-icon {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #F29718;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+    z-index: 26;
+}
+
+.give-settings-header .givewp-feature-flag-notification-counter {
+    display: none;
+}
+
+.give-admin-beta-features-message {
+    background-color: #fff;
+    padding: 0.5rem;
+    border: 1px solid #F29718;
+}
+
+.give-admin-beta-features-feedback-link {
+    margin: 2rem 1.5rem;
+
+    p {
+        color: #737373;
+        font-size: 0.875rem;
+        line-height: 1.7;
+        margin: 0;
+        text-align: right;
+
+        img {
+            translate: 0 -0.125rem;
+            vertical-align: middle;
+        }
+    }
+}

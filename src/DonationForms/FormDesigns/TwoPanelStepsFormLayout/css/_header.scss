@@ -1,0 +1,45 @@
+.givewp-layouts {
+    &-header {
+        max-width: var(--two-panel-header-width);
+        text-align: center;
+        width: 100%;
+
+        @media screen and (min-width: 71.5rem) {
+            border: solid 1px var(--givewp-grey-25);
+            border-radius: var(--givewp-rounded-8);
+            box-shadow: var(--givewp-shadow-sm);
+        }
+    }
+
+    &-headerTitle {
+        margin-bottom: var(--givewp-spacing-3);
+    }
+
+    &-headerDescription {
+        margin-bottom: var(--givewp-spacing-10);
+    }
+
+    .givewp-layouts-header__templates-ms {
+        padding-bottom: 2rem;
+
+        &--background {
+            .givewp-layouts-header__content {
+                position: static;
+                margin-bottom: 0;
+            }
+
+            .givewp-layouts-headerImage {
+
+                img {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 100%;
+                    min-height: 100%;
+                    border-radius: var(--givewp-rounded-8);
+                }
+            }
+        }
+    }
+}
+

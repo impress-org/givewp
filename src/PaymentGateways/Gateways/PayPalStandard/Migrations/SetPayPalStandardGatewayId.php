@@ -20,7 +20,7 @@ class SetPayPalStandardGatewayId extends Migration
     /**
      * @inheritdoc
      *
-     * @unreleased confirm $gateways is an array
+     * @since 3.4.0 confirm $gateways is an array
      */
     public function run()
     {

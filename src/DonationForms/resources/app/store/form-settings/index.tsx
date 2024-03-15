@@ -12,6 +12,7 @@ type PropTypes = {
         donateButtonCaption: string;
         multiStepNextButtonText: string;
         multiStepFirstButtonText: string;
+        showHeader: boolean;
     };
     children: ReactNode;
 };

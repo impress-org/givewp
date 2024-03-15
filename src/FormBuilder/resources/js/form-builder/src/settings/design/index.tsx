@@ -8,7 +8,7 @@ export enum DesignSettings {
 }
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 const FormDesignSettings = ({tab}) => {
     if (tab == DesignSettings.General) {

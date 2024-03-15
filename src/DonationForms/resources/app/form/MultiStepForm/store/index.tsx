@@ -9,7 +9,7 @@ const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'DonationFormMultiStepStateDispatch';
 
 /**
- * @unreleased removed showHeader in favor of DonationFormSettings context
+ * @since 3.4.0 removed showHeader in favor of DonationFormSettings context
  * @since 3.0.0
  */
 export type MultiStepFormContextState = {

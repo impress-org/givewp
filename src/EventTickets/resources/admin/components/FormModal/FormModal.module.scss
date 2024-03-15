@@ -1,0 +1,98 @@
+.formModal {
+    :global {
+        .givewp-modal-dialog {
+            max-width: 37.5rem;
+
+            .givewp-modal-header {
+                font-size: 1.25rem;
+                font-weight: 600;
+                line-height: 1.6;
+            }
+
+            .givewp-modal-close {
+                translateY: 4.5px;
+            }
+        }
+
+        .givewp-event-tickets {
+            &__form {
+                label {
+                    color: var(--givewp-grey-700);
+                    font-size: 1rem;
+                    font-weight: 500;
+                    line-height: 1.5;
+                }
+
+                input, textarea {
+                    border-color: var(--givewp-grey-400);
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+                    &::placeholder {
+                        color: var(--givewp-grey-400);
+                    }
+
+                    &[aria-invalid="true"] {
+                        border-color: var(--givewp-red-500);
+                        outline-color: var(--givewp-red-500);
+                    }
+                }
+
+                span {
+                    color: var(--givewp-grey-400);
+                    font-size: 0.75rem;
+                    line-height: 1.5;
+
+                    strong {
+                        color: var(--givewp-grey-500);
+                        font-weight: 600;
+                    }
+                }
+
+                button[type="submit"].button {
+                    display: block;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    padding: var(--givewp-spacing-3) var(--givewp-spacing-5);
+                    width: 100%;
+                }
+            }
+
+            &__form-row {
+                display: flex;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
+                margin-bottom: var(--givewp-spacing-6);
+
+                &--half {
+                    flex-direction: row;
+                    gap: var(--givewp-spacing-6);
+                }
+            }
+
+            &__form-column {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
+            }
+
+            &__form-errors {
+                list-style: disc;
+                margin-bottom: var(--givewp-spacing-6);
+                margin-top: 0;
+                padding-left: var(--givewp-spacing-4);
+
+                li {
+                    color: var(--givewp-red-500);
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

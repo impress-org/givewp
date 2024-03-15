@@ -17,7 +17,7 @@ const SecureBadge = () => {
 
 /**
  *
- * @unreleased updated to render value using Interweave
+ * @since 3.4.0 updated to render value using Interweave
  * @since 3.0.0
  */
 const Details = ({id, heading, details}: {id: string; heading: string; details: ReceiptDetail[]}) =>
@@ -45,6 +45,7 @@ export default function DonationReceipt({
     donorDetails,
     donationDetails,
     subscriptionDetails,
+    eventTicketsDetails,
     additionalDetails,
 }: DonationReceiptProps) {
     return (
@@ -64,6 +65,11 @@ export default function DonationReceipt({
                     id="subscription-details"
                     heading={__('Subscription Details', 'give')}
                     details={subscriptionDetails}
+                />
+                <Details
+                    id="event-tickets-details"
+                    heading={__('Event Tickets Details', 'give')}
+                    details={eventTicketsDetails}
                 />
                 <Details
                     id="additional-details"

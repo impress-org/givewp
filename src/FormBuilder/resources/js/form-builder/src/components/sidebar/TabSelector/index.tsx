@@ -9,7 +9,7 @@ type TabSelector = {
 };
 
 /**
- * @unreleased
+ * @since 3.4.0
  */
 export function TabSelector({close, selectTab, selected, tabs}: TabSelector) {
     return (
