@@ -570,7 +570,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultAudiences(): array
     {
-        return $this->getMeta('_give_mailchimp');
+        return (array)$this->getMeta('_give_mailchimp');
     }
 
     /**
@@ -578,7 +578,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSubscriberTags(): array
     {
-        return $this->getMeta('_give_mailchimp_tags');
+        return (array)$this->getMeta('_give_mailchimp_tags');
     }
 
 
