@@ -26,6 +26,7 @@ class GenerateTicketsFromPurchaseData
     }
 
     /**
+     * @unreleased Add "amount" to the array of props
      * @since 3.6.0
      */
     public function __invoke(TicketPurchaseData $data)
