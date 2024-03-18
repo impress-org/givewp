@@ -54,8 +54,8 @@ class SalesAmountColumn extends ModelColumn
 
         $salesTotal = array_reduce(
             $model->eventTickets()->getAll() ?? [],
-                function (Money $carry, $eventTicket) use ($ticketTypes) {
-                    return $carry->add($ticketTypes[$eventTicket->ticketTypeId]['price']);
+                function (Money $carry, $eventTicket) {
+                    return $carry->add($eventTicket->amount);
             },
             new Money(0, give_get_currency())
         );
