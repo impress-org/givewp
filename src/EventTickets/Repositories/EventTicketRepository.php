@@ -233,6 +233,7 @@ class EventTicketRepository
     }
 
     /**
+     * @unreleased Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      */
     public function getTotalByDonation(Donation $donation): Money
@@ -241,10 +242,8 @@ class EventTicketRepository
         $currency = $donation->amount->getCurrency();
 
         return array_reduce($eventTickets, static function (Money $carry, EventTicket $eventTicket) {
-            $ticketType = $eventTicket->ticketType()->get();
-
             return $carry->add(
-                $ticketType->price
+                $eventTicket->amount
             );
         }, new Money(0, $currency));
     }

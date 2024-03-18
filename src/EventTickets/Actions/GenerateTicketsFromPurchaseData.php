@@ -35,6 +35,7 @@ class GenerateTicketsFromPurchaseData
                 'eventId' => $data->ticketType->eventId,
                 'ticketTypeId' => $data->ticketType->id,
                 'donationId' => $this->donation->id,
+                'amount' => $data->ticketType->price,
             ]);
         }
     }
