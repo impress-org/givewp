@@ -547,7 +547,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
     }
-  
+
     /**
      * @unreleased
      */
@@ -578,7 +578,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         return $this->getMeta('_give_constant_contact_checked_default', $defaultMeta);
     }
-  
+
     /**
      * @unreleased
      */
@@ -600,7 +600,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactSelectedLists(): array
     {
-        return $this->getMeta('_give_constant_contact');
+        return (array)$this->getMeta('_give_constant_contact');
     }
 
     /**
