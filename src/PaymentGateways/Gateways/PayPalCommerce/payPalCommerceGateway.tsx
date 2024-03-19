@@ -48,6 +48,8 @@ import {PayPalSubscriber} from './types';
     let updateOrderAmount = false;
     let orderCreated = false;
 
+    let currency;
+
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
         label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
@@ -100,6 +102,7 @@ import {PayPalSubscriber} from './types';
     /**
      * Get amount with fee (if any).
      *
+     * @unreleased Append 'give-cs-form-currency' to formData
      * @since 3.2.0
      * @return {number} Amount with fee.
      */
@@ -138,6 +141,11 @@ import {PayPalSubscriber} from './types';
             formData.append('card_zip', postalCode);
             formData.append('billing_country', country);
         }
+
+        /**
+         * Ensure the proper currency will be used when using the Currency Switcher add-on.
+         */
+        formData.append('give-cs-form-currency', currency);
 
         return formData;
     };
@@ -266,6 +274,8 @@ import {PayPalSubscriber} from './types';
         postalCode = useWatch({name: 'zip'});
         country = useWatch({name: 'country'});
 
+        currency = useWatch({name: 'currency'});
+
         useEffect(() => {
             if (orderCreated) {
                 updateOrderAmount = true;
@@ -277,7 +287,6 @@ import {PayPalSubscriber} from './types';
 
     const SmartButtonsContainer = () => {
         const {useWatch, useFormState} = window.givewp.form.hooks;
-        const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
         const {isSubmitting, isSubmitSuccessful} = useFormState();
         const {useFormContext} = window.givewp.form.hooks;
@@ -451,7 +460,6 @@ import {PayPalSubscriber} from './types';
 
     function PaymentMethodsWrapper() {
         const {useWatch} = window.givewp.form.hooks;
-        const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
         const [{options}, dispatch] = usePayPalScriptReducer();
 
