@@ -1,4 +1,7 @@
 == Changelog ==
+= 3.6.1: March 21st, 2024 =
+* Fix: Resolved an issue with PayPal donations and currency switcher on donation forms using the visual form builder
+
 = 3.6.0: March 13th, 2024 =
 * New: Introduced a new beta feature called "Event Tickets" that is open for feedback! If enabled, you can create events and sell tickets on your donation forms.
 * New: Added a new form builder layout called "Two Panel" that offers a side-by-side appearance and a multi-step donation experience.
