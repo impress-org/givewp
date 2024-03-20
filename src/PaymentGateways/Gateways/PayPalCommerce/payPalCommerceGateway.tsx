@@ -102,7 +102,7 @@ import {PayPalSubscriber} from './types';
     /**
      * Get amount with fee (if any).
      *
-     * @unreleased Append 'give-cs-form-currency' to formData
+     * @since 3.6.1 Append 'give-cs-form-currency' to formData
      * @since 3.2.0
      * @return {number} Amount with fee.
      */

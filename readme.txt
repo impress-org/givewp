@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.6.1: March 21th, 2024 =
+* Fix: Resolved an issue with PayPal donations and currency switcher on donation forms using the visual form builder
+
 = 3.6.0: March 13th, 2024 =
 * New: Introduced a new beta feature called "Event Tickets" that is open for feedback! If enabled, you can create events and sell tickets on your donation forms.
 * New: Added a new form builder layout called "Two Panel" that offers a side-by-side appearance and a multi-step donation experience.
