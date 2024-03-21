@@ -4,6 +4,7 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
+use Give\EventTickets\Repositories\EventRepository;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -40,7 +41,7 @@ class UpdateEvent implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return give(EventRepository::class)->queryById($eventId)->count() > 0;
                         },
                         'required' => true,
                     ],

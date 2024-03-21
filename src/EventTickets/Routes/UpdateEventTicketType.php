@@ -5,6 +5,7 @@ namespace Give\EventTickets\Routes;
 use Give\API\RestRoute;
 use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Models\EventTicketType;
+use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -41,8 +42,8 @@ class UpdateEventTicketType implements RestRoute
                     'ticket_type_id' => [
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
-                        'validate_callback' => function ($eventId) {
-                            return EventTicketType::find($eventId);
+                        'validate_callback' => function ($ticketTypeId) {
+                            return give(EventTicketTypeRepository::class)->queryById($ticketTypeId)->count() > 0;
                         },
                         'required' => true,
                     ],
