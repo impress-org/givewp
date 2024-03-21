@@ -8,8 +8,6 @@ export type Event = {
     startDateTime: Date;
     endDateTime: Date;
     ticketTypes: TicketType[];
-    ticketsLabel: string;
-    soldOutMessage: string;
 };
 
 export type TicketType = {
