@@ -51,7 +51,7 @@ class UpdateEventTicketType implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'price' => [
                         'type' => 'integer',
