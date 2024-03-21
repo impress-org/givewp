@@ -5,7 +5,6 @@ namespace Give\EventTickets\Routes;
 use Give\API\RestRoute;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Exceptions\Primitives\Exception;
-use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -20,6 +19,9 @@ class DeleteEventTicketType implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "delete_give_payments".
+     * @since 3.6.0
      */
     public function registerRoute()
     {

@@ -20,6 +20,9 @@ class CreateEventTicketType implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "publish_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {

@@ -3,7 +3,6 @@
 namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
-use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicket;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Models\Model;
@@ -20,6 +19,9 @@ class GetEventTicketTypeTickets implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "read".
+     * @since 3.6.0
      */
     public function registerRoute()
     {

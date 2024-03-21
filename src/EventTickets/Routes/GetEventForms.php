@@ -18,6 +18,9 @@ class GetEventForms implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "read".
+     * @since 3.6.0
      */
     public function registerRoute()
     {

@@ -18,6 +18,9 @@ class UpdateEvent implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "edit_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
