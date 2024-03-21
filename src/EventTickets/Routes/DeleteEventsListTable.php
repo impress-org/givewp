@@ -41,7 +41,9 @@ class DeleteEventsListTable
                 [
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'permission_callback' => function () {
+                        return current_user_can('delete_give_payments');
+                    },
                 ],
                 'args' => [
                     'ids' => [
@@ -102,19 +104,5 @@ class DeleteEventsListTable
         }
 
         return [trim($ids)];
-    }
-
-        /**
-     * @since 3.6.0
-     *
-     * @return bool|\WP_Error
-     */
-    public function permissionsCheck()
-    {
-        return current_user_can('delete_posts')?: new \WP_Error(
-            'rest_forbidden',
-            esc_html__("You don't have permission to delete Events", 'give'),
-            ['status' => is_user_logged_in() ? 403 : 401]
-        );
     }
 }

@@ -30,7 +30,9 @@ class GetEventTicketTypes implements RestRoute
                 [
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return current_user_can('read');
+                    },
                 ],
                 'args' => [
                     'event_id' => [

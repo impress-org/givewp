@@ -43,7 +43,9 @@ class GetEventsListTable
                 [
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'permission_callback' => function () {
+                        return current_user_can('read');
+                    },
                 ],
                 'args' => [
                     'page' => [
@@ -166,19 +168,5 @@ class GetEventsListTable
         }
 
         return $query;
-    }
-
-        /**
-     * @since 3.6.0
-     *
-     * @return bool|\WP_Error
-     */
-    public function permissionsCheck()
-    {
-        return current_user_can('edit_posts')?: new \WP_Error(
-            'rest_forbidden',
-            esc_html__("You don't have permission to view Events", 'give'),
-            ['status' => is_user_logged_in() ? 403 : 401]
-        );
     }
 }

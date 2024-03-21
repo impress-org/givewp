@@ -28,7 +28,7 @@ class CreateEvent implements RestRoute
                     'methods' => 'POST',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can( 'manage_options' );
+                        return current_user_can('publish_give_payments');
                     }
                 ],
                 'args' => [
