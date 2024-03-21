@@ -786,4 +786,58 @@ class FormMetaDecorator extends FormModelDecorator
 
         return $featuredImage;
     }
+
+    /**
+     * @unreleased
+     */
+    public function isConvertKitEnabled(): bool
+    {
+        $isFormEnabled = $this->getMeta('_give_convertkit_override_option') === 'customize';
+
+        $isFormDisabled = $this->getMeta('_give_convertkit_override_option') === 'disabled';
+
+        $isGloballyEnabled = $this->getMeta('_give_convertkit_override_option') === 'default' &&
+                             give_is_setting_enabled(give_get_option('give_convertkit_show_subscribe_checkbox'));
+
+        Log::error('isConvertKitEnabled', [
+            '$isFormEnabled'=> $isFormEnabled,
+            '$isFormDisabled'=>$isFormDisabled,
+            '$isGloballyEnabled'=>$isGloballyEnabled,
+            'return'=> !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled))
+        ]);
+
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitLabel(): bool
+    {
+        return $this->getMeta('_give_convertkit_custom_label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitDefaultChecked(): bool
+    {
+        return $this->getMeta('_give_convertkit_checked_default');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitSelectedForm(): array
+    {
+        return $this->getMeta('_give_convertkit');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitTags(): array
+    {
+        return $this->getMeta('_give_convertkit_tags');
+    }
 }
