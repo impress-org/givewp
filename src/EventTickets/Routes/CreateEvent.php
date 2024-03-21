@@ -6,6 +6,7 @@ use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @since 3.6.0
@@ -28,7 +29,7 @@ class CreateEvent implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'POST',
+                    'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
                         return current_user_can('publish_give_payments');
