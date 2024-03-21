@@ -30,7 +30,6 @@ export default function BlockPlaceholder({attributes}) {
                 {!hasEnded && (
                     <EventTicketsList
                         ticketTypes={event.ticketTypes}
-                        ticketsLabel={ticketsLabel}
                         currency={currency}
                         currencyRate={1}
                     />
