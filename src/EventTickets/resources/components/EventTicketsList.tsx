@@ -19,6 +19,7 @@ export default function EventTicketsList({
             {ticketTypes.map((ticketType) => {
                 return (
                     <EventTicketsListItem
+                        key={ticketType.id}
                         ticketType={ticketType}
                         selectedTickets={selectedTickets[ticketType.id]?.quantity ?? 0}
                         handleSelect={
