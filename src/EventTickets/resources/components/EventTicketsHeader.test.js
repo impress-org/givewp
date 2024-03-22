@@ -10,7 +10,7 @@ describe('EventTicketsHeader', () => {
             <EventTicketsHeader title={title} startDateTime={startDateTime} />
         );
 
-        const dateWrapper = container.getElementsByTagName('div')[0];
+        const dateWrapper = container.querySelector('div');
         const dayElement = within(dateWrapper).getByText('15');
         const monthElement = within(dateWrapper).getByText('Mar');
         const titleElement = getByRole('heading', {name: title});

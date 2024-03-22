@@ -6,25 +6,26 @@ jest.mock('./EventTicketsListItem', () => (props) => (
 ));
 
 describe('EventTicketsList', () => {
-    test('renders null if no ticket types are provided', () => {
-        const {container} = render(<EventTicketsList ticketTypes={[]} ticketsLabel="Select tickets" currency="USD" currencyRate={1} />);
+    test('renders null when ticketTypes is an empty array', () => {
+        const {container} = render(
+            <EventTicketsList ticketTypes={[]} ticketsLabel="Select tickets" currency="USD" currencyRate={1} />
+        );
         expect(container.firstChild).toBeNull();
     });
 
-    test('renders the provided label', () => {
+    test('displays the provided ticketsLabel', () => {
         const ticketTypes = [{id: 1}];
 
-        const {getByText} = render(<EventTicketsList ticketTypes={ticketTypes} ticketsLabel="Select tickets" currency="USD" currencyRate={1} />);
+        const {getByText} = render(
+            <EventTicketsList ticketTypes={ticketTypes} ticketsLabel="Select tickets" currency="USD" currencyRate={1} />
+        );
 
         const labelElement = getByText('Select tickets');
         expect(labelElement).toBeInTheDocument();
     });
 
-    test('renders a list of ticket types', () => {
-        const ticketTypes = [
-            {id: 1},
-            {id: 2},
-        ];
+    test('renders an EventTicketsListItem for each ticket type provided', () => {
+        const ticketTypes = [{id: 1}, {id: 2}];
 
         const {getAllByTestId} = render(
             <EventTicketsList ticketTypes={ticketTypes} ticketsLabel="Select tickets" currency="USD" currencyRate={1} />

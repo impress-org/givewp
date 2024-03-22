@@ -2,7 +2,7 @@ import {fireEvent, render} from '@testing-library/react';
 import EventTicketsListItem from './EventTicketsListItem';
 
 describe('EventTicketsListItem', () => {
-    test('renders the ticket title, description and price', () => {
+    test('renders ticket details including title, description, and price correctly', () => {
         const ticketType = {
             id: 1,
             title: 'General Admission',
@@ -22,7 +22,7 @@ describe('EventTicketsListItem', () => {
         expect(priceElement).toBeInTheDocument();
     });
 
-    test('renders "Free" when the ticket price is 0', () => {
+    test('displays "Free" for tickets with a price of 0', () => {
         const ticketType = {
             id: 1,
             price: 0,
@@ -34,7 +34,7 @@ describe('EventTicketsListItem', () => {
         expect(priceElement).toBeInTheDocument();
     });
 
-    test('renders price with correct currency symbol and exchange rate', () => {
+    test('renders ticket price in a specified currency using the provided exchange rate', () => {
         const ticketType = {
             id: 1,
             price: 1000,
@@ -46,7 +46,7 @@ describe('EventTicketsListItem', () => {
         expect(priceElement).toBeInTheDocument();
     });
 
-    test('renders available tickets when ticketsAvailable is greater than 0', () => {
+    test('displays the number of available tickets when greater than 0', () => {
         const ticketType = {
             id: 1,
             ticketsAvailable: 10,
@@ -60,7 +60,7 @@ describe('EventTicketsListItem', () => {
         expect(availableTicketsElement).toBeInTheDocument();
     });
 
-    test('renders the quantity input with the value from selectedTickets', () => {
+    test('shows the number of selected tickets in the quantity input field', () => {
         const ticketType = {
             id: 1,
             ticketsAvailable: 10,
@@ -74,7 +74,7 @@ describe('EventTicketsListItem', () => {
         expect(selectedTicketsElement).toBeInTheDocument();
     });
 
-    test('updates the available tickets when selectedTickets is greater than 0', () => {
+    test('updates the displayed number of remaining tickets based on the number of selected tickets', () => {
         const ticketType = {
             id: 1,
             ticketsAvailable: 10,
@@ -88,7 +88,7 @@ describe('EventTicketsListItem', () => {
         expect(availableTicketsElement).toBeInTheDocument();
     });
 
-    test('calls handleButtonClick with correct quantity on decrement button click', () => {
+    test('calls handleSelect with the decremented quantity when the decrement button is clicked', () => {
         const mockHandleSelect = jest.fn();
         const ticketType = {
             id: 1,
@@ -112,7 +112,7 @@ describe('EventTicketsListItem', () => {
         expect(mockHandleSelect).toHaveBeenCalledWith(selectedTickets - 1);
     });
 
-    test('calls handleButtonClick with correct quantity on increment button click', () => {
+    test('calls handleSelect with the decremented quantity when the increment button is clicked', () => {
         const mockHandleSelect = jest.fn();
         const ticketType = {
             id: 1,
@@ -136,7 +136,7 @@ describe('EventTicketsListItem', () => {
         expect(mockHandleSelect).toHaveBeenCalledWith(selectedTickets + 1);
     });
 
-    test('renders "Sold Out" when ticketsAvailable is 0', () => {
+    test('displays "Sold Out" when there are no tickets available', () => {
         const ticketType = {
             id: 1,
             ticketsAvailable: 0,
