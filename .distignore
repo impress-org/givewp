@@ -10,7 +10,6 @@
 
 /bin
 /tests
-/coverage
 /node_modules
 /assets/src
 /assets/dist/**/*.map

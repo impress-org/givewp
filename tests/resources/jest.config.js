@@ -23,5 +23,6 @@ module.exports = {
     },
     transformIgnorePatterns: ['/node_modules/(?!(docker-compose|yaml)/)', '\\.pnp\\.[^\\/]+$'],
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+    coverageDirectory: '<rootDir>/tests/resources/coverage/',
     reporters: ['default'],
 };
