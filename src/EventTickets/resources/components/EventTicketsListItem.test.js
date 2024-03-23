@@ -112,7 +112,7 @@ describe('EventTicketsListItem', () => {
         expect(mockHandleSelect).toHaveBeenCalledWith(selectedTickets - 1);
     });
 
-    test('calls handleSelect with the decremented quantity when the increment button is clicked', () => {
+    test('calls handleSelect with the incremented quantity when the increment button is clicked', () => {
         const mockHandleSelect = jest.fn();
         const ticketType = {
             id: 1,
