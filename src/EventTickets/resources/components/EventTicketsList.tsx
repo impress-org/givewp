@@ -7,7 +7,7 @@ export default function EventTicketsList({
     currency,
     currencyRate,
     selectedTickets = [],
-    handleSelect = null,
+    handleSelect = () => null,
 }: EventTicketsListProps) {
     if (!ticketTypes?.length) {
         return null;
@@ -22,11 +22,7 @@ export default function EventTicketsList({
                         key={ticketType.id}
                         ticketType={ticketType}
                         selectedTickets={selectedTickets[ticketType.id]?.quantity ?? 0}
-                        handleSelect={
-                            handleSelect
-                                ? handleSelect(ticketType.id, ticketType.ticketsAvailable, ticketType.price)
-                                : () => null
-                        }
+                        handleSelect={handleSelect(ticketType.id, ticketType.ticketsAvailable, ticketType.price)}
                         currency={currency}
                         currencyRate={currencyRate}
                     />
