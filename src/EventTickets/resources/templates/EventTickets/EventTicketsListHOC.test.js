@@ -24,6 +24,13 @@ jest.mock('../../components/EventTicketsList', () => (props) => (
                             handleSelect(quantity + 1);
                         }}
                     />
+                    <button
+                        data-testid="ticket-invalid-button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            props.handleSelect(Infinity, 10, 1000)(quantity + 1);
+                        }}
+                    />
                 </div>
             );
         })}
@@ -88,6 +95,71 @@ describe('EventTicketsListHOC', () => {
         );
     });
 
+    test('ensures selected ticket quantity is never negative', () => {
+        const {useFormContext} = window.givewp.form.hooks;
+        const {setValue: mockSetValue} = useFormContext();
+
+        const {getByTestId} = render(
+            <EventTicketsListHOC
+                name="eventTickets"
+                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]}
+                ticketsLabel="Tickets"
+            />
+        );
+
+        expect(mockSetValue).toHaveBeenCalledTimes(1);
+        expect(mockSetValue).toHaveBeenCalledWith('eventTickets', JSON.stringify([]));
+
+        act(() => {
+            const buttonElement = getByTestId('ticket-decrement-button');
+            fireEvent.click(buttonElement);
+        });
+
+        expect(mockSetValue).toHaveBeenCalledTimes(2);
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'eventTickets',
+            JSON.stringify([{ticketId: 1, quantity: 0, amount: 0}])
+        );
+    });
+
+    test('ensures selected ticket quantity does not exceed available tickets', () => {
+        const {useFormContext} = window.givewp.form.hooks;
+        const {setValue: mockSetValue} = useFormContext();
+
+        const {getByTestId} = render(
+            <EventTicketsListHOC
+                name="eventTickets"
+                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 1}]}
+                ticketsLabel="Tickets"
+            />
+        );
+
+        expect(mockSetValue).toHaveBeenCalledTimes(1);
+        expect(mockSetValue).toHaveBeenCalledWith('eventTickets', JSON.stringify([]));
+
+        act(() => {
+            const buttonElement = getByTestId('ticket-increment-button');
+            fireEvent.click(buttonElement);
+        });
+
+        expect(mockSetValue).toHaveBeenCalledTimes(2);
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'eventTickets',
+            JSON.stringify([{ticketId: 1, quantity: 1, amount: 1000}])
+        );
+
+        act(() => {
+            const buttonElement = getByTestId('ticket-increment-button');
+            fireEvent.click(buttonElement);
+        });
+
+        expect(mockSetValue).toHaveBeenCalledTimes(3);
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'eventTickets',
+            JSON.stringify([{ticketId: 1, quantity: 1, amount: 1000}])
+        );
+    });
+
     test('adds ticket to donation summary when quantity increases from 0', () => {
         const {useDonationSummary} = window.givewp.form.hooks;
         const {addItem: mockAddItem, addToTotal: mockAddToTotal} = useDonationSummary();
@@ -111,6 +183,54 @@ describe('EventTicketsListHOC', () => {
             value: '$10.00',
         });
         expect(mockAddToTotal).toHaveBeenCalledWith('eventTickets', 10);
+    });
+
+    test('adds ticket to donation summary with "Free" price when quantity increases from 0 and ticket price is 0', () => {
+        const {useDonationSummary} = window.givewp.form.hooks;
+        const {addItem: mockAddItem, addToTotal: mockAddToTotal} = useDonationSummary();
+
+        const {getByTestId} = render(
+            <EventTicketsListHOC
+                name="eventTickets"
+                ticketTypes={[{id: 1, title: 'General Admission', price: 0, ticketsAvailable: 10}]}
+                ticketsLabel="Tickets"
+            />
+        );
+
+        act(() => {
+            const buttonElement = getByTestId('ticket-increment-button');
+            fireEvent.click(buttonElement);
+        });
+
+        expect(mockAddItem).toHaveBeenCalledWith({
+            id: 'eventTickets-1',
+            label: 'Ticket (General Admission) x1',
+            value: 'Free',
+        });
+    });
+
+    test('ensures an invalid ticket type is not added to the form field value', () => {
+        const {useFormContext} = window.givewp.form.hooks;
+        const {setValue: mockSetValue} = useFormContext();
+
+        const {getByTestId} = render(
+            <EventTicketsListHOC
+                name="eventTickets"
+                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]}
+                ticketsLabel="Tickets"
+            />
+        );
+
+        expect(mockSetValue).toHaveBeenCalledTimes(1);
+        expect(mockSetValue).toHaveBeenCalledWith('eventTickets', JSON.stringify([]));
+
+        act(() => {
+            const buttonElement = getByTestId('ticket-invalid-button');
+            fireEvent.click(buttonElement);
+        });
+
+        expect(mockSetValue).toHaveBeenCalledTimes(2);
+        expect(mockSetValue).toHaveBeenCalledWith('eventTickets', JSON.stringify([]));
     });
 
     test('removes ticket from donation summary when quantity returns to 0', () => {
