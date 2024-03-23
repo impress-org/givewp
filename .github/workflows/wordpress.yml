@@ -16,7 +16,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    phpTests:
+    php_tests:
         # The type of runner that the job will run on
         runs-on: ubuntu-20.04
         strategy:
@@ -105,7 +105,7 @@ jobs:
                 env:
                     DB_PORT: ${{ env.mysql_port }}
 
-    jsTests:
+    js_tests:
         runs-on: ubuntu-20.04
         steps:
             -   uses: actions/checkout@v3
