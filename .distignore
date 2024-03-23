@@ -10,6 +10,7 @@
 
 /bin
 /tests
+/coverage
 /node_modules
 /assets/src
 /assets/dist/**/*.map
@@ -22,8 +23,6 @@
 .editorconfig
 .babelrc
 
-
-/tests
 /node_modules
 /packages/form-builder/node_modules
 /assets/src
@@ -76,6 +75,7 @@ webpack.mix.js
 docker-compose.yml
 wp-textdomain.js
 .wp-env.json
+*.test.js
 
 # GH Action files
 DOCKER_ENV

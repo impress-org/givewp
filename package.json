@@ -14,7 +14,10 @@
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
         "test": "wp-scripts test-unit-js --config tests/resources/jest.config.js",
-        "test:watch": "npm run test -- --watch"
+        "test:verbose": "npm run test -- --verbose",
+        "test:watch": "npm run test -- --watch",
+        "test:watch:verbose": "npm run test -- --watch --verbose",
+        "test:coverage": "npm run test -- --coverage"
     },
     "repository": {
         "type": "git",
