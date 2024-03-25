@@ -29,8 +29,6 @@ class ConvertKit extends FormMigrationStep
             'attributes' => $this->getAttributes()
         ]);
 
-        Log::error('process', []);
-
         $this->fieldBlocks->insertAfter('givewp/email', $block);
     }
 
@@ -39,17 +37,11 @@ class ConvertKit extends FormMigrationStep
      */
     private function getAttributes(): array
     {
-        Log::error('attributes', []);
-
         return [
-            'label'             => $this->formV2->getConvertKitLabel() ??
-                                   give_get_option('give_convertkit_label', __('Subscribe to newsletter?')),
-            'defaultChecked'    => $this->formV2->getConvertKitDefaultChecked() ??
-                                   give_is_setting_enabled(give_get_option('give_convertkit_checked_default')),
-            'selectedForm'      => $this->formV2->getConvertKitSelectedForm() ??
-                                   give_get_option('give_convertkit_list', []),
-            'tagSubscribers'    => $this->formV2->getConvertKitTags() ??
-                                   give_get_option('_give_convertkit_tags', []),
+            'label'             => $this->formV2->getConvertKitLabel() ,
+            'defaultChecked'    => $this->formV2->getConvertKitDefaultChecked(),
+            'selectedForm'      => $this->formV2->getConvertKitSelectedForm(),
+            'tagSubscribers'    => $this->formV2->getConvertKitTags()
         ];
     }
 }
