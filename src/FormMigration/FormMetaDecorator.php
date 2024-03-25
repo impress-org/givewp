@@ -575,9 +575,9 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @since 3.3.0
      */
-    public function getMailchimpSubscriberTags(): array
+    public function getMailchimpSubscriberTags():? array
     {
-        return (array)$this->getMeta('_give_mailchimp_tags', ['']);
+        return (array)$this->getMeta('_give_mailchimp_tags', null);
     }
 
 
