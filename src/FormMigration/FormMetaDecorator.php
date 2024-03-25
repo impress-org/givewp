@@ -765,6 +765,22 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function getDoubleTheDonationStatus(): string
+    {
+        return $this->getMeta('dtd_enable_disable');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDoubleTheDonationLabel(): string
+    {
+        return $this->getMeta('give_dtd_label');
+    }
+
+    /**
      * @since 3.5.0
      */
     public function getFormFeaturedImage()
