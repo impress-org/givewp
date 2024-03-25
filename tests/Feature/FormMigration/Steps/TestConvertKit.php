@@ -18,18 +18,12 @@ class TestConvertKit extends TestCase
     /**
      * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesFromV2FormMeta(): void
+    public function testProcessShouldUpdateConvertkitBlockAttributesFromV2FormMeta(): void
     {
         $meta = [
             '_give_convertkit_custom_label'    => __('Subscribe to newsletter?'),
-            '_give_convertkit_tags'            => [
-                ["id" => 4619079, "name" => "Hiking"],
-                ["id" => 4619080, "name" => "Swimming"],
-            ],
-            '_give_convertkit'                 => [
-
-                ["id" => 6352843, "name" => 'Charlotte form'],
-            ],
+            '_give_convertkit'                 => [0 => '6352843'],
+            '_give_convertkit_tags'            => [ 0 => '4619079', 1 => '4619080'],
             '_give_convertkit_checked_default' => true,
         ];
 
@@ -45,19 +39,19 @@ class TestConvertKit extends TestCase
 
         $this->assertSame($meta['_give_convertkit_custom_label'], $block->getAttribute('label'));
         $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('subscriberTags'));
-        $this->assertSame($meta['_give_convertkit'], $block->getAttribute('defaultAudiences'));
+        $this->assertSame($meta['_give_convertkit'], $block->getAttribute('selectedForm'));
         $this->assertTrue(true, $block->getAttribute('checked'));
     }
 
     /**
      * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesFromGlobalSettings(): void
+    public function testProcessShouldUpdateConvertkitBlockAttributesFromGlobalSettings(): void
     {
         $meta = [
             'give_convertkit_label'           => __('Subscribe to newsletter?'),
-            '_give_convertkit_tags'           => [],
-            'give_convertkit_list'            => ['de73f3f82f'],
+            'give_convertkit_list'            => [0 => '6352843'],
+            '_give_convertkit_tags'           => [ 0 => '4619079', 1 => '4619080'],
             'give_convertkit_checked_default' => true,
         ];
 
@@ -69,42 +63,36 @@ class TestConvertKit extends TestCase
 
         $payload = FormMigrationPayload::fromFormV2($formV2);
 
-        $mailchimp = new Mailchimp($payload);
+        $mailchimp = new ConvertKit($payload);
 
         $mailchimp->process();
 
-        $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
+        $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
-        $this->assertSame($meta['give_mailchimp_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['give_mailchimp_list'], $block->getAttribute('defaultAudiences'));
-        $this->assertSame([''], $block->getAttribute('subscriberTags'));
+        $this->assertSame($meta['give_convertkit_label'], $block->getAttribute('label'));
+        $this->assertSame($meta['give_convertkit_list'], $block->getAttribute('selectedForm'));
+        $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('subscriberTags'));
         $this->assertTrue(true, $block->getAttribute('checked'));
-        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
-        $this->assertTrue(true, $block->getAttribute('sendDonationData'));
-        $this->assertTrue(true, $block->getAttribute('sendFFMData'));
     }
 
     /**
      * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesWhenNoMeta(): void
+    public function testProcessShouldUpdateConvertkitBlockAttributesWhenNoMeta(): void
     {
         $formV2 = $this->createSimpleDonationForm();
 
         $payload = FormMigrationPayload::fromFormV2($formV2);
 
-        $mailchimp = new Mailchimp($payload);
+        $mailchimp = new ConvertKit($payload);
 
         $mailchimp->process();
 
-        $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
+        $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
         $this->assertSame(__('Subscribe to newsletter?'), $block->getAttribute('label'));
+        $this->assertSame([''], $block->getAttribute('selectedForm'));
         $this->assertSame([''], $block->getAttribute('subscriberTags'));
-        $this->assertSame([''], $block->getAttribute('defaultAudiences'));
         $this->assertTrue(true, $block->getAttribute('checked'));
-        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
-        $this->assertTrue(true, $block->getAttribute('sendDonationData'));
-        $this->assertTrue(true, $block->getAttribute('sendFFMData'));
     }
 }
