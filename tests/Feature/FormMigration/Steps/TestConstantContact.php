@@ -90,6 +90,6 @@ class TestConstantContact extends TestCase
 
         $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
         $this->assertSame('Subscribe to our newsletter?', $block->getAttribute('label'));
-        $this->assertSame([''], $block->getAttribute('selectedEmailLists'));
+        $this->assertNull(null, $block->getAttribute('selectedEmailLists'));
     }
 }
