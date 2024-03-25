@@ -20,6 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 class FormBuilderViewModel
 {
     /**
+     * @unreleased Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
@@ -76,6 +77,7 @@ class FormBuilderViewModel
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
+            'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
         ];
     }
 
