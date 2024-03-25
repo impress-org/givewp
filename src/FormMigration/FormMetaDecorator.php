@@ -814,7 +814,9 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConvertKitLabel(): string
     {
-        return $this->getMeta('_give_convertkit_custom_label', give_get_option('give_convertkit_label', __('Subscribe to newsletter?')));
+        $defaultMeta = give_get_option('give_convertkit_label', __('Subscribe to newsletter?'));
+
+        return $this->getMeta('_give_convertkit_custom_label', $defaultMeta);
     }
 
     /**
@@ -822,7 +824,9 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConvertKitDefaultChecked(): bool
     {
-        return $this->getMeta('_give_convertkit_checked_default', give_is_setting_enabled(give_get_option('give_convertkit_checked_default')));
+        $defaultMeta = give_get_option('give_convertkit_checked_default');
+
+        return  give_is_setting_enabled($this->getMeta('_give_convertkit_checked_default', $defaultMeta));
     }
 
     /**
@@ -830,14 +834,18 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConvertKitSelectedForm(): string
     {
-        return $this->getMeta('_give_convertkit',  give_get_option('give_convertkit_list', ''));
+        $defaultMeta =  give_get_option('give_convertkit_list', '');
+
+        return $this->getMeta('_give_convertkit', $defaultMeta);
     }
 
     /**
      * @unreleased
      */
-    public function getConvertKitTags(): array
+    public function getConvertKitTags():? array
     {
-        return $this->getMeta('_give_convertkit_tags', give_get_option('_give_convertkit_tags', []));
+        $defaultMeta = give_get_option('give_convertkit_tags', null);
+
+        return $this->getMeta('_give_convertkit_tags', $defaultMeta);
     }
 }
