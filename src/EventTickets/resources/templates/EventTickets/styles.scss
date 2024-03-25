@@ -94,11 +94,12 @@
             border-radius: var(--givewp-rounded-2);
             border: 1px solid var(--givewp-grey-25);
             display: flex;
+            gap: var(--givewp-spacing-4);
             padding: var(--givewp-spacing-4);
 
             &__description {
                 display: flex;
-                flex: 1 0 auto;
+                flex: 1 0 0;
                 flex-direction: column;
                 gap: var(--givewp-spacing-1);
 
