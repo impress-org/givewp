@@ -537,7 +537,8 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultChecked(): bool
     {
-        return $this->getMeta('_give_mailchimp_checked_default', give_get_option('give_mailchimp_checked_default', true));
+        return give_is_setting_enabled($this->getMeta('_give_mailchimp_checked_default',
+            give_get_option('give_mailchimp_checked_default', true)));
     }
 
     /**
@@ -553,7 +554,8 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendDonationData(): bool
     {
-        return $this->getMeta('_give_mailchimp_send_donation',  give_get_option('give_mailchimp_donation_data', true));
+        return give_is_setting_enabled($this->getMeta('_give_mailchimp_send_donation',
+            give_get_option('give_mailchimp_donation_data', true)));
     }
 
     /**
