@@ -22,8 +22,8 @@ class TestConvertKit extends TestCase
     {
         $meta = [
             '_give_convertkit_custom_label'    => __('Subscribe to newsletter?'),
-            '_give_convertkit'                 => [0 => '6352843'],
-            '_give_convertkit_tags'            => [ 0 => '4619079', 1 => '4619080'],
+            '_give_convertkit'                 => '6352843',
+            '_give_convertkit_tags'            => ['4619079', '4619080'],
             '_give_convertkit_checked_default' => true,
         ];
 
@@ -38,9 +38,9 @@ class TestConvertKit extends TestCase
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
         $this->assertSame($meta['_give_convertkit_custom_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('subscriberTags'));
+        $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('tagSubscribers'));
         $this->assertSame($meta['_give_convertkit'], $block->getAttribute('selectedForm'));
-        $this->assertTrue(true, $block->getAttribute('checked'));
+        $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 
     /**
@@ -50,8 +50,8 @@ class TestConvertKit extends TestCase
     {
         $meta = [
             'give_convertkit_label'           => __('Subscribe to newsletter?'),
-            'give_convertkit_list'            => [0 => '6352843'],
-            '_give_convertkit_tags'           => [ 0 => '4619079', 1 => '4619080'],
+            'give_convertkit_list'            => '6352843',
+            'give_convertkit_tags'           => ['4619079', '4619080'],
             'give_convertkit_checked_default' => true,
         ];
 
@@ -71,8 +71,8 @@ class TestConvertKit extends TestCase
 
         $this->assertSame($meta['give_convertkit_label'], $block->getAttribute('label'));
         $this->assertSame($meta['give_convertkit_list'], $block->getAttribute('selectedForm'));
-        $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('subscriberTags'));
-        $this->assertTrue(true, $block->getAttribute('checked'));
+        $this->assertSame($meta['give_convertkit_tags'], $block->getAttribute('tagSubscribers'));
+        $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 
     /**
@@ -91,8 +91,8 @@ class TestConvertKit extends TestCase
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
         $this->assertSame(__('Subscribe to newsletter?'), $block->getAttribute('label'));
-        $this->assertSame([''], $block->getAttribute('selectedForm'));
-        $this->assertSame([''], $block->getAttribute('subscriberTags'));
-        $this->assertTrue(true, $block->getAttribute('checked'));
+        $this->assertSame('', $block->getAttribute('selectedForm'));
+        $this->assertNull(null, $block->getAttribute('tagSubscribers'));
+        $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 }
