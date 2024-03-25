@@ -529,8 +529,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpLabel()
     {
-        $value = $this->getMeta('_give_mailchimp_custom_label');
-        return $value === '' ? null : $value;
+        return $this->getMeta('_give_mailchimp_custom_label',  give_get_option('give_mailchimp_label', __('Subscribe to newsletter?')));
     }
 
     /**
@@ -538,7 +537,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultChecked(): bool
     {
-        return $this->getMeta('_give_mailchimp_checked_default');
+        return $this->getMeta('_give_mailchimp_checked_default', give_get_option('give_mailchimp_checked_default', true));
     }
 
     /**
@@ -546,7 +545,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDoubleOptIn(): bool
     {
-        return $this->getMeta('_give_mailchimp_double_opt_in');
+        return $this->getMeta('_give_mailchimp_double_opt_in',  give_get_option('give_mailchimp_double_opt_in'));
     }
 
     /**
@@ -554,7 +553,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendDonationData(): bool
     {
-        return $this->getMeta('_give_mailchimp_send_donation');
+        return $this->getMeta('_give_mailchimp_send_donation',  give_get_option('give_mailchimp_donation_data', true));
     }
 
     /**
@@ -562,7 +561,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendFFMData(): bool
     {
-        return $this->getMeta('_give_mailchimp_send_ffm');
+        return $this->getMeta('_give_mailchimp_send_ffm',  give_get_option('give_mailchimp_ffm_pass_field'));
     }
 
     /**
@@ -570,7 +569,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultAudiences(): array
     {
-        return (array)$this->getMeta('_give_mailchimp');
+        return (array)$this->getMeta('_give_mailchimp', give_get_option('give_mailchimp_list', ['']));
     }
 
     /**
@@ -578,7 +577,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSubscriberTags(): array
     {
-        return (array)$this->getMeta('_give_mailchimp_tags');
+        return (array)$this->getMeta('_give_mailchimp_tags', ['']);
     }
 
 
