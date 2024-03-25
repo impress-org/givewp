@@ -24,7 +24,7 @@ class TestMailchimp extends TestCase
             '_give_mailchimp_tags'            => ['Animal-Rescue-Campaign', 'Housing-And-Shelter-Campaign'],
             '_give_mailchimp'                 => ['de73f3f82f'],
             '_give_mailchimp_checked_default' => true,
-            '_give_mailchimp_send_donation'   => true,
+            '_give_mailchimp_send_donation_data'   => true,
             '_give_mailchimp_send_ffm'        => true,
         ];
 
@@ -76,7 +76,7 @@ class TestMailchimp extends TestCase
 
         $this->assertSame($meta['give_mailchimp_label'], $block->getAttribute('label'));
         $this->assertSame($meta['give_mailchimp_list'], $block->getAttribute('defaultAudiences'));
-        $this->assertSame([''], $block->getAttribute('subscriberTags'));
+        $this->assertNull(null, $block->getAttribute('subscriberTags'));
         $this->assertTrue(true, $block->getAttribute('checked'));
         $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
         $this->assertTrue(true, $block->getAttribute('sendDonationData'));
@@ -99,7 +99,7 @@ class TestMailchimp extends TestCase
         $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
 
         $this->assertSame(__('Subscribe to newsletter?'), $block->getAttribute('label'));
-        $this->assertSame([''], $block->getAttribute('subscriberTags'));
+        $this->assertNull(null, $block->getAttribute('subscriberTags'));
         $this->assertSame([''], $block->getAttribute('defaultAudiences'));
         $this->assertTrue(true, $block->getAttribute('checked'));
         $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
