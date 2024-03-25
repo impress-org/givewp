@@ -80,29 +80,4 @@ class EventTickets extends Field
         $this->ticketTypes = $ticketTypes;
         return $this;
     }
-
-    /**
-     * @since 3.6.0
-     */
-    public function getTicketsLabel(): string
-    {
-        return apply_filters(
-            'givewp_event_tickets_block/tickets_label',
-            __('Select Tickets', 'give')
-        );
-    }
-
-    /**
-     * @since 3.6.0
-     */
-    public function getSoldOutMessage(): string
-    {
-        return apply_filters(
-            'givewp_event_tickets_block/sold_out_message',
-            __(
-                'Thank you for supporting our cause. Our fundraising event tickets are officially sold out. You can still contribute by making a donation.',
-                'give'
-            )
-        );
-    }
 }

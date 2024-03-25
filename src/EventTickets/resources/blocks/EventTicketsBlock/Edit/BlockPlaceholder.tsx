@@ -24,7 +24,6 @@ export default function BlockPlaceholder({attributes}) {
 
                 <EventTicketsList
                     ticketTypes={event.ticketTypes}
-                    ticketsLabel={ticketsLabel}
                     currency={currency}
                     currencyRate={1}
                 />

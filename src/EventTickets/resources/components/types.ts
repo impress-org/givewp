@@ -7,8 +7,6 @@ export type Event = {
     startDateTime: Date;
     description: string;
     ticketTypes: TicketType[];
-    ticketsLabel: string;
-    soldOutMessage: string;
 };
 
 export type TicketType = {
@@ -28,7 +26,6 @@ export type SelectedTicket = {
 
 export type EventTicketsListProps = {
     ticketTypes: TicketType[];
-    ticketsLabel: string;
     currency: string;
     currencyRate: number;
     selectedTickets?: SelectedTicket[];
