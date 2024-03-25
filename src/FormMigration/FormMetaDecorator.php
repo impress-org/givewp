@@ -533,6 +533,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpDefaultChecked(): bool
@@ -543,6 +544,7 @@ class FormMetaDecorator extends FormModelDecorator
 
 
     /**
+     * @unreleased add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendDonationData(): bool
@@ -552,6 +554,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendFFMData(): bool
