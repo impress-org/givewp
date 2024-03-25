@@ -14,12 +14,16 @@ class DoubleTheDonation extends FormMigrationStep
     /**
      * @unreleased
      */
+    public function canHandle(): bool
+    {
+        return $this->formV2->getDoubleTheDonationStatus() === 'enabled';
+    }
+
+    /**
+     * @unreleased
+     */
     public function process()
     {
-        if ($this->formV2->getDoubleTheDonationStatus() !== 'enabled') {
-            return;
-        }
-
         $block = BlockModel::make([
             'name'       => 'givewp/dtd',
             'attributes' => [
