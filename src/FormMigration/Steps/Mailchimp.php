@@ -39,7 +39,7 @@ class Mailchimp extends FormMigrationStep
         return [
             'label'            => $this->formV2->getMailchimpLabel(),
             'checked'          => $this->formV2->getMailchimpDefaultChecked(),
-            'doubleOptIn'      => $this->formV2->getMailchimpDoubleOptIn(),
+            'doubleOptIn'      => give_get_option('give_mailchimp_double_opt_in', true),
             'subscriberTags'   => $this->formV2->getMailchimpSubscriberTags(),
             'sendDonationData' => $this->formV2->getMailchimpSendDonationData(),
             'sendFFMData'      => $this->formV2->getMailchimpSendFFMData(),

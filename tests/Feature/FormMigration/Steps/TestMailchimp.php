@@ -24,7 +24,6 @@ class TestMailchimp extends TestCase
             '_give_mailchimp_tags'            => ['Animal-Rescue-Campaign', 'Housing-And-Shelter-Campaign'],
             '_give_mailchimp'                 => ['de73f3f82f'],
             '_give_mailchimp_checked_default' => true,
-            '_give_mailchimp_double_opt_in'   => true,
             '_give_mailchimp_send_donation'   => true,
             '_give_mailchimp_send_ffm'        => true,
         ];
@@ -43,7 +42,6 @@ class TestMailchimp extends TestCase
         $this->assertSame($meta['_give_mailchimp_tags'], $block->getAttribute('subscriberTags'));
         $this->assertSame($meta['_give_mailchimp'], $block->getAttribute('defaultAudiences'));
         $this->assertTrue(true, $block->getAttribute('checked'));
-        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
         $this->assertTrue(true, $block->getAttribute('sendDonationData'));
         $this->assertTrue(true, $block->getAttribute('sendFFMData'));
     }

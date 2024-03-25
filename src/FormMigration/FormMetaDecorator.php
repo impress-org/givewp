@@ -541,13 +541,6 @@ class FormMetaDecorator extends FormModelDecorator
             give_get_option('give_mailchimp_checked_default', true)));
     }
 
-    /**
-     * @since 3.3.0
-     */
-    public function getMailchimpDoubleOptIn(): bool
-    {
-        return $this->getMeta('_give_mailchimp_double_opt_in',  give_get_option('give_mailchimp_double_opt_in'));
-    }
 
     /**
      * @since 3.3.0
