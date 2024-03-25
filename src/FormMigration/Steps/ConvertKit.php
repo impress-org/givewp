@@ -16,7 +16,7 @@ class ConvertKit extends FormMigrationStep
      */
     public function canHandle(): bool
     {
-        return true;
+        return $this->formV2->isConvertKitEnabled();
     }
 
     /**
