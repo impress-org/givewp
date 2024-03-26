@@ -47,7 +47,7 @@ const DesignEditorSkeleton = () => {
 
 const SchemaEditorSkeleton = () => {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
-    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
+    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState<string>('add');
 
     const toggleSelectedSecondarySidebar = (name) =>
         setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false);
