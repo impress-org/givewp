@@ -51,6 +51,6 @@ class DescriptionColumn extends ModelColumn
             $truncatedDescription .= '...';
         }
 
-        return wpautop($truncatedDescription);
+        return sprintf('<div class="event-description">%s</div>', wpautop($truncatedDescription));
     }
 }
