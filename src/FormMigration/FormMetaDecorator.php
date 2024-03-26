@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -785,5 +786,62 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return $featuredImage;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isConvertKitEnabled(): bool
+    {
+        $isFormEnabled = $this->getMeta('_give_convertkit_override_option') === 'customize';
+
+        $isFormDisabled = $this->getMeta('_give_convertkit_override_option') === 'disabled';
+
+        $isGloballyEnabled = $this->getMeta('_give_convertkit_override_option') === 'default' &&
+                             give_is_setting_enabled(give_get_option('give_convertkit_show_subscribe_checkbox'));
+
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitLabel(): string
+    {
+        $defaultMeta = give_get_option('give_convertkit_label', __('Subscribe to newsletter?'));
+
+        return $this->getMeta('_give_convertkit_custom_label', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitDefaultChecked(): bool
+    {
+        $defaultMeta = give_get_option('give_convertkit_checked_default');
+
+        return  give_is_setting_enabled($this->getMeta('_give_convertkit_checked_default', $defaultMeta));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitSelectedForm(): string
+    {
+        $defaultMeta =  give_get_option('give_convertkit_list', '');
+
+        return $this->getMeta('_give_convertkit', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitTags():? array
+    {
+        $defaultMeta = give_get_option('give_convertkit_tags', null);
+
+        return !empty($this->getMeta('_give_convertkit_tags')) ?
+            $this->getMeta('_give_convertkit_tags') :
+            $defaultMeta;
     }
 }
