@@ -786,4 +786,53 @@ class FormMetaDecorator extends FormModelDecorator
 
         return $featuredImage;
     }
+
+    /**
+     * @unreleased
+     */
+    public function isActiveCampaignEnabled(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getActiveCampaignLabel(): string
+    {
+        $defaultMeta = get_option('give_activecampaign_label', __('Subscribe to our newsletter?', 'give'));
+
+        return $this->getMeta('give_activecampaign_label', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getActiveCampaignDefaultChecked(): bool
+    {
+        $defaultMeta = get_option('give_activecampaign_checkbox_default', true);
+
+        return give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default', $defaultMeta));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getActiveCampaignSelectedLists(): array
+    {
+        $defaultMeta = get_option('give_activecampaign_lists', []);
+
+        return !empty($this->getMeta('give_activecampaign_lists')) ?
+            $this->getMeta('give_activecampaign_lists') : $defaultMeta;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getActiveCampaignTags(): array
+    {
+        $defaultMeta = get_option('give_activecampaign_tags', []);
+
+        return !empty($this->getMeta('give_activecampaign_tags')) ?
+            $this->getMeta('give_activecampaign_tags') : $defaultMeta;    }
 }
