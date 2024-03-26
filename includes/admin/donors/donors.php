@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Donors\Models\Donor;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -478,10 +480,32 @@ function give_donor_view( $donor ) {
 							</td>
 						</tr>
 
-						<?php
+                        <?php
+
+                        $donor_phone_number = Donor::find($donor->id)->phone;
+                        ?>
+                        <tr class="alternate">
+                            <th scope="col">
+                                <label for="tablecell"><?php
+                                    esc_html_e('Phone:', 'give'); ?></label>
+                            </th>
+                            <td>
+								<span class="donor-user-id info-item edit-item">
+									<input name="give_donor_phone_number" value="<?php
+                                    echo $donor_phone_number; ?>" type="text">
+								</span>
+
+                                <span class="donor-user-id info-item editable">
+									<?php
+                                    echo $donor_phone_number; ?>
+								</span>
+                            </td>
+                        </tr>
+
+                        <?php
 						$donor_company = $donor->get_meta( '_give_donor_company', true );
 						?>
-						<tr class="alternate">
+                        <tr class="">
 							<th scope="col">
 								<label for="tablecell"><?php esc_html_e( 'Company Name:', 'give' ); ?></label>
 							</th>
