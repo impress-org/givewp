@@ -19,6 +19,7 @@ class DonorFactory extends ModelFactory
             'lastName' => $lastName,
             'name' => trim("$firstName $lastName"),
             'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
             'totalAmountDonated' => new Money(0, 'USD'),
             'totalNumberOfDonations' => 0
         ];

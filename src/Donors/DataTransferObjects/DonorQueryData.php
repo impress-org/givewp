@@ -34,6 +34,10 @@ final class DonorQueryData
     /**
      * @var string
      */
+    public $phone;
+    /**
+     * @var string
+     */
     public $name;
     /**
      * @var string
@@ -77,6 +81,7 @@ final class DonorQueryData
         $self->userId = (int)$object->userId;
         $self->prefix = $object->{DonorMetaKeys::PREFIX()->getKeyAsCamelCase()};
         $self->email = $object->email;
+        $self->phone = $object->phone;
         $self->name = $object->name;
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;

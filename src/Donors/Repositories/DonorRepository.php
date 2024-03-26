@@ -119,6 +119,7 @@ class DonorRepository
             'date_created' => Temporal::getFormattedDateTime($dateCreated),
             'user_id' => $donor->userId ?? 0,
             'email' => $donor->email,
+            'phone' => $donor->phone,
             'name' => $donor->name,
         ];
 
@@ -192,6 +193,7 @@ class DonorRepository
         $args = [
             'user_id' => $donor->userId,
             'email' => $donor->email,
+            'phone' => $donor->phone,
             'name' => $donor->name
         ];
 
@@ -381,6 +383,7 @@ class DonorRepository
                 'id',
                 ['user_id', 'userId'],
                 'email',
+                'phone',
                 'name',
                 ['purchase_value', 'totalAmountDonated'],
                 ['purchase_count', 'totalNumberOfDonations'],
