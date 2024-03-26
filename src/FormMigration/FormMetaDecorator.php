@@ -527,7 +527,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @since 3.3.0
      */
-    public function getMailchimpLabel()
+    public function getMailchimpLabel(): string
     {
         return $this->getMeta('_give_mailchimp_custom_label',  give_get_option('give_mailchimp_label', __('Subscribe to newsletter?')));
     }
