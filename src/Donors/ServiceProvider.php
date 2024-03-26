@@ -8,8 +8,10 @@ use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\Migrations\addPhoneColumn;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepositoryProxy;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -55,6 +57,10 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->addCustomFieldsToDonorDetails();
         $this->enforceDonorsAsUsers();
+
+        give(MigrationsRegister::class)->addMigrations([
+            addPhoneColumn::class,
+        ]);
     }
 
     /**
