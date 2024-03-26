@@ -7,7 +7,6 @@ use Give\DonationForms\Models\DonationForm;
 use Give\EventTickets\Actions\ConvertEventTicketsBlockToFieldsApi;
 use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Fields\EventTickets;
-use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
@@ -28,8 +27,8 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
      */
     public function testBlockToFieldConversionMatchesAttributes(): void
     {
-        $event = Event::factory()->create();
-        $ticketType = EventTicketType::factory()->create(['eventId' => $event->id]);
+        $ticketType = EventTicketType::factory()->create();
+        $event = $ticketType->event;
 
         $block = BlockModel::make([
             'name' => 'givewp/event-tickets',
