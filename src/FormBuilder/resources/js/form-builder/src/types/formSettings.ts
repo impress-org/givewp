@@ -2,6 +2,7 @@ import {FormStatus} from '@givewp/form-builder/types/formStatus';
 import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
 
 /**
+ * @unreleased Added formExcerpt
  * @since 3.0.0
  */
 export type FormSettings = {
@@ -42,4 +43,13 @@ export type FormSettings = {
     multiStepFirstButtonText: string;
     multiStepNextButtonText: string;
     pdfSettings: object;
+    designSettingsImageUrl: string;
+    designSettingsImageStyle: string;
+    designSettingsLogoUrl: string;
+    designSettingsLogoPosition: string;
+    designSettingsSectionStyle: string;
+    designSettingsTextFieldStyle: string;
+    designSettingsImageOpacity: string;
+    designSettingsImageColor: string;
+    formExcerpt: string;
 };

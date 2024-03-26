@@ -38,11 +38,12 @@ const DesignEditorSkeleton = () => {
         <InterfaceSkeleton
             header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
             content={<DesignPreview />}
-            sidebar={!!showSidebar && <DesignSidebar />}
+            sidebar={!!showSidebar && <DesignSidebar toggleShowSidebar={toggleShowSidebar} />}
             notices={<NoticesContainer />}
+            className="givewp-form-builder__design-tab"
         />
     );
-}
+};
 
 const SchemaEditorSkeleton = () => {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);

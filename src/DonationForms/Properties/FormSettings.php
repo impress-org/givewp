@@ -2,13 +2,17 @@
 
 namespace Give\DonationForms\Properties;
 
+use Give\DonationForms\ValueObjects\DesignSettingsImageStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
+use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
- * @since 3.2.0 Remove addSlashesRecursive method
+ * @since      3.2.0 Remove addSlashesRecursive method
  * @since      3.0.0
  */
 class FormSettings implements Arrayable, Jsonable
@@ -179,6 +183,62 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsImageUrl;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsImageStyle;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsLogoUrl;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsLogoPosition;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsSectionStyle;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsTextFieldStyle;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageColor;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageOpacity;
+
+    /* @unreleased
+     * @var string
+     */
+    public $formExcerpt;
+
+    /**
+     * @unreleased Added formExcerpt
+
+    /**
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -198,7 +258,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = !empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
+        $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
         $self->designId = $array['designId'] ?? null;
@@ -220,7 +280,7 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
-        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus(
+        $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();
 
@@ -252,6 +312,30 @@ class FormSettings implements Arrayable, Jsonable
         $self->pdfSettings = isset($array['pdfSettings']) && is_array(
             $array['pdfSettings']
         ) ? $array['pdfSettings'] : [];
+
+        $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
+        $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
+            $array['designSettingsImageStyle']
+        ) : DesignSettingsImageStyle::BACKGROUND();
+
+        $self->designSettingsLogoUrl = $array['designSettingsLogoUrl'] ?? '';
+        $self->designSettingsLogoPosition = ! empty($array['designSettingsLogoPosition']) ? new DesignSettingsLogoPosition(
+            $array['designSettingsLogoPosition']
+        ) : DesignSettingsLogoPosition::LEFT();
+
+        $self->designSettingsSectionStyle = ! empty($array['designSettingsSectionStyle']) ? new DesignSettingsSectionStyle(
+            $array['designSettingsSectionStyle']
+        ) : DesignSettingsSectionStyle::DEFAULT();
+
+        $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
+            $array['designSettingsTextFieldStyle']
+        ) : DesignSettingsTextFieldStyle::DEFAULT();
+
+        $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
+
+        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
+
+        $self->formExcerpt = $array['formExcerpt'] ?? '';
 
         return $self;
     }

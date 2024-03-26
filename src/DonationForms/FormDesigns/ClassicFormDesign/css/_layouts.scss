@@ -11,4 +11,11 @@
     border-radius: 0.5rem;
     box-shadow: var(--givewp-shadow-xs);
     background-color: #fff;
+    border: 1px solid var(--givewp-grey-25);
+    border-top: none;
+}
+
+.givewp-layouts-header {
+    border: 1px solid var(--givewp-grey-25);
+    border-bottom: none;
 }

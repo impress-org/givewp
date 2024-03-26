@@ -11,7 +11,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
-import {PayPalSubscriber} from "./types";
+import {PayPalSubscriber} from './types';
 
 (() => {
     /**
@@ -44,6 +44,11 @@ import {PayPalSubscriber} from "./types";
     let addressLine1;
     let addressLine2;
     let postalCode;
+
+    let updateOrderAmount = false;
+    let orderCreated = false;
+
+    let currency;
 
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
@@ -84,28 +89,30 @@ import {PayPalSubscriber} from "./types";
         let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
 
         // Remove hosted fields from components if subscription.
-        if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
-            paypalScriptOptions.components = paypalScriptOptions.components.split(',')
+        if (isSubscription && -1 !== paypalScriptOptions.components.indexOf('hosted-fields')) {
+            paypalScriptOptions.components = paypalScriptOptions.components
+                .split(',')
                 .filter((component) => component !== 'hosted-fields')
                 .join(',');
         }
 
         return paypalScriptOptions;
-    }
+    };
 
     /**
      * Get amount with fee (if any).
      *
+     * @since 3.6.1 Append 'give-cs-form-currency' to formData
      * @since 3.2.0
      * @return {number} Amount with fee.
      */
     const getAmount = () => {
         const feeAmount = feeRecovery ? feeRecovery : 0;
-        let amountWithFee = amount + feeAmount
+        let amountWithFee = amount + feeAmount;
         amountWithFee = Math.round(amountWithFee * 100) / 100;
 
         return amountWithFee;
-    }
+    };
 
     const getFormData = () => {
         const formData = new FormData();
@@ -115,7 +122,7 @@ import {PayPalSubscriber} from "./types";
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', getAmount() );
+        formData.append('give-amount', getAmount());
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -126,7 +133,7 @@ import {PayPalSubscriber} from "./types";
         formData.append('give_last', lastName);
         formData.append('give_email', email);
 
-        if( country ) {
+        if (country) {
             formData.append('card_address', addressLine1);
             formData.append('card_address_2', addressLine2);
             formData.append('card_city', city);
@@ -134,6 +141,11 @@ import {PayPalSubscriber} from "./types";
             formData.append('card_zip', postalCode);
             formData.append('billing_country', country);
         }
+
+        /**
+         * Ensure the proper currency will be used when using the Currency Switcher add-on.
+         */
+        formData.append('give-cs-form-currency', currency);
 
         return formData;
     };
@@ -172,35 +184,37 @@ import {PayPalSubscriber} from "./types";
         }
 
         const subscriberData: PayPalSubscriber = {
-            "name": {
-                "given_name": firstName,
-                "surname": lastName
+            name: {
+                given_name: firstName,
+                surname: lastName,
             },
-            "email_address": email,
+            email_address: email,
         };
 
         if (country) {
             subscriberData.shipping_address = {
                 name: {
-                    "full_name": `${firstName} ${lastName}`.trim()
+                    full_name: `${firstName} ${lastName}`.trim(),
                 },
                 address: {
-                    "address_line_1": addressLine1,
-                    "address_line_2": addressLine2,
-                    "admin_area_2": city,
-                    "admin_area_1": state,
-                    "postal_code": postalCode,
-                    "country_code": country
-                }
+                    address_line_1: addressLine1,
+                    address_line_2: addressLine2,
+                    admin_area_2: city,
+                    admin_area_1: state,
+                    postal_code: postalCode,
+                    country_code: country,
+                },
             };
         }
 
-        return actions.subscription.create({
-            "plan_id": responseJson.data.id,
-            "subscriber": subscriberData
-        }).then((orderId) => {
-            return payPalSubscriptionId = orderId;
-        });
+        return actions.subscription
+            .create({
+                plan_id: responseJson.data.id,
+                subscriber: subscriberData,
+            })
+            .then((orderId) => {
+                return (payPalSubscriptionId = orderId);
+            });
     };
 
     const Divider = ({label, style = {}}) => {
@@ -249,7 +263,6 @@ import {PayPalSubscriber} from "./types";
         lastName = useWatch({name: 'lastName'});
         email = useWatch({name: 'email'});
 
-
         subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
         subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
         subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
@@ -261,16 +274,30 @@ import {PayPalSubscriber} from "./types";
         postalCode = useWatch({name: 'zip'});
         country = useWatch({name: 'country'});
 
+        currency = useWatch({name: 'currency'});
+
+        useEffect(() => {
+            if (orderCreated) {
+                updateOrderAmount = true;
+            }
+        }, [amount]);
+
         return children;
     };
 
     const SmartButtonsContainer = () => {
         const {useWatch, useFormState} = window.givewp.form.hooks;
-        const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
         const {isSubmitting, isSubmitSuccessful} = useFormState();
         const {useFormContext} = window.givewp.form.hooks;
-        const {getFieldState, setFocus, getValues, formState: {errors}, trigger, setError} = useFormContext();
+        const {
+            getFieldState,
+            setFocus,
+            getValues,
+            formState: {errors},
+            trigger,
+            setError,
+        } = useFormContext();
         const gateway = window.givewp.gateways.get('paypal-commerce');
 
         const props = {
@@ -280,61 +307,87 @@ import {PayPalSubscriber} from "./types";
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
-                    setError('FORM_ERROR', {
-                        message: __(
-                            'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
-                            'give'
-                        )
-                    },
+                    setError(
+                        'FORM_ERROR',
+                        {
+                            message: __(
+                                'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
+                                'give'
+                            ),
+                        },
                         {shouldFocus: true}
                     );
 
                     // Scroll to the top of the form.
                     // Add this moment we do not have a way to scroll to the error message.
                     // In the future we can add a way to scroll to the error message and remove this code.
-                    document.querySelector('#give-next-gen button[type="submit"]')
-                        .scrollIntoView({behavior: 'smooth'});
+                    document.querySelector('#give-next-gen button[type="submit"]').scrollIntoView({behavior: 'smooth'});
 
                     return actions.reject();
-
                 }
 
                 // Validate the form values before proceeding.
                 const result = await trigger();
-                if(result === false){
+                if (result === false) {
                     // Set focus on first invalid field.
-                                       for (const fieldName in getValues()) {
-                        if(getFieldState(fieldName).invalid){
+                    for (const fieldName in getValues()) {
+                        if (getFieldState(fieldName).invalid) {
                             setFocus(fieldName);
                         }
-                                       }
+                    }
                     return actions.reject();
                 }
 
+                orderCreated = true;
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
                 const donationFormWithSubmitButton = Array.from(document.forms).pop();
-                const submitButton = donationFormWithSubmitButton.querySelector('[type="submit"]');
+                const submitButton: HTMLButtonElement = donationFormWithSubmitButton.querySelector('[type="submit"]');
+                const submitButtonDefaultText = submitButton.textContent;
+                submitButton.textContent = __('Waiting for PayPal...', 'give');
+                submitButton.disabled = true;
 
-                if(donationType === 'subscription') {
-                    // @ts-ignore
+                if (payPalOrderId && updateOrderAmount) {
+                    const response = await fetch(
+                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_order_amount&order=${payPalOrderId}`,
+                        {
+                            method: 'POST',
+                            body: getFormData(),
+                        }
+                    );
+
+                    const {data: ajaxResponseData} = await response.json();
+
+                    if (ajaxResponseData.hasOwnProperty('error')) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = submitButtonDefaultText;
+                        throw new Error(ajaxResponseData.error);
+                    }
+                }
+
+                if (donationType === 'subscription') {
+                    submitButton.disabled = false;
+                    submitButton.textContent = submitButtonDefaultText;
                     submitButton.click();
                     return;
                 }
 
                 return actions.order.capture().then((details) => {
-                    // @ts-ignore
+                    submitButton.disabled = false;
+                    submitButton.textContent = submitButtonDefaultText;
                     submitButton.click();
                 });
-            }
-        }
+            },
+        };
 
-        return donationType === 'subscription'
+        return donationType === 'subscription' ? (
             // @ts-ignore
-            ? <PayPalButtons {...props} createSubscription={createSubscriptionHandler} />
+            <PayPalButtons {...props} createSubscription={createSubscriptionHandler} />
+        ) : (
             // @ts-ignore
-            : <PayPalButtons {...props} createOrder={createOrderHandler} />;
+            <PayPalButtons {...props} createOrder={createOrderHandler} />
+        );
     };
 
     const HostedFieldsContainer = () => {
@@ -350,9 +403,8 @@ import {PayPalSubscriber} from "./types";
         });
 
         return (
-
-                <PayPalHostedFieldsProvider createOrder={createOrderHandler}>
-                    <div>
+            <PayPalHostedFieldsProvider createOrder={createOrderHandler}>
+                <div>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
                     <TextControl
@@ -401,16 +453,13 @@ import {PayPalSubscriber} from "./types";
                     <div style={{display: 'flex', gap: '10px'}}></div>
 
                     <HoistHostedFieldContext />
-
-                    </div>
-                </PayPalHostedFieldsProvider>
-
+                </div>
+            </PayPalHostedFieldsProvider>
         );
     };
 
     function PaymentMethodsWrapper() {
         const {useWatch} = window.givewp.form.hooks;
-        const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
         const [{options}, dispatch] = usePayPalScriptReducer();
 
@@ -431,7 +480,7 @@ import {PayPalSubscriber} from "./types";
         return (
             <>
                 <SmartButtonsContainer />
-                { -1 !== options.components.indexOf('hosted-fields')  && <HostedFieldsContainer /> }
+                {-1 !== options.components.indexOf('hosted-fields') && <HostedFieldsContainer />}
             </>
         );
     }
@@ -454,10 +503,10 @@ import {PayPalSubscriber} from "./types";
                 };
             }
 
-            if(payPalSubscriptionId) {
+            if (payPalSubscriptionId) {
                 return {
                     payPalSubscriptionId: payPalSubscriptionId,
-                }
+                };
             }
 
             if (!validateHostedFields()) {
@@ -466,8 +515,7 @@ import {PayPalSubscriber} from "./types";
 
             const approveOrderCallback = async (data) => {
                 const response = await fetch(
-                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
-                    data.orderId,
+                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=${data.orderId}&update_amount=${updateOrderAmount}`,
                     {
                         method: 'POST',
                         body: getFormData(),
@@ -476,33 +524,31 @@ import {PayPalSubscriber} from "./types";
 
                 const {data: ajaxResponseData} = await response.json();
 
-                if( ajaxResponseData.hasOwnProperty('error')){
+                if (ajaxResponseData.hasOwnProperty('error')) {
                     throw new Error(ajaxResponseData.error);
                 }
 
                 return {...data, payPalOrderId: data.orderId};
             };
 
-            try{
-                const result = await hostedField.cardFields
-                    .submit({
-                        // Trigger 3D Secure authentication
-                        contingencies: [ 'SCA_WHEN_REQUIRED' ],
-                        cardholderName: cardholderName
-                    });
-
+            try {
+                const result = await hostedField.cardFields.submit({
+                    // Trigger 3D Secure authentication
+                    contingencies: ['SCA_WHEN_REQUIRED'],
+                    cardholderName: cardholderName,
+                });
 
                 if (
-                    ! result // Check whether get result from paypal gateway server.
-                    || (
-                        [ 'NO', 'POSSIBLE' ].includes( result.liabilityShift ) // Check whether card required 3D secure validation.
-                        && !  (result.liabilityShifted && 'POSSIBLE' === result.liabilityShift) // Check whether card passed 3D secure validation.
-                    )
+                    !result || // Check whether get result from paypal gateway server.
+                    (['NO', 'POSSIBLE'].includes(result.liabilityShift) && // Check whether card required 3D secure validation.
+                        !(result.liabilityShifted && 'POSSIBLE' === result.liabilityShift)) // Check whether card passed 3D secure validation.
                 ) {
-                    throw new Error(__(
-                        'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
-                        'give'
-                    ));
+                    throw new Error(
+                        __(
+                            'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
+                            'give'
+                        )
+                    );
                 }
 
                 return await approveOrderCallback(result);
@@ -511,16 +557,11 @@ import {PayPalSubscriber} from "./types";
 
                 // Handle PayPal error.
                 const isPayPalDonationError = err.hasOwnProperty('details');
-                if( isPayPalDonationError ){
+                if (isPayPalDonationError) {
                     throw new Error(err.details[0].description);
                 }
 
-                throw new Error(
-                    sprintf(
-                        __('Paypal Donations Error: %s', 'give'),
-                        err.message
-                    )
-                );
+                throw new Error(sprintf(__('Paypal Donations Error: %s', 'give'), err.message));
             }
         },
         Fields() {
@@ -530,10 +571,7 @@ import {PayPalSubscriber} from "./types";
 
             return (
                 <FormFieldsProvider>
-                    <PayPalScriptProvider
-                        deferLoading={true}
-                        options={getPayPalScriptOptions({isSubscription})}
-                    >
+                    <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>
                         <PaymentMethodsWrapper />
                     </PayPalScriptProvider>
                 </FormFieldsProvider>

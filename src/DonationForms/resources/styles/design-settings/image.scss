@@ -1,0 +1,259 @@
+/* Classic */
+.givewp-donation-form {
+    .givewp-layouts {
+        &-header {
+            position: relative;
+            padding: 0;
+            gap: 0;
+
+            &__templates, &__templates--background, &__templates--center {
+                display: flex;
+                flex-direction: column;
+                padding: var(--givewp-spacing-6);
+                gap: var(--givewp-spacing-6);
+                width: 100%;
+
+                @media screen and (min-width: 32rem) {
+                    padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
+                }
+            }
+
+            &__templates--above, &__templates--background, &__templates--center {
+                .givewp-layouts-headerImage {
+                    width: 100%;
+
+                    img {
+                        object-fit: cover;
+                        min-width: 100%;
+                        border-top-left-radius: var(--givewp-rounded-8);
+                        border-top-right-radius: var(--givewp-rounded-8);
+                    }
+                }
+            }
+
+            &__templates {
+                &--background {
+                    .givewp-layouts-headerImage {
+                        margin-top: -1.5rem;
+                        width: 100%;
+                        height: auto;
+
+                        img {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            height: 100%;
+                        }
+                    }
+
+                    div:not(.givewp-layouts-headerImage, .givewp-layouts-headerImage__overlay), aside {
+                        position: relative;
+                        z-index: 999;
+                    }
+                }
+
+                &--templates, &--above {
+                    padding: 0;
+                    width: 100%;
+                    gap: 0;
+
+                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+                    }
+
+                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                        color: var(--givewp-grey-900);
+                    }
+
+                    .givewp-layouts-headerImage {
+                        position: relative;
+
+                        img {
+                            height: 320px;
+                        }
+                    }
+
+                    .givewp-layouts-header__content {
+                        display: flex;
+                        flex-direction: column;
+                        gap: var(--givewp-spacing-6);
+                        padding: var(--givewp-spacing-6);
+
+                        @media screen and (min-width: 32rem) {
+                            padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
+                        }
+                    }
+                }
+
+                &--center {
+                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+                    }
+
+                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                        color: var(--givewp-grey-900);
+                    }
+
+                    .givewp-layouts-headerImage {
+                        position: relative;
+
+                        &__overlay {
+                            &:before {
+                                border-radius: var(--givewp-rounded-4);
+                            }
+                        }
+
+                        img {
+                            height: 311px;
+                            border-radius: var(--givewp-rounded-4);
+                        }
+                    }
+
+                    .givewp-layouts-goal {
+                        margin-top: -1.25rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Multi Step */
+.givewp-donation-form__steps-body, .givewp-donation-form > .givewp-layouts-header {
+    padding: 0;
+    background: #fff;
+
+    .givewp-layouts-multiStepForm, .givewp-layouts-header__templates-ms {
+        padding: 2rem 2rem 0 2rem;
+    }
+
+    .givewp-donation-form__steps-button-next {
+        width: calc(100% - 4rem);
+        margin: 0 auto;
+    }
+
+    .givewp-layouts-multiStepForm__form {
+        .givewp-donation-form__steps-button-next {
+            width: 100%;
+        }
+    }
+
+
+    .givewp-layouts-header__templates-ms {
+        .givewp-layouts-headerImage {
+            width: 100%;
+
+            img {
+                object-fit: cover;
+                min-width: 100%;
+                border-top-left-radius: var(--givewp-rounded-8);
+                border-top-right-radius: var(--givewp-rounded-8);
+            }
+        }
+
+        .givewp-layouts-headerTitle {
+            color: var(--givewp-grey-900);
+        }
+
+        .givewp-layouts-headerDescription {
+            color: var(--givewp-grey-700);
+        }
+
+
+        &--background {
+            padding: 0;
+
+            .givewp-layouts-header {
+                &__content {
+                    position: relative;
+                    padding: 2rem 2rem .5rem 2rem;
+                    margin-bottom: var(--givewp-spacing-4);
+
+                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
+                        color: var(--givewp-shades-white);
+                    }
+
+                }
+
+                &__goal {
+                    padding: 0 2rem;
+                }
+            }
+
+
+            div:not(.givewp-layouts-headerImage,, .givewp-layouts-headerImage__overlay, .givewp-layouts-header__content), aside {
+                position: relative;
+                z-index: 999;
+            }
+
+            .givewp-layouts-headerImage {
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                }
+            }
+        }
+
+        &--above {
+            padding: 0;
+
+            .givewp-layouts-header__content {
+                padding: 0 2rem;
+            }
+
+            .givewp-layouts-headerImage {
+                position: relative;
+
+                margin-bottom: var(--givewp-spacing-6);
+
+                img {
+                    height: 320px;
+                }
+            }
+        }
+
+        &--center {
+            padding: 2rem 2rem 0 2rem;
+
+            .givewp-layouts-headerImage {
+                position: relative;
+
+                &__overlay {
+                    &:before {
+                        border-radius: var(--givewp-rounded-4);
+                    }
+                }
+
+                img {
+                    border-radius: var(--givewp-rounded-4);
+                    max-height: 320px;
+                }
+            }
+
+            .givewp-layouts-goal {
+                margin-top: var(--givewp-spacing-1);
+            }
+        }
+    }
+}
+
+.givewp-layouts-headerImage {
+
+    &__overlay:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: var(--givewp-rounded-4);
+        border-top-right-radius: var(--givewp-rounded-4);
+        background: var(--givewp-image-color);
+        border: 1px solid var(--givewp-image-color);
+        opacity: calc(var(--givewp-image-opacity) / 100);
+        z-index: 999;
+    }
+}

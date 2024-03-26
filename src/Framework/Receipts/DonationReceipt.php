@@ -34,6 +34,10 @@ class DonationReceipt implements Arrayable, Jsonable
      * @var ReceiptDetailCollection
      */
     public $subscriptionDetails;
+    /**
+     * @var ReceiptDetailCollection
+     */
+    public $eventTicketsDetails;
 
     /**
      * @since 3.0.0
@@ -44,6 +48,7 @@ class DonationReceipt implements Arrayable, Jsonable
         $this->settings = new ReceiptSettings();
         $this->donorDetails = new ReceiptDetailCollection();
         $this->donationDetails = new ReceiptDetailCollection();
+        $this->eventTicketsDetails = new ReceiptDetailCollection();
         $this->subscriptionDetails = new ReceiptDetailCollection();
         $this->additionalDetails = new ReceiptDetailCollection();
     }
@@ -58,6 +63,7 @@ class DonationReceipt implements Arrayable, Jsonable
             'settings' => $this->settings->toArray(),
             'donorDetails' => $this->donorDetails->toArray(),
             'donationDetails' => $this->donationDetails->toArray(),
+            'eventTicketsDetails' => $this->eventTicketsDetails->toArray(),
             'subscriptionDetails' => $this->subscriptionDetails->toArray(),
             'additionalDetails' => $this->additionalDetails->toArray(),
         ];

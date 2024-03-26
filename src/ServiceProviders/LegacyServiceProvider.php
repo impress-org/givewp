@@ -2,7 +2,6 @@
 
 namespace Give\ServiceProviders;
 
-use _PHPStan_9a6ded56a\Nette\Neon\Exception;
 use Closure;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\Route\Form;

@@ -25,6 +25,7 @@ class GenerateConfirmationPageReceipt
         $this->fillSettings($receipt);
         $this->fillDonorDetails($receipt);
         $this->fillDonationDetails($receipt);
+        $this->fillEventTicketsDetails($receipt);
         $this->fillSubscriptionDetails($receipt);
         $this->fillAdditionalDetails($receipt);
 
@@ -32,6 +33,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 3.4.0 updated to check for metaKey first and then fallback to name
      * @since 3.3.0 updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
      */
@@ -64,17 +66,21 @@ class GenerateConfirmationPageReceipt
                     ]);
                 }
             } elseif ($field->getScope()->isDonor()) {
-                if (!metadata_exists('donor', $donation->donor->id, $field->getName())) {
+                if (!metadata_exists('donor', $donation->donor->id, $field->getMetaKey() ?? $field->getName())) {
                     continue;
                 }
 
-                $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
+                $value = give()->donor_meta->get_meta(
+                    $donation->donor->id,
+                    $field->getMetaKey() ?? $field->getName(),
+                    true
+                );
             } elseif ($field->getScope()->isDonation()) {
-                if (!metadata_exists('donation', $donation->id, $field->getName())) {
+                if (!metadata_exists('donation', $donation->id, $field->getMetaKey() ?? $field->getName())) {
                     continue;
                 }
 
-                $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
+                $value = give()->payment_meta->get_meta($donation->id, $field->getMetaKey() ?? $field->getName(), true);
             } else {
                 $value = null;
             }
@@ -93,8 +99,8 @@ class GenerateConfirmationPageReceipt
                 $donation
             );
 
-            if (!empty($label)){
-                 $receiptDetails[] = new ReceiptDetail(
+            if (!empty($label)) {
+                $receiptDetails[] = new ReceiptDetail(
                     $label,
                     $value ?? ''
                 );
@@ -105,6 +111,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 3.6.0 added support for event tickets
      * @since 3.0.0
      *
      * @return void
@@ -133,7 +140,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
+                    ['amount' => apply_filters('givewp_generate_confirmation_page_receipt_detail_donation_amount', $receipt->donation->intendedAmount()->formatToDecimal(), $receipt)]
                 ),
             ]
         );
@@ -146,6 +153,8 @@ class GenerateConfirmationPageReceipt
                 )
             );
         }
+
+        do_action('givewp_generate_confirmation_page_receipt_before_donation_total', $receipt);
 
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
@@ -355,5 +364,13 @@ class GenerateConfirmationPageReceipt
     {
         return give_do_email_tags($content, ['payment_id' => $donation->id, 'form_id' => $donation->formId]
         );
+    }
+
+    /**
+     * @since 3.6.0
+     */
+    private function fillEventTicketsDetails(DonationReceipt $receipt): void
+    {
+        do_action('givewp_generate_confirmation_page_receipt_fill_event_ticket_details', $receipt);
     }
 }

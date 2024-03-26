@@ -3,6 +3,7 @@ import {withTemplateWrapper} from '../templates';
 import type {GoalType} from '@givewp/forms/propTypes';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
+import type {Form as DonationForm} from '@givewp/forms/types';
 
 const formTemplates = window.givewp.form.templates;
 
@@ -11,13 +12,12 @@ const HeaderTitleTemplate = withTemplateWrapper(formTemplates.layouts.headerTitl
 const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.headerDescription);
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
-
+const HeaderImageTemplate = withTemplateWrapper(formTemplates.layouts.headerImage);
 
 /**
  * @since 3.0.0
  */
-export default function Header({form}) {
-
+export default function Header({form}: {form: DonationForm}) {
     const formatGoalAmount = useCallback((amount: number) => {
         return amountFormatter(form.currency, {
             maximumFractionDigits: 0,
@@ -27,6 +27,17 @@ export default function Header({form}) {
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
+                isMultiStep={form.design.isMultiStep}
+                HeaderImage={() =>
+                    form.settings?.designSettingsImageUrl && (
+                        <HeaderImageTemplate
+                            url={form.settings?.designSettingsImageUrl}
+                            alt={form.settings?.formTitle}
+                            color={form.settings?.designSettingsImageColor}
+                            opacity={form.settings?.designSettingsImageOpacity}
+                        />
+                    )
+                }
                 Title={() => form.settings?.showHeading && <HeaderTitleTemplate text={form.settings.heading} />}
                 Description={() =>
                     form.settings?.showDescription && <HeaderDescriptionTemplate text={form.settings.description} />

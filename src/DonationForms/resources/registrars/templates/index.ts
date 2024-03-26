@@ -35,7 +35,8 @@ import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
-import FormError from "./layouts/FormError";
+import FormError from './layouts/FormError';
+import HeaderImage from './layouts/HeaderImage';
 
 const defaultFormTemplates = {
     fields: {
@@ -78,6 +79,7 @@ const defaultFormTemplates = {
         header: Header,
         headerTitle: HeaderTitle,
         headerDescription: HeaderDescription,
+        headerImage: HeaderImage,
         goal: Goal,
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,

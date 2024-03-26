@@ -1,0 +1,58 @@
+.givewp-header-image-filter {
+    &__button {
+        display: flex;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        gap: var(--givewp-spacing-2);
+        width: 100%;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid grey;
+    }
+
+    .block-editor-panel-color-gradient-settings {
+        border: none;
+        padding-top: 0 !important;
+    }
+
+    .components-base-control {
+        margin-bottom: 0;
+    }
+
+    .components-base-control__label {
+        font-weight: normal;
+    }
+
+    .components-range-control__root {
+        flex-direction: row-reverse;
+        gap: var(--givewp-spacing-3);
+
+        .components-range-control__number, .components-number-control {
+            margin: 0 !important;
+            width: auto;
+        }
+
+        /* Hide the up and down arrows on number input */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+
+        .components-input-control__container {
+            position: relative;
+
+            &::before {
+                content: '%';
+                position: absolute;
+                top: .34rem;
+                right: .5rem;
+                color: #007cba;
+            }
+        }
+    }
+}

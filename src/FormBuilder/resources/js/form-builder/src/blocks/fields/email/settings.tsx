@@ -4,7 +4,12 @@ import defaultSettings from '../settings';
 import FieldSettings from '@givewp/form-builder/blocks/fields/settings/Edit';
 import {FieldBlock} from '@givewp/form-builder/types';
 import {Path, SVG} from '@wordpress/components';
+import {BlockEditProps} from '@wordpress/blocks';
 
+/**
+ * @since 3.4.1 updated default required attribute to be true on block and edit component
+ * @since 3.0.0
+ */
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
     title: __('Email', 'give'),
@@ -16,6 +21,11 @@ const settings: FieldBlock['settings'] = {
         ...defaultSettings.attributes,
         label: {
             default: __('Email Address'),
+        },
+        isRequired: {
+            type: 'boolean',
+            source: 'attribute',
+            default: true,
         },
     },
     icon: () => (
@@ -31,7 +41,7 @@ const settings: FieldBlock['settings'] = {
         />
     ),
 
-    edit: (props) => <FieldSettings showRequired={false} {...props} />,
+    edit: (props: BlockEditProps<any>) => <FieldSettings showRequired={false} {...props} attributes={{...props.attributes, isRequired: true}} />,
 };
 
 export default settings;

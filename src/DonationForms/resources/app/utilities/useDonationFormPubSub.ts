@@ -11,6 +11,7 @@ export const PREVIEW_EVENTS = {
     GOAL: 'preview:goal',
     COLORS: 'preview:colors',
     CSS: 'preview:css',
+    DESIGN_SETTINGS: 'preview:design-settings',
 }
 
 /**
@@ -78,6 +79,11 @@ export default function useDonationFormPubSub() {
         publish(PREVIEW_EVENTS.SETTINGS, data, iframeRef)
     }
 
+
+    const publishDesignSettings = (data: RequireAtLeastOne<FormSettings>) => {
+        publish(PREVIEW_EVENTS.DESIGN_SETTINGS, data, iframeRef)
+    }
+
     const publishGoal = (data: RequireAtLeastOne<FormGoal>) => {
         publish(PREVIEW_EVENTS.GOAL, data, iframeRef)
     }
@@ -103,6 +109,10 @@ export default function useDonationFormPubSub() {
 
     const subscribeToSettings = (callback: (data: FormSettings) => void) => {
         subscribe(PREVIEW_EVENTS.SETTINGS, callback)
+    }
+
+    const subscribeToDesignSettings = (callback: (data) => void) => {
+        subscribe(PREVIEW_EVENTS.DESIGN_SETTINGS, callback)
     }
 
     const subscribeToGoal = (callback: (data: FormGoal) => void) => {
@@ -145,9 +155,11 @@ export default function useDonationFormPubSub() {
         publishColors,
         publishCss,
         publishSettings,
+        publishDesignSettings,
         subscribeToGoal,
         subscribeToColors,
         subscribeToSettings,
-        subscribeToCss
+        subscribeToCss,
+        subscribeToDesignSettings
     }
 }

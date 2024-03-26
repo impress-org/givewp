@@ -9,7 +9,15 @@ use Give\Framework\FormDesigns\FormDesign;
  */
 class MultiStepFormDesign extends FormDesign
 {
+    /**
+     * @since 3.0.0
+     */
     protected $isMultiStep = true;
+
+    /**
+     * @since 3.6.0
+     */
+    protected $includeHeaderInMultiStep = true;
 
     /**
      * @since 3.0.0

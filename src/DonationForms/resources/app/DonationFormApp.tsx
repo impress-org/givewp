@@ -46,7 +46,6 @@ const initialState = {
  * @since 3.0.0
  */
 function App({form}: { form: DonationForm }) {
-
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
@@ -59,6 +58,7 @@ function App({form}: { form: DonationForm }) {
         return (
             <DonationFormSettingsProvider value={{...form.settings, ...donationFormNodeSettings}}>
                 <DonationFormStateProvider initialState={initialState}>
+                    {!form.design?.includeHeaderInMultiStep && form.settings.showHeader && <Header form={form} />}
                     <MultiStepForm form={form} />
                 </DonationFormStateProvider>
             </DonationFormSettingsProvider>
@@ -79,7 +79,6 @@ function App({form}: { form: DonationForm }) {
  * @since 3.1.0
  */
 function AppPreview() {
-
     const {
         subscribeToGoal,
         subscribeToColors,
@@ -92,28 +91,28 @@ function AppPreview() {
 
     useEffect(() => {
         subscribeToSettings((settings) => {
-            setFormState(prevState => {
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     settings: {
                         ...prevState.settings,
-                        ...settings
-                    }
-                }
-            })
-        })
+                        ...settings,
+                    },
+                };
+            });
+        });
 
         subscribeToGoal((goal) => {
-            setFormState(prevState => {
+            setFormState((prevState) => {
                 return {
                     ...prevState,
                     goal: {
                         ...prevState.goal,
-                        ...goal
-                    }
-                }
-            })
-        })
+                        ...goal,
+                    },
+                };
+            });
+        });
 
         subscribeToColors((data) => {
             if (data['primaryColor']) {
@@ -123,7 +122,7 @@ function AppPreview() {
             if (data['secondaryColor']) {
                 root.style.setProperty('--givewp-secondary-color', data['secondaryColor']);
             }
-        })
+        });
 
         subscribeToCss(({customCss}) => {
             let cssRules = '';
@@ -132,17 +131,16 @@ function AppPreview() {
             stylesheet.replaceSync(customCss);
 
             for (let i = 0; i < stylesheet.cssRules.length; i++) {
-                cssRules += stylesheet.cssRules[i].cssText + "\n";
+                cssRules += stylesheet.cssRules[i].cssText + '\n';
             }
 
             style.innerText = cssRules;
-        })
+        });
 
         return () => unsubscribeAll();
-
     }, []);
 
-    return <App form={formState} />
+    return <App form={formState} />;
 }
 
 const root = document.getElementById('root-givewp-donation-form');
