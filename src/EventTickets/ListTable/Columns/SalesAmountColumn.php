@@ -47,9 +47,13 @@ class SalesAmountColumn extends ModelColumn
     {
         $ticketTypes = [];
         foreach ($model->ticketTypes()->getAll() ?? [] as $ticketType) {
+            $salesCount = $ticketType->eventTickets()->count();
+            $ticketsAvailable = $ticketType->capacity - $salesCount;
+
             $ticketTypes[$ticketType->id] = [
                 'price' => $ticketType->price,
                 'capacity' => $ticketType->capacity,
+                'ticketsAvailable' => $ticketsAvailable,
             ];
         }
 
@@ -61,8 +65,8 @@ class SalesAmountColumn extends ModelColumn
             new Money(0, give_get_currency())
         );
         $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
-            return $carry->add($ticketType['price']->multiply($ticketType['capacity']));
-        }, new Money(0, give_get_currency()));
+            return $carry->add($ticketType['price']->multiply($ticketType['ticketsAvailable']));
+        }, $salesTotal);
 
         $salesPercentage = $maxCapacitySales->formatToMinorAmount() > 0 ? max(
             min($salesTotal->formatToMinorAmount() / $maxCapacitySales->formatToMinorAmount(), 100),
