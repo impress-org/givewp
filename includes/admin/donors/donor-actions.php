@@ -127,7 +127,7 @@ function give_edit_donor( $args ) {
 	$donor->update_meta( '_give_donor_company', sanitize_text_field( $args['give_donor_company'] ) );
 
     $donorModel = Donor::find($donor->id);
-    $donorModel->phone = sanitize_text_field($args['give_donor_phone_number']);
+    $donorModel->phone = sanitize_text_field($args['give_donor_phone_number--full_number']);
     $donorModel->save();
 
 	// If First name of donor is empty, then fetch the current first name of donor.

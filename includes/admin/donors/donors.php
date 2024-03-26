@@ -491,8 +491,8 @@ function give_donor_view( $donor ) {
                             </th>
                             <td>
 								<span class="donor-user-id info-item edit-item">
-									<input name="give_donor_phone_number" value="<?php
-                                    echo $donor_phone_number; ?>" type="text">
+                                    <?php
+                                    echo give_get_phone_input($donor_phone_number, "give_donor_phone_number"); ?>
 								</span>
 
                                 <span class="donor-user-id info-item editable">
@@ -501,7 +501,6 @@ function give_donor_view( $donor ) {
 								</span>
                             </td>
                         </tr>
-
                         <?php
 						$donor_company = $donor->get_meta( '_give_donor_company', true );
 						?>

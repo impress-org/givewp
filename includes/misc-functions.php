@@ -2624,3 +2624,87 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
 
     return get_post($pages[0], $output);
 }
+
+ /**
+ * @see https://github.com/jackocnr/intl-tel-input
+ *
+ * @unreleased
+ */
+function give_get_phone_input(string $value, string $id, string $name = ''):string {
+
+    if (empty($name)) {
+        $name = $id;
+    }
+
+    /*$handle = 'intlTelInput';
+
+    wp_enqueue_style(
+        $handle,
+        'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css',
+        [],
+        '20.2.0'
+    );
+
+    wp_enqueue_script(
+            $handle,
+            'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js',
+            [],
+            '20.2.0',
+            true
+    );
+
+    wp_add_inline_script( $handle, '
+        const input = document.querySelector("#' .  $id  . '");
+        window.intlTelInput(input, {
+            initialCountry: "' . give_get_country() . '",
+            showSelectedDialCode: true,
+            //strictMode: true,
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js",
+        });
+    ' );
+
+    return "<input id='$id' name='$name' value='$value' type='text'>";*/
+
+    ob_start();
+
+    ?>
+        <input id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css">
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js"></script>
+        <script>
+            const numberInput = document.querySelector("#<?php echo $id; ?>");
+            const fullNumberInput = document.querySelector("#<?php echo $id; ?>-full-number");
+            const iti = window.intlTelInput(numberInput, {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js",
+                hiddenInput: function(telInputName) {
+                    return {
+                      phone: "<?php echo $id . '--full_number'; ?>",
+                      country: "<?php echo $id . '--country_code'; ?>"
+                    };
+                },
+                initialCountry: "<?php echo give_get_country(); ?>",
+                showSelectedDialCode: true,
+                strictMode: true,
+                i18n: {
+                     // Aria label for the selected country element
+                    selectedCountryAriaLabel: "<?php echo __('Selected country', 'give'); ?>",
+                    // Screen reader text for when no country is selected
+                    noCountrySelected: "<?php echo __('No country selected', 'give'); ?>",
+                    // Aria label for the country list element
+                    countryListAriaLabel: "<?php echo __('List of countries', 'give'); ?>",
+                    // Placeholder for the search input in the dropdown (when countrySearch enabled)
+                    searchPlaceholder: "<?php echo __('Search', 'give'); ?>",
+                    // Screen reader text for when the search produces no results
+                    zeroSearchResults: "<?php echo __('No results found', 'give'); ?>",
+                    // Screen reader text for when the search produces 1 result
+                    oneSearchResult: "<?php echo __('1 result found', 'give'); ?>",
+                    // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+                    multipleSearchResults: "<?php echo __('${count} results found', 'give'); ?>",
+                }
+            });
+        </script>
+    <?php
+
+    return ob_get_clean();
+}
