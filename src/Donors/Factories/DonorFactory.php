@@ -8,6 +8,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class DonorFactory extends ModelFactory
 {
     /**
+     * @unreleased Add "phone" property
      * @since 2.19.6
      */
     public function definition(): array

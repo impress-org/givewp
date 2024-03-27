@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
- * @unreleased Add support to the "phone number" field
+ * @unreleased Add support to the "phone" field
  * @since      1.0
  *
  * @param array $args The $_POST array being passed.
