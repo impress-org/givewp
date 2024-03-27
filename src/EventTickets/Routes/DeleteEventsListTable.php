@@ -45,7 +45,7 @@ class DeleteEventsListTable
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('delete_give_payments');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [

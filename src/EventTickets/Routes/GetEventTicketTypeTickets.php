@@ -33,7 +33,7 @@ class GetEventTicketTypeTickets implements RestRoute
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('read');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [
@@ -41,7 +41,9 @@ class GetEventTicketTypeTickets implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($ticketTypeId) {
-                            return EventTicketType::find($ticketTypeId);
+                            return EventTicketType::find(
+                                    $ticketTypeId
+                                ) !== null;
                         },
                         'required' => true,
                     ],

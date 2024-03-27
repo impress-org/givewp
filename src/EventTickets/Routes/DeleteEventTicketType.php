@@ -4,7 +4,6 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\EventTicketType;
-use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
@@ -35,7 +34,7 @@ class DeleteEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('delete_give_payments');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [
@@ -43,7 +42,28 @@ class DeleteEventTicketType implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($ticketTypeId) {
-                            return give(EventTicketTypeRepository::class)->queryById($ticketTypeId)->count() > 0;
+                            $eventTicketType = EventTicketType::find(
+                                $ticketTypeId
+                            );
+
+                            if (is_null($eventTicketType)) {
+                                return false;
+                            }
+
+                            $salesCount = $eventTicketType->eventTickets(
+                            )->count();
+                            if ($salesCount > 0) {
+                                return new WP_Error(
+                                    'event_ticket_type_sold_delete_failed',
+                                    __(
+                                        'This ticket type has been sold and cannot be deleted.',
+                                        'give'
+                                    ),
+                                    ['status' => 403]
+                                );
+                            }
+
+                            return true;
                         },
                         'required' => true,
                     ],
@@ -55,24 +75,11 @@ class DeleteEventTicketType implements RestRoute
     /**
      * @since 3.6.0
      *
-     * @return WP_REST_Response|WP_Error
      * @throws Exception
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
-        $ticketType = EventTicketType::find($request->get_param('ticket_type_id'));
-
-        $salesCount = $ticketType->eventTickets()->count();
-
-        if ($salesCount > 0) {
-            return new WP_Error(
-                'event_ticket_type_delete_failed',
-                __('This ticket type has been sold and cannot be deleted.', 'give'),
-                ['status' => 403]
-            );
-        }
-
-        $ticketType->delete();
+        EventTicketType::find($request->get_param('ticket_type_id'))->delete();
 
         return new WP_REST_Response();
     }

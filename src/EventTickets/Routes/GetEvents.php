@@ -31,7 +31,7 @@ class GetEvents implements RestRoute
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('read');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [

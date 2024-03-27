@@ -3,6 +3,7 @@
 namespace Unit\EventTickets\Routes;
 
 use Exception;
+use Give\EventTickets\Models\Event;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
@@ -23,6 +24,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
      */
     public function testEventTicketTypeCreationSuccess()
     {
+        $eventId = Event::factory()->create()->id;
         $data = [
             'title' => 'New Title',
             'description' => 'New Description',
@@ -30,15 +32,36 @@ class CreateEventTicketTypeTest extends RestApiTestCase
             'capacity' => 100,
         ];
 
-        $response = $this->handleRequest(1, $data);
+        $response = $this->handleRequest($eventId, $data);
         $ticketType = EventTicketType::find($response->get_data()->id);
 
         $this->assertEquals(201, $response->get_status());
         $this->assertEquals(1, $ticketType->eventId);
+        $this->assertEquals($eventId, $ticketType->eventId);
         $this->assertEquals($data['title'], $ticketType->title);
         $this->assertEquals($data['description'], $ticketType->description);
         $this->assertEquals(new Money($data['price'], give_get_currency()), $ticketType->price);
         $this->assertEquals($data['capacity'], $ticketType->capacity);
+    }
+
+    /**
+     * Test that creating an Event Ticket Type giving an invalid event ID returns an error.
+     *
+     * @unreleased
+     * @throws Exception
+     */
+    public function testEventTicketTypeCreationWithInvalidEventId()
+    {
+        $data = [
+            'title' => 'New Title',
+            'description' => 'New Description',
+            'price' => 1000,
+            'capacity' => 100,
+        ];
+
+        $response = $this->handleRequest(PHP_INT_MAX, $data);
+
+        $this->assertErrorResponse('rest_invalid_param', $response);
     }
 
     /**
@@ -49,7 +72,8 @@ class CreateEventTicketTypeTest extends RestApiTestCase
      */
     public function testEventTicketTypeCreationWithMissingRequiredFields()
     {
-        $response = $this->handleRequest(1, []);
+        $eventId = Event::factory()->create()->id;
+        $response = $this->handleRequest($eventId, []);
 
         $this->assertErrorResponse('rest_missing_callback_param', $response);
 
@@ -69,13 +93,14 @@ class CreateEventTicketTypeTest extends RestApiTestCase
      */
     public function testEventTicketTypeCreationRequiresAuthorization()
     {
+        $eventId = Event::factory()->create()->id;
         $data = [
             'title' => 'New Title',
             'price' => '1000',
             'capacity' => 100,
         ];
 
-        $response = $this->handleRequest(1, $data, false);
+        $response = $this->handleRequest($eventId, $data, false);
 
         $this->assertErrorResponse('rest_forbidden', $response, 401);
     }

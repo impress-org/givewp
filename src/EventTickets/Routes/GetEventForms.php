@@ -32,7 +32,7 @@ class GetEventForms implements RestRoute
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('read');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [
@@ -40,7 +40,7 @@ class GetEventForms implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return Event::find($eventId) !== null;
                         },
                         'required' => true,
                     ],

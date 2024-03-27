@@ -5,7 +5,6 @@ namespace Give\EventTickets\Routes;
 use Give\API\RestRoute;
 use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\Models\EventTicketType;
-use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -35,7 +34,7 @@ class UpdateEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('edit_give_payments');
+                        return current_user_can('edit_give_forms');
                     },
                 ],
                 'args' => [
@@ -43,7 +42,9 @@ class UpdateEventTicketType implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($ticketTypeId) {
-                            return give(EventTicketTypeRepository::class)->queryById($ticketTypeId)->count() > 0;
+                            return EventTicketType::find(
+                                    $ticketTypeId
+                                ) !== null;
                         },
                         'required' => true,
                     ],

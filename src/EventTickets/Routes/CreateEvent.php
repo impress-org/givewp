@@ -32,7 +32,7 @@ class CreateEvent implements RestRoute
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('publish_give_payments');
+                        return current_user_can('edit_give_forms');
                     }
                 ],
                 'args' => [

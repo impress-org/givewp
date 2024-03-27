@@ -57,7 +57,23 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
 
         $response = $this->handleRequest($ticketTypeId);
 
-        $this->assertErrorResponse('event_ticket_type_delete_failed', $response);
+        $this->assertErrorResponse('rest_invalid_param', $response);
+
+        $errorData = $response->as_error()->get_error_data();
+        if (isset($errorData['params'])) {
+            $this->assertContains(
+                'ticket_type_id',
+                array_keys($errorData['params'])
+            );
+            $this->assertEquals(
+                'event_ticket_type_sold_delete_failed',
+                $errorData['details']['ticket_type_id']['code']
+            );
+            $this->assertEquals(
+                403,
+                $errorData['details']['ticket_type_id']['data']['status']
+            );
+        }
     }
 
     /**
@@ -80,8 +96,8 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
      *
      * @unreleased
      *
-     * @param int   $ticketTypeId
-     * @param bool  $authenticatedAsAdmin
+     * @param int  $ticketTypeId
+     * @param bool $authenticatedAsAdmin
      *
      * @return WP_REST_Response
      */
