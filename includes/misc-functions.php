@@ -2636,24 +2636,32 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
         $name = $id;
     }
 
-    /*$handle = 'intlTelInput';
+    $styleUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css';
+    $scriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js';
+    $utilsScriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js';
+
+   /* $handle = 'intlTelInput';
+    $version = '20.2.0';
 
     wp_enqueue_style(
         $handle,
-        'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css',
+        $styleUrl,
         [],
-        '20.2.0'
+        $version
     );
 
     wp_enqueue_script(
             $handle,
-            'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js',
+            $scriptUrl,
             [],
-            '20.2.0',
+            $version,
             true
     );
 
-    wp_add_inline_script( $handle, '
+
+
+
+      wp_add_inline_script( $handle, '
         const input = document.querySelector("#' .  $id  . '");
         window.intlTelInput(input, {
             initialCountry: "' . give_get_country() . '",
@@ -2665,18 +2673,22 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
 
     return "<input id='$id' name='$name' value='$value' type='text'>";*/
 
+    $countryList = give_get_country_list();
+    array_shift($countryList);
+    $countryList = json_encode($countryList);
+
     ob_start();
 
     ?>
         <input id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css">
-        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js"></script>
+        <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
+        <script src="<?php echo $scriptUrl; ?>"></script>
+
         <script>
             const numberInput = document.querySelector("#<?php echo $id; ?>");
-            const fullNumberInput = document.querySelector("#<?php echo $id; ?>-full-number");
             const iti = window.intlTelInput(numberInput, {
-                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js",
+                utilsScript: "<?php echo $utilsScriptUrl; ?>",
                 hiddenInput: function(telInputName) {
                     return {
                       phone: "<?php echo $id . '--full_number'; ?>",
@@ -2687,20 +2699,14 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
                 showSelectedDialCode: true,
                 strictMode: true,
                 i18n: {
-                     // Aria label for the selected country element
-                    selectedCountryAriaLabel: "<?php echo __('Selected country', 'give'); ?>",
-                    // Screen reader text for when no country is selected
-                    noCountrySelected: "<?php echo __('No country selected', 'give'); ?>",
-                    // Aria label for the country list element
-                    countryListAriaLabel: "<?php echo __('List of countries', 'give'); ?>",
-                    // Placeholder for the search input in the dropdown (when countrySearch enabled)
-                    searchPlaceholder: "<?php echo __('Search', 'give'); ?>",
-                    // Screen reader text for when the search produces no results
-                    zeroSearchResults: "<?php echo __('No results found', 'give'); ?>",
-                    // Screen reader text for when the search produces 1 result
-                    oneSearchResult: "<?php echo __('1 result found', 'give'); ?>",
-                    // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
-                    multipleSearchResults: "<?php echo __('${count} results found', 'give'); ?>",
+                    ...<?php echo $countryList; ?>,
+                    selectedCountryAriaLabel: "<?php echo __('Selected country', 'give'); ?>", // Aria label for the selected country element
+                    noCountrySelected: "<?php echo __('No country selected', 'give'); ?>", // Screen reader text for when no country is selected
+                    countryListAriaLabel: "<?php echo __('List of countries', 'give'); ?>", // Aria label for the country list element
+                    searchPlaceholder: "<?php echo __('Search', 'give'); ?>", // Placeholder for the search input in the dropdown (when countrySearch enabled)
+                    zeroSearchResults: "<?php echo __('No results found', 'give'); ?>", // Screen reader text for when the search produces no results
+                    oneSearchResult: "<?php echo __('1 result found', 'give'); ?>", // Screen reader text for when the search produces 1 result
+                    multipleSearchResults: "<?php echo __('${count} results found', 'give'); ?>", // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
                 }
             });
         </script>
