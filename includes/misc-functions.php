@@ -2673,9 +2673,19 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
 
     return "<input id='$id' name='$name' value='$value' type='text'>";*/
 
-    $countryList = give_get_country_list();
+    $initialCountry = strtolower(give_get_country());
+
+    $countryList = array_change_key_case(give_get_country_list());
     array_shift($countryList);
     $countryList = json_encode($countryList);
+
+    $selectedCountryAriaLabel = __('Selected country', 'give'); // Aria label for the selected country element
+    $noCountrySelected = __('No country selected', 'give'); // Screen reader text for when no country is selected
+    $countryListAriaLabel = __('List of countries', 'give'); // Aria label for the country list element
+    $searchPlaceholder = __('Search', 'give'); // Placeholder for the search input in the dropdown (when countrySearch enabled)
+    $zeroSearchResults = __('No results found', 'give'); // Screen reader text for when the search produces no results
+    $oneSearchResult = __('1 result found', 'give'); // Screen reader text for when the search produces 1 result
+    $multipleSearchResults = __('${count} results found', 'give'); // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
 
     ob_start();
 
@@ -2695,18 +2705,18 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
                       country: "<?php echo $id . '--country_code'; ?>"
                     };
                 },
-                initialCountry: "<?php echo give_get_country(); ?>",
+                initialCountry: "<?php echo  $initialCountry; ?>",
                 showSelectedDialCode: true,
                 strictMode: true,
                 i18n: {
                     ...<?php echo $countryList; ?>,
-                    selectedCountryAriaLabel: "<?php echo __('Selected country', 'give'); ?>", // Aria label for the selected country element
-                    noCountrySelected: "<?php echo __('No country selected', 'give'); ?>", // Screen reader text for when no country is selected
-                    countryListAriaLabel: "<?php echo __('List of countries', 'give'); ?>", // Aria label for the country list element
-                    searchPlaceholder: "<?php echo __('Search', 'give'); ?>", // Placeholder for the search input in the dropdown (when countrySearch enabled)
-                    zeroSearchResults: "<?php echo __('No results found', 'give'); ?>", // Screen reader text for when the search produces no results
-                    oneSearchResult: "<?php echo __('1 result found', 'give'); ?>", // Screen reader text for when the search produces 1 result
-                    multipleSearchResults: "<?php echo __('${count} results found', 'give'); ?>", // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+                    selectedCountryAriaLabel: "<?php echo $selectedCountryAriaLabel ?>",
+                    noCountrySelected: "<?php echo $noCountrySelected ?>",
+                    countryListAriaLabel: "<?php echo $countryListAriaLabel ?>",
+                    searchPlaceholder: "<?php echo $searchPlaceholder ?>",
+                    zeroSearchResults: "<?php echo $zeroSearchResults ?>",
+                    oneSearchResult: "<?php echo $oneSearchResult ?>",
+                    multipleSearchResults: "<?php echo $multipleSearchResults ?>",
                 }
             });
         </script>
