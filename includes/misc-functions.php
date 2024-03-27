@@ -2696,8 +2696,7 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
         <script src="<?php echo $scriptUrl; ?>"></script>
 
         <script>
-            const numberInput = document.querySelector("#<?php echo $id; ?>");
-            const iti = window.intlTelInput(numberInput, {
+            window.intlTelInput(document.querySelector("#<?php echo $id; ?>"), {
                 utilsScript: "<?php echo $utilsScriptUrl; ?>",
                 hiddenInput: function(telInputName) {
                     return {
