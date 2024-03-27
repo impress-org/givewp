@@ -15,6 +15,7 @@
 .interface-interface-skeleton__body {
     width: 100%;
     background-color: var(--givewp-gray-10);
+    overflow: hidden;
 }
 
 .interface-interface-skeleton__secondary-sidebar {
@@ -34,15 +35,21 @@
 }
 
 .interface-interface-skeleton__content {
-    width: 720px;
-    margin: 0 auto auto;
+    height: 100vh;
+    width: 100%;
+
     padding: 100px 0; /* Leave room for toolbar above first block. */
     flex-grow: unset;
     box-sizing: border-box;
 
     .givewp-form-builder__design-tab & {
+        display: block;
         width: 100%;
-        max-width: 1200px;
+    }
+
+    #form-blocks-canvas {
+        display: flex;
+        justify-content: center;
     }
 
     @media screen and (max-width: 782px) {
@@ -232,6 +239,11 @@
 
 .givewp-support-link.components-external-link > svg {
     display: none; /* Hide included icon, in favor of menu item icon. */
+}
+
+
+.givewp-form-settings__editor .interface-interface-skeleton {
+    width: 100%;
 }
 
 .givewp-block-editor-design-sidebar {
