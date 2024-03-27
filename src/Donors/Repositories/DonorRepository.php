@@ -119,7 +119,7 @@ class DonorRepository
             'date_created' => Temporal::getFormattedDateTime($dateCreated),
             'user_id' => $donor->userId ?? 0,
             'email' => $donor->email,
-            'phone' => $donor->phone,
+            'phone' => $donor->phone ?? '',
             'name' => $donor->name,
         ];
 
