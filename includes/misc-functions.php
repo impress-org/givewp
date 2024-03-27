@@ -2647,7 +2647,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
         <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
 
         <input id="<?php echo $id; ?>" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
-        <span id="<?php echo $id . '-error-msg'; ?>" class="hide" style="color:red;"></span>
+        <span id="<?php echo $id . '--error-msg'; ?>" class="hide" style="color:red;"></span>
 
         <style>
             .give-intl-tel-input-hide {
@@ -2669,8 +2669,8 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
                     utilsScript: "<?php echo $utilsScriptUrl; ?>",
                     hiddenInput: function(telInputName) {
                         return {
-                          phone: "<?php echo $id . '--full_number'; ?>",
-                          country: "<?php echo $id . '--country_code'; ?>"
+                          phone: "<?php echo $id . '--international-format'; ?>",
+                          country: "<?php echo $id . '--country-code'; ?>"
                         };
                     },
                     initialCountry: "<?php echo  strtolower(give_get_country()); ?>",
@@ -2679,7 +2679,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
                     i18n: <?php echo  give_get_intl_tel_input_i18n_json_object(); ?>
                 });
 
-                const errorMsg = document.querySelector("#<?php echo $id . '-error-msg'; ?>");
+                const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
                 const errorMap = [
                     "<?php echo __('Invalid number', 'give'); ?>",
                     "<?php echo __('Invalid country code', 'give'); ?>",
