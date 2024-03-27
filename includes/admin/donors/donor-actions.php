@@ -19,11 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
+ * @unreleased Add support to the "phone number" field
+ * @since      1.0
+ *
  * @param array $args The $_POST array being passed.
  *
- * @since 1.0
- *
  * @return array|bool $output Response messages
+ * @throws Exception
  */
 function give_edit_donor( $args ) {
 
