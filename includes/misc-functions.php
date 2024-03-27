@@ -2630,7 +2630,7 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
  *
  * @unreleased
  */
-function give_get_intl_tel_input(string $value, string $id, string $name = ''):string {
+function give_get_intl_tel_input(string $value, string $id, string $class = '', string $name = ''):string {
 
     if (empty($name)) {
         $name = $id;
@@ -2643,7 +2643,7 @@ function give_get_intl_tel_input(string $value, string $id, string $name = ''):s
     ob_start();
 
     ?>
-        <input id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
+        <input id="<?php echo $id; ?>" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
 
         <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
         <script src="<?php echo $scriptUrl; ?>"></script>
