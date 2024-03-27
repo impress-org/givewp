@@ -2726,7 +2726,7 @@ function give_get_intl_tel_input_i18n_json_object() {
     $countryList = array_change_key_case(give_get_country_list());
     array_shift($countryList); // Remove first empty item from the country list
 
-    $i18n = [
+    $i18n = array_merge($countryList, [
         'selectedCountryAriaLabel' => __('Selected country', 'give'), // Aria label for the selected country element
         'noCountrySelected' => __('No country selected', 'give'), // Screen reader text for when no country is selected
         'countryListAriaLabel' => __('List of countries', 'give'), // Aria label for the country list element
@@ -2734,9 +2734,7 @@ function give_get_intl_tel_input_i18n_json_object() {
         'zeroSearchResults' => __('No results found', 'give'), // Screen reader text for when the search produces no results
         'oneSearchResult' => __('1 result found', 'give'), // Screen reader text for when the search produces 1 result
         'multipleSearchResults' => __('${count} results found', 'give'), // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
-    ];
-
-    $i18n = array_merge($countryList, $i18n);
+    ]);
 
     return json_encode($i18n);
 }
