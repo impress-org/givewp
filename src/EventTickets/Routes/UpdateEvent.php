@@ -18,6 +18,9 @@ class UpdateEvent implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "edit_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -28,14 +31,16 @@ class UpdateEvent implements RestRoute
                 [
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return current_user_can('edit_give_forms');
+                    },
                 ],
                 'args' => [
                     'event_id' => [
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return Event::find($eventId) !== null;
                         },
                         'required' => true,
                     ],
@@ -47,7 +52,7 @@ class UpdateEvent implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textare_field',
                     ],
                     'startDateTime' => [
                         'type' => 'string',
