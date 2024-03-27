@@ -23,6 +23,10 @@ const BlankSlate = () => {
     );
 };
 
+/**
+ * @unreleased Link attendee name to donor profile
+ * @since 3.6.0
+ */
 export default function AttendeesSection() {
     const {
         event: {ticketTypes, tickets},
@@ -43,7 +47,11 @@ export default function AttendeesSection() {
     const formattedData = data.map((ticket) => {
         return {
             ...ticket,
-            attendeeName: ticket.attendee.name,
+            attendeeName: ticket.attendee.donorUrl ? (
+                <a href={ticket.attendee.donorUrl}>{ticket.attendee.name}</a>
+            ) : (
+                ticket.attendee.name
+            ),
             attendeeEmail: ticket.attendee.email,
             ticketType: getTicketTypeById(ticket.ticketTypeId),
             date: format(new Date(ticket.createdAt.date), dateFormat, {locale}),
