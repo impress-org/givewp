@@ -492,7 +492,7 @@ function give_donor_view( $donor ) {
                             <td>
 								<span class="donor-user-id info-item edit-item">
                                     <?php
-                                    echo give_get_phone_input($donor_phone_number, "give_donor_phone_number"); ?>
+                                    echo give_get_intl_tel_input($donor_phone_number, "give_donor_phone_number"); ?>
 								</span>
 
                                 <span class="donor-user-id info-item editable">

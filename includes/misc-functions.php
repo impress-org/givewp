@@ -2630,7 +2630,7 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
  *
  * @unreleased
  */
-function give_get_phone_input(string $value, string $id, string $name = ''):string {
+function give_get_intl_tel_input(string $value, string $id, string $name = ''):string {
 
     if (empty($name)) {
         $name = $id;
@@ -2639,53 +2639,6 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
     $styleUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css';
     $scriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js';
     $utilsScriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js';
-
-   /* $handle = 'intlTelInput';
-    $version = '20.2.0';
-
-    wp_enqueue_style(
-        $handle,
-        $styleUrl,
-        [],
-        $version
-    );
-
-    wp_enqueue_script(
-            $handle,
-            $scriptUrl,
-            [],
-            $version,
-            true
-    );
-
-
-
-
-      wp_add_inline_script( $handle, '
-        const input = document.querySelector("#' .  $id  . '");
-        window.intlTelInput(input, {
-            initialCountry: "' . give_get_country() . '",
-            showSelectedDialCode: true,
-            //strictMode: true,
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js",
-        });
-    ' );
-
-    return "<input id='$id' name='$name' value='$value' type='text'>";*/
-
-    $initialCountry = strtolower(give_get_country());
-
-    $countryList = array_change_key_case(give_get_country_list());
-    array_shift($countryList);
-    $countryList = json_encode($countryList);
-
-    $selectedCountryAriaLabel = __('Selected country', 'give'); // Aria label for the selected country element
-    $noCountrySelected = __('No country selected', 'give'); // Screen reader text for when no country is selected
-    $countryListAriaLabel = __('List of countries', 'give'); // Aria label for the country list element
-    $searchPlaceholder = __('Search', 'give'); // Placeholder for the search input in the dropdown (when countrySearch enabled)
-    $zeroSearchResults = __('No results found', 'give'); // Screen reader text for when the search produces no results
-    $oneSearchResult = __('1 result found', 'give'); // Screen reader text for when the search produces 1 result
-    $multipleSearchResults = __('${count} results found', 'give'); // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
 
     ob_start();
 
@@ -2704,22 +2657,36 @@ function give_get_phone_input(string $value, string $id, string $name = ''):stri
                       country: "<?php echo $id . '--country_code'; ?>"
                     };
                 },
-                initialCountry: "<?php echo  $initialCountry; ?>",
+                initialCountry: "<?php echo  strtolower(give_get_country()); ?>",
                 showSelectedDialCode: true,
                 strictMode: true,
-                i18n: {
-                    ...<?php echo $countryList; ?>,
-                    selectedCountryAriaLabel: "<?php echo $selectedCountryAriaLabel ?>",
-                    noCountrySelected: "<?php echo $noCountrySelected ?>",
-                    countryListAriaLabel: "<?php echo $countryListAriaLabel ?>",
-                    searchPlaceholder: "<?php echo $searchPlaceholder ?>",
-                    zeroSearchResults: "<?php echo $zeroSearchResults ?>",
-                    oneSearchResult: "<?php echo $oneSearchResult ?>",
-                    multipleSearchResults: "<?php echo $multipleSearchResults ?>",
-                }
+                i18n: <?php echo  give_get_intl_tel_input_i18n_json_object(); ?>
             });
         </script>
     <?php
 
     return ob_get_clean();
+}
+
+/**
+* @unreleased
+ */
+function give_get_intl_tel_input_i18n_json_object() {
+
+        $countryList = array_change_key_case(give_get_country_list());
+        array_shift($countryList); // Remove first empty item from the country list
+
+        $i18n = [
+          'selectedCountryAriaLabel' => __('Selected country', 'give'), // Aria label for the selected country element
+          'noCountrySelected' => __('No country selected', 'give'), // Screen reader text for when no country is selected
+          'countryListAriaLabel' => __('List of countries', 'give'), // Aria label for the country list element
+          'searchPlaceholder' => __('Search', 'give'), // Placeholder for the search input in the dropdown (when countrySearch enabled)
+          'zeroSearchResults' => __('No results found', 'give'), // Screen reader text for when the search produces no results
+          'oneSearchResult' => __('1 result found', 'give'), // Screen reader text for when the search produces 1 result
+          'multipleSearchResults' => __('${count} results found', 'give'), // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+        ];
+
+        $i18n = array_merge($countryList, $i18n);
+
+        return json_encode($i18n);
 }
