@@ -97,6 +97,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
      * @since 2.20.0 mutate model and return void
@@ -121,6 +122,10 @@ class DonorRepository
             'email' => $donor->email,
             'name' => $donor->name,
         ];
+
+        if (isset($donor->phone)) {
+            $args['phone'] = $donor->phone;
+        }
 
         if (isset($donor->totalAmountDonated)) {
             $args['purchase_value'] = $donor->totalAmountDonated->formatToDecimal();
@@ -172,6 +177,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
      * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
@@ -192,6 +198,7 @@ class DonorRepository
         $args = [
             'user_id' => $donor->userId,
             'email' => $donor->email,
+            'phone' => $donor->phone,
             'name' => $donor->name
         ];
 
@@ -367,6 +374,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add support to "phone" property
      * @since 2.24.0 replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
@@ -381,6 +389,7 @@ class DonorRepository
                 'id',
                 ['user_id', 'userId'],
                 'email',
+                'phone',
                 'name',
                 ['purchase_value', 'totalAmountDonated'],
                 ['purchase_count', 'totalNumberOfDonations'],

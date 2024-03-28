@@ -20,6 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
+ * @unreleased Add "phone" property
  * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
  * @since 2.19.6
  *
@@ -31,6 +32,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
+ * @property string $phone
  * @property string[] $additionalEmails
  * @property Money $totalAmountDonated
  * @property int $totalNumberOfDonations
@@ -50,6 +52,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
+        'phone' => 'string',
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
         'totalAmountDonated' => Money::class,

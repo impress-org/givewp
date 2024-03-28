@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Donors\Models\Donor;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,11 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
+ * @unreleased Add support to the "phone" field
+ * @since      1.0
+ *
  * @param array $args The $_POST array being passed.
  *
- * @since 1.0
- *
  * @return array|bool $output Response messages
+ * @throws Exception
  */
 function give_edit_donor( $args ) {
 
@@ -123,6 +127,10 @@ function give_edit_donor( $args ) {
 
 	// Save company name in when admin update donor company name from dashboard.
 	$donor->update_meta( '_give_donor_company', sanitize_text_field( $args['give_donor_company'] ) );
+
+    $donorModel = Donor::find($donor->id);
+    $donorModel->phone = sanitize_text_field($args['give_donor_phone_number--international-format']);
+    $donorModel->save();
 
 	// If First name of donor is empty, then fetch the current first name of donor.
 	if ( empty( $donor_info['first_name'] ) ) {
