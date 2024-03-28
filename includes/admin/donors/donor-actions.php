@@ -9,8 +9,6 @@
  * @since       1.0
  */
 
-use Give\Donors\Models\Donor;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -128,9 +126,15 @@ function give_edit_donor( $args ) {
 	// Save company name in when admin update donor company name from dashboard.
 	$donor->update_meta( '_give_donor_company', sanitize_text_field( $args['give_donor_company'] ) );
 
-    $donorModel = Donor::find($donor->id);
-    $donorModel->phone = sanitize_text_field($args['give_donor_phone_number--international-format']);
-    $donorModel->save();
+    /**
+     * Fires after using the submitted data to update the donor metadata.
+     *
+     * @param array $args     The sanitized data submitted.
+     * @param int   $donor_id The donor ID.
+     *
+     * @unreleased
+     */
+    do_action('give_admin_donor_details_updating', $args, $donor->id);
 
 	// If First name of donor is empty, then fetch the current first name of donor.
 	if ( empty( $donor_info['first_name'] ) ) {
