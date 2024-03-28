@@ -26,7 +26,7 @@ class AddPhoneColumn extends Migration
             maybe_add_column(
                 $donorsTableName,
                 'phone',
-                "ALTER TABLE `$donorsTableName` ADD COLUMN `phone` varchar(50) NOT NULL DEFAULT '' AFTER `email`"
+                "ALTER TABLE `$donorsTableName` ADD COLUMN `phone` varchar(50) NOT NULL DEFAULT '' AFTER `name`"
             );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred adding the phone column to the donors table',
