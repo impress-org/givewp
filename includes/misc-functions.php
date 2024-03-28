@@ -2647,7 +2647,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
         <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
 
         <input id="<?php echo $id; ?>" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
-        <span id="<?php echo $id . '--error-msg'; ?>" class="hide" style="color:red;"></span>
+        <span id="<?php echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
 
         <style>
             .give-intl-tel-input-hide {
