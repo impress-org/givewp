@@ -120,9 +120,12 @@ class DonorRepository
             'date_created' => Temporal::getFormattedDateTime($dateCreated),
             'user_id' => $donor->userId ?? 0,
             'email' => $donor->email,
-            'phone' => $donor->phone ?? '',
             'name' => $donor->name,
         ];
+
+        if (isset($donor->phone)) {
+            $args['phone'] = $donor->phone;
+        }
 
         if (isset($donor->totalAmountDonated)) {
             $args['purchase_value'] = $donor->totalAmountDonated->formatToDecimal();
