@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 /**
  * @unreleased
  */
-class addPhoneColumn extends Migration
+class AddPhoneColumn extends Migration
 {
     /**
      * @unreleased
