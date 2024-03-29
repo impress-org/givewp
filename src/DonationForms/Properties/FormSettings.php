@@ -320,7 +320,7 @@ class FormSettings implements Arrayable, Jsonable
         ) ? $array['pdfSettings'] : [];
 
         $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
-        $self->designSettingsImageAlt = ! empty($array['designSettingsImageAlt']) ? $array['designSettingsImageAlt'] : $self->formTitle;
+        $self->designSettingsImageAlt = $array['designSettingsImageAlt'] ?: $self->formTitle;
         $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
             $array['designSettingsImageStyle']
         ) : DesignSettingsImageStyle::BACKGROUND();
