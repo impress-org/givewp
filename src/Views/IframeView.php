@@ -261,10 +261,15 @@ class IframeView
     /**
      * Get button HTML.
      *
+     * @unreleased Escape attributes
+     *
      * @return string
      */
     private function getButtonHTML()
     {
+        $buttonTitle = esc_html($this->buttonTitle);
+        $buttonColor = esc_attr($this->buttonColor);
+
         return sprintf(
             '<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
@@ -273,8 +278,8 @@ class IframeView
 				data-form-id="%1$s"%3$s>%2$s</button>
 			</div>',
             $this->uniqueId,
-            $this->buttonTitle,
-            $this->buttonColor ? " style=\"background-color: {$this->buttonColor}\"" : ''
+            $buttonTitle,
+            $this->buttonColor ? " style=\"background-color: {$buttonColor}\"" : ''
         );
     }
 
