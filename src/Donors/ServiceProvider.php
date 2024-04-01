@@ -5,11 +5,14 @@ namespace Give\Donors;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
+use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\Migrations\AddPhoneColumn;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepositoryProxy;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -37,6 +40,8 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
     {
@@ -55,6 +60,12 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->addCustomFieldsToDonorDetails();
         $this->enforceDonorsAsUsers();
+
+        give(MigrationsRegister::class)->addMigrations([
+            AddPhoneColumn::class,
+        ]);
+
+        Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
     }
 
     /**
