@@ -170,9 +170,9 @@ class ConvertDonationFormBlocksToFieldsApi
                         return $email;
                     });
             case 'givewp/phone':
-                return Phone::make($block->getAttribute('fieldName'))
+                return Phone::make($block->getAttribute('fieldName'));
                     //->phoneFormat($block->getAttribute('phoneFormat'))
-                    ->defaultValue($block->getAttribute('defaultValue'));
+            //->defaultValue($block->getAttribute('defaultValue'));
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
 

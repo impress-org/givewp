@@ -50,6 +50,7 @@ interface FormBuilderWindowData {
     goalTypeOptions: GoalTypeOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
+    i18nIntlTelInput: object;
 }
 
 /**
@@ -71,6 +72,7 @@ declare const window: {
  * @since 3.0.0
  */
 export default function getWindowData(): FormBuilderWindowData {
+    //console.log('window.giveStorageData: ', window.giveStorageData);
     return window.giveStorageData;
 }
 

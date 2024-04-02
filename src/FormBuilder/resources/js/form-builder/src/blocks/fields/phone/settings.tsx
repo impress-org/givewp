@@ -9,7 +9,7 @@ const settings: FieldBlock['settings'] = {
     ...defaultSettings,
     title: __('Phone', 'give'),
     //category: 'custom',
-    description: __('A phone number field that donors can use.', 'give'),
+    description: __('Donors can input their phone number', 'give'),
     supports: {
         multiple: false,
         // @ts-ignore
@@ -26,6 +26,17 @@ const settings: FieldBlock['settings'] = {
             conditionalLogic: true,
         },
     },
+    /*attributes: {
+        ...defaultSettings.attributes,
+        label: {
+            default: __('Phone Number', 'give'),
+        },
+        isRequired: {
+            type: 'boolean',
+            source: 'attribute',
+            default: true,
+        },
+    },*/
     icon: () => (
         <Icon
             icon={
