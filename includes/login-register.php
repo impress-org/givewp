@@ -51,8 +51,8 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 	give_get_template(
 		'shortcode-login',
 		array(
-			'give_login_redirect'  => esc_url($login_redirect),
-			'give_logout_redirect' => esc_url($logout_redirect),
+			'give_login_redirect'  => $login_redirect,
+			'give_logout_redirect' => $logout_redirect,
 		)
 	);
 
@@ -62,7 +62,6 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 /**
  * Registration Form
  *
- * @unreleased Escape $redirect
  * @since 2.0
  * @global       $give_register_redirect
  *
@@ -81,7 +80,7 @@ function give_register_form( $redirect = '' ) {
 		give_get_template(
 			'shortcode-register',
 			array(
-				'give_register_redirect' => esc_url($redirect),
+				'give_register_redirect' => $redirect,
 			)
 		);
 	}
