@@ -25,6 +25,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
+use Give\Framework\FieldsAPI\Phone;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
@@ -168,7 +169,10 @@ class ConvertDonationFormBlocksToFieldsApi
 
                         return $email;
                     });
-
+            case 'givewp/phone':
+                return Phone::make($block->getAttribute('fieldName'))
+                    //->phoneFormat($block->getAttribute('phoneFormat'))
+                    ->defaultValue($block->getAttribute('defaultValue'));
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
 

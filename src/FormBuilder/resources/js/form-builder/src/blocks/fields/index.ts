@@ -12,6 +12,7 @@ import billingAddress from './billing-address';
 import termsAndConditions from './terms-and-conditions';
 import donorComments from './donor-comments';
 import anonymous from './anonymous';
+import phone from './phone';
 
 /**
  * @note Blocks in the appender are listed in the order that the blocks are registered.
@@ -21,6 +22,7 @@ const FieldBlocks: FieldBlock[] = [
     company,
     donorName,
     email,
+    phone,
     paymentGateways,
     donationSummary,
     amount,
