@@ -19,7 +19,7 @@ const settings: FieldBlock['settings'] = {
                     default: __('Phone Number', 'give'),
                 },
                 description: true,
-                placeholder: true,
+                placeholder: false,
                 defaultValue: true,
                 emailTag: true,
             },

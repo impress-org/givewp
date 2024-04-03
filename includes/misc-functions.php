@@ -2636,15 +2636,15 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
         $name = $id;
     }
 
-    $styleUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css';
-    $scriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js';
-    $utilsScriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js';
+    $cssUrl = give_get_intl_tel_input_css_url();
+    $scriptUrl = give_get_intl_tel_input_script_url();
+    $utilsScriptUrl = give_get_intl_tel_input_utils_script_url();
 
     ob_start();
 
     ?>
         <script src="<?php echo $scriptUrl; ?>"></script>
-        <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
+        <link rel="stylesheet" href="<?php echo $cssUrl; ?>">
 
         <input id="<?php echo $id; ?>" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
         <span id="<?php echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
@@ -2675,7 +2675,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
                     },
                     initialCountry: "<?php echo  strtolower(give_get_country()); ?>",
                     showSelectedDialCode: true,
-                    strictMode: false,
+                    strictMode: true,
                     i18n: <?php echo  give_get_intl_tel_input_i18n_json_object(); ?>
                 });
 
