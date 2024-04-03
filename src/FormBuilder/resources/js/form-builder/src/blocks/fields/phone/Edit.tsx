@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useEffect} from 'react';
+import {BaseControl} from '@wordpress/components';
 
 export default function Edit({attributes}: BlockEditProps<any>) {
     const {label, isRequired, description, placeholder, defaultValue} = attributes;
@@ -38,9 +39,9 @@ export default function Edit({attributes}: BlockEditProps<any>) {
 
     return (
         <div className={classnames({'give-is-required': isRequired})}>
-            <span className="components-input-control__label give-text-block__label">{label}</span>
-            {description && <p className="give-text-block__description">{description}</p>}
-            <input id={inputId} type="text" />
+            <BaseControl id={'give-form-builder-phone-label'} label={label} help={description}>
+                <input id={inputId} type="text" />
+            </BaseControl>
         </div>
     );
 }
