@@ -79,6 +79,7 @@ class FormBuilderViewModel
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
             'IntlTelInput' => [
+                'initialCountry' => strtolower(give_get_country()),
                 'i18n' => give_get_intl_tel_input_i18n_json_object(),
                 'cssUrl' => give_get_intl_tel_input_css_url(),
                 'scriptUrl' => give_get_intl_tel_input_script_url(),

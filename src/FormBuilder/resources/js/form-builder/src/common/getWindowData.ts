@@ -51,6 +51,7 @@ interface FormBuilderWindowData {
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
     IntlTelInput: {
+        initialCountry: string;
         i18n: any;
         cssUrl: string;
         scriptUrl: string;

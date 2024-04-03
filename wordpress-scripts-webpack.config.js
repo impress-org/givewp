@@ -7,6 +7,8 @@ const path = require('path');
  * WordPress Dependencies
  */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
+//defaultConfig.module.rules[0].exclude = /node_modules\/(?!(@givewp\/form-builder-library)\/).*/;
+//defaultConfig.module.rules[0].exclude = /node_modules\/(?!(intl-tel-input\/react)\/).*/;
 
 /**
  * Custom config

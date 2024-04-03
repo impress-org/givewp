@@ -2720,7 +2720,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
 
 /**
 * @unreleased
- */
+*/
 function give_get_intl_tel_input_i18n_json_object() {
 
     $countryList = array_change_key_case(give_get_country_list());
@@ -2737,4 +2737,25 @@ function give_get_intl_tel_input_i18n_json_object() {
     ]);
 
     return json_encode($i18n);
+}
+
+/**
+* @unreleased
+*/
+function give_get_intl_tel_input_css_url():string {
+    return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/css/intlTelInput.css';
+}
+
+/**
+* @unreleased
+*/
+function give_get_intl_tel_input_script_url():string {
+    return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/js/intlTelInput.min.js';
+}
+
+/**
+* @unreleased
+*/
+function give_get_intl_tel_input_utils_script_url():string {
+    return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/js/utils.js';
 }
