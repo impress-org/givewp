@@ -78,8 +78,12 @@ class FormBuilderViewModel
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
-            'intlTelInput' => give_get_intl_tel_input('', 'fom-builder-placeholder'),
-            'i18nIntlTelInput' => give_get_intl_tel_input_i18n_json_object(),
+            'IntlTelInput' => [
+                'i18n' => give_get_intl_tel_input_i18n_json_object(),
+                'cssUrl' => give_get_intl_tel_input_css_url(),
+                'scriptUrl' => give_get_intl_tel_input_script_url(),
+                'utilsScriptUrl' => give_get_intl_tel_input_utils_script_url(),
+            ],
         ];
     }
 
