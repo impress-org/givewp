@@ -20,11 +20,11 @@ export default function Edit({attributes}: BlockEditProps<any>) {
         script.async = true;
         document.body.appendChild(script);
 
-        console.log(IntlTelInput.initialCountry);
-
         const interval = setTimeout(() => {
             // @ts-ignore
             window.intlTelInput(document.querySelector('#' + inputId), {
+                showSelectedDialCode: true,
+                strictMode: true,
                 utilsScript: IntlTelInput.utilsScriptUrl,
                 initialCountry: IntlTelInput.initialCountry,
                 i18n: JSON.parse(IntlTelInput.i18n),
