@@ -10,12 +10,19 @@ import {__} from "@wordpress/i18n";
 
 
 /**
+ * @unreleased Early return dispatchFormBlocks if there are no unwrapped blocks.
  * @since 3.0.0
  */
 export default function BlockEditorContainer() {
     const {blocks} = useFormState();
     const dispatch = useFormStateDispatch();
     const dispatchFormBlocks = (blocks) => {
+        const hasUnwrappedBlocks = blocks.some((block) => block.name !== 'givewp/section');
+
+        if (!hasUnwrappedBlocks) {
+            return;
+        }
+
         dispatch(setFormBlocks(blocks.map((block) => {
             return block.name == 'givewp/section'
                 ? block
