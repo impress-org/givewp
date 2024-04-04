@@ -20,7 +20,7 @@ export default function BlockEditorContainer() {
         const hasUnwrappedBlocks = blocks.some((block) => block.name !== 'givewp/section');
 
         if (!hasUnwrappedBlocks) {
-            return;
+            return dispatch(setFormBlocks(blocks));
         }
 
         dispatch(setFormBlocks(blocks.map((block) => {
@@ -41,7 +41,7 @@ export default function BlockEditorContainer() {
     parseMissingBlocks(blocks);
 
     return (
-        <BlockEditorProvider value={blocks} onChange={dispatchFormBlocks}>
+        <BlockEditorProvider value={blocks} onInput={dispatchFormBlocks} onChange={dispatchFormBlocks}>
             <Onboarding />
             <SlotFillProvider>
                 <Sidebar.InspectorFill>
