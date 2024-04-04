@@ -41,7 +41,7 @@ export default function BlockEditorContainer() {
     parseMissingBlocks(blocks);
 
     return (
-        <BlockEditorProvider value={blocks} onInput={dispatchFormBlocks} onChange={dispatchFormBlocks}>
+        <BlockEditorProvider value={blocks} onChange={dispatchFormBlocks}>
             <Onboarding />
             <SlotFillProvider>
                 <Sidebar.InspectorFill>
