@@ -10,7 +10,7 @@ import {__} from "@wordpress/i18n";
 
 
 /**
- * @unreleased Early return dispatchFormBlocks if there are no unwrapped blocks.
+ * @since 3.6.2 Early return dispatchFormBlocks if there are no unwrapped blocks.
  * @since 3.0.0
  */
 export default function BlockEditorContainer() {
