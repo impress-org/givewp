@@ -1,14 +1,13 @@
 import classnames from 'classnames';
 import {BlockEditProps} from '@wordpress/blocks';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {useEffect} from 'react';
 import {BaseControl} from '@wordpress/components';
 
 export default function Edit({attributes}: BlockEditProps<any>) {
-    const {label, isRequired, description, placeholder, defaultValue} = attributes;
-    const inputId: string = 'give-form-builder-phone-input';
+    //console.log('attributes: ', attributes);
+    const {label, isRequired, description, fieldName, placeholder, defaultValue} = attributes;
+    //const inputId: string = 'give-form-builder-phone-input';
 
-    useEffect(() => {
+    /*useEffect(() => {
         const {IntlTelInput} = getFormBuilderWindowData();
 
         const css = document.createElement('link');
@@ -35,12 +34,12 @@ export default function Edit({attributes}: BlockEditProps<any>) {
         return () => {
             clearInterval(interval);
         };
-    }, []);
+    }, []);*/
 
     return (
         <div className={classnames({'give-is-required': isRequired})}>
             <BaseControl id={'give-form-builder-phone-label'} label={label} help={description}>
-                <input id={inputId} type="text" />
+                <input id={fieldName} name={fieldName} type="text" />
             </BaseControl>
         </div>
     );

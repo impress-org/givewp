@@ -53,6 +53,15 @@ export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'>
 
 export interface PhoneProps extends FieldHasDescriptionProps {
     phoneFormat: string;
+    intlTelInputFullNumber: string;
+    intlTelInputCountryCode: string;
+    intlTelInputSettings: {
+        initialCountry: string;
+        i18n: any;
+        cssUrl: string;
+        scriptUrl: string;
+        utilsScriptUrl: string;
+    };
 }
 
 export interface ElementProps extends Element {}

@@ -170,9 +170,19 @@ class ConvertDonationFormBlocksToFieldsApi
                         return $email;
                     });
             case 'givewp/phone':
-                return Phone::make($block->getAttribute('fieldName'));
-                    //->phoneFormat($block->getAttribute('phoneFormat'))
-            //->defaultValue($block->getAttribute('defaultValue'));
+                return Phone::make($block->getAttribute('fieldName'))
+                    //->phoneFormat('international')
+                    //->setIntlTelInputFullNumber((string)$block->getAttribute('intlTelInputFullNumber'))
+                    ->setIntlTelInputSettings([
+                        'initialCountry' => strtolower(give_get_country()),
+                        'i18n' => give_get_intl_tel_input_i18n_json_object(),
+                        'cssUrl' => give_get_intl_tel_input_css_url(),
+                        'scriptUrl' => give_get_intl_tel_input_script_url(),
+                        'utilsScriptUrl' => give_get_intl_tel_input_utils_script_url(),
+                    ])->tap(function ($phone) use ($block) {
+                        return $phone;
+                    });
+
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
 
