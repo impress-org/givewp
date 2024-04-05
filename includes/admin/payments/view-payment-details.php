@@ -11,6 +11,7 @@
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Models\Donor;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -62,7 +63,8 @@ $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
-$phone_number = Donation::find($payment_id)->phone
+$donation_phone_number = Donation::find($payment_id)->phone;
+$donor_phone_number = Donor::find($donor_id)->phone;
 
 ?>
 <div class="wrap give-wrap">
@@ -642,6 +644,26 @@ $phone_number = Donation::find($payment_id)->phone
 													);
 												?>
 											</p>
+                                            <p>
+                                                <?php
+                                                if ( ! empty($donation_phone_number)) {
+                                                    ?>
+                                                    <strong><?php
+                                                        esc_html_e('Donor Phone:', 'give'); ?></strong><br>
+                                                    <?php
+                                                    // Show Donor donation phone first and Primary phone on parenthesis if not match both phone.
+                                                    echo (empty($donor_phone_number) ||
+                                                          hash_equals($donor_phone_number, $donation_phone_number))
+                                                        ? $donation_phone_number :
+                                                        sprintf(
+                                                            '%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
+                                                            $donation_phone_number,
+                                                            esc_url(admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}")),
+                                                            $donor_phone_number
+                                                        );
+                                                }
+                                                ?>
+                                            </p>
 										</div>
 										<div class="column">
 											<p>
@@ -655,17 +677,6 @@ $phone_number = Donation::find($payment_id)->phone
 												);
 												?>
 											</p>
-                                            <p>
-                                                <?php
-                                                if ( ! empty($phone_number)) {
-                                                    ?>
-                                                    <strong><?php
-                                                        esc_html_e('Phone:', 'give'); ?></strong><br>
-                                                    <?php
-                                                    echo $phone_number;
-                                                }
-                                                ?>
-                                            </p>
 											<p>
 												<?php
 												if ( ! empty( $company_name ) ) {
