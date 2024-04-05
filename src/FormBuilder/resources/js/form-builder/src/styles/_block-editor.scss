@@ -250,16 +250,47 @@
 
 .givewp-block-editor-sidebar {
     &__tabs {
+        display: flex; // WP 6.5 backwards compatibility
         flex: 1 1 0;
         justify-content: center;
 
         li {
             flex: 1;
+            margin: 0; // WP 6.5 backwards compatibility
 
             > .components-button {
                 display: block;
                 width: 100%;
                 text-align: center;
+
+                // WP 6.5 backwards compatibility
+                position: relative;
+                height: 48px;
+                padding: 3px 16px;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: none;
+                }
+
+                &.is-active:after {
+                    height: calc(var(--wp-admin-border-width-focus) * 1);
+                    outline: 1px solid transparent;
+                    outline-offset: -1px;
+                }
+
+                &:after {
+                    content: "";
+                    background: var(--wp-admin-theme-color);
+                    border-radius: 0;
+                    bottom: 0;
+                    height: calc(var(--wp-admin-border-width-focus) * 0);
+                    pointer-events: none;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    transition: all .1s linear;
+                }
             }
         }
     }
