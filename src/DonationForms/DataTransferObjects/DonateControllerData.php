@@ -172,7 +172,7 @@ class DonateControllerData
             'amount' => $this->amount(),
             'anonymous' => $this->anonymous,
             'donorId' => $donorId,
-            'honorific' => $this->honorific,
+            //'honorific' => $this->honorific,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'email' => $this->email,

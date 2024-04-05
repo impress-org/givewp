@@ -34,7 +34,7 @@ class GetOrCreateDonor
             $donor->save();
         }
 
-        if ($donor && ! $donor->hasPhone($donorPhone)) {
+        if ($donor && $donorPhone && ! $donor->hasPhone($donorPhone)) {
             $donor->additionalPhones = array_merge($donor->additionalPhones ?? [], [$donorPhone]);
             $donor->save();
         }

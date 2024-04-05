@@ -21,7 +21,8 @@ class TestGetOrCreateDonor extends TestCase
     {
         $donor = Donor::factory()->create(['userId' => 1]);
         $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingEmail = $action(null, $donor->email, $donor->firstName, $donor->lastName, $donor->prefix);
+        $donorFromActionWithMatchingEmail = $action(null, $donor->email, $donor->firstName, $donor->lastName,
+            $donor->prefix, $donor->phone);
 
         $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingEmail->toArray());
         $this->assertFalse($action->donorCreated);
@@ -36,7 +37,8 @@ class TestGetOrCreateDonor extends TestCase
     {
         $donor = Donor::factory()->create(['userId' => 1]);
         $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingUserId = $action($donor->userId, $donor->email, 'billing first name', 'billing last name', null);
+        $donorFromActionWithMatchingUserId = $action($donor->userId, $donor->email, 'billing first name',
+            'billing last name', null, null);
 
         $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
         $this->assertFalse($action->donorCreated);
@@ -50,7 +52,8 @@ class TestGetOrCreateDonor extends TestCase
     {
         $donor = Donor::factory()->create(['userId' => 1]);
         $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingUserId = $action($donor->userId, 'newDonor@givewp.com', 'billing first name', 'billing last name', null);
+        $donorFromActionWithMatchingUserId = $action($donor->userId, 'newDonor@givewp.com', 'billing first name',
+            'billing last name', null, null);
         $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], ['newDonor@givewp.com']);
         $donor->save();
 
@@ -68,7 +71,8 @@ class TestGetOrCreateDonor extends TestCase
         $donor = Donor::factory()->create(['userId' => 1]);
         $donorWithExistingEmail = Donor::factory()->create();
         $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingUserId = $action($donor->userId, $donorWithExistingEmail->email, 'billing first name', 'billing last name', null);
+        $donorFromActionWithMatchingUserId = $action($donor->userId, $donorWithExistingEmail->email,
+            'billing first name', 'billing last name', null, null);
 
         $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
         $this->assertFalse($action->donorCreated);
@@ -82,7 +86,7 @@ class TestGetOrCreateDonor extends TestCase
     public function testShouldReturnNewDonor(): void
     {
         $action = new GetOrCreateDonor();
-        $donorFromAction = $action(null, 'billMurray@givewp.com', 'Bill', 'Murray', 'Mr.');
+        $donorFromAction = $action(null, 'billMurray@givewp.com', 'Bill', 'Murray', 'Mr.', null);
 
         $this->assertSame('Bill Murray', $donorFromAction->name);
         $this->assertSame('Bill', $donorFromAction->firstName);

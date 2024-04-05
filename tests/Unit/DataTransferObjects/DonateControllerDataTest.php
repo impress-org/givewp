@@ -204,6 +204,7 @@ class DonateControllerDataTest extends TestCase
             'gatewayId' => $data->gatewayId,
             'amount' => $subscription->amount,
             'donorId' => $donor->id,
+            //'honorific' => $data->honorific,
             'firstName' => $data->firstName,
             'lastName' => $data->lastName,
             'email' => $data->email,
