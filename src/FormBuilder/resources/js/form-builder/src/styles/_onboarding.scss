@@ -2,10 +2,12 @@
 .shepherd-modal-overlay-container {
     z-index: 9999999999 !important;
 }
+
 .shepherd-element {
     padding: var(--givewp-spacing-6);
     padding-top: var(--givewp-spacing-4);
 }
+
 .shepherd-text {
     padding: 0;
 
@@ -19,23 +21,29 @@
         }
     }
 }
+
 .shepherd-target {
     outline: solid 2px var(--wp-blue-blue-50);
 }
+
 #form-blocks-canvas.shepherd-target {
     padding: 58px;
     margin: -58px;
 }
+
 .shepherd-modal-overlay-container.shepherd-modal-is-visible {
     opacity: .3 !important;
 }
+
 .shepherd-header {
     display: none !important;
 }
+
 .shepherd-footer {
     margin-top: var(--givewp-spacing-5);
     padding: 0;
 }
+
 .shepherd-button {
     flex: 1;
     font-size: 14px;
@@ -45,15 +53,18 @@
     &.shepherd-button-primary {
         color: var(--givewp-shades-white);
         background-color: var(--wp-admin-theme-color);
+
         &:hover {
             color: var(--givewp-shades-white) !important;
             background-color: var(--wp-admin-theme-color-darker-10);
         }
     }
+
     &.shepherd-button-secondary {
         color: var(--wp-admin-theme-color) !important;
         border: solid 1px var(--wp-admin-theme-color);
         background-color: var(--givewp-shades-white);
+
         &:hover {
             color: var(--wp-admin-theme-color-darker-10) !important;
             border: solid 1px var(--wp-admin-theme-color-darker-10);
@@ -248,5 +259,78 @@
     .shepherd-button-secondary // Hide the "previous" button for the design tour.
     {
         display: none;
+    }
+}
+
+.givewp-shepherd {
+    &__steps {
+        display: flex;
+        background-color: var(--givewp-blue-25);
+        font-size: 12px;
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+        border-radius: 2px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: var(--givewp-spacing-3) 0;
+    }
+
+    &__description {
+        font-size: 14px;
+    }
+}
+
+
+[data-shepherd-step-id="schema-find-docs"], [data-shepherd-step-id="schema-find-tour"] {
+    position: relative;
+    background-color: var(--givewp-green-700);
+    max-width: 400px;
+    min-Width: 280px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -.35rem;
+        right: 50%;
+        height: 1rem;
+        width: .75rem;
+        display: block;
+        transform: rotate(45deg);
+        background-color: var(--givewp-green-700);
+    }
+
+    * {
+        color: var(--givewp-shades-white);
+        background-color: transparent;
+    }
+
+    .shepherd-footer {
+        margin-top: 0;
+    }
+
+    .shepherd-button-primary--tools {
+        display: inline-block;
+        background: transparent;
+        text-align: right;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    .givewp-shepherd {
+        &__steps, &__title {
+            display: none;
+        }
+    }
+}
+
+.givewp-block-editor-tools {
+    &__item {
+        outline: 2px solid var(--givewp-green-700);
     }
 }
