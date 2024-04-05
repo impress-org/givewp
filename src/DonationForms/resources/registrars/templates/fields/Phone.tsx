@@ -37,11 +37,11 @@ export default function Phone({
         script.onload = () => {
             // @ts-ignore
             const intl = window.intlTelInput(input, {
-                showSelectedDialCode: true,
-                strictMode: true,
+                showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
+                strictMode: intlTelInputSettings.strictMode,
                 utilsScript: intlTelInputSettings.utilsScriptUrl,
                 initialCountry: intlTelInputSettings.initialCountry,
-                i18n: JSON.parse(intlTelInputSettings.i18n),
+                i18n: intlTelInputSettings.i18n,
             });
 
             const handleIntlTelInputChange = (event) => {

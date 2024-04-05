@@ -15,6 +15,7 @@ use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
@@ -78,7 +79,7 @@ class FormBuilderViewModel
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
-            'intlTelInputSettings' => give_get_intl_tel_input_settings(),
+            'intlTelInputSettings' => IntlTelInput::getSettings(),
         ];
     }
 

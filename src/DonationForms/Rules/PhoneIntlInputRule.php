@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Rules;
 
 use Closure;
+use Give\Helpers\IntlTelInput;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
@@ -31,13 +32,7 @@ class PhoneIntlInputRule implements ValidationRule
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        $errorMap = [
-            __('Invalid number.', 'give'),
-            __('Invalid country code.', 'give'),
-            __('Invalid number: too short.', 'give'),
-            __('Invalid number: too long.', 'give'),
-            __('Invalid number.', 'give'),
-        ];
+        $errorMap = IntlTelInput::getErrorMap();
 
         if ($value && 1 === strlen($value) && array_key_exists(absint($value), $errorMap)) {
             $errorCode = absint($value) ?? 0;

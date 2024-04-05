@@ -9,6 +9,7 @@ import type {
 } from '@givewp/form-builder/types';
 
 import BlockRegistrar from '@givewp/form-builder/registrars/blocks';
+import {IntlTelInputSettings} from '@givewp/forms/propTypes';
 
 type GoalTypeOption = {
     value: string;
@@ -50,13 +51,7 @@ interface FormBuilderWindowData {
     goalTypeOptions: GoalTypeOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
-    intlTelInputSettings: {
-        initialCountry: string;
-        i18n: any;
-        cssUrl: string;
-        scriptUrl: string;
-        utilsScriptUrl: string;
-    };
+    intlTelInputSettings: IntlTelInputSettings;
 }
 
 /**

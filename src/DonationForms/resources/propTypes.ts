@@ -51,15 +51,20 @@ export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'>
     dateFormat: string;
 }
 
+export interface IntlTelInputSettings {
+    initialCountry: string;
+    showSelectedDialCode: boolean;
+    strictMode: boolean;
+    i18n: object;
+    cssUrl: string;
+    scriptUrl: string;
+    utilsScriptUrl: string;
+    errorMap: Array<string>;
+}
+
 export interface PhoneProps extends FieldHasDescriptionProps {
     phoneFormat: string;
-    intlTelInputSettings: {
-        initialCountry: string;
-        i18n: any;
-        cssUrl: string;
-        scriptUrl: string;
-        utilsScriptUrl: string;
-    };
+    intlTelInputSettings: IntlTelInputSettings;
 }
 
 export interface ElementProps extends Element {}

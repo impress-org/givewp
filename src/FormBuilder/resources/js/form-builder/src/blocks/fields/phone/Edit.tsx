@@ -22,11 +22,11 @@ export default function Edit({attributes}: BlockEditProps<any>) {
         script.onload = () => {
             // @ts-ignore
             window.intlTelInput(document.querySelector('#' + intlTelInputId), {
-                showSelectedDialCode: true,
-                strictMode: true,
+                showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
+                strictMode: intlTelInputSettings.strictMode,
                 utilsScript: intlTelInputSettings.utilsScriptUrl,
                 initialCountry: intlTelInputSettings.initialCountry,
-                i18n: JSON.parse(intlTelInputSettings.i18n),
+                i18n: intlTelInputSettings.i18n,
             });
         };
         document.body.appendChild(script);

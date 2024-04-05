@@ -31,6 +31,7 @@ use Give\Framework\FieldsAPI\Phone;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
+use Give\Helpers\IntlTelInput;
 use WP_User;
 
 /**
@@ -173,8 +174,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     });
             case 'givewp/phone':
                 return Phone::make($block->getAttribute('fieldName'))
-                    //->phoneFormat('domestic')
-                    ->setIntlTelInputSettings(give_get_intl_tel_input_settings())
+                    ->setIntlTelInputSettings(IntlTelInput::getSettings())
                     ->scope(function (Phone $field, $value, Donation $donation) {
                         if ( ! empty($value)) {
                             $donation->donor->phone = $value;
