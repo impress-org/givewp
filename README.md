@@ -40,19 +40,24 @@ To get started developing on the GiveWP platform you will need to perform the fo
 3. Fork this repository from GitHub and then clone that into your plugins directory in a new `give` directory
 4. Run `composer install` to set up dependencies
 5. Run `npm install` to get the necessary npm packages
-6. Activate the plugin in WordPress
-7. Run `npm run watch` to start the watch process which will build the sass and script files and live reload using [Browsersync](https://www.browsersync.io/)
+6. Run `npm run dev` to build the initial scripts & styles
+7. Activate the plugin in WordPress
+
 
 That's it. You're now ready to start development.
 
 **Available commands**
 
-| Command             | Description  |
-| :------------- | :------------ |
-| `npm run watch`      | Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run.  |
-| `npm run dev`      |    Runs a one time build for development. No production files are created. |
-| `npm run production` |  Builds the minified production files for release. |
-| `npm run test` |  Run jest tests. Make sure that your docker container is running before running this command. [Read more](https://github.com/impress-org/give/tree/master/tests/e2e) |
+Note: as of GiveWP 3.0 we have two separate build processes. One for the legacy codebase that uses [Laravel Mix](https://laravel.com/docs/6.x/mix) and one for scripts introduced 3.0+ that use [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/). There are commands for running both and individual processes.  The commands are as follows:
+
+| Command            | Description                                                                                                                                                                                                           |
+|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `npm run dev`      | (v2 & v3) Runs a one time build for development. No production files are created.                                                                                                                                     |
+| `npm run dev:v3`   | (v3) Runs a one time build for development. No production files are created.                                                                                                                                          |
+| `npm run watch`    | (v2) Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run. |
+| `npm run watch:v3` | (v3) Live reloads JS files for . Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run.     |
+| `npm run build`    | (v2 & v3) Builds the minified production files for release.                                                                                                                                                           |
+| `npm run build:v3` | (v3) Builds the minified production files for release.                                                                                                                                                                |
 
 **Development Notes**
 
