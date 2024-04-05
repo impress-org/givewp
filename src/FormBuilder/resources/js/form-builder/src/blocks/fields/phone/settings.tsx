@@ -17,10 +17,10 @@ const settings: FieldBlock['settings'] = {
         label: {
             default: __('Phone Number', 'give'),
         },
-        isRequired: {
+        required: {
             type: 'boolean',
             source: 'attribute',
-            default: true,
+            default: false,
         },
     },
     icon: () => (

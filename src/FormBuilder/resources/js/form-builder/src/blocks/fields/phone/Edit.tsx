@@ -8,7 +8,7 @@ import Required from '@givewp/form-builder/blocks/fields/settings/Required';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 
-export default function Edit({attributes: {label, isRequired}, setAttributes}: BlockEditProps<any>) {
+export default function Edit({attributes: {label, required}, setAttributes}: BlockEditProps<any>) {
     const intlTelInputId: string = 'give-form-builder-phone-input';
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function Edit({attributes: {label, isRequired}, setAttributes}: B
 
     return (
         <>
-            <div className={classnames({'give-is-required': isRequired})}>
+            <div className={classnames({'give-is-required': required})}>
                 <BaseControl id={'give-form-builder-phone-label'} label={label}>
                     <input id={intlTelInputId} type="text" />
                 </BaseControl>
@@ -54,7 +54,7 @@ export default function Edit({attributes: {label, isRequired}, setAttributes}: B
                         <Label label={label} setAttributes={setAttributes} />
                     </PanelRow>
                     <PanelRow>
-                        <Required isRequired={isRequired} setAttributes={setAttributes} />
+                        <Required isRequired={required} setAttributes={setAttributes} />
                     </PanelRow>
                 </PanelBody>
             </InspectorControls>

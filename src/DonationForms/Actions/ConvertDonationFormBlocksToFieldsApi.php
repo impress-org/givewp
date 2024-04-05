@@ -173,7 +173,7 @@ class ConvertDonationFormBlocksToFieldsApi
                         return $email;
                     });
             case 'givewp/phone':
-                return Phone::make($block->getAttribute('fieldName'))
+                return Phone::make('phone')
                     ->setIntlTelInputSettings(IntlTelInput::getSettings())
                     ->scope(function (Phone $field, $value, Donation $donation) {
                         if ( ! empty($value)) {
