@@ -286,16 +286,18 @@
 
 
 [data-shepherd-step-id="schema-find-docs"], [data-shepherd-step-id="schema-find-tour"] {
-    position: relative;
     background-color: var(--givewp-green-700);
+    min-height: fit-content;
     max-width: 400px;
-    min-Width: 280px;
+    width: calc(18.188rem + 2rem);
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4) 0 var(--givewp-spacing-4);
+    font-size: 0.75rem;
 
     &::after {
         content: '';
         position: absolute;
         top: -.35rem;
-        right: 50%;
+        right: 49%;
         height: 1rem;
         width: .75rem;
         display: block;
@@ -310,6 +312,11 @@
 
     .shepherd-footer {
         margin-top: 0;
+
+        .shepherd-button:last-child {
+            padding-bottom: .5rem;
+            font-weight: 600;
+        }
     }
 
     .shepherd-button-primary--tools {

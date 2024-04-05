@@ -61,7 +61,7 @@ const schemaSteps = [
 
 const toolSteps = {
     id: 'schema-find-tour',
-    attachTo: {element: '.givewp-block-editor-tools__tour', on: 'bottom' as Placement},
+    attachTo: {element: '.givewp-block-editor-tools__tour', on: 'bottom-end' as Placement},
     title: '',
     highlightClass: 'givewp-block-editor-tools__item',
     text: __(
@@ -73,7 +73,7 @@ const toolSteps = {
             document.dispatchEvent(new CustomEvent('openToolsMenu'));
             setTimeout(function () {
                 resolve();
-            }, 75);
+            }, 100);
         });
     },
 };
