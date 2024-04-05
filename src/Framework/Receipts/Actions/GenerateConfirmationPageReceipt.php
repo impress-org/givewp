@@ -183,10 +183,10 @@ class GenerateConfirmationPageReceipt
             ),
         ];
 
-        if ($receipt->donation->donor->phone) {
+        if ($receipt->donation->phone) {
             $details[] = new ReceiptDetail(
                 __('Phone Number', 'give'),
-                $receipt->donation->donor->phone
+                $receipt->donation->phone
             );
         }
 

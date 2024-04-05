@@ -34,6 +34,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property string $phone
  * @property string[] $additionalEmails
+ * @property string[] $additionalPhones
  * @property Money $totalAmountDonated
  * @property int $totalNumberOfDonations
  * @property Subscription[] $subscriptions
@@ -55,6 +56,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'phone' => 'string',
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
+        'additionalPhones' => ['array', []],
         'totalAmountDonated' => Money::class,
         'totalNumberOfDonations' => 'int'
     ];
@@ -100,6 +102,16 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         $emails = array_merge($this->additionalEmails ?? [], [$this->email]);
 
         return in_array($donorEmail, $emails, true);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasPhone(string $donorPhone): bool
+    {
+        $emails = array_merge($this->additionalPhones ?? [], [$this->phone]);
+
+        return in_array($donorPhone, $emails, true);
     }
 
     /**

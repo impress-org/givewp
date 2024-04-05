@@ -9,7 +9,6 @@ use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\DonationForms\Rules\PhoneIntlInputRule;
-use Give\Donations\Models\Donation;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -175,12 +174,12 @@ class ConvertDonationFormBlocksToFieldsApi
             case 'givewp/phone':
                 return Phone::make('phone')
                     ->setIntlTelInputSettings(IntlTelInput::getSettings())
-                    ->scope(function (Phone $field, $value, Donation $donation) {
+                    /*->scope(function (Phone $field, $value, Donation $donation) {
                         if ( ! empty($value)) {
                             $donation->donor->phone = $value;
                             $donation->donor->save();
                         }
-                    })
+                    })*/
                     ->rules(new PhoneIntlInputRule())
                     ->required($block->getAttribute('required'));
 

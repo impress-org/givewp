@@ -97,6 +97,26 @@ class DonorRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @return array|bool
+     */
+    public function getAdditionalPhones(int $donorId)
+    {
+        $additionalPhones = DB::table('give_donormeta')
+            ->select(['meta_value', 'phone'])
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_PHONES)
+            ->where('donor_id', $donorId)
+            ->getAll();
+
+        if ( ! $additionalPhones) {
+            return null;
+        }
+
+        return array_column($additionalPhones, 'phone');
+    }
+
+    /**
      * @unreleased Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
@@ -157,6 +177,17 @@ class DonorRepository
                             'donor_id' => $donorId,
                             'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
                             'meta_value' => $additionalEmail,
+                        ]);
+                }
+            }
+
+            if (isset($donor->additionalPhones)) {
+                foreach ($donor->additionalPhones as $additionalPhone) {
+                    DB::table('give_donormeta')
+                        ->insert([
+                            'donor_id' => $donorId,
+                            'meta_key' => DonorMetaKeys::ADDITIONAL_PHONES,
+                            'meta_value' => $additionalPhone,
                         ]);
                 }
             }
@@ -221,6 +252,10 @@ class DonorRepository
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
                 $this->updateAdditionalEmails($donor);
+            }
+
+            if (isset($donor->additionalPhones) && $donor->isDirty('additionalPhones')) {
+                $this->updateAdditionalPhones($donor);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -403,7 +438,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmails()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmailsAndPhones()
             );
     }
 
@@ -432,6 +467,34 @@ class DonorRepository
                     'donor_id' => $donor->id,
                     'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
                     'meta_value' => $additionalEmail,
+                ]);
+        }
+    }
+
+    /**
+     * Additional phones are assigned to the same additional_phone meta key.
+     * In order to update them we need to delete and re-insert.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    private function updateAdditionalPhones(Donor $donor)
+    {
+        foreach ($donor->additionalPhones as $additionalPhone) {
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->where('meta_key', DonorMetaKeys::ADDITIONAL_PHONES)
+                ->where('meta_value', $additionalPhone)
+                ->delete();
+        }
+
+        foreach ($donor->additionalPhones as $additionalPhone) {
+            DB::table('give_donormeta')
+                ->insert([
+                    'donor_id' => $donor->id,
+                    'meta_key' => DonorMetaKeys::ADDITIONAL_PHONES,
+                    'meta_value' => $additionalPhone,
                 ]);
         }
     }

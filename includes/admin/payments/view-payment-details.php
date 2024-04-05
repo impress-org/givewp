@@ -9,9 +9,10 @@
  * @since       1.0
  */
 
-// Exit if accessed directly.
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
+// Exit if accessed directly.
 if (!defined('ABSPATH')) {
 	exit;
 }
@@ -61,7 +62,7 @@ $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
-$phone_number = \Give\Donors\Models\Donor::find($donor_id)->phone
+$phone_number = Donation::find($payment_id)->phone
 
 ?>
 <div class="wrap give-wrap">

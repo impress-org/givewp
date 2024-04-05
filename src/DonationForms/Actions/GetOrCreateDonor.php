@@ -22,7 +22,8 @@ class GetOrCreateDonor
         string $donorEmail,
         string $firstName,
         string $lastName,
-        ?string $honorific
+        ?string $honorific,
+        ?string $donorPhone
     ): Donor {
         // first check if donor exists as a user
         $donor = $userId ? Donor::whereUserId($userId) : null;
@@ -30,6 +31,11 @@ class GetOrCreateDonor
         // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
         if ($donor && !$donor->hasEmail($donorEmail) && !Donor::whereEmail($donorEmail)) {
             $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
+            $donor->save();
+        }
+
+        if ($donor && ! $donor->hasPhone($donorPhone)) {
+            $donor->additionalPhones = array_merge($donor->additionalPhones ?? [], [$donorPhone]);
             $donor->save();
         }
 
@@ -45,6 +51,7 @@ class GetOrCreateDonor
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'email' => $donorEmail,
+                'phone' => $donorPhone,
                 'userId' => $userId ?: null,
                 'prefix' => $honorific,
             ]);

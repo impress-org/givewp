@@ -45,14 +45,14 @@ export default function Phone({
             });
 
             const handleIntlTelInputChange = (event) => {
-                if (intl.isValidNumber()) {
-                    const number = intl.getNumber();
-                    setValue(inputProps.name, number);
-                    console.log(number);
-                } else {
+                const number = intl.getNumber();
+                console.log('number: ', number);
+                if (number && !intl.isValidNumber()) {
                     const errorCode = intl.getValidationError();
                     setValue(inputProps.name, errorCode);
-                    console.log(errorCode);
+                    console.log('error: ', errorCode);
+                } else {
+                    setValue(inputProps.name, number);
                 }
             };
 
