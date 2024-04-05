@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import Placement from '@givewp/form-builder/components/onboarding/steps/types/placement';
 
-export default [
+const schemaSteps = [
     {
         id: 'schema-canvas',
         attachTo: {element: '#form-blocks-canvas', on: 'right-start' as Placement},
@@ -58,3 +58,30 @@ export default [
         },
     },
 ];
+
+const toolSteps = {
+    id: 'schema-find-tour',
+    attachTo: {element: '.givewp-block-editor-tools__tour', on: 'bottom' as Placement},
+    title: '',
+    highlightClass: 'givewp-block-editor-tools__item',
+    text: __(
+        'Want to view the guided tour later? Access this option in the three dots menu above at any time.',
+        'give'
+    ),
+    beforeShowPromise: function () {
+        return new Promise<void>(function (resolve) {
+            document.dispatchEvent(new CustomEvent('openToolsMenu'));
+            setTimeout(function () {
+                resolve();
+            }, 75);
+        });
+    },
+};
+
+const renderToolSteps = !!window.onboardingTourData.autoStartSchemaTour;
+
+if (renderToolSteps) {
+    schemaSteps.push(toolSteps);
+}
+
+export default schemaSteps;
