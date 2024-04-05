@@ -129,15 +129,18 @@ class IntlTelInput
 
         ?>
         <script src="<?php
-        echo self::getScriptUrl(); ?>"></script>
+        echo self::getScriptUrl(); ?>">
+        </script>
+
         <link rel="stylesheet" href="<?php
         echo self::getCssUrl(); ?>">
 
         <input id="<?php
-        echo $id; ?>" class="<?php
+        echo $id . '--intl_tel_input'; ?>" class="<?php
         echo $class; ?>" name="<?php
         echo $name; ?>" value="<?php
         echo $value; ?>" type='text'>
+
         <span id="<?php
         echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
 
@@ -158,13 +161,12 @@ class IntlTelInput
             }
 
             function readyHandler() {
-                const input = document.querySelector("#<?php echo $id; ?>");
+                const input = document.querySelector("#<?php echo $id . '--intl_tel_input'; ?>");
                 const intl = window.intlTelInput(input, {
                     utilsScript: "<?php echo self::getUtilsScriptUrl(); ?>",
                     hiddenInput: function (telInputName) {
                         return {
-                            phone: "<?php echo $id . '--international-format'; ?>",
-                            country: "<?php echo $id . '--country-code'; ?>",
+                            phone: "<?php echo $id ?>",
                         };
                     },
                     initialCountry: "<?php echo self::getInitialCountry(); ?>",
@@ -176,26 +178,26 @@ class IntlTelInput
                 const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
                 const errorMap = <?php echo json_encode(self::getErrorMap()); ?>;
 
-                const reset = () => {
+                const resetErrorMessage = () => {
                     input.classList.remove("give-intl-tel-input-error");
                     errorMsg.innerHTML = "";
                     errorMsg.classList.add("give-intl-tel-input-hide");
                 };
 
-                const showError = (msg) => {
+                const showErrorMessage = (msg) => {
                     input.classList.add("give-intl-tel-input-error");
                     errorMsg.innerHTML = msg;
                     errorMsg.classList.remove("give-intl-tel-input-hide");
                 };
 
-                input.addEventListener('change', reset);
-                input.addEventListener('keyup', reset);
+                input.addEventListener('change', resetErrorMessage);
+                input.addEventListener('keyup', resetErrorMessage);
                 input.form.addEventListener("submit", function (e) {
                     if (input.value.trim() && !intl.isValidNumber()) {
                         e.preventDefault();
                         const errorCode = intl.getValidationError();
                         const msg = errorMap[errorCode] || errorMap[0];
-                        showError(msg);
+                        showErrorMessage(msg);
                         return false;
                     }
                 });
