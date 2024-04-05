@@ -50,14 +50,14 @@ That's it. You're now ready to start development.
 
 Note: as of GiveWP 3.0 we have two separate build processes. One for the legacy codebase that uses [Laravel Mix](https://laravel.com/docs/6.x/mix) and one for scripts introduced 3.0+ that use [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/). There are commands for running both and individual processes.  The commands are as follows:
 
-| Command            | Description                                                                                                                                                                                                           |
-|:-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `npm run dev`      | (v2 & v3) Runs a one time build for development. No production files are created.                                                                                                                                     |
-| `npm run dev:v3`   | (v3) Runs a one time build for development. No production files are created.                                                                                                                                          |
-| `npm run watch`    | (v2) Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run. |
-| `npm run watch:v3` | (v3) Live reloads JS files for . Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run.     |
-| `npm run build`    | (v2 & v3) Builds the minified production files for release.                                                                                                                                                           |
-| `npm run build:v3` | (v3) Builds the minified production files for release.                                                                                                                                                                |
+| Command            | Description                                                                       |
+|:-------------------|:----------------------------------------------------------------------------------|
+| `npm run dev`      | (v2 & v3) Runs a one time build for development. No production files are created. |
+| `npm run dev:v3`   | (v3) Runs a one time build for development. No production files are created.      |
+| `npm run watch`    | (v2) Automatically re-builds as changes are made.                                 |
+| `npm run watch:v3` | (v3) Automatically re-builds as changes are made.                                 |
+| `npm run build`    | (v2 & v3) Builds the minified production files for release.                       |
+| `npm run build:v3` | (v3) Builds the minified production files for release.                            |
 
 **Development Notes**
 
