@@ -61,6 +61,7 @@ $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
+$phone_number = \Give\Donors\Models\Donor::find($donor_id)->phone
 
 ?>
 <div class="wrap give-wrap">
@@ -653,6 +654,17 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												);
 												?>
 											</p>
+                                            <p>
+                                                <?php
+                                                if ( ! empty($phone_number)) {
+                                                    ?>
+                                                    <strong><?php
+                                                        esc_html_e('Phone:', 'give'); ?></strong><br>
+                                                    <?php
+                                                    echo $phone_number;
+                                                }
+                                                ?>
+                                            </p>
 											<p>
 												<?php
 												if ( ! empty( $company_name ) ) {

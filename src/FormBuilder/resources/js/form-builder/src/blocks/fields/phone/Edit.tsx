@@ -1,45 +1,46 @@
 import classnames from 'classnames';
 import {BlockEditProps} from '@wordpress/blocks';
 import {BaseControl} from '@wordpress/components';
+import {useEffect} from 'react';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 export default function Edit({attributes}: BlockEditProps<any>) {
-    //console.log('attributes: ', attributes);
-    const {label, isRequired, description, fieldName, placeholder, defaultValue} = attributes;
-    //const inputId: string = 'give-form-builder-phone-input';
+    const {label, isRequired, description} = attributes;
+    const intlTelInputId: string = 'give-form-builder-phone-input';
 
-    /*useEffect(() => {
-        const {IntlTelInput} = getFormBuilderWindowData();
+    useEffect(() => {
+        const {intlTelInputSettings} = getFormBuilderWindowData();
 
         const css = document.createElement('link');
-        css.href = IntlTelInput.cssUrl;
+        css.href = intlTelInputSettings.cssUrl;
         css.rel = 'stylesheet';
         document.body.appendChild(css);
 
         const script = document.createElement('script');
-        script.src = IntlTelInput.scriptUrl;
+        script.src = intlTelInputSettings.scriptUrl;
         script.async = true;
-        document.body.appendChild(script);
-
-        const interval = setTimeout(() => {
+        script.onload = () => {
             // @ts-ignore
-            window.intlTelInput(document.querySelector('#' + inputId), {
+            window.intlTelInput(document.querySelector('#' + intlTelInputId), {
                 showSelectedDialCode: true,
                 strictMode: true,
-                utilsScript: IntlTelInput.utilsScriptUrl,
-                initialCountry: IntlTelInput.initialCountry,
-                i18n: JSON.parse(IntlTelInput.i18n),
+                utilsScript: intlTelInputSettings.utilsScriptUrl,
+                initialCountry: intlTelInputSettings.initialCountry,
+                i18n: JSON.parse(intlTelInputSettings.i18n),
             });
-        }, 100);
+        };
+        document.body.appendChild(script);
 
         return () => {
-            clearInterval(interval);
+            document.body.removeChild(css);
+            document.body.removeChild(script);
         };
-    }, []);*/
+    }, []);
 
     return (
         <div className={classnames({'give-is-required': isRequired})}>
             <BaseControl id={'give-form-builder-phone-label'} label={label} help={description}>
-                <input id={fieldName} name={fieldName} type="text" />
+                <input id={intlTelInputId} type="text" />
             </BaseControl>
         </div>
     );

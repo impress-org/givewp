@@ -165,6 +165,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased Add phone number to donor details
      * @since 3.0.0
      *
      * @return void
@@ -181,6 +182,13 @@ class GenerateConfirmationPageReceipt
                 $receipt->donation->email
             ),
         ];
+
+        if ($receipt->donation->donor->phone) {
+            $details[] = new ReceiptDetail(
+                __('Phone Number', 'give'),
+                $receipt->donation->donor->phone
+            );
+        }
 
         if ($receipt->donation->billingAddress->country) {
             $details[] = new ReceiptDetail(

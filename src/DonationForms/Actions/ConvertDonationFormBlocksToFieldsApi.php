@@ -8,6 +8,8 @@ use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
+use Give\DonationForms\Rules\PhoneIntlInputRule;
+use Give\Donations\Models\Donation;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -171,17 +173,16 @@ class ConvertDonationFormBlocksToFieldsApi
                     });
             case 'givewp/phone':
                 return Phone::make($block->getAttribute('fieldName'))
-                    //->phoneFormat('international')
-                    //->setIntlTelInputFullNumber((string)$block->getAttribute('intlTelInputFullNumber'))
-                    ->setIntlTelInputSettings([
-                        'initialCountry' => strtolower(give_get_country()),
-                        'i18n' => give_get_intl_tel_input_i18n_json_object(),
-                        'cssUrl' => give_get_intl_tel_input_css_url(),
-                        'scriptUrl' => give_get_intl_tel_input_script_url(),
-                        'utilsScriptUrl' => give_get_intl_tel_input_utils_script_url(),
-                    ])->tap(function ($phone) use ($block) {
-                        return $phone;
-                    });
+                    //->phoneFormat('domestic')
+                    ->setIntlTelInputSettings(give_get_intl_tel_input_settings())
+                    ->scope(function (Phone $field, $value, Donation $donation) {
+                        if ( ! empty($value)) {
+                            $donation->donor->phone = $value;
+                            $donation->donor->save();
+                        }
+                    })
+                    ->rules(new PhoneIntlInputRule())
+                    ->required($block->getAttribute('required'));
 
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);

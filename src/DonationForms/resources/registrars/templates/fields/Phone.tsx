@@ -1,7 +1,6 @@
-import InputMask from 'react-input-mask';
-
 import {PhoneProps} from '@givewp/forms/propTypes';
 import {useEffect} from 'react';
+import InputMask from 'react-input-mask';
 
 export default function Phone({
     Label,
@@ -10,25 +9,22 @@ export default function Phone({
     description,
     phoneFormat,
     inputProps,
-    name,
     intlTelInputSettings,
-    intlTelInputFullNumber,
 }: PhoneProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
-    const {useWatch, useFormContext, useFormState} = window.givewp.form.hooks;
-    const {setValue, clearErrors} = useFormContext();
+    const {useFormContext} = window.givewp.form.hooks;
+    const {setValue} = useFormContext();
 
-    const intlTelInputId = name + '_intl_tel_input';
+    const intlTelInputId = inputProps.name + '_intl_tel_input';
+    const isIntlTelInput =
+        intlTelInputSettings.cssUrl && intlTelInputSettings.scriptUrl && intlTelInputSettings.utilsScriptUrl;
 
     useEffect(() => {
-        //console.log('getWindowData: ', getWindowData());
-
-        if (phoneFormat) {
+        if (!isIntlTelInput) {
             return;
         }
 
         const input = document.querySelector('#' + intlTelInputId);
-        console.log('input: ', input);
 
         const css = document.createElement('link');
         css.href = intlTelInputSettings.cssUrl;
@@ -41,12 +37,6 @@ export default function Phone({
         script.onload = () => {
             // @ts-ignore
             const intl = window.intlTelInput(input, {
-                hiddenInput: function (telInputName) {
-                    return {
-                        phone: name + '--international-format',
-                        country: name + '--country-code',
-                    };
-                },
                 showSelectedDialCode: true,
                 strictMode: true,
                 utilsScript: intlTelInputSettings.utilsScriptUrl,
@@ -55,29 +45,42 @@ export default function Phone({
             });
 
             const handleIntlTelInputChange = (event) => {
-                console.log('value: ', event.target.value);
-                console.log('intl.getNumber(): ', intl.getNumber());
-                setValue(inputProps.name, intl.getNumber());
+                if (intl.isValidNumber()) {
+                    const number = intl.getNumber();
+                    setValue(inputProps.name, number);
+                    console.log(number);
+                } else {
+                    const errorCode = intl.getValidationError();
+                    setValue(inputProps.name, errorCode);
+                    console.log(errorCode);
+                }
             };
 
             input.addEventListener('change', handleIntlTelInputChange);
             input.addEventListener('keyup', handleIntlTelInputChange);
         };
-
         document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(css);
+            document.body.removeChild(script);
+        };
     }, []);
 
     return (
         <label>
             <Label />
             {description && <FieldDescription description={description} />}
-            {phoneFormat === 'domestic' ? (
+
+            {isIntlTelInput ? (
+                <>
+                    <input type={'hidden'} placeholder={placeholder} {...inputProps} />
+                    <input id={intlTelInputId} type={'text'} />
+                </>
+            ) : phoneFormat === 'domestic' ? (
                 <InputMask type={'phone'} {...inputProps} mask={'(999) 999-9999'} placeholder={placeholder} />
             ) : (
-                <>
-                    <input id={intlTelInputId} type={'text'} />
-                    <input type={'hidden'} placeholder={placeholder} {...inputProps} />
-                </>
+                <input type={'phone'} placeholder={placeholder} {...inputProps} />
             )}
 
             <ErrorMessage />

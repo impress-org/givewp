@@ -50,7 +50,7 @@ interface FormBuilderWindowData {
     goalTypeOptions: GoalTypeOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
-    IntlTelInput: {
+    intlTelInputSettings: {
         initialCountry: string;
         i18n: any;
         cssUrl: string;

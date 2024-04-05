@@ -2759,3 +2759,16 @@ function give_get_intl_tel_input_script_url():string {
 function give_get_intl_tel_input_utils_script_url():string {
     return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/js/utils.js';
 }
+
+/**
+* @unreleased
+ */
+function give_get_intl_tel_input_settings(): array {
+    return [
+       'initialCountry' => strtolower(give_get_country()),
+       'i18n' => give_get_intl_tel_input_i18n_json_object(),
+       'cssUrl' => give_get_intl_tel_input_css_url(),
+       'scriptUrl' => give_get_intl_tel_input_script_url(),
+       'utilsScriptUrl' => give_get_intl_tel_input_utils_script_url(),
+   ];
+}
