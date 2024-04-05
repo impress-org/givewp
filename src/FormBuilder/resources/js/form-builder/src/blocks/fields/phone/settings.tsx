@@ -8,25 +8,11 @@ import {Path, SVG} from '@wordpress/components';
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
     title: __('Phone', 'give'),
-    //category: 'custom',
     description: __('Donors can input their phone number', 'give'),
     supports: {
         multiple: false,
-        // @ts-ignore
-        givewp: {
-            fieldSettings: {
-                label: {
-                    default: __('Phone Number', 'give'),
-                },
-                description: true,
-                placeholder: false,
-                defaultValue: true,
-                emailTag: true,
-            },
-            conditionalLogic: true,
-        },
     },
-    /*attributes: {
+    attributes: {
         ...defaultSettings.attributes,
         label: {
             default: __('Phone Number', 'give'),
@@ -36,7 +22,7 @@ const settings: FieldBlock['settings'] = {
             source: 'attribute',
             default: true,
         },
-    },*/
+    },
     icon: () => (
         <Icon
             icon={
