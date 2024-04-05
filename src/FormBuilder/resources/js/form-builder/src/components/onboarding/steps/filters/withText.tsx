@@ -36,9 +36,12 @@ const TextContent = ({title, description, stepNumber, stepCount}) => {
 
 const withText = (steps) => {
     return steps.map((step, index) => {
+        const showToolSteps = steps.some((step: {id: string}) => step.id === 'schema-find-tour');
+        const stepCount = showToolSteps ? steps.length - 1 : steps.length;
+
         const Component = step.component;
         const content = (
-            <TextContent title={step.title} description={step.text} stepNumber={index + 1} stepCount={steps.length} />
+            <TextContent title={step.title} description={step.text} stepNumber={index + 1} stepCount={stepCount} />
         );
         const tempContainer = document.createElement('div');
         render(Component ?? content, tempContainer);
