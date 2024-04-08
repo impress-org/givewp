@@ -83,7 +83,7 @@ class DonationFormsData implements TrackData
                 'form_template' => $this->getFormTemplate($formId),
                 'donor_count' => $this->formDonorCounts[$formId],
                 'revenue' => $this->formRevenues[$formId],
-                'event_block' => FormBlocks::formId($formId)->hasBlock('give_event_block'),
+                'event_block' => FormBlocks::formId($formId)->hasBlock('givewp/event-tickets'),
             ];
             $this->addAddonsInformation($temp, $formId);
             $data[] = $temp;
