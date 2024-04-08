@@ -1,10 +1,8 @@
 import classnames from 'classnames';
 import {BlockEditProps} from '@wordpress/blocks';
-import {BaseControl, PanelBody, PanelRow} from '@wordpress/components';
+import {BaseControl, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {useEffect} from 'react';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import Label from '@givewp/form-builder/blocks/fields/settings/Label';
-import Required from '@givewp/form-builder/blocks/fields/settings/Required';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 
@@ -54,10 +52,18 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
             <InspectorControls>
                 <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
                     <PanelRow>
-                        <Label label={label} setAttributes={setAttributes} />
+                        <TextControl
+                            label={__('Label')}
+                            value={label}
+                            onChange={(value) => setAttributes({label: value})}
+                        />
                     </PanelRow>
                     <PanelRow>
-                        <Required isRequired={required} setAttributes={setAttributes} />
+                        <ToggleControl
+                            label={__('Required', 'give')}
+                            checked={required}
+                            onChange={() => setAttributes({required: !required})}
+                        />
                     </PanelRow>
                 </PanelBody>
             </InspectorControls>
