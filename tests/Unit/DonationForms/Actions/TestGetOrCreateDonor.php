@@ -13,6 +13,7 @@ class TestGetOrCreateDonor extends TestCase
     use RefreshDatabase;
 
     /**
+     * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -29,6 +30,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
+     * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -45,6 +47,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
+     * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      * @throws Exception
      */
@@ -62,6 +65,24 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testShouldReturnExistingDonorWithUserIdAndUpdateAdditionalPhones(): void
+    {
+        $donor = Donor::factory()->create(['userId' => 1]);
+        $action = new GetOrCreateDonor();
+        $donorFromActionWithMatchingUserId = $action($donor->userId, $donor->email, 'billing first name',
+            'billing last name', null, '+120155501234');
+        $donor->additionalPhones = array_merge($donor->additionalPhones ?? [], ['+120155501234']);
+        $donor->save();
+
+        $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
+        $this->assertFalse($action->donorCreated);
+    }
+
+    /**
+     * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -79,6 +100,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
+     * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -86,13 +108,14 @@ class TestGetOrCreateDonor extends TestCase
     public function testShouldReturnNewDonor(): void
     {
         $action = new GetOrCreateDonor();
-        $donorFromAction = $action(null, 'billMurray@givewp.com', 'Bill', 'Murray', 'Mr.', null);
+        $donorFromAction = $action(null, 'billMurray@givewp.com', 'Bill', 'Murray', 'Mr.', '+120155501234');
 
         $this->assertSame('Bill Murray', $donorFromAction->name);
         $this->assertSame('Bill', $donorFromAction->firstName);
         $this->assertSame('Murray', $donorFromAction->lastName);
         $this->assertSame('Mr.', $donorFromAction->prefix);
         $this->assertSame('billMurray@givewp.com', $donorFromAction->email);
+        $this->assertSame('+120155501234', $donorFromAction->phone);
         $this->assertTrue($action->donorCreated);
     }
 }
