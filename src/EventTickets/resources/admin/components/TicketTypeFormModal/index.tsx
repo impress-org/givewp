@@ -91,7 +91,9 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
                                 name="price"
                                 decimalsLimit={2}
                                 value={fieldValue}
-                                onValueChange={(value) => onChange(parseValueFromLocale(value))}
+                                onValueChange={(value) =>
+                                    onChange(parseInt(value) >= 0 ? parseValueFromLocale(value) : '')
+                                }
                             />
                         )}
                     />
