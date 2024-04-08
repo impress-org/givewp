@@ -22,11 +22,16 @@ export default function useFormOptions(): {
     const formOptions = [];
 
     const {forms, isResolving} = useSelect((select) => {
+        const query = {per_page: 100};
         return {
             // @ts-ignore
-            forms: select('core').getEntityRecords<Post[]>('postType', 'give_forms'),
+            forms: select('core').getEntityRecords<Post[]>('postType', 'give_forms', query),
             // @ts-ignore
-            isResolving: select('core/data').getIsResolving('core', 'getEntityRecords', ['postType', 'give_forms']),
+            isResolving: select('core/data').getIsResolving('core', 'getEntityRecords', [
+                'postType',
+                'give_forms',
+                query,
+            ]),
         };
     }, []);
 
