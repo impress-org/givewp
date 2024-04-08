@@ -24,7 +24,7 @@ export default function Phone({
             return;
         }
 
-        const input = document.querySelector('#' + intlTelInputId);
+        const input: HTMLInputElement = document.querySelector('#' + intlTelInputId);
 
         const css = document.createElement('link');
         css.href = intlTelInputSettings.cssUrl;
@@ -55,6 +55,8 @@ export default function Phone({
                     setValue(inputProps.name, number);
                 }
             };
+
+            input.style.paddingLeft = '87px'; // It's necessary to fix a missing padding in the form preview
 
             input.addEventListener('change', handleIntlTelInputChange);
             input.addEventListener('keyup', handleIntlTelInputChange);
