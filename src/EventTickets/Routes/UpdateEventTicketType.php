@@ -20,6 +20,9 @@ class UpdateEventTicketType implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "edit_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -30,14 +33,18 @@ class UpdateEventTicketType implements RestRoute
                 [
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return current_user_can('edit_give_forms');
+                    },
                 ],
                 'args' => [
                     'ticket_type_id' => [
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
-                        'validate_callback' => function ($eventId) {
-                            return EventTicketType::find($eventId);
+                        'validate_callback' => function ($ticketTypeId) {
+                            return EventTicketType::find(
+                                    $ticketTypeId
+                                ) !== null;
                         },
                         'required' => true,
                     ],
@@ -49,7 +56,7 @@ class UpdateEventTicketType implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'price' => [
                         'type' => 'integer',

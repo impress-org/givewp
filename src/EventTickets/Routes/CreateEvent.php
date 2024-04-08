@@ -6,6 +6,7 @@ use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @since 3.6.0
@@ -17,6 +18,9 @@ class CreateEvent implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "publish_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -25,10 +29,10 @@ class CreateEvent implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'POST',
+                    'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can( 'manage_options' );
+                        return current_user_can('edit_give_forms');
                     }
                 ],
                 'args' => [
@@ -40,7 +44,7 @@ class CreateEvent implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'startDateTime' => [
                         'type' => 'string',
