@@ -1,4 +1,4 @@
-import {SubmitHandler, useForm} from 'react-hook-form';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import styles from './TicketTypeFormModal.module.scss';
 import FormModal from '../FormModal';
@@ -6,6 +6,8 @@ import {useTicketTypeForm} from './ticketTypeFormContext';
 import {Inputs, TicketModalProps} from './types';
 import {useEffect} from 'react';
 import EventTicketsApi from '../api';
+import CurrencyInput from 'react-currency-input-field';
+import parseValueFromLocale from './parseValueFromLocale';
 
 /**
  * Ticket Form Modal component
@@ -18,6 +20,7 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
 
     const {
         register,
+        control,
         handleSubmit,
         reset,
         formState: {errors, isDirty},
@@ -74,9 +77,27 @@ export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, e
             <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
                 <div className="givewp-event-tickets__form-column">
                     <label htmlFor="price">{__('Price', 'give')}</label>
-                    <input type="number" {...register('price')} />
+                    <Controller
+                        name="price"
+                        control={control}
+                        render={({field: {onChange, value: fieldValue, ref}}) => (
+                            <CurrencyInput
+                                intlConfig={{
+                                    locale: navigator.language,
+                                    currency: apiSettings.currencyCode,
+                                }}
+                                ref={ref}
+                                id="price"
+                                name="price"
+                                decimalsLimit={2}
+                                value={fieldValue}
+                                onValueChange={(value) => onChange(parseValueFromLocale(value))}
+                            />
+                        )}
+                    />
                     <span>
-                        {__('Leave empty for', 'give')} <strong>{__('free', 'give')}</strong>
+                        {__('Leave empty for', 'give')}&nbsp;
+                        <strong>{__('free', 'give')}</strong>
                     </span>
                 </div>
                 <div className="givewp-event-tickets__form-column">
