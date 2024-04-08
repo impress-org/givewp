@@ -31,6 +31,7 @@ if (!current_user_can('view_give_payments')) {
 /**
  * View donation details page
  *
+ * @unreleased Add donor phone number to the view
  * @since 1.0
  * @return void
  */

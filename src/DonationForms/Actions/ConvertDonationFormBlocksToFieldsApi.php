@@ -129,6 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unreleased Add "givewp/phone" block
      * @since 3.0.0
      *
      * @return Node|null
@@ -174,12 +175,6 @@ class ConvertDonationFormBlocksToFieldsApi
             case 'givewp/phone':
                 return Phone::make('phone')
                     ->setIntlTelInputSettings(IntlTelInput::getSettings())
-                    /*->scope(function (Phone $field, $value, Donation $donation) {
-                        if ( ! empty($value)) {
-                            $donation->donor->phone = $value;
-                            $donation->donor->save();
-                        }
-                    })*/
                     ->rules(new PhoneIntlInputRule())
                     ->required($block->getAttribute('required'));
 
