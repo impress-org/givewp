@@ -159,7 +159,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased Added phone and honorific property
+     * @unreleased Added phone property
      * @since 3.0.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
@@ -172,7 +172,6 @@ class DonateControllerData
             'amount' => $this->amount(),
             'anonymous' => $this->anonymous,
             'donorId' => $donorId,
-            //'honorific' => $this->honorific,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'email' => $this->email,
