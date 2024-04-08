@@ -12,6 +12,7 @@ import parseValueFromLocale from './parseValueFromLocale';
 /**
  * Ticket Form Modal component
  *
+ * @unreleased Replace number input with CurrencyInput component
  * @since 3.6.0
  */
 export default function TicketTypeFormModal({isOpen, handleClose, apiSettings, eventId}: TicketModalProps) {
