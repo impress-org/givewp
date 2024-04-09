@@ -66,6 +66,10 @@ textarea {
     &::placeholder {
         opacity: 0.6;
     }
+
+    &:focus {
+        border: none;
+    }
 }
 
 button[type="submit"] {
