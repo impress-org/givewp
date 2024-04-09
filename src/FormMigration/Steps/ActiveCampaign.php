@@ -39,8 +39,8 @@ class ActiveCampaign extends FormMigrationStep
         return [
             'label'             => $this->formV2->getActiveCampaignLabel() ,
             'defaultChecked'    => $this->formV2->getActiveCampaignDefaultChecked(),
-            'selectedLists'      => $this->formV2->getActiveCampaignSelectedLists(),
-            'selectedTags'    => $this->formV2->getActiveCampaignTags()
+            'selectedLists'     => $this->formV2->getActiveCampaignSelectedLists(),
+            'selectedTags'      => $this->formV2->getActiveCampaignTags()
         ];
     }
 }
