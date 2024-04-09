@@ -797,13 +797,6 @@ class FormMetaDecorator extends FormModelDecorator
 
         $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_activecampaign_globally_enabled'), 'on');
 
-        Log::error('isActiveCampaignEnabled', [
-            'return' => !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled)),
-            '$isFormEnabled' =>$isFormEnabled,
-            '$isFormDisabled' => $isFormDisabled,
-            '$isGloballyEnabled' => $isGloballyEnabled,
-        ]);
-
         return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
     }
 
