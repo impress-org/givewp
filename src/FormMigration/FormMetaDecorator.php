@@ -824,7 +824,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
 
-        $isGlobalChecked = give_is_setting_enabled(get_option('give_activecampaign_checkbox_default'), 'on');
+        $isGlobalChecked = give_is_setting_enabled(give_get_option('give_activecampaign_checkbox_default'), 'on');
 
         $isFormChecked = give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default'), 'on');
 
