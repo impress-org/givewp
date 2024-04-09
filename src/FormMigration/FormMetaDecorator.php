@@ -5,6 +5,7 @@ namespace Give\FormMigration;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormMigration\Contracts\FormModelDecorator;
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Email_Notification_Util;
 
@@ -790,7 +791,20 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function isActiveCampaignEnabled(): bool
     {
-        return true;
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'disabled');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_activecampaign_globally_enabled'), 'on');
+
+        Log::error('isActiveCampaignEnabled', [
+            'return' => !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled)),
+            '$isFormEnabled' =>$isFormEnabled,
+            '$isFormDisabled' => $isFormDisabled,
+            '$isGloballyEnabled' => $isGloballyEnabled,
+        ]);
+
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
     }
 
     /**
@@ -808,9 +822,13 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getActiveCampaignDefaultChecked(): bool
     {
-        $defaultMeta = get_option('give_activecampaign_checkbox_default', true);
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
 
-        return give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default', $defaultMeta));
+        $isGlobalChecked = give_is_setting_enabled(get_option('give_activecampaign_checkbox_default'), 'on');
+
+        $isFormChecked = give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default'), 'on');
+
+        return $isFormEnabled ? $isFormChecked : $isGlobalChecked;
     }
 
     /**
@@ -818,7 +836,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getActiveCampaignSelectedLists(): array
     {
-        $defaultMeta = get_option('give_activecampaign_lists', []);
+        $defaultMeta = give_get_option('give_activecampaign_lists', []);
 
         return !empty($this->getMeta('give_activecampaign_lists')) ?
             $this->getMeta('give_activecampaign_lists') : $defaultMeta;
@@ -829,8 +847,9 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getActiveCampaignTags(): array
     {
-        $defaultMeta = get_option('give_activecampaign_tags', []);
+        $defaultMeta = give_get_option('give_activecampaign_tags',[]);
 
         return !empty($this->getMeta('give_activecampaign_tags')) ?
-            $this->getMeta('give_activecampaign_tags') : $defaultMeta;    }
+            $this->getMeta('give_activecampaign_tags') : $defaultMeta;
+    }
 }
