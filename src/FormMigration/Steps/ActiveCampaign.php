@@ -4,7 +4,6 @@ namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
-use Give\Log\Log;
 
 /**
  * @unreleased
