@@ -24,7 +24,7 @@ class FormBuilderViewModelTest extends TestCase
 
     /**
      *
-     * @unreleased Add support to isExcerptEnabled key in the compared array
+     * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
      * @since 3.0.0
      *

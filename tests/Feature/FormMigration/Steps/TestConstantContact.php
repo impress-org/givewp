@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.7.0
  *
  * @covers \Give\FormMigration\Steps\DonationGoal
  */
@@ -18,7 +18,7 @@ class TestConstantContact extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateConstantContactBlockAttributesWithV2FormMeta(): void
     {
@@ -44,7 +44,7 @@ class TestConstantContact extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateConstantContactBlockAttributesWithGlobalSettings(): void
     {
@@ -74,7 +74,7 @@ class TestConstantContact extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateConstantContactBlockAttributesWhenNoMeta(): void
     {

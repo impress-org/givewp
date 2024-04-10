@@ -7,12 +7,12 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 3.7.0
  */
 class AddPhoneColumn extends Migration
 {
     /**
-     * @unreleased
+     * @since 3.7.0
      *
      * @throws DatabaseMigrationException
      */
@@ -35,7 +35,7 @@ class AddPhoneColumn extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public static function id(): string
     {
@@ -43,7 +43,7 @@ class AddPhoneColumn extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public static function title(): string
     {
@@ -51,7 +51,7 @@ class AddPhoneColumn extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public static function timestamp()
     {

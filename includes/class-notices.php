@@ -638,7 +638,7 @@ class Give_Notices {
 	 * Print frontend notice.
 	 * Notice: notice type can be success/error/warning
 	 *
-     * @unreleased Escape attributes
+     * @since 3.7.0 Escape attributes
 	 * @since  1.8.9
 	 * @access public
 	 *

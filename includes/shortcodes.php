@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
@@ -133,7 +133,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
  * @since  1.0
@@ -213,7 +213,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
  *
@@ -271,7 +271,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * Shows a login form allowing users to users to log in. This function simply
  * calls the give_login_form function to display the login form.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -306,7 +306,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * Shows a registration form allowing users to users to register for the site.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -335,7 +335,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows a donation receipt.
  *
- * @unreleased Sanitize and escape attributes
+ * @since 3.7.0 Sanitize and escape attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -411,7 +411,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * folder. Please visit the Give Documentation for more information on how the
  * templating system is used.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -626,7 +626,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since  2.1
  *
  * @param  array $atts Shortcode attributes.
@@ -835,7 +835,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 /**
  * Displays donation forms in a grid layout.
  *
- * @unreleased Sanitize attributes
+ * @since 3.7.0 Sanitize attributes
  * @since  2.1.0
  *
  * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus

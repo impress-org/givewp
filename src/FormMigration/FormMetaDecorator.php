@@ -511,7 +511,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function isConstantContactEnabled(): bool
     {
@@ -525,7 +525,7 @@ class FormMetaDecorator extends FormModelDecorator
       }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function getConstantContactLabel(): string
     {
@@ -535,7 +535,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function getConstantContactDefaultChecked(): bool
     {
@@ -549,7 +549,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function getConstantContactSelectedLists(): array
     {
@@ -581,7 +581,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpDefaultChecked(): bool
@@ -591,7 +591,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendDonationData(): bool
@@ -601,7 +601,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendFFMData(): bool

@@ -6,12 +6,12 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.7.0
  */
 class ConstantContact extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function canHandle(): bool
     {
@@ -19,7 +19,7 @@ class ConstantContact extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function process(): void
     {

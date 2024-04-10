@@ -12,7 +12,7 @@ export interface FormOption extends Form {
 }
 
 /**
- * @unreleased Increase the per_page attribute to 100 to accommodate for more forms.
+ * @since 3.7.0 Increase the per_page attribute to 100 to accommodate for more forms.
  * @since 3.2.0 include isLegacyForm, isLegacyFormTemplate & link.
  * @since 3.0.0
  */

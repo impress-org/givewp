@@ -261,7 +261,7 @@ class IframeView
     /**
      * Get button HTML.
      *
-     * @unreleased Escape attributes
+     * @since 3.7.0 Escape attributes
      *
      * @return string
      */

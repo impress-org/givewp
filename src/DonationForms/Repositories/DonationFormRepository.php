@@ -69,7 +69,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased Add post_excerpt to the list of fields being inserted
+     * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
      * @return void
@@ -147,7 +147,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased Add post_excerpt to the list of fields being updated
+     * @since 3.7.0 Add post_excerpt to the list of fields being updated
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
