@@ -638,6 +638,7 @@ class Give_Notices {
 	 * Print frontend notice.
 	 * Notice: notice type can be success/error/warning
 	 *
+     * @unreleased Escape attributes
 	 * @since  1.8.9
 	 * @access public
 	 *
@@ -691,11 +692,11 @@ class Give_Notices {
 						</p>
 						%6$s
 					</div>',
-			$notice_type,
-			give_clean( $notice_args['dismissible'] ),
-			absint( $notice_args['dismiss_interval'] ),
-			give_clean( $notice_args['dismiss_type'] ),
-			$message,
+			esc_attr($notice_type),
+			esc_attr( $notice_args['dismissible'] ),
+			esc_attr( $notice_args['dismiss_interval'] ),
+			esc_attr( $notice_args['dismiss_type'] ),
+			esc_html($message),
 			$close_icon
 		);
 

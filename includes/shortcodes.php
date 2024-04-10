@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Displays a user's donation history.
  *
+ * @unreleased Sanitize attributes
  * @since 3.1.0 pass form id by reference in give_totals shortcode.
  * @since  1.0
  *
@@ -34,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string|bool
  */
 function give_donation_history( $atts, $content = false ) {
-
+    $atts = give_clean($atts);
 	$donation_history_args = shortcode_atts(
 		[
 			'id'             => true,
@@ -132,6 +133,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @unreleased Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
  * @since  1.0
@@ -142,6 +144,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  * @return string
  */
 function give_form_shortcode( $atts ) {
+    $atts = give_clean($atts);
 	$atts = shortcode_atts( give_get_default_form_shortcode_args(), $atts, 'give_form' );
 
     if('fullForm' === $atts['display_style']) {
@@ -210,6 +213,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
+ * @unreleased Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
  *
@@ -218,6 +222,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  * @return string
  */
 function give_goal_shortcode( $atts ) {
+    $atts = give_clean($atts);
 	$atts = shortcode_atts(
 		[
 			'id'        => '',
@@ -266,6 +271,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * Shows a login form allowing users to users to log in. This function simply
  * calls the give_login_form function to display the login form.
  *
+ * @unreleased Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -275,7 +281,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * @return string
  */
 function give_login_form_shortcode( $atts ) {
-
+    $atts = give_clean($atts);
 	$atts = shortcode_atts(
 		[
 			// Add backward compatibility for redirect attribute.
@@ -300,6 +306,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * Shows a registration form allowing users to users to register for the site.
  *
+ * @unreleased Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -309,6 +316,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  * @return string
  */
 function give_register_form_shortcode( $atts ) {
+    $atts = give_clean($atts);
 	$atts = shortcode_atts(
 		[
 			'redirect' => '',
@@ -327,6 +335,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows a donation receipt.
  *
+ * @unreleased Sanitize and escape attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -336,6 +345,8 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
 function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args;
+
+    $atts = give_clean($atts);
 
 	$give_receipt_args = shortcode_atts(
 		[
@@ -378,8 +389,8 @@ function give_receipt_shortcode( $atts ) {
 		return sprintf(
 			'<div id="give-receipt" data-shortcode="%1$s" data-receipt-type="%2$s" data-donation-key="%3$s" >%4$s</div>',
 			htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
-			$receipt_type,
-			$donation_id,
+			esc_attr($receipt_type),
+			esc_attr($donation_id),
 			ob_get_clean()
 		);
 	}
@@ -400,6 +411,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * folder. Please visit the Give Documentation for more information on how the
  * templating system is used.
  *
+ * @unreleased Sanitize attributes
  * @since  1.0
  *
  * @param  array $atts Shortcode attributes.
@@ -407,6 +419,8 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  * @return string Output generated from the profile editor
  */
 function give_profile_editor_shortcode( $atts ) {
+
+    $atts = give_clean($atts);
 
 	ob_start();
 
@@ -612,6 +626,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
+ * @unreleased Sanitize attributes
  * @since  2.1
  *
  * @param  array $atts Shortcode attributes.
@@ -640,6 +655,8 @@ function give_totals_shortcode( $atts ) {
 
 	// Total Goal.
 	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
+
+    $atts = give_clean($atts);
 
 	/**
 	 * Give Action fire before the shortcode is rendering is started.
@@ -818,6 +835,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 /**
  * Displays donation forms in a grid layout.
  *
+ * @unreleased Sanitize attributes
  * @since  2.1.0
  *
  * @since 3.1.0 Use static function on array_map callback to pass the id as reference for _give_redirect_form_id to prevent warnings on PHP 8.0.1 or plus
@@ -855,7 +873,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
-
+    $atts = give_clean($atts);
 	$give_settings = give_get_settings();
 
 	$atts = shortcode_atts(
