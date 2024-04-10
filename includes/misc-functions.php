@@ -2628,7 +2628,7 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
  /**
  * @see https://github.com/jackocnr/intl-tel-input
  *
- * @unreleased
+ * @since 3.7.0
  */
 function give_get_intl_tel_input(string $value, string $id, string $class = '', string $name = ''):string {
 
@@ -2719,7 +2719,7 @@ function give_get_intl_tel_input(string $value, string $id, string $class = '', 
 }
 
 /**
-* @unreleased
+* @since 3.7.0
  */
 function give_get_intl_tel_input_i18n_json_object() {
 

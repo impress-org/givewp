@@ -46,7 +46,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased Test "phone" property
+     * @since 3.7.0 Test "phone" property
      * @since 2.19.6
      *
      * @return void
@@ -81,7 +81,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      *
      * @throws Exception
      */
@@ -129,7 +129,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased Test "phone" property
+     * @since 3.7.0 Test "phone" property
      * @since 2.19.6
      *
      * @return void

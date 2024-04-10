@@ -8,7 +8,7 @@ import {getWindowData} from '@givewp/form-builder/common';
 const {isExcerptEnabled} = getWindowData();
 
 /**
- * @unreleased Added formExcerpt text area
+ * @since 3.7.0 Added formExcerpt text area
  * @since 3.1.0 dispatch page slug from form title on initial publish.
  */
 const FormSummarySettings = ({settings, setSettings}) => {

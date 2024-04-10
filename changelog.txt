@@ -1,4 +1,15 @@
 == Changelog ==
+= 3.7.0: April 10th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming constant contact add-on release
+* New: Added phone number field to the donor details page, more updates for this field will come in future releases!
+* Enhancement: Updated the form block option to select more available forms than the original limit of 10
+* Enhancement: Updated the form builder left-side menu to open automatically when entering the build screen
+* Security: Added sanitizing and escaping to shortcodes
+* Fix: Resolved a conflict with GiveWP and WordPress bulk actions functionality
+
+= 3.6.2: April 5th, 2024 =
+* Fix: Resolved an issue with WordPress 6.5 and the visual form builder that was making it difficult to interact with blocks
+
 = 3.6.1: March 21st, 2024 =
 * Fix: Resolved an issue with PayPal donations and currency switcher on donation forms using the visual form builder
 
