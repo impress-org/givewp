@@ -511,6 +511,54 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @unreleased
+     */
+    public function isConstantContactEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_enable'),'true');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'),'true');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_constant_contact_show_checkout_signup'), 'on');
+
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+      }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactLabel(): string
+    {
+        $defaultMeta = give_get_option('give_constant_contact_label', __('Subscribe to our newsletter?'));
+
+        return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactDefaultChecked(): bool
+    {
+        $defaultMeta = give_is_setting_enabled(
+            give_get_option('give_constant_contact_checked_default',
+                true),
+            'on'
+        );
+
+        return $this->getMeta('_give_constant_contact_checked_default', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConstantContactSelectedLists(): array
+    {
+        $defaultMeta = give_get_option('give_constant_contact_list', []);
+
+        return (array)$this->getMeta('_give_constant_contact', $defaultMeta);
+    }
+
+    /**
      * @since 3.3.0
      */
     public function isMailchimpEnabled(): bool
@@ -541,7 +589,6 @@ class FormMetaDecorator extends FormModelDecorator
         return give_is_setting_enabled($this->getMeta('_give_mailchimp_checked_default',
             give_get_option('give_mailchimp_checked_default', true)));
     }
-
 
     /**
      * @unreleased add global setting as default.

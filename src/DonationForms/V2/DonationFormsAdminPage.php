@@ -334,6 +334,7 @@ class DonationFormsAdminPage
             'Zapier' => defined('GIVE_ZAPIER_VERSION'),
             'Salesforce' => defined('GIVE_SALESFORCE_VERSION'),
             'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
+            'Constant Contact' => class_exists('Give_Constant_Contact'),
             'MailChimp' => class_exists('Give_MailChimp'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
             'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
@@ -349,7 +350,6 @@ class DonationFormsAdminPage
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
-            //            'Constant Contact' => class_exists('Give_Constant_Contact'),
         ];
 
         $output = [];
