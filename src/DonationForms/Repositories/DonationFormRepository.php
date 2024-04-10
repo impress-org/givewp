@@ -69,7 +69,7 @@ class DonationFormRepository
     }
 
     /**
-     *
+     * @unreleased Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
      * @return void
@@ -103,6 +103,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $donationForm->status->getValue(),
                     'post_type' => 'give_forms',
+                    'post_excerpt' => $donationForm->settings->formExcerpt,
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
@@ -146,6 +147,7 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased Add post_excerpt to the list of fields being updated
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
@@ -179,6 +181,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
+                    'post_excerpt' => $donationForm->settings->formExcerpt,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
                     'post_name' => $donationForm->settings->pageSlug,
                 ]);
