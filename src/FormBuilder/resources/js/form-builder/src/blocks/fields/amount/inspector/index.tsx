@@ -14,11 +14,11 @@ import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
-import {OptionsPanel} from '@givewp/form-builder-library';
 import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
+import {OptionsPanel} from '@givewp/form-builder-library';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -212,12 +212,22 @@ const Inspector = ({attributes, setAttributes}) => {
                             : __('The donation amount is fixed to the following amount:', 'give')
                     }
                 />
-                {priceOption === 'set' && (
+                {priceOption === 'set' ? (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
                         value={setPrice}
                         onBlur={() => !setPrice && setAttributes({setPrice: 25})}
                         onValueChange={(setPrice) => setAttributes({setPrice: setPrice ? parseInt(setPrice) : 0})}
+                    />
+                ) : (
+                    <OptionsPanel
+                        currency={currency}
+                        multiple={false}
+                        options={donationLevels}
+                        setOptions={handleLevelsChange}
+                        onAddOption={handleLevelAdded}
+                        onRemoveOption={handleLevelRemoved}
+                        defaultControlsTooltip={__('Default Level', 'give')}
                     />
                 )}
             </PanelBody>
@@ -247,20 +257,6 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-
-            {priceOption === 'multi' && (
-                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    <OptionsPanel
-                        currency={currency}
-                        multiple={false}
-                        options={donationLevels}
-                        setOptions={handleLevelsChange}
-                        onAddOption={handleLevelAdded}
-                        onRemoveOption={handleLevelRemoved}
-                        defaultControlsTooltip={__('Default Level', 'give')}
-                    />
-                </PanelBody>
-            )}
 
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
                 {!isRecurringSupported &&
