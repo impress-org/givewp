@@ -19,6 +19,7 @@ import {useEffect} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 import {OptionsPanel} from '@givewp/form-builder-library';
+import DonationTypeControl from '@givewp/form-builder/blocks/fields/amount/inspector/donation-type-control';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -198,20 +199,8 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelRow>
             </PanelBody>
             <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>
-                <SelectControl
-                    label={__('Donation Option', 'give')}
-                    onChange={(priceOption) => setAttributes({priceOption})}
-                    value={priceOption}
-                    options={[
-                        {label: __('Multi-level Donation', 'give'), value: 'multi'},
-                        {label: __('Fixed Donation', 'give'), value: 'set'},
-                    ]}
-                    help={
-                        'multi' === priceOption
-                            ? __('Set multiple price donations for this form.', 'give')
-                            : __('The donation amount is fixed to the following amount:', 'give')
-                    }
-                />
+                <DonationTypeControl priceOption={priceOption} attributes={attributes} setAttributes={setAttributes} />
+
                 {priceOption === 'set' ? (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
