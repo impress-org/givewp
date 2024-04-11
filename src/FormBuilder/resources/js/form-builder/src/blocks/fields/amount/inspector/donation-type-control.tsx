@@ -9,6 +9,10 @@ type DonationTypeControlProps = {
     attributes: any;
 };
 
+/**
+ * @unreleased
+ */
+
 export default function DonationTypeControl({priceOption, setAttributes, attributes}: DonationTypeControlProps) {
     const handleTypeChange = (value: string) => {
         setAttributes({priceOption: value});
