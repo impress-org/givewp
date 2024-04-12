@@ -350,6 +350,7 @@ class DonationFormsAdminPage
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
             //            'Constant Contact' => class_exists('Give_Constant_Contact'),
+            'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
         ];
 
         $output = [];
