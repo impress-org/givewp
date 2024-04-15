@@ -57,10 +57,16 @@ const numberOfDonationsControlOptions = [{label: __('Ongoing', 'give'), value: '
     }))
 );
 
+/**
+ * @unreleased add description fields to levels.
+ * @since 3.0.0
+ */
 const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
+        descriptions,
+        descriptionsEnabled = false,
         defaultLevel,
         priceOption,
         setPrice,
@@ -121,9 +127,9 @@ const Inspector = ({attributes, setAttributes}) => {
     const isRecurring = isRecurringSupported && recurringEnabled;
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
-        levels.map((level) => ({
+        levels.map((level, index) => ({
             id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(level.toString()),
+            label: descriptions[index] || '',
             value: level.toString(),
             checked: defaultLevel === level,
         }))
@@ -164,9 +170,14 @@ const Inspector = ({attributes, setAttributes}) => {
     const handleLevelsChange = (options: OptionProps[]) => {
         const checkedLevel = options.filter((option) => option.checked);
         const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
+        const newDescriptions = options.map((option) => option.label);
 
         setDonationLevels(options);
-        setAttributes({levels: newLevels, defaultLevel: Number(checkedLevel[0].value)});
+        setAttributes({
+            levels: newLevels,
+            defaultLevel: Number(checkedLevel[0].value),
+            descriptions: newDescriptions,
+        });
     };
 
     const getDefaultBillingPeriodOptions = useCallback(
@@ -217,6 +228,20 @@ const Inspector = ({attributes, setAttributes}) => {
                         onAddOption={handleLevelAdded}
                         onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
+                    />
+                )}
+                {priceOption === 'multi' && (
+                    <OptionsPanel
+                        currency={currency}
+                        multiple={false}
+                        options={donationLevels}
+                        setOptions={handleLevelsChange}
+                        onAddOption={handleLevelAdded}
+                        onRemoveOption={handleLevelRemoved}
+                        defaultControlsTooltip={__('Default Level', 'give')}
+                        toggleLabel={__('Enable amount description', 'give')}
+                        toggleEnabled={descriptionsEnabled}
+                        onHandleToggle={(value) => setAttributes({descriptionsEnabled: value})}
                     />
                 )}
             </PanelBody>
