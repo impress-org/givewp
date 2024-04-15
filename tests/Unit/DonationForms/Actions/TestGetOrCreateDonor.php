@@ -65,23 +65,6 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
-     * @unreleased
-     * @throws Exception
-     */
-    public function testShouldReturnExistingDonorWithUserIdAndUpdateAdditionalPhones(): void
-    {
-        $donor = Donor::factory()->create(['userId' => 1]);
-        $action = new GetOrCreateDonor();
-        $donorFromActionWithMatchingUserId = $action($donor->userId, $donor->email, 'billing first name',
-            'billing last name', null, '+120155501234');
-        $donor->additionalPhones = array_merge($donor->additionalPhones ?? [], ['+120155501234']);
-        $donor->save();
-
-        $this->assertEquals($donor->toArray(), $donorFromActionWithMatchingUserId->toArray());
-        $this->assertFalse($action->donorCreated);
-    }
-
-    /**
      * @unreleased Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *

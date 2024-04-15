@@ -13,7 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
-     * @unreleased Add support for "phone" and "additionalPhones" properties
+     * @unreleased Add support to "phone" property
      * @since 3.2.0
      *
      * @throws Exception
@@ -32,11 +32,6 @@ class GetOrCreateDonor
         // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
         if ($donor && !$donor->hasEmail($donorEmail) && !Donor::whereEmail($donorEmail)) {
             $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
-            $donor->save();
-        }
-
-        if ($donor && $donorPhone && ! $donor->hasPhone($donorPhone)) {
-            $donor->additionalPhones = array_merge($donor->additionalPhones ?? [], [$donorPhone]);
             $donor->save();
         }
 
