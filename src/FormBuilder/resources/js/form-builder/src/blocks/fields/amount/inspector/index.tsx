@@ -123,10 +123,9 @@ const Inspector = ({attributes, setAttributes}) => {
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level, index) => ({
             id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(level.toString()),
+            label: descriptions[index] || '',
             value: level.toString(),
             checked: defaultLevel === level,
-            description: descriptions[index] || '',
         }))
     );
 
@@ -165,7 +164,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const handleLevelsChange = (options: OptionProps[]) => {
         const checkedLevel = options.filter((option) => option.checked);
         const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
-        const newDescriptions = options.map((option) => option.description);
+        const newDescriptions = options.map((option) => option.label);
 
         setDonationLevels(donationLevels);
         setAttributes({
@@ -236,7 +235,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         onAddOption={handleLevelAdded}
                         onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
-                        hasDescriptions={!!descriptions}
+                        toggleLabel={__('Enable amount description', 'give')}
                     />
                 )}
             </PanelBody>
