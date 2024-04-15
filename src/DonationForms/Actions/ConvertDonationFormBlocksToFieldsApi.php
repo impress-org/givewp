@@ -175,8 +175,9 @@ class ConvertDonationFormBlocksToFieldsApi
             case 'givewp/phone':
                 return Phone::make('phone')
                     ->setIntlTelInputSettings(IntlTelInput::getSettings())
-                    ->rules(new PhoneIntlInputRule())
-                    ->required($block->getAttribute('required'));
+                    ->rules('max:50', (bool)$block->getAttribute('required') ? 'required' : 'optional',
+                        new PhoneIntlInputRule());
+
 
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
