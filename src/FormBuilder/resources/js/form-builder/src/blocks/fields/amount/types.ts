@@ -1,9 +1,10 @@
-import type {subscriptionPeriod} from "@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod";
+import type {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 
 export interface DonationAmountAttributes {
     label: string;
     levels: number[];
     descriptions: string[];
+    descriptionsEnabled: boolean;
     defaultLevel: number;
     priceOption: string;
     setPrice: number;
@@ -15,5 +16,5 @@ export interface DonationAmountAttributes {
     recurringBillingPeriodOptions: subscriptionPeriod[];
     recurringLengthOfTime: string;
     recurringOptInDefaultBillingPeriod: subscriptionPeriod | 'one-time';
-    recurringEnableOneTimeDonations: boolean
+    recurringEnableOneTimeDonations: boolean;
 }

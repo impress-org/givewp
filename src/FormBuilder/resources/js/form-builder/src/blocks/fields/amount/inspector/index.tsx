@@ -61,6 +61,7 @@ const Inspector = ({attributes, setAttributes}) => {
         label = __('Donation Amount', 'give'),
         levels,
         descriptions,
+        descriptionsEnabled = false,
         defaultLevel,
         priceOption,
         setPrice,
@@ -236,6 +237,8 @@ const Inspector = ({attributes, setAttributes}) => {
                         onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
                         toggleLabel={__('Enable amount description', 'give')}
+                        toggleEnabled={descriptionsEnabled}
+                        onHandleToggle={(value) => setAttributes({descriptionsEnabled: value})}
                     />
                 )}
             </PanelBody>
