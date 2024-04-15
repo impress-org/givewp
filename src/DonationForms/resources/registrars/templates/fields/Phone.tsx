@@ -12,11 +12,12 @@ export default function Phone({
     description,
     phoneFormat,
     inputProps,
+    fieldError,
     intlTelInputSettings,
 }: PhoneProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {useFormContext} = window.givewp.form.hooks;
-    const {setValue} = useFormContext();
+    const {setValue, setError, trigger, getFieldState} = useFormContext();
 
     const intlTelInputId = inputProps.name + '_intl_tel_input';
     const isIntlTelInput =
@@ -52,9 +53,15 @@ export default function Phone({
                 if (number && !intl.isValidNumber()) {
                     const errorCode = intl.getValidationError();
                     setValue(inputProps.name, errorCode);
+                    setError(inputProps.name, {type: 'custom', message: intlTelInputSettings.errorMap[errorCode]});
                 } else {
                     setValue(inputProps.name, number);
+                    trigger(inputProps.name, {shouldFocus: false}).then((r) => {
+                        console.log(r);
+                    });
                 }
+
+                console.log('getFieldState: ', getFieldState(inputProps.name));
             };
 
             input.style.paddingLeft = '87px'; // It's necessary to fix a missing padding in the form preview
@@ -78,7 +85,7 @@ export default function Phone({
             {isIntlTelInput ? (
                 <>
                     <input type={'hidden'} placeholder={placeholder} {...inputProps} />
-                    <input id={intlTelInputId} type={'text'} />
+                    <input id={intlTelInputId} type={'text'} aria-invalid={fieldError ? 'true' : 'false'} />
                 </>
             ) : phoneFormat === 'domestic' ? (
                 <InputMask type={'phone'} {...inputProps} mask={'(999) 999-9999'} placeholder={placeholder} />
