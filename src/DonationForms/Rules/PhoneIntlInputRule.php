@@ -28,6 +28,15 @@ class PhoneIntlInputRule implements ValidationRule
     }
 
     /**
+     * It handles the possible error codes returned by the getValidationError() intl function.
+     *
+     * 0|4 = Invalid number
+     * 1 = Invalid country code
+     * 2 = Too short
+     * 3 = Too long
+     *
+     * @see https://intl-tel-input.com/examples/validation.html
+     *
      * @unreleased
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
