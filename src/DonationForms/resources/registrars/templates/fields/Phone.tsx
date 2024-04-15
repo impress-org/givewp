@@ -17,7 +17,7 @@ export default function Phone({
 }: PhoneProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {useFormContext} = window.givewp.form.hooks;
-    const {setValue, setError, trigger, getFieldState} = useFormContext();
+    const {setValue, setError, trigger} = useFormContext();
 
     const intlTelInputId = inputProps.name + '_intl_tel_input';
     const isIntlTelInput =
@@ -56,12 +56,8 @@ export default function Phone({
                     setError(inputProps.name, {type: 'custom', message: intlTelInputSettings.errorMap[errorCode]});
                 } else {
                     setValue(inputProps.name, number);
-                    trigger(inputProps.name, {shouldFocus: false}).then((r) => {
-                        console.log(r);
-                    });
+                    trigger(inputProps.name, {shouldFocus: false});
                 }
-
-                console.log('getFieldState: ', getFieldState(inputProps.name));
             };
 
             input.style.paddingLeft = '87px'; // It's necessary to fix a missing padding in the form preview
