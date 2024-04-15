@@ -62,7 +62,7 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
                         <ToggleControl
                             label={__('Required', 'give')}
                             checked={required}
-                            onChange={() => setAttributes({required: !required})}
+                            onChange={(value) => setAttributes({required: value})}
                         />
                     </PanelRow>
                 </PanelBody>
