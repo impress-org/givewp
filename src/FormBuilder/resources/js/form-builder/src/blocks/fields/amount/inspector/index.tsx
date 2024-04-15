@@ -166,7 +166,7 @@ const Inspector = ({attributes, setAttributes}) => {
         const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
         const newDescriptions = options.map((option) => option.label);
 
-        setDonationLevels(donationLevels);
+        setDonationLevels(options);
         setAttributes({
             levels: newLevels,
             defaultLevel: Number(checkedLevel[0].value),
