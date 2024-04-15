@@ -83,6 +83,6 @@ input[type="password"],
 input[type="email"],
 textarea {
     &:focus {
-        border: none;
+        border-color: transparent;
     }
 }
