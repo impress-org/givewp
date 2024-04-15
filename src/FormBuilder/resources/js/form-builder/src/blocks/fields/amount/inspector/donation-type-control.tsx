@@ -1,7 +1,8 @@
-import {BaseControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import cx from 'classnames';
-import './styles.scss';
+import {
+    __experimentalToggleGroupControl as ToggleGroupControl,
+    __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 type DonationTypeControlProps = {
     priceOption: string;
@@ -19,41 +20,20 @@ export default function DonationTypeControl({priceOption, setAttributes, attribu
     };
 
     return (
-        <BaseControl
-            id={'givewp-donation-type-controls'}
+        <ToggleGroupControl
+            __nextHasNoMarginBottom
+            isBlock
             label={__('Donation Type', 'give')}
+            onChange={handleTypeChange}
+            value={priceOption}
             help={
                 'multi' === priceOption
                     ? __('Set multiple price donations for this form.', 'give')
                     : __('The donation amount is fixed to the following amount:', 'give')
             }
         >
-            <div className={'givewp-donation-type-control'}>
-                <label
-                    className={cx('givewp-donation-type-control__multi', {
-                        ['givewp-donation-type-control__multi--selected']: priceOption === 'multi',
-                    })}
-                >
-                    {__('Multi-level', 'give')}
-                    <input
-                        className={'givewp-donation-type-control__multi__input'}
-                        type={'checkbox'}
-                        onChange={() => handleTypeChange('multi')}
-                    />
-                </label>
-                <label
-                    className={cx('givewp-donation-type-control__set', {
-                        ['givewp-donation-type-control__set--selected']: priceOption === 'set',
-                    })}
-                >
-                    {__('Fixed', 'give')}
-                    <input
-                        className={'givewp-donation-type-control__set__input'}
-                        type={'checkbox'}
-                        onChange={() => handleTypeChange('set')}
-                    />
-                </label>
-            </div>
-        </BaseControl>
+            <ToggleGroupControlOption label={__('Multi-level', 'give')} value="multi" />
+            <ToggleGroupControlOption label={__('Fixed', 'give')} value="set" />
+        </ToggleGroupControl>
     );
 }
