@@ -41,7 +41,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
+     * @since 3.7.0 Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
     {
