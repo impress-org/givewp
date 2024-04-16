@@ -6,13 +6,13 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.8.0
  */
 class DoubleTheDonation extends FormMigrationStep
 {
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function canHandle(): bool
     {
@@ -20,7 +20,7 @@ class DoubleTheDonation extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function process()
     {

@@ -3,12 +3,12 @@
 namespace Give\Framework\Blocks\Contracts;
 
 /**
- * @unreleased
+ * @since 3.8.0
  */
 interface BlockTypeInterface
 {
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public static function name(): string;
 }

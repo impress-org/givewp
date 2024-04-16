@@ -268,7 +268,7 @@ class TestFormMetaDecorator extends TestCase {
 
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testIsDoubleTheDonationEnabledShouldReturnTrue(): void
     {
@@ -284,7 +284,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testIsDoubleTheDonationDisabledShouldReturnTrue(): void
     {
@@ -300,7 +300,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testIsDoubleTheDonationLabelSetShouldReturnTrue(): void
     {

@@ -264,6 +264,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.8.0: April 17th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming double the donation add-on release
+* Dev: Added BlockType api for easier block to field conversion
 
 = 3.7.0: April 10th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming constant contact add-on release

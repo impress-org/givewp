@@ -810,7 +810,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function getDoubleTheDonationStatus(): string
     {
@@ -818,7 +818,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function getDoubleTheDonationLabel(): string
     {
