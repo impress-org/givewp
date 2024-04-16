@@ -80,7 +80,7 @@ class TestDonor extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      *
      * @throws Exception
      */
@@ -92,7 +92,7 @@ class TestDonor extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      *
      * @throws Exception
      */

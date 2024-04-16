@@ -301,7 +301,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @unreleased Add "phone" field
+ * @since 3.7.0 Add "phone" field
  * @since  1.0
  *
  * @param  Give_Donor $donor The Donor object being displayed.

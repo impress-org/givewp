@@ -20,7 +20,7 @@ type GoalTypeOption = {
 
 /**
  * @unreleased Added intlTelInputSettings
- * @unreleased Added isExcerptEnabled
+ * @since 3.7.0 Added isExcerptEnabled
  * @since 3.0.0
  */
 interface FormBuilderWindowData {
