@@ -14,7 +14,7 @@ class IntlTelInput
      */
     public static function getCssUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/css/intlTelInput.css';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/css/intlTelInput.css';
     }
 
     /**
@@ -22,7 +22,7 @@ class IntlTelInput
      */
     public static function getScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/js/intlTelInput.min.js';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/js/intlTelInput.min.js';
     }
 
     /**
@@ -30,7 +30,7 @@ class IntlTelInput
      */
     public static function getUtilsScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.0.0/build/js/utils.js';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/js/utils.js';
     }
 
     /**

@@ -1,5 +1,7 @@
 import {PhoneProps} from '@givewp/forms/propTypes';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/css/intlTelInput.css';
 import InputMask from 'react-input-mask';
 
 /**
@@ -19,58 +21,49 @@ export default function Phone({
     const {useFormContext} = window.givewp.form.hooks;
     const {setValue, setError, trigger} = useFormContext();
 
-    const intlTelInputId = inputProps.name + '_intl_tel_input';
-    const isIntlTelInput =
-        intlTelInputSettings.cssUrl && intlTelInputSettings.scriptUrl && intlTelInputSettings.utilsScriptUrl;
+    let iti = null;
+    const intlTelInputRef = useRef(null);
+    const isIntlTelInput = intlTelInputSettings.initialCountry && intlTelInputSettings.utilsScriptUrl;
 
     useEffect(() => {
         if (!isIntlTelInput) {
             return;
         }
+        const isFormBuilderPreview = window.location.href.indexOf('about:srcdoc') > -1;
+        console.log('isFormBuilderPreview: ', isFormBuilderPreview);
+        setTimeout(
+            () => {
+                iti = intlTelInput(intlTelInputRef.current, {
+                    utilsScript: intlTelInputSettings.utilsScriptUrl,
+                    initialCountry: intlTelInputSettings.initialCountry,
+                    showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
+                    strictMode: intlTelInputSettings.strictMode,
+                    i18n: intlTelInputSettings.i18n,
+                    /**
+                     * Control when the country list appears as a fullscreen popup vs an inline dropdown. By default,
+                     * it will appear as a fullscreen popup on mobile devices. However, in the form builder preview
+                     * it always load the country list in full scree, so we need set it to "false" to prevent this.
+                     */
+                    useFullscreenPopup: !isFormBuilderPreview,
+                });
 
-        const input: HTMLInputElement = document.querySelector('#' + intlTelInputId);
+                const handleIntlTelInputChange = (event) => {
+                    const number = iti.getNumber();
+                    if (number && !iti.isValidNumber()) {
+                        const errorCode = iti.getValidationError();
+                        setValue(inputProps.name, errorCode);
+                        setError(inputProps.name, {type: 'custom', message: intlTelInputSettings.errorMap[errorCode]});
+                    } else {
+                        setValue(inputProps.name, number);
+                        trigger(inputProps.name, {shouldFocus: false});
+                    }
+                };
 
-        const css = document.createElement('link');
-        css.href = intlTelInputSettings.cssUrl;
-        css.rel = 'stylesheet';
-        document.body.appendChild(css);
-
-        const script = document.createElement('script');
-        script.src = intlTelInputSettings.scriptUrl;
-        script.async = true;
-        script.onload = () => {
-            // @ts-ignore
-            const intl = window.intlTelInput(input, {
-                showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
-                strictMode: intlTelInputSettings.strictMode,
-                utilsScript: intlTelInputSettings.utilsScriptUrl,
-                initialCountry: intlTelInputSettings.initialCountry,
-                i18n: intlTelInputSettings.i18n,
-            });
-
-            const handleIntlTelInputChange = (event) => {
-                const number = intl.getNumber();
-                if (number && !intl.isValidNumber()) {
-                    const errorCode = intl.getValidationError();
-                    setValue(inputProps.name, errorCode);
-                    setError(inputProps.name, {type: 'custom', message: intlTelInputSettings.errorMap[errorCode]});
-                } else {
-                    setValue(inputProps.name, number);
-                    trigger(inputProps.name, {shouldFocus: false});
-                }
-            };
-
-            input.style.paddingLeft = '87px'; // It's necessary to fix a missing padding in the form preview
-
-            input.addEventListener('change', handleIntlTelInputChange);
-            input.addEventListener('keyup', handleIntlTelInputChange);
-        };
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(css);
-            document.body.removeChild(script);
-        };
+                intlTelInputRef.current.addEventListener('change', handleIntlTelInputChange);
+                intlTelInputRef.current.addEventListener('keyup', handleIntlTelInputChange);
+            },
+            isFormBuilderPreview ? 1000 : 0 // It's necessary to fix the missing placeholder in the form preview
+        );
     }, []);
 
     return (
@@ -81,7 +74,7 @@ export default function Phone({
             {isIntlTelInput ? (
                 <>
                     <input type={'hidden'} placeholder={placeholder} {...inputProps} />
-                    <input id={intlTelInputId} type={'text'} aria-invalid={fieldError ? 'true' : 'false'} />
+                    <input type={'text'} aria-invalid={fieldError ? 'true' : 'false'} ref={intlTelInputRef} />
                 </>
             ) : phoneFormat === 'domestic' ? (
                 <InputMask type={'phone'} {...inputProps} mask={'(999) 999-9999'} placeholder={placeholder} />
