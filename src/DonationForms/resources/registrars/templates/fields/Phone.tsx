@@ -43,7 +43,7 @@ export default function Phone({
                 /**
                  * Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will
                  * appear as a fullscreen popup on mobile devices. However, in the form builder preview it always load the
-                 * country list in full screen, so we need set it to "false" to prevent this behaviour.
+                 * country list in fullscreen mode, so we need set it to "false" to prevent this behaviour.
                  */
                 if (isFormBuilderPreview) {
                     options['useFullscreenPopup'] = false;
