@@ -10,6 +10,7 @@ import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared
 import Notice from './notice';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
+import cx from 'classnames';
 
 const DonationLevels = ({
     levels,
@@ -67,6 +68,27 @@ const BillingPeriodControl = ({options, defaultSelected}: {options: string[]; de
     );
 };
 
+const PriceOptions = ({isMultiLevel, isFixedAmount}: {isMultiLevel: boolean; isFixedAmount: boolean}) => {
+    return (
+        <div className={'give-donation-block__priceOption'}>
+            <div
+                className={cx('give-donation-block__priceOption__option', {
+                    ['give-donation-block__priceOption__option--selected']: isMultiLevel,
+                })}
+            >
+                {__('One Time', 'give')}
+            </div>
+            <div
+                className={cx('give-donation-block__priceOption__option', {
+                    ['give-donation-block__priceOption__option--selected']: isFixedAmount,
+                })}
+            >
+                {__('Monthly', 'give')}
+            </div>
+        </div>
+    );
+};
+
 const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
@@ -117,6 +139,8 @@ const Edit = ({attributes, setAttributes}) => {
                         defaultSelected={recurringOptInDefaultBillingPeriod}
                     />
                 )}
+
+                <PriceOptions isMultiLevel={isMultiLevel} isFixedAmount={isFixedAmount} />
 
                 {isMultiLevel && (
                     <DonationLevels
