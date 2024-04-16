@@ -29,12 +29,19 @@ const DonationLevels = ({
 
             return (
                 <LevelButton selected={level === defaultLevel} key={index} descriptionsEnabled={descriptionsEnabled}>
-                    <span className={'give-donation-block__level__amount'}>{levelAmount}</span>
-                    <span className={'give-donation-block__level__label'}>
-                        {descriptionsEnabled && descriptions[index] !== ''
-                            ? descriptions[index]
-                            : __('Description goes here', 'give')}
+                    <span
+                        className={cx({
+                            'give-donation-block__level__amount': descriptionsEnabled,
+                        })}
+                    >
+                        {levelAmount}
                     </span>
+
+                    {descriptionsEnabled && (
+                        <span className={'give-donation-block__level__label'}>
+                            {descriptions[index] !== '' ? descriptions[index] : __('Description goes here', 'give')}
+                        </span>
+                    )}
                 </LevelButton>
             );
         })}
