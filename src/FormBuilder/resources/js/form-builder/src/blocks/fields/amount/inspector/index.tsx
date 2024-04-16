@@ -228,17 +228,6 @@ const Inspector = ({attributes, setAttributes}) => {
                         onAddOption={handleLevelAdded}
                         onRemoveOption={handleLevelRemoved}
                         defaultControlsTooltip={__('Default Level', 'give')}
-                    />
-                )}
-                {priceOption === 'multi' && (
-                    <OptionsPanel
-                        currency={currency}
-                        multiple={false}
-                        options={donationLevels}
-                        setOptions={handleLevelsChange}
-                        onAddOption={handleLevelAdded}
-                        onRemoveOption={handleLevelRemoved}
-                        defaultControlsTooltip={__('Default Level', 'give')}
                         toggleLabel={__('Enable amount description', 'give')}
                         toggleEnabled={descriptionsEnabled}
                         onHandleToggle={(value) => setAttributes({descriptionsEnabled: value})}
