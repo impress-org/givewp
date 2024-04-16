@@ -75,27 +75,6 @@ const BillingPeriodControl = ({options, defaultSelected}: {options: string[]; de
     );
 };
 
-const PriceOptions = ({isMultiLevel, isFixedAmount}: {isMultiLevel: boolean; isFixedAmount: boolean}) => {
-    return (
-        <div className={'give-donation-block__priceOption'}>
-            <div
-                className={cx('give-donation-block__priceOption__option', {
-                    ['give-donation-block__priceOption__option--selected']: isMultiLevel,
-                })}
-            >
-                {__('One Time', 'give')}
-            </div>
-            <div
-                className={cx('give-donation-block__priceOption__option', {
-                    ['give-donation-block__priceOption__option--selected']: isFixedAmount,
-                })}
-            >
-                {__('Monthly', 'give')}
-            </div>
-        </div>
-    );
-};
-
 const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
@@ -146,8 +125,6 @@ const Edit = ({attributes, setAttributes}) => {
                         defaultSelected={recurringOptInDefaultBillingPeriod}
                     />
                 )}
-
-                <PriceOptions isMultiLevel={isMultiLevel} isFixedAmount={isFixedAmount} />
 
                 {isMultiLevel && (
                     <DonationLevels

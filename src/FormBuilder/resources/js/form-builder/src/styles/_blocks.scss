@@ -7,31 +7,6 @@
         flex-direction: column;
         gap: var(--givewp-spacing-6);
 
-        &__priceOption {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 40px;
-            gap: 8px;
-            background-color: transparent;
-
-            &__option {
-                flex-grow: 1;
-                padding: 12px 8px;
-                background-color: var(--givewp-grey-50);
-                font-weight: 500;
-                line-height: 1;
-                color: var(--givewp-grey-900);
-                text-align: center;
-                border-radius: 2px;
-
-                &--selected {
-                    background-color: var(--givewp-grey-400);
-                    color: var(--givewp-shades-white)
-                }
-            }
-        }
-
         &__levels {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
