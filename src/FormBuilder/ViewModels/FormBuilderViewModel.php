@@ -20,7 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 class FormBuilderViewModel
 {
     /**
-     * @unreleased Add support to isExcerptEnabled key in the compared array
+     * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */

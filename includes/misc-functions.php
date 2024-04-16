@@ -2624,3 +2624,117 @@ function give_get_page_by_title(string $page_title, string $output = OBJECT, str
 
     return get_post($pages[0], $output);
 }
+
+ /**
+ * @see https://github.com/jackocnr/intl-tel-input
+ *
+ * @since 3.7.0
+ */
+function give_get_intl_tel_input(string $value, string $id, string $class = '', string $name = ''):string {
+
+    if (empty($name)) {
+        $name = $id;
+    }
+
+    $styleUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/css/intlTelInput.css';
+    $scriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/intlTelInput.min.js';
+    $utilsScriptUrl = 'https://cdn.jsdelivr.net/npm/intl-tel-input@20.2.0/build/js/utils.js';
+
+    ob_start();
+
+    ?>
+        <script src="<?php echo $scriptUrl; ?>"></script>
+        <link rel="stylesheet" href="<?php echo $styleUrl; ?>">
+
+        <input id="<?php echo $id; ?>" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" type='text'>
+        <span id="<?php echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
+
+        <style>
+            .give-intl-tel-input-hide {
+                display: none !important;
+            }
+            .give-intl-tel-input-error {
+                border: 1px solid red !important;
+            }
+        </style>
+        <script>
+            if (document.readyState !== 'loading') {
+                readyHandler();
+            } else {
+                document.addEventListener('DOMContentLoaded', readyHandler);
+            }
+            function readyHandler() {
+                const input = document.querySelector("#<?php echo $id; ?>");
+                const iti = window.intlTelInput(input, {
+                    utilsScript: "<?php echo $utilsScriptUrl; ?>",
+                    hiddenInput: function(telInputName) {
+                        return {
+                          phone: "<?php echo $id . '--international-format'; ?>",
+                          country: "<?php echo $id . '--country-code'; ?>"
+                        };
+                    },
+                    initialCountry: "<?php echo  strtolower(give_get_country()); ?>",
+                    showSelectedDialCode: true,
+                    strictMode: false,
+                    i18n: <?php echo  give_get_intl_tel_input_i18n_json_object(); ?>
+                });
+
+                const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
+                const errorMap = [
+                    "<?php echo __('Invalid number', 'give'); ?>",
+                    "<?php echo __('Invalid country code', 'give'); ?>",
+                    "<?php echo __('Too short', 'give'); ?>",
+                    "<?php echo __('Too long', 'give'); ?>",
+                    "<?php echo __('Invalid number', 'give'); ?>",
+                ];
+
+                const reset = () => {
+                    input.classList.remove("give-intl-tel-input-error");
+                    errorMsg.innerHTML = "";
+                    errorMsg.classList.add("give-intl-tel-input-hide");
+                };
+
+                const showError = (msg) => {
+                    input.classList.add("give-intl-tel-input-error");
+                    errorMsg.innerHTML = msg;
+                    errorMsg.classList.remove("give-intl-tel-input-hide");
+                };
+
+                input.addEventListener('change', reset);
+                input.addEventListener('keyup', reset);
+                input.form.addEventListener("submit", function(e) {
+                    if (input.value.trim() && !iti.isValidNumber()) {
+                        e.preventDefault();
+                        const errorCode = iti.getValidationError();
+                        const msg = errorMap[errorCode] || errorMap[0];
+                        showError(msg);
+                        return false;
+                    }
+                });
+            }
+        </script>
+    <?php
+
+    return ob_get_clean();
+}
+
+/**
+* @since 3.7.0
+ */
+function give_get_intl_tel_input_i18n_json_object() {
+
+    $countryList = array_change_key_case(give_get_country_list());
+    array_shift($countryList); // Remove first empty item from the country list
+
+    $i18n = array_merge($countryList, [
+        'selectedCountryAriaLabel' => __('Selected country', 'give'), // Aria label for the selected country element
+        'noCountrySelected' => __('No country selected', 'give'), // Screen reader text for when no country is selected
+        'countryListAriaLabel' => __('List of countries', 'give'), // Aria label for the country list element
+        'searchPlaceholder' => __('Search', 'give'), // Placeholder for the search input in the dropdown (when countrySearch enabled)
+        'zeroSearchResults' => __('No results found', 'give'), // Screen reader text for when the search produces no results
+        'oneSearchResult' => __('1 result found', 'give'), // Screen reader text for when the search produces 1 result
+        'multipleSearchResults' => __('${count} results found', 'give'), // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+    ]);
+
+    return json_encode($i18n);
+}

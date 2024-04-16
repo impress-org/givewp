@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Donors\Models\Donor;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -298,6 +300,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
+ * @since 3.7.0 Add "phone" field
  * @since  1.0
  *
  * @param  Give_Donor $donor The Donor object being displayed.
@@ -478,10 +481,31 @@ function give_donor_view( $donor ) {
 							</td>
 						</tr>
 
-						<?php
+                        <?php
+
+                        $donor_phone_number = Donor::find($donor->id)->phone;
+                        ?>
+                        <tr class="alternate">
+                            <th scope="col">
+                                <label for="tablecell"><?php
+                                    esc_html_e('Phone:', 'give'); ?></label>
+                            </th>
+                            <td>
+								<span class="donor-user-id info-item edit-item">
+                                    <?php
+                                    echo give_get_intl_tel_input($donor_phone_number, "give_donor_phone_number"); ?>
+								</span>
+
+                                <span class="donor-user-id info-item editable">
+									<?php
+                                    echo $donor_phone_number; ?>
+								</span>
+                            </td>
+                        </tr>
+                        <?php
 						$donor_company = $donor->get_meta( '_give_donor_company', true );
 						?>
-						<tr class="alternate">
+                        <tr class="">
 							<th scope="col">
 								<label for="tablecell"><?php esc_html_e( 'Company Name:', 'give' ); ?></label>
 							</th>
