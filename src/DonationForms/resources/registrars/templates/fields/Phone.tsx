@@ -30,22 +30,26 @@ export default function Phone({
             return;
         }
         const isFormBuilderPreview = window.location.href.indexOf('about:srcdoc') > -1;
-        console.log('isFormBuilderPreview: ', isFormBuilderPreview);
-        setTimeout(
+        const interval = setTimeout(
             () => {
-                iti = intlTelInput(intlTelInputRef.current, {
+                const options = {
                     utilsScript: intlTelInputSettings.utilsScriptUrl,
                     initialCountry: intlTelInputSettings.initialCountry,
                     showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
                     strictMode: intlTelInputSettings.strictMode,
                     i18n: intlTelInputSettings.i18n,
-                    /**
-                     * Control when the country list appears as a fullscreen popup vs an inline dropdown. By default,
-                     * it will appear as a fullscreen popup on mobile devices. However, in the form builder preview
-                     * it always load the country list in full scree, so we need set it to "false" to prevent this.
-                     */
-                    useFullscreenPopup: !isFormBuilderPreview,
-                });
+                };
+
+                /**
+                 * Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will
+                 * appear as a fullscreen popup on mobile devices. However, in the form builder preview it always load the
+                 * country list in full screen, so we need set it to "false" to prevent this behaviour.
+                 */
+                if (isFormBuilderPreview) {
+                    options['useFullscreenPopup'] = false;
+                }
+
+                iti = intlTelInput(intlTelInputRef.current, options);
 
                 const handleIntlTelInputChange = (event) => {
                     const number = iti.getNumber();
@@ -62,8 +66,12 @@ export default function Phone({
                 intlTelInputRef.current.addEventListener('change', handleIntlTelInputChange);
                 intlTelInputRef.current.addEventListener('keyup', handleIntlTelInputChange);
             },
-            isFormBuilderPreview ? 1000 : 0 // It's necessary to fix the missing placeholder in the form preview
+            isFormBuilderPreview ? 100 : 0 // It's necessary to properly load the utilsScript in the form builder preview
         );
+
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
 
     return (
