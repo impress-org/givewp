@@ -14,7 +14,6 @@ import {useEffect} from 'react';
 export default function Edit({attributes: {label, required}, setAttributes}: BlockEditProps<any>) {
     const {intlTelInputSettings} = getFormBuilderWindowData();
 
-    // It's necessary to fix a missing padding in the form builder.
     useEffect(() => {
         const interval = setTimeout(() => {
             document.querySelectorAll('.iti__tel-input').forEach(function (input: HTMLInputElement) {
@@ -35,26 +34,12 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
                 <BaseControl id={'give-form-builder-phone-label'} label={label}>
                     <IntlTelInput
                         initOptions={{
-                            initialCountry: 'auto',
-                            geoIpLookup: (success) => {
-                                fetch('https://ipapi.co/json')
-                                    .then(function (res) {
-                                        return res.json();
-                                    })
-                                    .then(function (data) {
-                                        success(data.country_code);
-                                    })
-                                    .catch(function () {
-                                        const initialCountry =
-                                            navigator.language.split('-')[1].toLowerCase() ||
-                                            intlTelInputSettings.initialCountry;
-                                        success(initialCountry);
-                                    });
-                            },
+                            initialCountry: intlTelInputSettings.initialCountry,
                             showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
                             strictMode: intlTelInputSettings.strictMode,
                             i18n: intlTelInputSettings.i18n,
                             useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
+                            utilsScript: intlTelInputSettings.utilsScriptUrl,
                         }}
                     />
                 </BaseControl>

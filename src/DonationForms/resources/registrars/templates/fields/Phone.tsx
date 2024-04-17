@@ -69,22 +69,7 @@ export default function Phone({
                         onChangeCountry={setCountry}
                         onChangeNumber={onChangeNumber}
                         initOptions={{
-                            initialCountry: 'auto',
-                            geoIpLookup: (success) => {
-                                fetch('https://ipapi.co/json')
-                                    .then(function (res) {
-                                        return res.json();
-                                    })
-                                    .then(function (data) {
-                                        success(data.country_code);
-                                    })
-                                    .catch(function () {
-                                        success(
-                                            navigator.language.split('-')[1].toLowerCase() ||
-                                                intlTelInputSettings.initialCountry
-                                        );
-                                    });
-                            },
+                            initialCountry: intlTelInputSettings.initialCountry,
                             showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
                             strictMode: intlTelInputSettings.strictMode,
                             i18n: intlTelInputSettings.i18n,

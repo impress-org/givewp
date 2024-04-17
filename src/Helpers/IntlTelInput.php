@@ -178,22 +178,7 @@ class IntlTelInput
                             phone: "<?php echo $id ?>",
                         };
                     },
-                    initialCountry: 'auto',
-                    geoIpLookup: (success, failure) => {
-                        fetch('https://ipapi.co/json')
-                            .then(function (res) {
-                                return res.json();
-                            })
-                            .then(function (data) {
-                                success(data.country_code);
-                            })
-                            .catch(function () {
-                                const initialCountry =
-                                        navigator.language.split('-')[1].toLowerCase() ||
-                                    <?php echo self::getInitialCountry(); ?>;
-                                success(initialCountry);
-                            });
-                    },
+                    initialCountry: "<?php echo self::getInitialCountry(); ?>",
                     showSelectedDialCode: Boolean(<?php echo self::getShowSelectedDialCode(); ?>),
                     useFullscreenPopup: Boolean(<?php echo self::getUseFullscreenPopup(); ?>),
                     strictMode: Boolean(<?php echo self::getStrictMode(); ?>),
