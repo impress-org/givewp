@@ -15,6 +15,7 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
     const {intlTelInputSettings} = getFormBuilderWindowData();
 
     useEffect(() => {
+        // This timeout is necessary to fix a missing left padding that can happen in certain cases.
         const interval = setTimeout(() => {
             document.querySelectorAll('.iti__tel-input').forEach(function (input: HTMLInputElement) {
                 // @ts-ignore
