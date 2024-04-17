@@ -194,10 +194,10 @@ class IntlTelInput
                                 success(initialCountry);
                             });
                     },
-                    showSelectedDialCode: <?php echo self::getShowSelectedDialCode(); ?>,
-                    strictMode: <?php echo self::getStrictMode(); ?>,
+                    showSelectedDialCode: Boolean(<?php echo self::getShowSelectedDialCode(); ?>),
+                    useFullscreenPopup: Boolean(<?php echo self::getUseFullscreenPopup(); ?>),
+                    strictMode: Boolean(<?php echo self::getStrictMode(); ?>),
                     i18n: <?php echo json_encode(self::getI18n()); ?>,
-                    useFullscreenPopup: <?php echo self::getUseFullscreenPopup(); ?>
                 });
 
                 const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
