@@ -41,11 +41,15 @@ export default function Phone({
     }
 
     useEffect(() => {
+        if (!isIntlTelInput) {
+            return;
+        }
+
         const interval = setTimeout(
             () => {
                 window.intlTelInputGlobals.loadUtils(intlTelInputSettings.utilsScriptUrl);
 
-                // It's necessary to fix a missing padding in the form builder preview
+                // It's necessary to fix a missing padding in the form builder preview.
                 if (isFormBuilderPreview) {
                     document.querySelectorAll('.iti__tel-input').forEach(function (input: HTMLInputElement) {
                         // @ts-ignore
@@ -54,7 +58,7 @@ export default function Phone({
                     });
                 }
             },
-            isFormBuilderPreview ? 100 : 0 // It's necessary to properly load the utilsScript in the form builder preview
+            isFormBuilderPreview ? 100 : 0 // It's necessary to properly load the utilsScript in the form builder preview - without this, the autoPlaceholder feature doesn't work.
         );
 
         return () => {
