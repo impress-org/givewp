@@ -15,7 +15,7 @@ class TestMailchimp extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateMailchimpBlockAttributesFromV2FormMeta(): void
     {
@@ -47,7 +47,7 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateMailchimpBlockAttributesFromGlobalSettings(): void
     {
@@ -84,7 +84,7 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.7.0
      */
     public function testProcessShouldUpdateMailchimpBlockAttributesWhenNoMeta(): void
     {
