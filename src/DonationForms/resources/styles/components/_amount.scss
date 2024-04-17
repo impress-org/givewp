@@ -123,6 +123,31 @@ $borderColor: #9A9A9A;
         @media screen and (min-width: variables.$givewp-breakpoint-sm) {
             grid-template-columns: repeat(3, 1fr);
         }
+        
+        .givewp-fields-amount__level-container {
+            display: flex;
+            align-items: center;
+            gap: var(--givewp-spacing-4);
+
+            &--col {
+                grid-column: 1 / -1;
+            }
+        ;
+
+            .givewp-fields-amount__level {
+                max-width: 144px;
+
+                &--description {
+                    max-width: none;
+                }
+            }
+
+            .givewp-fields-amount__description {
+                margin-bottom: 0;
+                color: var(--givewp-grey-700);
+                font-size: 1rem;
+            }
+        }
     }
 
     &__level {
