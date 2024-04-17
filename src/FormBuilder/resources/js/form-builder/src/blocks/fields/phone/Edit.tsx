@@ -1,34 +1,28 @@
 import classnames from 'classnames';
 import {BlockEditProps} from '@wordpress/blocks';
 import {BaseControl, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
-import {useEffect, useRef} from 'react';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {__} from '@wordpress/i18n';
-import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/css/intlTelInput.css';
 import {InspectorControls} from '@wordpress/block-editor';
+import IntlTelInput from 'intl-tel-input/react';
+import 'intl-tel-input/build/css/intlTelInput.css';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {useEffect} from 'react';
 
 /**
  * @unreleased
  */
 export default function Edit({attributes: {label, required}, setAttributes}: BlockEditProps<any>) {
-    const intlTelInputRef = useRef(null);
+    const {intlTelInputSettings} = getFormBuilderWindowData();
 
+    // It's necessary to fix a missing padding in the form builder.
     useEffect(() => {
-        const {intlTelInputSettings} = getFormBuilderWindowData();
-
-        const interval = setTimeout(
-            () => {
-                intlTelInput(intlTelInputRef.current, {
-                    utilsScript: intlTelInputSettings.utilsScriptUrl,
-                    initialCountry: intlTelInputSettings.initialCountry,
-                    showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
-                    strictMode: intlTelInputSettings.strictMode,
-                    i18n: intlTelInputSettings.i18n,
-                });
-            },
-            100 // It's necessary to properly load the utilsScript in the form builder
-        );
+        const interval = setTimeout(() => {
+            document.querySelectorAll('.iti__tel-input').forEach(function (input: HTMLInputElement) {
+                // @ts-ignore
+                const countryContainerWidth = document.querySelector('.iti__country-container').offsetWidth;
+                input.style.paddingLeft = String(countryContainerWidth + 4) + 'px';
+            });
+        }, 100);
 
         return () => {
             clearInterval(interval);
@@ -39,7 +33,15 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
         <>
             <div className={classnames({'give-is-required': required})}>
                 <BaseControl id={'give-form-builder-phone-label'} label={label}>
-                    <input ref={intlTelInputRef} type="text" />
+                    <IntlTelInput
+                        initOptions={{
+                            utilsScript: intlTelInputSettings.utilsScriptUrl,
+                            initialCountry: intlTelInputSettings.initialCountry,
+                            showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
+                            strictMode: intlTelInputSettings.strictMode,
+                            i18n: intlTelInputSettings.i18n,
+                        }}
+                    />
                 </BaseControl>
             </div>
 
