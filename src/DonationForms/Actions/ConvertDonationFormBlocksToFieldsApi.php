@@ -172,7 +172,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
                         return $email;
                     });
-            case 'givewp/phone':
+            case 'givewp/donor-phone':
                 return Phone::make('phone')
                     ->setIntlTelInputSettings(IntlTelInput::getSettings())
                     ->rules('max:50', (bool)$block->getAttribute('required') ? 'required' : 'optional',

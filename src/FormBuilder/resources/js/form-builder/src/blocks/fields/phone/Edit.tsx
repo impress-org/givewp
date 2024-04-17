@@ -35,11 +35,26 @@ export default function Edit({attributes: {label, required}, setAttributes}: Blo
                 <BaseControl id={'give-form-builder-phone-label'} label={label}>
                     <IntlTelInput
                         initOptions={{
-                            utilsScript: intlTelInputSettings.utilsScriptUrl,
-                            initialCountry: intlTelInputSettings.initialCountry,
+                            initialCountry: 'auto',
+                            geoIpLookup: (success) => {
+                                fetch('https://ipapi.co/json')
+                                    .then(function (res) {
+                                        return res.json();
+                                    })
+                                    .then(function (data) {
+                                        success(data.country_code);
+                                    })
+                                    .catch(function () {
+                                        const initialCountry =
+                                            navigator.language.split('-')[1].toLowerCase() ||
+                                            intlTelInputSettings.initialCountry;
+                                        success(initialCountry);
+                                    });
+                            },
                             showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
                             strictMode: intlTelInputSettings.strictMode,
                             i18n: intlTelInputSettings.i18n,
+                            useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
                         }}
                     />
                 </BaseControl>

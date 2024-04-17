@@ -79,10 +79,10 @@ export default function Phone({
                                         success(data.country_code);
                                     })
                                     .catch(function () {
-                                        const initialCountry =
+                                        success(
                                             navigator.language.split('-')[1].toLowerCase() ||
-                                            intlTelInputSettings.initialCountry;
-                                        success(initialCountry);
+                                                intlTelInputSettings.initialCountry
+                                        );
                                     });
                             },
                             showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,

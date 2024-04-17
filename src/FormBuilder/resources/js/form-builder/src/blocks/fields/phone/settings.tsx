@@ -10,7 +10,7 @@ import {Path, SVG} from '@wordpress/components';
  */
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Phone', 'give'),
+    title: __('Donor Phone', 'give'),
     description: __('Donors can input their phone number', 'give'),
     supports: {
         multiple: false,

@@ -6,7 +6,7 @@ import {FieldBlock} from '@givewp/form-builder/types';
  * @unreleased
  */
 const phone: FieldBlock = {
-    name: 'givewp/phone',
+    name: 'givewp/donor-phone',
     settings,
 };
 
