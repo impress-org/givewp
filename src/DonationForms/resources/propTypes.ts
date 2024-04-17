@@ -60,6 +60,7 @@ export interface IntlTelInputSettings {
     scriptUrl: string;
     utilsScriptUrl: string;
     errorMap: Array<string>;
+    useFullscreenPopup: boolean;
 }
 
 export interface PhoneProps extends FieldHasDescriptionProps {

@@ -14,7 +14,7 @@ class IntlTelInput
      */
     public static function getCssUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/css/intlTelInput.css';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/css/intlTelInput.css';
     }
 
     /**
@@ -22,7 +22,7 @@ class IntlTelInput
      */
     public static function getScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/js/intlTelInput.min.js';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/js/intlTelInput.min.js';
     }
 
     /**
@@ -30,7 +30,7 @@ class IntlTelInput
      */
     public static function getUtilsScriptUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.1.4/build/js/utils.js';
+        return 'https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.4/build/js/utils.js';
     }
 
     /**
@@ -102,6 +102,14 @@ class IntlTelInput
     /**
      * @unreleased
      */
+    public static function getUseFullscreenPopup(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @unreleased
+     */
     public static function getSettings(): array
     {
         return [
@@ -113,6 +121,7 @@ class IntlTelInput
             'scriptUrl' => self::getScriptUrl(),
             'utilsScriptUrl' => self::getUtilsScriptUrl(),
             'errorMap' => self::getErrorMap(),
+            'useFullscreenPopup' => self::getUseFullscreenPopup(),
         ];
     }
 
@@ -169,10 +178,26 @@ class IntlTelInput
                             phone: "<?php echo $id ?>",
                         };
                     },
-                    initialCountry: "<?php echo self::getInitialCountry(); ?>",
+                    initialCountry: 'auto',
+                    geoIpLookup: (success, failure) => {
+                        fetch('https://ipapi.co/json')
+                            .then(function (res) {
+                                return res.json();
+                            })
+                            .then(function (data) {
+                                success(data.country_code);
+                            })
+                            .catch(function () {
+                                const initialCountry =
+                                        navigator.language.split('-')[1].toLowerCase() ||
+                                    <?php echo self::getInitialCountry(); ?>;
+                                success(initialCountry);
+                            });
+                    },
                     showSelectedDialCode: <?php echo self::getShowSelectedDialCode(); ?>,
                     strictMode: <?php echo self::getStrictMode(); ?>,
-                    i18n: <?php echo json_encode(self::getI18n()); ?>
+                    i18n: <?php echo json_encode(self::getI18n()); ?>,
+                    useFullscreenPopup: <?php echo self::getUseFullscreenPopup(); ?>
                 });
 
                 const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");

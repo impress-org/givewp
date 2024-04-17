@@ -105,7 +105,7 @@
         "iframe-resizer-react": "^1.1.0",
         "immer": "^10.0.2",
         "interweave": "^13.1.0",
-        "intl-tel-input": "^21.1.4",
+        "intl-tel-input": "^21.2.4",
         "joi": "^17.7.0",
         "jquery": "^3.6.0",
         "jquery-chosen": "latest",
