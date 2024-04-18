@@ -9,7 +9,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use RuntimeException;
 
 /**
- * @unreleased
+ * @since 3.8.0
  */
 abstract class BlockType implements BlockTypeInterface, Arrayable
 {
@@ -24,7 +24,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     protected $block;
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     abstract public static function name(): string;
 
@@ -51,7 +51,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Dynamically retrieve attributes.
      *
-     * @unreleased
+     * @since 3.8.0
      *
      * @return mixed
      */
@@ -65,7 +65,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Dynamically set attributes.
      *
-     * @unreleased
+     * @since 3.8.0
      *
      * @param  mixed  $value
      *
@@ -81,7 +81,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Determine if an attribute exists.
      *
-     * @unreleased
+     * @since 3.8.0
      *
      * @return bool
      */
@@ -91,7 +91,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function getAttribute($name)
     {
@@ -99,7 +99,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function hasAttribute($name): bool
     {
@@ -107,7 +107,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function setAttribute(string $name, $value): self
     {
@@ -119,7 +119,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Validates that the given value is a valid type for the given attribute.
      *
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws InvalidArgumentException
      */
@@ -135,7 +135,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Validate an attribute to a PHP type.
      *
-     * @unreleased
+     * @since 3.8.0
      */
     public function isAttributeTypeValid(string $key, $value): bool
     {
@@ -162,7 +162,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function castAttributeType(string $key, $value)
     {
@@ -189,7 +189,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function getPropertyType(string $key): string
     {
@@ -199,7 +199,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function toArray(): array
     {
@@ -216,7 +216,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
      /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function setDefaultProperties(): array
     {
@@ -224,7 +224,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     private function fillDefaultProperties(): void
     {

@@ -52,6 +52,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\GiftAid::class,
                 Steps\FormFeaturedImage::class,
                 Steps\FormExcerpt::class,
+                Steps\DoubleTheDonation::class,
             ]);
         });
     }
