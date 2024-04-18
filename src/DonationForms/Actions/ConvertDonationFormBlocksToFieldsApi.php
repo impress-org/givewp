@@ -129,7 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased Add "givewp/phone" block
+     * @unreleased Add "givewp/donor-phone" block
      * @since 3.0.0
      *
      * @return Node|null
