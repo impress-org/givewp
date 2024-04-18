@@ -35,6 +35,11 @@ class GetOrCreateDonor
             $donor->save();
         }
 
+        if ($donor && empty($donor->phone)) {
+            $donor->phone = $donorPhone;
+            $donor->save();
+        }
+
         // if donor is not a user than check for any donor matching this email
         if (!$donor) {
             $donor = Donor::whereEmail($donorEmail);
