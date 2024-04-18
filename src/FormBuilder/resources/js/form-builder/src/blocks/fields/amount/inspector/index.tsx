@@ -125,11 +125,12 @@ const Inspector = ({attributes, setAttributes}) => {
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
+    const hasDescriptions = descriptions?.length === levels?.length;
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level, index) => ({
             id: String(Math.floor(Math.random() * 1000000)),
-            label: descriptions[index] || __('Description goes here', 'give'),
+            label: hasDescriptions ? descriptions[index] : __('Description goes here', 'give'),
             value: level.toString(),
             checked: defaultLevel === level,
         }))

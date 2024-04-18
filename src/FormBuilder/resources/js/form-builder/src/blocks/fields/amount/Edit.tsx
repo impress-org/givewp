@@ -26,6 +26,7 @@ const DonationLevels = ({
     <LevelGrid descriptionsEnabled={descriptionsEnabled}>
         {levels.map((level, index) => {
             const levelAmount = formatCurrencyAmount(level.toString());
+            const hasDescriptions = descriptions?.length === levels?.length;
 
             return (
                 <LevelButton selected={level === defaultLevel} key={index} descriptionsEnabled={descriptionsEnabled}>
@@ -39,7 +40,7 @@ const DonationLevels = ({
 
                     {descriptionsEnabled && (
                         <span className={'give-donation-block__level__label'}>
-                            {descriptions[index] !== '' ? descriptions[index] : __('Description goes here', 'give')}
+                            {hasDescriptions ? descriptions[index] : __('Description goes here', 'give')}
                         </span>
                     )}
                 </LevelButton>
