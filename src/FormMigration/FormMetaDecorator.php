@@ -883,7 +883,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConvertKitTags():? array
     {
-        $defaultMeta = give_get_option('give_convertkit_tags', null);
+        $defaultMeta = give_get_option('_give_convertkit_tags', []);
 
         return !empty($this->getMeta('_give_convertkit_tags')) ?
             $this->getMeta('_give_convertkit_tags') :

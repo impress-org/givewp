@@ -51,7 +51,7 @@ class TestConvertKit extends TestCase
         $meta = [
             'give_convertkit_label'           => __('Subscribe to newsletter?'),
             'give_convertkit_list'            => '6352843',
-            'give_convertkit_tags'           => ['4619079', '4619080'],
+            '_give_convertkit_tags'           => ['4619079', '4619080'],
             'give_convertkit_checked_default' => true,
         ];
 
@@ -71,7 +71,7 @@ class TestConvertKit extends TestCase
 
         $this->assertSame($meta['give_convertkit_label'], $block->getAttribute('label'));
         $this->assertSame($meta['give_convertkit_list'], $block->getAttribute('selectedForm'));
-        $this->assertSame($meta['give_convertkit_tags'], $block->getAttribute('tagSubscribers'));
+        $this->assertSame($meta['_give_convertkit_tags'], $block->getAttribute('tagSubscribers'));
         $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 
