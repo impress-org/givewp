@@ -25,7 +25,7 @@ class DismissNotification implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'DELETE',
+                    'methods' => 'POST',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => 'is_user_logged_in',
                     'args' => [
