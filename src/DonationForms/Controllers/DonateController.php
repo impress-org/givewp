@@ -46,7 +46,8 @@ class DonateController
             $formData->email,
             $formData->firstName,
             $formData->lastName,
-            $formData->honorific
+            $formData->honorific,
+            $formData->phone
         );
 
         if ($formData->donationType->isSingle()) {
@@ -158,6 +159,7 @@ class DonateController
     }
 
     /**
+     * @unreleased Add support for "phone" property
      * @since 3.2.0 Added $formId to the signature for passing to do_action hooks. Added honorific and use GetOrCreateDonor action
      * @since 3.0.0
      *
@@ -169,7 +171,8 @@ class DonateController
         string $donorEmail,
         string $firstName,
         string $lastName,
-        ?string $honorific
+        ?string $honorific,
+        ?string $donorPhone
     ): Donor {
         $getOrCreateDonorAction = new GetOrCreateDonor();
 
@@ -178,7 +181,8 @@ class DonateController
             $donorEmail,
             $firstName,
             $lastName,
-            $honorific
+            $honorific,
+            $donorPhone
         );
 
         if ($getOrCreateDonorAction->donorCreated) {

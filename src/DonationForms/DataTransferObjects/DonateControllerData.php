@@ -49,6 +49,10 @@ class DonateControllerData
      */
     public $email;
     /**
+     * @var string
+     */
+    public $phone;
+    /**
      * @var int
      */
     public $wpUserId;
@@ -126,6 +130,7 @@ class DonateControllerData
     public $comment;
 
     /**
+     * @unreleased Added phone property
      * @since 3.2.0 added honorific property
      * @since 3.0.0
      */
@@ -143,6 +148,7 @@ class DonateControllerData
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'email' => $this->email,
+            'phone' => $this->phone,
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
@@ -153,6 +159,7 @@ class DonateControllerData
     }
 
     /**
+     * @unreleased Added phone property
      * @since 3.0.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
@@ -168,6 +175,7 @@ class DonateControllerData
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'email' => $this->email,
+            'phone' => $this->phone,
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,

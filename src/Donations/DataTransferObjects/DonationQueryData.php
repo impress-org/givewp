@@ -50,6 +50,10 @@ final class DonationQueryData
      */
     public $email;
     /**
+     * @var string
+     */
+    public $phone;
+    /**
      * @var int
      */
     public $id;
@@ -129,6 +133,7 @@ final class DonationQueryData
     /**
      * Convert data from object to Donation
      *
+     * @unreleased Add support for "phone" property
      * @since 3.2.0 add fallback for donation mode
      * @since 2.23.0 remove parentId property
      * @since 2.22.0 add support for company field
@@ -161,6 +166,7 @@ final class DonationQueryData
         $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()};
         $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
         $self->email = $donationQueryObject->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
+        $self->phone = $donationQueryObject->{DonationMetaKeys::PHONE()->getKeyAsCamelCase()};
         $self->gatewayId = $donationQueryObject->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()};
         $self->createdAt = Temporal::toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
@@ -193,7 +199,7 @@ final class DonationQueryData
         } else {
             $self->type = DonationType::SINGLE();
         }
-        
+
         return $self;
     }
 

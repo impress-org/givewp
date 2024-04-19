@@ -14,6 +14,7 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -23,7 +24,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     *
+     * @unreleased Add support to intlTelInputSettings key in the compared array
      * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
      * @since 3.0.0
@@ -88,6 +89,7 @@ class FormBuilderViewModelTest extends TestCase
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes'),
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
+                'intlTelInputSettings' => IntlTelInput::getSettings(),
             ],
             $viewModel->storageData($formId)
         );
