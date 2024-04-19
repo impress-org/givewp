@@ -3,7 +3,7 @@
 namespace Give\FormBuilder\BlockTypes\Concerns;
 
 /**
- * @unreleased
+ * @since 3.8.0
  *
  * @property string $label
  * @property string $description
@@ -20,7 +20,7 @@ namespace Give\FormBuilder\BlockTypes\Concerns;
 trait HasDefaultFieldAttributes
 {
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected function setDefaultProperties(): array
     {

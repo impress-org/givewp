@@ -6,14 +6,14 @@ use Give\FormBuilder\BlockTypes\Concerns\HasDefaultFieldAttributes;
 use Give\Framework\Blocks\BlockType;
 
 /**
- * @unreleased
+ * @since 3.8.0
  */
 class TextBlockType extends BlockType
 {
     use HasDefaultFieldAttributes;
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public static function name(): string
     {

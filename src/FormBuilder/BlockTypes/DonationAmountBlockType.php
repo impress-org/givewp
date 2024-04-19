@@ -6,7 +6,7 @@ use Give\Framework\Blocks\BlockType;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
- * @unreleased
+ * @since 3.8.0
  *
  * @property string $label
  * @property array $levels
@@ -26,7 +26,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 class DonationAmountBlockType extends BlockType
 {
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public static function name(): string
     {
@@ -34,7 +34,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     protected $properties = [
         'label' => 'string',
@@ -54,7 +54,7 @@ class DonationAmountBlockType extends BlockType
     ];
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @return float[]
      */
@@ -74,7 +74,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringEnabled(bool $enabled = true): self
     {
@@ -84,7 +84,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringEnableOneTimeDonations(bool $enabled = true): self
     {
@@ -94,7 +94,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringBillingInterval(int $interval): self
     {
@@ -104,7 +104,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringLengthOfTime(int $lengthOfTime): self
     {
@@ -114,7 +114,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringBillingPeriodOptions(SubscriptionPeriod ...$options): self
     {
@@ -129,7 +129,7 @@ class DonationAmountBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function setRecurringOptInDefaultBillingPeriod(SubscriptionPeriod $period): self
     {
