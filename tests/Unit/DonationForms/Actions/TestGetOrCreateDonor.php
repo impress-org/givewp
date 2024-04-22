@@ -13,7 +13,7 @@ class TestGetOrCreateDonor extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Add phone support to GetOrCreateDonor action
+     * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -30,7 +30,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
-     * @unreleased Add phone support to GetOrCreateDonor action
+     * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -47,7 +47,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
-     * @unreleased Add phone support to GetOrCreateDonor action
+     * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      * @throws Exception
      */
@@ -65,7 +65,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
-     * @unreleased Add phone support to GetOrCreateDonor action
+     * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception
@@ -83,7 +83,7 @@ class TestGetOrCreateDonor extends TestCase
     }
 
     /**
-     * @unreleased Add phone support to GetOrCreateDonor action
+     * @since 3.9.0 Add phone support to GetOrCreateDonor action
      * @since 3.2.0
      *
      * @throws Exception

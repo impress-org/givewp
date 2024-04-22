@@ -159,7 +159,7 @@ class DonateController
     }
 
     /**
-     * @unreleased Add support for "phone" property
+     * @since 3.9.0 Add support for "phone" property
      * @since 3.2.0 Added $formId to the signature for passing to do_action hooks. Added honorific and use GetOrCreateDonor action
      * @since 3.0.0
      *

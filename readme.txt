@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 3.8.0
+Stable tag: 3.9.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.9.0: April 24th, 2024 =
+* New: Added a donor phone number block to the visual form builder to collect donor phone numbers
+* Enhancement: Updated form field inputs to have a single border color when selected 
+
 = 3.8.0: April 17th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming double the donation add-on release
 * Enhancement: Updated the form builder tour to highlight where to find the guided tour again 

@@ -165,7 +165,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased Add phone number to donor details
+     * @since 3.9.0 Add phone number to donor details
      * @since 3.0.0
      *
      * @return void

@@ -19,7 +19,7 @@ type GoalTypeOption = {
 };
 
 /**
- * @unreleased Added intlTelInputSettings
+ * @since 3.9.0 Added intlTelInputSettings
  * @since 3.7.0 Added isExcerptEnabled
  * @since 3.0.0
  */

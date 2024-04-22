@@ -49,7 +49,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased Add support to "phone" property
+     * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0  Capture exceptions when get gateway data.
      * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
@@ -326,7 +326,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased Add support to "phone" property
+     * @since 3.9.0 Add support to "phone" property
      * @since 3.4.0 add $formId and do_action
      * @since 3.2.0 add honorific and use GetOrCreateDonor action
      * @since 2.21.0

@@ -5,7 +5,7 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import InputMask from 'react-input-mask';
 
 /**
- * @unreleased
+ * @since 3.9.0
  */
 export default function Phone({
     Label,

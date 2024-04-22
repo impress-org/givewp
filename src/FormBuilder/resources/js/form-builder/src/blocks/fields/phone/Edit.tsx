@@ -9,7 +9,7 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import {useEffect} from 'react';
 
 /**
- * @unreleased
+ * @since 3.9.0
  */
 export default function Edit({attributes: {label, required}, setAttributes}: BlockEditProps<any>) {
     const {intlTelInputSettings} = getFormBuilderWindowData();
