@@ -28,7 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', GetNotifications::class, 'registerRoute');
         Hooks::addAction('rest_api_init', DismissNotification::class, 'registerRoute');
 
-        // Localize scripts
-        Hooks::addAction( 'admin_enqueue_scripts', Assets::class );
+        // Load scripts
+        Hooks::addAction( 'admin_enqueue_scripts', Scripts::class );
     }
 }
