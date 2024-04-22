@@ -248,7 +248,7 @@ class AdminSettingFields
         if ($this->isCountryInNorthAmerica()) {
             $telephone = sprintf(
                 '<a href="tel:%1$s">%1$s</a>',
-                '1-888-221-1161'
+                '1-888-350-2387'
             );
 
             $message = sprintf(
