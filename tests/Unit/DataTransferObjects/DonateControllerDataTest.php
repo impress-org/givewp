@@ -24,6 +24,7 @@ class DonateControllerDataTest extends TestCase
 {
 
     /**
+     * @unreleased Add phone support
      * @since 3.2.0 added honorific property
      * @since 3.0.0
      */
@@ -43,6 +44,7 @@ class DonateControllerDataTest extends TestCase
         $data->firstName = "Bill";
         $data->lastName = "Murray";
         $data->email = "billmurray@givewp.com";
+        $data->phone = '+120155501234';
         $data->formId = $donationForm->id;
         $data->formTitle = $donationForm->title;
         $data->company = null;
@@ -67,6 +69,7 @@ class DonateControllerDataTest extends TestCase
             'firstName' => $data->firstName,
             'lastName' => $data->lastName,
             'email' => $data->email,
+            'phone' => $data->phone,
             'formId' => $data->formId,
             'formTitle' => $data->formTitle,
             'company' => $data->company,
@@ -264,5 +267,4 @@ class DonateControllerDataTest extends TestCase
             $data->getCustomFields()
         );
     }
-
 }

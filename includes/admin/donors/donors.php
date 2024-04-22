@@ -10,6 +10,7 @@
  */
 
 use Give\Donors\Models\Donor;
+use Give\Helpers\IntlTelInput;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -493,7 +494,7 @@ function give_donor_view( $donor ) {
                             <td>
 								<span class="donor-user-id info-item edit-item">
                                     <?php
-                                    echo give_get_intl_tel_input($donor_phone_number, "give_donor_phone_number"); ?>
+                                    echo IntlTelInput::getHtmlInput($donor_phone_number, "give_donor_phone_number"); ?>
 								</span>
 
                                 <span class="donor-user-id info-item editable">

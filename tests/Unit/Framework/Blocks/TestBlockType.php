@@ -10,12 +10,12 @@ use Give\Tests\TestCase;
 use RuntimeException;
 
 /**
- * @unreleased
+ * @since 3.8.0
  */
 class TestBlockType extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -34,7 +34,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -53,7 +53,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -84,7 +84,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -127,7 +127,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -161,7 +161,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -195,7 +195,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -229,7 +229,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testShouldCastFloatPropertyValues(): void
     {
@@ -264,7 +264,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -294,7 +294,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */
@@ -324,7 +324,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testShouldSetNewProperty(): void
     {
@@ -350,7 +350,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @return void
      */
@@ -379,7 +379,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function testBlockTypeToArray(): void
     {

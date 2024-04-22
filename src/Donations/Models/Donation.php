@@ -24,6 +24,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @unreleased Add phone property
  * @since 2.23.0 add type property; remove parentId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
@@ -45,6 +46,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
+ * @property string $phone
  * @property int $subscriptionId
  * @property BillingAddress $billingAddress
  * @property string $purchaseKey
@@ -83,6 +85,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
+        'phone' => 'string',
         'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
         'anonymous' => ['bool', false],

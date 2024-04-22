@@ -53,6 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormFeaturedImage::class,
                 Steps\FormExcerpt::class,
                 Steps\ConvertKit::class,
+                Steps\DoubleTheDonation::class,
             ]);
         });
     }
