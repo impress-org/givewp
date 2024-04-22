@@ -263,7 +263,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.9.0: April 24th, 2024 =
-* New: Added a donor phone number block to the visual form builder to collect donor phone numbers
+* New: Added a donor phone number block to the form builder to collect donor phone numbers on donation forms
 * Enhancement: Updated form field inputs to have a single border color when selected 
 
 = 3.8.0: April 17th, 2024 =
