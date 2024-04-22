@@ -230,10 +230,17 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $designSettingsImageOpacity;
 
-    /* @since 3.7.0
+    /**
+     * @since 3.7.0
      * @var string
      */
     public $formExcerpt;
+
+    /**
+     * @unreleased
+     * @var array
+     */
+    public $currencySwitcherSettings;
 
     /**
      * @since 3.7.0 Added formExcerpt
@@ -336,6 +343,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
 
         $self->formExcerpt = $array['formExcerpt'] ?? '';
+
+        $self->currencySwitcherSettings = isset($array['currencySwitcherSettings']) && is_array(
+            $array['currencySwitcherSettings']
+        ) ? $array['currencySwitcherSettings'] : [];
 
         return $self;
     }
