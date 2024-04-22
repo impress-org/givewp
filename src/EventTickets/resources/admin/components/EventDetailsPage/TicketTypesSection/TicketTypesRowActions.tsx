@@ -15,7 +15,7 @@ export function TicketTypesRowActions({tickets, setTickets, openEditModal}) {
                 id,
                 title,
                 description,
-                price: (price / 100).toFixed(2),
+                price: price / 100,
                 capacity,
             });
         };
