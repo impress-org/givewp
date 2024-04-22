@@ -130,7 +130,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level, index) => ({
             id: String(Math.floor(Math.random() * 1000000)),
-            label: hasDescriptions ? descriptions[index] : __('Description goes here', 'give'),
+            label: hasDescriptions ? descriptions[index] : '',
             value: level.toString(),
             checked: defaultLevel === level,
         }))
@@ -140,7 +140,7 @@ const Inspector = ({attributes, setAttributes}) => {
         const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
         const newLevel = {
             id: String(Math.floor(Math.random() * 1000000)),
-            label: __('Description goes here', 'give'),
+            label:'',
             value: newLevelValue,
             checked: false,
         };
