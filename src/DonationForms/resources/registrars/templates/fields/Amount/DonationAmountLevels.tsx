@@ -36,7 +36,11 @@ export default function DonationAmountLevels({
     const allLevels = [...groupedLevels.labeled, ...groupedLevels.unlabeled];
 
     return (
-        <div className={'givewp-fields-amount__levels-container'}>
+        <div
+            className={classNames('givewp-fields-amount__levels-container', {
+                'givewp-fields-amount__levels-container--has-descriptions': groupedLevels.labeled.length > 0,
+            })}
+        >
             {allLevels.map((level, index) => {
                 const label = formatter.format(level.value);
                 const selected = level.value === amount;
@@ -51,7 +55,7 @@ export default function DonationAmountLevels({
                         <button
                             className={classNames('givewp-fields-amount__level', {
                                 'givewp-fields-amount__level--selected': selected,
-                                'givewp-fields-amount__level--description': !hasDescription,
+                                'givewp-fields-amount__level--description': hasDescription,
                             })}
                             type="button"
                             onClick={() => {

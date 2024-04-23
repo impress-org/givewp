@@ -113,11 +113,20 @@ $borderColor: #9A9A9A;
     }
 
     &__levels-container {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
         gap: var(--givewp-spacing-2);
+        grid-template-rows: repeat(2, 1fr);
         inline-size: 100%;
         list-style: none;
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        &--has-descriptions {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
         .givewp-fields-amount__level-container {
             display: flex;
@@ -137,10 +146,9 @@ $borderColor: #9A9A9A;
 
             .givewp-fields-amount__level {
                 height: 100%;
-                max-width: 144px;
 
                 &--description {
-                    max-width: none;
+                    max-width: 144px;
                 }
             }
 
