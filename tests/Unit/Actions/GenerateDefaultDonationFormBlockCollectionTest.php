@@ -44,7 +44,6 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
                     ['value' => 250],
                     ['value' => 500],
                 ],
-                "defaultLevel" => 10,
                 "priceOption" => "multi",
                 "setPrice" => 25,
                 "customAmount" => true,
