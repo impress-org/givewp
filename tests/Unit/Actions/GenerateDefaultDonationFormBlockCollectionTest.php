@@ -37,7 +37,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
             [
                 "label" => __("Donation Amount", 'give'),
                 "levels" => [
-                    ['value' => 10],
+                    ['value' => 10, 'checked' => true],
                     ['value' => 25],
                     ['value' => 50],
                     ['value' => 100],
