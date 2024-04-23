@@ -3,11 +3,13 @@
 namespace Give\FormMigration\Steps;
 
 use Give\FormMigration\Contracts\FormMigrationStep;
+use Give\Framework\Blocks\BlockModel;
 
 class DonationOptions extends FormMigrationStep
 {
     public function process()
     {
+        /** @var BlockModel $amountField */
         $amountField = $this->fieldBlocks->findByName('givewp/donation-amount');
 
         $priceOption = $this->getMetaV2('_give_price_option');
@@ -20,9 +22,20 @@ class DonationOptions extends FormMigrationStep
         if('multi' === $priceOption) {
             // @note $formV2->levels only returns a single level
             $donationLevels = $this->getMetaV2('_give_donation_levels');
-            // @note No corresponding setting in v3 for `_give_text` for Donation Levels.
+
+            $isDescriptionEnabled = false;
             $amountField->setAttribute('levels',
-                array_map([$this, 'roundAmount'], wp_list_pluck($donationLevels, '_give_amount')));
+                array_map(function ($donationLevel) use (&$isDescriptionEnabled) {
+                    $isDescriptionEnabled = $isDescriptionEnabled || ! empty($donationLevel['_give_text']);
+
+                    return [
+                        'value' => $this->roundAmount($donationLevel['_give_amount']),
+                        'label' => $donationLevel['_give_text'],
+                        'checked' => $donationLevel['_give_default'] === 'default' ?? false,
+                    ];
+                }, $donationLevels)
+            );
+            $amountField->setAttribute('descriptionsEnabled', $isDescriptionEnabled);
         }
 
         $isCustomAmountEnabled = $this->formV2->isCustomAmountOptionEnabled();
