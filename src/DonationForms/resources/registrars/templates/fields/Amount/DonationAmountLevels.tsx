@@ -8,8 +8,6 @@ type DonationAmountLevelsProps = {
     currency: string;
     levels: {label: string; value: number}[];
     onLevelClick?: (amount: number) => void;
-    descriptions: string[];
-    descriptionsEnabled: boolean;
 };
 
 /**
@@ -26,10 +24,16 @@ export default function DonationAmountLevels({
     const amount = useWatch({name});
     const formatter = useCurrencyFormatter(currency);
 
-    const levelsWithDescriptions = levels.filter((level) => level.label);
-    const levelsWithoutDescriptions = levels.filter((level) => !level.label);
+    const groupedLevels = levels.reduce(
+        (acc, level) => {
+            const key = level.label ? 'labeled' : 'unlabeled';
+            acc[key].push(level);
+            return acc;
+        },
+        {labeled: [], unlabeled: []}
+    );
 
-    const allLevels = [...levelsWithDescriptions, ...levelsWithoutDescriptions];
+    const allLevels = [...groupedLevels.labeled, ...groupedLevels.unlabeled];
 
     return (
         <div className={'givewp-fields-amount__levels-container'}>

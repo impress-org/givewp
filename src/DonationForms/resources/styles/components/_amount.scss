@@ -113,23 +113,25 @@ $borderColor: #9A9A9A;
     }
 
     &__levels-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-wrap: wrap;
         gap: var(--givewp-spacing-2);
         inline-size: 100%;
         list-style: none;
 
-        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
         .givewp-fields-amount__level-container {
             display: flex;
             align-items: center;
+            flex: 1;
             gap: var(--givewp-spacing-4);
+            min-width: calc((100% - var(--givewp-spacing-2)) / 2);
+
+            @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+                min-width: calc((100% - var(--givewp-spacing-2) * 2) / 3);
+            }
 
             &--col {
-                grid-column: 1 / -1;
+                flex-basis: 100%;
             }
         ;
 
