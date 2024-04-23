@@ -31,7 +31,7 @@ class DonationOptions extends FormMigrationStep
                     return [
                         'value' => $this->roundAmount($donationLevel['_give_amount']),
                         'label' => $donationLevel['_give_text'],
-                        'checked' => $donationLevel['_give_default'] === 'default' ?? false,
+                        'checked' => isset($donationLevel['_give_default']) && $donationLevel['_give_default'] === 'default',
                     ];
                 }, $donationLevels)
             );
