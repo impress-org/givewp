@@ -52,7 +52,7 @@ class UpdateEvent implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_textare_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'startDateTime' => [
                         'type' => 'string',
