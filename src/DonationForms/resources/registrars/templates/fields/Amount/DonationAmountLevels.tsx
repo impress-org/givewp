@@ -6,7 +6,7 @@ import classNames from 'classnames';
 type DonationAmountLevelsProps = {
     name: string;
     currency: string;
-    levels: number[];
+    levels: {label: string; value: number}[];
     onLevelClick?: (amount: number) => void;
     descriptions: string[];
     descriptionsEnabled: boolean;
@@ -21,19 +21,22 @@ export default function DonationAmountLevels({
     currency,
     levels,
     onLevelClick,
-    descriptions,
-    descriptionsEnabled,
 }: DonationAmountLevelsProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useCurrencyFormatter(currency);
 
+    const levelsWithDescriptions = levels.filter((level) => level.label);
+    const levelsWithoutDescriptions = levels.filter((level) => !level.label);
+
+    const allLevels = [...levelsWithDescriptions, ...levelsWithoutDescriptions];
+
     return (
         <div className={'givewp-fields-amount__levels-container'}>
-            {levels.map((levelAmount, index) => {
-                const label = formatter.format(levelAmount);
-                const selected = levelAmount === amount;
-                const hasDescription = descriptionsEnabled && descriptions[index] !== '';
+            {allLevels.map((level, index) => {
+                const label = formatter.format(level.value);
+                const selected = level.value === amount;
+                const hasDescription = level.label;
 
                 return (
                     <div
@@ -48,14 +51,14 @@ export default function DonationAmountLevels({
                             })}
                             type="button"
                             onClick={() => {
-                                onLevelClick(levelAmount);
+                                onLevelClick(level.value);
                             }}
                             key={index}
                         >
                             {label}
                         </button>
                         {hasDescription && (
-                            <span className={'givewp-fields-amount__level__description'}>{descriptions[index]}</span>
+                            <span className={'givewp-fields-amount__level__description'}>{level.label}</span>
                         )}
                     </div>
                 );
