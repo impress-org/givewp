@@ -9,7 +9,7 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/components/CurrencyControl';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
@@ -125,11 +125,12 @@ const Inspector = ({attributes, setAttributes}) => {
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
+    const hasDescriptions = descriptions?.length === levels?.length;
 
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level, index) => ({
             id: String(Math.floor(Math.random() * 1000000)),
-            label: descriptions[index] || '',
+            label: hasDescriptions ? descriptions[index] : '',
             value: level.toString(),
             checked: defaultLevel === level,
         }))
@@ -139,7 +140,7 @@ const Inspector = ({attributes, setAttributes}) => {
         const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
         const newLevel = {
             id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(newLevelValue),
+            label:'',
             value: newLevelValue,
             checked: false,
         };
@@ -220,17 +221,6 @@ const Inspector = ({attributes, setAttributes}) => {
                         onValueChange={(setPrice) => setAttributes({setPrice: setPrice ? parseInt(setPrice) : 0})}
                     />
                 ) : (
-                    <OptionsPanel
-                        currency={currency}
-                        multiple={false}
-                        options={donationLevels}
-                        setOptions={handleLevelsChange}
-                        onAddOption={handleLevelAdded}
-                        onRemoveOption={handleLevelRemoved}
-                        defaultControlsTooltip={__('Default Level', 'give')}
-                    />
-                )}
-                {priceOption === 'multi' && (
                     <OptionsPanel
                         currency={currency}
                         multiple={false}
