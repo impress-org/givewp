@@ -176,7 +176,7 @@ class ConvertDonationAmountBlockToFieldsApi
      *
      * @unreleased
      *
-     * @return array ['options' => [], 'checked' => string]
+     * @return array ['options' => ['label' => string, 'value' => string][], 'checked' => string]
      */
     private function prepareLevelsArray(DonationAmountBlockModel $block): array
     {
@@ -185,7 +185,7 @@ class ConvertDonationAmountBlockToFieldsApi
             array_filter(
                 array_map(
                     function ($item) use (&$checked, $block) {
-                        if ($item['checked']) {
+                        if (isset($item['checked']) && $item['checked']) {
                             $checked = $item['value'];
                         }
 
@@ -197,7 +197,7 @@ class ConvertDonationAmountBlockToFieldsApi
                     $block->getLevels()
                 ),
                 function ($item) {
-                    return $item[0] !== '';
+                    return $item['value'] !== '';
                 }
             )
         );
