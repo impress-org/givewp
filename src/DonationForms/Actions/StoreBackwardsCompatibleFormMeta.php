@@ -23,6 +23,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
+     * @unreleased Update to store donation levels with descriptions
      * @since 3.0.0 update with dynamic values from amount field
      * @since 3.0.0
      */
@@ -43,7 +44,8 @@ class StoreBackwardsCompatibleFormMeta
                     '_give_id' => [
                         'level_id' => $index,
                     ],
-                    '_give_amount' => $donationLevel
+                    '_give_amount' => $donationLevel['value'],
+                    '_give_text' => $donationLevel['label'] ?? '',
                 ];
             }, $donationLevels, array_keys($donationLevels));
 

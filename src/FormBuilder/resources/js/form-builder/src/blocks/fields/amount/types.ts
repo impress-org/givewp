@@ -1,8 +1,9 @@
+import {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import type {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 
 export interface DonationAmountAttributes {
     label: string;
-    levels: number[];
+    levels: OptionProps[];
     descriptions: string[];
     descriptionsEnabled: boolean;
     defaultLevel: number;

@@ -13,9 +13,9 @@ import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {useCallback, useState} from '@wordpress/element';
+import {useCallback} from '@wordpress/element';
 import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 import {OptionsPanel} from '@givewp/form-builder-library';
@@ -65,9 +65,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        descriptions,
         descriptionsEnabled = false,
-        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -125,22 +123,20 @@ const Inspector = ({attributes, setAttributes}) => {
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
-    const hasDescriptions = descriptions?.length === levels?.length;
-
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
-        levels.map((level, index) => ({
+        levels.map((level) => ({
+            ...level,
             id: String(Math.floor(Math.random() * 1000000)),
-            label: hasDescriptions ? descriptions[index] : '',
-            value: level.toString(),
-            checked: defaultLevel === level,
+            value: level.value.toString(),
         }))
     );
 
     const handleLevelAdded = () => {
-        const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
+        const levelValues = levels.map((level) => Number(level.value));
+        const newLevelValue = levelValues.length ? String(Math.max(...levelValues) * 2) : '10';
         const newLevel = {
             id: String(Math.floor(Math.random() * 1000000)),
-            label:'',
+            label: '',
             value: newLevelValue,
             checked: false,
         };
@@ -148,36 +144,34 @@ const Inspector = ({attributes, setAttributes}) => {
         // If there are no levels, set the new level as the default.
         if (!levels.length) {
             newLevel.checked = true;
-            setAttributes({defaultLevel: Number(newLevelValue)});
         }
 
         setDonationLevels([...donationLevels, newLevel]);
-        setAttributes({levels: [...levels, Number(newLevelValue)]});
+        setAttributes({levels: [...levels, newLevel]});
     };
 
     const handleLevelRemoved = (level: OptionProps, index: number) => {
         const newLevels = levels.filter((_, i) => i !== index);
-        const newDonationLevels = donationLevels.filter((_, i) => i !== index);
 
-        if (level.checked && newDonationLevels.length > 0) {
-            newDonationLevels[0].checked = true;
-            setAttributes({defaultLevel: Number(newDonationLevels[0].value)});
+        if (level.checked && newLevels.length > 0) {
+            newLevels[0].checked = true;
         }
 
-        setDonationLevels(newDonationLevels);
+        setDonationLevels(newLevels);
         setAttributes({levels: newLevels});
     };
 
     const handleLevelsChange = (options: OptionProps[]) => {
-        const checkedLevel = options.filter((option) => option.checked);
-        const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
-        const newDescriptions = options.map((option) => option.label);
+        const newLevels = options
+            .filter((option) => option.value)
+            .map((option) => ({
+                ...option,
+                value: Number(option.value),
+            }));
 
         setDonationLevels(options);
         setAttributes({
             levels: newLevels,
-            defaultLevel: Number(checkedLevel[0].value),
-            descriptions: newDescriptions,
         });
     };
 

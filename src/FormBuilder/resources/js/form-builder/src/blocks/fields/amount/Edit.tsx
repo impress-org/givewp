@@ -14,22 +14,17 @@ import cx from 'classnames';
 
 const DonationLevels = ({
     levels,
-    defaultLevel,
     descriptionsEnabled,
-    descriptions,
 }: {
     levels: DonationAmountAttributes['levels'];
-    defaultLevel: DonationAmountAttributes['defaultLevel'];
     descriptionsEnabled: DonationAmountAttributes['descriptionsEnabled'];
-    descriptions: DonationAmountAttributes['descriptions'];
 }) => (
     <LevelGrid descriptionsEnabled={descriptionsEnabled}>
         {levels.map((level, index) => {
-            const levelAmount = formatCurrencyAmount(level.toString());
-            const hasDescriptions = descriptions?.length === levels?.length;
+            const levelAmount = formatCurrencyAmount(level?.value?.toString());
 
             return (
-                <LevelButton selected={level === defaultLevel} key={index} descriptionsEnabled={descriptionsEnabled}>
+                <LevelButton selected={level.checked} key={index} descriptionsEnabled={descriptionsEnabled}>
                     <span
                         className={cx({
                             'give-donation-block__level__amount': descriptionsEnabled,
@@ -40,7 +35,7 @@ const DonationLevels = ({
 
                     {descriptionsEnabled && (
                         <span className={'give-donation-block__level__label'}>
-                            {hasDescriptions ? descriptions[index] : __('Description goes here', 'give')}
+                            {level.label ? level.label : __('Description goes here', 'give')}
                         </span>
                     )}
                 </LevelButton>
@@ -80,7 +75,6 @@ const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -90,7 +84,6 @@ const Edit = ({attributes, setAttributes}) => {
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
         recurringEnableOneTimeDonations,
-        descriptions,
         descriptionsEnabled,
     } = attributes as DonationAmountAttributes;
 
@@ -130,9 +123,7 @@ const Edit = ({attributes, setAttributes}) => {
                 {isMultiLevel && (
                     <DonationLevels
                         levels={levels}
-                        defaultLevel={defaultLevel}
                         descriptionsEnabled={descriptionsEnabled}
-                        descriptions={descriptions}
                     />
                 )}
 
