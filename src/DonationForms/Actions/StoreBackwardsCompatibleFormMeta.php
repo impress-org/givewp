@@ -45,7 +45,7 @@ class StoreBackwardsCompatibleFormMeta
                         'level_id' => $index,
                     ],
                     '_give_amount' => $donationLevel['value'],
-                    '_give_text' => $donationLevel['label'],
+                    '_give_text' => $donationLevel['label'] ?? '',
                 ];
             }, $donationLevels, array_keys($donationLevels));
 
