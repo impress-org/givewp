@@ -316,7 +316,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Added meta for phone property
+     * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6

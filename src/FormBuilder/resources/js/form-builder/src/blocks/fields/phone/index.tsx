@@ -3,7 +3,7 @@ import settings from './settings';
 import {FieldBlock} from '@givewp/form-builder/types';
 
 /**
- * @unreleased
+ * @since 3.9.0
  */
 const phone: FieldBlock = {
     name: 'givewp/donor-phone',

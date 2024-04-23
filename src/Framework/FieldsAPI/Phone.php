@@ -43,7 +43,7 @@ class Phone extends Field
      *
      * @see https://github.com/jackocnr/intl-tel-input
      *
-     * @unreleased
+     * @since 3.9.0
      */
     public function setIntlTelInputSettings(array $intlTelInputSettings): self
     {

@@ -13,7 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
-     * @unreleased Add support to "phone" property
+     * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0
      *
      * @throws Exception

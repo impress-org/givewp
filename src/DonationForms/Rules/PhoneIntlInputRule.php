@@ -7,12 +7,12 @@ use Give\Helpers\IntlTelInput;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
- * @unreleased
+ * @since 3.9.0
  */
 class PhoneIntlInputRule implements ValidationRule
 {
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function id(): string
     {
@@ -20,7 +20,7 @@ class PhoneIntlInputRule implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -37,7 +37,7 @@ class PhoneIntlInputRule implements ValidationRule
      *
      * @see https://intl-tel-input.com/examples/validation.html
      *
-     * @unreleased
+     * @since 3.9.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

@@ -3,14 +3,14 @@
 namespace Give\Helpers;
 
 /**
- * @unreleased
+ * @since 3.9.0
  *
  * @see https://github.com/jackocnr/intl-tel-input
  */
 class IntlTelInput
 {
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getCssUrl(): string
     {
@@ -18,7 +18,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getScriptUrl(): string
     {
@@ -26,7 +26,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getUtilsScriptUrl(): string
     {
@@ -34,7 +34,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getI18n(): array
     {
@@ -62,7 +62,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getErrorMap(): array
     {
@@ -76,7 +76,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getInitialCountry(): string
     {
@@ -84,7 +84,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getShowSelectedDialCode(): bool
     {
@@ -92,7 +92,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getStrictMode(): bool
     {
@@ -100,7 +100,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getUseFullscreenPopup(): bool
     {
@@ -108,7 +108,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getSettings(): array
     {
@@ -126,7 +126,7 @@ class IntlTelInput
     }
 
     /**
-     * @unreleased
+     * @since 3.9.0
      */
     public static function getHtmlInput(string $value, string $id, string $class = '', string $name = ''): string
     {

@@ -15,7 +15,7 @@ import anonymous from './anonymous';
 import phone from './phone';
 
 /**
- * @unreleased Add phone block
+ * @since 3.9.0 Add phone block
  * @note Blocks in the appender are listed in the order that the blocks are registered.
  */
 const FieldBlocks: FieldBlock[] = [

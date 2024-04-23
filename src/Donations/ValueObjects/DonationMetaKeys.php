@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased added PHONE
+ * @since 3.9.0 added PHONE
  * @since 3.2.0 added HONORIFIC
  * @since 2.20.0 add fee amount recovered and exchange rate
  * @since 2.19.6

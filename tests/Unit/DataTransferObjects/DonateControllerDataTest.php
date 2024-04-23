@@ -24,7 +24,7 @@ class DonateControllerDataTest extends TestCase
 {
 
     /**
-     * @unreleased Add phone support
+     * @since 3.9.0 Add phone support
      * @since 3.2.0 added honorific property
      * @since 3.0.0
      */

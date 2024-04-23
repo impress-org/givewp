@@ -237,7 +237,7 @@ class FormSettings implements Arrayable, Jsonable
     public $formExcerpt;
 
     /**
-     * @unreleased
+     * @since 3.9.0
      * @var array
      */
     public $currencySwitcherSettings;
