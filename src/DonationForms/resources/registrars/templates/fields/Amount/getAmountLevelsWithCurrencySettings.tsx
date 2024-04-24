@@ -7,7 +7,7 @@ import {isBaseCurrency} from './CurrencySwitcher';
  * @since 3.0.0
  */
 export default function getAmountLevelsWithCurrencySettings(
-    levels: number[],
+    levels: {label: string; value: number}[],
     currency: string,
     currencySettings: CurrencySwitcherSetting[]
 ) {
@@ -17,5 +17,10 @@ export default function getAmountLevelsWithCurrencySettings(
         return levels;
     }
 
-    return levels.map((levelAmount) => levelAmount * currencySetting.exchangeRate);
+    return levels.map((level) => {
+        return {
+            ...level,
+            value: level.value * currencySetting.exchangeRate,
+        };
+    });
 }
