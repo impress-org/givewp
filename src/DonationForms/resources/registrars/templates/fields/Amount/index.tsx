@@ -1,16 +1,18 @@
 import {useCallback} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
-import {useState} from 'react';
-import getAmountLevelsWithCurrencySettings from './getAmountLevelsWithCurrencySettings';
+import {useEffect, useState} from 'react';
+import {getAmountLevelsWithCurrencySettings, getDefaultAmountWithCurrencySettings} from './withCurrencySettings';
 import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';
 
 /**
+ * @unreleased Update default level when having distinct default currency
  * @since 3.0.0
  */
 export default function Amount({
     name,
+    defaultValue,
     Label,
     ErrorMessage,
     inputProps,
@@ -23,12 +25,25 @@ export default function Amount({
 }: AmountProps) {
     const isFixedAmount = !allowLevels;
     const [customAmountValue, setCustomAmountValue] = useState<string>(
-      isFixedAmount ? fixedAmountValue.toString() : '');
+        isFixedAmount ? fixedAmountValue.toString() : ''
+    );
     const {useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
 
     const currency = useWatch({name: 'currency'});
+
+    useEffect(() => {
+        if (!isFixedAmount) {
+            const defaultAmount = getDefaultAmountWithCurrencySettings(
+                levels,
+                defaultValue,
+                currency,
+                currencySwitcherSettings
+            );
+            setValue(name, defaultAmount);
+        }
+    }, []);
 
     const getAmountLevels = useCallback(() => {
         if (currencySwitcherSettings.length <= 1) {
@@ -86,7 +101,6 @@ export default function Amount({
                     value={customAmountValue}
                     onValueChange={(value) => {
                         setCustomAmountValue(value);
-
                         setValue(name, Number(value) ?? null);
                     }}
                 />

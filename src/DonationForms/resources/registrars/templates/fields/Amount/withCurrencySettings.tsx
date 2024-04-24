@@ -6,7 +6,7 @@ import {isBaseCurrency} from './CurrencySwitcher';
  *
  * @since 3.0.0
  */
-export default function getAmountLevelsWithCurrencySettings(
+export function getAmountLevelsWithCurrencySettings(
     levels: {label: string; value: number}[],
     currency: string,
     currencySettings: CurrencySwitcherSetting[]
@@ -23,4 +23,20 @@ export default function getAmountLevelsWithCurrencySettings(
             value: level.value * currencySetting.exchangeRate,
         };
     });
+}
+
+export function getDefaultAmountWithCurrencySettings(
+    levels: {label: string; value: number}[],
+    amount: number,
+    currency: string,
+    currencySettings: CurrencySwitcherSetting[]
+) {
+    const currencySetting = currencySettings.find(({id}) => id === currency);
+    const defaultLevel = levels.find((level) => level.value === amount);
+
+    if (currencySetting === undefined || isBaseCurrency(currencySetting) || defaultLevel === undefined) {
+        return amount;
+    }
+
+    return defaultLevel.value * currencySetting.exchangeRate;
 }
