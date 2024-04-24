@@ -21,6 +21,8 @@ export default function Amount({
     fixedAmountValue,
     allowCustomAmount,
     messages,
+    descriptions,
+    descriptionsEnabled
 }: AmountProps) {
     const isFixedAmount = !allowLevels;
     const [customAmountValue, setCustomAmountValue] = useState<string>(
@@ -76,6 +78,8 @@ export default function Amount({
                         resetCustomAmount();
                         setValue(name, levelAmount);
                     }}
+                    descriptions={descriptions}
+                    descriptionsEnabled={descriptionsEnabled}
                 />
             )}
 

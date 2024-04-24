@@ -114,14 +114,49 @@ $borderColor: #9A9A9A;
 
     &__levels-container {
         display: grid;
-        grid-auto-rows: 1fr;
-        grid-template-columns: repeat(2, 1fr);
         gap: var(--givewp-spacing-2);
+        grid-template-rows: repeat(2, 1fr);
         inline-size: 100%;
         list-style: none;
 
         @media screen and (min-width: variables.$givewp-breakpoint-sm) {
             grid-template-columns: repeat(3, 1fr);
+        }
+
+        &--has-descriptions {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .givewp-fields-amount__level-container {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: var(--givewp-spacing-4);
+            min-width: calc((100% - var(--givewp-spacing-2)) / 2);
+
+            @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+                min-width: calc((100% - var(--givewp-spacing-2) * 2) / 3);
+            }
+
+            &--col {
+                flex-basis: 100%;
+            }
+        ;
+
+            .givewp-fields-amount__level {
+                height: 100%;
+
+                &--description {
+                    max-width: 144px;
+                }
+            }
+
+            .givewp-fields-amount__description {
+                margin-bottom: 0;
+                color: var(--givewp-grey-700);
+                font-size: 1rem;
+            }
         }
     }
 
