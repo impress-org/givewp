@@ -25,6 +25,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
+     * @unreleased Update test to use the new levels schema
      * @since 3.8.0
      * @throws Exception
      */
