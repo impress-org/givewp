@@ -6,7 +6,6 @@ namespace Give\Tests\Feature\FormMigration\Steps;
 
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\ConvertKit;
-use Give\FormMigration\Steps\Mailchimp;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
@@ -31,9 +30,9 @@ class TestConvertKit extends TestCase
 
         $payload = FormMigrationPayload::fromFormV2($formV2);
 
-        $mailchimp = new ConvertKit($payload);
+        $convertkit = new ConvertKit($payload);
 
-        $mailchimp->process();
+        $convertkit->process();
 
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
@@ -63,9 +62,9 @@ class TestConvertKit extends TestCase
 
         $payload = FormMigrationPayload::fromFormV2($formV2);
 
-        $mailchimp = new ConvertKit($payload);
+        $convertkit = new ConvertKit($payload);
 
-        $mailchimp->process();
+        $convertkit->process();
 
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
@@ -84,9 +83,9 @@ class TestConvertKit extends TestCase
 
         $payload = FormMigrationPayload::fromFormV2($formV2);
 
-        $mailchimp = new ConvertKit($payload);
+        $convertkit = new ConvertKit($payload);
 
-        $mailchimp->process();
+        $convertkit->process();
 
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
