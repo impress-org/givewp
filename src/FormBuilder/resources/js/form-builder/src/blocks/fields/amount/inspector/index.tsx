@@ -127,7 +127,7 @@ const Inspector = ({attributes, setAttributes}) => {
         levels.map((level) => ({
             ...level,
             id: String(Math.floor(Math.random() * 1000000)),
-            value: level.value.toString(),
+            value: level?.value.toString() ?? '',
         }))
     );
 
