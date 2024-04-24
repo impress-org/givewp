@@ -1,24 +1,24 @@
 <?php
 
-namespace Give\NotificationsHandler;
+namespace Give\Notifications;
 
 
 /**
  * @unreleased
  */
-class Scripts
+class Assets
 {
     /**
      * @unreleased
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         wp_register_script('give-notifications-handler', false);
         wp_enqueue_script('give-notifications-handler');
 
         wp_localize_script(
             'give-notifications-handler',
-            'GiveNotifications',
+            'givewpNotifications',
             [
                 'apiNonce' => wp_create_nonce('wp_rest'),
             ]

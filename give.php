@@ -58,7 +58,7 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
 use Give\FormMigration\ServiceProvider as FormMigrationServiceProvider;
-use Give\NotificationsHandler\ServiceProvider as NotificationHandlerServiceProvider;
+use Give\Notifications\ServiceProvider as NotificationsServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -236,7 +236,7 @@ final class Give
         DonationFormsServiceProvider::class,
         FormDesignServiceProvider::class,
         FormMigrationServiceProvider::class,
-        NotificationHandlerServiceProvider::class,
+        NotificationsServiceProvider::class,
         //TODO: merge this service provider
         Give\PaymentGateways\Gateways\ServiceProvider::class,
         Give\EventTickets\ServiceProvider::class,
