@@ -20,7 +20,7 @@ class TestConvertKit extends TestCase
     public function testProcessShouldUpdateConvertkitBlockAttributesFromV2FormMeta(): void
     {
         $meta = [
-            '_give_convertkit_custom_label'    => __('Subscribe to newsletter?'),
+            '_give_convertkit_custom_label'    => __('Subscribe to newsletter?' , 'give'),
             '_give_convertkit'                 => '6352843',
             '_give_convertkit_tags'            => ['4619079', '4619080'],
             '_give_convertkit_checked_default' => true,
@@ -48,7 +48,7 @@ class TestConvertKit extends TestCase
     public function testProcessShouldUpdateConvertkitBlockAttributesFromGlobalSettings(): void
     {
         $meta = [
-            'give_convertkit_label'           => __('Subscribe to newsletter?'),
+            'give_convertkit_label'           => __('Subscribe to newsletter?', 'give'),
             'give_convertkit_list'            => '6352843',
             '_give_convertkit_tags'           => ['4619079', '4619080'],
             'give_convertkit_checked_default' => true,
@@ -89,7 +89,7 @@ class TestConvertKit extends TestCase
 
         $block = $payload->formV3->blocks->findByName('givewp-convertkit/convertkit');
 
-        $this->assertSame(__('Subscribe to newsletter?'), $block->getAttribute('label'));
+        $this->assertSame(__('Subscribe to newsletter?', 'give'), $block->getAttribute('label'));
         $this->assertSame('', $block->getAttribute('selectedForm'));
         $this->assertNull(null, $block->getAttribute('tagSubscribers'));
         $this->assertTrue(true, $block->getAttribute('defaultChecked'));
