@@ -11,6 +11,10 @@
         .components-popover__content {
             min-width: 320px;
             padding: 16px;
+
+            .components-number-control {
+                width: unset;
+            }
         }
 
         .components-input-control__input {
