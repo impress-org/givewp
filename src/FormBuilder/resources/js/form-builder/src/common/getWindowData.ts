@@ -19,6 +19,17 @@ type GoalTypeOption = {
 };
 
 /**
+ * @unreleased
+ */
+type GoalProgressOption = {
+    value: string;
+    label: string;
+    description: string;
+    isCustom: boolean;
+};
+
+/**
+ * @unreleased Added goalProgressOptions
  * @since 3.9.0 Added intlTelInputSettings
  * @since 3.7.0 Added isExcerptEnabled
  * @since 3.0.0
@@ -50,6 +61,7 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    goalProgressOptions: GoalProgressOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
     intlTelInputSettings: IntlTelInputSettings;
