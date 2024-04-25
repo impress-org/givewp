@@ -128,6 +128,7 @@ const DonationGoal = ({dispatch}) => {
                                 label={__('Start Date', 'give')}
                                 placeholder={__('Select Date', 'give')}
                                 date={goalStartDate}
+                                invalidDateAfter={goalEndDate}
                                 onSelect={(goalStartDate) => {
                                     dispatch(setFormSettings({goalStartDate}));
                                 }}
