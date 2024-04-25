@@ -4,6 +4,7 @@ namespace Give\DonationForms\Repositories;
 
 use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -411,21 +412,14 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased Update query to use intended amounts (without recovered fees).
      * @since 3.0.0
      */
     public function getTotalRevenue(int $formId): int
     {
-        $query = DB::table('give_formmeta')
-            ->select('meta_value as totalRevenue')
-            ->where('form_id', $formId)
-            ->where('meta_key', '_give_form_earnings')
-            ->get();
-
-        if (!$query) {
-            return 0;
-        }
-
-        return (int)$query->totalRevenue;
+        return (int) (new DonationQuery)
+            ->form($formId)
+            ->sumIntendedAmount();
     }
 
     /**

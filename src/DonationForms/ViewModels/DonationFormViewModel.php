@@ -6,6 +6,7 @@ use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -171,7 +172,7 @@ class DonationFormViewModel
             return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
         }
 
-        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+         return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
     }
 
     /**
