@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
- * @unreleased Add support to the "phone" field
+ * @since 3.7.0 Add support to the "phone" field
  * @since      1.0
  *
  * @param array $args The $_POST array being passed.
@@ -132,7 +132,7 @@ function give_edit_donor( $args ) {
      * @param array $args     The sanitized data submitted.
      * @param int   $donor_id The donor ID.
      *
-     * @unreleased
+     * @since 3.7.0
      */
     do_action('give_admin_donor_details_updating', $args, $donor->id);
 

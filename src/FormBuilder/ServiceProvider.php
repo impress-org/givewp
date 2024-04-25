@@ -63,7 +63,6 @@ class ServiceProvider implements ServiceProviderInterface
             give(UpdateEmailSettingsMeta::class)->__invoke($form);
             give(UpdateEmailTemplateMeta::class)->__invoke($form);
             give(UpdateDonorCommentsMeta::class)->__invoke($form);
-            give(UpdateFormExcerpt::class)->__invoke($form);
         });
 
         Hooks::addAction('givewp_form_builder_new_form', ConvertGlobalDefaultOptionsToDefaultBlocks::class);
