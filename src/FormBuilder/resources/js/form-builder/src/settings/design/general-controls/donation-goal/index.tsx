@@ -11,7 +11,7 @@ import {
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
-import DateTimePicker from '@givewp/form-builder/components/DateTimePicker';
+import DatePicker from '@givewp/form-builder/components/DatePicker';
 
 const {goalTypeOptions, goalProgressOptions} = getFormBuilderWindowData();
 
@@ -123,7 +123,8 @@ const DonationGoal = ({dispatch}) => {
 
                     {selectedGoalProgressType.isCustom && (
                         <>
-                            <DateTimePicker
+                            <DatePicker
+                                showTimeSelector
                                 label={__('Start Date', 'give')}
                                 placeholder={__('Select Date', 'give')}
                                 date={goalStartDate}
@@ -132,7 +133,8 @@ const DonationGoal = ({dispatch}) => {
                                 }}
                             />
 
-                            <DateTimePicker
+                            <DatePicker
+                                showTimeSelector
                                 label={__('End Date', 'give')}
                                 placeholder={__('Select Date', 'give')}
                                 date={goalEndDate}

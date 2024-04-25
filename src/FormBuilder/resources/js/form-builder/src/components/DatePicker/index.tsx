@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {useRef, useState} from 'react';
-import {Button, DateTimePicker, PanelRow, Popover, TextControl} from '@wordpress/components';
+import {Button, DatePicker, DateTimePicker, PanelRow, Popover, TextControl} from '@wordpress/components';
 
 import './styles.scss';
 import {close} from '@wordpress/icons';
@@ -13,12 +13,22 @@ interface DatePickerProps {
     invalidDateBefore?: string;
     invalidDateAfter?: string;
     is12Hour?: boolean;
+    showTimeSelector?: boolean;
 }
 
 /**
  * @unreleased
  */
-export default ({label, placeholder, date: value, onSelect, invalidDateBefore = null, invalidDateAfter = null, is12Hour = true}: DatePickerProps) => {
+export default ({
+    label,
+    placeholder,
+    date: value,
+    onSelect,
+    invalidDateBefore = null,
+    invalidDateAfter = null,
+    is12Hour = true,
+    showTimeSelector = false,
+}: DatePickerProps) => {
 
     const popoverRef = useRef();
 
@@ -53,7 +63,7 @@ export default ({label, placeholder, date: value, onSelect, invalidDateBefore = 
         }
 
         return false;
-    }
+    };
 
     return (
         <PanelRow ref={popoverRef}>
@@ -83,14 +93,24 @@ export default ({label, placeholder, date: value, onSelect, invalidDateBefore = 
 
                         <label>{label}</label>
 
-                        <DateTimePicker
-                            is12Hour={is12Hour}
-                            currentDate={currentDate}
-                            isInvalidDate={(date) => checkDate(date)}
-                            onChange={(date) => {
-                                setDate(date);
-                            }}
-                        />
+                        {showTimeSelector ? (
+                            <DateTimePicker
+                                is12Hour={is12Hour}
+                                currentDate={currentDate}
+                                isInvalidDate={(date) => checkDate(date)}
+                                onChange={(date) => {
+                                    setDate(date);
+                                }}
+                            />
+                        ) : (
+                            <DatePicker
+                                currentDate={currentDate}
+                                isInvalidDate={(date) => checkDate(date)}
+                                onChange={(date) => {
+                                    setDate(date);
+                                }}
+                            />
+                        )}
 
                         <div className="givewp-date-picker_popover__buttons">
                             <Button variant="primary" onClick={onSelectDate}>
@@ -98,8 +118,8 @@ export default ({label, placeholder, date: value, onSelect, invalidDateBefore = 
                             </Button>
 
                             <Button variant="secondary" onClick={() => {
-                                onSelect('')
-                                setIsVisible(false)
+                                onSelect('');
+                                setIsVisible(false);
                             }}>
                                 {__('Reset', 'give')}
                             </Button>
