@@ -11,18 +11,30 @@ import {
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
+import DateTimePicker from '@givewp/form-builder/components/DateTimePicker';
 
-const {goalTypeOptions} = getFormBuilderWindowData();
+const {goalTypeOptions, goalProgressOptions} = getFormBuilderWindowData();
 
 const DonationGoal = ({dispatch}) => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
+        settings: {
+            enableDonationGoal,
+            enableAutoClose,
+            goalAchievedMessage,
+            goalType,
+            goalProgressType,
+            goalAmount,
+            goalStartDate,
+            goalEndDate
+        },
     } = useFormState();
 
     const {publishGoal, publishGoalType} = useDonationFormPubSub();
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
+    const selectedGoalProgressType = goalProgressOptions.find((option) => option.value === goalProgressType);
+    const selectedGoalProgressDescription = selectedGoalProgressType ? selectedGoalProgressType.description : '';
 
     return (
         <PanelBody title={__('Donation Goal', 'give')} initialOpen={false}>
@@ -40,28 +52,6 @@ const DonationGoal = ({dispatch}) => {
 
             {enableDonationGoal && (
                 <>
-                    <PanelRow>
-                        <ToggleControl
-                            label={__('Auto-Close Form', 'give')}
-                            help={__(
-                                'Do you want to close the donation forms and stop accepting donations once this goal has been met?',
-                                'give'
-                            )}
-                            checked={enableAutoClose}
-                            onChange={() => dispatch(setFormSettings({enableAutoClose: !enableAutoClose}))}
-                        />
-                    </PanelRow>
-                    {enableAutoClose && (
-                        <PanelRow>
-                            <TextareaControl
-                                label={__('Goal Achieved Message', 'give')}
-                                value={goalAchievedMessage}
-                                onChange={(goalAchievedMessage) =>
-                                    dispatch(setFormSettings({goalAchievedMessage: goalAchievedMessage}))
-                                }
-                            />
-                        </PanelRow>
-                    )}
                     <PanelRow>
                         <SelectControl
                             label={__('Goal Type', 'give')}
@@ -97,6 +87,62 @@ const DonationGoal = ({dispatch}) => {
                             />
                         )}
                     </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Auto-Close Form', 'give')}
+                            help={__(
+                                'Do you want to close the donation forms and stop accepting donations once this goal has been met?',
+                                'give',
+                            )}
+                            checked={enableAutoClose}
+                            onChange={() => dispatch(setFormSettings({enableAutoClose: !enableAutoClose}))}
+                        />
+                    </PanelRow>
+                    {enableAutoClose && (
+                        <PanelRow>
+                            <TextareaControl
+                                label={__('Goal Achieved Message', 'give')}
+                                value={goalAchievedMessage}
+                                onChange={(goalAchievedMessage) =>
+                                    dispatch(setFormSettings({goalAchievedMessage: goalAchievedMessage}))
+                                }
+                            />
+                        </PanelRow>
+                    )}
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Goal Progress', 'give')}
+                            value={goalProgressType}
+                            options={goalProgressOptions}
+                            onChange={(goalProgressType: string) => {
+                                dispatch(setFormSettings({goalProgressType}));
+                            }}
+                            help={selectedGoalProgressDescription}
+                        />
+                    </PanelRow>
+
+                    {selectedGoalProgressType.isCustom && (
+                        <>
+                            <DateTimePicker
+                                label={__('Start Date', 'give')}
+                                placeholder={__('Select Date', 'give')}
+                                date={goalStartDate}
+                                onSelect={(goalStartDate) => {
+                                    dispatch(setFormSettings({goalStartDate}));
+                                }}
+                            />
+
+                            <DateTimePicker
+                                label={__('End Date', 'give')}
+                                placeholder={__('Select Date', 'give')}
+                                date={goalEndDate}
+                                invalidDateBefore={goalStartDate}
+                                onSelect={(goalEndDate) => {
+                                    dispatch(setFormSettings({goalEndDate}));
+                                }}
+                            />
+                        </>
+                    )}
                 </>
             )}
         </PanelBody>
