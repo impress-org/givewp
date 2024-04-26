@@ -1,9 +1,9 @@
 import {__} from '@wordpress/i18n';
 import {useRef, useState} from 'react';
+import {close} from '@wordpress/icons';
 import {Button, DatePicker, DateTimePicker, PanelRow, Popover, TextControl} from '@wordpress/components';
 
 import './styles.scss';
-import {close} from '@wordpress/icons';
 
 interface DatePickerProps {
     label: string;
@@ -34,7 +34,7 @@ export default ({
 
     const [date, setDate] = useState<string>(value);
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const currentDate = date ? new Date(Date.parse(date)) : new Date();
+    const currentDate =  date ? new Date(date) : new Date();
 
 
     const convertJsDateToMySQLDate = (dateTime: string) => {
