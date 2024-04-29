@@ -6,26 +6,28 @@ import classNames from 'classnames';
 type DonationAmountLevelsProps = {
     name: string;
     currency: string;
-    levels: {label: string; value: number}[];
+    levels: Level[];
     onLevelClick?: (amount: number) => void;
 };
+
+type GroupedLevels = {
+    labeled: Level[];
+    unlabeled: Level[];
+};
+
+type Level = {label: string | null; value: number};
 
 /**
  * @unreleased add level descriptions.
  * @since 3.0.0
  */
-export default function DonationAmountLevels({
-    name,
-    currency,
-    levels,
-    onLevelClick,
-}: DonationAmountLevelsProps) {
+export default function DonationAmountLevels({name, currency, levels, onLevelClick}: DonationAmountLevelsProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useCurrencyFormatter(currency);
 
-    const groupedLevels = levels.reduce(
-        (acc, level) => {
+    const groupedLevels: GroupedLevels = levels.reduce(
+        (acc: GroupedLevels, level) => {
             const key = level.label ? 'labeled' : 'unlabeled';
             acc[key].push(level);
             return acc;
