@@ -130,7 +130,7 @@ $borderColor: #9A9A9A;
 
         .givewp-fields-amount__level-container {
             display: flex;
-            align-items: center;
+            align-items: start;
             flex: 1;
             gap: var(--givewp-spacing-4);
             min-width: calc((100% - var(--givewp-spacing-2)) / 2);
@@ -145,17 +145,16 @@ $borderColor: #9A9A9A;
         ;
 
             .givewp-fields-amount__level {
-                height: 100%;
-
                 &--description {
                     max-width: 144px;
                 }
             }
 
-            .givewp-fields-amount__description {
-                margin-bottom: 0;
+            .givewp-fields-amount__level__description {
+                align-items: center;
                 color: var(--givewp-grey-700);
-                font-size: 1rem;
+                display: flex;
+                min-height: 100%;
             }
         }
     }
