@@ -141,12 +141,17 @@ $borderColor: #9A9A9A;
 
             &--col {
                 flex-basis: 100%;
+                padding-bottom: var(--givewp-spacing-2);
             }
         ;
 
             .givewp-fields-amount__level {
                 &--description {
-                    max-width: 144px;
+                    flex-basis: 110px;
+
+                    @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+                        flex-basis: 144px;
+                    }
                 }
             }
 
@@ -154,6 +159,7 @@ $borderColor: #9A9A9A;
                 align-items: center;
                 color: var(--givewp-grey-700);
                 display: flex;
+                flex: 1;
                 min-height: 100%;
             }
         }
