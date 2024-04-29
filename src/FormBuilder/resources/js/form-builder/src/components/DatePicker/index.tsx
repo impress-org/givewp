@@ -34,7 +34,7 @@ export default ({
 
     const [date, setDate] = useState<string>(value);
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const currentDate =  date ? new Date(date) : new Date();
+    const currentDate = date ? new Date(date) : new Date();
 
 
     const convertJsDateToMySQLDate = (dateTime: string) => {
@@ -54,12 +54,17 @@ export default ({
     };
 
     const checkDate = (date: Date) => {
-        if (invalidDateBefore) {
-            return date < new Date(invalidDateBefore);
+        // Check if the date is in range
+        if (invalidDateBefore && invalidDateAfter) {
+            return !(date > new Date(invalidDateBefore) && date < new Date(invalidDateAfter));
         }
 
-        if (invalidDateAfter) {
-            return date > new Date(invalidDateAfter);
+        if (invalidDateBefore && date < new Date(invalidDateAfter)) {
+            return true;
+        }
+
+        if (invalidDateAfter && date > new Date(invalidDateAfter)) {
+            return true;
         }
 
         return false;
