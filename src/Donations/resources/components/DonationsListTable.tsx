@@ -248,7 +248,7 @@ export default function DonationsListTable() {
                 {__('Import Donations', 'give')}
             </a>
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
-                {__('Switch to Legacy View')}
+                {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>
     );

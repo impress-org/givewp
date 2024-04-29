@@ -15,7 +15,7 @@ _e(
 echo '</p>
                         <a href="https://docs.givewp.com/feerecovery-settings-gateway" target="_blank"
                            class="givewp-payment-gateway-fee-recovery-recommendation_external">';
-_e('Recover your fees');
+_e('Recover your fees', 'give');
 echo '<img
                                 src="' . esc_url(
         GIVE_PLUGIN_URL . 'assets/dist/images/list-table/external-link-icon.svg'
