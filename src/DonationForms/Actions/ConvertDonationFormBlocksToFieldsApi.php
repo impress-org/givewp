@@ -8,6 +8,7 @@ use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
+use Give\DonationForms\Rules\PhoneIntlInputRule;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -25,9 +26,11 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
+use Give\Framework\FieldsAPI\Phone;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
+use Give\Helpers\IntlTelInput;
 use WP_User;
 
 /**
@@ -126,6 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *
      * @return Node|null
@@ -168,6 +172,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
                         return $email;
                     });
+            case 'givewp/donor-phone':
+                return Phone::make('phone')
+                    ->setIntlTelInputSettings(IntlTelInput::getSettings())
+                    ->rules('max:50', (bool)$block->getAttribute('required') ? 'required' : 'optional',
+                        new PhoneIntlInputRule());
+
 
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);

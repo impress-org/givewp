@@ -32,7 +32,7 @@ class TestTextBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      *
      * @throws Exception
      */

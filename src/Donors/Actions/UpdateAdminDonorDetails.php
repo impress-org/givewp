@@ -20,7 +20,7 @@ class UpdateAdminDonorDetails
     public function __invoke(array $args, int $donorId)
     {
         $donor = Donor::find($donorId);
-        $donor->phone = $args['give_donor_phone_number--international-format'];
+        $donor->phone = $args['give_donor_phone_number'] ?? '';
         $donor->save();
     }
 }

@@ -13,7 +13,7 @@ class TestDonationAmountBlockType extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.8.0
      * @throws Exception
      */
     public function testGetName(): void
@@ -25,7 +25,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      * @throws Exception
      */
     public function testDefaultBlockModelAttributesMatchBlockTypeProperties(): void
@@ -57,7 +57,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.8.0
      */
     public function getDefaultDonationAmountBlockModel(): BlockModel
     {

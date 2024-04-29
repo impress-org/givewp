@@ -343,7 +343,7 @@ class DonationFormsAdminPage
             //            'MailChimp' => class_exists('Give_MailChimp'),
             //            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
             //            'Donation Block for Stripe' => defined('DONATION_BLOCK_FILE'),
-            //            'Double the Donation' => defined('GIVE_DTD_NAME'),
+            'Double the Donation' => defined('GIVE_DTD_NAME'),
             //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
             //            'Receipt Attachments' => defined('GIVERA_VERSION'),
             'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
