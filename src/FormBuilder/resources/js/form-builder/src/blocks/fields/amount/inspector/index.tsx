@@ -226,6 +226,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         toggleLabel={__('Enable amount description', 'give')}
                         toggleEnabled={descriptionsEnabled}
                         onHandleToggle={(value) => setAttributes({descriptionsEnabled: value})}
+                        maxLabelLength={120}
                     />
                 )}
             </PanelBody>
