@@ -349,7 +349,7 @@ class DonationFormsAdminPage
             'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
-            //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
+            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
         ];
 
         $output = [];
