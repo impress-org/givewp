@@ -121,7 +121,7 @@ const DonationGoal = ({dispatch}) => {
                         />
                     </PanelRow>
 
-                    {selectedGoalProgressType.isCustom && (
+                    {goalProgressType === 'custom' && (
                         <>
                             <DatePicker
                                 showTimeSelector

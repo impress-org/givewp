@@ -119,15 +119,13 @@ class FormBuilderViewModel
     public function getGoalProgressOption(
         string $value,
         string $label,
-        string $description,
-        bool $isCustom = false
+        string $description
     ): array
     {
         return [
             'value' => $value,
             'label' => $label,
-            'description' => $description,
-            'isCustom' => $isCustom
+            'description' => $description
         ];
     }
 
@@ -194,8 +192,7 @@ class FormBuilderViewModel
             $this->getGoalProgressOption(
                 GoalProgressType::CUSTOM,
                 __('Custom', 'give'),
-                __('Displays the goal progress from the start date to the end date.', 'give'),
-                true
+                __('Displays the goal progress from the start date to the end date.', 'give')
             )
         ];
     }
