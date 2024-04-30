@@ -4,6 +4,7 @@ namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
@@ -32,6 +33,18 @@ class DonationFormGoalData implements Arrayable
      * @var int
      */
     public $targetAmount;
+    /**
+     * @var GoalProgressType
+     */
+    public $goalProgressType;
+    /**
+     * @var string|null
+     */
+    public $goalStartDate;
+    /**
+     * @var string|null
+     */
+    public $goalEndDate;
 
     /**
      * @since 3.0.0
@@ -43,6 +56,9 @@ class DonationFormGoalData implements Arrayable
         $this->isEnabled = $formSettings->enableDonationGoal ?? false;
         $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
         $this->targetAmount = $this->formSettings->goalAmount ?? 0;
+        $this->goalProgressType = $this->formSettings->goalProgressType ?? GoalProgressType::ALL_TIME();
+        $this->goalStartDate = $this->formSettings->goalStartDate ?? null;
+        $this->goalEndDate = $this->formSettings->goalEndDate ?? null;
     }
 
     /**
@@ -68,7 +84,9 @@ class DonationFormGoalData implements Arrayable
                 return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
             case GoalType::AMOUNT():
             default:
-                return $donationFormRepository->getTotalRevenue($this->formId);
+                return $this->goalProgressType->isAllTime()
+                    ? $donationFormRepository->getTotalRevenue($this->formId)
+                    : $donationFormRepository->getTotalRevenueForDateRange($this->formId,$this->goalStartDate, $this->goalEndDate);
         endswitch;
     }
 
