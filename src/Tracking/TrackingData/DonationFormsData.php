@@ -9,6 +9,7 @@ use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
+use Give\Tracking\Helpers\FormBlocks;
 use Give\Tracking\Repositories\TrackEvents;
 
 /**
@@ -60,6 +61,7 @@ class DonationFormsData implements TrackData
     /**
      * Get forms data.
      *
+     * @unreleased Add check for event block.
      * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      * @return array
@@ -81,6 +83,7 @@ class DonationFormsData implements TrackData
                 'form_template' => $this->getFormTemplate($formId),
                 'donor_count' => $this->formDonorCounts[$formId],
                 'revenue' => $this->formRevenues[$formId],
+                'event_block' => (int) FormBlocks::formId($formId)->hasBlock('givewp/event-tickets'),
             ];
             $this->addAddonsInformation($temp, $formId);
             $data[] = $temp;
