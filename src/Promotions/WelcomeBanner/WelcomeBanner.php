@@ -48,6 +48,8 @@ class WelcomeBanner
             ]
         );
 
+        wp_set_script_translations( 'givewp-welcome-banner', 'give' );
+        
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style('givewp-admin-fonts');
     }
