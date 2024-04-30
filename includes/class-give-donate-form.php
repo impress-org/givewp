@@ -814,6 +814,10 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_classes( $args ) {
+        /**
+         * @unreleased sanitize $args
+         */
+        $args = give_clean($args);
 
 		$float_labels_option = give_is_float_labels_enabled( $args )
 			? 'float-labels-enabled'
@@ -850,6 +854,11 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_wrap_classes( $args ) {
+        /**
+         * @unreleased sanitize $args
+         */
+        $args = give_clean($args);
+
 		$custom_class = [
 			'give-form-wrap',
 		];
