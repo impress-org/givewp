@@ -6,12 +6,12 @@ use Give\FormMigration\Contracts\FormMigrationStep;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.10.0
  */
 class ActiveCampaign extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function canHandle(): bool
     {
@@ -19,7 +19,7 @@ class ActiveCampaign extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function process(): void
     {
@@ -32,7 +32,7 @@ class ActiveCampaign extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     private function getAttributes(): array
     {

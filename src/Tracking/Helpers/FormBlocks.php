@@ -5,18 +5,18 @@ namespace Give\Tracking\Helpers;
 use Give\DonationForms\Models\DonationForm;
 
 /**
- * @unreleased
+ * @since 3.10.0
  */
 class FormBlocks
 {
     /**
      * @var DonationForm
-     * @unreleased
+     * @since 3.10.0
      */
     protected $form;
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function __construct(DonationForm $form)
     {
@@ -24,7 +24,7 @@ class FormBlocks
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public static function formId($formId): self
     {
@@ -32,7 +32,7 @@ class FormBlocks
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function hasBlock(string $blockName): bool
     {

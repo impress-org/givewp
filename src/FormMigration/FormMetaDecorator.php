@@ -849,7 +849,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function isActiveCampaignEnabled(): bool
     {
@@ -863,7 +863,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function getActiveCampaignLabel(): string
     {
@@ -873,7 +873,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function getActiveCampaignDefaultChecked(): bool
     {
@@ -887,7 +887,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function getActiveCampaignSelectedLists(): array
     {
@@ -898,7 +898,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function getActiveCampaignTags(): array
     {

@@ -15,7 +15,7 @@ class TestActiveCampaign extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testProcessShouldUpdateActiveCampaignBlockAttributesFromV2FormMeta(): void
     {
@@ -43,7 +43,7 @@ class TestActiveCampaign extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testProcessShouldUpdateActiveCampaignBlockAttributesFromGlobalSettings(): void
     {
@@ -75,7 +75,7 @@ class TestActiveCampaign extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testProcessShouldUpdateActiveCampaignBlockAttributesWhenNoMeta(): void
     {
