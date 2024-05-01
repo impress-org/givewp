@@ -84,6 +84,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @unreleased Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
