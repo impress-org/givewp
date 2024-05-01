@@ -274,7 +274,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
-        $self->customCss = wp_strip_all_tags($array['customCss']) ?? '';
+        $self->customCss = wp_strip_all_tags($array['customCss'] ?? '');
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
