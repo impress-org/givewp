@@ -111,7 +111,7 @@ class DonationConfirmationReceiptViewModel
 
         <?php
         if ($customCss): ?>
-            <style><?= $customCss ?></style>
+            <style><?php echo wp_strip_all_tags($customCss); ?></style>
         <?php
         endif; ?>
 

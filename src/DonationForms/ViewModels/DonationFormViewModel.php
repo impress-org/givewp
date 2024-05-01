@@ -266,7 +266,7 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo $this->formSettings->customCss; ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
         <?php
         endif; ?>
 
