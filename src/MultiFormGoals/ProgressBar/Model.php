@@ -2,6 +2,7 @@
 
 namespace Give\MultiFormGoals\ProgressBar;
 
+use Give\DonationForms\DonationQuery;
 use Give\ValueObjects\Money;
 
 class Model
@@ -132,14 +133,18 @@ class Model
     /**
      * Get raw earnings value for Progress Bar
      *
+     * @unreleased use DonationQuery
      * @since 2.9.0
      */
     public function getTotal(): string
     {
-        $query = new Query($this->getForms());
-        $results = $query->getResults();
+        $amount = 0;
 
-        return Money::ofMinor($results->total, give_get_option('currency'))->getAmount();
+        foreach($this->getForms() as $formId) {
+            $amount += (new DonationQuery())->form($formId)->sumIntendedAmount();
+        }
+
+        return $amount;
     }
 
     /**

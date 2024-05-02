@@ -1,6 +1,7 @@
 <?php
 
 use Give\Log\Log;
+use Give\DonationForms\DonationQuery;
 
 /**
  * This template is used to display the goal with [give_goal]
@@ -8,6 +9,7 @@ use Give\Log\Log;
 
 /**
  * @var int $form_id form id passed from the give_show_goal_progress() context
+ * @var $args array shortcode args
  */
 
 if ( empty($form_id) ) {
@@ -37,6 +39,25 @@ $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_tex
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
 /**
+ * @unreleased use DonationQuery to get donation amounts
+ */
+$form_income = 0;
+
+if ($args['start_date'] === $args['end_date']) {
+    $form_income = (new DonationQuery())->form($form->ID)->sumIntendedAmount();
+} else {
+    // If end date is not set, we have to use the current datetime.
+    if ( ! $args['end_date']) {
+        $args['end_date'] = date('Y-m-d H:i:s');
+    }
+
+    $form_income = (new DonationQuery())
+        ->form($form->ID)
+        ->between($args['start_date'], $args['end_date'])
+        ->sumIntendedAmount();
+}
+
+/**
  * Allow filtering the goal stats used for this shortcode context.
  *
  * @since 2.23.1
@@ -49,7 +70,7 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
 $shortcode_stats = apply_filters(
     'give_goal_shortcode_stats',
     array(
-        'income' => $form->get_earnings(),
+        'income' => $form_income,
         'goal'   => $goal_progress_stats['raw_goal'],
     ),
     $form_id,
