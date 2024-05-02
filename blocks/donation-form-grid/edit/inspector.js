@@ -302,7 +302,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             </Panel>
             <PanelColorSettings
-                title={ __( 'Color Settings' ) }
+                title={ __( 'Color Settings', 'give' ) }
                 colorSettings={ [
                     {
                         value: tagBackgroundColor

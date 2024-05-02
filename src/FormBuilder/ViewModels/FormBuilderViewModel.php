@@ -15,12 +15,14 @@ use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
 {
     /**
-     * @unreleased Add support to isExcerptEnabled key in the compared array
+     * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
+     * @since      3.7.0 Add support to isExcerptEnabled key in the returned array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
@@ -78,6 +80,7 @@ class FormBuilderViewModel
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes'),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
+            'intlTelInputSettings' => IntlTelInput::getSettings(),
         ];
     }
 

@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 6.0
-Tested up to: 6.4
+Requires at least: 6.3
+Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 3.6.1
+Stable tag: 3.10.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -167,7 +167,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 6.0 or greater
+* WordPress 6.3 or greater
 * PHP version 7.2 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
@@ -262,6 +262,33 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.10.0: April 30th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming ActiveCampaign add-on release
+* Enhancement: Updated PayPal support phone number
+* Enhancement: Updated various strings to be translatable (open-source contribution by @DAnn2012)
+* Security: sanitize additional give_form shortcode args
+* Fix: Resolved styling issues with recurring labels in the form builder
+
+= 3.9.0: April 24th, 2024 =
+* New: Added a donor phone number block to the form builder to collect donor phone numbers on donation forms
+* Enhancement: Updated form field inputs to have a single border color when selected 
+
+= 3.8.0: April 17th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming double the donation add-on release
+* Enhancement: Updated the form builder tour to highlight where to find the guided tour again 
+* Dev: Added BlockType api for easier block to field conversion
+
+= 3.7.0: April 10th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming constant contact add-on release
+* New: Added phone number field to the donor details page, more updates for this field will come in future releases!
+* Enhancement: Updated the form block option to select more available forms than the original limit of 10
+* Enhancement: Updated the form builder left-side menu to open automatically when entering the build screen
+* Security: Added sanitizing and escaping to shortcodes
+* Fix: Resolved a conflict with GiveWP and WordPress bulk actions functionality
+
+= 3.6.2: April 5th, 2024 =
+* Fix: Resolved an issue with WordPress 6.5 and the visual form builder that was making it difficult to interact with blocks
+
 = 3.6.1: March 21st, 2024 =
 * Fix: Resolved an issue with PayPal donations and currency switcher on donation forms using the visual form builder
 

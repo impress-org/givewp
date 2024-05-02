@@ -45,12 +45,15 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormMeta::class,
                 Steps\PdfSettings::class,
                 Steps\FeeRecovery::class,
+                Steps\ConstantContact::class,
                 Steps\PerFormGateways::class,
                 Steps\Mailchimp::class,
                 Steps\FundsAndDesignations::class,
                 Steps\GiftAid::class,
                 Steps\FormFeaturedImage::class,
                 Steps\FormExcerpt::class,
+                Steps\ActiveCampaign::class,
+                Steps\DoubleTheDonation::class,
             ]);
         });
     }

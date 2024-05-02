@@ -511,6 +511,54 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 3.7.0
+     */
+    public function isConstantContactEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_enable'),'true');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'),'true');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_constant_contact_show_checkout_signup'), 'on');
+
+        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
+      }
+
+    /**
+     * @since 3.7.0
+     */
+    public function getConstantContactLabel(): string
+    {
+        $defaultMeta = give_get_option('give_constant_contact_label', __('Subscribe to our newsletter?'));
+
+        return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
+    }
+
+    /**
+     * @since 3.7.0
+     */
+    public function getConstantContactDefaultChecked(): bool
+    {
+        $defaultMeta = give_is_setting_enabled(
+            give_get_option('give_constant_contact_checked_default',
+                true),
+            'on'
+        );
+
+        return $this->getMeta('_give_constant_contact_checked_default', $defaultMeta);
+    }
+
+    /**
+     * @since 3.7.0
+     */
+    public function getConstantContactSelectedLists(): array
+    {
+        $defaultMeta = give_get_option('give_constant_contact_list', []);
+
+        return (array)$this->getMeta('_give_constant_contact', $defaultMeta);
+    }
+
+    /**
      * @since 3.3.0
      */
     public function isMailchimpEnabled(): bool
@@ -533,7 +581,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpDefaultChecked(): bool
@@ -542,9 +590,8 @@ class FormMetaDecorator extends FormModelDecorator
             give_get_option('give_mailchimp_checked_default', true)));
     }
 
-
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendDonationData(): bool
@@ -554,7 +601,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased add global setting as default.
+     * @since 3.7.0 add global setting as default.
      * @since 3.3.0
      */
     public function getMailchimpSendFFMData(): bool
@@ -763,6 +810,22 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
+     * @since 3.8.0
+     */
+    public function getDoubleTheDonationStatus(): string
+    {
+        return $this->getMeta('dtd_enable_disable');
+    }
+
+    /**
+     * @since 3.8.0
+     */
+    public function getDoubleTheDonationLabel(): string
+    {
+        return $this->getMeta('give_dtd_label');
+    }
+
+    /**
      * @since 3.5.0
      */
     public function getFormFeaturedImage()
@@ -783,5 +846,65 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return $featuredImage;
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function isActiveCampaignEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'disabled');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_activecampaign_globally_enabled'), 'on');
+
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignLabel(): string
+    {
+        $defaultMeta = get_option('give_activecampaign_label', __('Subscribe to our newsletter?', 'give'));
+
+        return $this->getMeta('give_activecampaign_label', $defaultMeta);
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignDefaultChecked(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
+
+        $isGlobalChecked = give_is_setting_enabled(give_get_option('give_activecampaign_checkbox_default'), 'on');
+
+        $isFormChecked = give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default'), 'on');
+
+        return $isFormEnabled ? $isFormChecked : $isGlobalChecked;
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignSelectedLists(): array
+    {
+        $defaultMeta = give_get_option('give_activecampaign_lists', []);
+
+        return !empty($this->getMeta('give_activecampaign_lists')) ?
+            $this->getMeta('give_activecampaign_lists') : $defaultMeta;
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignTags(): array
+    {
+        $defaultMeta = give_get_option('give_activecampaign_tags',[]);
+
+        return !empty($this->getMeta('give_activecampaign_tags')) ?
+            $this->getMeta('give_activecampaign_tags') : $defaultMeta;
     }
 }
