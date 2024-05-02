@@ -249,7 +249,7 @@ class DonationFormsAdminPage
 
             jQuery(function () {
                 jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>',
+                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>',
                 );
             });
         </script>
@@ -349,7 +349,7 @@ class DonationFormsAdminPage
             'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
-            //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
+            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
         ];
 
         $output = [];

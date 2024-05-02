@@ -847,4 +847,64 @@ class FormMetaDecorator extends FormModelDecorator
 
         return $featuredImage;
     }
+
+    /**
+     * @since 3.10.0
+     */
+    public function isActiveCampaignEnabled(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
+
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'disabled');
+
+        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_activecampaign_globally_enabled'), 'on');
+
+        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignLabel(): string
+    {
+        $defaultMeta = get_option('give_activecampaign_label', __('Subscribe to our newsletter?', 'give'));
+
+        return $this->getMeta('give_activecampaign_label', $defaultMeta);
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignDefaultChecked(): bool
+    {
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
+
+        $isGlobalChecked = give_is_setting_enabled(give_get_option('give_activecampaign_checkbox_default'), 'on');
+
+        $isFormChecked = give_is_setting_enabled($this->getMeta('give_activecampaign_checkbox_default'), 'on');
+
+        return $isFormEnabled ? $isFormChecked : $isGlobalChecked;
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignSelectedLists(): array
+    {
+        $defaultMeta = give_get_option('give_activecampaign_lists', []);
+
+        return !empty($this->getMeta('give_activecampaign_lists')) ?
+            $this->getMeta('give_activecampaign_lists') : $defaultMeta;
+    }
+
+    /**
+     * @since 3.10.0
+     */
+    public function getActiveCampaignTags(): array
+    {
+        $defaultMeta = give_get_option('give_activecampaign_tags',[]);
+
+        return !empty($this->getMeta('give_activecampaign_tags')) ?
+            $this->getMeta('give_activecampaign_tags') : $defaultMeta;
+    }
 }

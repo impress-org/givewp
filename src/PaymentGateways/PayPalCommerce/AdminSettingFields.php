@@ -237,7 +237,7 @@ class AdminSettingFields
     /**
      * Return admin guidance notice to fix PayPal on boarding error.
      *
-     * @unreleased Updated phone number for contact
+     * @since 3.10.0 Updated phone number for contact
      * @since 2.9.6
      *
      * @param bool $completeMessage
