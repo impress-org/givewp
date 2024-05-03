@@ -69,7 +69,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.15.1",
         "@fortawesome/react-fontawesome": "^0.1.12",
         "@givewp/design-system-foundation": "^1.1.0",
-        "@givewp/form-builder-library": "^1.5.0",
+        "@givewp/form-builder-library": "^1.6.0",
         "@hookform/error-message": "^2.0.1",
         "@hookform/resolvers": "^2.9.10",
         "@paypal/paypal-js": "^5.1.4",
