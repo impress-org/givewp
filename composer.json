@@ -99,7 +99,8 @@
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
                 "symfony/polyfill-mbstring",
-                "symfony/http-foundation"
+                "symfony/http-foundation",
+                "myclabs/php-enum"
             ],
             "exclude_from_copy": {
                 "packages": [
