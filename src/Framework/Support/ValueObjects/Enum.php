@@ -4,7 +4,6 @@ namespace Give\Framework\Support\ValueObjects;
 
 use BadMethodCallException;
 use Give\Framework\Support\Facades\Str;
-use Give\Vendors\MyCLabs\Enum\Enum as BaseEnum;
 
 /**
  * @since 2.10.0
