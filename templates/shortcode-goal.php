@@ -42,19 +42,17 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
  * @unreleased use DonationQuery to get donation amounts
  */
 $form_income = 0;
+$donationQuery = (new DonationQuery())->form($form->ID);
 
 if ($args['start_date'] === $args['end_date']) {
-    $form_income = (new DonationQuery())->form($form->ID)->sumIntendedAmount();
+    $form_income = $donationQuery->sumIntendedAmount();
 } else {
     // If end date is not set, we have to use the current datetime.
     if ( ! $args['end_date']) {
         $args['end_date'] = date('Y-m-d H:i:s');
     }
 
-    $form_income = (new DonationQuery())
-        ->form($form->ID)
-        ->between($args['start_date'], $args['end_date'])
-        ->sumIntendedAmount();
+    $form_income = $donationQuery->between($args['start_date'], $args['end_date'])->sumIntendedAmount();
 }
 
 /**
