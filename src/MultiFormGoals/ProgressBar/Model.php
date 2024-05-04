@@ -138,13 +138,7 @@ class Model
      */
     public function getTotal(): string
     {
-        $amount = 0;
-
-        foreach($this->getForms() as $formId) {
-            $amount += (new DonationQuery())->form($formId)->sumIntendedAmount();
-        }
-
-        return $amount;
+        return (new DonationQuery())->forms($this->getForms())->sumIntendedAmount();
     }
 
     /**

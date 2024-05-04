@@ -52,6 +52,18 @@ class DonationQuery extends QueryBuilder
         return $this;
     }
 
+
+    /**
+     * An opinionated where method for the multiple donation form IDs meta field.
+     * @unreleased
+     */
+    public function forms(array $formIds)
+    {
+        $this->joinMeta('_give_payment_form_id', 'formId');
+        $this->whereIn('formId.meta_value', $formIds);
+        return $this;
+    }
+
     /**
      * An opinionated whereBetween method for the completed date meta field.
      * @unreleased
