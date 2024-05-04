@@ -59,7 +59,7 @@ export default ({
             return !(date > new Date(invalidDateBefore) && date < new Date(invalidDateAfter));
         }
 
-        if (invalidDateBefore && date < new Date(invalidDateAfter)) {
+        if (invalidDateBefore && date < new Date(invalidDateBefore)) {
             return true;
         }
 
