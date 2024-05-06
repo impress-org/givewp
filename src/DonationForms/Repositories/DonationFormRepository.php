@@ -367,15 +367,9 @@ class DonationFormRepository
      */
     public function getTotalNumberOfDonors(int $formId): int
     {
-        return DB::table('give_donationmeta')
-            ->where('meta_key', DonationMetaKeys::DONOR_ID)
-            ->whereIn('donation_id', function ($builder) use ($formId) {
-                $builder
-                    ->select('donation_id')
-                    ->from('give_donationmeta')
-                    ->where('meta_key', DonationMetaKeys::FORM_ID)
-                    ->where('meta_value', $formId);
-            })->count('DISTINCT meta_value');
+        return (new DonationQuery)
+            ->form($formId)
+            ->countDonors();
     }
 
     /**
@@ -399,14 +393,6 @@ class DonationFormRepository
             ->count();
     }
 
-    public function getTotalNumberOfDonationsForDateRange(int $formId, string $startDate, string $endDate): int
-    {
-        return (new DonationQuery)
-            ->form($formId)
-            ->between($startDate, $endDate)
-            ->count();
-    }
-
     /**
      * @since 3.0.0
      */
@@ -425,17 +411,6 @@ class DonationFormRepository
     {
         return (int) (new DonationQuery)
             ->form($formId)
-            ->sumIntendedAmount();
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getTotalRevenueForDateRange(int $formId, string $startDate, string $endDate): int
-    {
-        return (int) (new DonationQuery)
-            ->form($formId)
-            ->between($startDate, $endDate)
             ->sumIntendedAmount();
     }
 
