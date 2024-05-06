@@ -367,9 +367,15 @@ class DonationFormRepository
      */
     public function getTotalNumberOfDonors(int $formId): int
     {
-        return (new DonationQuery)
-            ->form($formId)
-            ->countDonors();
+        return DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::DONOR_ID)
+            ->whereIn('donation_id', function ($builder) use ($formId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::FORM_ID)
+                    ->where('meta_value', $formId);
+            })->count('DISTINCT meta_value');
     }
 
     /**
