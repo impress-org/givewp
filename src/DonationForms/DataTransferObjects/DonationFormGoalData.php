@@ -3,8 +3,10 @@
 namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\DonationQuery;
+use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\SubscriptionQuery;
 use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
@@ -69,29 +71,30 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
+        $query = $this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())
+            ? new SubscriptionQuery()
+            : new DonationQuery();
 
-        $donationQuery = (new DonationQuery)->form($this->formId);
+        $query->form($this->formId);
 
         if($this->goalProgressType->isCustom()) {
-            $donationQuery->between($this->goalStartDate, $this->goalEndDate);
+            $query->between($this->goalStartDate, $this->goalEndDate);
         }
 
         switch ($this->goalType):
             case GoalType::DONORS():
-                return $donationQuery->countDonors();
+                return $query->countDonors();
             case GoalType::DONATIONS():
-                return $donationQuery->count();
+                return $query->count();
             case GoalType::SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalNumberOfSubscriptions($this->formId);
+                return $query->count();
             case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalInitialAmountFromSubscriptions($this->formId);
+                return $query->sumInitialAmount();
             case GoalType::DONORS_FROM_SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
+                return $query->countDonors();
             case GoalType::AMOUNT():
             default:
-                return $donationQuery->sumIntendedAmount();
+                return $query->sumIntendedAmount();
         endswitch;
     }
 
