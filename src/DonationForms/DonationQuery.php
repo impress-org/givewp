@@ -52,6 +52,18 @@ class DonationQuery extends QueryBuilder
         return $this;
     }
 
+
+    /**
+     * An opinionated where method for the multiple donation form IDs meta field.
+     * @unreleased
+     */
+    public function forms(array $formIds)
+    {
+        $this->joinMeta('_give_payment_form_id', 'formId');
+        $this->whereIn('formId.meta_value', $formIds);
+        return $this;
+    }
+
     /**
      * An opinionated whereBetween method for the completed date meta field.
      * @unreleased
@@ -59,7 +71,11 @@ class DonationQuery extends QueryBuilder
     public function between($startDate, $endDate)
     {
         $this->joinMeta('_give_completed_date', 'completed');
-        $this->whereBetween('completed.meta_value', $startDate, $endDate);
+        $this->whereBetween(
+            'completed.meta_value',
+            date('Y-m-d H:i:s', strtotime($startDate)),
+            date('Y-m-d H:i:s', strtotime($endDate))
+        );
         return $this;
     }
 
