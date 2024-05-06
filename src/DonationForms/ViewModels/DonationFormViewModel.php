@@ -247,6 +247,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
+     * @unreleased Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
@@ -266,7 +267,7 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo $this->formSettings->customCss; ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
         <?php
         endif; ?>
 

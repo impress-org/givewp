@@ -246,6 +246,7 @@ class FormSettings implements Arrayable, Jsonable
      * @since 3.7.0 Added formExcerpt
 
     /**
+     * @unreleased Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -273,7 +274,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
-        $self->customCss = $array['customCss'] ?? '';
+        $self->customCss = wp_strip_all_tags($array['customCss'] ?? '');
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
