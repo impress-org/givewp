@@ -6,7 +6,7 @@ use Give\DonationForms\Properties\FormSettings;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.11.0
  */
 class FormSettingsTest extends TestCase
 {

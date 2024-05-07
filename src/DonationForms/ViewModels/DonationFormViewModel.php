@@ -247,7 +247,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @unreleased Sanitize customCSS property
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string

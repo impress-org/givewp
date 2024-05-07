@@ -246,7 +246,7 @@ class FormSettings implements Arrayable, Jsonable
      * @since 3.7.0 Added formExcerpt
 
     /**
-     * @unreleased Sanitize customCSS property
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
