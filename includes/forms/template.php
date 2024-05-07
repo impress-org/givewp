@@ -28,7 +28,7 @@ function give_get_donation_form( $args = [] ) {
 	static $count = 1;
 
     /**
-     * @unreleased sanitize $args
+     * @since 3.11.0 sanitize $args
      */
     $args = give_clean($args);
 

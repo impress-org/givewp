@@ -815,7 +815,7 @@ class Give_Donate_Form {
 	 */
 	public function get_form_classes( $args ) {
         /**
-         * @unreleased sanitize $args
+         * @since 3.11.0 sanitize $args
          */
         $args = give_clean($args);
 
@@ -839,7 +839,7 @@ class Give_Donate_Form {
 		$form_classes_array = array_filter( $form_classes_array );
 
         /**
-         * @unreleased sanitize attributes
+         * @since 3.11.0 sanitize attributes
          */
         $form_classes_array = array_map('esc_attr', $form_classes_array);
 
@@ -860,7 +860,7 @@ class Give_Donate_Form {
 	 */
 	public function get_form_wrap_classes( $args ) {
         /**
-         * @unreleased sanitize $args
+         * @since 3.11.0 sanitize $args
          */
         $args = give_clean($args);
 
@@ -891,7 +891,7 @@ class Give_Donate_Form {
 		$form_wrap_classes_array = (array) apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
 
         /**
-         * @unreleased sanitize attributes
+         * @since 3.11.0 sanitize attributes
          */
         $form_wrap_classes_array = array_map('esc_attr', $form_wrap_classes_array);
 

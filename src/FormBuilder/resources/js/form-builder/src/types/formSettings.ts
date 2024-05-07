@@ -48,6 +48,7 @@ export type FormSettings = {
     pdfSettings: object;
     designSettingsImageUrl: string;
     designSettingsImageStyle: string;
+    designSettingsImageAlt: string;
     designSettingsLogoUrl: string;
     designSettingsLogoPosition: string;
     designSettingsSectionStyle: string;

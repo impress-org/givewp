@@ -123,16 +123,18 @@ export default function Header({dispatch, publishSettings}) {
                             label={__('Image', 'give')}
                             actionLabel={__('Upload Image', 'give')}
                             value={designSettingsImageUrl}
-                            onChange={(designSettingsImageUrl) => {
+                            onChange={(designSettingsImageUrl, designSettingsImageAlt) => {
                                 dispatch(
                                     setFormSettings({
                                         designSettingsImageUrl,
+                                        designSettingsImageAlt,
                                         designSettingsImageStyle,
                                     })
                                 );
 
                                 publishSettings({
                                     designSettingsImageUrl,
+                                    designSettingsImageAlt,
                                     designSettingsImageStyle,
                                 });
                             }}
