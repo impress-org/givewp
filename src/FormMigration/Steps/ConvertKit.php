@@ -7,12 +7,12 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 3.11.0
  */
 class ConvertKit extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function canHandle(): bool
     {
@@ -20,7 +20,7 @@ class ConvertKit extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function process(): void
     {
@@ -33,7 +33,7 @@ class ConvertKit extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     private function getAttributes(): array
     {

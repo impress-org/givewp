@@ -15,7 +15,7 @@ class TestConvertKit extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function testProcessShouldUpdateConvertkitBlockAttributesFromV2FormMeta(): void
     {
@@ -43,7 +43,7 @@ class TestConvertKit extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function testProcessShouldUpdateConvertkitBlockAttributesFromGlobalSettings(): void
     {
@@ -75,7 +75,7 @@ class TestConvertKit extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function testProcessShouldUpdateConvertkitBlockAttributesWhenNoMeta(): void
     {

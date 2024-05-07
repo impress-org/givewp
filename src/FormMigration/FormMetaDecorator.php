@@ -885,7 +885,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function getConvertKitLabel(): string
     {
@@ -895,7 +895,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function getConvertKitDefaultChecked(): bool
     {
@@ -905,7 +905,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function getConvertKitTags(): ?array
     {
@@ -917,7 +917,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.11.0
      */
     public function getConvertKitSelectedForm(): string
     {
