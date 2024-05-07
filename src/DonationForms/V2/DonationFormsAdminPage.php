@@ -93,19 +93,19 @@ class DonationFormsAdminPage
     public function loadScripts()
     {
         $data = [
-            'apiRoot'             => $this->apiRoot,
-            'bannerActionUrl'     => $this->bannerActionUrl,
-            'tooltipActionUrl'    => $this->tooltipActionUrl,
-            'apiNonce'            => $this->apiNonce,
-            'preload'             => $this->preloadDonationForms(),
-            'authors'             => $this->getAuthors(),
-            'table'               => give(DonationFormsListTable::class)->toArray(),
-            'adminUrl'            => $this->adminUrl,
-            'pluginUrl'           => GIVE_PLUGIN_URL,
-            'showBanner'          => ! get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
-            'showUpgradedTooltip' => ! get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
-            'supportedAddons'     => $this->getSupportedAddons(),
-            'supportedGateways'   => $this->getSupportedGateways(),
+            'apiRoot' => $this->apiRoot,
+            'bannerActionUrl' => $this->bannerActionUrl,
+            'tooltipActionUrl' => $this->tooltipActionUrl,
+            'apiNonce' => $this->apiNonce,
+            'preload' => $this->preloadDonationForms(),
+            'authors' => $this->getAuthors(),
+            'table' => give(DonationFormsListTable::class)->toArray(),
+            'adminUrl' => $this->adminUrl,
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'showBanner' => !get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
+            'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'supportedAddons' => $this->getSupportedAddons(),
+            'supportedGateways' => $this->getSupportedGateways(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -136,7 +136,7 @@ class DonationFormsAdminPage
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
-                    'supportedAddons'   => $this->getSupportedAddons(),
+                    'supportedAddons' => $this->getSupportedAddons(),
                     'supportedGateways' => $this->getSupportedGateways(),
                 ])
                 ->enqueue();
@@ -149,11 +149,11 @@ class DonationFormsAdminPage
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
-                    'supportedAddons'   => $this->getSupportedAddons(),
+                    'supportedAddons' => $this->getSupportedAddons(),
                     'supportedGateways' => $this->getSupportedGateways(),
-                    'migrationApiRoot'  => $this->migrationApiRoot,
-                    'apiNonce'          => $this->apiNonce,
-                    'isMigrated'        => _give_is_form_migrated((int)$_GET['post']),
+                    'migrationApiRoot' => $this->migrationApiRoot,
+                    'apiNonce' => $this->apiNonce,
+                    'isMigrated' => _give_is_form_migrated((int)$_GET['post']),
                 ])
                 ->enqueue();
 
@@ -170,7 +170,7 @@ class DonationFormsAdminPage
     private function preloadDonationForms()
     {
         $queryParameters = [
-            'page'    => 1,
+            'page' => 1,
             'perPage' => 30,
         ];
 
@@ -196,7 +196,7 @@ class DonationFormsAdminPage
 
         return array_map(function ($user) {
             return [
-                'id'   => $user->ID,
+                'id' => $user->ID,
                 'name' => $user->display_name,
             ];
         }, $author_users);
@@ -215,7 +215,7 @@ class DonationFormsAdminPage
      *
      * @since 3.0.0
      *
-     * @param WP_Post $post
+     * @param  WP_Post  $post
      *
      * @return void
      */
@@ -239,17 +239,20 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
-                    },
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    }
                 })
                     .then((res) => {
                         window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-forms';
                     });
             }
 
-            jQuery(function () {
-                jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>',
+            jQuery(function() {
+                jQuery(jQuery('.wrap .page-title-action')[0]).after(
+                    '<button class="page-title-action" onclick="showReactTable()"><?php _e(
+                        'Switch to New View',
+                        'give'
+                    ) ?></button>'
                 );
             });
         </script>
@@ -288,7 +291,7 @@ class DonationFormsAdminPage
      */
     private function isShowingAddV2FormPage(): bool
     {
-        return ! isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
 
     /**
@@ -321,35 +324,35 @@ class DonationFormsAdminPage
     public function getSupportedAddons(): array
     {
         $supportedAddons = [
-            'Recurring Donation'                 => class_exists('Give_Recurring'),
-            'Fee Recovery'                       => class_exists('Give_Fee_Recovery'),
-            'Currency Switcher'                  => class_exists('Give_Currency_Switcher'),
-            'Form Field Manager'                 => class_exists('Give_Form_Fields_Manager'),
-            'Tributes'                           => class_exists('Give_Tributes'),
+            'Recurring Donation' => class_exists('Give_Recurring'),
+            'Fee Recovery' => class_exists('Give_Fee_Recovery'),
+            'Currency Switcher' => class_exists('Give_Currency_Switcher'),
+            'Form Field Manager' => class_exists('Give_Form_Fields_Manager'),
+            'Tributes' => class_exists('Give_Tributes'),
             'Google Analytics Donation Tracking' => class_exists('Give_Google_Analytics'),
-            'PDF Receipts'                       => class_exists('Give_PDF_Receipts'),
-            'Annual Receipts'                    => class_exists('Give_Annual_Receipts'),
-            'Webhooks'                           => defined('GIVE_WEBHOOKS_VERSION'),
-            'Email Reports'                      => defined('GIVE_EMAIL_REPORTS_VERSION'),
-            'Zapier'                             => defined('GIVE_ZAPIER_VERSION'),
-            'Salesforce'                         => defined('GIVE_SALESFORCE_VERSION'),
-            'Donation Upsells for WooCommerce'   => class_exists('Give_WooCommerce'),
-            'Constant Contact'                   => class_exists('Give_Constant_Contact'),
-            'MailChimp'                          => class_exists('Give_MailChimp'),
+            'PDF Receipts' => class_exists('Give_PDF_Receipts'),
+            'Annual Receipts' => class_exists('Give_Annual_Receipts'),
+            'Webhooks' => defined('GIVE_WEBHOOKS_VERSION'),
+            'Email Reports' => defined('GIVE_EMAIL_REPORTS_VERSION'),
+            'Zapier' => defined('GIVE_ZAPIER_VERSION'),
+            'Salesforce' => defined('GIVE_SALESFORCE_VERSION'),
+            'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
+            'Constant Contact' => class_exists('Give_Constant_Contact'),
+            'MailChimp' => class_exists('Give_MailChimp'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
-            'Funds'                              => defined('GIVE_FUNDS_ADDON_NAME'),
-            'Peer-to-Peer'                       => defined('GIVE_P2P_NAME'),
-            'Gift Aid'                           => class_exists('Give_Gift_Aid'),
+            'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
+            'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
+            'Gift Aid' => class_exists('Give_Gift_Aid'),
             //            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
             //            'Donation Block for Stripe' => defined('DONATION_BLOCK_FILE'),
-            'Double the Donation'                => defined('GIVE_DTD_NAME'),
+            'Double the Donation' => defined('GIVE_DTD_NAME'),
             //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
             //            'Receipt Attachments' => defined('GIVERA_VERSION'),
-            'Per Form Gateways'                  => class_exists('Give_Per_Form_Gateways'),
+            'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
-            'ConvertKit'                         => defined('GIVE_CONVERTKIT_VERSION'),
-            'ActiveCampaign'                     => class_exists('Give_ActiveCampaign'),
+            'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
+            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
         ];
 
         $output = [];
