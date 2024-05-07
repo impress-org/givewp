@@ -46,7 +46,7 @@ class FormMetaDecorator extends FormModelDecorator
 
     public function isUserLoginRequired(): bool
     {
-        return !$this->isGuestDonationsEnabled();
+        return ! $this->isGuestDonationsEnabled();
     }
 
     public function isGuestDonationsEnabled(): bool
@@ -69,7 +69,7 @@ class FormMetaDecorator extends FormModelDecorator
             $form_option = give_get_meta($this->form->id, '_give_company_field', true);
             $global_setting = give_get_option('company_field');
 
-            if (!empty($form_option) && give_is_setting_enabled($form_option, ['required'])) {
+            if ( ! empty($form_option) && give_is_setting_enabled($form_option, ['required'])) {
                 return true;
             } elseif ('global' === $form_option && give_is_setting_enabled($global_setting, ['required'])) {
                 return true;
@@ -261,7 +261,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $_give_recurring = $this->getRecurringDonationsOption();
 
-        return !empty($_give_recurring) && 'no' !== $_give_recurring;
+        return ! empty($_give_recurring) && 'no' !== $_give_recurring;
     }
 
     /**
@@ -427,9 +427,9 @@ class FormMetaDecorator extends FormModelDecorator
         $instructions = give_get_meta($this->form->id, '_give_offline_checkout_notes', true);
 
         return [
-            'offlineEnabled' => $customization !== 'disabled',
+            'offlineEnabled'               => $customization !== 'disabled',
             'offlineUseGlobalInstructions' => $customization === 'global',
-            'offlineDonationInstructions' => $instructions,
+            'offlineDonationInstructions'  => $instructions,
         ];
     }
 
@@ -485,10 +485,10 @@ class FormMetaDecorator extends FormModelDecorator
                 }
 
                 $perGatewaySettings[$v3GatewayId] = [
-                    'enabled' => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
+                    'enabled'       => $this->getMeta('_form_gateway_fee_enable_' . $gatewayId) === 'enabled',
                     'feePercentage' => (float)$this->getMeta('_form_gateway_fee_percentage_' . $gatewayId, 2.9),
                     'feeBaseAmount' => (float)$this->getMeta('_form_gateway_fee_base_amount_' . $gatewayId, 0.30),
-                    'maxFeeAmount' => (float)$this->getMeta(
+                    'maxFeeAmount'  => (float)$this->getMeta(
                         '_form_gateway_fee_maximum_fee_amount_' . $gatewayId,
                         give_format_decimal(['amount' => '0.00'])
                     ),
@@ -497,16 +497,16 @@ class FormMetaDecorator extends FormModelDecorator
         }
 
         return [
-            'useGlobalSettings' => false,
+            'useGlobalSettings'        => false,
             'feeSupportForAllGateways' => $this->getMeta('_form_give_fee_configuration') === 'all_gateways',
-            'perGatewaySettings' => $perGatewaySettings,
-            'feePercentage' => (float)$this->getMeta('_form_give_fee_percentage'),
-            'feeBaseAmount' => (float)$this->getMeta('_form_give_fee_base_amount'),
-            'maxFeeAmount' => (float)$this->getMeta('_form_give_fee_maximum_fee_amount'),
+            'perGatewaySettings'       => $perGatewaySettings,
+            'feePercentage'            => (float)$this->getMeta('_form_give_fee_percentage'),
+            'feeBaseAmount'            => (float)$this->getMeta('_form_give_fee_base_amount'),
+            'maxFeeAmount'             => (float)$this->getMeta('_form_give_fee_maximum_fee_amount'),
             'includeInDonationSummary' => $this->getMeta('_form_breakdown') === 'enabled',
-            'donorOptIn' => $this->getMeta('_form_give_fee_mode') === 'donor_opt_in',
-            'feeCheckboxLabel' => $this->getMeta('_form_give_fee_checkbox_label'),
-            'feeMessage' => $this->getMeta('_form_give_fee_explanation'),
+            'donorOptIn'               => $this->getMeta('_form_give_fee_mode') === 'donor_opt_in',
+            'feeCheckboxLabel'         => $this->getMeta('_form_give_fee_checkbox_label'),
+            'feeMessage'               => $this->getMeta('_form_give_fee_explanation'),
         ];
     }
 
@@ -515,14 +515,17 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function isConstantContactEnabled(): bool
     {
-        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_enable'),'true');
+        $isFormEnabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_enable'), 'true');
 
-        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'),'true');
+        $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'), 'true');
 
-        $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_constant_contact_show_checkout_signup'), 'on');
+        $isGloballyEnabled = give_is_setting_enabled(
+            give_get_option('give_constant_contact_show_checkout_signup'),
+            'on'
+        );
 
-        return !($isFormDisabled || ( !$isGloballyEnabled && !$isFormEnabled));
-      }
+        return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
+    }
 
     /**
      * @since 3.7.0
@@ -540,8 +543,10 @@ class FormMetaDecorator extends FormModelDecorator
     public function getConstantContactDefaultChecked(): bool
     {
         $defaultMeta = give_is_setting_enabled(
-            give_get_option('give_constant_contact_checked_default',
-                true),
+            give_get_option(
+                'give_constant_contact_checked_default',
+                true
+            ),
             'on'
         );
 
@@ -569,7 +574,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_mailchimp_show_checkout_signup'), 'on');
 
-        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+        return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
     }
 
     /**
@@ -577,7 +582,10 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpLabel(): string
     {
-        return $this->getMeta('_give_mailchimp_custom_label',  give_get_option('give_mailchimp_label', __('Subscribe to newsletter?')));
+        return $this->getMeta(
+            '_give_mailchimp_custom_label',
+            give_get_option('give_mailchimp_label', __('Subscribe to newsletter?'))
+        );
     }
 
     /**
@@ -586,8 +594,12 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpDefaultChecked(): bool
     {
-        return give_is_setting_enabled($this->getMeta('_give_mailchimp_checked_default',
-            give_get_option('give_mailchimp_checked_default', true)));
+        return give_is_setting_enabled(
+            $this->getMeta(
+                '_give_mailchimp_checked_default',
+                give_get_option('give_mailchimp_checked_default', true)
+            )
+        );
     }
 
     /**
@@ -596,8 +608,12 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendDonationData(): bool
     {
-        return give_is_setting_enabled($this->getMeta('_give_mailchimp_send_donation_data',
-            give_get_option('give_mailchimp_donation_data', true)));
+        return give_is_setting_enabled(
+            $this->getMeta(
+                '_give_mailchimp_send_donation_data',
+                give_get_option('give_mailchimp_donation_data', true)
+            )
+        );
     }
 
     /**
@@ -606,8 +622,12 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getMailchimpSendFFMData(): bool
     {
-        return  give_is_setting_enabled($this->getMeta('_give_mailchimp_send_ffm',
-            give_get_option('give_mailchimp_ffm_pass_field')));
+        return give_is_setting_enabled(
+            $this->getMeta(
+                '_give_mailchimp_send_ffm',
+                give_get_option('give_mailchimp_ffm_pass_field')
+            )
+        );
     }
 
     /**
@@ -621,7 +641,7 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @since 3.3.0
      */
-    public function getMailchimpSubscriberTags():? array
+    public function getMailchimpSubscriberTags(): ?array
     {
         return (array)$this->getMeta('_give_mailchimp_tags', null);
     }
@@ -635,8 +655,9 @@ class FormMetaDecorator extends FormModelDecorator
      *
      * @since 3.0.0
      *
-     * @param  string  $key
-     * @param  mixed  $default
+     * @param string $key
+     * @param mixed  $default
+     *
      * @return mixed
      */
     private function getMeta(string $key, $default = null)
@@ -652,7 +673,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return !empty($fundsAndDesignationsAttributes['fund']);
+        return ! empty($fundsAndDesignationsAttributes['fund']);
     }
 
     /**
@@ -663,7 +684,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $fundsAndDesignationsAttributes = $this->getFundsAndDesignationsAttributes();
 
-        return !empty($fundsAndDesignationsAttributes['options']);
+        return ! empty($fundsAndDesignationsAttributes['options']);
     }
 
     /**
@@ -679,12 +700,12 @@ class FormMetaDecorator extends FormModelDecorator
 
 
         $options = [];
-        if (!empty($donorOptions)) {
+        if ( ! empty($donorOptions)) {
             foreach ($donorOptions as $fundId) {
                 $options[] = [
-                    'value' => $fundId,
-                    'label' => $this->getFundLabel($fundId),
-                    'checked' => $isAdminChoice ? $fundId === $adminChoice : true,
+                    'value'     => $fundId,
+                    'label'     => $this->getFundLabel($fundId),
+                    'checked'   => $isAdminChoice ? $fundId === $adminChoice : true,
                     'isDefault' => $this->isDefaultFund($fundId),
                 ];
             }
@@ -693,18 +714,18 @@ class FormMetaDecorator extends FormModelDecorator
         $fund = [];
         if ($isAdminChoice) {
             $fund = [
-                'value' => $adminChoice,
-                'label' => $this->getFundLabel($adminChoice),
-                'checked' => true,
+                'value'     => $adminChoice,
+                'label'     => $this->getFundLabel($adminChoice),
+                'checked'   => true,
                 'isDefault' => $this->isDefaultFund($adminChoice),
             ];
-        } elseif (!empty($options)) {
+        } elseif ( ! empty($options)) {
             $fund = $options[0];
         }
 
         return [
-            'label' => $label,
-            'fund' => $fund,
+            'label'   => $label,
+            'fund'    => $fund,
             'options' => $options,
         ];
     }
@@ -720,7 +741,7 @@ class FormMetaDecorator extends FormModelDecorator
             $wpdb->prepare("SELECT * FROM {$wpdb->give_funds} WHERE id = %d", $fundId)
         );
 
-        if (!$fund) {
+        if ( ! $fund) {
             return '';
         }
 
@@ -736,7 +757,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         $fund = $wpdb->get_row("SELECT id FROM {$wpdb->give_funds} WHERE is_default = 1");
 
-        if (!$fund) {
+        if ( ! $fund) {
             return false;
         }
 
@@ -851,6 +872,60 @@ class FormMetaDecorator extends FormModelDecorator
     /**
      * @since 3.10.0
      */
+    public function isConvertKitEnabled(): bool
+    {
+        $isFormEnabled = $this->getMeta('_give_convertkit_override_option') === 'customize';
+
+        $isFormDisabled = $this->getMeta('_give_convertkit_override_option') === 'disabled';
+
+        $isGloballyEnabled = $this->getMeta('_give_convertkit_override_option') === 'default' &&
+                             give_is_setting_enabled(give_get_option('give_convertkit_show_subscribe_checkbox'));
+
+        return $isFormEnabled ? $isGloballyEnabled : $isFormDisabled;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitLabel(): string
+    {
+        $defaultMeta = give_get_option('give_convertkit_label', __('Subscribe to newsletter?'));
+
+        return $this->getMeta('_give_convertkit_custom_label', $defaultMeta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitDefaultChecked(): bool
+    {
+        $defaultMeta = give_get_option('give_convertkit_checked_default');
+
+        return give_is_setting_enabled($this->getMeta('_give_convertkit_checked_default', $defaultMeta));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitTags(): ?array
+    {
+        $defaultMeta = give_get_option('_give_convertkit_tags', []);
+
+        return ! empty($this->getMeta('_give_convertkit_tags')) ?
+            $this->getMeta('_give_convertkit_tags') :
+            $defaultMeta;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConvertKitSelectedForm(): string
+    {
+        $defaultMeta = give_get_option('give_convertkit_list', '');
+
+        return $this->getMeta('_give_convertkit', $defaultMeta);
+    }
+
     public function isActiveCampaignEnabled(): bool
     {
         $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
@@ -859,7 +934,7 @@ class FormMetaDecorator extends FormModelDecorator
 
         $isGloballyEnabled = give_is_setting_enabled(give_get_option('give_activecampaign_globally_enabled'), 'on');
 
-        return !($isFormDisabled || (!$isGloballyEnabled && !$isFormEnabled));
+        return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
     }
 
     /**
@@ -893,7 +968,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $defaultMeta = give_get_option('give_activecampaign_lists', []);
 
-        return !empty($this->getMeta('give_activecampaign_lists')) ?
+        return ! empty($this->getMeta('give_activecampaign_lists')) ?
             $this->getMeta('give_activecampaign_lists') : $defaultMeta;
     }
 
@@ -902,9 +977,9 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getActiveCampaignTags(): array
     {
-        $defaultMeta = give_get_option('give_activecampaign_tags',[]);
+        $defaultMeta = give_get_option('give_activecampaign_tags', []);
 
-        return !empty($this->getMeta('give_activecampaign_tags')) ?
+        return ! empty($this->getMeta('give_activecampaign_tags')) ?
             $this->getMeta('give_activecampaign_tags') : $defaultMeta;
     }
 }
