@@ -30,7 +30,7 @@ class GivePluginSettingsData implements TrackData
     /**
      * Returns plugin global settings.
      *
-     * @unreleased Add check for Event Tickets beta feature.
+     * @since 3.10.0 Add check for Event Tickets beta feature.
      * @since 2.10.0
      * @return array
      */
@@ -67,7 +67,7 @@ class GivePluginSettingsData implements TrackData
         $data['active_payment_gateways'] = $this->getGatewaysLabels();
 
         /**
-         * @unreleased Add check for Event Tickets beta feature.
+         * @since 3.10.0 Add check for Event Tickets beta feature.
          */
         $data['is_event_tickets'] = FeatureFlag::eventTickets();
 

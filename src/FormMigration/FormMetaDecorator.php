@@ -870,7 +870,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function isConvertKitEnabled(): bool
     {
@@ -937,6 +937,9 @@ class FormMetaDecorator extends FormModelDecorator
         return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
     }
 
+    /**
+     * @since 3.10.0
+     */
     public function getActiveCampaignLabel(): string
     {
         $defaultMeta = get_option('give_activecampaign_label', __('Subscribe to our newsletter?', 'give'));
@@ -944,6 +947,9 @@ class FormMetaDecorator extends FormModelDecorator
         return $this->getMeta('give_activecampaign_label', $defaultMeta);
     }
 
+    /**
+     * @since 3.10.0
+     */
     public function getActiveCampaignDefaultChecked(): bool
     {
         $isFormEnabled = give_is_setting_enabled($this->getMeta('activecampaign_per_form_options'), 'customized');
@@ -955,6 +961,9 @@ class FormMetaDecorator extends FormModelDecorator
         return $isFormEnabled ? $isFormChecked : $isGlobalChecked;
     }
 
+    /**
+     * @since 3.10.0
+     */
     public function getActiveCampaignSelectedLists(): array
     {
         $defaultMeta = give_get_option('give_activecampaign_lists', []);
@@ -963,6 +972,9 @@ class FormMetaDecorator extends FormModelDecorator
             $this->getMeta('give_activecampaign_lists') : $defaultMeta;
     }
 
+    /**
+     * @since 3.10.0
+     */
     public function getActiveCampaignTags(): array
     {
         $defaultMeta = give_get_option('give_activecampaign_tags', []);

@@ -5,12 +5,12 @@ namespace Give\Tests\Unit;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.10.0
  */
 class TestGive extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testReadMeVersionMatchesPluginVersion(): void
     {
@@ -29,7 +29,7 @@ class TestGive extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testReadMeRequiresPHPVersionMatchesPluginVersion(): void
     {
@@ -46,7 +46,7 @@ class TestGive extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.10.0
      */
     public function testReadMeRequiresWPVersionMatchesPluginHeaderVersion(): void
     {

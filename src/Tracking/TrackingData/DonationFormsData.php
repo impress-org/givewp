@@ -61,7 +61,7 @@ class DonationFormsData implements TrackData
     /**
      * Get forms data.
      *
-     * @unreleased Add check for event block.
+     * @since 3.10.0 Add check for event block.
      * @since 3.0.0 Add support for v3 forms
      * @since 2.10.0
      * @return array
