@@ -2,8 +2,11 @@
 
 namespace Give\DonationForms\DataTransferObjects;
 
+use Give\DonationForms\DonationQuery;
+use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\SubscriptionQuery;
 use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
@@ -68,25 +71,30 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
+        $query = $this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())
+            ? new SubscriptionQuery()
+            : new DonationQuery();
+
+        $query->form($this->formId);
+
+        if($this->goalProgressType->isCustom()) {
+            $query->between($this->goalStartDate, $this->goalEndDate);
+        }
 
         switch ($this->goalType):
             case GoalType::DONORS():
-                return $donationFormRepository->getTotalNumberOfDonors($this->formId);
+                return $query->countDonors();
             case GoalType::DONATIONS():
-                return $donationFormRepository->getTotalNumberOfDonations($this->formId);
+                return $query->count();
             case GoalType::SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalNumberOfSubscriptions($this->formId);
+                return $query->count();
             case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalInitialAmountFromSubscriptions($this->formId);
+                return $query->sumInitialAmount();
             case GoalType::DONORS_FROM_SUBSCRIPTIONS():
-                return $donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->formId);
+                return $query->countDonors();
             case GoalType::AMOUNT():
             default:
-                return $this->goalProgressType->isAllTime()
-                    ? $donationFormRepository->getTotalRevenue($this->formId)
-                    : $donationFormRepository->getTotalRevenueForDateRange($this->formId,$this->goalStartDate, $this->goalEndDate);
+                return $query->sumIntendedAmount();
         endswitch;
     }
 

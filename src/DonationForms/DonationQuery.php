@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms;
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
@@ -91,5 +92,11 @@ class DonationQuery extends QueryBuilder
         return $this->sum(
             'COALESCE(intendedAmount.meta_value, amount.meta_value)'
         );
+    }
+
+    public function countDonors()
+    {
+        $this->joinMeta(DonationMetaKeys::DONOR_ID, 'donorId');
+        return $this->count('DISTINCT donorId.meta_value');
     }
 }

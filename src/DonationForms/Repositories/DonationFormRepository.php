@@ -399,14 +399,6 @@ class DonationFormRepository
             ->count();
     }
 
-    public function getTotalNumberOfDonationsForDateRange(int $formId, string $startDate, string $endDate): int
-    {
-        return (new DonationQuery)
-            ->form($formId)
-            ->between($startDate, $endDate)
-            ->count();
-    }
-
     /**
      * @since 3.0.0
      */
@@ -425,17 +417,6 @@ class DonationFormRepository
     {
         return (int) (new DonationQuery)
             ->form($formId)
-            ->sumIntendedAmount();
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getTotalRevenueForDateRange(int $formId, string $startDate, string $endDate): int
-    {
-        return (int) (new DonationQuery)
-            ->form($formId)
-            ->between($startDate, $endDate)
             ->sumIntendedAmount();
     }
 
