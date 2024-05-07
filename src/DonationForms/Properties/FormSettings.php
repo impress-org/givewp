@@ -189,7 +189,7 @@ class FormSettings implements Arrayable, Jsonable
     public $designSettingsImageUrl;
 
     /**
-     * @unreleased
+     * @since 3.11.0
      * @var string
      */
     public $designSettingsImageAlt;
