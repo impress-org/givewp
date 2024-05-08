@@ -60,8 +60,6 @@ class LogModel
     /**
      * LogModel constructor.
      *
-     * @unreleased Add 'givewp_log_source' filter
-     *
      * @param string   $type
      * @param string   $message
      * @param string   $category
@@ -75,7 +73,7 @@ class LogModel
         $this->setType($type);
         $this->setDate($date);
         $this->category = $category;
-        $this->source = apply_filters('givewp_log_source', $source, $context, $type, $message, $category, $logId);
+        $this->source = $source;
         $this->context = $context;
         $this->message = $message;
         $this->id = $logId;
@@ -255,7 +253,7 @@ class LogModel
      */
     public function __call($type, $args)
     {
-        [$message, $source, $context] = array_pad($args, 3, null);
+        list ($message, $source, $context) = array_pad($args, 3, null);
 
         $this->setType($type);
         $this->setMessage($message);
