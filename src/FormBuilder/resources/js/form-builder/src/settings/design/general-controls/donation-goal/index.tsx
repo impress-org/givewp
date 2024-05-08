@@ -209,8 +209,7 @@ const DonationGoal = ({dispatch}) => {
                                             {__('You can now set a time frame to show progress toward your goal.', 'give')}
                                         </span>
                                         <span>
-                                            {/*todo: add link to docs*/}
-                                            <a href="#" target="_blank">
+                                            <a href="https://docs.givewp.com/goal-timeframe" target="_blank">
                                                 <Icon
                                                     style={noticeStyles.externalIcon as CSSProperties}
                                                     icon={external}
