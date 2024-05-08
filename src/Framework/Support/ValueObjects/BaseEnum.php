@@ -3,12 +3,14 @@
 namespace Give\Framework\Support\ValueObjects;
 
 /**
- * @unreleased remove stringable
+ * @unreleased
  *
- * This is a fork of the myclabs/php-enum library 1.8.4.
- * In GiveWP we have php constraints that do not allow us to use the latest version of this package.
+ * This is a fork of the myclabs/php-enum library 1.8.4 with the Stringable interface removed.
+ *
+ * In GiveWP, we have php constraints based on WordPress requirements and our customers that do not always allow us to use the latest version of php and therefore this package.
+ * At the time of this fork we are bound to php 7.2 while the package requires php 7.3.  One day we will use native PHP enums in php 8.1+ and this package will be deprecated.
+ *
  * @link    http://github.com/myclabs/php-enum
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
 /**
