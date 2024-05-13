@@ -34,14 +34,10 @@ export default ({
 
     const [date, setDate] = useState<string>(value);
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const currentDate = date ? new Date(date) : new Date();
-
 
     const convertJsDateToMySQLDate = (dateTime: string) => {
-        // split the ISO string into date and time
-        const [date, time] = new Date(dateTime).toISOString().split('T');
-
-        return `${date} ${time.slice(0, 8)}`;
+        const [date, time] = dateTime.split('T');
+        return `${date} ${time}`;
     };
 
     const toggleVisible = () => {
@@ -101,7 +97,7 @@ export default ({
                         {showTimeSelector ? (
                             <DateTimePicker
                                 is12Hour={is12Hour}
-                                currentDate={currentDate}
+                                currentDate={value}
                                 isInvalidDate={(date) => checkDate(date)}
                                 onChange={(date) => {
                                     setDate(date);
@@ -109,7 +105,7 @@ export default ({
                             />
                         ) : (
                             <DatePicker
-                                currentDate={currentDate}
+                                currentDate={value}
                                 isInvalidDate={(date) => checkDate(date)}
                                 onChange={(date) => {
                                     setDate(date);
