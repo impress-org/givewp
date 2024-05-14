@@ -26,6 +26,7 @@ const DesignPreview = () => {
         formSettings.goalType,
         formSettings.goalStartDate,
         formSettings.goalEndDate,
+        formSettings.goalProgressType,
         JSON.stringify(blocks), // stringify to prevent re-renders caused by object as dep
     ]);
 
