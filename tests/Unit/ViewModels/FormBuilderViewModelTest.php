@@ -87,6 +87,7 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
+                'goalProgressOptions' => $viewModel->getGoalProgressOptions(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes'),
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
                 'intlTelInputSettings' => IntlTelInput::getSettings(),
