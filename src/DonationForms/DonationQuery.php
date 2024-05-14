@@ -71,12 +71,15 @@ class DonationQuery extends QueryBuilder
      */
     public function between($startDate, $endDate)
     {
+        // If the dates are empty or invalid, they will fallback to January 1st, 1970.
+        // For the start date, this is exactly what we need, but for the end date, we should set it as the current date so that we have a correct date range.
+        $startDate = date('Y-m-d H:i:s', strtotime($startDate));
+        $endDate = empty($endDate)
+            ? date('Y-m-d H:i:s')
+            : date('Y-m-d H:i:s', strtotime($endDate));
+
         $this->joinMeta('_give_completed_date', 'completed');
-        $this->whereBetween(
-            'completed.meta_value',
-            date('Y-m-d H:i:s', strtotime($startDate)),
-            date('Y-m-d H:i:s', strtotime($endDate))
-        );
+        $this->whereBetween('completed.meta_value', $startDate, $endDate);
         return $this;
     }
 
