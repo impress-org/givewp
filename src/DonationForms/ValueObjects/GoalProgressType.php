@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 3.12.0
  *
  * @method static GoalProgressType ALL_TIME()
  * @method static GoalProgressType CUSTOM()

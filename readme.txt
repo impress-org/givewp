@@ -263,7 +263,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.12.0: May 15th, 2024 =
-* New: Added ability to create donation amount level descriptions for the donation amount block in the visual form builder
+* New: Updated the donation amount block with options for donation amount level description in the visual form builder
+* New: Updated form goal settings with options for start and end dates in the visual form builder
 
 = 3.11.0: May 7th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming ConvertKit add-on release

@@ -19,7 +19,7 @@ type GoalTypeOption = {
 };
 
 /**
- * @unreleased
+ * @since 3.12.0
  */
 type GoalProgressOption = {
     value: string;
@@ -29,7 +29,7 @@ type GoalProgressOption = {
 };
 
 /**
- * @unreleased Added goalProgressOptions
+ * @since 3.12.0 Added goalProgressOptions
  * @since 3.9.0 Added intlTelInputSettings
  * @since 3.7.0 Added isExcerptEnabled
  * @since 3.0.0

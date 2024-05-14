@@ -5,12 +5,12 @@ namespace Give\DonationForms;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 3.12.0
  */
 class SubscriptionQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function __construct()
     {
@@ -18,7 +18,7 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function form($formId)
     {
@@ -28,7 +28,7 @@ class SubscriptionQuery extends QueryBuilder
 
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function forms(array $formIds)
     {
@@ -37,7 +37,7 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function between($startDate, $endDate)
     {
@@ -50,7 +50,7 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function sumInitialAmount()
     {
@@ -58,7 +58,7 @@ class SubscriptionQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function countDonors()
     {

@@ -410,7 +410,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased Update query to use intended amounts (without recovered fees).
+     * @since 3.12.0 Update query to use intended amounts (without recovered fees).
      * @since 3.0.0
      */
     public function getTotalRevenue(int $formId): int
