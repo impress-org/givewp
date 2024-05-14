@@ -7,11 +7,13 @@ use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
 use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
 use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
+ * @unreleased Add goalProgressType
  * @since      3.2.0 Remove addSlashesRecursive method
  * @since      3.0.0
  */
@@ -45,6 +47,18 @@ class FormSettings implements Arrayable, Jsonable
      * @var GoalType
      */
     public $goalType;
+    /**
+     * @var GoalProgressType
+     */
+    public $goalProgressType;
+    /**
+     * @var string
+     */
+    public $goalStartDate;
+    /**
+     * @var string
+     */
+    public $goalEndDate;
     /**
      * @var string
      */
@@ -275,6 +289,11 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
+        $self->goalProgressType = ! empty($array['goalProgressType']) && GoalProgressType::isValid($array['goalProgressType'])
+            ? new GoalProgressType($array['goalProgressType'])
+            : GoalProgressType::ALL_TIME();
+        $self->goalStartDate = $array['goalStartDate'] ?? '';
+        $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
