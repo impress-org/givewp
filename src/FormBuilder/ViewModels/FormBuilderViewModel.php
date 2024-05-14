@@ -22,7 +22,7 @@ use Give\Subscriptions\Models\Subscription;
 class FormBuilderViewModel
 {
     /**
-     * @unreleased  Add goalProgressOptions key to the returned array
+     * @since 3.12.0  Add goalProgressOptions key to the returned array
      * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
      * @since      3.7.0 Add support to isExcerptEnabled key in the returned array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
@@ -114,7 +114,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function getGoalProgressOption(
         string $value,
@@ -179,7 +179,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function getGoalProgressOptions(): array
     {

@@ -133,7 +133,7 @@ class Model
     /**
      * Get raw earnings value for Progress Bar
      *
-     * @unreleased use DonationQuery
+     * @since 3.12.0 use DonationQuery
      * @since 2.9.0
      */
     public function getTotal(): string

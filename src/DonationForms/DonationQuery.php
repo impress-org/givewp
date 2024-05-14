@@ -9,7 +9,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 /**
  * An opinionated Query Builder for GiveWP donations and meta fields.
  *
- * @unreleased
+ * @since 3.12.0
  *
  * Example usage:
  * (new DonationQuery)
@@ -20,7 +20,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 class DonationQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function __construct()
     {
@@ -29,7 +29,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated join method for the donation meta table.
-     * @unreleased
+     * @since 3.12.0
      */
     public function joinMeta($key, $alias)
     {
@@ -44,7 +44,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated where method for the donation form ID meta field.
-     * @unreleased
+     * @since 3.12.0
      */
     public function form($formId)
     {
@@ -56,7 +56,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated where method for the multiple donation form IDs meta field.
-     * @unreleased
+     * @since 3.12.0
      */
     public function forms(array $formIds)
     {
@@ -67,7 +67,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * An opinionated whereBetween method for the completed date meta field.
-     * @unreleased
+     * @since 3.12.0
      */
     public function between($startDate, $endDate)
     {
@@ -85,7 +85,7 @@ class DonationQuery extends QueryBuilder
 
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
-     * @unreleased
+     * @since 3.12.0
      * @return int|float
      */
     public function sumIntendedAmount()

@@ -13,7 +13,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
- * @unreleased Add goalProgressType
+ * @since 3.12.0 Add goalProgressType
  * @since      3.2.0 Remove addSlashesRecursive method
  * @since      3.0.0
  */
