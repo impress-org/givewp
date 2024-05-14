@@ -84,6 +84,7 @@ export default ({
                         anchor={popoverRef.current}
                         position="middle left bottom"
                         className="givewp-date-picker_popover"
+                        //@ts-ignore
                         offset={window?.chrome ? 30 : 0}
                     >
                         <Button
