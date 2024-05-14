@@ -23,7 +23,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased Update to store donation levels with descriptions
+     * @since 3.12.0 Update to store donation levels with descriptions
      * @since 3.0.0 update with dynamic values from amount field
      * @since 3.0.0
      */

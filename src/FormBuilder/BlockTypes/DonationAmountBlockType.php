@@ -54,7 +54,7 @@ class DonationAmountBlockType extends BlockType
     ];
 
     /**
-     * @unreleased Update levels array schema.
+     * @since 3.12.0 Update levels array schema.
      * @since 3.8.0
      *
      * @return float[]

@@ -58,7 +58,7 @@ const numberOfDonationsControlOptions = [{label: __('Ongoing', 'give'), value: '
 );
 
 /**
- * @unreleased add description fields to levels.
+ * @since 3.12.0 add description fields to levels.
  * @since 3.0.0
  */
 const Inspector = ({attributes, setAttributes}) => {

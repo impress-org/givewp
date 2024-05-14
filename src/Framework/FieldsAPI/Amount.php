@@ -38,7 +38,7 @@ class Amount extends Field
     /**
      * Set the preset donation levels. Provide level amounts in minor units.
      *
-     * @unreleased Changed to receive an array as a parameter.
+     * @since 3.12.0 Changed to receive an array as a parameter.
      * @since 3.0.0
      */
     public function levels(array ...$levels): self

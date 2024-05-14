@@ -47,7 +47,7 @@ class TestDonationOptions extends TestCase {
     }
 
     /**
-     * @unreleased Updated test to include donation levels with descriptions
+     * @since 3.12.0 Updated test to include donation levels with descriptions
      * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributesWithDonationLevels(): void

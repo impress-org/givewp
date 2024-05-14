@@ -7,7 +7,7 @@ import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';
 
 /**
- * @unreleased Update default level when having distinct default currency
+ * @since 3.12.0 Update default level when having distinct default currency
  * @since 3.0.0
  */
 export default function Amount({

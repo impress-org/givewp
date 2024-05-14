@@ -174,7 +174,7 @@ class ConvertDonationAmountBlockToFieldsApi
     /**
      * Prepares the options array to be used in the field.
      *
-     * @unreleased
+     * @since 3.12.0
      *
      * @return array ['options' => ['label' => string, 'value' => string][], 'checked' => string]
      */

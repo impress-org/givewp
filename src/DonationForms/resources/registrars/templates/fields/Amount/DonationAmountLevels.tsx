@@ -18,7 +18,7 @@ type GroupedLevels = {
 type Level = {label: string | null; value: number};
 
 /**
- * @unreleased add level descriptions.
+ * @since 3.12.0 add level descriptions.
  * @since 3.0.0
  */
 export default function DonationAmountLevels({name, currency, levels, onLevelClick}: DonationAmountLevelsProps) {

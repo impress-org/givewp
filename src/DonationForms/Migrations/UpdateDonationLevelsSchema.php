@@ -8,7 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 /**
  * Update the donation levels schema to support descriptions
  *
- * @unreleased
+ * @since 3.12.0
  */
 class UpdateDonationLevelsSchema extends Migration
 {
@@ -37,7 +37,7 @@ class UpdateDonationLevelsSchema extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function run()
     {

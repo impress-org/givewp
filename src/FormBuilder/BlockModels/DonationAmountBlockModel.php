@@ -60,7 +60,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased Changed the return type to an array of OptionsProps
+     * @since 3.12.0 Changed the return type to an array of OptionsProps
      * @since 3.0.0
      *
      * @return array ['label' => string, 'value' => string, 'checked' => bool][]
@@ -81,7 +81,7 @@ class DonationAmountBlockModel
     }
 
     /**
-     * @unreleased
+     * @since 3.12.0
      */
     public function isDescriptionEnabled(): bool
     {

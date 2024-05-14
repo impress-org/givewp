@@ -11,7 +11,7 @@ type DonationTypeControlProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.12.0
  */
 
 export default function DonationTypeControl({priceOption, setAttributes, attributes}: DonationTypeControlProps) {
