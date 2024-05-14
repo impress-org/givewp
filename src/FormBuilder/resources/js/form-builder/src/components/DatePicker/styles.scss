@@ -9,6 +9,7 @@
 
     &_popover {
         .components-popover__content {
+            position: relative;
             min-width: 320px;
             padding: 16px;
 
@@ -22,11 +23,10 @@
         }
 
         &__close-button {
-            all: unset;
             position: absolute;
             cursor: pointer;
-            top: 10px;
-            right: 20px;
+            top: 8px;
+            right: 10px;
         }
 
         &__close-button:focus {
@@ -41,6 +41,7 @@
         }
 
         label {
+            display: block;
             font-size: 13px;
             font-weight: 600;
             color: #0e0e0e;
