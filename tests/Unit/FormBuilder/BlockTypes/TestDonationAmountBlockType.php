@@ -25,6 +25,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
+     * @unreleased Update test to use the new levels schema
      * @since 3.8.0
      * @throws Exception
      */
@@ -35,14 +36,13 @@ class TestDonationAmountBlockType extends TestCase
 
         $this->assertSame(__("Donation Amount", 'give'), $block->label);
         $this->assertSame([
-            10,
-            25,
-            50,
-            100,
-            250,
-            500
+            ['value' => 10, 'checked' => true],
+            ['value' => 25],
+            ['value' => 50],
+            ['value' => 100],
+            ['value' => 250],
+            ['value' => 500],
         ], $block->levels);
-        $this->assertSame(10.00, $block->defaultLevel);
         $this->assertSame("multi", $block->priceOption);
         $this->assertSame(25, $block->setPrice);
         $this->assertTrue($block->customAmount);

@@ -6,41 +6,71 @@ import classNames from 'classnames';
 type DonationAmountLevelsProps = {
     name: string;
     currency: string;
-    levels: number[];
+    levels: Level[];
     onLevelClick?: (amount: number) => void;
 };
 
+type GroupedLevels = {
+    labeled: Level[];
+    unlabeled: Level[];
+};
+
+type Level = {label: string | null; value: number};
+
 /**
+ * @unreleased add level descriptions.
  * @since 3.0.0
  */
-export default function DonationAmountLevels({
-    name,
-    currency,
-    levels,
-    onLevelClick,
-}: DonationAmountLevelsProps) {
+export default function DonationAmountLevels({name, currency, levels, onLevelClick}: DonationAmountLevelsProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const amount = useWatch({name});
     const formatter = useCurrencyFormatter(currency);
 
+    const groupedLevels: GroupedLevels = levels.reduce(
+        (acc: GroupedLevels, level) => {
+            const key = level.label ? 'labeled' : 'unlabeled';
+            acc[key].push(level);
+            return acc;
+        },
+        {labeled: [], unlabeled: []}
+    );
+
+    const allLevels = [...groupedLevels.labeled, ...groupedLevels.unlabeled];
+
     return (
-        <div className="givewp-fields-amount__levels-container">
-            {levels.map((levelAmount, index) => {
-                const label = formatter.format(levelAmount);
-                const selected = levelAmount === amount;
+        <div
+            className={classNames('givewp-fields-amount__levels-container', {
+                'givewp-fields-amount__levels-container--has-descriptions': groupedLevels.labeled.length > 0,
+            })}
+        >
+            {allLevels.map((level, index) => {
+                const label = formatter.format(level.value);
+                const selected = level.value === amount;
+                const hasDescription = level.label;
+
                 return (
-                    <button
-                        className={classNames('givewp-fields-amount__level', {
-                            'givewp-fields-amount__level--selected': selected,
+                    <div
+                        className={classNames('givewp-fields-amount__level-container', {
+                            'givewp-fields-amount__level-container--col': hasDescription,
                         })}
-                        type="button"
-                        onClick={() => {
-                            onLevelClick(levelAmount);
-                        }}
-                        key={index}
                     >
-                        {label}
-                    </button>
+                        <button
+                            className={classNames('givewp-fields-amount__level', {
+                                'givewp-fields-amount__level--selected': selected,
+                                'givewp-fields-amount__level--description': hasDescription,
+                            })}
+                            type="button"
+                            onClick={() => {
+                                onLevelClick(level.value);
+                            }}
+                            key={index}
+                        >
+                            {label}
+                        </button>
+                        {hasDescription && (
+                            <span className={'givewp-fields-amount__level__description'}>{level.label}</span>
+                        )}
+                    </div>
                 );
             })}
         </div>

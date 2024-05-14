@@ -56,18 +56,24 @@ class ConvertDonationAmountBlockToFieldsApi
 
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
-            $defaultLevel = $block->getDefaultLevel() > 0 ? $block->getDefaultLevel() : 10;
             $amountNode
                 ->label($block->getLabel())
-                ->levels(...$block->getLevels())
-                ->allowLevels($block->getPriceOption() === 'multi')
                 ->allowCustomAmount($block->isCustomAmountEnabled())
-                ->fixedAmountValue($block->getSetPrice())
-                ->defaultValue(
-                    $block->getPriceOption() === 'set' ?
-                        $block->getSetPrice() : $defaultLevel
-                )
                 ->rules(...$amountRules);
+
+            $priceOptions = $block->getPriceOption();
+            if ($priceOptions === 'multi') {
+                ['levels' => $levels, 'checked' => $checked] = $this->prepareLevelsArray($block);
+
+                $amountNode
+                    ->allowLevels()
+                    ->levels(...$levels)
+                    ->defaultValue($checked);
+            } else {
+                $amountNode
+                    ->fixedAmountValue($block->getSetPrice())
+                    ->defaultValue($block->getSetPrice());
+            }
 
             /** @var Hidden $currencyNode */
             $currencyNode = $group->getNodeByName('currency');
@@ -163,5 +169,42 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
+    }
+
+    /**
+     * Prepares the options array to be used in the field.
+     *
+     * @unreleased
+     *
+     * @return array ['options' => ['label' => string, 'value' => string][], 'checked' => string]
+     */
+    private function prepareLevelsArray(DonationAmountBlockModel $block): array
+    {
+        $checked = null;
+        $levels = array_values(
+            array_filter(
+                array_map(
+                    function ($item) use (&$checked, $block) {
+                        if (isset($item['checked']) && $item['checked']) {
+                            $checked = $item['value'];
+                        }
+
+                        return [
+                            'value' => $item['value'] ?? '',
+                            'label' => $block->isDescriptionEnabled() ? $item['label'] : '',
+                        ];
+                    },
+                    $block->getLevels()
+                ),
+                function ($item) {
+                    return $item['value'] !== '';
+                }
+            )
+        );
+
+        return [
+            'levels' => $levels,
+            'checked' => $checked,
+        ];
     }
 }

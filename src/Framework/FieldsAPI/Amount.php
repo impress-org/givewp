@@ -13,7 +13,7 @@ class Amount extends Field
     const TYPE = 'amount';
 
     /**
-     * @var int[]
+     * @var array ['label' => string, 'value' => int, 'checked' => bool]
      */
     protected $levels = [];
     /**
@@ -36,11 +36,12 @@ class Amount extends Field
     protected $fixedAmountValue;
 
     /**
-     * Set the preset donation levels. Provide levels in minor units.
+     * Set the preset donation levels. Provide level amounts in minor units.
      *
+     * @unreleased Changed to receive an array as a parameter.
      * @since 3.0.0
      */
-    public function levels(float ...$levels): self
+    public function levels(array ...$levels): self
     {
         $this->levels = $levels;
 

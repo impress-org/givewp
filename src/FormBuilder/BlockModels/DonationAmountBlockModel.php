@@ -60,23 +60,32 @@ class DonationAmountBlockModel
     }
 
     /**
+     * @unreleased Changed the return type to an array of OptionsProps
      * @since 3.0.0
      *
-     * @return float[]
+     * @return array ['label' => string, 'value' => string, 'checked' => bool][]
      */
     public function getLevels(): array
     {
-        return array_map(static function($level) {
-            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+        return array_map(static function ($level) {
+            return [
+                'label'   => htmlspecialchars($level['label'] ?? ''),
+                'value'   => (float)filter_var(
+                    $level['value'] ?? '',
+                    FILTER_SANITIZE_NUMBER_FLOAT,
+                    FILTER_FLAG_ALLOW_FRACTION
+                ),
+                'checked' => (bool)filter_var($level['checked'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            ];
         }, $this->block->getAttribute('levels'));
     }
 
     /**
-     * @since 3.0.0
+     * @unreleased
      */
-    public function getDefaultLevel(): ?float
+    public function isDescriptionEnabled(): bool
     {
-        return (float)filter_var($this->block->getAttribute('defaultLevel'), FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
+        return $this->block->getAttribute('descriptionsEnabled') === true;
     }
 
     /**

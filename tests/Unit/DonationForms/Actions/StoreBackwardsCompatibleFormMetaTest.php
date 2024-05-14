@@ -82,7 +82,14 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',
-                        'levels' => ['10', '25', '50', '100', '250', '500'],
+                        'levels' => [
+                            ['value' => '10'],
+                            ['value' => '25'],
+                            ['value' => '50'],
+                            ['value' => '100'],
+                            ['value' => '250'],
+                            ['value' => '500'],
+                        ],
                         'priceOption' => 'multi',
                         'setPrice' => '25',
                         'customAmount' => 'true',
@@ -131,7 +138,14 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',
-                        'levels' => ['10', '25', '50', '100', '250', '500'],
+                        'levels' => [
+                            ['value' => '10'],
+                            ['value' => '25'],
+                            ['value' => '50'],
+                            ['value' => '100'],
+                            ['value' => '250'],
+                            ['value' => '500'],
+                        ],
                         'priceOption' => 'multi',
                         'setPrice' => '25',
                         'customAmount' => 'true',
