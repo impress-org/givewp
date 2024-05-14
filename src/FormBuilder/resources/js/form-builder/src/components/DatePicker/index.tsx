@@ -32,20 +32,15 @@ export default ({
 
     const popoverRef = useRef();
 
-    const [date, setDate] = useState<string>(value);
+    const [date, setDate] = useState<string>(value || new Date().toISOString().slice(0, 19));
     const [isVisible, setIsVisible] = useState<boolean>(false);
-
-    const convertJsDateToMySQLDate = (dateTime: string) => {
-        const [date, time] = dateTime.split('T');
-        return `${date} ${time}`;
-    };
 
     const toggleVisible = () => {
         setIsVisible((state) => !state);
     };
 
     const onSelectDate = () => {
-        onSelect(convertJsDateToMySQLDate(date));
+        onSelect(date.replace('T', ' '));
         setIsVisible(false);
     };
 
@@ -99,7 +94,7 @@ export default ({
                         {showTimeSelector ? (
                             <DateTimePicker
                                 is12Hour={is12Hour}
-                                currentDate={value}
+                                currentDate={date}
                                 isInvalidDate={(date) => checkDate(date)}
                                 onChange={(date) => {
                                     setDate(date);
@@ -107,7 +102,7 @@ export default ({
                             />
                         ) : (
                             <DatePicker
-                                currentDate={value}
+                                currentDate={date}
                                 isInvalidDate={(date) => checkDate(date)}
                                 onChange={(date) => {
                                     setDate(date);
