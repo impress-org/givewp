@@ -265,6 +265,7 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased Prevent returning forms without the "formBuilderSettings" and "formBuilderFields" meta keys
      * @since 3.0.0
      *
      * @return ModelQueryBuilder<DonationForm>
@@ -288,6 +289,8 @@ class DonationFormRepository
                 'form_id',
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
+            ->whereIsNotNull("give_formmeta_attach_meta_settings.meta_value")
+            ->whereIsNotNull("give_formmeta_attach_meta_fields.meta_value")
             ->where('post_type', 'give_forms');
     }
 
