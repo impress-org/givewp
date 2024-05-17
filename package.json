@@ -61,6 +61,7 @@
         "axios-mock-adapter": "^1.18.2",
         "babel-jest": "^29.7.0",
         "jest": "^29.6.2",
+        "jest-environment-jsdom": "^29.7.0",
         "jest-puppeteer": "^9.0.0",
         "jest-watch-typeahead": "^2.2.2",
         "laravel-mix": "^6.0.34",
