@@ -2,6 +2,7 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Repositories\Settings;
 
@@ -29,6 +30,7 @@ class GivePluginSettingsData implements TrackData
     /**
      * Returns plugin global settings.
      *
+     * @since 3.10.0 Add check for Event Tickets beta feature.
      * @since 2.10.0
      * @return array
      */
@@ -63,6 +65,11 @@ class GivePluginSettingsData implements TrackData
         }
 
         $data['active_payment_gateways'] = $this->getGatewaysLabels();
+
+        /**
+         * @since 3.10.0 Add check for Event Tickets beta feature.
+         */
+        $data['is_event_tickets'] = FeatureFlag::eventTickets();
 
         return $data;
     }

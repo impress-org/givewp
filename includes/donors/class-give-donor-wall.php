@@ -82,6 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
+     * @since 3.7.0 Sanitize attributes
      * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
 	 *
@@ -114,6 +115,7 @@ class Give_Donor_Wall {
 	 * @return string|bool The markup of the form grid or false.
 	 */
 	public function render_shortcode( $atts ) {
+        $atts = give_clean($atts);
 
 		$give_settings = give_get_settings();
 

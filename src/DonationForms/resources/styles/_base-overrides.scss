@@ -77,3 +77,12 @@ label, fieldset {
 input[type="file"] {
     padding: 0;
 }
+
+input[type="text"]:not([name="amount"], [name="amount-custom"]),
+input[type="password"],
+input[type="email"],
+textarea {
+    &:focus {
+        border-color: transparent;
+    }
+}

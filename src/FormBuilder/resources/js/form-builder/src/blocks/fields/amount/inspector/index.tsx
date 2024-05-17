@@ -9,16 +9,17 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/components/CurrencyControl';
+import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {useCallback, useState} from '@wordpress/element';
-import {OptionsPanel} from '@givewp/form-builder-library';
+import {useCallback} from '@wordpress/element';
 import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
+import {OptionsPanel} from '@givewp/form-builder-library';
+import DonationTypeControl from '@givewp/form-builder/blocks/fields/amount/inspector/donation-type-control';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -56,11 +57,15 @@ const numberOfDonationsControlOptions = [{label: __('Ongoing', 'give'), value: '
     }))
 );
 
+/**
+ * @since 3.12.0 add description fields to levels.
+ * @since 3.0.0
+ */
 const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        defaultLevel,
+        descriptionsEnabled = false,
         priceOption,
         setPrice,
         customAmount,
@@ -118,21 +123,20 @@ const Inspector = ({attributes, setAttributes}) => {
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
-
     const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
         levels.map((level) => ({
+            ...level,
             id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(level.toString()),
-            value: level.toString(),
-            checked: defaultLevel === level,
+            value: level?.value.toString() ?? '',
         }))
     );
 
     const handleLevelAdded = () => {
-        const newLevelValue = levels.length ? String(Math.max(...levels) * 2) : '10';
+        const levelValues = levels.map((level) => Number(level.value));
+        const newLevelValue = levelValues.length ? String(Math.max(...levelValues) * 2) : '10';
         const newLevel = {
             id: String(Math.floor(Math.random() * 1000000)),
-            label: formatCurrencyAmount(newLevelValue),
+            label: '',
             value: newLevelValue,
             checked: false,
         };
@@ -140,32 +144,35 @@ const Inspector = ({attributes, setAttributes}) => {
         // If there are no levels, set the new level as the default.
         if (!levels.length) {
             newLevel.checked = true;
-            setAttributes({defaultLevel: Number(newLevelValue)});
         }
 
         setDonationLevels([...donationLevels, newLevel]);
-        setAttributes({levels: [...levels, Number(newLevelValue)]});
+        setAttributes({levels: [...levels, newLevel]});
     };
 
     const handleLevelRemoved = (level: OptionProps, index: number) => {
         const newLevels = levels.filter((_, i) => i !== index);
-        const newDonationLevels = donationLevels.filter((_, i) => i !== index);
 
-        if (level.checked && newDonationLevels.length > 0) {
-            newDonationLevels[0].checked = true;
-            setAttributes({defaultLevel: Number(newDonationLevels[0].value)});
+        if (level.checked && newLevels.length > 0) {
+            newLevels[0].checked = true;
         }
 
-        setDonationLevels(newDonationLevels);
+        setDonationLevels(newLevels);
         setAttributes({levels: newLevels});
     };
 
     const handleLevelsChange = (options: OptionProps[]) => {
-        const checkedLevel = options.filter((option) => option.checked);
-        const newLevels = options.filter((option) => option.value).map((option) => Number(option.value));
+        const newLevels = options
+            .filter((option) => option.value)
+            .map((option) => ({
+                ...option,
+                value: Number(option.value),
+            }));
 
         setDonationLevels(options);
-        setAttributes({levels: newLevels, defaultLevel: Number(checkedLevel[0].value)});
+        setAttributes({
+            levels: newLevels,
+        });
     };
 
     const getDefaultBillingPeriodOptions = useCallback(
@@ -198,26 +205,28 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelRow>
             </PanelBody>
             <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>
-                <SelectControl
-                    label={__('Donation Option', 'give')}
-                    onChange={(priceOption) => setAttributes({priceOption})}
-                    value={priceOption}
-                    options={[
-                        {label: __('Multi-level Donation', 'give'), value: 'multi'},
-                        {label: __('Fixed Donation', 'give'), value: 'set'},
-                    ]}
-                    help={
-                        'multi' === priceOption
-                            ? __('Set multiple price donations for this form.', 'give')
-                            : __('The donation amount is fixed to the following amount:', 'give')
-                    }
-                />
-                {priceOption === 'set' && (
+                <DonationTypeControl priceOption={priceOption} attributes={attributes} setAttributes={setAttributes} />
+
+                {priceOption === 'set' ? (
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
                         value={setPrice}
                         onBlur={() => !setPrice && setAttributes({setPrice: 25})}
                         onValueChange={(setPrice) => setAttributes({setPrice: setPrice ? parseInt(setPrice) : 0})}
+                    />
+                ) : (
+                    <OptionsPanel
+                        currency={currency}
+                        multiple={false}
+                        options={donationLevels}
+                        setOptions={handleLevelsChange}
+                        onAddOption={handleLevelAdded}
+                        onRemoveOption={handleLevelRemoved}
+                        defaultControlsTooltip={__('Default Level', 'give')}
+                        toggleLabel={__('Enable amount description', 'give')}
+                        toggleEnabled={descriptionsEnabled}
+                        onHandleToggle={(value) => setAttributes({descriptionsEnabled: value})}
+                        maxLabelLength={120}
                     />
                 )}
             </PanelBody>
@@ -247,20 +256,6 @@ const Inspector = ({attributes, setAttributes}) => {
                     </>
                 )}
             </PanelBody>
-
-            {priceOption === 'multi' && (
-                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    <OptionsPanel
-                        currency={currency}
-                        multiple={false}
-                        options={donationLevels}
-                        setOptions={handleLevelsChange}
-                        onAddOption={handleLevelAdded}
-                        onRemoveOption={handleLevelRemoved}
-                        defaultControlsTooltip={__('Default Level', 'give')}
-                    />
-                </PanelBody>
-            )}
 
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
                 {!isRecurringSupported &&

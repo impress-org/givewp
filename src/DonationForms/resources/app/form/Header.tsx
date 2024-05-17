@@ -32,7 +32,7 @@ export default function Header({form}: {form: DonationForm}) {
                     form.settings?.designSettingsImageUrl && (
                         <HeaderImageTemplate
                             url={form.settings?.designSettingsImageUrl}
-                            alt={form.settings?.formTitle}
+                            alt={form.settings?.designSettingsImageAlt || form.settings?.formTitle}
                             color={form.settings?.designSettingsImageColor}
                             opacity={form.settings?.designSettingsImageOpacity}
                         />

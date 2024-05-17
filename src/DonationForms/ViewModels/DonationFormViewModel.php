@@ -6,6 +6,7 @@ use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -181,14 +182,18 @@ class DonationFormViewModel
     {
         $goalType = $this->goalType();
 
-        $totalRevenue = $this->getTotalRevenue($goalType);
-        $totalCountValue = $this->getTotalCountValue($goalType);
-        $totalCountLabel = $this->getCountLabel($goalType);
+        $donationQuery = (new DonationQuery)->form($this->donationFormId);
+
+        if($this->formSettings->goalProgressType->isCustom()) {
+            $donationQuery->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
+        }
 
         return [
-            'totalRevenue' => $totalRevenue,
-            'totalCountValue' => $totalCountValue,
-            'totalCountLabel' => $totalCountLabel,
+            'totalRevenue' => $donationQuery->sumIntendedAmount(),
+            'totalCountValue' => $goalType->isDonations() || $goalType->isAmount()
+                ? $donationQuery->count()
+                : $this->getTotalCountValue($goalType),
+            'totalCountLabel' => $this->getCountLabel($goalType),
         ];
     }
 
@@ -247,6 +252,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
@@ -266,7 +272,7 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo $this->formSettings->customCss; ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
         <?php
         endif; ?>
 

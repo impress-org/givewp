@@ -39,6 +39,7 @@ function TourEffectsAndEvents() {
     const {mode} = useEditorState();
     const dispatch = useFormStateDispatch();
     const {selectBlock} = useDispatch('core/block-editor');
+    const [showToolMenu, setShowToolsMenu] = useState(!!window.onboardingTourData.autoStartSchemaTour);
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
@@ -59,7 +60,9 @@ function TourEffectsAndEvents() {
         const clickExitTourCallback = (event) => {
             var element = event.target as Element;
             if (tour.isActive() && element.classList.contains('js-exit-tour')) {
-                tour.complete();
+               const renderToolSteps = tour.steps.some(step => step.id === 'schema-find-tour');
+
+                renderToolSteps ? tour.show('schema-find-tour') : tour.complete();
             }
         }
 
@@ -80,9 +83,6 @@ function TourEffectsAndEvents() {
                 method: 'POST',
                 body: data,
             })
-
-            // Trigger tools menu
-            // Highlight
         }
 
         tour.on('complete', onTourComplete);
@@ -92,7 +92,19 @@ function TourEffectsAndEvents() {
         }
     }, [mode])
 
-    return <></>
+    useEffect(()=> {
+        const openToolsMenuCallBack = () => {
+            document.getElementById('FormBuilderSidebarToggle')?.click();
+        };
+
+        document.addEventListener('openToolsMenu', openToolsMenuCallBack);
+
+        return () => {
+            window.removeEventListener('openToolsMenu', openToolsMenuCallBack);
+        };
+    }, [mode]);
+
+    return <></>;
 }
 
 const Onboarding = () => {

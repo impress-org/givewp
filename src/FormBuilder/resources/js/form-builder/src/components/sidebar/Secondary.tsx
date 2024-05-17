@@ -2,7 +2,6 @@ import {__} from '@wordpress/i18n';
 import BlockListTree from './panels/BlockListTree';
 import {__experimentalLibrary as Library} from '@wordpress/block-editor';
 import AdditionalFieldsPanel from '@givewp/form-builder/promos/additionalFields';
-import {useSelect} from '@wordpress/data';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const BlockListInserter = () => {

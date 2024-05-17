@@ -90,5 +90,6 @@ class Block
             GIVE_VERSION,
             true
         );
+        wp_set_script_translations( 'give-donor-dashboards-block', 'give' );
     }
 }

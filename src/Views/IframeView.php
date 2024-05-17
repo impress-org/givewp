@@ -261,6 +261,8 @@ class IframeView
     /**
      * Get button HTML.
      *
+     * @since 3.7.0 Escape attributes
+     *
      * @return string
      */
     private function getButtonHTML()
@@ -272,9 +274,9 @@ class IframeView
 				class="js-give-embed-form-modal-opener"
 				data-form-id="%1$s"%3$s>%2$s</button>
 			</div>',
-            $this->uniqueId,
-            $this->buttonTitle,
-            $this->buttonColor ? " style=\"background-color: {$this->buttonColor}\"" : ''
+            esc_attr($this->uniqueId),
+            esc_html($this->buttonTitle),
+            $this->buttonColor ? ' style="background-color: ' . esc_attr($this->buttonColor) . '"' : ''
         );
     }
 

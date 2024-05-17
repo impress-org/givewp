@@ -40,6 +40,7 @@ export default function TicketTypesSection() {
     const {
         apiRoot,
         apiNonce,
+        currencyCode,
         event,
         event: {ticketTypes},
     }: GiveEventTicketsDetails = window.GiveEventTicketsDetails;
@@ -101,7 +102,7 @@ export default function TicketTypesSection() {
                         })}
                     />
                     <TicketTypeFormModal
-                        apiSettings={{apiRoot, apiNonce}}
+                        apiSettings={{apiRoot, apiNonce, currencyCode}}
                         isOpen={isOpen}
                         handleClose={closeModal}
                         eventId={event?.id}

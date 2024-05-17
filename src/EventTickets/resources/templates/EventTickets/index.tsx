@@ -5,23 +5,30 @@ import {Event} from '../../components/types';
 
 import './styles.scss';
 
+/**
+ * @unreleased Hide tickets once the event has ended.
+ * @since 3.6.0
+ */
 export default function EventTicketsField({
     name,
-    id,
     title,
-    startDateTime,
     description,
+    startDateTime,
+    endDateTime,
     ticketTypes,
     ticketsLabel,
-    soldOutMessage,
 }: Event) {
+    const startDateTimeObj = new Date(startDateTime);
+    const endDateTimeObj = new Date(endDateTime);
+    const hasEnded = endDateTimeObj < new Date();
+
     return (
         <div className={'givewp-event-tickets'}>
-            <EventTicketsHeader title={title} startDateTime={new Date(startDateTime)} />
+            <EventTicketsHeader title={title} startDateTime={startDateTimeObj} endDateTime={endDateTimeObj} />
 
             {description && <EventTicketsDescription description={description} />}
 
-            <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />
+            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />}
         </div>
     );
 }

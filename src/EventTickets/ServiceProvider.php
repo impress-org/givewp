@@ -12,8 +12,6 @@ use Give\EventTickets\Repositories\EventRepository;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\EventTickets\Repositories\EventTicketTypeRepository;
 use Give\Framework\Migrations\MigrationsRegister;
-use Give\Framework\Receipts\DonationReceipt;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -69,6 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
             Migrations\CreateEventsTable::class,
             Migrations\CreateEventTicketTypesTable::class,
             Migrations\CreateEventTicketsTable::class,
+            Migrations\AddAmountColumnToEventTicketsTable::class,
         ]);
     }
 

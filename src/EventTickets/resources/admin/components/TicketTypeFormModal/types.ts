@@ -21,6 +21,7 @@ export interface TicketModalProps {
     apiSettings: {
         apiRoot: string;
         apiNonce: string;
+        currencyCode: string;
     };
     eventId: number;
 }

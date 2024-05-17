@@ -4,6 +4,7 @@ namespace Give\DonationForms\Repositories;
 
 use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -69,7 +70,7 @@ class DonationFormRepository
     }
 
     /**
-     *
+     * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
      * @return void
@@ -103,6 +104,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $donationForm->status->getValue(),
                     'post_type' => 'give_forms',
+                    'post_excerpt' => $donationForm->settings->formExcerpt,
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
@@ -146,6 +148,7 @@ class DonationFormRepository
     }
 
     /**
+     * @since 3.7.0 Add post_excerpt to the list of fields being updated
      * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
@@ -179,6 +182,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
+                    'post_excerpt' => $donationForm->settings->formExcerpt,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
                     'post_name' => $donationForm->settings->pageSlug,
                 ]);
@@ -390,10 +394,8 @@ class DonationFormRepository
      */
     public function getTotalNumberOfDonations(int $formId): int
     {
-        return DB::table('posts')
-            ->leftJoin('give_donationmeta', 'ID', 'donation_id')
-            ->where('meta_key', DonationMetaKeys::FORM_ID)
-            ->where('meta_value', $formId)
+        return (new DonationQuery)
+            ->form($formId)
             ->count();
     }
 
@@ -408,21 +410,14 @@ class DonationFormRepository
     }
 
     /**
+     * @since 3.12.0 Update query to use intended amounts (without recovered fees).
      * @since 3.0.0
      */
     public function getTotalRevenue(int $formId): int
     {
-        $query = DB::table('give_formmeta')
-            ->select('meta_value as totalRevenue')
-            ->where('form_id', $formId)
-            ->where('meta_key', '_give_form_earnings')
-            ->get();
-
-        if (!$query) {
-            return 0;
-        }
-
-        return (int)$query->totalRevenue;
+        return (int) (new DonationQuery)
+            ->form($formId)
+            ->sumIntendedAmount();
     }
 
     /**

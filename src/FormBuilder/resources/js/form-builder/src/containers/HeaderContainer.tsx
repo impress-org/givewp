@@ -257,6 +257,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     <MenuGroup label={__('Support', 'give')}>
                                         {mode !== EditorMode.settings && (
                                             <MenuItem
+                                                className={'givewp-block-editor-tools__tour'}
                                                 onClick={() => {
                                                     // @ts-ignore
                                                     if (!window.tour.isActive()) {
