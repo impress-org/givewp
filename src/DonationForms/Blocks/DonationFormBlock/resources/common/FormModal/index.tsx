@@ -10,7 +10,7 @@ type FormModalProps = {
 };
 
 /**
- * @unreleased
+ * @since 3.6.1
  */
 export default function FormModal({openFormButton, children, onChange, isOpen}: FormModalProps) {
     return (

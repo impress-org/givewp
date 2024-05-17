@@ -237,6 +237,7 @@ class AdminSettingFields
     /**
      * Return admin guidance notice to fix PayPal on boarding error.
      *
+     * @since 3.10.0 Updated phone number for contact
      * @since 2.9.6
      *
      * @param bool $completeMessage
@@ -248,7 +249,7 @@ class AdminSettingFields
         if ($this->isCountryInNorthAmerica()) {
             $telephone = sprintf(
                 '<a href="tel:%1$s">%1$s</a>',
-                '1-888-221-1161'
+                '1-888-350-2387'
             );
 
             $message = sprintf(

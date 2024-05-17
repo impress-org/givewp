@@ -7,11 +7,13 @@ use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
 use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
 use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
+ * @since 3.12.0 Add goalProgressType
  * @since      3.2.0 Remove addSlashesRecursive method
  * @since      3.0.0
  */
@@ -45,6 +47,18 @@ class FormSettings implements Arrayable, Jsonable
      * @var GoalType
      */
     public $goalType;
+    /**
+     * @var GoalProgressType
+     */
+    public $goalProgressType;
+    /**
+     * @var string
+     */
+    public $goalStartDate;
+    /**
+     * @var string
+     */
+    public $goalEndDate;
     /**
      * @var string
      */
@@ -189,6 +203,12 @@ class FormSettings implements Arrayable, Jsonable
     public $designSettingsImageUrl;
 
     /**
+     * @since 3.11.0
+     * @var string
+     */
+    public $designSettingsImageAlt;
+
+    /**
      * @since 3.4.0
      * @var string
      */
@@ -231,6 +251,22 @@ class FormSettings implements Arrayable, Jsonable
     public $designSettingsImageOpacity;
 
     /**
+     * @since 3.7.0
+     * @var string
+     */
+    public $formExcerpt;
+
+    /**
+     * @since 3.9.0
+     * @var array
+     */
+    public $currencySwitcherSettings;
+
+    /**
+     * @since 3.7.0 Added formExcerpt
+
+    /**
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -253,12 +289,17 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
+        $self->goalProgressType = ! empty($array['goalProgressType']) && GoalProgressType::isValid($array['goalProgressType'])
+            ? new GoalProgressType($array['goalProgressType'])
+            : GoalProgressType::ALL_TIME();
+        $self->goalStartDate = $array['goalStartDate'] ?? '';
+        $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
-        $self->customCss = $array['customCss'] ?? '';
+        $self->customCss = wp_strip_all_tags($array['customCss'] ?? '');
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
@@ -306,6 +347,7 @@ class FormSettings implements Arrayable, Jsonable
         ) ? $array['pdfSettings'] : [];
 
         $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
+        $self->designSettingsImageAlt = $array['designSettingsImageAlt'] ?? $self->formTitle;
         $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
             $array['designSettingsImageStyle']
         ) : DesignSettingsImageStyle::BACKGROUND();
@@ -326,6 +368,12 @@ class FormSettings implements Arrayable, Jsonable
         $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
 
         $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
+
+        $self->formExcerpt = $array['formExcerpt'] ?? '';
+
+        $self->currencySwitcherSettings = isset($array['currencySwitcherSettings']) && is_array(
+            $array['currencySwitcherSettings']
+        ) ? $array['currencySwitcherSettings'] : [];
 
         return $self;
     }

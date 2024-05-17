@@ -23,6 +23,9 @@ class Phone extends Field
     /** @var string */
     protected $phoneFormat = '';
 
+    /** @var string */
+    protected $intlTelInputSettings = [];
+
     /**
      * Set the phone format for the element.
      *
@@ -31,6 +34,20 @@ class Phone extends Field
     public function phoneFormat(string $phoneFormat): self
     {
         $this->phoneFormat = $phoneFormat;
+
+        return $this;
+    }
+
+    /**
+     * Set the intl-tel-input options for the element.
+     *
+     * @see https://github.com/jackocnr/intl-tel-input
+     *
+     * @since 3.9.0
+     */
+    public function setIntlTelInputSettings(array $intlTelInputSettings): self
+    {
+        $this->intlTelInputSettings = $intlTelInputSettings;
 
         return $this;
     }

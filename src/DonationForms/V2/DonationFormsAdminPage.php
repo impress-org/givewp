@@ -102,8 +102,8 @@ class DonationFormsAdminPage
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'showBanner' => ! get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
-            'showUpgradedTooltip' => ! get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'showBanner' => !get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
+            'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
         ];
@@ -133,29 +133,29 @@ class DonationFormsAdminPage
     {
         if ($this->isShowingAddV2FormPage()) {
             EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
-                         ->loadInFooter()
-                         ->registerTranslations()
-                         ->registerLocalizeData('GiveDonationForms', [
-                             'supportedAddons' => $this->getSupportedAddons(),
-                             'supportedGateways' => $this->getSupportedGateways(),
-                         ])
-                         ->enqueue();
+                ->loadInFooter()
+                ->registerTranslations()
+                ->registerLocalizeData('GiveDonationForms', [
+                    'supportedAddons' => $this->getSupportedAddons(),
+                    'supportedGateways' => $this->getSupportedGateways(),
+                ])
+                ->enqueue();
 
             wp_enqueue_style('givewp-design-system-foundation');
         }
 
         if ($this->isShowingEditV2FormPage()) {
             EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
-                         ->loadInFooter()
-                         ->registerTranslations()
-                         ->registerLocalizeData('GiveDonationForms', [
-                             'supportedAddons' => $this->getSupportedAddons(),
-                             'supportedGateways' => $this->getSupportedGateways(),
-                             'migrationApiRoot' => $this->migrationApiRoot,
-                             'apiNonce' => $this->apiNonce,
-                             'isMigrated' => _give_is_form_migrated((int)$_GET['post'])
-                         ])
-                         ->enqueue();
+                ->loadInFooter()
+                ->registerTranslations()
+                ->registerLocalizeData('GiveDonationForms', [
+                    'supportedAddons' => $this->getSupportedAddons(),
+                    'supportedGateways' => $this->getSupportedGateways(),
+                    'migrationApiRoot' => $this->migrationApiRoot,
+                    'apiNonce' => $this->apiNonce,
+                    'isMigrated' => _give_is_form_migrated((int)$_GET['post']),
+                ])
+                ->enqueue();
 
             wp_enqueue_style('givewp-design-system-foundation');
         }
@@ -215,7 +215,7 @@ class DonationFormsAdminPage
      *
      * @since 3.0.0
      *
-     * @param WP_Post $post
+     * @param  WP_Post  $post
      *
      * @return void
      */
@@ -239,17 +239,20 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
-                    },
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    }
                 })
                     .then((res) => {
                         window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-forms';
                     });
             }
 
-            jQuery(function () {
-                jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>',
+            jQuery(function() {
+                jQuery(jQuery('.wrap .page-title-action')[0]).after(
+                    '<button class="page-title-action" onclick="showReactTable()"><?php _e(
+                        'Switch to New View',
+                        'give'
+                    ) ?></button>'
                 );
             });
         </script>
@@ -288,7 +291,7 @@ class DonationFormsAdminPage
      */
     private function isShowingAddV2FormPage(): bool
     {
-        return ! isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
+        return !isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
 
     /**
@@ -334,22 +337,22 @@ class DonationFormsAdminPage
             'Zapier' => defined('GIVE_ZAPIER_VERSION'),
             'Salesforce' => defined('GIVE_SALESFORCE_VERSION'),
             'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
+            'Constant Contact' => class_exists('Give_Constant_Contact'),
             'MailChimp' => class_exists('Give_MailChimp'),
             //            'Manual Donations' => class_exists('Give_Manual_Donations'),
             'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
             'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
             'Gift Aid' => class_exists('Give_Gift_Aid'),
-            //            'MailChimp' => class_exists('Give_MailChimp'),
             //            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
             //            'Donation Block for Stripe' => defined('DONATION_BLOCK_FILE'),
-            //            'Double the Donation' => defined('GIVE_DTD_NAME'),
+            'Double the Donation' => defined('GIVE_DTD_NAME'),
             //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
             //            'Receipt Attachments' => defined('GIVERA_VERSION'),
             'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
             //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
-            //            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
-            //            'Constant Contact' => class_exists('Give_Constant_Contact'),
+            'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
+            'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
         ];
 
         $output = [];

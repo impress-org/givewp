@@ -46,6 +46,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
+     * @since 3.7.0 Test "phone" property
      * @since 2.19.6
      *
      * @return void
@@ -76,6 +77,33 @@ class TestDonorRepository extends TestCase
         $this->assertEquals($query->lastName, $donor->lastName);
         $this->assertEquals($query->email, $donor->email);
         $this->assertEquals($query->additionalEmails, $donor->additionalEmails);
+        $this->assertEquals($query->phone, $donor->phone);
+    }
+
+    /**
+     * @since 3.7.0
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldAddDonorWithEmptyPhoneToDatabase()
+    {
+        $donorMissingPhone = new Donor([
+            'name' => 'Bill Murray',
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonorRepository();
+
+        $repository->insert($donorMissingPhone);
+
+        /** @var Donor $query */
+        $query = $repository->prepareQuery()
+            ->where('id', $donorMissingPhone->id)
+            ->get();
+
+        $this->assertEmpty($query->phone);
     }
 
     /**
@@ -101,6 +129,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
+     * @since 3.7.0 Test "phone" property
      * @since 2.19.6
      *
      * @return void
@@ -116,6 +145,7 @@ class TestDonorRepository extends TestCase
         $donor->firstName = "Chris";
         $donor->lastName = "Farley";
         $donor->additionalEmails = ["chrisFarley2@givewp.com", "chrisFarley3@givewp.com"];
+        $donor->phone = '+1555444333';
 
         $repository->update($donor);
 
@@ -128,6 +158,7 @@ class TestDonorRepository extends TestCase
         $this->assertEquals("Chris", $query->firstName);
         $this->assertEquals("Farley", $query->lastName);
         $this->assertEquals($donor->additionalEmails, $query->additionalEmails);
+        $this->assertEquals($donor->phone, $query->phone);
     }
 
     /**

@@ -814,6 +814,10 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_classes( $args ) {
+        /**
+         * @since 3.11.0 sanitize $args
+         */
+        $args = give_clean($args);
 
 		$float_labels_option = give_is_float_labels_enabled( $args )
 			? 'float-labels-enabled'
@@ -834,6 +838,11 @@ class Give_Donate_Form {
 		// Remove empty class names.
 		$form_classes_array = array_filter( $form_classes_array );
 
+        /**
+         * @since 3.11.0 sanitize attributes
+         */
+        $form_classes_array = array_map('esc_attr', $form_classes_array);
+
 		return implode( ' ', $form_classes_array );
 
 	}
@@ -850,6 +859,11 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_wrap_classes( $args ) {
+        /**
+         * @since 3.11.0 sanitize $args
+         */
+        $args = give_clean($args);
+
 		$custom_class = [
 			'give-form-wrap',
 		];
@@ -875,6 +889,11 @@ class Give_Donate_Form {
 		 * @since 1.0
 		 */
 		$form_wrap_classes_array = (array) apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
+
+        /**
+         * @since 3.11.0 sanitize attributes
+         */
+        $form_wrap_classes_array = array_map('esc_attr', $form_wrap_classes_array);
 
 		return implode( ' ', $form_wrap_classes_array );
 

@@ -1,4 +1,40 @@
 == Changelog ==
+= 3.11.0: May 7th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming ConvertKit add-on release
+* New: Added ability to customize alt tags for header images in the visual form builder
+* Security: Added additional escaping to the give_form shortcode
+* Security: Added additional sanitization to the custom css field in the form builder
+
+= 3.10.0: April 30th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming ActiveCampaign add-on release
+* Enhancement: Updated PayPal support phone number
+* Enhancement: Updated various strings to be translatable (open-source contribution by @DAnn2012)
+* Security: sanitize additional give_form shortcode args
+* Fix: Resolved styling issues with recurring labels in the form builder
+
+= 3.9.0: April 24th, 2024 =
+* New: Added a donor phone number block to the form builder to collect donor phone numbers on donation forms
+* Enhancement: Updated form field inputs to have a single border color when selected 
+
+= 3.8.0: April 17th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming double the donation add-on release
+* Enhancement: Updated the form builder tour to highlight where to find the guided tour again 
+* Dev: Added BlockType api for easier block to field conversion
+
+= 3.7.0: April 10th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming constant contact add-on release
+* New: Added phone number field to the donor details page, more updates for this field will come in future releases!
+* Enhancement: Updated the form block option to select more available forms than the original limit of 10
+* Enhancement: Updated the form builder left-side menu to open automatically when entering the build screen
+* Security: Added sanitizing and escaping to shortcodes
+* Fix: Resolved a conflict with GiveWP and WordPress bulk actions functionality
+
+= 3.6.2: April 5th, 2024 =
+* Fix: Resolved an issue with WordPress 6.5 and the visual form builder that was making it difficult to interact with blocks
+
+= 3.6.1: March 21st, 2024 =
+* Fix: Resolved an issue with PayPal donations and currency switcher on donation forms using the visual form builder
+
 = 3.6.0: March 13th, 2024 =
 * New: Introduced a new beta feature called "Event Tickets" that is open for feedback! If enabled, you can create events and sell tickets on your donation forms.
 * New: Added a new form builder layout called "Two Panel" that offers a side-by-side appearance and a multi-step donation experience.

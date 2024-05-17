@@ -9,6 +9,7 @@ import type {
 } from '@givewp/form-builder/types';
 
 import BlockRegistrar from '@givewp/form-builder/registrars/blocks';
+import {IntlTelInputSettings} from '@givewp/forms/propTypes';
 
 type GoalTypeOption = {
     value: string;
@@ -18,6 +19,19 @@ type GoalTypeOption = {
 };
 
 /**
+ * @since 3.12.0
+ */
+type GoalProgressOption = {
+    value: string;
+    label: string;
+    description: string;
+    isCustom: boolean;
+};
+
+/**
+ * @since 3.12.0 Added goalProgressOptions
+ * @since 3.9.0 Added intlTelInputSettings
+ * @since 3.7.0 Added isExcerptEnabled
  * @since 3.0.0
  */
 interface FormBuilderWindowData {
@@ -47,7 +61,10 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    goalProgressOptions: GoalProgressOption[];
     nameTitlePrefixes: string[];
+    isExcerptEnabled: boolean;
+    intlTelInputSettings: IntlTelInputSettings;
 }
 
 /**
@@ -62,7 +79,7 @@ declare const window: {
                 [key: string]: Component;
             };
         };
-    }
+    };
 } & Window;
 
 /**
