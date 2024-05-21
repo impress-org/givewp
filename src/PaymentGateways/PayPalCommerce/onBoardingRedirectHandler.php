@@ -140,7 +140,6 @@ class onBoardingRedirectHandler
     private function savePayPalMerchantDetails()
     {
         $paypalGetData = wp_parse_args(str_replace("+", "%2B", $_SERVER['QUERY_STRING']));
-        ray($paypalGetData);
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
         $tokenInfo = $this->settings->getAccessToken();
 
