@@ -376,4 +376,34 @@ final class TestDonationFormRepository extends TestCase
 
         $this->assertEquals($amount->formatToDecimal(), $this->repository->getTotalInitialAmountFromSubscriptions($form->id));
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldNotReturnDonationFormWithoutSettingsMetaKey()
+    {
+        $donationForm = $this->modelFactory->create();
+
+        give()->form_meta->delete_meta($donationForm->id, 'formBuilderSettings');
+        $donationFormFromDatabase = $this->repository->getById($donationForm->id);
+
+        $this->assertNull($donationFormFromDatabase);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldNotReturnDonationFormWithoutFieldsMetaKey()
+    {
+        $donationForm = $this->modelFactory->create();
+
+        give()->form_meta->delete_meta($donationForm->id, 'formBuilderFields');
+        $donationFormFromDatabase = $this->repository->getById($donationForm->id);
+
+        $this->assertNull($donationFormFromDatabase);
+    }
 }
