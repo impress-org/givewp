@@ -156,6 +156,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
+     * @unreleased Include donor_phone_number col.
      * @since      2.29.0 Include donor created col
      * @since      2.21.2
      */

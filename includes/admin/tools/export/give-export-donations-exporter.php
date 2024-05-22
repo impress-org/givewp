@@ -157,6 +157,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * CSV file columns.
 	 *
+     * @unreleased add phone column.
 	 * @since  2.1
 	 *
 	 * @param array $columns
