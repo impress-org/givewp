@@ -199,6 +199,9 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$cols['address_zip']     = __( 'Zip', 'give' );
 					$cols['address_country'] = __( 'Country', 'give' );
 					break;
+                case 'phone':
+                    $cols['phone'] = __( 'Donor Phone Number', 'give' );
+                    break;
 				case 'comment':
 					$cols['comment'] = __( 'Donor Comment', 'give' );
 					break;
@@ -373,6 +376,10 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 					$data[ $i ]['address_zip']     = isset( $address['zip'] ) ? $address['zip'] : '';
 					$data[ $i ]['address_country'] = isset( $address['country'] ) ? $address['country'] : '';
 				}
+
+                if ( ! empty( $columns['phone'] ) ) {
+                    $data[ $i ]['phone'] = $payment_meta['_give_payment_donor_phone'];
+                }
 
 				if ( ! empty( $columns['comment'] ) ) {
 					$comment               = give_get_donor_donation_comment( $payment->ID, $payment->donor_id );
