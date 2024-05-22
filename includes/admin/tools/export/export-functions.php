@@ -154,7 +154,8 @@ function give_export_donors_get_default_columns() {
 		'address'            => __( 'Address', 'give' ),
 		'userid'             => __( 'User ID', 'give' ),
 		'donor_created_date' => __( 'Donor Created Date', 'give' ),
-		'donations'          => __( 'Number of donations', 'give' ),
+        'donor_phone_number' => __( 'Donor Phone Number', 'give' ),
+        'donations'          => __( 'Number of donations', 'give' ),
 		'donation_sum'       => __( 'Total Donated', 'give' ),
 	];
 
