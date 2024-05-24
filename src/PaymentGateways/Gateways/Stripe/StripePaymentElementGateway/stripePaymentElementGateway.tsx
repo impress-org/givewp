@@ -135,6 +135,14 @@ const stripePaymentElementGateway: StripeGateway = {
             billingDetails: {
                 name: string;
                 email: string;
+                address?: {
+                    city?: string;
+                    country?: string;
+                    line1?: string;
+                    line2?: string;
+                    postal_code?: string;
+                    state?: string;
+                }
             };
         };
     }): Promise<void> {
