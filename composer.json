@@ -46,8 +46,9 @@
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
-            "test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.14.0/strauss.phar",
-            "vendor/stellarwp/validation/bin/set-domain domain=give",
+            "test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.19.1/strauss.phar",
+            "sed -i 's/PHP_EOL/\"\\n\"/' vendor/stellarwp/validation/bin/set-domain",
+            "@php vendor/stellarwp/validation/bin/set-domain domain=give",
             "@php bin/strauss.phar"
         ],
         "post-install-cmd": [
