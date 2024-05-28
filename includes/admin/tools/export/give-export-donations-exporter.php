@@ -318,6 +318,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @access public
 	 *
+     * @unreleased add donor phone.
 	 * @since  2.1
 	 *
 	 * @global object $wpdb Used to query the database using the WordPress database API.
