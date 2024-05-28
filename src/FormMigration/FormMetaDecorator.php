@@ -982,4 +982,36 @@ class FormMetaDecorator extends FormModelDecorator
         return ! empty($this->getMeta('give_activecampaign_tags')) ?
             $this->getMeta('give_activecampaign_tags') : $defaultMeta;
     }
+
+    /**
+     * @unreleased
+     */
+    public function getCurrencySwitcherStatus(): string
+    {
+        return $this->getMeta('cs_status');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getCurrencySwitcherMessage(): string
+    {
+        return $this->getMeta('cs_message');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getCurrencySwitcherDefaultCurrency(): string
+    {
+        return $this->getMeta('give_cs_default_currency');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getCurrencySwitcherSupportedCurrencies(): array
+    {
+        return (array)$this->getMeta('cs_supported_currency');
+    }
 }
