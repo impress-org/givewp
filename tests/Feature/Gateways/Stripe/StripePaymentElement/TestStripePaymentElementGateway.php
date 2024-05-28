@@ -140,7 +140,15 @@ class TestStripePaymentElementGateway extends TestCase
                 'returnUrl' => $gatewayData['successUrl'],
                 'billingDetails' => [
                     'name' => trim("$donation->firstName $donation->lastName"),
-                    'email' => $donation->email
+                    'email' => $donation->email,
+                     'address' => [
+                        'city' => $donation->billingAddress->city,
+                        'country' => $donation->billingAddress->country,
+                        'line1' => $donation->billingAddress->address1,
+                        'line2' => $donation->billingAddress->address2,
+                        'postal_code' => $donation->billingAddress->zip,
+                        'state' => $donation->billingAddress->state,
+                    ],
                 ]
             ])
         );
