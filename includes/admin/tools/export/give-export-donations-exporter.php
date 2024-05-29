@@ -683,6 +683,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
      * Escapes CSV cell data to protect against CSV injection.
      * @link https://owasp.org/www-community/attacks/CSV_Injection
      *
+     * @unreleased sanitize + prefix
      * @since 2.25.2
      *
      * @param mixed|string $cellData
@@ -690,6 +691,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
      * @return mixed|string
      */
     protected function escape_csv_cell_data($cellData) {
+        $cellData = str_replace('+', '', $cellData);
         $firstCharacter = substr($cellData, 0, 1);
         if( in_array($firstCharacter, array('=', '+', '-', '@')) ) {
             $cellData = "'" . $cellData;
