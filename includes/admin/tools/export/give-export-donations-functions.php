@@ -35,16 +35,16 @@ function give_export_donations_get_custom_fields() {
 	$donation_list = implode( ',', (array) give_get_payments( $args ) );
 
 	$query_and = sprintf(
-		"AND $wpdb->posts.ID IN (%s) 
-		AND $wpdb->donationmeta.meta_key != '' 
+		"AND $wpdb->posts.ID IN (%s)
+		AND $wpdb->donationmeta.meta_key != ''
 		AND $wpdb->donationmeta.meta_key NOT RegExp '(^[_0-9].+$)'",
 		$donation_list
 	);
 
 	$query = "
-        SELECT DISTINCT($wpdb->donationmeta.meta_key) 
-        FROM $wpdb->posts 
-        LEFT JOIN $wpdb->donationmeta 
+        SELECT DISTINCT($wpdb->donationmeta.meta_key)
+        FROM $wpdb->posts
+        LEFT JOIN $wpdb->donationmeta
         ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key}
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
@@ -56,17 +56,17 @@ function give_export_donations_get_custom_fields() {
 	}
 
 	$query_and = sprintf(
-		"AND $wpdb->posts.ID IN (%s) 
-		AND $wpdb->donationmeta.meta_key != '' 
+		"AND $wpdb->posts.ID IN (%s)
+		AND $wpdb->donationmeta.meta_key != ''
 		AND $wpdb->donationmeta.meta_key NOT RegExp '^[^_]'",
 		$donation_list
 	);
 
 	$query = "
-        SELECT DISTINCT($wpdb->donationmeta.meta_key) 
-        FROM $wpdb->posts 
-        LEFT JOIN $wpdb->donationmeta 
-        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key} 
+        SELECT DISTINCT($wpdb->donationmeta.meta_key)
+        FROM $wpdb->posts
+        LEFT JOIN $wpdb->donationmeta
+        ON $wpdb->posts.ID = {$wpdb->donationmeta}.{$donationmeta_table_key}
         WHERE $wpdb->posts.post_type = '%s'
     " . $query_and;
 
@@ -229,6 +229,7 @@ add_filter( 'give_ajax_form_search_args', 'give_export_donation_form_search_args
 /**
  * Add Donation standard fields in export donation page
  *
+ * @unreleased add Donor Phone Number to donor fields.
  * @since 2.1
  */
 function give_export_donation_standard_fields() {
@@ -471,6 +472,14 @@ function give_export_donation_standard_fields() {
 										   id="give-export-address"><?php _e( 'Donor\'s Billing Address', 'give' ); ?>
 								</label>
 							</li>
+
+                            <li>
+                                <label for="give-export-phone">
+                                    <input type="checkbox" checked
+                                           name="give_give_donations_export_option[phone]"
+                                           id="give-export-address"><?php _e( 'Donor\'s Phone Number', 'give' ); ?>
+                                </label>
+                            </li>
 
 							<li>
 								<label for="give-export-comment">
