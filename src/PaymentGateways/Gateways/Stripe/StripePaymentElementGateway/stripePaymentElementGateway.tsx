@@ -89,6 +89,9 @@ interface StripeGateway extends Gateway {
     settings?: StripeSettings;
 }
 
+/**
+ * @since 3.0.0
+ */
 const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {

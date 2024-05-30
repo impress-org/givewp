@@ -57,6 +57,7 @@ class TestStripePaymentElementGateway extends TestCase
     }
 
     /**
+     * @unreleased updated to send billing address details to Stripe
      * @since 3.0.0
      *
      * @throws \Give\Framework\Exceptions\Primitives\Exception
