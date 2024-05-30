@@ -142,6 +142,7 @@ add_action( 'wp_ajax_give_do_ajax_export', 'give_do_ajax_export' );
  * Note: This function is for internal purposes only.
  * Use filter "give_export_donors_get_default_columns" instead.
  *
+ * @unreleased add donor_phone_number column.
  * @since 2.2.6
  *
  * @return array
@@ -154,7 +155,8 @@ function give_export_donors_get_default_columns() {
 		'address'            => __( 'Address', 'give' ),
 		'userid'             => __( 'User ID', 'give' ),
 		'donor_created_date' => __( 'Donor Created Date', 'give' ),
-		'donations'          => __( 'Number of donations', 'give' ),
+        'donor_phone_number' => __( 'Donor Phone Number', 'give' ),
+        'donations'          => __( 'Number of donations', 'give' ),
 		'donation_sum'       => __( 'Total Donated', 'give' ),
 	];
 
