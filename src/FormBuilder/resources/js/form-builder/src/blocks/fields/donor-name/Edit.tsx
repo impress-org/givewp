@@ -139,7 +139,11 @@ export default function Edit({
                                                 }}
                                             >
                                                 {__(' Go to the settings to change the ')}
-                                                <a href="/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=display-settings">
+                                                <a
+                                                    href="/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=display-settings"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
                                                     {__('global Title Prefixes options.')}
                                                 </a>
                                             </p>
