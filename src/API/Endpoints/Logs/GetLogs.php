@@ -142,6 +142,8 @@ class GetLogs extends Endpoint
     }
 
     /**
+     * @unreleased Add 'givewp_log_source_view' filter
+     *
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
@@ -157,7 +159,8 @@ class GetLogs extends Endpoint
                 'id' => $log->getId(),
                 'log_type' => $log->getType(),
                 'category' => $log->getCategory(),
-                'source' => $log->getSource(),
+                'source' => apply_filters('givewp_log_source_view', $log->getSource(), $log->getContext(),
+                    $log->getId()),
                 'message' => $log->getMessage(),
                 'context' => $log->getContext(),
                 'date' => $log->getDate(),
