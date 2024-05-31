@@ -90,6 +90,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
+ * @unreleased updated afterCreatePayment response type to include billing details address
  * @since 3.0.0
  */
 const stripePaymentElementGateway: StripeGateway = {
