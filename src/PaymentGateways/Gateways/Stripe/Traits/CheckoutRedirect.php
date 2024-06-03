@@ -27,6 +27,7 @@ trait CheckoutRedirect
     }
 
     /**
+     * @unreleased add esc_attr to $session_id
      * @since  2.5.5
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
      * @return void
@@ -83,7 +84,7 @@ trait CheckoutRedirect
                     // Make the id field from the Checkout Session creation API response
                     // available to this file, so you can provide it as parameter here
                     // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-                    sessionId: '<?php echo $session_id; ?>'
+                    sessionId: '<?php echo esc_attr($session_id); ?>'
                 }).then( ( result ) => {
                     console.log(result);
                     // If `redirectToCheckout` fails due to a browser or network
