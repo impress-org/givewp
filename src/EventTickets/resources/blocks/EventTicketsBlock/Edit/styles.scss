@@ -65,14 +65,23 @@
         padding: var(--givewp-spacing-2);
 
         &__header {
+            background: none;
             padding: 0;
 
-            &::before {
-                display: none;
-            }
-
             &__date {
+                background-color: var(--givewp-grey-25);
                 color: var(--givewp-grey-900);
+            }
+        }
+
+        &__tickets {
+            &__ticket {
+                &__quantity {
+                    &__sold-out {
+                        background-color: var(--givewp-grey-25);
+                        color: var(--givewp-grey-900);
+                    }
+                }
             }
         }
     }
