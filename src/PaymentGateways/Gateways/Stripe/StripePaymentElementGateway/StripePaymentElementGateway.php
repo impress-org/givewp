@@ -89,7 +89,7 @@ class StripePaymentElementGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased updated to send billing address details to Stripe
+     * @since 3.12.1 updated to send billing address details to Stripe
      * @since 3.0.0
      * @inheritDoc
      * @throws ApiErrorException

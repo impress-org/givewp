@@ -27,7 +27,7 @@ trait CheckoutRedirect
     }
 
     /**
-     * @unreleased add esc_attr to $session_id
+     * @since 3.12.1 add esc_attr to $session_id
      * @since  2.5.5
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
      * @return void
