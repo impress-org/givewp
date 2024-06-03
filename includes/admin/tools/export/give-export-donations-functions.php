@@ -229,7 +229,7 @@ add_filter( 'give_ajax_form_search_args', 'give_export_donation_form_search_args
 /**
  * Add Donation standard fields in export donation page
  *
- * @unreleased add Donor Phone Number to donor fields.
+ * @since 3.12.1 add Donor Phone Number to donor fields.
  * @since 2.1
  */
 function give_export_donation_standard_fields() {

@@ -142,7 +142,7 @@ class GetLogs extends Endpoint
     }
 
     /**
-     * @unreleased Add 'givewp_log_source_view' filter
+     * @since 3.12.1 Add 'givewp_log_source_view' filter
      *
      * @param WP_REST_Request $request
      *

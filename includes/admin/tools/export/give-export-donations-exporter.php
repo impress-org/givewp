@@ -157,7 +157,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	/**
 	 * CSV file columns.
 	 *
-     * @unreleased add phone column.
+     * @since 3.12.1 add phone column.
 	 * @since  2.1
 	 *
 	 * @param array $columns
@@ -318,7 +318,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 *
 	 * @access public
 	 *
-     * @unreleased add donor phone.
+     * @since 3.12.1 add donor phone.
 	 * @since  2.1
 	 *
 	 * @global object $wpdb Used to query the database using the WordPress database API.
@@ -683,7 +683,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
      * Escapes CSV cell data to protect against CSV injection.
      * @link https://owasp.org/www-community/attacks/CSV_Injection
      *
-     * @unreleased sanitize + prefix
+     * @since 3.12.1 sanitize + prefix
      * @since 2.25.2
      *
      * @param mixed|string $cellData

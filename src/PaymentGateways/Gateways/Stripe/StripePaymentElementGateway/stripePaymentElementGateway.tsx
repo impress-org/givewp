@@ -90,7 +90,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
- * @unreleased updated afterCreatePayment response type to include billing details address
+ * @since 3.12.1 updated afterCreatePayment response type to include billing details address
  * @since 3.0.0
  */
 const stripePaymentElementGateway: StripeGateway = {
@@ -146,7 +146,7 @@ const stripePaymentElementGateway: StripeGateway = {
                     line2?: string;
                     postal_code?: string;
                     state?: string;
-                }
+                };
             };
         };
     }): Promise<void> {

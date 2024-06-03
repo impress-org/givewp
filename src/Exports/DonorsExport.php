@@ -54,7 +54,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased Include donor phone.
+     * @since 3.12.1 Include donor phone.
      * @since      2.29.0 Include donor created date
      * @since      2.21.2
      * @since 3.3.0 Filter donors by form ID
@@ -157,7 +157,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased Include donor_phone_number col.
+     * @since 3.12.1 Include donor_phone_number col.
      * @since      2.29.0 Include donor created col
      * @since      2.21.2
      */
