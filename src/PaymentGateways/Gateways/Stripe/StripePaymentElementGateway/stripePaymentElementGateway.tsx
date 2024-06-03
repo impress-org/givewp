@@ -89,6 +89,10 @@ interface StripeGateway extends Gateway {
     settings?: StripeSettings;
 }
 
+/**
+ * @unreleased updated afterCreatePayment response type to include billing details address
+ * @since 3.0.0
+ */
 const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {
@@ -135,6 +139,14 @@ const stripePaymentElementGateway: StripeGateway = {
             billingDetails: {
                 name: string;
                 email: string;
+                address?: {
+                    city?: string;
+                    country?: string;
+                    line1?: string;
+                    line2?: string;
+                    postal_code?: string;
+                    state?: string;
+                }
             };
         };
     }): Promise<void> {
