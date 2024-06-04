@@ -8,6 +8,7 @@ import {
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import {applyFilters} from '@wordpress/hooks';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+import {__, sprintf} from '@wordpress/i18n';
 
 let stripePromise = null;
 let stripePaymentMethod = null;
@@ -123,7 +124,21 @@ const stripePaymentElementGateway: StripeGateway = {
         const {error: submitError} = await this.elements.submit();
 
         if (submitError) {
-            throw new Error(submitError);
+            let errorMessage = __('Invalid Payment Data.', 'give');
+
+            if (typeof submitError === 'string') {
+                errorMessage = sprintf(__('Invalid Payment Data. Error Details: %s', 'give'), submitError);
+            }
+
+            if (submitError.hasOwnProperty('code') && submitError.hasOwnProperty('message')) {
+                errorMessage = sprintf(
+                    __('Invalid Payment Data. Error Details: %s (code: %s)', 'give'),
+                    submitError.message,
+                    submitError.code
+                );
+            }
+
+            throw new Error(errorMessage);
         }
 
         return {
