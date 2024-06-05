@@ -50,19 +50,21 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
-    let eventTicketsName; // eventTickets-1
+    let eventTicketsFieldName; // eventTickets-1
     let eventTickets; // [{"ticketId":1,"quantity":1,"amount":2000},{"ticketId":2,"quantity":2,"amount":2000}]
     let eventTicketsTotalAmount = 0; // 60
 
     window.givewpDonationFormExports.form.nodes.forEach((section) => {
         const eventField = section.nodes.filter((field) => field.type === 'eventTickets');
 
-        if (eventField.length > 0) {
-            eventTicketsName = eventField[0].name;
-            console.log('eventTicketsName: ', eventTicketsName);
+        if (eventField.length === 1) {
+            eventTicketsFieldName = eventField[0].name;
         }
     });
 
+    /**
+     * @unreleased
+     */
     const setEventTicketsTotalAmount = (eventsTicket: Array<any>) => {
         const totalAmount = eventsTicket.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
         if (totalAmount > 0) {
@@ -70,7 +72,6 @@ import {PayPalSubscriber} from './types';
         } else {
             eventTicketsTotalAmount = 0;
         }
-        console.log('EventsTicketTotalAmount: ', eventTicketsTotalAmount);
     };
 
     const buttonsStyle = {
@@ -148,7 +149,7 @@ import {PayPalSubscriber} from './types';
         if (subscriptionPeriod === 'one-time') {
             formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
         } else {
-            formData.append('give-amount', getAmount());
+            formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
         }
 
         formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));
@@ -305,12 +306,10 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
-        eventTickets = useWatch({name: eventTicketsName}); //eventTickets-1
+        eventTickets = useWatch({name: eventTicketsFieldName});
 
         useEffect(() => {
-            console.log('amount: ', amount);
-            if (eventTicketsName) {
-                console.log('eventTickets: ', eventTickets);
+            if (eventTicketsFieldName) {
                 setEventTicketsTotalAmount(JSON.parse(eventTickets));
             }
 
@@ -318,19 +317,6 @@ import {PayPalSubscriber} from './types';
                 updateOrderAmount = true;
             }
         }, [amount, eventTickets]);
-
-        //eventTickets-1
-        /*if (eventTicketsName) {
-            console.log('eventTicketsName: ', eventTicketsName);
-            eventTickets = useWatch({name: eventTicketsName});
-
-            useEffect(() => {
-                console.log('eventTickets: ', eventTickets);
-                if (eventTickets) {
-                    setEventTicketsTotalAmount(JSON.parse(eventTickets));
-                }
-            }, [eventTickets]);
-        }*/
 
         return children;
     };
