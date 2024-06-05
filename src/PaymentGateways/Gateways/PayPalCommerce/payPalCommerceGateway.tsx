@@ -50,7 +50,7 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
-    let eventTicketsFieldName; // eventTickets-1
+    let eventTicketsFieldName; // event-tickets-1
     let eventTickets; // [{"ticketId":1,"quantity":1,"amount":2000},{"ticketId":2,"quantity":2,"amount":2000}]
     let eventTicketsTotalAmount = 0; // 60
 
