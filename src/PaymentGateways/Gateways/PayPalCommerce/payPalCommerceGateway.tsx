@@ -50,6 +50,29 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
+    let eventTicketsName; // eventTickets-1
+    let eventTickets; // [{"ticketId":1,"quantity":1,"amount":2000},{"ticketId":2,"quantity":2,"amount":2000}]
+    let eventTicketsTotalAmount = 0; // 60
+
+    window.givewpDonationFormExports.form.nodes.forEach((section) => {
+        const eventField = section.nodes.filter((field) => field.type === 'eventTickets');
+
+        if (eventField.length > 0) {
+            eventTicketsName = eventField[0].name;
+            console.log('eventTicketsName: ', eventTicketsName);
+        }
+    });
+
+    const setEventTicketsTotalAmount = (eventsTicket: Array<any>) => {
+        const totalAmount = eventsTicket.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+        if (totalAmount > 0) {
+            eventTicketsTotalAmount = totalAmount / 100;
+        } else {
+            eventTicketsTotalAmount = 0;
+        }
+        console.log('EventsTicketTotalAmount: ', eventTicketsTotalAmount);
+    };
+
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
         label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
@@ -107,11 +130,19 @@ import {PayPalSubscriber} from './types';
      * @return {number} Amount with fee.
      */
     const getAmount = () => {
+        /*const {useWatch, useFormState} = window.givewp.form.hooks;
+        const donationType = useWatch({name: 'donationType'});
+        const isSubscription = donationType === 'subscription';*/
+
         const feeAmount = feeRecovery ? feeRecovery : 0;
         let amountWithFee = amount + feeAmount;
         amountWithFee = Math.round(amountWithFee * 100) / 100;
 
-        return amountWithFee;
+        /*if (isSubscription) {
+            return amountWithFee
+        }*/
+
+        return amountWithFee + eventTicketsTotalAmount;
     };
 
     const getFormData = () => {
@@ -281,6 +312,19 @@ import {PayPalSubscriber} from './types';
                 updateOrderAmount = true;
             }
         }, [amount]);
+
+        //eventTickets-1
+        if (eventTicketsName) {
+            console.log('eventTicketsName: ', eventTicketsName);
+            eventTickets = useWatch({name: eventTicketsName});
+
+            useEffect(() => {
+                console.log('eventTickets: ', eventTickets);
+                if (eventTickets) {
+                    setEventTicketsTotalAmount(JSON.parse(eventTickets));
+                }
+            }, [eventTickets]);
+        }
 
         return children;
     };
