@@ -130,19 +130,11 @@ import {PayPalSubscriber} from './types';
      * @return {number} Amount with fee.
      */
     const getAmount = () => {
-        /*const {useWatch, useFormState} = window.givewp.form.hooks;
-        const donationType = useWatch({name: 'donationType'});
-        const isSubscription = donationType === 'subscription';*/
-
         const feeAmount = feeRecovery ? feeRecovery : 0;
         let amountWithFee = amount + feeAmount;
         amountWithFee = Math.round(amountWithFee * 100) / 100;
 
-        /*if (isSubscription) {
-            return amountWithFee
-        }*/
-
-        return amountWithFee + eventTicketsTotalAmount;
+        return amountWithFee;
     };
 
     const getFormData = () => {
@@ -153,7 +145,13 @@ import {PayPalSubscriber} from './types';
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', getAmount());
+        if (subscriptionPeriod === 'one-time') {
+            formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
+        } else {
+            formData.append('give-amount', getAmount());
+        }
+
+        formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -307,14 +305,22 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
+        eventTickets = useWatch({name: eventTicketsName}); //eventTickets-1
+
         useEffect(() => {
+            console.log('amount: ', amount);
+            if (eventTicketsName) {
+                console.log('eventTickets: ', eventTickets);
+                setEventTicketsTotalAmount(JSON.parse(eventTickets));
+            }
+
             if (orderCreated) {
                 updateOrderAmount = true;
             }
-        }, [amount]);
+        }, [amount, eventTickets]);
 
         //eventTickets-1
-        if (eventTicketsName) {
+        /*if (eventTicketsName) {
             console.log('eventTicketsName: ', eventTicketsName);
             eventTickets = useWatch({name: eventTicketsName});
 
@@ -324,7 +330,7 @@ import {PayPalSubscriber} from './types';
                     setEventTicketsTotalAmount(JSON.parse(eventTickets));
                 }
             }, [eventTickets]);
-        }
+        }*/
 
         return children;
     };
