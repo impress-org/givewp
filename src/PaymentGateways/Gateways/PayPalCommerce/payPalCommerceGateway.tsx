@@ -65,8 +65,14 @@ import {PayPalSubscriber} from './types';
     /**
      * @unreleased
      */
-    const setEventTicketsTotalAmount = (eventsTicket: Array<any>) => {
-        const totalAmount = eventsTicket.reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+    const setEventTicketsTotalAmount = (
+        eventTickets: Array<{
+            ticketId: number;
+            quantity: number;
+            amount: number;
+        }>
+    ) => {
+        const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
         if (totalAmount > 0) {
             eventTicketsTotalAmount = totalAmount / 100;
         } else {
