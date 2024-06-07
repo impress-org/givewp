@@ -50,22 +50,12 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
-    let eventTicketsFieldName; // event-tickets-1
-    let eventTickets; // [{"ticketId":1,"quantity":1,"amount":2000},{"ticketId":2,"quantity":2,"amount":2000}]
-    let eventTicketsTotalAmount = 0; // 60
-
-    window.givewpDonationFormExports.form.nodes.forEach((section) => {
-        const eventField = section.nodes.filter((field) => field.type === 'eventTickets');
-
-        if (eventField.length === 1) {
-            eventTicketsFieldName = eventField[0].name;
-        }
-    });
+    let eventTickets;
 
     /**
      * @unreleased
      */
-    const setEventTicketsTotalAmount = (
+    const getEventTicketsTotalAmount = (
         eventTickets: Array<{
             ticketId: number;
             quantity: number;
@@ -74,9 +64,9 @@ import {PayPalSubscriber} from './types';
     ) => {
         const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
         if (totalAmount > 0) {
-            eventTicketsTotalAmount = totalAmount / 100;
+            return totalAmount / 100;
         } else {
-            eventTicketsTotalAmount = 0;
+            return 0;
         }
     };
 
@@ -152,6 +142,7 @@ import {PayPalSubscriber} from './types';
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
+        const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
         if (subscriptionPeriod === 'one-time') {
             formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
         } else {
@@ -312,13 +303,9 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
-        eventTickets = useWatch({name: eventTicketsFieldName});
+        eventTickets = useWatch({name: 'event-tickets'});
 
         useEffect(() => {
-            if (eventTicketsFieldName) {
-                setEventTicketsTotalAmount(JSON.parse(eventTickets));
-            }
-
             if (orderCreated) {
                 updateOrderAmount = true;
             }
