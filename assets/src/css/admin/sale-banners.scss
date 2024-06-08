@@ -2,8 +2,6 @@
     display: block;
     width: 100%;
     position: relative;
-    padding: 1.75rem 0 1.5rem 2.75rem;
-    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -61,6 +59,8 @@
         width: 70%;
         line-height: normal;
         font-style: normal;
+        padding: 1.75rem 0 1.5rem 2.75rem;
+        box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
 
         & h2 {
             font-size: 2rem;
