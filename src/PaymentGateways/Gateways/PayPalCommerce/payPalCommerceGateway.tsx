@@ -314,6 +314,34 @@ import {PayPalSubscriber} from './types';
         return children;
     };
 
+    /**
+     * @unreleased
+     */
+    const getRequiredValidationMessage = () => {
+        return __('This is a required field', 'give');
+    };
+
+    /**
+     * @unreleased
+     */
+    const isCityRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-text-city .givewp-field-required'));
+    };
+
+    /**
+     * @unreleased
+     */
+    const isStateRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-select-state .givewp-field-required'));
+    };
+
+    /**
+     * @unreleased
+     */
+    const isZipRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-text-zip .givewp-field-required'));
+    };
+
     const SmartButtonsContainer = () => {
         const {useWatch, useFormState} = window.givewp.form.hooks;
         const donationType = useWatch({name: 'donationType'});
@@ -364,6 +392,29 @@ import {PayPalSubscriber} from './types';
                             setFocus(fieldName);
                         }
                     }
+                    return actions.reject();
+                }
+
+                /**
+                 * Depending on the selected country, the city, state, and zip fields can be required or not and there are custom
+                 * validation rules on the server side that check that. However, in this case, these validations are reached later
+                 * when the donation is already created on the PayPal side. This way, we need the conditions below to check it earlier
+                 * and prevent the donation creation on the PayPal side if the required billing address fields are missing.
+                 */
+                if (city.length === 0 && isCityRequired()) {
+                    setError('city', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
+                    return actions.reject();
+                }
+
+                if (state.length === 0 && isStateRequired()) {
+                    setError('state', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
+                    // As the state is a hidden field we need to use this workaround because the "shouldFocus" option does not work in hidden fields.
+                    document.querySelector('.givewp-fields-select-state').scrollIntoView({behavior: 'smooth'});
+                    return actions.reject();
+                }
+
+                if (postalCode.length === 0 && isZipRequired()) {
+                    setError('zip', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
                     return actions.reject();
                 }
 
