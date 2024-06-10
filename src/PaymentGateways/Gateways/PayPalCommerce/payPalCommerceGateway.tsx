@@ -143,7 +143,8 @@ import {PayPalSubscriber} from './types';
         formData.append('give_payment_mode', 'paypal-commerce');
 
         const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
-        if (subscriptionPeriod === 'one-time') {
+        const isSubscription = subscriptionPeriod ? subscriptionPeriod !== 'one-time' : false;
+        if (!isSubscription) {
             formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
         } else {
             formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
