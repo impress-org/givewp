@@ -305,7 +305,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 const disconnectPayPalAccountFn = () => {
                     const formData = new FormData();
                     const requestData = {};
-                    console.log('keepWebhooks: ', keepWebhooks);
+
                     // Do nothing if user cancel the confirmation.
                     if (!isConfirmed) {
                         return;

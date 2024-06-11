@@ -89,6 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
+     * @unreleased Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
     public function loadAdminScripts()
