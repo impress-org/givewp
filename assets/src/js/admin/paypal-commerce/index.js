@@ -313,6 +313,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
                     formData.append('action', 'give_paypal_commerce_disconnect_account');
                     formData.append('mode', button.getAttribute('data-mode'));
+                    formData.append('keep-webhooks', Boolean(keepWebhooks));
 
                     requestData.method = 'POST';
                     requestData.body = formData;
@@ -353,7 +354,6 @@ window.addEventListener('DOMContentLoaded', function () {
                         open: function open() {
                             document.querySelector('#keep_webhooks').addEventListener('change', function (event) {
                                 keepWebhooks = event.target.checked;
-                                console.log('keepWebhooks:', keepWebhooks);
                             });
                         },
                         afterClose: () => disconnectPayPalAccountFn(),

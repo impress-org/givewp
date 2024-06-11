@@ -196,6 +196,7 @@ class AjaxRequestHandler
 
         try {
             $mode = give_clean($_POST['mode']);
+            $keepWebhooks = rest_sanitize_boolean($_POST['keep-webhooks']);
             $this->webhooksRepository->setMode($mode);
             $this->merchantRepository->setMode($mode);
             $this->refreshToken->setMode($mode);
@@ -204,7 +205,7 @@ class AjaxRequestHandler
             $this->validateAdminRequest();
 
             // Remove the webhook from PayPal if there is one
-            if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
+            if ( ! $keepWebhooks && $webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
                 $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
                 $this->webhooksRepository->deleteWebhookConfig();
             }
