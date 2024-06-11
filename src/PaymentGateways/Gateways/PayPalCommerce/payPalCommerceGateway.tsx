@@ -50,6 +50,26 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
+    let eventTickets;
+
+    /**
+     * @unreleased
+     */
+    const getEventTicketsTotalAmount = (
+        eventTickets: Array<{
+            ticketId: number;
+            quantity: number;
+            amount: number;
+        }>
+    ) => {
+        const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
+        if (totalAmount > 0) {
+            return totalAmount / 100;
+        } else {
+            return 0;
+        }
+    };
+
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
         label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
@@ -122,7 +142,15 @@ import {PayPalSubscriber} from './types';
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', getAmount());
+        const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
+        const isSubscription = subscriptionPeriod ? subscriptionPeriod !== 'one-time' : false;
+        if (!isSubscription) {
+            formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
+        } else {
+            formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
+        }
+
+        formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -276,11 +304,13 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
+        eventTickets = useWatch({name: 'event-tickets'});
+
         useEffect(() => {
             if (orderCreated) {
                 updateOrderAmount = true;
             }
-        }, [amount]);
+        }, [amount, eventTickets]);
 
         return children;
     };

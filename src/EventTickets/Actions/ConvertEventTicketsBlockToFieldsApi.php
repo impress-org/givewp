@@ -3,11 +3,9 @@
 namespace Give\EventTickets\Actions;
 
 use Give\Donations\Models\Donation;
-use Give\EventTickets\DataTransferObjects\TicketPurchaseData;
 use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
+use Give\EventTickets\DataTransferObjects\TicketPurchaseData;
 use Give\EventTickets\Fields\EventTickets;
-use Give\EventTickets\Models\EventTicket;
-use Give\EventTickets\Models\EventTicketType;
 use Give\EventTickets\Repositories\EventRepository;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
@@ -16,13 +14,14 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @unreleased Remove event ID from field name
      * @since 3.6.0
      *
      * @throws EmptyNameException
      */
     public function __invoke(BlockModel $block, int $formId)
     {
-        return EventTickets::make($block->getShortName() . '-' . $block->getAttribute('eventId'))
+        return EventTickets::make($block->getShortName())
             ->tap(function (EventTickets $eventTicketsField) use ($block, $formId) {
                 $eventId = $block->getAttribute('eventId');
                 $event = give(EventRepository::class)->getById($eventId);
