@@ -53,7 +53,7 @@ import {PayPalSubscriber} from './types';
     let eventTickets;
 
     /**
-     * @unreleased
+     * @since 3.12.2
      */
     const getEventTicketsTotalAmount = (
         eventTickets: Array<{
@@ -316,28 +316,28 @@ import {PayPalSubscriber} from './types';
     };
 
     /**
-     * @unreleased
+     * @since 3.12.2
      */
     const getRequiredValidationMessage = () => {
         return __('This is a required field', 'give');
     };
 
     /**
-     * @unreleased
+     * @since 3.12.2
      */
     const isCityRequired = () => {
         return Boolean(document.querySelector('.givewp-fields-text-city .givewp-field-required'));
     };
 
     /**
-     * @unreleased
+     * @since 3.12.2
      */
     const isStateRequired = () => {
         return Boolean(document.querySelector('.givewp-fields-select-state .givewp-field-required'));
     };
 
     /**
-     * @unreleased
+     * @since 3.12.2
      */
     const isZipRequired = () => {
         return Boolean(document.querySelector('.givewp-fields-text-zip .givewp-field-required'));
