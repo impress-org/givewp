@@ -42,15 +42,6 @@ class StellarSaleBanners extends SaleBanners
             GIVE_VERSION
         );
 
-        if (is_rtl()) {
-            wp_enqueue_style(
-                'give-in-plugin-upsells-stellar-sales-banner-rtl',
-                GIVE_PLUGIN_URL . 'assets/dist/css/admin-stellarwp-sales-banner.rtl.css',
-                ['give-in-plugin-upsells-stellar-sales-banner'],
-                GIVE_VERSION
-            );
-        }
-
         wp_enqueue_style('givewp-admin-fonts');
     }
 
