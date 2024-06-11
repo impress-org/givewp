@@ -16,7 +16,7 @@ class StellarSaleBanners extends SaleBanners
     {
         return [
             [
-                'id' => 'bfgt2024-test',
+                'id' => 'bfgt2024-give',
                 'mainHeader' => __('Make it yours.', 'give'),
                 'subHeader' => __('Save 40% on the GiveWP Plus Plan'),
                 'actionText' => __('Shop Now', 'give'),
@@ -24,8 +24,8 @@ class StellarSaleBanners extends SaleBanners
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
                 'secondaryActionURL' => 'https://www.secondaryActionURL.com',
                 'content' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
-                'startDate' => '2024-06-05 00:00',
-                'endDate' => '2024-06-10 23:59',
+                'startDate' => '2024-06-10 00:00',
+                'endDate' => '2024-06-30 23:59',
             ],
         ];
     }
@@ -56,5 +56,20 @@ class StellarSaleBanners extends SaleBanners
             include __DIR__ . '/resources/views/stellarwp-sale-banner.php';
         }
     }
+
+    /**
+     * @unreleased
+     */
+    public static function isShowing(): bool
+    {
+        $saleBanners = new self();
+        $page = $_GET['page'] ?? [];
+        $validPages = ['give-donors', 'give-payment-history', 'give-reports'];
+
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' &&
+               in_array($page, $validPages, true) &&
+               !empty($saleBanners->getBanners());
+    }
+
 
 }
