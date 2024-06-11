@@ -124,6 +124,8 @@ class ScriptLoader
                         'Are you sure you want to disconnect your PayPal account?',
                         'give'
                     ),
+                    'keepWebhooksAfterDisconnect' => esc_html__('Continue to receive events, including subscription renewals, from old account?',
+                        'give'),
                     'connectSuccessTitle' => esc_html__('You’re connected to PayPal! Here’s what’s next...', 'give'),
                     'pciWarning' => sprintf(
                         __(
@@ -146,7 +148,7 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ],
+                    ]
                 ],
             ]
         );
