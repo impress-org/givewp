@@ -2,6 +2,7 @@ const bannersContainer = document.querySelector('.givewp-sale-banners-container'
 const dismissActions = document.querySelectorAll('.givewp-sale-banner__dismiss');
 const pageTitle = document.querySelector('.page-title-action, .wp-heading-inline, #give-in-plugin-upsells h1');
 const listTable = document.querySelector('#give-admin-donations-root, #give-admin-donation-forms-root, #give-admin-donors-root');
+const settings = document.querySelector('.give-settings-header');
 
 /**
  * @since 3.1.0 show banner on ListTable pages.
@@ -25,11 +26,12 @@ const hideBanner = ({target: dismissAction}) => {
     }
 };
 
+
 if((pageTitle || listTable) && bannersContainer ){
     bannersContainer.style.display = null;
 
-    if (pageTitle) {
-        pageTitle.parentNode.insertBefore(bannersContainer, pageTitle.nextSibling);
+    if (settings) {
+       settings.insertAdjacentElement('afterend', bannersContainer);
     } else if (listTable){
         listTable.querySelector('header').insertAdjacentElement('afterend', bannersContainer);
     }
