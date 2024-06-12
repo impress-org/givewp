@@ -7,6 +7,7 @@ namespace Give\Promotions\InPluginUpsells;
  */
 class StellarSaleBanners extends SaleBanners
 {
+
     /**
      * @unreleased
      */
@@ -15,13 +16,51 @@ class StellarSaleBanners extends SaleBanners
         return [
             [
                 'id' => 'bfgt2024-give',
-                'mainHeader' => __('Make it yours.', 'give'),
-                'subHeader' => __('Save 40% on the GiveWP Plus Plan'),
+                'mainHeader' => self::getDataByPricingPlan([
+                    'Pro' => __('Make it stellar.', 'give'),
+                    'default' => __('Make it yours.', 'give'),
+                ]),
+                'subHeader' => self::getDataByPricingPlan([
+                    'Basic' => __('Save 40% on the GiveWP Plus Plan.', 'give'),
+                    'Plus' => __('Save 40% on the GiveWP Pro Plan.', 'give'),
+                    'Pro' => __('Save 40% on all StellarWP products.', 'give'),
+                    'default' => __(__('Save 40% on the GiveWP Plus Plan.', 'give')),
+                ]),
                 'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://www.actionURL.com',
+                'actionURL' => self::getDataByPricingPlan([
+                    'Basic' => 'www.basic-test.com',
+                    'Plus' => 'www.plus-test.com',
+                    'Pro' => 'www.pro-test.com',
+                    'default' => 'www.default-test.com',
+                ]),
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
                 'secondaryActionURL' => 'https://www.secondaryActionURL.com',
-                'content' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                'content' => self::getDataByPricingPlan([
+                    'Pro' => __(__('Take 40% off all brands during the annual Stellar Sale. Now through July 30.', 'give'), 'give'),
+                    'default' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                ]),
+                'startDate' => '2024-06-23 00:00',
+                'endDate' => '2024-06-30 23:59',
+            ],
+            [
+                'id' => 'bfgt2024-p2p',
+                'mainHeader' => __('Make it yours.', 'give'),
+                'subHeader' => __('Save 40% on Peer-to-Peer Fundraising.', 'give'),
+                'actionText' => __('Shop Now', 'give'),
+                'actionURL' => self::getDataByPricingPlan([
+                    'Basic' => 'www.basic-test.com',
+                    'Plus' => 'www.plus-test.com',
+                    'Pro' => 'www.pro-test.com',
+                    'default' => 'www.default-test.com',
+                ]),
+                'secondaryActionText' => __('View all StellarWP Deals', 'give'),
+                'secondaryActionURL' => 'https://www.secondaryActionURL.com',
+                'content' => self::getDataByPricingPlan([
+                    'Basic' => __('Open up your donation forms to your supporters during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'Plus' => __('Upgrade to the Pro Plan and get Peer-to-Peer Fundraising during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'Pro' => __('Upgrade to the Pro Plan and get Peer-to-Peer Fundraising during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'default' => __('Open up your donation forms to your supporters during the annual Stellar Sale. Now through July 30.', 'give'),
+                ]),
                 'startDate' => '2024-06-23 00:00',
                 'endDate' => '2024-06-30 23:59',
             ],
@@ -48,7 +87,7 @@ class StellarSaleBanners extends SaleBanners
      */
     public function render(): void
     {
-        $banners = $this->getVisibleBanners();
+        $banners = $this->alternateVisibleBanners();
 
         if (!empty($banners)) {
             include __DIR__ . '/resources/views/stellarwp-sale-banner.php';
@@ -66,6 +105,43 @@ class StellarSaleBanners extends SaleBanners
 
         return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' &&
                in_array($page, $validPages, true) &&
-               !empty($saleBanners->getBanners());
+               ! empty($saleBanners->getBanners());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function startSession(): void
+    {
+        if (!session_id()) {
+            session_start();
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function alternateVisibleBanners(): array
+    {
+        $visibleBanners = $this->getVisibleBanners();
+        $bannerCount = count($visibleBanners);
+
+        if ($bannerCount > 0) {
+            $currentIndex = $_SESSION['banner_index'] ?? 0;
+
+            $selectedBanner = $visibleBanners[$currentIndex];
+
+            $currentIndex = ($currentIndex + 1) % $bannerCount;
+
+            $_SESSION['banner_index'] = $currentIndex;
+
+            if(!$selectedBanner && session_id()){
+                session_destroy();
+            }
+
+            return $selectedBanner ? [$selectedBanner] : [];
+        }
+
+        return $visibleBanners;
     }
 }

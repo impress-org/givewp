@@ -38,6 +38,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased add StellarSaleBanner session hook.
      * @since      2.27.1 Removed Recurring donations tab app.
      *
      * Boots the Plugin Upsell promotional page
@@ -50,6 +51,8 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
+        Hooks::addAction('init', StellarSaleBanners::class, 'startSession');
+
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
