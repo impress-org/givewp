@@ -2,8 +2,6 @@
 
 namespace Give\Promotions\InPluginUpsells;
 
-use Give\Log\Log;
-
 /**
  * @unreleased
  */
@@ -70,6 +68,4 @@ class StellarSaleBanners extends SaleBanners
                in_array($page, $validPages, true) &&
                !empty($saleBanners->getBanners());
     }
-
-
 }
