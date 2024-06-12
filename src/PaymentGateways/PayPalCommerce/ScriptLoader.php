@@ -127,6 +127,7 @@ class ScriptLoader
                     ),
                     'keepWebhooksAfterDisconnect' => esc_html__('Continue to receive events, including subscription renewals, from old account?',
                         'give'),
+                    'keepWebhooksAfterDisconnectLearnMore' => esc_html__('Learn More', 'give') . ' &raquo;',
                     'connectSuccessTitle' => esc_html__('You’re connected to PayPal! Here’s what’s next...', 'give'),
                     'pciWarning' => sprintf(
                         __(

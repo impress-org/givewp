@@ -342,7 +342,10 @@ window.addEventListener('DOMContentLoaded', function () {
                 let modalBody =
                     '<div><input type="checkbox" id="keep_webhooks" name="keep_webhooks" checked /><label for="keep_webhooks">' +
                     givePayPalCommerce.translations.keepWebhooksAfterDisconnect +
-                    '</label></div>';
+                    '</label></div><br/>' +
+                    '<a style="font-size: 13px;font-style: italic;" href="https://docs.givewp.com/pp-donations-webhooks" target="_blank">' +
+                    givePayPalCommerce.translations.keepWebhooksAfterDisconnectLearnMore +
+                    '</a>';
                 new GiveConfirmModal({
                     modalContent: {
                         title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
