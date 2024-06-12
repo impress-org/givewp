@@ -22,7 +22,7 @@
     color: #F9FAF9;
 }
 
-.give_forms_page_give-reports .give-sale-banner-content , .give-sale-banner-content {
+.give_forms_page_give-reports .give-sale-banner-content, .give-sale-banner-content {
     flex: .7;
     display: flex;
     align-items: center;
@@ -187,6 +187,10 @@
             gap: 1rem;
         }
     }
+
+    .give_forms_page_give-reports .give-sale-banner-content__primary-cta {
+        white-space: normal;
+    }
 }
 
 @media screen and (max-width: 770px) {
@@ -194,23 +198,13 @@
         padding-left: 1rem;
     }
 
-    .give-sale-banner-content__secondary-cta {
+    .give_forms_page_give-reports .give-sale-banner-content__secondary-cta, .give-sale-banner-content__secondary-cta {
         display: none;
-    }
-
-    .give-sale-banner-content__primary-cta-mobile-link {
-        display: inline-block;
     }
 
     .give-sale-banner__abstract-icon {
         max-width: 8.25rem;
         max-height: 9.5rem;
         right: 6rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .give-sale-banner-content__primary-cta-mobile-link {
-        margin-left: 0;
     }
 }
