@@ -5,7 +5,6 @@ namespace Give\Promotions\InPluginUpsells;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Give\Framework\Shims\Shim;
 
 /**
  * @since 2.17.0
@@ -241,13 +240,15 @@ class SaleBanners
     }
 
     /**
+     * @unreleased add type for $data.
      * @since 3.1.0 return data by user pricing plan.
      */
-    public static function getDataByPricingPlan($data): string
+    public static function getDataByPricingPlan(array $data): string
     {
         $userPricingPlan = self::getUserPricingPlan();
 
         if (array_key_exists($userPricingPlan, $data)) {
+
             return $data[$userPricingPlan];
         }
 
