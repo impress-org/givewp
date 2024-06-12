@@ -22,7 +22,7 @@ class StellarSaleBanners extends SaleBanners
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
                 'secondaryActionURL' => 'https://www.secondaryActionURL.com',
                 'content' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
-                'startDate' => '2024-06-10 00:00',
+                'startDate' => '2024-06-23 00:00',
                 'endDate' => '2024-06-30 23:59',
             ],
         ];
