@@ -1,6 +1,12 @@
-.givewp-fields-checkbox {
+.givewp-fields-checkbox  {
     &__description {
         margin-left: calc(1.25em + 0.375em);
+    }
+
+    &-anonymous {
+        .givewp-fields__description{
+            margin-left: 1.8rem;
+        }
     }
 }
 
