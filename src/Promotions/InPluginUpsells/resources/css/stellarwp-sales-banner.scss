@@ -23,11 +23,12 @@
 }
 
 .give_forms_page_give-reports .give-sale-banner-content , .give-sale-banner-content {
+    flex: .7;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 3rem;
-    width: 70%;
+
 
     & * {
         font-size: inherit;
@@ -36,7 +37,6 @@
 
     a {
         color: inherit;
-        font-weight: 700;
         text-decoration-thickness: 0.05em;
         transform-style: preserve-3d;
 
@@ -62,24 +62,27 @@
     }
 
     &__primary-cta {
-        min-width: fit-content;
+        line-height: normal;
+        white-space: nowrap;
 
-        &__header {
-            margin: .67rem 0 0 0;
-            font-size: 1.75rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1rem;
+        &__header, &__sub-header {
+            flex: 1 1 auto;
+            margin: 0;
+            font-size: 1.5rem;
             color: #F9FAF9;
         }
 
+        &__header {
+            font-weight: 700;
+        }
+
         &__sub-header {
-            font-weight: 400;
+            font-weight: 300;
         }
 
         &__link {
             font-family: 'Inconsolata', Montserrat, sans-serif;;
-            margin-top: .5rem;
+            margin-top: 1rem;
             display: inline-flex;
             padding: 0.73125rem 1.6714375rem;
             justify-content: center;
@@ -157,12 +160,27 @@
     right: 0;
 }
 
+
+@media screen and (min-width: 1800px) {
+    .give-sale-banner__abstract-icon {
+        bottom: -4rem;
+
+        svg {
+            width: 330px;
+            height: 224px;
+        }
+    }
+}
 @media screen and (max-width: 1200px) {
     .give-sale-banner-content {
         gap: 1.5rem;
 
         & a {
             font-size: 0.875rem;
+        }
+
+        &__primary-cta {
+            white-space: normal;
         }
 
         &__secondary-cta {

@@ -18,7 +18,7 @@
             <div class="give-sale-banner-content">
                 <div class="give-sale-banner-content__primary-cta">
                     <h1 class="give-sale-banner-content__primary-cta__header"><?= $mainHeader ?></h1>
-                    <p class="give-sale-banner-content__primary-cta__sub-header"><?= $subHeader ?></p>
+                    <h3 class="give-sale-banner-content__primary-cta__sub-header"><?= $subHeader ?></h3>
                     <a class="give-sale-banner-content__primary-cta__link" href="<?= $actionURL ?>" rel="noopener"
                        target="_blank"><?= $actionText ?></a>
                 </div>
