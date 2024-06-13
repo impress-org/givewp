@@ -85,6 +85,8 @@ class DonationQuery extends QueryBuilder
 
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
+     *
+     * @unreleased Use the NULLIF function to prevent zero values and consider the donation mode (test or live) instead of summing both modes together
      * @since 3.12.0
      * @return int|float
      */
@@ -92,8 +94,10 @@ class DonationQuery extends QueryBuilder
     {
         $this->joinMeta('_give_payment_total', 'amount');
         $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
+        $this->joinMeta('_give_payment_mode', 'paymentMode');
+        $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
         return $this->sum(
-            'COALESCE(intendedAmount.meta_value, amount.meta_value)'
+            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))'
         );
     }
 
