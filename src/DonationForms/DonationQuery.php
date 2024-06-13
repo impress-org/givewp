@@ -20,11 +20,14 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 class DonationQuery extends QueryBuilder
 {
     /**
+     * @unreleased Consider the donation mode (test or live) instead of querying both modes together
      * @since 3.12.0
      */
     public function __construct()
     {
         $this->from('posts', 'donation');
+        $this->joinMeta('_give_payment_mode', 'paymentMode');
+        $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
     }
 
     /**
@@ -86,7 +89,7 @@ class DonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased Use the NULLIF function to prevent zero values and consider the donation mode (test or live) instead of summing both modes together
+     * @unreleased Use the NULLIF function to prevent zero values that can generate a wrong final result
      * @since 3.12.0
      * @return int|float
      */
@@ -94,10 +97,23 @@ class DonationQuery extends QueryBuilder
     {
         $this->joinMeta('_give_payment_total', 'amount');
         $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
-        $this->joinMeta('_give_payment_mode', 'paymentMode');
-        $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
         return $this->sum(
             'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))'
+        );
+    }
+
+    /**
+     * Returns a calculated sum of the amounts (with recovered fees) for the donations.
+     *
+     * @unreleased
+     * @return int|float
+     */
+    public function sumAmount()
+    {
+        $this->joinMeta('_give_payment_total', 'amount');
+
+        return $this->sum(
+            'amount.meta_value'
         );
     }
 
