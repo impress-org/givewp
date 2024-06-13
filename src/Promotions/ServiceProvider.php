@@ -38,11 +38,12 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased add Stellar banner.
      * @since      2.27.1 Removed Recurring donations tab app.
+     * @since      2.19.0
      *
      * Boots the Plugin Upsell promotional page
      *
-     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {

@@ -5,6 +5,7 @@ const listTable = document.querySelector('#give-admin-donations-root, #give-admi
 const settings = document.querySelector('.give-settings-header');
 
 /**
+ * @unreleased move placement of banner on Reports page.
  * @since 3.1.0 show banner on ListTable pages.
  */
 const hideBanner = ({target: dismissAction}) => {
@@ -27,12 +28,12 @@ const hideBanner = ({target: dismissAction}) => {
 };
 
 
-if((pageTitle || listTable) && bannersContainer ){
+if ((pageTitle || listTable) && bannersContainer) {
     bannersContainer.style.display = null;
 
     if (settings) {
-       settings.insertAdjacentElement('afterend', bannersContainer);
-    } else if (listTable){
+        settings.insertAdjacentElement('afterend', bannersContainer);
+    } else if (listTable) {
         listTable.querySelector('header').insertAdjacentElement('afterend', bannersContainer);
     }
 }
