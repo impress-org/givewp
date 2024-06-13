@@ -1,4 +1,4 @@
-.give-sale-banners-container .givewp-sale-banners-container {
+.give_forms_page_give-reports .give-sale-banners-container, .givewp-sale-banners-container {
     /* Box-sizing reset */
     &,
     & *,
@@ -10,16 +10,16 @@
     margin: 0 auto;
 }
 
-.give-sale-banner {
+.give_forms_page_give-reports .give-sale-banner, .give-sale-banner {
     position: relative;
     display: flex;
     justify-content: space-between;
     background: #1D202F;
-    min-height: 180px;
-    padding: 0.6875rem 1.3125em .75rem 3.25em;
+    padding: 2rem 1.25rem 1.5rem 3.25rem;
     box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
     color: #F9FAF9;
+    overflow: hidden;
 }
 
 .give_forms_page_give-reports .give-sale-banner-content, .give-sale-banner-content {
@@ -62,27 +62,30 @@
     }
 
     &__primary-cta {
-        line-height: normal;
         white-space: nowrap;
 
         &__header, &__sub-header {
             flex: 1 1 auto;
             margin: 0;
-            font-size: 1.5rem;
+            padding: 0;
+            line-height: 29px;
             color: #F9FAF9;
         }
 
         &__header {
+            font-size: 1.5rem;
             font-weight: 700;
         }
 
         &__sub-header {
+            font-size: 1.25rem;
             font-weight: 300;
+            line-height: normal
         }
 
         &__link {
-            font-family: 'Inconsolata', Montserrat, sans-serif;;
-            margin-top: 1rem;
+            font-family: 'Inconsolata', Montserrat, sans-serif;
+            font-size: .875rem;
             display: inline-flex;
             padding: 0.73125rem 1.6714375rem;
             justify-content: center;
@@ -90,14 +93,7 @@
             background: #62B265;
             border-radius: 9999px;
             text-decoration: none;
-            margin-right: auto;
-        }
-
-        &-mobile-link {
-            display: none;
-            margin: 1rem 0 0 1rem;
-            color: #fff;
-            background: none;
+            margin: 1rem auto 0 0;
         }
     }
 
@@ -171,6 +167,7 @@
         }
     }
 }
+
 @media screen and (max-width: 1200px) {
     .give-sale-banner-content {
         gap: 1.5rem;

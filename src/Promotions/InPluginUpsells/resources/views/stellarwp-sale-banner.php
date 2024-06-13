@@ -13,7 +13,7 @@
      * @var string $endDate
      */
     ?>
-    <div class="give-sale-banners-container givewp-sale-banners-container">
+    <div class="givewp-sale-banners-container">
         <aside aria-label="" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>" class="give-sale-banner">
             <div class="give-sale-banner-content">
                 <div class="give-sale-banner-content__primary-cta">
@@ -25,9 +25,9 @@
 
                 <div class="give-sale-banner-content__secondary-cta">
                     <p class="give-sale-banner-content__secondary-cta__content"><?= $content ?></p>
-                    <a  class="give-sale-banner-content__secondary-cta__link"
-                        href="<?= $secondaryActionURL ?>" rel="noopener"
-                        target="_blank"><?= $secondaryActionText ?></a>
+                    <a class="give-sale-banner-content__secondary-cta__link"
+                       href="<?= $secondaryActionURL ?>" rel="noopener"
+                       target="_blank"><?= $secondaryActionText ?></a>
                 </div>
             </div>
 
