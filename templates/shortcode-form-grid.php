@@ -4,6 +4,7 @@
  */
 
 // Exit if accessed directly.
+use Give\DonationForms\DonationQuery;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
@@ -242,10 +243,13 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
+                /**
+                 * @unreleased Replace "$form->get_earnings()" with $query->form($post)->sumIntendedAmount()
+                 */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => $form->get_earnings(),
+                        'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,

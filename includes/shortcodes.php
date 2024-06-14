@@ -10,7 +10,8 @@
  */
 
 // Exit if accessed directly.
-use Give\DonationForms\DonationQuery;use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
+use Give\DonationForms\DonationQuery;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Frontend\ConfirmDonation;
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
