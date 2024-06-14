@@ -378,7 +378,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.12.1
      *
      * @throws Exception
      */
@@ -393,7 +393,7 @@ final class TestDonationFormRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.12.1
      *
      * @throws Exception
      */
