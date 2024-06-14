@@ -988,7 +988,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getCurrencySwitcherStatus(): string
     {
-        return $this->getMeta('cs_status');
+        return $this->getMeta('cs_status', 'global');
     }
 
     /**
@@ -996,7 +996,15 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getCurrencySwitcherMessage(): string
     {
-        return $this->getMeta('cs_message');
+        return $this->getMeta(
+            'cs_message',
+            sprintf(
+                __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give-currency-switcher'),
+                '{base_currency}',
+                '{new_currency_rate}',
+                '{new_currency}'
+            )
+        );
     }
 
     /**
@@ -1004,7 +1012,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getCurrencySwitcherDefaultCurrency(): string
     {
-        return $this->getMeta('give_cs_default_currency');
+        return $this->getMeta('give_cs_default_currency', '');
     }
 
     /**
@@ -1012,6 +1020,6 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getCurrencySwitcherSupportedCurrencies(): array
     {
-        return (array)$this->getMeta('cs_supported_currency');
+        return (array)$this->getMeta('cs_supported_currency', []);
     }
 }
