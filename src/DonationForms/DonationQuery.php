@@ -20,15 +20,11 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 class DonationQuery extends QueryBuilder
 {
     /**
-     * @unreleased Consider the donation status ('publish' or 'give_subscription') and the donation mode (test or live) instead of querying both modes together
      * @since 3.12.0
      */
     public function __construct()
     {
         $this->from('posts', 'donation');
-        $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
-        $this->joinMeta('_give_payment_mode', 'paymentMode');
-        $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
     }
 
     /**
@@ -88,14 +84,37 @@ class DonationQuery extends QueryBuilder
     }
 
     /**
+     * @unreleased
+     */
+    public function includeOnlyValidStatuses()
+    {
+        $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function includeOnlyCurrentMode()
+    {
+        $this->joinMeta('_give_payment_mode', 'paymentMode');
+        $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
+
+        return $this;
+    }
+
+    /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased Use the NULLIF function to prevent zero values that can generate a wrong final result
+     * @unreleased Use the NULLIF function to prevent zero values that can generate a wrong final result and use $this->includeOnlyValidStatuses() and $this->includeOnlyCurrentMode()
      * @since 3.12.0
      * @return int|float
      */
     public function sumIntendedAmount()
     {
+        $this->includeOnlyValidStatuses();
+        $this->includeOnlyCurrentMode();
         $this->joinMeta('_give_payment_total', 'amount');
         $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
         return $this->sum(
@@ -111,6 +130,8 @@ class DonationQuery extends QueryBuilder
      */
     public function sumAmount()
     {
+        $this->includeOnlyValidStatuses();
+        $this->includeOnlyCurrentMode();
         $this->joinMeta('_give_payment_total', 'amount');
 
         return $this->sum(
