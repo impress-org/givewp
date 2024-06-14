@@ -31,7 +31,7 @@ class DonationQuery extends QueryBuilder
      * An opinionated join method for the donation meta table.
      * @since 3.12.0
      */
-    public function joinMeta($key, $alias)
+    public function joinMeta($key, $alias): DonationQuery
     {
         $this->join(function (JoinQueryBuilder $builder) use ($key, $alias) {
             $builder
@@ -58,7 +58,7 @@ class DonationQuery extends QueryBuilder
      * An opinionated where method for the multiple donation form IDs meta field.
      * @since 3.12.0
      */
-    public function forms(array $formIds)
+    public function forms(array $formIds): DonationQuery
     {
         $this->joinMeta('_give_payment_form_id', 'formId');
         $this->whereIn('formId.meta_value', $formIds);
@@ -69,7 +69,7 @@ class DonationQuery extends QueryBuilder
      * An opinionated whereBetween method for the completed date meta field.
      * @since 3.12.0
      */
-    public function between($startDate, $endDate)
+    public function between($startDate, $endDate): DonationQuery
     {
         // If the dates are empty or invalid, they will fallback to January 1st, 1970.
         // For the start date, this is exactly what we need, but for the end date, we should set it as the current date so that we have a correct date range.
@@ -86,7 +86,7 @@ class DonationQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function includeOnlyValidStatuses()
+    public function includeOnlyValidStatuses(): DonationQuery
     {
         $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
 
@@ -96,7 +96,7 @@ class DonationQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function includeOnlyCurrentMode()
+    public function includeOnlyCurrentMode(): DonationQuery
     {
         $this->joinMeta('_give_payment_mode', 'paymentMode');
         $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
@@ -111,10 +111,16 @@ class DonationQuery extends QueryBuilder
      * @since 3.12.0
      * @return int|float
      */
-    public function sumIntendedAmount()
+    public function sumIntendedAmount($includeOnlyValidStatuses = true, $includeOnlyCurrentMode = true)
     {
-        $this->includeOnlyValidStatuses();
-        $this->includeOnlyCurrentMode();
+        if ($includeOnlyValidStatuses) {
+            $this->includeOnlyValidStatuses();
+        }
+
+        if ($includeOnlyCurrentMode) {
+            $this->includeOnlyCurrentMode();
+        }
+
         $this->joinMeta('_give_payment_total', 'amount');
         $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
         return $this->sum(
@@ -128,10 +134,16 @@ class DonationQuery extends QueryBuilder
      * @unreleased
      * @return int|float
      */
-    public function sumAmount()
+    public function sumAmount($includeOnlyValidStatuses = true, $includeOnlyCurrentMode = true)
     {
-        $this->includeOnlyValidStatuses();
-        $this->includeOnlyCurrentMode();
+        if ($includeOnlyValidStatuses) {
+            $this->includeOnlyValidStatuses();
+        }
+
+        if ($includeOnlyCurrentMode) {
+            $this->includeOnlyCurrentMode();
+        }
+        
         $this->joinMeta('_give_payment_total', 'amount');
 
         return $this->sum(
