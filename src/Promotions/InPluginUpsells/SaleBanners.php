@@ -254,5 +254,42 @@ class SaleBanners
 
         return $data['default'];
     }
+
+    /**
+     * @unreleased
+     */
+    public function alternateVisibleBanners(): array
+    {
+        $visibleBanners = $this->getVisibleBanners();
+        $bannerCount = count($visibleBanners);
+
+        if ($bannerCount > 0) {
+            $currentIndex = $_SESSION['banner_index'] ?? 0;
+
+            $selectedBanner = $visibleBanners[$currentIndex];
+
+            $currentIndex = ($currentIndex + 1) % $bannerCount;
+
+            $_SESSION['banner_index'] = $currentIndex;
+
+            if(!$selectedBanner && session_id()){
+                session_destroy();
+            }
+
+            return $selectedBanner ? [$selectedBanner] : [];
+        }
+
+        return $visibleBanners;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function startSession(): void
+    {
+        if (!session_id()) {
+            session_start();
+        }
+    }
 }
 

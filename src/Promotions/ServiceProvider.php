@@ -51,7 +51,7 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
-        Hooks::addAction('init', StellarSaleBanners::class, 'startSession');
+        Hooks::addAction('init', SaleBanners::class, 'startSession');
 
 
         if (AddonsAdminPage::isShowing()) {
