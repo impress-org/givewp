@@ -36,8 +36,10 @@ class StellarSaleBanners extends SaleBanners
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
                 'secondaryActionURL' => 'https://go.givewp.com/stellarsale',
                 'content' => self::getDataByPricingPlan([
-                    'Pro' => __(__('Take 40% off all brands during the annual Stellar Sale. Now through July 30.', 'give'), 'give'),
-                    'default' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'Pro' => sprintf(__('Take %s off all brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                        '<strong>40%</strong>'),
+                    'default' => sprintf(__('Take %s off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                        '<strong>40%</strong>'),
                 ]),
                 'startDate' => '2024-06-23 00:00',
                 'endDate' => '2024-06-30 23:59',
@@ -105,42 +107,5 @@ class StellarSaleBanners extends SaleBanners
         return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' &&
                in_array($page, $validPages, true) &&
                ! empty($saleBanners->getBanners());
-    }
-
-    /**
-     * @unreleased
-     */
-    public function startSession(): void
-    {
-        if (!session_id()) {
-            session_start();
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function alternateVisibleBanners(): array
-    {
-        $visibleBanners = $this->getVisibleBanners();
-        $bannerCount = count($visibleBanners);
-
-        if ($bannerCount > 0) {
-            $currentIndex = $_SESSION['banner_index'] ?? 0;
-
-            $selectedBanner = $visibleBanners[$currentIndex];
-
-            $currentIndex = ($currentIndex + 1) % $bannerCount;
-
-            $_SESSION['banner_index'] = $currentIndex;
-
-            if(!$selectedBanner && session_id()){
-                session_destroy();
-            }
-
-            return $selectedBanner ? [$selectedBanner] : [];
-        }
-
-        return $visibleBanners;
     }
 }
