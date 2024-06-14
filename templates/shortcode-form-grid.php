@@ -244,7 +244,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
                 /**
-                 * @unreleased Replace "$form->get_earnings()" with $query->form($post)->sumIntendedAmount()
+                 * @unreleased Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
