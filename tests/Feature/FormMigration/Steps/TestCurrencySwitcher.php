@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Tests\Unit\FormMigration\Steps;
+namespace Feature\FormMigration\Steps;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\V2\Models\DonationForm as V2DonationForm;
@@ -11,7 +11,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
-class CurrencySwitcherTest extends TestCase
+class TestCurrencySwitcher extends TestCase
 {
     use RefreshDatabase;
     use LegacyDonationFormAdapter;
@@ -19,7 +19,7 @@ class CurrencySwitcherTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormWithoutCurrencySwitcherSettingsIsNotMigrated(): void
+    public function testFormWithoutCurrencySwitcherSettingsMigratesUsingGlobalSettings(): void
     {
         // Arrange
         $v2Form = $this->setUpDonationForm();
@@ -29,7 +29,9 @@ class CurrencySwitcherTest extends TestCase
 
         // Assert
         $form = DonationForm::find($v3Form->id);
-        $this->assertEmpty($form->settings->currencySwitcherSettings);
+        $this->assertIsArray($form->settings->currencySwitcherSettings);
+        $this->assertArrayHasKey('enable', $form->settings->currencySwitcherSettings);
+        $this->assertEquals('global', $form->settings->currencySwitcherSettings['enable']);
     }
 
     /**
