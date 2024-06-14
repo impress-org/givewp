@@ -456,7 +456,10 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
+                                /**
+                                 * @unreleased Replace $form->get_sales with (new Give\MultiFormGoals\ProgressBar\Model(['id' => $form_id]))->getDonationCount()
+                                 */
+                                echo (new Give\MultiFormGoals\ProgressBar\Model(['id' => $form_id]))->getDonationCount() ?>
                             </span>
                             <span class="goal">
                                 <?php
