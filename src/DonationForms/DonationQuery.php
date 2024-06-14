@@ -20,12 +20,13 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 class DonationQuery extends QueryBuilder
 {
     /**
-     * @unreleased Consider the donation mode (test or live) instead of querying both modes together
+     * @unreleased Consider the donation status ('publish' or 'give_subscription') and the donation mode (test or live) instead of querying both modes together
      * @since 3.12.0
      */
     public function __construct()
     {
         $this->from('posts', 'donation');
+        $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
         $this->joinMeta('_give_payment_mode', 'paymentMode');
         $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
     }
