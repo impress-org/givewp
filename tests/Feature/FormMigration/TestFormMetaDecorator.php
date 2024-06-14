@@ -12,7 +12,8 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
  *
  * @covers \Give\FormMigration\FormMetaDecorator
  */
-class TestFormMetaDecorator extends TestCase {
+class TestFormMetaDecorator extends TestCase
+{
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
@@ -20,19 +21,23 @@ class TestFormMetaDecorator extends TestCase {
      */
     public function testIsLastNameRequiredShouldReturnTrue(): void
     {
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_last_name_field_required' => 'required',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_last_name_field_required' => 'required',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
         $this->assertTrue($formMetaDecorator->isLastNameRequired());
 
-        give_update_option( 'last_name_field_required', 'required' );
+        give_update_option('last_name_field_required', 'required');
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_last_name_field_required' => 'global',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_last_name_field_required' => 'global',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
@@ -44,19 +49,23 @@ class TestFormMetaDecorator extends TestCase {
      */
     public function testIsLastNameRequiredShouldReturnFalse(): void
     {
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_last_name_field_required' => '',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_last_name_field_required' => '',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
         $this->assertFalse($formMetaDecorator->isLastNameRequired());
 
-        give_update_option( 'last_name_field_required', 'optional' );
+        give_update_option('last_name_field_required', 'optional');
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_last_name_field_required' => 'global',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_last_name_field_required' => 'global',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
@@ -68,19 +77,23 @@ class TestFormMetaDecorator extends TestCase {
      */
     public function testIsNameTitlePrefixEnabledShouldReturnTrue(): void
     {
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_name_title_prefix' => 'required',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_name_title_prefix' => 'required',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
         $this->assertTrue($formMetaDecorator->isNameTitlePrefixEnabled());
 
-        give_update_option( 'name_title_prefix', 'required' );
+        give_update_option('name_title_prefix', 'required');
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_name_title_prefix' => 'optional',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_name_title_prefix' => 'optional',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
@@ -92,19 +105,23 @@ class TestFormMetaDecorator extends TestCase {
      */
     public function testIsNameTitlePrefixEnabledShouldReturnFalse(): void
     {
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_name_title_prefix' => 'disabled',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_name_title_prefix' => 'disabled',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
         $this->assertFalse($formMetaDecorator->isNameTitlePrefixEnabled());
 
-        give_update_option( 'name_title_prefix', 'optional' );
+        give_update_option('name_title_prefix', 'optional');
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => [
-            '_give_name_title_prefix' => 'disabled',
-        ]]);
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                '_give_name_title_prefix' => 'disabled',
+            ]
+        ]);
 
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
@@ -252,7 +269,7 @@ class TestFormMetaDecorator extends TestCase {
     }
 
     /**
-     * @see https://core.trac.wordpress.org/browser/branches/4.5/tests/phpunit/tests/post/attachments.php#L24
+     * @see   https://core.trac.wordpress.org/browser/branches/4.5/tests/phpunit/tests/post/attachments.php#L24
      *
      * @since 3.5.0
      */
@@ -313,5 +330,103 @@ class TestFormMetaDecorator extends TestCase {
         $formMetaDecorator = new FormMetaDecorator($formV2);
 
         $this->assertTrue($formMetaDecorator->getDoubleTheDonationLabel() === 'DTD Label');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrencySwitcherStatus(): void
+    {
+        $status = 'enabled';
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'cs_status' => $status,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test - Status is present in the form meta
+        $this->assertEquals($status, $formMetaDecorator->getCurrencySwitcherStatus());
+
+        // Test - Status is NOT present in the form meta
+        give_update_meta($formV2->id, 'cs_status', '');
+        $this->assertEquals('global', $formMetaDecorator->getCurrencySwitcherStatus());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrencySwitcherMessage(): void
+    {
+        $message = 'The current exchange rate is 1.00 {base_currency} equals {new_currency_rate} {new_currency}.';
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'cs_message' => $message,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test - Message is present in the form meta
+        $this->assertEquals($message, $formMetaDecorator->getCurrencySwitcherMessage());
+
+        // Test - Message is NOT present in the form meta
+        give_update_meta($formV2->id, 'cs_message', '');
+        $expectedMessage = sprintf(
+            __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give-currency-switcher'),
+            '{base_currency}',
+            '{new_currency_rate}',
+            '{new_currency}'
+        );
+        $this->assertEquals($expectedMessage, $formMetaDecorator->getCurrencySwitcherMessage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrencySwitcherDefaultCurrency(): void
+    {
+        $defaultCurrency = 'USD';
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'give_cs_default_currency' => $defaultCurrency,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test - Default currency is present in the form meta
+        $this->assertEquals($defaultCurrency, $formMetaDecorator->getCurrencySwitcherDefaultCurrency());
+
+        // Test - Default currency is NOT present in the form meta
+        give_update_meta($formV2->id, 'give_cs_default_currency', '');
+        $this->assertEquals('', $formMetaDecorator->getCurrencySwitcherDefaultCurrency());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrencySwitcherSupportedCurrencies(): void
+    {
+        $supportedCurrencies = ['USD', 'EUR', 'GBP'];
+
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'cs_supported_currency' => $supportedCurrencies,
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        // Test - Supported currencies are present in the form meta
+        $this->assertEquals($supportedCurrencies, $formMetaDecorator->getCurrencySwitcherSupportedCurrencies());
+
+        // Test - Supported currencies are NOT present in the form meta
+        give_update_meta($formV2->id, 'cs_supported_currency', []);
+        $this->assertEquals([], $formMetaDecorator->getCurrencySwitcherSupportedCurrencies());
     }
 }
