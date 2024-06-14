@@ -10,7 +10,8 @@
  */
 
 // Exit if accessed directly.
-use Give\DonationForms\DonationQuery;use Give\License\PremiumAddonsListManager;
+use Give\DonationForms\DonationQuery;
+use Give\License\PremiumAddonsListManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
