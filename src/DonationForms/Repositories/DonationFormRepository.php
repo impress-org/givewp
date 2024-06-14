@@ -265,7 +265,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased Prevent returning forms without the "formBuilderSettings" and "formBuilderFields" meta keys
+     * @since 3.12.1 Prevent returning forms without the "formBuilderSettings" and "formBuilderFields" meta keys
      * @since 3.0.0
      *
      * @return ModelQueryBuilder<DonationForm>
