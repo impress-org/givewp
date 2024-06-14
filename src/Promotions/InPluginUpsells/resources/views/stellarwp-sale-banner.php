@@ -1,5 +1,8 @@
 <?php /** @var array[] $banners */ ?>
-<?php foreach ($banners as $banner): extract($banner);
+<?php
+
+foreach ($banners as $banner):
+    extract($banner);
     /**
      * @var string $id
      * @var string $mainHeader
@@ -14,20 +17,20 @@
      */
     ?>
     <div class="givewp-sale-banners-container">
-        <aside aria-label="" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>" class="give-sale-banner">
+        <aside aria-label="" id="<?php echo $dismissableElementId = "give-sale-banner-{$id}" ?>"
+               class="give-sale-banner">
             <div class="give-sale-banner-content">
                 <div class="give-sale-banner-content__primary-cta">
-                    <h1 class="give-sale-banner-content__primary-cta__header"><?= $mainHeader ?></h1>
-                    <h3 class="give-sale-banner-content__primary-cta__sub-header"><?= $subHeader ?></h3>
-                    <a class="give-sale-banner-content__primary-cta__link" href="<?= $actionURL ?>" rel="noopener"
-                       target="_blank"><?= $actionText ?></a>
+                    <h1 class="give-sale-banner-content__primary-cta__header"><?php echo $mainHeader ?></h1>
+                    <h3 class="give-sale-banner-content__primary-cta__sub-header"><?php echo $subHeader ?></h3>
+                    <a class="give-sale-banner-content__primary-cta__link" href="<?php echo $actionURL ?>"
+                       rel="noopener" target="_blank"><?php echo $actionText ?></a>
                 </div>
 
                 <div class="give-sale-banner-content__secondary-cta">
-                    <p class="give-sale-banner-content__secondary-cta__content"><?= $content ?></p>
-                    <a class="give-sale-banner-content__secondary-cta__link"
-                       href="<?= $secondaryActionURL ?>" rel="noopener"
-                       target="_blank"><?= $secondaryActionText ?></a>
+                    <p class="give-sale-banner-content__secondary-cta__content"><?php echo wp_kses($content, ['strong' =>[]]) ?></p>
+                    <a class="give-sale-banner-content__secondary-cta__link" href="<?php echo $secondaryActionURL ?>"
+                       rel="noopener" target="_blank"><?php echo $secondaryActionText ?></a>
                 </div>
             </div>
 
@@ -47,14 +50,12 @@
                     </defs>
                 </svg>
             </div>
-            <button type="button" aria-label="<?= __('Dismiss', 'give') ?>"
-                    aria-controls="<?= $dismissableElementId ?>"
-                    class="give-sale-banner-dismiss givewp-sale-banner__dismiss"
-                    data-id="<?= $id ?>">
+            <button type="button" aria-label="<?php echo __('Dismiss', 'give') ?>"
+                    aria-controls="<?php echo $dismissableElementId ?>"
+                    class="give-sale-banner-dismiss givewp-sale-banner__dismiss" data-id="<?php echo $id ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
                     <line x1="1.35355" y1="0.646447" x2="19.3535" y2="18.6464" stroke="#F9FAF9" />
-                    <line y1="-0.5" x2="25.4558" y2="-0.5"
-                          transform="matrix(0.707107 -0.707106 0.707107 0.707106 1 19)"
+                    <line y1="-0.5" x2="25.4558" y2="-0.5" transform="matrix(0.707107 -0.707106 0.707107 0.707106 1 19)"
                           stroke="#F9FAF9" />
                 </svg>
             </button>
