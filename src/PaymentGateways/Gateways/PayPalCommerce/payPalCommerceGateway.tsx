@@ -402,21 +402,37 @@ import {PayPalSubscriber} from './types';
                  * when the donation is already created on the PayPal side. This way, we need the conditions below to check it earlier
                  * and prevent the donation creation on the PayPal side if the required billing address fields are missing.
                  */
-                if (city.length === 0 && isCityRequired()) {
-                    setError('city', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
-                    return actions.reject();
-                }
+                if (country) {
+                    if (city.length === 0 && isCityRequired()) {
+                        setError(
+                            'city',
+                            {
+                                type: 'custom',
+                                message: getRequiredValidationMessage(),
+                            },
+                            {shouldFocus: true}
+                        );
+                        return actions.reject();
+                    }
 
-                if (state.length === 0 && isStateRequired()) {
-                    setError('state', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
-                    // As the state is a hidden field we need to use this workaround because the "shouldFocus" option does not work in hidden fields.
-                    document.querySelector('.givewp-fields-select-state').scrollIntoView({behavior: 'smooth'});
-                    return actions.reject();
-                }
+                    if (state.length === 0 && isStateRequired()) {
+                        setError(
+                            'state',
+                            {
+                                type: 'custom',
+                                message: getRequiredValidationMessage(),
+                            },
+                            {shouldFocus: true}
+                        );
+                        // As the state is a hidden field we need to use this workaround because the "shouldFocus" option does not work in hidden fields.
+                        document.querySelector('.givewp-fields-select-state').scrollIntoView({behavior: 'smooth'});
+                        return actions.reject();
+                    }
 
-                if (postalCode.length === 0 && isZipRequired()) {
-                    setError('zip', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
-                    return actions.reject();
+                    if (postalCode.length === 0 && isZipRequired()) {
+                        setError('zip', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
+                        return actions.reject();
+                    }
                 }
 
                 orderCreated = true;
