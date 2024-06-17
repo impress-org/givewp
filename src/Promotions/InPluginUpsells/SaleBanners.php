@@ -77,7 +77,7 @@ class SaleBanners
                         'Free' => 'https://go.givewp.com/bf23',
                         'Basic' => 'https://go.givewp.com/bfup23',
                         'Plus' => 'https://go.givewp.com/bfup23',
-                        'Default' => 'https://go.givewp.com/bfup23',
+                        'default' => 'https://go.givewp.com/bfup23',
                     ]
                 ),
                 'startDate' => '2023-11-20 00:00',
@@ -94,10 +94,6 @@ class SaleBanners
      */
     public function getVisibleBanners(): array
     {
-        if (self::getUserPricingPlan() === 'Pro') {
-            return [];
-        }
-
         $currentDateTime = current_datetime();
         $currentUserId = get_current_user_id();
         $giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');
