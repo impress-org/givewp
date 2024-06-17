@@ -13,7 +13,7 @@ class StellarSaleBanners extends SaleBanners
      */
     public function getBanners(): array
     {
-        return [
+        $banners = [
             [
                 'id' => 'bfgt2024-give',
                 'mainHeader' => self::getDataByPricingPlan([
@@ -31,7 +31,7 @@ class StellarSaleBanners extends SaleBanners
                     'Basic' => 'https://go.givewp.com/plusplan',
                     'Plus' => 'https://go.givewp.com/pro',
                     'Pro' => 'https://go.givewp.com/stellarsale',
-                    'default' => 'https://go.givewp.com/stellarsale',
+                    'default' => 'https://go.givewp.com/plusplan',
                 ]),
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
                 'secondaryActionURL' => 'https://go.givewp.com/stellarsale',
@@ -44,6 +44,24 @@ class StellarSaleBanners extends SaleBanners
                 'startDate' => '2024-06-23 00:00',
                 'endDate' => '2024-06-30 23:59',
             ],
+        ];
+
+        if(!defined('GIVE_P2P_VERSION')) {
+            $p2pBanners = $this->getP2PBanners();
+            foreach($p2pBanners as $p2pBanner){
+                $banners[] = $p2pBanner;
+            }
+        }
+
+        return $banners;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getP2PBanners(): array
+    {
+        return [
             [
                 'id' => 'bfgt2024-p2p',
                 'mainHeader' => __('Make it yours.', 'give'),
