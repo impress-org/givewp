@@ -144,7 +144,7 @@ export default function Edit({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
-                                                    {__('global Title Prefixes options.')}
+                                                    {__('Global Title Prefixes options.')}
                                                 </a>
                                             </p>
                                         )}
