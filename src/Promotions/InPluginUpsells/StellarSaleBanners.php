@@ -46,11 +46,8 @@ class StellarSaleBanners extends SaleBanners
             ],
         ];
 
-        if(!defined('GIVE_P2P_VERSION')) {
-            $p2pBanners = $this->getP2PBanners();
-            foreach($p2pBanners as $p2pBanner){
-                $banners[] = $p2pBanner;
-            }
+        foreach($this->getAddonBanners() as $addonBanner){
+            $banners[] = $addonBanner;
         }
 
         return $banners;
@@ -84,6 +81,24 @@ class StellarSaleBanners extends SaleBanners
                 'endDate' => '2024-06-30 23:59',
             ],
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getAddonBanners(): array
+    {
+        if(self::getUserPricingPlan() === 'Pro') {
+            return [];
+        }
+
+        $addonBanners = [];
+
+        if(!defined('GIVE_P2P_VERSION')) {
+            $addonBanners = $this->getP2PBanners();
+        }
+
+        return $addonBanners;
     }
 
     /**
