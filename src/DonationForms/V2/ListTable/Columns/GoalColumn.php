@@ -36,6 +36,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
+     * @unreleased Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,9 +49,6 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
-        /**
-         * @unreleased
-         */
         add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
             return (new DonationQuery())->form($donationFormId)->sumAmount();
         }, 10, 2);

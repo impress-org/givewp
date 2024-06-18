@@ -261,7 +261,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $goal = $shortcode_stats['goal'];
 
                 /**
-                 * @unreleased
+                 * @unreleased Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
                  */
                 add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
                     return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
