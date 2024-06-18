@@ -263,8 +263,8 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 /**
                  * @unreleased
                  */
-                add_filter('give_donate_form_get_sales', function ($sales, $donationForm) {
-                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationForm]]))->getDonationCount();
+                add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
+                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
                 }, 10, 2);
 
                 switch ($goal_format) {
