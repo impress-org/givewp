@@ -260,6 +260,13 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $income = $shortcode_stats['income'];
                 $goal = $shortcode_stats['goal'];
 
+                /**
+                 * @unreleased
+                 */
+                add_filter('give_donate_form_get_sales', function ($sales, $donationForm) {
+                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationForm]]))->getDonationCount();
+                }, 10, 2);
+
                 switch ($goal_format) {
                     case 'donation':
                         $progress = $goal ? round(($form->get_sales() / $goal) * 100, 2) : 0;
@@ -456,10 +463,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                /**
-                                 * @unreleased Replace $form->get_sales with (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$form->ID]]))->getDonationCount()
-                                 */
-                                echo (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$form->ID]]))->getDonationCount() ?>
+                                echo $form->get_sales() ?>
                             </span>
                             <span class="goal">
                                 <?php
