@@ -124,7 +124,7 @@ class DonationQuery extends QueryBuilder
         $this->joinMeta('_give_payment_total', 'amount');
         $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
         return $this->sum(
-            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))'
+            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)'
         );
     }
 
@@ -143,7 +143,7 @@ class DonationQuery extends QueryBuilder
         if ($includeOnlyCurrentMode) {
             $this->includeOnlyCurrentMode();
         }
-        
+
         $this->joinMeta('_give_payment_total', 'amount');
 
         return $this->sum(
