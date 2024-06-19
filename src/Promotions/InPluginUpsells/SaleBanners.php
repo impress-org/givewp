@@ -253,6 +253,10 @@ class SaleBanners
 
     /**
      * @unreleased
+     *
+     *  This method cycles through the visible banners, selecting the next banner in the list
+     *  on each call. If no banners are visible, or if the session index is not set, it returns
+     *  all visible banners.
      */
     public function alternateVisibleBanners(): array
     {
@@ -268,11 +272,12 @@ class SaleBanners
 
             $_SESSION['banner_index'] = $currentIndex;
 
-            if(!$selectedBanner){
+            if( !$selectedBanner){
                 $this->destroySession();
+                return $visibleBanners;
             }
 
-            return $selectedBanner ? [$selectedBanner] : [];
+            return [$selectedBanner];
         }
 
         return $visibleBanners;
