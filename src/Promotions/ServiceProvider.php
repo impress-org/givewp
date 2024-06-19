@@ -3,6 +3,7 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
+use Give\Log\Log;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
@@ -10,6 +11,7 @@ use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
+use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
 use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -57,6 +59,10 @@ class ServiceProvider implements ServiceProviderContract
         if (SaleBanners::isShowing()) {
             Hooks::addAction('admin_notices', SaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
+        }
+
+        if (ReportsWidgetBanner::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
         }
 
         if (PaymentGateways::isShowing()) {
