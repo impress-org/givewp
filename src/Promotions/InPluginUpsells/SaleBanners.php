@@ -268,8 +268,8 @@ class SaleBanners
 
             $_SESSION['banner_index'] = $currentIndex;
 
-            if(!$selectedBanner && session_id()){
-                session_destroy();
+            if(!$selectedBanner){
+                $this->destroySession();
             }
 
             return $selectedBanner ? [$selectedBanner] : [];
@@ -285,6 +285,16 @@ class SaleBanners
     {
         if (!session_id()) {
             session_start();
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function destroySession(): void
+    {
+        if (session_id()) {
+            session_destroy();
         }
     }
 }
