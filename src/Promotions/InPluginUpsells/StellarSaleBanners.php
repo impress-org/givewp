@@ -41,8 +41,8 @@ class StellarSaleBanners extends SaleBanners
                     'default' => sprintf(__('Take %s off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
                         '<strong>40%</strong>'),
                 ]),
-                'startDate' => '2024-06-23 00:00',
-                'endDate' => '2024-06-30 23:59',
+                'startDate' => '2024-07-23 00:00',
+                'endDate' => '2024-07-30 23:59',
             ],
         ];
 
@@ -77,8 +77,8 @@ class StellarSaleBanners extends SaleBanners
                     'Pro' => __('Upgrade to the Pro Plan and get Peer-to-Peer Fundraising during the annual Stellar Sale. Now through July 30.', 'give'),
                     'default' => __('Open up your donation forms to your supporters during the annual Stellar Sale. Now through July 30.', 'give'),
                 ]),
-                'startDate' => '2024-06-23 00:00',
-                'endDate' => '2024-06-30 23:59',
+                'startDate' => '2024-07-23 00:00',
+                'endDate' => '2024-07-30 23:59',
             ],
         ];
     }
