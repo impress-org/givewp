@@ -184,6 +184,7 @@ class SaleBanners
     }
 
     /**
+     * @unreleased remove all_access_pass.
      * @since 3.1.0 retrieve licensed plugin slugs.
      */
     public static function getLicensedPluginSlugs(): array
@@ -192,10 +193,8 @@ class SaleBanners
         $licenses = get_option("give_licenses", []);
 
         foreach ($licenses as $license) {
-            if (isset($license['is_all_access_pass']) && $license['is_all_access_pass'] && !empty($license['download'])) {
-                $pluginSlugs = ['is_all_access_pass'];
-            } else {
-                $pluginSlugs[] = $license['plugin_slug'];
+            foreach ($license['download'] as $plugin) {
+                $pluginSlugs[] = $plugin['plugin_slug'];
             }
         }
 
@@ -210,17 +209,9 @@ class SaleBanners
         $plan = 'Free';
 
         $pricingPlans = [
-            'Basic' => ['pdf' => 'give-pdf-receipts'],
-            'Plus' => [
-                'pdf_receipts' => 'give-pdf-receipts',
-                'recurring_donations' => 'give-recurring',
-                'fee_recovery' => 'give-fee-recovery',
-                'form_field_manager' => 'give-form-field-manager',
-                'tributes' => 'give-tributes',
-                'annual_receipts' => 'give-annual-receipts',
-                'peer_to_peer' => 'give-peer-to-peer',
-            ],
-            'Pro' => ['is_all_access_pass'],
+            'Basic' => self::getBasicLicenseSlugs(),
+            'Plus'  => self::getPlusLicenseSlugs(),
+            'Pro'   => self::getProLicenseSlugs(),
         ];
 
         $licensedPluginSlugs = self::getLicensedPluginSlugs();
@@ -302,5 +293,85 @@ class SaleBanners
             session_destroy();
         }
     }
+
+
+    /**
+     * @unreleased
+     */
+    public static function getBasicLicenseSlugs(): array
+    {
+        return [
+            'bitpay'              => 'give-bitpay',
+            'text_to_give'        => 'give-text-to-give',
+            'activecampaign'      => 'give-activecampaign',
+            'moneris'             => 'give-moneris',
+            'square'              => 'give-square',
+            'mollie'              => 'give-mollie',
+            'payfast'             => 'give-payfast',
+            'sofort'              => 'give-sofort',
+            'americloud_payments' => 'give-americloud-payments',
+            'paytm'               => 'give-paytm',
+            'gocardless'          => 'give-gocardless',
+            'razorpay'            => 'give-razorpay',
+            'payumoney'           => 'give-payumoney',
+            'convertkit'          => 'give-convertkit',
+            'aweber'              => 'give-aweber',
+            'per_form_gateways'   => 'give-per-form-gateways',
+            'email_reports'       => 'give-email-reports',
+            'manual_donations'    => 'give-manual-donations',
+            'zapier'              => 'give-zapier',
+            'google_analytics'    => 'give-google-analytics',
+            'ccavenue'            => 'give-ccavenue',
+            'constant_contact'    => 'give-constant-contact',
+            'braintree'           => 'give-braintree',
+            'iats'                => 'give-iats',
+            '2checkout'           => 'give-2checkout',
+            'pdf_receipts'        => 'give-pdf-receipts',
+            'paymill'             => 'give-paymill',
+            'stripe'              => 'give-stripe',
+            'authorize_net'       => 'give-authorize-net',
+            'mailchimp'           => 'give-mailchimp',
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getPlusLicenseSlugs(): array
+    {
+        $basicLicenseSlugs = self::getBasicLicenseSlugs();
+
+        $plusLicenseSlugs = [
+            'webhooks'                     => 'give-webhooks',
+            'salesforce'                   => 'give-salesforce',
+            'funds'                        => 'give-funds',
+            'annual_receipts'              => 'give-annual-receipts',
+            'currency_switcher'            => 'give-currency-switcher',
+            'donation_upsells_woocommerce' => 'give-donation-upsells-woocommerce',
+            'tributes'                     => 'give-tributes',
+            'fee_recovery'                 => 'give-fee-recovery',
+            'email_reports'                => 'give-email-reports',
+            'gift_aid'                     => 'give-gift-aid',
+            'recurring'                    => 'give-recurring',
+            'form_field_manager'           => 'give-form-field-manager',
+        ];
+
+        return array_merge($basicLicenseSlugs, $plusLicenseSlugs);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getProLicenseSlugs(): array
+    {
+        $plusLicenseSlugs = self::getPlusLicenseSlugs();
+
+        $proLicenseSlugs = [
+            'peer_to_peer' => 'give-peer-to-peer',
+        ];
+
+        return array_merge($plusLicenseSlugs, $proLicenseSlugs);
+    }
+
 }
 
