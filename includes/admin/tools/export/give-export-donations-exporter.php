@@ -663,6 +663,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				foreach ( $row as $col_id => $column ) {
 					// Make sure the column is valid
 					if ( array_key_exists( $col_id, $cols ) ) {
+                        $column = maybe_serialize( $column );
 						$row_data .= '"' . $this->escape_csv_cell_data(preg_replace( '/"/', "'", $column )) . '"';
 						$row_data .= $i == count( $cols ) ? '' : ',';
 						$i ++;
