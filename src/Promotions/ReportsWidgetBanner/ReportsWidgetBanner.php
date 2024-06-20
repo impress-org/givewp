@@ -21,8 +21,8 @@ class ReportsWidgetBanner extends SaleBanners
                 'header' => __('Make it yours. Save 40% on all GiveWP products.', 'give'),
                 'actionText' => __('Shop Now', 'give'),
                 'actionUrl' => 'https://go.givewp.com/40sale24',
-                'startDate' => '2024-06-12 00:00',
-                'endDate' => '2024-06-30 23:59',
+                'startDate' => '2024-07-23 00:00',
+                'endDate' => '2024-07-30 23:59',
             ],
         ];
     }
