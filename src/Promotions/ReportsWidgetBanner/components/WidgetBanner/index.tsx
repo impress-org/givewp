@@ -21,7 +21,13 @@ export default function WidgetBanner({hideWidgetBanner}: widgetBannerProps) {
                 <h1 className={'givewp-reports-widget-banner__header__main'}>{__('Make it yours.', 'give')}</h1>
                 <h2 className={'givewp-reports-widget-banner__header__secondary'}>{__('Save 40% on all GiveWP products', 'give')}</h2>
             </div>
-            <a className={'givewp-reports-widget-banner__cta'} href={banner.actionUrl}>{banner.actionText}</a>
+            <a className={'givewp-reports-widget-banner__cta'}
+               href={banner.actionUrl}
+               target={"_blank"}
+               rel={"noopener noreferrer"}
+            >
+                {banner.actionText}
+            </a>
             <button
                 onClick={dismissBanner}
                 type="button"
