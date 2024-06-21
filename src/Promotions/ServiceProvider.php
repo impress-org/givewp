@@ -51,8 +51,6 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
-        Hooks::addAction('init', SaleBanners::class, 'startSession');
-
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
@@ -64,6 +62,7 @@ class ServiceProvider implements ServiceProviderContract
         }
 
         if (StellarSaleBanners::isShowing()) {
+            Hooks::addAction('admin_init', SaleBanners::class, 'startSession');
             Hooks::addAction('admin_notices', StellarSaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', StellarSaleBanners::class, 'loadScripts');
         }
