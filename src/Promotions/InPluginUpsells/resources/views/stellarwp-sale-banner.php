@@ -1,5 +1,10 @@
-<?php /** @var array[] $banners */ ?>
-<?php foreach ($banners as $banner):
+<?php
+/**
+ * @unreleased
+ */
+
+/** @var array[] $banners */
+ foreach ($banners as $banner):
     [$id, $mainHeader, $subHeader, $actionText, $actionURL, $content, $secondaryActionText, $secondaryActionURL, $startDate, $endDate] = $banner;
     ?>
     <div class="givewp-sale-banners-container">
