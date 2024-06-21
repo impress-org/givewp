@@ -12,20 +12,92 @@ class StellarSaleBanners extends SaleBanners
      */
     public function getBanners(): array
     {
-        return [
+        $banners = [
             [
                 'id' => 'bfgt2024-give',
-                'mainHeader' => __('Make it yours.', 'give'),
-                'subHeader' => __('Save 40% on the GiveWP Plus Plan'),
+                'mainHeader' => self::getDataByPricingPlan([
+                    'Pro' => __('Make it stellar.', 'give'),
+                    'default' => __('Make it yours.', 'give'),
+                ]),
+                'subHeader' => self::getDataByPricingPlan([
+                    'Basic' => __('Save 40% on the GiveWP Plus Plan.', 'give'),
+                    'Plus' => __('Save 40% on the GiveWP Pro Plan.', 'give'),
+                    'Pro' => __('Save 40% on all StellarWP products.', 'give'),
+                    'default' => __('Save 40% on the GiveWP Plus Plan.', 'give'),
+                ]),
                 'actionText' => __('Shop Now', 'give'),
-                'actionURL' => 'https://www.actionURL.com',
+                'actionURL' => self::getDataByPricingPlan([
+                    'Basic' => 'https://go.givewp.com/plusplan',
+                    'Plus' => 'https://go.givewp.com/pro',
+                    'Pro' => 'https://go.givewp.com/stellarsale',
+                    'default' => 'https://go.givewp.com/plusplan',
+                ]),
                 'secondaryActionText' => __('View all StellarWP Deals', 'give'),
-                'secondaryActionURL' => 'https://www.secondaryActionURL.com',
-                'content' => __('Take 40% off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
-                'startDate' => '2024-06-23 00:00',
-                'endDate' => '2024-06-30 23:59',
+                'secondaryActionURL' => 'https://go.givewp.com/stellarsale',
+                'content' => self::getDataByPricingPlan([
+                    'Pro' => sprintf(__('Take %s off all brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                        '<strong>40%</strong>'),
+                    'default' => sprintf(__('Take %s off all StellarWP brands during the annual Stellar Sale. Now through July 30.', 'give'),
+                        '<strong>40%</strong>'),
+                ]),
+                'startDate' => '2024-07-23 00:00',
+                'endDate' => '2024-07-30 23:59',
             ],
         ];
+
+        foreach($this->getAddonBanners() as $addonBanner){
+            $banners[] = $addonBanner;
+        }
+
+        return $banners;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getP2PBanners(): array
+    {
+        return [
+            [
+                'id' => 'bfgt2024-p2p',
+                'mainHeader' => __('Make it yours.', 'give'),
+                'subHeader' => __('Save 40% on Peer-to-Peer Fundraising.', 'give'),
+                'actionText' => __('Shop Now', 'give'),
+                'actionURL' => self::getDataByPricingPlan([
+                    'Basic' => 'https://go.givewp.com/p2p',
+                    'Plus' => 'https://go.givewp.com/p2ppro',
+                    'default' => 'https://go.givewp.com/p2p',
+                ]),
+                'secondaryActionText' => __('View all StellarWP Deals', 'give'),
+                'secondaryActionURL' => 'https://go.givewp.com/stellarsale',
+                'content' => self::getDataByPricingPlan([
+                    'Basic' => __('Open up your donation forms to your supporters during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'Plus' => __('Upgrade to the Pro Plan and get Peer-to-Peer Fundraising during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'Pro' => __('Upgrade to the Pro Plan and get Peer-to-Peer Fundraising during the annual Stellar Sale. Now through July 30.', 'give'),
+                    'default' => __('Open up your donation forms to your supporters during the annual Stellar Sale. Now through July 30.', 'give'),
+                ]),
+                'startDate' => '2024-07-23 00:00',
+                'endDate' => '2024-07-30 23:59',
+            ],
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getAddonBanners(): array
+    {
+        if(self::getUserPricingPlan() === 'Pro') {
+            return [];
+        }
+
+        $addonBanners = [];
+
+        if(!defined('GIVE_P2P_VERSION')) {
+            $addonBanners = $this->getP2PBanners();
+        }
+
+        return $addonBanners;
     }
 
     /**
@@ -48,7 +120,7 @@ class StellarSaleBanners extends SaleBanners
      */
     public function render(): void
     {
-        $banners = $this->getVisibleBanners();
+        $banners = $this->alternateVisibleBanners();
 
         if (!empty($banners)) {
             include __DIR__ . '/resources/views/stellarwp-sale-banner.php';
