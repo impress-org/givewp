@@ -52,7 +52,9 @@ class HideSaleBannerRoute implements RestRoute
             $request->get_param('id') . get_current_user_id()
         );
 
-        return new WP_REST_Response();
-    }
+        return new WP_REST_Response([
+            'status' => 'success',
+            'message' => 'Banner hidden successfully'
+        ], 200);    }
 
 }

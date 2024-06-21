@@ -11,6 +11,7 @@ use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\StellarSaleBanners;
+use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
 use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -65,6 +66,10 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_init', SaleBanners::class, 'startSession');
             Hooks::addAction('admin_notices', StellarSaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', StellarSaleBanners::class, 'loadScripts');
+        }
+
+        if (ReportsWidgetBanner::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
         }
 
         if (PaymentGateways::isShowing()) {

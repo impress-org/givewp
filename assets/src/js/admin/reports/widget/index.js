@@ -15,12 +15,16 @@ import RESTChart from '../components/rest-chart';
 import RESTMiniChart from '../components/rest-mini-chart';
 import LoadingNotice from '../components/loading-notice';
 import MiniPeriodSelector from '../components/mini-period-selector';
+import useBannerVisibility from '../../../../../../src/promotions/ReportsWidgetBanner/hooks/useBannerVisibility.ts';
+import WidgetBanner from '../../../../../../src/promotions/ReportsWidgetBanner/components/WidgetBanner';
 
 const Widget = () => {
-    const [{giveStatus, pageLoaded}] = useStoreValue();
+    const [{giveStatus, pageLoaded, widgetBanner}] = useStoreValue();
+    const {hideWidgetBanner, isVisible} = useBannerVisibility();
 
     return (
         <div className="givewp-reports-widget-container">
+            {isVisible &&  <WidgetBanner hideWidgetBanner={hideWidgetBanner} />}
             {giveStatus === 'no_donations_found' && <RecurringAddonOverlay />}
             {pageLoaded === false && <LoadingNotice />}
             <Grid gap="12px" visible={pageLoaded}>
