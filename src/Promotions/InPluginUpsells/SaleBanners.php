@@ -301,36 +301,36 @@ class SaleBanners
     public static function getBasicLicenseSlugs(): array
     {
         return [
-            'bitpay'              => 'give-bitpay',
-            'text_to_give'        => 'give-text-to-give',
-            'activecampaign'      => 'give-activecampaign',
-            'moneris'             => 'give-moneris',
-            'square'              => 'give-square',
-            'mollie'              => 'give-mollie',
-            'payfast'             => 'give-payfast',
-            'sofort'              => 'give-sofort',
-            'americloud_payments' => 'give-americloud-payments',
-            'paytm'               => 'give-paytm',
-            'gocardless'          => 'give-gocardless',
-            'razorpay'            => 'give-razorpay',
-            'payumoney'           => 'give-payumoney',
-            'convertkit'          => 'give-convertkit',
-            'aweber'              => 'give-aweber',
-            'per_form_gateways'   => 'give-per-form-gateways',
-            'email_reports'       => 'give-email-reports',
-            'manual_donations'    => 'give-manual-donations',
-            'zapier'              => 'give-zapier',
-            'google_analytics'    => 'give-google-analytics',
+            'give-bitpay',
+            'give-text-to-give',
+            'give-activecampaign',
+            'give-moneris',
+            'give-square',
+            'give-mollie',
+            'give-payfast',
+            'give-sofort',
+            'give-americloud-payments',
+            'give-paytm',
+            'give-gocardless',
+            'give-razorpay',
+            'give-payumoney',
+            'give-convertkit',
+            'give-aweber',
+            'give-per-form-gateways',
+            'give-email-reports',
+            'give-manual-donations',
+            'give-zapier',
+            'give-google-analytics',
             'ccavenue'            => 'give-ccavenue',
-            'constant_contact'    => 'give-constant-contact',
-            'braintree'           => 'give-braintree',
-            'iats'                => 'give-iats',
-            '2checkout'           => 'give-2checkout',
-            'pdf_receipts'        => 'give-pdf-receipts',
-            'paymill'             => 'give-paymill',
-            'stripe'              => 'give-stripe',
-            'authorize_net'       => 'give-authorize-net',
-            'mailchimp'           => 'give-mailchimp',
+            'give-constant-contact',
+            'give-braintree',
+            'give-iats',
+            'give-2checkout',
+            'give-pdf-receipts',
+            'give-paymill',
+            'give-stripe',
+            'give-authorize-net',
+            'give-mailchimp',
         ];
     }
 
@@ -342,18 +342,18 @@ class SaleBanners
         $basicLicenseSlugs = self::getBasicLicenseSlugs();
 
         $plusLicenseSlugs = [
-            'webhooks'                     => 'give-webhooks',
-            'salesforce'                   => 'give-salesforce',
-            'funds'                        => 'give-funds',
-            'annual_receipts'              => 'give-annual-receipts',
-            'currency_switcher'            => 'give-currency-switcher',
-            'donation_upsells_woocommerce' => 'give-donation-upsells-woocommerce',
-            'tributes'                     => 'give-tributes',
-            'fee_recovery'                 => 'give-fee-recovery',
-            'email_reports'                => 'give-email-reports',
-            'gift_aid'                     => 'give-gift-aid',
-            'recurring'                    => 'give-recurring',
-            'form_field_manager'           => 'give-form-field-manager',
+            'give-webhooks',
+            'give-salesforce',
+            'give-funds',
+            'give-annual-receipts',
+            'give-currency-switcher',
+            'give-donation-upsells-woocommerce',
+            'give-tributes',
+            'give-fee-recovery',
+            'give-email-reports',
+            'give-gift-aid',
+            'give-recurring',
+            'give-form-field-manager',
         ];
 
         return array_merge($basicLicenseSlugs, $plusLicenseSlugs);
@@ -366,9 +366,7 @@ class SaleBanners
     {
         $plusLicenseSlugs = self::getPlusLicenseSlugs();
 
-        $proLicenseSlugs = [
-            'peer_to_peer' => 'give-peer-to-peer',
-        ];
+        $proLicenseSlugs = ['give-peer-to-peer'];
 
         return array_merge($plusLicenseSlugs, $proLicenseSlugs);
     }
