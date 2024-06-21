@@ -7,7 +7,6 @@ namespace Give\Promotions\InPluginUpsells;
  */
 class StellarSaleBanners extends SaleBanners
 {
-
     /**
      * @unreleased
      */
@@ -139,6 +138,6 @@ class StellarSaleBanners extends SaleBanners
 
         return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' &&
                in_array($page, $validPages, true) &&
-               ! empty($saleBanners->getBanners());
+               !empty($saleBanners->getBanners());
     }
 }
