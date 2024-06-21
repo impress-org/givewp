@@ -32,7 +32,7 @@ if ((pageTitle || listTable) && bannersContainer) {
     bannersContainer.style.display = null;
 
     if (settings) {
-        settings.insertAdjacentElement('afterend', bannersContainer);
+       settings.insertAdjacentElement('afterend', bannersContainer);
     } else if (listTable) {
         listTable.querySelector('header').insertAdjacentElement('afterend', bannersContainer);
     }
