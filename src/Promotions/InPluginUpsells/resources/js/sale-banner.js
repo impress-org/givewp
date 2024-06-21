@@ -28,12 +28,12 @@ const hideBanner = ({target: dismissAction}) => {
 };
 
 
-if((pageTitle || listTable) && bannersContainer ){
+if ((pageTitle || listTable) && bannersContainer) {
     bannersContainer.style.display = null;
 
     if (settings) {
        settings.insertAdjacentElement('afterend', bannersContainer);
-    } else if (listTable){
+    } else if (listTable) {
         listTable.querySelector('header').insertAdjacentElement('afterend', bannersContainer);
     }
 }
