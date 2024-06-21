@@ -39,11 +39,12 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased add Stellar banner.
      * @since      2.27.1 Removed Recurring donations tab app.
+     * @since      2.19.0
      *
      * Boots the Plugin Upsell promotional page
      *
-     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {
@@ -61,8 +62,10 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
         }
 
-        if (ReportsWidgetBanner::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
+        if (StellarSaleBanners::isShowing()) {
+            Hooks::addAction('admin_init', SaleBanners::class, 'startSession');
+            Hooks::addAction('admin_notices', StellarSaleBanners::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', StellarSaleBanners::class, 'loadScripts');
         }
 
         if (PaymentGateways::isShowing()) {
