@@ -157,31 +157,49 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
+     * @unreleased
+     */
+    protected function filterColumnData(array $defaultColumns): array
+    {
+        /**
+         * @unreleased
+         *
+         * @param array $defaultColumns
+         */
+        return apply_filters('give_export_donors_get_default_columns', $defaultColumns );
+    }
+
+    /**
+     * @unreleased allow cols to be filtered.
      * @since 3.12.1 Include donor_phone_number col.
      * @since      2.29.0 Include donor created col
      * @since      2.21.2
      */
     public function csv_cols(): array
     {
-        return $this->flattenAddressColumn(
-            array_intersect_key([
-                'full_name' => __('Name', 'give'),
-                'email' => __('Email', 'give'),
-                'address' => [
-                    'address_line1' => __('Address', 'give'),
-                    'address_line2' => __('Address 2', 'give'),
-                    'address_city' => __('City', 'give'),
-                    'address_state' => __('State', 'give'),
-                    'address_zip' => __('Zip', 'give'),
-                    'address_country' => __('Country', 'give'),
-                ],
-                'userid' => __('User ID', 'give'),
-                'donor_created_date' => __('Donor Created', 'give'),
-                'donor_phone_number' => __('Donor Phone Number', 'give'),
-                'donations' => __('Number of donations', 'give'),
-                'donation_sum' => __('Total Donated', 'give'),
-            ], $this->postedData['give_export_columns'])
+        $defaultColumns = [
+            'full_name' => __('Name', 'give'),
+            'email' => __('Email', 'give'),
+            'userid' => __('User ID', 'give'),
+            'donor_created_date' => __('Donor Created', 'give'),
+            'donor_phone_number' => __('Donor Phone Number', 'give'),
+            'donations' => __('Number of donations', 'give'),
+            'donation_sum' => __('Total Donated', 'give'),
+            'address' => [
+                'address_line1' => __('Address', 'give'),
+                'address_line2' => __('Address 2', 'give'),
+                'address_city' => __('City', 'give'),
+                'address_state' => __('State', 'give'),
+                'address_zip' => __('Zip', 'give'),
+                'address_country' => __('Country', 'give'),
+            ],
+        ];
+
+        $defaultColumns = $this->flattenAddressColumn(
+            array_intersect_key($defaultColumns, $this->postedData['give_export_columns'])
         );
+
+        return $this->filterColumnData($defaultColumns);
     }
 
     /**
