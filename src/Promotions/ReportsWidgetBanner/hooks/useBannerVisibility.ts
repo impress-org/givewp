@@ -8,14 +8,14 @@ export const useBannerVisibility = () => {
 
     useEffect(() => {
             setIsVisible(!!windowData?.banner);
-    }, [windowData]);
+    }, [windowData?.banner]);
 
     const hideWidgetBanner = async (id) => {
         const formData = new FormData();
         formData.append('id', id);
 
         try {
-            const response = await fetch(`${windowData.apiRoot}/hide`, {
+             await fetch(`${windowData.apiRoot}/hide`, {
                 method: 'POST',
                 headers: {
                     'X-WP-Nonce': windowData.apiNonce,
@@ -23,8 +23,6 @@ export const useBannerVisibility = () => {
                 body: formData,
             });
 
-            const data = await response.json();
-            console.log('Banner hidden successfully:', data);
             setIsVisible(false);
         } catch (error) {
             console.error('Error hiding banner:', error);
