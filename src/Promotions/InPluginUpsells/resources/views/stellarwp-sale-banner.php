@@ -1,4 +1,3 @@
-<?php /** @var array[] $banners */ ?>
 <?php
 /**
  * @unreleased
