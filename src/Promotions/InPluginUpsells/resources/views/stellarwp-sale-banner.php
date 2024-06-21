@@ -1,17 +1,6 @@
 <?php /** @var array[] $banners */ ?>
-<?php foreach ($banners as $banner): extract($banner);
-    /**
-     * @var string $id
-     * @var string $mainHeader
-     * @var string $subHeader
-     * @var string $actionText
-     * @var string $actionURL
-     * @var string $content
-     * @var string $secondaryActionText
-     * @var string $secondaryActionURL
-     * @var string $startDate
-     * @var string $endDate
-     */
+<?php foreach ($banners as $banner):
+    [$id, $mainHeader, $subHeader, $actionText, $actionURL, $content, $secondaryActionText, $secondaryActionURL, $startDate, $endDate] = $banner;
     ?>
     <div class="givewp-sale-banners-container">
         <aside aria-label="" id="<?= $dismissableElementId = "give-sale-banner-{$id}" ?>" class="give-sale-banner">
