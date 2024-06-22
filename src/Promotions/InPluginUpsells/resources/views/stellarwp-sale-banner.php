@@ -5,8 +5,18 @@
 
 /** @var array[] $banners */
  foreach ($banners as $banner):
-    [$id, $mainHeader, $subHeader, $actionText, $actionURL, $content, $secondaryActionText, $secondaryActionURL, $startDate, $endDate] = $banner;
+    $id = $banner['id'];
+    $mainHeader = $banner['mainHeader'];
+    $subHeader = $banner['subHeader'];
+    $actionText = $banner['actionText'];
+    $actionURL = $banner['actionURL'];
+    $content = $banner['content'];
+    $secondaryActionText = $banner['secondaryActionText'];
+    $secondaryActionURL = $banner['secondaryActionURL'];
+    $startDate = $banner['startDate'];
+    $endDate = $banner['endDate'];
     ?>
+
     <div class="givewp-sale-banners-container">
         <aside aria-label="" id="<?php echo $dismissableElementId = "give-sale-banner-{$id}" ?>"
                class="give-sale-banner">
