@@ -340,10 +340,10 @@ window.addEventListener('DOMContentLoaded', function () {
 
                 // Show confirmation modal.
                 let modalBody =
-                    '<div><input type="checkbox" id="keep_webhooks" name="keep_webhooks" checked /><label style="font-size: 14px;" for="keep_webhooks">' +
+                    '<div style="margin-bottom: 8px;"><input type="checkbox" id="keep_webhooks" name="keep_webhooks" checked /><label style="font-size: 14px;" for="keep_webhooks">' +
                     givePayPalCommerce.translations.keepWebhooksAfterDisconnect +
-                    '</label></div><br/>' +
-                    '<a style="font-size: 13px;font-style: italic;" href="https://docs.givewp.com/pp-donations-webhooks" target="_blank">' +
+                    '</label></div>' +
+                    '<a style="font-size: 13px;margin-top: 200px" href="https://docs.givewp.com/pp-donations-webhooks" target="_blank">' +
                     givePayPalCommerce.translations.keepWebhooksAfterDisconnectLearnMore +
                     '</a>';
                 new GiveConfirmModal({
