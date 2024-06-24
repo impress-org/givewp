@@ -15,8 +15,8 @@ import RESTChart from '../components/rest-chart';
 import RESTMiniChart from '../components/rest-mini-chart';
 import LoadingNotice from '../components/loading-notice';
 import MiniPeriodSelector from '../components/mini-period-selector';
-import useBannerVisibility from '../../../../../../src/promotions/ReportsWidgetBanner/hooks/useBannerVisibility.ts';
-import WidgetBanner from '../../../../../../src/promotions/ReportsWidgetBanner/components/WidgetBanner';
+import useBannerVisibility from '../../../../../../src/Promotions/ReportsWidgetBanner/hooks/useBannerVisibility.ts';
+import WidgetBanner from '../../../../../../src/Promotions/ReportsWidgetBanner/components/WidgetBanner';
 
 const Widget = () => {
     const [{giveStatus, pageLoaded, widgetBanner}] = useStoreValue();
