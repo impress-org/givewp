@@ -91,6 +91,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
+ * @unreleased Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
  * @since 3.12.1 updated afterCreatePayment response type to include billing details address
  * @since 3.0.0
  */
@@ -99,7 +100,7 @@ const stripePaymentElementGateway: StripeGateway = {
     initialize() {
         const {stripeKey, stripeConnectedAccountId, formId} = this.settings;
 
-        if (!stripeKey || !stripeConnectedAccountId) {
+        if (!stripeKey && !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
@@ -109,9 +110,14 @@ const stripePaymentElementGateway: StripeGateway = {
          * Create the Stripe object and pass our api keys
          * @see https://stripe.com/docs/payments/accept-a-payment-deferred
          */
-        stripePromise = loadStripe(stripeKey, {
-            stripeAccount: stripeConnectedAccountId,
-        });
+        stripePromise = loadStripe(
+            stripeKey,
+            stripeConnectedAccountId
+                ? {
+                      stripeAccount: stripeConnectedAccountId,
+                  }
+                : {}
+        );
     },
     beforeCreatePayment: async function (values): Promise<object> {
         if (!this.stripe || !this.elements) {
