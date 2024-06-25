@@ -213,6 +213,8 @@
     gap: 2rem;
 
     .block-editor-block-list__block {
+        max-width: 720px;
+
         &:not([contenteditable]):focus::after {
             box-shadow: none;
         }
