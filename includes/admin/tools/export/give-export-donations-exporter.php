@@ -646,6 +646,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 	 * @access public
 	 *
 	 * @since  2.1
+	 * @unreleased Use maybe_serialize() for column data (some data are arrays)
 	 *
 	 * @return string|false
 	 */
