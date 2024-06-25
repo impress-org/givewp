@@ -50,6 +50,26 @@ import {PayPalSubscriber} from './types';
 
     let currency;
 
+    let eventTickets;
+
+    /**
+     * @since 3.12.2
+     */
+    const getEventTicketsTotalAmount = (
+        eventTickets: Array<{
+            ticketId: number;
+            quantity: number;
+            amount: number;
+        }>
+    ) => {
+        const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
+        if (totalAmount > 0) {
+            return totalAmount / 100;
+        } else {
+            return 0;
+        }
+    };
+
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
         label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
@@ -122,7 +142,15 @@ import {PayPalSubscriber} from './types';
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', getAmount());
+        const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
+        const isSubscription = subscriptionPeriod ? subscriptionPeriod !== 'one-time' : false;
+        if (!isSubscription) {
+            formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
+        } else {
+            formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
+        }
+
+        formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -276,13 +304,43 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
+        eventTickets = useWatch({name: 'event-tickets'});
+
         useEffect(() => {
             if (orderCreated) {
                 updateOrderAmount = true;
             }
-        }, [amount]);
+        }, [amount, eventTickets]);
 
         return children;
+    };
+
+    /**
+     * @since 3.12.2
+     */
+    const getRequiredValidationMessage = () => {
+        return __('This is a required field', 'give');
+    };
+
+    /**
+     * @since 3.12.2
+     */
+    const isCityRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-text-city .givewp-field-required'));
+    };
+
+    /**
+     * @since 3.12.2
+     */
+    const isStateRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-select-state .givewp-field-required'));
+    };
+
+    /**
+     * @since 3.12.2
+     */
+    const isZipRequired = () => {
+        return Boolean(document.querySelector('.givewp-fields-text-zip .givewp-field-required'));
     };
 
     const SmartButtonsContainer = () => {
@@ -336,6 +394,45 @@ import {PayPalSubscriber} from './types';
                         }
                     }
                     return actions.reject();
+                }
+
+                /**
+                 * Depending on the selected country, the city, state, and zip fields can be required or not and there are custom
+                 * validation rules on the server side that check that. However, in this case, these validations are reached later
+                 * when the donation is already created on the PayPal side. This way, we need the conditions below to check it earlier
+                 * and prevent the donation creation on the PayPal side if the required billing address fields are missing.
+                 */
+                if (country) {
+                    if (city.length === 0 && isCityRequired()) {
+                        setError(
+                            'city',
+                            {
+                                type: 'custom',
+                                message: getRequiredValidationMessage(),
+                            },
+                            {shouldFocus: true}
+                        );
+                        return actions.reject();
+                    }
+
+                    if (state.length === 0 && isStateRequired()) {
+                        setError(
+                            'state',
+                            {
+                                type: 'custom',
+                                message: getRequiredValidationMessage(),
+                            },
+                            {shouldFocus: true}
+                        );
+                        // As the state is a hidden field we need to use this workaround because the "shouldFocus" option does not work in hidden fields.
+                        document.querySelector('.givewp-fields-select-state').scrollIntoView({behavior: 'smooth'});
+                        return actions.reject();
+                    }
+
+                    if (postalCode.length === 0 && isZipRequired()) {
+                        setError('zip', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
+                        return actions.reject();
+                    }
                 }
 
                 orderCreated = true;

@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 3.12.0
+Stable tag: 3.12.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,19 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.12.3: June 19th, 2024 =
+* Fix: Resolved an issue where PayPal was not processing donations due to missing billing address fields
+
+= 3.12.2: June 11th, 2024 =
+* Fix: Resolved an issue where only the donation amount was sent to PayPal, ignoring event ticket values for one-time donations.
+* Fix: Resolved an issue where donations were processed on PayPal but not recorded in GiveWP due to missing city, state, and zip fields.
+
+= 3.12.1: June 5th, 2024 =
+* Fix: Resolved an issue where the Donor Phone field was not included in the donor export
+* Fix: Resolved an issue where the Billing Address field was not saved in Stripe
+* Security: Added additional escaping to Stripe onboarding
+* Dev: Added a new filter `givewp_log_source_view` to allow customization of the log source column
+
 = 3.12.0: May 15th, 2024 =
 * New: Updated the donation amount block with options for donation amount level description in the visual form builder
 * New: Updated form goal settings with options for start and end dates in the visual form builder
