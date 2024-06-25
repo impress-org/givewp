@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.13.0
  */
 class CurrencySwitcher extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function process()
     {

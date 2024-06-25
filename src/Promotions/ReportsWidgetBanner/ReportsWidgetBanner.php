@@ -5,13 +5,13 @@ namespace Give\Promotions\ReportsWidgetBanner;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 
 /**
-* @unreleased
+* @since 3.13.0
  */
 class ReportsWidgetBanner extends SaleBanners
 {
 
     /**
-     @unreleased
+     @since 3.13.0
      */
     public function getBanners(): array
     {
@@ -28,7 +28,7 @@ class ReportsWidgetBanner extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function loadScripts(): void
     {
@@ -52,7 +52,7 @@ class ReportsWidgetBanner extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public static function isShowing(): bool
     {

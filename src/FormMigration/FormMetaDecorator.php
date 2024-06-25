@@ -984,7 +984,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getCurrencySwitcherStatus(): string
     {
@@ -992,7 +992,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getCurrencySwitcherMessage(): string
     {
@@ -1008,7 +1008,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getCurrencySwitcherDefaultCurrency(): string
     {
@@ -1016,7 +1016,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getCurrencySwitcherSupportedCurrencies(): array
     {

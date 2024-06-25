@@ -5,7 +5,7 @@ const listTable = document.querySelector('#give-admin-donations-root, #give-admi
 const settings = document.querySelector('.give-settings-header');
 
 /**
- * @unreleased move placement of banner on Reports page.
+ * @since 3.13.0 move placement of banner on Reports page.
  * @since 3.1.0 show banner on ListTable pages.
  */
 const hideBanner = ({target: dismissAction}) => {

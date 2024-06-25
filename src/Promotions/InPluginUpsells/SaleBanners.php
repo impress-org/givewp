@@ -184,7 +184,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased remove all_access_pass.
+     * @since 3.13.0 remove all_access_pass.
      * @since 3.1.0 retrieve licensed plugin slugs.
      */
     public static function getLicensedPluginSlugs(): array
@@ -227,7 +227,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased add type for $data.
+     * @since 3.13.0 add type for $data.
      * @since 3.1.0 return data by user pricing plan.
      */
     public static function getDataByPricingPlan(array $data): string
@@ -243,7 +243,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      *
      *  This method cycles through the visible banners, selecting the next banner in the list
      *  on each call. If no banners are visible, or if the session index is not set, it returns
@@ -275,7 +275,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function startSession(): void
     {
@@ -285,7 +285,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function destroySession(): void
     {
@@ -296,7 +296,7 @@ class SaleBanners
 
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public static function getBasicLicenseSlugs(): array
     {
@@ -335,7 +335,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public static function getPlusLicenseSlugs(): array
     {
@@ -360,7 +360,7 @@ class SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public static function getProLicenseSlugs(): array
     {

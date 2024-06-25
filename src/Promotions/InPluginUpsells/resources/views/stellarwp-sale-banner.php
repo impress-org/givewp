@@ -1,6 +1,6 @@
 <?php
 /**
- * @unreleased
+ * @since 3.13.0
  */
 
 /** @var array[] $banners */
