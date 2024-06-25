@@ -262,7 +262,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.13.0: June 25th, 2024 =
+= 3.13.0: June 26th, 2024 =
 * New: Added option to PayPal settings to keep webhooks when disconnecting account
 * Enhancement: Updated donor comment block active state border color to be the primary color
 * Enhancement: Updated form builder global settings links to open in new tabs
