@@ -333,7 +333,7 @@ class TestFormMetaDecorator extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testGetCurrencySwitcherStatus(): void
     {
@@ -356,7 +356,7 @@ class TestFormMetaDecorator extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testGetCurrencySwitcherMessage(): void
     {
@@ -385,7 +385,7 @@ class TestFormMetaDecorator extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testGetCurrencySwitcherDefaultCurrency(): void
     {
@@ -408,7 +408,7 @@ class TestFormMetaDecorator extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testGetCurrencySwitcherSupportedCurrencies(): void
     {

@@ -91,7 +91,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
- * @unreleased Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
+ * @since 3.13.0 Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
  * @since 3.12.1 updated afterCreatePayment response type to include billing details address
  * @since 3.0.0
  */

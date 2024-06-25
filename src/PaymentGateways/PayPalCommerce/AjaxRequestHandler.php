@@ -184,7 +184,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
-     * @unreleased Add new $keepWebhooks option
+     * @since 3.13.0 Add new $keepWebhooks option
      * @since 2.30.0 Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0

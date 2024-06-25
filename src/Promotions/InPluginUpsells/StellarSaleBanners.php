@@ -3,12 +3,12 @@
 namespace Give\Promotions\InPluginUpsells;
 
 /**
- * @unreleased
+ * @since 3.13.0
  */
 class StellarSaleBanners extends SaleBanners
 {
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getBanners(): array
     {
@@ -53,7 +53,7 @@ class StellarSaleBanners extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getP2PBanners(): array
     {
@@ -83,7 +83,7 @@ class StellarSaleBanners extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function getAddonBanners(): array
     {
@@ -101,7 +101,7 @@ class StellarSaleBanners extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function loadScripts(): void
     {
@@ -116,7 +116,7 @@ class StellarSaleBanners extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function render(): void
     {
@@ -128,7 +128,7 @@ class StellarSaleBanners extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public static function isShowing(): bool
     {
