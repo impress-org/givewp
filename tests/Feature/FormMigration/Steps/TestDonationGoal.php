@@ -16,7 +16,9 @@ use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
  */
 class TestDonationGoal extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter, FormMigrationProcessor;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
      * @unreleased Update test to use FormMigrationProcessor::migrateForm method

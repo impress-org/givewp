@@ -12,7 +12,9 @@ use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 class TestActiveCampaign extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter, FormMigrationProcessor;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
      * @unreleased
