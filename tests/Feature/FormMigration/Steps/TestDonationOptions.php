@@ -2,11 +2,11 @@
 
 namespace Give\Tests\Feature\FormMigration\Steps;
 
-use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\DonationOptions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
  * @since 3.4.0
@@ -14,13 +14,17 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
  * @covers \Give\FormMigration\Steps\DonationOptions
  */
 class TestDonationOptions extends TestCase {
-    use RefreshDatabase, LegacyDonationFormAdapter;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
+     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributes(): void
     {
+        // Arrange
         $meta = [
             '_give_price_option' => 'set',
             '_give_set_price' => '100',
@@ -28,17 +32,13 @@ class TestDonationOptions extends TestCase {
             '_give_custom_amount_range_minimum' => '1',
             '_give_custom_amount_range_maximum' => '1000',
         ];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, DonationOptions::class);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $donationOptions = new DonationOptions($payload);
-
-        $donationOptions->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/donation-amount');
-
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/donation-amount');
         $this->assertSame($meta['_give_price_option'], $block->getAttribute('priceOption'));
         $this->assertSame($meta['_give_set_price'], $block->getAttribute('setPrice'));
         $this->assertTrue($block->getAttribute('customAmount'));
@@ -47,27 +47,25 @@ class TestDonationOptions extends TestCase {
     }
 
     /**
+     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.12.0 Updated test to include donation levels with descriptions
      * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributesWithDonationLevels(): void
     {
+        //Arrange
         $meta = [
             '_give_custom_amount' => 'enabled',
             '_give_custom_amount_range_minimum' => '1',
             '_give_custom_amount_range_maximum' => '1000',
         ];
+        $v2Form = $this->createMultiLevelDonationForm(['meta' => $meta]);
 
-        $formV2 = $this->createMultiLevelDonationForm(['meta' => $meta]);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, DonationOptions::class);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $donationOptions = new DonationOptions($payload);
-
-        $donationOptions->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/donation-amount');
-
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/donation-amount');
         $expectedLevels = [
             [
                 'value' => 10.00,
