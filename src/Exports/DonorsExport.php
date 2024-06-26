@@ -54,6 +54,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
+     * @since 3.12.1 Include donor phone.
      * @since      2.29.0 Include donor created date
      * @since      2.21.2
      * @since 3.3.0 Filter donors by form ID
@@ -67,6 +68,7 @@ class DonorsExport extends Give_Batch_Export
                 ['donors.email', 'email'],
                 ['donors.user_id', 'userid'],
                 ['donors.date_created', 'donor_created_date'],
+                ['donors.phone', 'donor_phone_number'],
                 ['donors.purchase_count', 'donations'],
                 ['donors.purchase_value', 'donation_sum']
             );
@@ -155,6 +157,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
+     * @since 3.12.1 Include donor_phone_number col.
      * @since      2.29.0 Include donor created col
      * @since      2.21.2
      */
@@ -174,6 +177,7 @@ class DonorsExport extends Give_Batch_Export
                 ],
                 'userid' => __('User ID', 'give'),
                 'donor_created_date' => __('Donor Created', 'give'),
+                'donor_phone_number' => __('Donor Phone Number', 'give'),
                 'donations' => __('Number of donations', 'give'),
                 'donation_sum' => __('Total Donated', 'give'),
             ], $this->postedData['give_export_columns'])

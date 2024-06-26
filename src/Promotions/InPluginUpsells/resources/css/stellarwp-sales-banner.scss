@@ -1,4 +1,4 @@
-.give-sale-banners-container {
+.give_forms_page_give-reports .give-sale-banners-container, .givewp-sale-banners-container {
     /* Box-sizing reset */
     &,
     & *,
@@ -7,31 +7,28 @@
         box-sizing: border-box;
     }
 
-    overflow: hidden;
+    margin: 0 auto;
 }
 
-.give-sale-banner {
+.give_forms_page_give-reports .give-sale-banner, .give-sale-banner {
     position: relative;
     display: flex;
     justify-content: space-between;
     background: #1D202F;
-    min-height: 180px;
-    --banner-y-pad: 0.6875em;
-    padding-top: var(--banner-y-pad);
-    padding-bottom: var(--banner-y-pad);
-    padding-left: 3.25em;
-    padding-right: 1.3125em;
+    padding: 2rem 1.25rem 1.5rem 3.25rem;
     box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
     font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
     color: #F9FAF9;
+    overflow: hidden;
 }
 
-.give-sale-banner-content {
+.give_forms_page_give-reports .give-sale-banner-content, .give-sale-banner-content {
+    flex: .7;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 3rem;
-    width: 70%;
+
 
     & * {
         font-size: inherit;
@@ -40,10 +37,8 @@
 
     a {
         color: inherit;
-        font-weight: 700;
         text-decoration-thickness: 0.05em;
         transform-style: preserve-3d;
-        font-size: 0.875rem;
 
         &::after {
             content: "";
@@ -67,27 +62,30 @@
     }
 
     &__primary-cta {
-        width: fit-content;
+        white-space: nowrap;
 
-        > h1 {
-            font-size: 1.5rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+        &__header, &__sub-header {
+            flex: 1 1 auto;
+            margin: 0;
+            padding: 0;
+            line-height: 29px;
             color: #F9FAF9;
         }
 
-        > p {
-            font-size: 1.375rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
+        &__header {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
+        &__sub-header {
+            font-size: 1.25rem;
+            font-weight: 300;
+            line-height: normal
+        }
 
-        &-link {
-            font-family: 'Inconsolata', Montserrat, sans-serif;;
-            margin-top: 1.125rem;
+        &__link {
+            font-family: 'Inconsolata', Montserrat, sans-serif;
+            font-size: .875rem;
             display: inline-flex;
             padding: 0.73125rem 1.6714375rem;
             justify-content: center;
@@ -95,45 +93,29 @@
             background: #62B265;
             border-radius: 9999px;
             text-decoration: none;
-            margin-right: auto;
-        }
-
-        &-mobile-link {
-            display: none;
-            margin: 1rem 0 0 1rem;
-            color: #fff;
-            background: none;
+            margin: 1rem auto 0 0;
         }
     }
 
     &__secondary-cta {
-        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 1.125rem;
-    }
+        gap: 1rem;
 
-    & p {
-        display: flex;
-        flex-wrap: wrap;
-        row-gap: 0.25rem;
-        column-gap: 0.9375em;
-        margin: 0;
-        line-height: 1.37;
+        &__content {
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
     }
 }
 
-.give-sale-banner__abstract-icon {
+.give-sale-banner-dismiss.givewp-sale-banner__dismiss[aria-label="Dismiss"][aria-controls][data-id] {
     position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-
-.give-sale-banner-dismiss {
+    top: 1rem;
+    right: 1rem;
     --size: 1.25rem;
-    /* Artificially align this with the sale icon, since we shouldn’t use align-items: center on the banner */
-    //margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
     appearance: none;
     background: none;
     display: grid;
@@ -168,10 +150,43 @@
     }
 }
 
-@media screen and (max-width: 1100px) {
+.give-sale-banner__abstract-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
+@media screen and (min-width: 1800px) {
+    .give-sale-banner__abstract-icon {
+        bottom: -4rem;
+
+        svg {
+            width: 330px;
+            height: 224px;
+        }
+    }
+}
+
+@media screen and (max-width: 1200px) {
     .give-sale-banner-content {
-        flex-direction: column;
-        align-items: flex-start;
+        gap: 1.5rem;
+
+        & a {
+            font-size: 0.875rem;
+        }
+
+        &__primary-cta {
+            white-space: normal;
+        }
+
+        &__secondary-cta {
+            gap: 1rem;
+        }
+    }
+
+    .give_forms_page_give-reports .give-sale-banner-content__primary-cta {
+        white-space: normal;
     }
 }
 
@@ -180,22 +195,13 @@
         padding-left: 1rem;
     }
 
-    .give-sale-banner-content__secondary-cta {
+    .give_forms_page_give-reports .give-sale-banner-content__secondary-cta, .give-sale-banner-content__secondary-cta {
         display: none;
-    }
-
-    .give-sale-banner-content__primary-cta-mobile-link {
-        display: inline-block;
     }
 
     .give-sale-banner__abstract-icon {
         max-width: 8.25rem;
         max-height: 9.5rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .give-sale-banner-content__primary-cta-mobile-link {
-        margin-left: 0;
+        right: 6rem;
     }
 }

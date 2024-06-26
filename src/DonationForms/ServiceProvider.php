@@ -14,11 +14,12 @@ use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteD
 use Give\DonationForms\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
-use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
+use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
 use Give\DonationForms\Migrations\RemoveDuplicateMeta;
+use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
@@ -76,6 +77,7 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations([
             CleanMultipleSlashesOnDB::class,
             RemoveDuplicateMeta::class,
+            UpdateDonationLevelsSchema::class,
         ]);
     }
 

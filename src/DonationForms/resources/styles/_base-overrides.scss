@@ -84,5 +84,6 @@ input[type="email"],
 textarea {
     &:focus {
         border-color: transparent;
+        --box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
     }
 }

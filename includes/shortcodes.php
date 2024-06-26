@@ -213,6 +213,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
+ * @since 3.12.0 add start_date and end_date attributes
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
@@ -228,7 +229,9 @@ function give_goal_shortcode( $atts ) {
 			'id'        => '',
 			'show_text' => true,
 			'show_bar'  => true,
-			'color'		=> '',
+			'color'		=> '#66BB6A',
+            'start_date' => '',
+            'end_date' => '',
 		],
 		$atts,
 		'give_goal'

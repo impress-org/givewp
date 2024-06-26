@@ -89,6 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
+     * @unreleased Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
     public function loadAdminScripts()
@@ -124,6 +125,10 @@ class ScriptLoader
                         'Are you sure you want to disconnect your PayPal account?',
                         'give'
                     ),
+                    'keepWebhooksAfterDisconnect' => esc_html__("Continue to receive events, including subscription renewals, from the disconnected account? If you have existing recurring donations with this account, you'll want to leave this checked. This is not reversible.",
+                        'give'),
+                    'keepWebhooksAfterDisconnectLearnMore' => esc_html__('Learn why this is critically important.',
+                            'give') . ' &raquo;',
                     'connectSuccessTitle' => esc_html__('You’re connected to PayPal! Here’s what’s next...', 'give'),
                     'pciWarning' => sprintf(
                         __(
@@ -146,7 +151,7 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ],
+                    ]
                 ],
             ]
         );
