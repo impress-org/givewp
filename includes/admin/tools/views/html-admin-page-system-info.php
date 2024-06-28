@@ -167,7 +167,7 @@ $give_updates = Give_Updates::get_instance();
 	<tr>
 		<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
-		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
+		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html__( 'Error: Too long', 'give' ) : esc_html__( 'Acceptable', 'give' ); ?></td>
 	</tr>
 	<tr>
 		<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
