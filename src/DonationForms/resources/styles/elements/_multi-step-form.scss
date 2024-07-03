@@ -98,6 +98,7 @@
         }
     }
 
+    button[type="submit"],
     &__steps-button-next {
         display: flex;
         justify-content: center;
@@ -107,6 +108,14 @@
         line-height: 1.5;
         font-weight: 600;
 
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+            &:hover {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+            }
+        }
+    }
+
+    &__steps-button-next {
         &:after {
             content: "";
             display: inline-block;
@@ -116,12 +125,6 @@
             background-image: var(--givewp-icon-arrow-right);
             background-position: center;
             background-repeat: no-repeat;
-        }
-
-        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
-            &:hover {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
-            }
         }
     }
 
