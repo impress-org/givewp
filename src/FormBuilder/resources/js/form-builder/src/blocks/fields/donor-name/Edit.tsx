@@ -79,6 +79,7 @@ export default function Edit({
                         options={honorificOptions}
                         value={selectedTitle}
                         onChange={setSelectedTitle}
+                        style={{padding: '16px 38px 16px 16px'}}
                     />
                 )}
                 <TextControl
