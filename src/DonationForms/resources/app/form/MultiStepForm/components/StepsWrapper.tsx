@@ -37,9 +37,9 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
             <div className="givewp-donation-form__steps-footer">
                 <div className="givewp-donation-form__steps-footer-secure">
                     <i className="fas fa-lock givewp-donation-form__steps-footer-secure-icon"></i>
-                    <small className="givewp-donation-form__steps-footer-secure-icon">
-                        {__('Secure Donation', 'give')}
-                    </small>
+                    <span className="givewp-donation-form__steps-footer-secure-text">
+                        {__('100% Secure Donation', 'give')}
+                    </span>
                 </div>
             </div>
         </div>
