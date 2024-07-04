@@ -132,8 +132,25 @@ const login: FieldBlock = {
                                     label={__('Require donor login', 'give')}
                                     checked={required}
                                     onChange={() => setAttributes({required: !required})}
+                                    help={__(
+                                        'Enable this option if you want to require the donor login by default.',
+                                        'give'
+                                    )}
                                 />
                             </PanelRow>
+                            {!required && (
+                                <PanelRow>
+                                    <TextControl
+                                        label={__('Login Notice', 'give')}
+                                        value={loginNotice}
+                                        onChange={(loginNotice) => setAttributes({loginNotice})}
+                                        help={__(
+                                            'Add your own to customize or leave blank to use the default text placeholder.',
+                                            'give'
+                                        )}
+                                    />
+                                </PanelRow>
+                            )}
                             <PanelRow>
                                 <ToggleControl
                                     label={__('Redirect to login page', 'give')}
@@ -143,16 +160,13 @@ const login: FieldBlock = {
                             </PanelRow>
                             <PanelRow>
                                 <TextControl
-                                    label={__('Login Notice', 'give')}
-                                    value={loginNotice}
-                                    onChange={(loginNotice) => setAttributes({loginNotice})}
-                                />
-                            </PanelRow>
-                            <PanelRow>
-                                <TextControl
                                     label={__('Login Confirmation', 'give')}
                                     value={loginConfirmation}
                                     onChange={(loginConfirmation) => setAttributes({loginConfirmation})}
+                                    help={__(
+                                        'Add your own to customize or leave blank to use the default text placeholder.',
+                                        'give'
+                                    )}
                                 />
                             </PanelRow>
                         </PanelBody>
