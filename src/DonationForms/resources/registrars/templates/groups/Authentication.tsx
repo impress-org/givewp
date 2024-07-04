@@ -6,6 +6,7 @@ import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import FieldError from '../layouts/FieldError';
+import styles from '../styles.module.scss';
 
 const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
@@ -91,7 +92,7 @@ export default function Authentication({
                 </LoginForm>
             )}
             {!isAuth && !showLogin && (
-                <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                <div style={{display: 'flex'}}>
                     {loginRedirect ? (
                         <button
                             type="button"
@@ -161,7 +162,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                     alignItems: 'baseline',
                 }}
             >
-                <button style={{width: 'auto'}} onClick={tryLogin}>
+                <button className={styles.loginButton} onClick={tryLogin}>
                     {__('Log In', 'give')}
                 </button>
                 <a
@@ -171,8 +172,15 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
 
                         window.top.location.assign(passwordResetUrl);
                     }}
+                    style={{
+                        color: 'var(--givewp-grey-500)',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        lineHeight: '1.43',
+                    }}
                 >
-                    {__('Reset Password', 'give')}
+                    {__('Forgot your password?', 'give')}{' '}
+                    <span style={{color: 'var(--primary)', fontWeight: '500'}}>{__('Reset', 'give')}</span>
                 </a>
             </div>
         </div>
@@ -183,9 +191,18 @@ const LoginNotice = ({children, onClick}) => {
     return (
         <button
             onClick={onClick}
-            style={{width: 'auto', backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
+            style={{
+                backgroundColor: 'transparent',
+                border: 0,
+                color: 'var(--primary)',
+                fontSize: '14px',
+                fontWeight: '500',
+                margin: '0',
+                padding: '0',
+                width: 'auto',
+            }}
         >
             {children}
         </button>
-    )
-}
+    );
+};

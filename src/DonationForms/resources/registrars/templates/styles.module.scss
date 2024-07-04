@@ -91,3 +91,21 @@
         }
     }
 }
+
+.loginButton {
+    border-radius: 5px;
+    color: var(--givewp-grey-5);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0;
+    min-width: 154px;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-6);
+    width: auto;
+
+    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+        &:hover {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+        }
+    }
+}
