@@ -77,6 +77,11 @@ export default function Authentication({
     const [isAuth, setIsAuth] = useState<boolean>(isAuthenticated);
     const [showLogin, setShowLogin] = useState<boolean>(required);
     const toggleShowLogin = () => setShowLogin(!showLogin);
+    const redirectToLoginPage = (e) => {
+        e.preventDefault();
+        const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
+        window.top.location.assign(loginUrl);
+    };
 
     return (
         <>
@@ -94,16 +99,7 @@ export default function Authentication({
             {!isAuth && !showLogin && (
                 <div style={{display: 'flex'}}>
                     {loginRedirect ? (
-                        <button
-                            type="button"
-                            onClick={() => {
-                                const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
-
-                                window.top.location.assign(loginUrl);
-                            }}
-                        >
-                            {loginNotice}
-                        </button>
+                        <LoginNotice onClick={redirectToLoginPage}>{loginNotice}</LoginNotice>
                     ) : (
                         <LoginNotice onClick={toggleShowLogin}>{loginNotice}</LoginNotice>
                     )}
