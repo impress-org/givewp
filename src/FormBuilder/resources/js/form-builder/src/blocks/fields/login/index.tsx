@@ -13,7 +13,7 @@ const login: FieldBlock = {
         ...defaultSettings,
         icon: BlockIcon,
         title: __('User Login', 'give'),
-        description: __('...', 'give'),
+        description: __('Provides the donor the option to log in to complete donation', 'give'),
         supports: {
             multiple: false,
         },
@@ -44,39 +44,81 @@ const login: FieldBlock = {
                         <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
                             <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
                                 <TextControl
-                                    label={__('Login', 'give')}
+                                    label={__('Username', 'give')}
                                     onChange={() => null}
                                     value={''}
-                                    placeholder={__('Username or Email Address', 'give')}
+                                    placeholder={__('Enter your username or email', 'give')}
                                 />
                                 <TextControl
                                     type="password"
                                     label={__('Password', 'give')}
                                     onChange={() => null}
-                                    value={'password123'}
+                                    value={''}
+                                    placeholder={__('Enter your password', 'give')}
                                 />
                             </div>
                             <div
                                 style={{
+                                    alignItems: 'center',
                                     display: 'flex',
                                     flexDirection: 'row-reverse',
                                     gap: '15px',
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Button variant={'primary'}>{__('Log In', 'give')}</Button>
-                                <Button variant={'link'}>{__('Reset Password', 'give')}</Button>
+                                <Button
+                                    variant={'primary'}
+                                    style={{
+                                        backgroundColor: 'var(--givewp-neutral-70)',
+                                        color: 'var(--givewp-grey-900)',
+                                        borderRadius: '4px',
+                                        fontSize: '1rem',
+                                        fontWeight: '600',
+                                        height: 'auto',
+                                        lineHeight: '1.38',
+                                        padding: '12px 16px',
+                                    }}
+                                >
+                                    {__('Log In', 'give')}
+                                </Button>
+                                <Button
+                                    style={{
+                                        color: 'var(--givewp-grey-700)',
+                                        display: 'inline',
+                                        fontSize: '14px',
+                                        fontWeight: '500',
+                                        padding: '0',
+                                    }}
+                                >
+                                    {__('Forgot your password?', 'give')} <strong>{__('Reset', 'give')}</strong>
+                                </Button>
                             </div>
                         </div>
                     )}
 
                     {!required && (
-                        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                        <div
+                            style={{
+                                backgroundColor: 'var(--givewp-grey-50)',
+                                borderRadius: '5px',
+                                display: 'flex',
+                                padding: '12px 24px',
+                            }}
+                        >
                             <Button
-                                variant={'link'}
-                                icon={!!loginRedirect ? <Icon icon={external} /> : undefined}
+                                icon={
+                                    !!loginRedirect ? (
+                                        <Icon icon={external} style={{height: '20px', width: '20px'}} />
+                                    ) : undefined
+                                }
                                 // iconPosition={'right' as 'left' | 'right'} // The icon position does not seem to be working.
-                                style={{flexDirection: 'row-reverse'}}
+                                style={{
+                                    flexDirection: 'row-reverse',
+                                    fontSize: '14px',
+                                    height: 'auto',
+                                    lineHeight: '1.5',
+                                    padding: '0',
+                                }}
                             >
                                 {loginNotice}
                             </Button>
