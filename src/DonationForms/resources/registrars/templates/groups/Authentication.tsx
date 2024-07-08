@@ -144,39 +144,25 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     };
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
-            <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>{children}</div>
+        <div className={styles['authentication__login-form']}>
+            <div className={styles['authentication__login-form__fields-wrapper']}>{children}</div>
 
             {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    gap: '15px',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                }}
-            >
-                <button className={styles.loginButton} onClick={tryLogin}>
+            <div className={styles['authentication__login-form__buttons-wrapper']}>
+                <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
                     {__('Log In', 'give')}
                 </button>
                 <a
+                    className={styles['authentication__login-form__reset-button']}
                     onClick={(event) => {
                         event.preventDefault();
                         const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
 
                         window.top.location.assign(passwordResetUrl);
                     }}
-                    style={{
-                        color: 'var(--givewp-grey-500)',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        lineHeight: '1.43',
-                    }}
                 >
-                    {__('Forgot your password?', 'give')}{' '}
-                    <span style={{color: 'var(--primary)', fontWeight: '500'}}>{__('Reset', 'give')}</span>
+                    {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
                 </a>
             </div>
         </div>
@@ -185,19 +171,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
 
 const LoginNotice = ({children, onClick}) => {
     return (
-        <button
-            onClick={onClick}
-            style={{
-                backgroundColor: 'transparent',
-                border: 0,
-                color: 'var(--primary)',
-                fontSize: '14px',
-                fontWeight: '500',
-                margin: '0',
-                padding: '0',
-                width: 'auto',
-            }}
-        >
+        <button className={styles['authentication__login-notice']} onClick={onClick}>
             {children}
         </button>
     );

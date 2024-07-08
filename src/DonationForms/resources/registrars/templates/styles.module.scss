@@ -92,20 +92,65 @@
     }
 }
 
-.loginButton {
-    border-radius: 5px;
-    color: var(--givewp-grey-5);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.5;
-    margin: 0;
-    min-width: 154px;
-    padding: var(--givewp-spacing-2) var(--givewp-spacing-6);
-    width: auto;
+.authentication {
+    &__login-notice {
+        background-color: transparent;
+        border: 0;
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+        width: auto;
+    }
 
-    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
-        &:hover {
-            background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+    &__login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        &__fields-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        &__buttons-wrapper {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 15px;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        &__login-button {
+            border-radius: 5px;
+            color: var(--givewp-grey-5);
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+            min-width: 154px;
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-6);
+            width: auto;
+
+            @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+                &:hover {
+                    background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+                }
+            }
+        }
+
+        &__reset-button {
+            color: var(--givewp-grey-500);
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.43;
+
+            span {
+                color: var(--primary);
+                font-weight: 500;
+            }
         }
     }
 }
