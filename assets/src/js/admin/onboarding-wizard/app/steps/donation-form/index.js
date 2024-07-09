@@ -17,7 +17,7 @@ const DonationForm = () => {
 			</div>
 			<div className="give-obw-donation-form__content">
 				<div className="give-obw-donation-form__fixed">
-					<h1>{ __( 'Check out your first donation form!', 'give' ) }</h1>
+					<h1>{ __( '🎉 Congrats! Check out your first donation form.', 'give' ) }</h1>
 					<p>
 						{ __( 'This form is customized based on your responses.', 'give' ) }
 					</p>
@@ -38,7 +38,7 @@ const DonationForm = () => {
 						</li>
 						<li>
 							<GradientChevronIcon index={ 4 } />
-							{ __( 'Extend with add-ons and more!', 'give' ) }
+							{ __( 'Extend functionality with add-ons and more', 'give' ) }
 						</li>
 					</ul>
 					<ContinueButton testId="preview-continue-button" />
