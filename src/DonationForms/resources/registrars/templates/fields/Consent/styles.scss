@@ -7,7 +7,7 @@
     }
 
     &-modal {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         bottom: 0;
@@ -17,9 +17,9 @@
         justify-content: center;
         background: transparent;
         backdrop-filter: blur(2px);
-        z-index: 999;
 
         &-content {
+            max-width: 48rem;
             background: var(--givep-shades-white, #fff);
             padding: 2.5rem 3.5rem;
             width: calc(min(100%, 51.5rem) + 2rem);
@@ -41,8 +41,7 @@
                 display: flex;
                 gap: 1rem;
 
-                > button {
-                    margin: 0;
+                button:first-child {
                     background: transparent;
                     color: var(--givewp-primary-color);
                     border: 1px solid var(--givewp-primary-color);
@@ -66,4 +65,3 @@
         }
     }
 }
-
