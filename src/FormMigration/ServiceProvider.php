@@ -56,6 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\ActiveCampaign::class,
                 Steps\DoubleTheDonation::class,
                 Steps\CurrencySwitcher::class,
+                Steps\RazorpayPerFormSettings::class,
             ]);
         });
     }
