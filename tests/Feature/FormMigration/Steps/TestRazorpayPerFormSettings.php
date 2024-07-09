@@ -21,14 +21,13 @@ class TestRazorpayPerFormSettings extends TestCase
      */
     public function testProcessShouldUpdatePaymentGatewaysBlockAttributes(): void
     {
-        $useGlobalSettings = 'enabled';
         $liveKeyId = 'live_12304567890';
         $liveSecretKey = 'live_0123456789';
         $testKeyId = 'test_12304567890';
         $testSecretKey = 'test_0123456789';
 
         $meta = [
-            'razorpay_per_form_account_options' => $useGlobalSettings,
+            'razorpay_per_form_account_options' => 'global',
             'razorpay_per_form_live_merchant_key_id' => $liveKeyId,
             'razorpay_per_form_live_merchant_secret_key' => $liveSecretKey,
             'razorpay_per_form_test_merchant_key_id' => $testKeyId,
@@ -44,7 +43,7 @@ class TestRazorpayPerFormSettings extends TestCase
 
         $paymentGatewaysBlock = $payload->formV3->blocks->findByName('givewp/payment-gateways');
 
-        $this->assertSame($useGlobalSettings, $paymentGatewaysBlock->getAttribute('useGlobalSettings'));
+        $this->assertSame(true, $paymentGatewaysBlock->getAttribute('useGlobalSettings'));
         $this->assertSame($liveKeyId, $paymentGatewaysBlock->getAttribute('liveKeyId'));
         $this->assertSame($liveSecretKey, $paymentGatewaysBlock->getAttribute('liveSecretKey'));
         $this->assertSame($testKeyId, $paymentGatewaysBlock->getAttribute('testKeyId'));
