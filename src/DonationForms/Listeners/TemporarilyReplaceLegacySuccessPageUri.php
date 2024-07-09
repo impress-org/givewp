@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\DonationForms\Listeners;
 
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
@@ -22,9 +23,11 @@ class TemporarilyReplaceLegacySuccessPageUri
     public function __invoke(DonateControllerData $formData, Donation $donation)
     {
         $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
+        $redirectUrl = $formData->getDonationConfirmationPageFromSettings($donation);
 
-        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
-            return $filteredUrl;
+        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl, $redirectUrl) {
+            return $redirectUrl;
+            //return $filteredUrl;
         });
     }
 }

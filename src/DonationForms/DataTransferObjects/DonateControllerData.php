@@ -191,6 +191,11 @@ class DonateControllerData
      */
     public function getSuccessUrl(Donation $donation): string
     {
+        $shouldRedirect = true;
+        if ($shouldRedirect) {
+            return $this->getDonationConfirmationPageFromSettings($donation);
+        }
+
         return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
@@ -220,6 +225,20 @@ class DonateControllerData
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
         return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->embedId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationPageFromSettings(Donation $donation): string
+    {
+        $settings = give_get_settings();
+
+        $page = isset($settings['success_page'])
+            ? get_permalink(absint($settings['success_page']))
+            : get_bloginfo('url');
+
+        return esc_url_raw(add_query_arg(['receipt-id' => $donation->purchaseKey], $page));
     }
 
     /**

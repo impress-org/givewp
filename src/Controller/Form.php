@@ -9,6 +9,9 @@
 
 namespace Give\Controller;
 
+use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
+use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
+use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\Form\LoadTemplate;
 use Give\Form\Template;
 use Give\Helpers\Form\Template as FormTemplateUtils;
@@ -71,6 +74,14 @@ class Form
             return;
         }
 
+        wp_enqueue_script(
+            'givewp-donation-form-embed',
+            GIVE_PLUGIN_URL . 'build/donationFormEmbed.js',
+            [],
+            GIVE_VERSION,
+            true
+        );
+
         // Handle success page.
         if (FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm()) {
             /* @var Template $formTemplate */
@@ -113,7 +124,6 @@ class Form
                 include $formTemplate->getReceiptView();
                 exit();
             }
-
             // Render receipt on success page in iframe.
             add_filter('the_content', [$this, 'showReceiptInIframeOnSuccessPage'], 1);
         }
@@ -173,9 +183,20 @@ class Form
     public function showReceiptInIframeOnSuccessPage($content)
     {
         $receiptShortcode = ShortcodeUtils::getReceiptShortcodeFromConfirmationPage();
-        $content = str_replace($receiptShortcode, give_form_shortcode([]), $content);
 
-        return $content;
+        $data = DonationConfirmationReceiptViewRouteData::fromRequest($_GET);
+        $view = give_form_shortcode([]);
+
+        if ($data->receiptId) {
+            //$view = give(DonationConfirmationReceiptViewController::class)->show($data);
+            $viewUrl = (new GenerateDonationConfirmationReceiptViewRouteUrl())($data->receiptId);
+
+            return str_replace($receiptShortcode, "
+            <iframe style='width: 1px;min-width: 100%;' data-givewp-embed src='$viewUrl' />",
+                $content);
+        }
+
+        return str_replace($receiptShortcode, $view, $content);
     }
 
     /**
