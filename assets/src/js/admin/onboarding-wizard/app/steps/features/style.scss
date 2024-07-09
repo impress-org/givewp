@@ -30,16 +30,24 @@
 		align-items: center;
 		justify-content: center;
 
-		> strong {
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			text-transform: uppercase;
-			font-weight: 500;
-			font-size: 18px;
-			line-height: 24px;
-			text-align: center;
-			letter-spacing: 3.5px;
-			color: #4a5568;
-		}
+        > h2 {
+            color: #4a5568;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.33;
+            margin: 0 0 0.25rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        > p {
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.57;
+            margin: 0;
+            text-align: center;
+        }
 	}
 
 	> .give-obw-button {
