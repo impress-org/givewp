@@ -86,18 +86,15 @@ button[type="submit"] {
     font-size: 1.375rem;
     font-weight: 600;
     line-height: 1.2;
-    transition-property: filter, box-shadow, transform;
-    transition-duration: 0.3s;
-    transition-timing-function: ease-in-out;
     cursor: pointer;
     inline-size: 100%;
     width: 100%;
     margin: 1rem 0;
 
-    &:hover {
-        filter: brightness(1.2);
-        transform: scale(1.01);
-        box-shadow: 0 0.0625rem 0.25rem rgb(0 0 0 / 25%);
+    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+        &:hover {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+        }
     }
 }
 
