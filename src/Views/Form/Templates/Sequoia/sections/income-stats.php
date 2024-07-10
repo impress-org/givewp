@@ -3,6 +3,13 @@
 /**
  * @var int $formId
  */
+
+use Give\DonationForms\DonationQuery;
+use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
+
+/**
+ * @unreleased Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
+ */
 if ($form->has_goal()) : ?>
     <?php
     $goalStats = give_goal_progress_stats($formId);
@@ -10,7 +17,7 @@ if ($form->has_goal()) : ?>
     // Setup default raised value
     $raised = give_currency_filter(
         give_format_amount(
-            $form->get_earnings(),
+            (new DonationQuery())->form($formId)->sumIntendedAmount(),
             [
                 'sanitize' => false,
                 'decimal' => false,
@@ -19,7 +26,7 @@ if ($form->has_goal()) : ?>
     );
 
     // Setup default count value
-    $count = $form->get_sales();
+    $count = (new ProgressBarModal(['ids' => [$formId]]))->getDonationCount();;
 
     // Setup default count label
     $countLabel = _n('donation', 'donations', $count, 'give');
