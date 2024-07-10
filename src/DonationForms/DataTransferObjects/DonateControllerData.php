@@ -191,8 +191,7 @@ class DonateControllerData
      */
     public function getSuccessUrl(Donation $donation): string
     {
-        $shouldRedirect = true;
-        if ($shouldRedirect) {
+        if (!apply_filters('givewp_donation_confirmation_page_redirect', false)) {
             return $this->getDonationConfirmationPageFromSettings($donation);
         }
 
@@ -237,6 +236,8 @@ class DonateControllerData
         $page = isset($settings['success_page'])
             ? get_permalink(absint($settings['success_page']))
             : get_bloginfo('url');
+
+        $page = apply_filters('givewp_donation_confirmation_page_redirect_permalink', $page, $donation);
 
         return esc_url_raw(add_query_arg(['receipt-id' => $donation->purchaseKey], $page));
     }

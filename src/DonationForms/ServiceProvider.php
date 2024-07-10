@@ -5,6 +5,7 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
+use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -188,6 +189,7 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerShortcodes()
     {
         Hooks::addFilter('givewp_form_shortcode_output', GiveFormShortcode::class, '__invoke', 10, 2);
+        Hooks::addFilter('give_donation_confirmation_success_page_shortcode_view', ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe::class);
     }
 
     /**
