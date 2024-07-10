@@ -62,6 +62,7 @@ class Form
     /**
      * Load receipt view.
      *
+     * @unreleased add action give_donation_confirmation_page_enqueue_scripts
      * @since 2.7.0
      */
     public function loadReceiptView()
@@ -71,13 +72,7 @@ class Form
             return;
         }
 
-        wp_enqueue_script(
-            'givewp-donation-form-embed',
-            GIVE_PLUGIN_URL . 'build/donationFormEmbed.js',
-            [],
-            GIVE_VERSION,
-            true
-        );
+       do_action('give_donation_confirmation_page_enqueue_scripts');
 
         // Handle success page.
         if (FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm()) {
@@ -171,6 +166,7 @@ class Form
     /**
      * Handle receipt shortcode on success page
      *
+     * @unreleased add filter give_donation_confirmation_success_page_shortcode_view
      * @since 2.7.0
      *
      * @param string $content

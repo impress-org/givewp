@@ -338,6 +338,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows a donation receipt.
  *
+ * @unreleased add give_donation_confirmation_page_enqueue_scripts
  * @since 3.7.0 Sanitize and escape attributes
  * @since  1.0
  *
@@ -389,13 +390,15 @@ function give_receipt_shortcode( $atts ) {
 	if ( ! wp_doing_ajax() ) {
 		give_get_template_part( 'receipt/placeholder' );
 
-		return sprintf(
+        do_action('give_donation_confirmation_page_enqueue_scripts');
+
+		return apply_filters('give_receipt_shortcode_output', sprintf(
 			'<div id="give-receipt" data-shortcode="%1$s" data-receipt-type="%2$s" data-donation-key="%3$s" >%4$s</div>',
 			htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
 			esc_attr($receipt_type),
 			esc_attr($donation_id),
 			ob_get_clean()
-		);
+		));
 	}
 
 	return give_display_donation_receipt( $atts );

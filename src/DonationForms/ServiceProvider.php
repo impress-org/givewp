@@ -190,6 +190,16 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addFilter('givewp_form_shortcode_output', GiveFormShortcode::class, '__invoke', 10, 2);
         Hooks::addFilter('give_donation_confirmation_success_page_shortcode_view', ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe::class);
+        Hooks::addFilter('give_receipt_shortcode_output', ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe::class);
+        add_action('give_donation_confirmation_page_enqueue_scripts', function() {
+            wp_enqueue_script(
+                'givewp-donation-form-embed',
+                GIVE_PLUGIN_URL . 'build/donationFormEmbed.js',
+                [],
+                GIVE_VERSION,
+                true
+            );
+        });
     }
 
     /**
