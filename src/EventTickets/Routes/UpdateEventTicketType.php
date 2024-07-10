@@ -12,6 +12,7 @@ use WP_REST_Server;
 
 /**
  * @since 3.6.0
+ * @unreleased add permission callback check
  */
 class UpdateEventTicketType implements RestRoute
 {
