@@ -42,7 +42,9 @@ class Helpers
      */
     public static function isDonorLoggedIn(): bool
     {
-        return is_user_logged_in() || (
+        $user = wp_get_current_user();
+
+        return is_user_logged_in() && (current_user_can('administrator') || in_array('give_donor', $user->roles)) || (
                 give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
                 Give()->email_access->is_valid_token(Give()->email_access->get_token())
         );
