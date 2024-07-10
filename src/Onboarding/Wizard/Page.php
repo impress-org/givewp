@@ -65,7 +65,7 @@ class Page
      **/
     public function add_page()
     {
-        add_submenu_page('', '', '', 'manage_options', $this->slug);
+        add_submenu_page('', '', '', 'manage_give_settings', $this->slug);
     }
 
     /**
@@ -77,7 +77,7 @@ class Page
      **/
     public function setup_wizard()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
             return;
         } else {
             $this->render_page();
