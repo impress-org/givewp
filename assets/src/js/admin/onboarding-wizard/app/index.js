@@ -45,6 +45,8 @@ const App = () => {
 		configuration: {
 			userType: 'individual',
 			causeType: '',
+            usageTracking: true,
+            newsletterSubscription: true,
 			country: getDefaultCountry(),
 			state: getDefaultState(),
 			currency: getDefaultCurrency(),
