@@ -39,6 +39,7 @@ class Helpers
      * Retrieve donor logged in status
      *
      * @since 2.20.2
+     * @unreleased Add user capability and user role check
      */
     public static function isDonorLoggedIn(): bool
     {
