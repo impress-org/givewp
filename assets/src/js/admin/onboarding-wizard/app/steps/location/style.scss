@@ -28,7 +28,9 @@
 
 	.give-obw-card {
 		padding: 40px;
-		margin-bottom: 85px;
+		margin-bottom: 24px;
+        box-sizing: border-box;
+        width: 445px;
 	}
 
 	.give-obw-select-input {
@@ -39,4 +41,8 @@
 			margin-bottom: 0;
 		}
 	}
+
+    .give-obw-footer {
+        width: 445px;
+    }
 }

@@ -3,6 +3,7 @@ import {__} from '@wordpress/i18n';
 
 // Import components
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import DonationFormComponent from '../../../components/donation-form';
 import Bullet from '../../../components/icons/bullet';
 
@@ -39,7 +40,10 @@ const DonationForm = () => {
                             {__('Extend functionality with add-ons and more', 'give')}
                         </li>
                     </ul>
-                    <ContinueButton testId="preview-continue-button" />
+                    <footer className="give-obw-footer">
+                        <ContinueButton testId="preview-continue-button" />
+                        <PreviousButton testId="preview-previous-button" />
+                    </footer>
                 </div>
             </div>
         </div>
