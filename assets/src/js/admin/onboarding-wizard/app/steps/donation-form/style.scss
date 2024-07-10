@@ -1,9 +1,9 @@
 .give-obw-donation-form {
 	display: grid;
 	position: relative;
-	grid-template-columns: repeat(2, 1fr);
-	width: 1200px;
-	grid-gap: 62px;
+	grid-template-columns: 560px 1fr;
+	width: 1256px;
+	grid-gap: 80px;
 	align-items: center;
 }
 
@@ -17,6 +17,7 @@
 
 	.give-obw-donation-form__fixed {
 		position: fixed;
+        max-width: 616px;
 	}
 
 	h1 {
@@ -69,4 +70,18 @@
 			}
 		}
 	}
+
+    .give-obw-newsletter-subscription-field {
+        margin-bottom: 2rem;
+        max-width: 590px;
+
+        .give-obw-checkbox-input {
+            margin-left: 0;
+            margin-right: 0;
+
+            &__help {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
