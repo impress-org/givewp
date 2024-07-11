@@ -12,6 +12,14 @@ class RazorpayPerFormSettings extends FormMigrationStep
     /**
      * @unreleased
      */
+    public function canHandle(): bool
+    {
+        return $this->formV2->isRazorpayPerFormSettingsEnabled();
+    }
+
+    /**
+     * @unreleased
+     */
     public function process()
     {
         $oldFormId = $this->formV2->id;
