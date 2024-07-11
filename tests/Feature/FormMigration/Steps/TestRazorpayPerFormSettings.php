@@ -13,8 +13,37 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
  */
 class TestRazorpayPerFormSettings extends TestCase
 {
-
     use RefreshDatabase, LegacyDonationFormAdapter;
+
+    /**
+     * @unreleased
+     */
+    public function testCanHandleShouldReturnFalse()
+    {
+        $meta = [
+            'razorpay_per_form_account_options' => 'global',
+        ];
+        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        $payload = FormMigrationPayload::fromFormV2($formV2);
+        $razorpayPerFormSettings = new RazorpayPerFormSettings($payload);
+
+        $this->assertNotTrue($razorpayPerFormSettings->canHandle());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCanHandleShouldReturnTrue()
+    {
+        $meta = [
+            'razorpay_per_form_account_options' => 'enabled',
+        ];
+        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        $payload = FormMigrationPayload::fromFormV2($formV2);
+        $razorpayPerFormSettings = new RazorpayPerFormSettings($payload);
+
+        $this->assertTrue($razorpayPerFormSettings->canHandle());
+    }
 
     /**
      * @unreleased
@@ -49,6 +78,5 @@ class TestRazorpayPerFormSettings extends TestCase
         $this->assertSame($testKeyId, $paymentGatewaysBlock->getAttribute('razorpayTestKeyId'));
         $this->assertSame($testSecretKey, $paymentGatewaysBlock->getAttribute('razorpayTestSecretKey'));
     }
-
 }
 
