@@ -18,17 +18,17 @@ class RazorpayPerFormSettings extends FormMigrationStep
 
         $paymentGatewaysBlock = $this->fieldBlocks->findByName('givewp/payment-gateways');
 
-        $paymentGatewaysBlock->setAttribute('useGlobalSettings',
+        $paymentGatewaysBlock->setAttribute('razorpayUseGlobalSettings',
             $this->getMetaValue($oldFormId, 'razorpay_per_form_account_options', 'global') === 'global');
 
-        $paymentGatewaysBlock->setAttribute('liveKeyId',
+        $paymentGatewaysBlock->setAttribute('razorpayLiveKeyId',
             $this->getMetaValue($oldFormId, 'razorpay_per_form_live_merchant_key_id', ''));
-        $paymentGatewaysBlock->setAttribute('liveSecretKey',
+        $paymentGatewaysBlock->setAttribute('razorpayLiveSecretKey',
             $this->getMetaValue($oldFormId, 'razorpay_per_form_live_merchant_secret_key', ''));
 
-        $paymentGatewaysBlock->setAttribute('testKeyId',
+        $paymentGatewaysBlock->setAttribute('razorpayTestKeyId',
             $this->getMetaValue($oldFormId, 'razorpay_per_form_test_merchant_key_id', ''));
-        $paymentGatewaysBlock->setAttribute('testSecretKey',
+        $paymentGatewaysBlock->setAttribute('razorpayTestSecretKey',
             $this->getMetaValue($oldFormId, 'razorpay_per_form_test_merchant_secret_key', ''));
     }
 

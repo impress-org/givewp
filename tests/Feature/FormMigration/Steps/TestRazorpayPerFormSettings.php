@@ -43,11 +43,11 @@ class TestRazorpayPerFormSettings extends TestCase
 
         $paymentGatewaysBlock = $payload->formV3->blocks->findByName('givewp/payment-gateways');
 
-        $this->assertSame(true, $paymentGatewaysBlock->getAttribute('useGlobalSettings'));
-        $this->assertSame($liveKeyId, $paymentGatewaysBlock->getAttribute('liveKeyId'));
-        $this->assertSame($liveSecretKey, $paymentGatewaysBlock->getAttribute('liveSecretKey'));
-        $this->assertSame($testKeyId, $paymentGatewaysBlock->getAttribute('testKeyId'));
-        $this->assertSame($testSecretKey, $paymentGatewaysBlock->getAttribute('testSecretKey'));
+        $this->assertSame(true, $paymentGatewaysBlock->getAttribute('razorpayUseGlobalSettings'));
+        $this->assertSame($liveKeyId, $paymentGatewaysBlock->getAttribute('razorpayLiveKeyId'));
+        $this->assertSame($liveSecretKey, $paymentGatewaysBlock->getAttribute('razorpayLiveSecretKey'));
+        $this->assertSame($testKeyId, $paymentGatewaysBlock->getAttribute('razorpayTestKeyId'));
+        $this->assertSame($testSecretKey, $paymentGatewaysBlock->getAttribute('razorpayTestSecretKey'));
     }
 
 }
