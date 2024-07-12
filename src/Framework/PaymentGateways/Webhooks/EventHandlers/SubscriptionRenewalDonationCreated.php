@@ -24,7 +24,13 @@ class SubscriptionRenewalDonationCreated
     ) {
         $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
-        if ( ! $subscription) {
+        if ( ! $subscription || $subscription->initialDonation()->gatewayTransactionId === $gatewayTransactionId) {
+            return;
+        }
+
+        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+
+        if ($donation) {
             return;
         }
 
