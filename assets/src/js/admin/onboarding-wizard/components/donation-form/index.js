@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { __ } from '@wordpress/i18n'
 
 // Import utilities
@@ -11,33 +11,19 @@ import ConfigurationIcon from '../icons/configuration';
 // Import styles
 import './style.scss';
 
-const DonationForm = () => {
-	const formPreviewUrl = getWindowData( 'formPreviewUrl' );
+const DonationForm = ({formId}) => {
+	const formPreviewUrl = getWindowData( 'formPreviewUrl' ) + `${formId}`;
 	const [ iframeLoaded, setIframeLoaded ] = useState( false );
 	const [ iframeHeight, setIframeHeight ] = useState( 749 );
+    const iframeRef = useRef();
 
-	useEffect( () => {
-		window.addEventListener( 'message', receiveMessage, false );
+    useEffect( () => {
+        const iframe = iframeRef.current
+		iframe.addEventListener( 'load', onIframeLoaded, false );
 		return () => {
-			window.removeEventListener( 'message', receiveMessage, false );
+			iframe.removeEventListener( 'load', onIframeLoaded, false );
 		};
 	}, [] );
-
-	const receiveMessage = ( event ) => {
-		switch ( event.data.action ) {
-			case 'resize': {
-				setIframeHeight( event.data.payload.height );
-				break;
-			}
-			case 'loaded': {
-				onIframeLoaded();
-				break;
-			}
-			default: {
-
-			}
-		}
-	};
 
 	const iframeStyle = {
 		height: iframeHeight,
@@ -50,8 +36,10 @@ const DonationForm = () => {
 
 	const onIframeLoaded = () => {
 		setIframeLoaded( true );
-		hideInIframe( '#give_error_test_mode' );
-		hideInIframe( '.social-sharing' );
+
+        if (iframeRef.current?.contentWindow?.document) {
+            setIframeHeight(iframeRef.current?.contentWindow?.document?.scrollHeight);
+        }
 	};
 
 	const hideInIframe = ( selector ) => {
@@ -71,7 +59,7 @@ const DonationForm = () => {
 					{ __( 'Building Form Preview...', 'give' ) }
 				</h3>
 			</div>
-			<iframe id="donationFormPreview" className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
+			<iframe ref={iframeRef} id="donationFormPreview" className="give-obw-donation-form-preview__iframe" src={ formPreviewUrl } style={ iframeStyle } />
 		</div>
 	);
 };

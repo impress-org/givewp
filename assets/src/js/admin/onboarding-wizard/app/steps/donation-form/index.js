@@ -1,6 +1,9 @@
 // Import vendor dependencies
 import { __ } from '@wordpress/i18n'
 
+// Import store dependencies
+import {useStoreValue} from "../../store";
+
 // Import components
 import ContinueButton from '../../../components/continue-button';
 import DonationFormComponent from '../../../components/donation-form';
@@ -10,10 +13,12 @@ import GradientChevronIcon from '../../../components/icons/gradient-chevron';
 import './style.scss';
 
 const DonationForm = () => {
+    const [{configuration}, dispatch] = useStoreValue();
+
 	return (
 		<div className="give-obw-donation-form">
 			<div className="give-obw-donation-form__preview">
-				<DonationFormComponent />
+				<DonationFormComponent formId={configuration.formId} />
 			</div>
 			<div className="give-obw-donation-form__content">
 				<div className="give-obw-donation-form__fixed">
