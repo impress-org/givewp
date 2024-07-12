@@ -261,6 +261,10 @@ class FormSettings implements Arrayable, Jsonable
      * @var array
      */
     public $currencySwitcherSettings;
+    /**
+     * @var bool
+     */
+    public $enableReceiptConfirmationPage;
 
     /**
      * @since 3.7.0 Added formExcerpt
@@ -313,6 +317,9 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
+
+        $self->enableReceiptConfirmationPage = $array['enableReceiptConfirmationPage'] ?? false;
+
         $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();

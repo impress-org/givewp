@@ -24,8 +24,9 @@ class TemporarilyReplaceLegacySuccessPageUri
     {
         $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
         $redirectUrl = $formData->getDonationConfirmationPageFromSettings($donation);
+        $form = $formData->getDonationForm();
 
-        if (apply_filters('givewp_donation_confirmation_page_redirect', false, $donation->formId)) {
+        if (apply_filters('givewp_enable_donation_confirmation_page_redirect', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
             $filteredUrl = $redirectUrl;
         }
 

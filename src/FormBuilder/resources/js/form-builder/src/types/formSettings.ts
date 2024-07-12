@@ -56,4 +56,5 @@ export type FormSettings = {
     designSettingsImageOpacity: string;
     designSettingsImageColor: string;
     formExcerpt: string;
+    enableReceiptConfirmationPage: boolean;
 };

@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {PanelRow} from '@wordpress/components';
+import {PanelRow, ToggleControl} from '@wordpress/components';
 import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
@@ -11,7 +11,7 @@ const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
  * @since 3.3.0
  */
 export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {
-    const {receiptHeading, receiptDescription} = settings;
+    const {receiptHeading, receiptDescription, enableReceiptConfirmationPage} = settings;
 
     return (
         <>
@@ -44,6 +44,19 @@ export default function FormDonationConfirmationSettingsGroup({settings, setSett
             >
                 <PanelRow>
                     <TemplateTags templateTags={donationConfirmationTemplateTags} />
+                </PanelRow>
+            </SettingsSection>
+            <SettingsSection title={__('Confirmation Page Redirect', 'give')}>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Enable redirect to confirmation page', 'give')}
+                        checked={enableReceiptConfirmationPage}
+                        onChange={() => setSettings({enableReceiptConfirmationPage: !enableReceiptConfirmationPage})}
+                        help={__(
+                            'If enabled, donors will be sent to a donation confirmation page after successfully donating.  This page can be customized in the GiveWP settings under "Success Page".',
+                            'give'
+                        )}
+                    />
                 </PanelRow>
             </SettingsSection>
         </>
