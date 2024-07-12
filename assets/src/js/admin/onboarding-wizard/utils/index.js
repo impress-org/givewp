@@ -209,12 +209,15 @@ export const fetchStatesListWithOnboardingAPI = ( country, dispatch ) => {
  * @param {requestCallback} dispatch Dispatch an action with the returned data
  * @since 2.8.0
  */
-export const generateFormPreviewWithOnboardingAPI = ( dispatch ) => {
-	axios.post( getAPIRoot() + 'give-api/v2/onboarding/form', {}, {
+export const generateFormPreviewWithOnboardingAPI = async( dispatch ) => {
+	const {data} = await axios.post( getAPIRoot() + 'give-api/v2/onboarding/form', {}, {
 		headers: {
 			'X-WP-Nonce': getAPINonce(),
+            'Content-Type': 'application/json',
 		},
 	} );
+
+    return data.formID
 };
 
 /**
