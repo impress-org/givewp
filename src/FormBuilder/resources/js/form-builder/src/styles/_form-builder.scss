@@ -42,15 +42,12 @@
     border: 1px solid lightgray;
     bottom: 0;
     //color: slategray;
-    height: calc(100vh - 60px); // Account for header height above sidebar
+    height: calc(100vh - 65px); // Account for header height above sidebar
     //overflow: hidden; // The Inspector Popout needs to be visible.
-    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
-    top: 60px; // Account for header @todo move this to layout, not in the component.
     overflow-y: scroll;
 
-    &.givewp-next-gen-sidebar-primary {
-        right: 0;
 
+    &.givewp-next-gen-sidebar-primary {
         .block-editor-block-inspector {
             > h2 {
                 border-bottom: 1px solid #e0e0e0;
@@ -68,10 +65,6 @@
                 padding: var(--givewp-spacing-4);
             }
         }
-    }
-
-    &.givewp-next-gen-sidebar-secondary {
-        left: 0;
     }
 
     &__inner {
@@ -249,7 +242,7 @@
         }
     }
 
-    &_visibility{
+    &_visibility {
         font-size: 0.75rem;
         line-height: 1.4;
         margin-top: -8px;
@@ -309,7 +302,8 @@
             fill: #000;
             stroke: #fff;
         }
-    };
+    }
+;
 }
 
 .iti {
