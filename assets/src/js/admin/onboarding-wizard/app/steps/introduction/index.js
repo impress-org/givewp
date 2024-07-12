@@ -1,5 +1,9 @@
 // Import vendor dependencies
-import { __ } from '@wordpress/i18n'
+import { __ } from '@wordpress/i18n';
+
+// Import store dependencies
+import {useStoreValue} from "../../store";
+import {setFormId} from "../../store/actions";
 
 // Import styles
 import './style.scss';
@@ -13,8 +17,11 @@ import ContinueButton from '../../../components/continue-button';
 import DismissLink from '../../../components/dismiss-link';
 
 const Introduction = () => {
-	const onStartSetup = () => {
-		generateFormPreviewWithOnboardingAPI();
+    const [ {}, dispatch ] = useStoreValue();
+
+    const onStartSetup = async() => {
+	    const formId = await generateFormPreviewWithOnboardingAPI();
+        dispatch(setFormId(formId));
 	};
 
 	return (
