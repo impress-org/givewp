@@ -8,6 +8,7 @@ import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags'
 const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 /**
+ * @unreleased Added setting for enableReceiptConfirmationPage
  * @since 3.3.0
  */
 export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {

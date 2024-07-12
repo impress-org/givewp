@@ -187,13 +187,14 @@ class DonateControllerData
     }
 
     /**
+     * @unreleased Added "givewp_donation_confirmation_page_redirect_enabled" filter
      * @since 3.0.0
      */
     public function getSuccessUrl(Donation $donation): string
     {
         $form = $this->getDonationForm();
 
-        if (apply_filters('givewp_enable_donation_confirmation_page_redirect', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
+        if (apply_filters('givewp_donation_confirmation_page_redirect_enabled', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
             return $this->getDonationConfirmationPageFromSettings($donation);
         }
 

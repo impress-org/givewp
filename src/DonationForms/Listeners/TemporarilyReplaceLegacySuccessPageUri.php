@@ -16,6 +16,7 @@ class TemporarilyReplaceLegacySuccessPageUri
      *
      * This is a temporary solution until we can update the gateway api to support the new receipt urls.
      *
+     * @unreleased Added "givewp_enable_donation_confirmation_page_redirect" filter
      * @since 3.0.0
      *
      * @return void
@@ -26,7 +27,7 @@ class TemporarilyReplaceLegacySuccessPageUri
         $redirectUrl = $formData->getDonationConfirmationPageFromSettings($donation);
         $form = $formData->getDonationForm();
 
-        if (apply_filters('givewp_enable_donation_confirmation_page_redirect', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
+        if (apply_filters('givewp_donation_confirmation_page_redirect_enabled', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
             $filteredUrl = $redirectUrl;
         }
 
