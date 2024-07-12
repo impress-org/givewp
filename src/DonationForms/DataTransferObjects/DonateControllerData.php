@@ -237,7 +237,7 @@ class DonateControllerData
             ? get_permalink(absint($settings['success_page']))
             : get_bloginfo('url');
 
-        $page = apply_filters('givewp_donation_confirmation_page_redirect_permalink', $page, $donation);
+        $page = apply_filters('givewp_donation_confirmation_page_redirect_permalink', $page, $donation->formId);
 
         return esc_url_raw(add_query_arg(['receipt-id' => $donation->purchaseKey], $page));
     }
