@@ -26,36 +26,40 @@ const Features = () => {
 	return (
 		<div className="give-obw-fundraising-needs">
 			<h1>{ __( 'What do you need in your first donation form?', 'give' ) }</h1>
-			<p>
-				{ __( 'Don\'t worry, these settings can always be changed later.', 'give' ) }
-			</p>
-			<CardInput values={ features } onChange={ ( value ) => dispatch( setFeatures( value ) ) } >
-				<Card value="donation-goal">
-					<DonationGoalIcon />
-					<strong>{ __( 'Donation Goal', 'give' ) }</strong>
-				</Card>
-				<Card value="donation-comments">
-					<DonationCommentsIcon />
-					<strong>{ __( 'Donation Comments', 'give' ) }</strong>
-				</Card>
-				<Card value="terms-conditions">
-					<TermsConditionsIcon />
-					<strong>{ __( 'Terms & Conditions', 'give' ) }</strong>
-				</Card>
-				<Card value="offline-donations">
-					<OfflineDonationsIcon />
-					<strong>{ __( 'Offline Donations', 'give' ) }</strong>
-				</Card>
-				<Card value="anonymous-donations">
-					<AnonymousDonationsIcon />
-					<strong>{ __( 'Anonymous Donations', 'give' ) }</strong>
-				</Card>
-				<Card value="company-donations">
-					<CompanyDonationsIcon />
-					<strong>{ __( 'Company Donations', 'give' ) }</strong>
-				</Card>
-			</CardInput>
-			<ContinueButton testId="features-continue-button" />
+            <p>{__('Select the features you need. These can always be changed later.', 'give')}</p>
+            <CardInput values={features} onChange={(value) => dispatch(setFeatures(value))}>
+                <Card value="donation-goal">
+                    <DonationGoalIcon />
+                    <h2>{__('Donation Goal', 'give')}</h2>
+                    <p>{__('Show the donation goal progress on the form.', 'give')}</p>
+                </Card>
+                <Card value="donation-comments">
+                    <DonationCommentsIcon />
+                    <h2>{__('Donation Comments', 'give')}</h2>
+                    <p>{__('Allow donors to add comments to their donations.', 'give')}</p>
+                </Card>
+                <Card value="terms-conditions">
+                    <TermsConditionsIcon />
+                    <h2>{__('Terms & Conditions', 'give')}</h2>
+                    <p>{__('Require donors to accept terms and conditions.', 'give')}</p>
+                </Card>
+                <Card value="offline-donations">
+                    <OfflineDonationsIcon />
+                    <h2>{__('Offline Donations', 'give')}</h2>
+                    <p>{__('Donors can choose to donate offline, via mail or in person.', 'give')}</p>
+                </Card>
+                <Card value="anonymous-donations">
+                    <AnonymousDonationsIcon />
+                    <h2>{__('Anonymous Donations', 'give')}</h2>
+                    <p>{__('Enable donors to give anonymously.', 'give')}</p>
+                </Card>
+                <Card value="company-donations">
+                    <CompanyDonationsIcon />
+                    <h2>{__('Company Donations', 'give')}</h2>
+                    <p>{__('Donors can donate via their company.', 'give')}</p>
+                </Card>
+            </CardInput>
+            <ContinueButton testId="features-continue-button" />
 		</div>
 	);
 };
