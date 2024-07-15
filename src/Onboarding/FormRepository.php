@@ -84,7 +84,7 @@ class FormRepository
             'status'   => DonationFormStatus::PUBLISHED(),
             'settings' => FormSettings::fromArray([
                 'designId' => 'multi-step',
-                'designSettingsImageUrl' => '',
+                'designSettingsImageUrl' => GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.png',
             ]),
             'blocks'   => (new GenerateDefaultDonationFormBlockCollection())(),
         ]);
