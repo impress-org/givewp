@@ -168,6 +168,7 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
+ * @unreleased Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *
  * @param array $vars Array of all the sort variables.
@@ -179,6 +180,10 @@ function give_sort_forms( $vars ) {
 	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
 		return $vars;
 	}
+
+    add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
+        return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
+    }, 10, 2);
 
 	switch ( $vars['orderby'] ) {
 		// Check if 'orderby' is set to "sales".

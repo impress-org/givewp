@@ -2,11 +2,13 @@
 
 namespace Give\Views\Form\Templates\Classic;
 
+use Give\DonationForms\DonationQuery;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Helpers\Form\Template\Utils\Frontend;
+use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
 use Give\Receipt\DonationReceipt;
 use Give_Donate_Form;
 use InvalidArgumentException;
@@ -103,7 +105,7 @@ class Classic extends Template implements Hookable, Scriptable
         ];
 
         foreach ($sections as $section) {
-            list ($start, $end) = array_pad($section[ 'hooks' ], 2, null);
+            [$start, $end] = array_pad($section['hooks'], 2, null);
 
             add_action($start, function () use ($section) {
                 printf('<section class="give-form-section %s">', $section[ 'class' ]);
@@ -289,10 +291,13 @@ class Classic extends Template implements Hookable, Scriptable
         return $receipt;
     }
 
+    /**
+     * @unreleased Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
+     */
     public function getFormGoalStats(Give_Donate_Form $form)
     {
         $goalStats = give_goal_progress_stats($form->get_ID());
-        $raisedRaw = $form->get_earnings();
+        $raisedRaw = (new DonationQuery())->form($form->ID)->sumIntendedAmount();
 
         // Setup default raised value
         $raised = give_currency_filter(
@@ -306,7 +311,7 @@ class Classic extends Template implements Hookable, Scriptable
         );
 
         // Setup default count value
-        $count = $form->get_sales();
+        $count = (new ProgressBarModal(['ids' => [$form->get_ID()]]))->getDonationCount();
 
         // Setup default count label
         $countLabel = _n('donation', 'donations', $count, 'give');

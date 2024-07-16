@@ -10,6 +10,7 @@
  */
 
 // Exit if accessed directly.
+use Give\DonationForms\DonationQuery;
 use Give\License\PremiumAddonsListManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -1942,7 +1943,7 @@ function give_goal_progress_stats( $form ) {
 
 	/**
 	 * Filter the form.
-	 *
+	 * @unreleased Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
 	 * @since 1.8.8
 	 */
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ), 2 ), $form->ID, $form );
@@ -1975,7 +1976,7 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 1.8.8
 			 */
-			$actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+			$actual = apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
 			break;
 	}
 
