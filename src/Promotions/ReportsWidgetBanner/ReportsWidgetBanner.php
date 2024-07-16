@@ -61,4 +61,12 @@ class ReportsWidgetBanner extends SaleBanners
 
         return $hasBanners && $isDashboardWidgetPage;
     }
+
+    /**
+     * @unreleased required abstract class method.
+     */
+    public function render(): void
+    {
+        // Rendering managed in public/wp-content/plugins/givewp/assets/src/js/admin/reports/widget
+    }
 }
