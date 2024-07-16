@@ -7,9 +7,10 @@ use DateTimeZone;
 use Exception;
 
 /**
+ * @unreleased create abstract class.
  * @since 2.17.0
  */
-class SaleBanners
+abstract class SaleBanners
 {
     /**
      * @var string
@@ -30,61 +31,26 @@ class SaleBanners
     }
 
     /**
-     * Get banners definitions
+     * Get banners definitions/details.
      *
-     * @since 3.1.0 add Giving Tuesday 2023 banner
-     * @since 2.23.2 add Giving Tuesday 2022 banner
-     * @since 2.17.0
-     *
-     * @note id must be unique for each definition
+     * @unreleased
      */
-    public function getBanners(): array
-    {
-        return [
-            [
-                'id' => 'bfgt2023',
-                'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
-                'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
-                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
-                'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
-                'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
-                'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
-                'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
-                'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
-                'leadText' => self::getDataByPricingPlan(
-                    [
-                        'Free' => __(
-                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
-                            'give'
-                        ),
-                        'Basic' => __(
-                            'Upgrade to a Plus Plan to get all must-have add-ons.',
-                            'give'
-                        ),
-                        'Plus' => __(
-                            'Upgrade to Pro and get Peer-to-Peer fundraising.',
-                            'give'
-                        ),
-                        'default' => __(
-                            'Upgrade to a Pricing Plan for Recurring Donations, Fee Recovery, and more.',
-                            'give'
-                        ),
-                    ]
-                ),
-                'actionText' => __('Shop Now', 'give'),
-                'actionURL' => self::getDataByPricingPlan(
-                    [
-                        'Free' => 'https://go.givewp.com/bf23',
-                        'Basic' => 'https://go.givewp.com/bfup23',
-                        'Plus' => 'https://go.givewp.com/bfup23',
-                        'default' => 'https://go.givewp.com/bfup23',
-                    ]
-                ),
-                'startDate' => '2023-11-20 00:00',
-                'endDate' => '2023-11-29 23:59',
-            ],
-        ];
-    }
+    abstract public function getBanners(): array;
+
+    /**
+     * Pages/when to render banner.
+     *
+     * @unreleased
+     */
+    abstract public function render(): void;
+
+    /**
+     * Helper function to determine when to load/display the banner.
+     *
+     * @unreleased
+     */
+    abstract public static function isShowing(): bool;
+
 
     /**
      * Get the banners that should be displayed.
@@ -116,7 +82,7 @@ class SaleBanners
     }
 
     /**
-     * Marks the given banner id as hidden for the current user so it will not display again.
+     * Marks the given banner id as hidden for the current user, so it will not display again.
      *
      * @since 2.17.0
      *
@@ -130,20 +96,6 @@ class SaleBanners
             $this->optionName,
             array_unique($this->hiddenBanners)
         );
-    }
-
-    /**
-     * Render admin page
-     *
-     * @since 2.17.0
-     */
-    public function render()
-    {
-        $banners = $this->getVisibleBanners();
-
-        if (!empty($banners)) {
-            include __DIR__ . '/resources/views/sale-banners.php';
-        }
     }
 
     /**
@@ -171,16 +123,6 @@ class SaleBanners
         );
 
         wp_enqueue_style('givewp-admin-fonts');
-    }
-
-    /**
-     * Helper function to determine if the current page Give admin page
-     *
-     * @since 2.17.0
-     */
-    public static function isShowing(): bool
-    {
-        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
 
     /**
