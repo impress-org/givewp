@@ -8,6 +8,7 @@ import {
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import {applyFilters} from '@wordpress/hooks';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+import {__, sprintf} from '@wordpress/i18n';
 
 let stripePromise = null;
 let stripePaymentMethod = null;
@@ -89,12 +90,17 @@ interface StripeGateway extends Gateway {
     settings?: StripeSettings;
 }
 
+/**
+ * @since 3.13.0 Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
+ * @since 3.12.1 updated afterCreatePayment response type to include billing details address
+ * @since 3.0.0
+ */
 const stripePaymentElementGateway: StripeGateway = {
     id: 'stripe_payment_element',
     initialize() {
         const {stripeKey, stripeConnectedAccountId, formId} = this.settings;
 
-        if (!stripeKey || !stripeConnectedAccountId) {
+        if (!stripeKey && !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
@@ -104,9 +110,14 @@ const stripePaymentElementGateway: StripeGateway = {
          * Create the Stripe object and pass our api keys
          * @see https://stripe.com/docs/payments/accept-a-payment-deferred
          */
-        stripePromise = loadStripe(stripeKey, {
-            stripeAccount: stripeConnectedAccountId,
-        });
+        stripePromise = loadStripe(
+            stripeKey,
+            stripeConnectedAccountId
+                ? {
+                      stripeAccount: stripeConnectedAccountId,
+                  }
+                : {}
+        );
     },
     beforeCreatePayment: async function (values): Promise<object> {
         if (!this.stripe || !this.elements) {
@@ -119,7 +130,21 @@ const stripePaymentElementGateway: StripeGateway = {
         const {error: submitError} = await this.elements.submit();
 
         if (submitError) {
-            throw new Error(submitError);
+            let errorMessage = __('Invalid Payment Data.', 'give');
+
+            if (typeof submitError === 'string') {
+                errorMessage = sprintf(__('Invalid Payment Data. Error Details: %s', 'give'), submitError);
+            }
+
+            if (submitError.hasOwnProperty('code') && submitError.hasOwnProperty('message')) {
+                errorMessage = sprintf(
+                    __('Invalid Payment Data. Error Details: %s (code: %s)', 'give'),
+                    submitError.message,
+                    submitError.code
+                );
+            }
+
+            throw new Error(errorMessage);
         }
 
         return {
@@ -135,6 +160,14 @@ const stripePaymentElementGateway: StripeGateway = {
             billingDetails: {
                 name: string;
                 email: string;
+                address?: {
+                    city?: string;
+                    country?: string;
+                    line1?: string;
+                    line2?: string;
+                    postal_code?: string;
+                    state?: string;
+                };
             };
         };
     }): Promise<void> {

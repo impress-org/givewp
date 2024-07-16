@@ -12,6 +12,10 @@
             grid-template-columns: repeat(3, 1fr);
             gap: var(--givewp-spacing-4);
             text-align: center;
+
+            &--descriptions {
+                grid-template-columns: 1fr;
+            }
         }
 
         &__level {
@@ -21,6 +25,26 @@
             border-radius: var(--givewp-rounded-4);
             background-color: var(--givewp-neutral-70);
             cursor: pointer;
+
+            &__label {
+                flex: 1;
+                text-align: left;
+            }
+
+            &__amount {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 112px;
+            }
+
+            &--descriptions {
+                display: flex;
+                justify-content: space-between;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.5;
+            }
 
             &--selected {
                 background-color: var(--givewp-neutral-90);

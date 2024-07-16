@@ -10,6 +10,7 @@
  */
 
 // Exit if accessed directly.
+use Give\DonationForms\DonationQuery;
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Frontend\ConfirmDonation;
@@ -213,6 +214,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * Show the Give donation form goals.
  *
+ * @since 3.12.0 add start_date and end_date attributes
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since  1.0
@@ -228,7 +230,9 @@ function give_goal_shortcode( $atts ) {
 			'id'        => '',
 			'show_text' => true,
 			'show_bar'  => true,
-			'color'		=> '',
+			'color'		=> '#66BB6A',
+            'start_date' => '',
+            'end_date' => '',
 		],
 		$atts,
 		'give_goal'
@@ -626,6 +630,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
+ * @unreleased Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
  *
@@ -734,8 +739,9 @@ function give_totals_shortcode( $atts ) {
 
 		if ( isset( $forms->posts ) ) {
 			$total = 0;
+            $query = new DonationQuery();
 			foreach ( $forms->posts as $post ) {
-				$form_earning = give_get_meta( $post, '_give_form_earnings', true );
+				$form_earning = $query->form($post)->sumAmount();
 				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
 
 				/**

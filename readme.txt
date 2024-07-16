@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 3.11.0
+Stable tag: 3.13.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,30 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.13.0: June 26th, 2024 =
+* New: Added option to PayPal settings to keep webhooks when disconnecting account
+* Enhancement: Updated donor comment block active state border color to be the primary color
+* Enhancement: Updated form builder global settings links to open in new tabs
+* Fix: Resolved an issue with some validation errors using Stripe Payment Element Gateway not displaying information correctly
+* Fix: Resolved an issue with Stripe accounts using API keys and the Stripe Payment Element Gateway
+
+= 3.12.3: June 19th, 2024 =
+* Fix: Resolved an issue where PayPal was not processing donations due to missing billing address fields
+
+= 3.12.2: June 11th, 2024 =
+* Fix: Resolved an issue where only the donation amount was sent to PayPal, ignoring event ticket values for one-time donations.
+* Fix: Resolved an issue where donations were processed on PayPal but not recorded in GiveWP due to missing city, state, and zip fields.
+
+= 3.12.1: June 5th, 2024 =
+* Fix: Resolved an issue where the Donor Phone field was not included in the donor export
+* Fix: Resolved an issue where the Billing Address field was not saved in Stripe
+* Security: Added additional escaping to Stripe onboarding
+* Dev: Added a new filter `givewp_log_source_view` to allow customization of the log source column
+
+= 3.12.0: May 15th, 2024 =
+* New: Updated the donation amount block with options for donation amount level description in the visual form builder
+* New: Updated form goal settings with options for start and end dates in the visual form builder
+
 = 3.11.0: May 7th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming ConvertKit add-on release
 * New: Added ability to customize alt tags for header images in the visual form builder

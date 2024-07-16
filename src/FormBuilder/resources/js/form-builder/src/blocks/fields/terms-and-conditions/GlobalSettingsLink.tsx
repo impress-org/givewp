@@ -16,7 +16,9 @@ export default function GlobalSettingsLink({href}: GlobalSettingsLinkProps) {
             }}
         >
             {__(' Go to the settings to change the ')}
-            <a href={href}>{__('global Label and Text options.')}</a>
+            <a href={href} target="_blank" rel="noopener noreferrer">
+                {__('Global Label and Text options.')}
+            </a>
         </p>
     );
 }

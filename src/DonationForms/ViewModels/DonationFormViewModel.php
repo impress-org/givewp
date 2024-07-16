@@ -6,6 +6,7 @@ use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -181,14 +182,18 @@ class DonationFormViewModel
     {
         $goalType = $this->goalType();
 
-        $totalRevenue = $this->getTotalRevenue($goalType);
-        $totalCountValue = $this->getTotalCountValue($goalType);
-        $totalCountLabel = $this->getCountLabel($goalType);
+        $donationQuery = (new DonationQuery)->form($this->donationFormId);
+
+        if($this->formSettings->goalProgressType->isCustom()) {
+            $donationQuery->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
+        }
 
         return [
-            'totalRevenue' => $totalRevenue,
-            'totalCountValue' => $totalCountValue,
-            'totalCountLabel' => $totalCountLabel,
+            'totalRevenue' => $donationQuery->sumIntendedAmount(),
+            'totalCountValue' => $goalType->isDonations() || $goalType->isAmount()
+                ? $donationQuery->count()
+                : $this->getTotalCountValue($goalType),
+            'totalCountLabel' => $this->getCountLabel($goalType),
         ];
     }
 

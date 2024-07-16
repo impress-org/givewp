@@ -54,15 +54,20 @@ class DonationAmountBlockType extends BlockType
     ];
 
     /**
+     * @since 3.12.0 Update levels array schema.
      * @since 3.8.0
      *
      * @return float[]
      */
     public function getLevels(): array
     {
-        return array_map(static function ($level) {
-            return (float)filter_var($level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        }, $this->levels);
+        return array_map(static function($level) {
+            return [
+                'label' => (string)filter_var($level['label'] ?? '', FILTER_SANITIZE_STRING),
+                'value' => (float)filter_var($level['value'] ?? '', FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION),
+                'checked' => (bool)filter_var($level['checked'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            ];
+        }, $this->block->getAttribute('levels'));
     }
 
     /**

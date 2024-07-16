@@ -21,11 +21,13 @@ class Authentication extends Group
         return parent::make($name)
             ->append(
                 Text::make('login')
-                    ->label(__('Username or Email Address', 'give'))
+                    ->label(__('Username', 'give'))
+                    ->placeholder(__('Enter your username or email', 'give'))
             )
             ->append(
                 Password::make('password')
                     ->label(__('Password', 'give'))
+                    ->placeholder(__('Enter your password', 'give'))
             );
     }
 

@@ -1,4 +1,26 @@
 == Changelog ==
+= 3.11.0: May 7th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming ConvertKit add-on release
+* New: Added ability to customize alt tags for header images in the visual form builder
+* Security: Added additional escaping to the give_form shortcode
+* Security: Added additional sanitization to the custom css field in the form builder
+
+= 3.10.0: April 30th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming ActiveCampaign add-on release
+* Enhancement: Updated PayPal support phone number
+* Enhancement: Updated various strings to be translatable (open-source contribution by @DAnn2012)
+* Security: sanitize additional give_form shortcode args
+* Fix: Resolved styling issues with recurring labels in the form builder
+
+= 3.9.0: April 24th, 2024 =
+* New: Added a donor phone number block to the form builder to collect donor phone numbers on donation forms
+* Enhancement: Updated form field inputs to have a single border color when selected 
+
+= 3.8.0: April 17th, 2024 =
+* New: Added pre-requisite form builder compatibility for upcoming double the donation add-on release
+* Enhancement: Updated the form builder tour to highlight where to find the guided tour again 
+* Dev: Added BlockType api for easier block to field conversion
+
 = 3.7.0: April 10th, 2024 =
 * New: Added pre-requisite form builder compatibility for upcoming constant contact add-on release
 * New: Added phone number field to the donor details page, more updates for this field will come in future releases!
