@@ -7,9 +7,9 @@ use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
+use Give\Promotions\InPluginUpsells\GivingTuesdayBanners;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
-use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\StellarSaleBanners;
 use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
@@ -57,13 +57,13 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
         }
 
-        if (SaleBanners::isShowing()) {
-            Hooks::addAction('admin_notices', SaleBanners::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
+        if (GivingTuesdayBanners::isShowing()) {
+            Hooks::addAction('admin_notices', GivingTuesdayBanners::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', GivingTuesdayBanners::class, 'loadScripts');
         }
 
         if (StellarSaleBanners::isShowing()) {
-            Hooks::addAction('admin_init', SaleBanners::class, 'startSession');
+            Hooks::addAction('admin_init', StellarSaleBanners::class, 'startSession');
             Hooks::addAction('admin_notices', StellarSaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', StellarSaleBanners::class, 'loadScripts');
         }
