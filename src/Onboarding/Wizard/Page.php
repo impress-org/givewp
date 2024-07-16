@@ -62,10 +62,11 @@ class Page
      * Register Onboarding Wizard as an admin page route
      *
      * @since 2.8.0
+     * @unreleased change capability to manage_give_settings
      **/
     public function add_page()
     {
-        add_submenu_page('', '', '', 'manage_options', $this->slug);
+        add_submenu_page('', '', '', 'manage_give_settings', $this->slug);
     }
 
     /**
@@ -74,10 +75,11 @@ class Page
      * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
      *
      * @since 2.8.0
+     * @unreleased add user capability check
      **/
     public function setup_wizard()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
             return;
         } else {
             $this->render_page();
