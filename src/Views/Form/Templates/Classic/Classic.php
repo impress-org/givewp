@@ -292,7 +292,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
-     * @unreleased Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
+     * @since 3.14.0 Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
      */
     public function getFormGoalStats(Give_Donate_Form $form)
     {

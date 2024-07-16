@@ -316,7 +316,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
-     * @unreleased Added support for Razorpay
+     * @since 3.14.0 Added support for Razorpay
      * @since 3.4.2 Added support for Gift Aid
      * @since 3.3.0 Add support to the Funds and Designations addon
      * @since 3.0.0
