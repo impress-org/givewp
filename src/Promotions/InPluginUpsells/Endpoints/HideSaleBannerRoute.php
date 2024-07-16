@@ -3,7 +3,7 @@
 namespace Give\Promotions\InPluginUpsells\Endpoints;
 
 use Give\API\RestRoute;
-use Give\Promotions\InPluginUpsells\SaleBanners;
+use Give\Promotions\InPluginUpsells\StellarSaleBanners;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -48,7 +48,7 @@ class HideSaleBannerRoute implements RestRoute
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        give(SaleBanners::class)->hideBanner(
+        give(StellarSaleBanners::class)->hideBanner(
             $request->get_param('id') . get_current_user_id()
         );
 
