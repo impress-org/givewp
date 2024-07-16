@@ -105,6 +105,23 @@ class StellarSaleBanners extends SaleBanners
      */
     public function loadScripts(): void
     {
+        wp_enqueue_script(
+            'give-in-plugin-upsells-sale-banners',
+            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-sale-banner.js',
+            [],
+            GIVE_VERSION,
+            true
+        );
+
+        wp_localize_script(
+            'give-in-plugin-upsells-sale-banners',
+            'GiveSaleBanners',
+            [
+                'apiRoot' => esc_url_raw(rest_url('give-api/v2/sale-banner')),
+                'apiNonce' => wp_create_nonce('wp_rest'),
+            ]
+        );
+
         wp_enqueue_style(
             'give-in-plugin-upsells-stellar-sales-banner',
             GIVE_PLUGIN_URL . 'assets/dist/css/admin-stellarwp-sales-banner.css',
