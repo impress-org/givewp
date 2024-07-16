@@ -86,6 +86,7 @@ class FormRepository
                 'designId' => 'multi-step',
                 'designSettingsImageUrl' => GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.png',
                 'designSettingsImageStyle' => 'above',
+                'designSettingsImageAlt' => 'GiveWP Onboarding Donation Form',
             ]),
             'blocks'   => (new GenerateDefaultDonationFormBlockCollection())(),
         ]);
