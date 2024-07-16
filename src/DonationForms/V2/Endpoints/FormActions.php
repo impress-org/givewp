@@ -47,7 +47,7 @@ class FormActions extends Endpoint
                         'required'          => true,
                         'validate_callback' => function ($ids) {
                             foreach ($this->splitString($ids) as $id) {
-                                if ( ! $this->validateInt($id)) {
+                                if ( ! $this->validateInt($id) || !$this->validatePostType($id)) {
                                     return false;
                                 }
                             }
@@ -75,7 +75,7 @@ class FormActions extends Endpoint
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('edit_posts')) {
+        if ( ! current_user_can('edit_give_forms')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to edit Donation Forms', 'give'),
