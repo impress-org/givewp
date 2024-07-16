@@ -22,7 +22,6 @@ declare global {
             authors: Array<{ id: string | number; name: string }>;
             table: { columns: Array<object> };
             pluginUrl: string;
-            showBanner: boolean;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
             supportedAddons: Array<string>;
@@ -239,7 +238,6 @@ const ListTableBlankSlate = (
 export default function DonationFormsListTable() {
 
     const [state, setState] = useState<OnboardingStateProps>({
-        showBanner: Boolean(window.GiveDonationForms.showBanner),
         showFeatureNoticeDialog: false
     })
 
