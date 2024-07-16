@@ -244,7 +244,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
                 /**
-                 * @unreleased Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
+                 * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
@@ -261,7 +261,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $goal = $shortcode_stats['goal'];
 
                 /**
-                 * @unreleased Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
+                 * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
                  */
                 add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
                     return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();

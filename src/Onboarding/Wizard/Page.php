@@ -62,7 +62,7 @@ class Page
      * Register Onboarding Wizard as an admin page route
      *
      * @since 2.8.0
-     * @unreleased change capability to manage_give_settings
+     * @since 3.14.0 change capability to manage_give_settings
      **/
     public function add_page()
     {
@@ -75,7 +75,7 @@ class Page
      * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
      *
      * @since 2.8.0
-     * @unreleased add user capability check
+     * @since 3.14.0 add user capability check
      **/
     public function setup_wizard()
     {

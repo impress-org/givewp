@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.14.0
  */
 class RazorpayPerFormSettings extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function canHandle(): bool
     {
@@ -18,7 +18,7 @@ class RazorpayPerFormSettings extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function process()
     {
@@ -41,7 +41,7 @@ class RazorpayPerFormSettings extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     private function getMetaValue(int $formId, string $metaKey, $defaultValue)
     {

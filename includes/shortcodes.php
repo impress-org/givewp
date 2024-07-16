@@ -630,7 +630,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
- * @unreleased Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
+ * @since 3.14.0 Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
  *
