@@ -6,6 +6,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
+use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
  * @since 2.24.0
@@ -38,6 +39,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
+     * @unreleased Use the 'getDonationCount()" method from progress bar model to ensure the correct donation count will be used
      * @since 2.24.0
      *
      * @inheritDoc
@@ -46,7 +48,7 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $model->totalNumberOfDonations;
+        $totalDonations = (new ProgressBarModel(['ids' => [$model->id]]))->getDonationCount();
 
         $label = $totalDonations > 0
             ? sprintf(
