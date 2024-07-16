@@ -9,7 +9,6 @@ import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 
 declare global {
@@ -258,14 +257,6 @@ export default function DonationFormsListTable() {
                 columnFilters={columnFilters}
                 banner={Onboarding}
             >
-                <div className={styles.tryNewFormBuilderBtnContainer}>
-                    <FormBuilderButton
-                        onClick={() => setState(prev => ({
-                            ...prev,
-                            showFeatureNoticeDialog: true
-                        }))}
-                    />
-                </div>
                 <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
