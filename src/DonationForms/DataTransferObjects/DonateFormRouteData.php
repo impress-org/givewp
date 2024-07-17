@@ -63,7 +63,7 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @unreleased Added form status validation
+     * @since 3.14.0 Added form status validation
      * @since 3.0.0
      *
      * @throws DonationFormFieldErrorsException|NameCollisionException|DonationFormForbidden
@@ -138,7 +138,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     private function isValidForm(DonationForm $form): bool
     {

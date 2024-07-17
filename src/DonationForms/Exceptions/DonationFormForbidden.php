@@ -6,7 +6,7 @@ use Exception;
 use Throwable;
 
 /**
- * @unreleased
+ * @since 3.14.0
  */
 class DonationFormForbidden extends Exception
 {
