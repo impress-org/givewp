@@ -11,7 +11,6 @@
         "paypal/paypal-checkout-sdk": "^1.0",
         "kjohnson/format-object-list": "^0.1.0",
         "fakerphp/faker": "^1.9",
-        "myclabs/php-enum": "^1.6",
         "symfony/http-foundation": "^v3.4.47",
         "moneyphp/money": "v3.3.1",
         "stellarwp/field-conditions": "^1.1",

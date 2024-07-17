@@ -2,7 +2,7 @@
 
 namespace Give\Tracking\Enum;
 
-use MyCLabs\Enum\Enum;
+use Give\Framework\Support\ValueObjects\Enum;
 
 /**
  * Class EventType
