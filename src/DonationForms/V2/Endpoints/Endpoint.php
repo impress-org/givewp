@@ -27,7 +27,7 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      * @param  string  $id
      * @return bool
      */

@@ -7,7 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased updated to validate form id is a donation form post type
+ * @since 3.14.0 updated to validate form id is a donation form post type
  * @since 2.19.0
  */
 class FormActions extends Endpoint
