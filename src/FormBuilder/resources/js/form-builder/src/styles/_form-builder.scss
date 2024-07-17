@@ -46,6 +46,12 @@
     //overflow: hidden; // The Inspector Popout needs to be visible.
     overflow-y: scroll;
 
+    // WP 6.6+ - hide the Blocks, Patterns, Media tabs
+    &.givewp-next-gen-sidebar-secondary {
+        .block-editor-inserter__tablist-and-close-button {
+                display: none;
+            }
+    }
 
     &.givewp-next-gen-sidebar-primary {
         .block-editor-block-inspector {
