@@ -28,6 +28,26 @@ export const setCauseType = ( type ) => {
 	};
 };
 
+// Dispatch SET_USAGE_TRACKING action
+export const setUsageTracking = (usageTracking) => {
+    return {
+        type: 'SET_USAGE_TRACKING',
+        payload: {
+            usageTracking,
+        },
+    };
+};
+
+// Dispatch SET_NEWSLETTER_SUBSCRIPTION action
+export const setNewsletterSubscription = (newsletterSubscription) => {
+    return {
+        type: 'SET_NEWSLETTER_SUBSCRIPTION',
+        payload: {
+            newsletterSubscription,
+        },
+    };
+};
+
 // Dispatch SET_COUNTRY action
 export const setCountry = ( country ) => {
 	return {
