@@ -99,6 +99,13 @@ export const reducer = ( state, action ) => {
 					features: action.payload.features,
 				},
 			};
+        case 'SET_FORM_ID':
+			return {
+				...state,
+				configuration: { ...state.configuration,
+					formId: action.payload.formId,
+				},
+			};
 		default:
 			return state;
 	}

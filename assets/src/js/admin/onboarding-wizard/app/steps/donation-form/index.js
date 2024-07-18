@@ -18,13 +18,12 @@ import './style.scss';
 
 const DonationForm = () => {
     const [{configuration}, dispatch] = useStoreValue();
-
     const newsletterSubscription = configuration.newsletterSubscription;
 
     return (
         <div className="give-obw-donation-form">
             <div className="give-obw-donation-form__preview">
-                <DonationFormComponent />
+              <DonationFormComponent formId={configuration.formId} />
             </div>
             <div className="give-obw-donation-form__content">
                 <div className="give-obw-donation-form__fixed">

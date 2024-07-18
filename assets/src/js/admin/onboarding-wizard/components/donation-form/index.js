@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { __ } from '@wordpress/i18n'
 
 // Import utilities
@@ -11,33 +11,19 @@ import ConfigurationIcon from '../icons/configuration';
 // Import styles
 import './style.scss';
 
-const DonationForm = () => {
-	const formPreviewUrl = getWindowData( 'formPreviewUrl' );
+const DonationForm = ({formId}) => {
+    const formPreviewUrl = getWindowData( 'formPreviewUrl' ) + `${formId}`;
 	const [ iframeLoaded, setIframeLoaded ] = useState( false );
 	const [ iframeHeight, setIframeHeight ] = useState( 749 );
+    const iframeRef = useRef();
 
-	useEffect( () => {
-		window.addEventListener( 'message', receiveMessage, false );
-		return () => {
-			window.removeEventListener( 'message', receiveMessage, false );
-		};
-	}, [] );
-
-	const receiveMessage = ( event ) => {
-		switch ( event.data.action ) {
-			case 'resize': {
-				setIframeHeight( event.data.payload.height );
-				break;
-			}
-			case 'loaded': {
-				onIframeLoaded();
-				break;
-			}
-			default: {
-
-			}
-		}
-	};
+    useEffect( () => {
+        const iframe = iframeRef.current
+        iframe.addEventListener( 'load', onIframeLoaded, false );
+        return () => {
+            iframe.removeEventListener( 'load', onIframeLoaded, false );
+        };
+    }, [] );
 
 	const iframeStyle = {
 		height: iframeHeight,
@@ -48,20 +34,15 @@ const DonationForm = () => {
 		opacity: iframeLoaded === false ? '1' : '0',
 	};
 
-	const onIframeLoaded = () => {
-		setIframeLoaded( true );
-		hideInIframe( '#give_error_test_mode' );
-		hideInIframe( '.social-sharing' );
-	};
+    const onIframeLoaded = () => {
+        setIframeLoaded(true);
 
-	const hideInIframe = ( selector ) => {
-		const element = document.getElementById( 'donationFormPreview' ).contentDocument
-			.getElementById( 'iFrameResizer0' ).contentDocument
-			.querySelector( selector );
-		if ( element ) {
-			element.style.display = 'none';
-		}
-	};
+        if (iframeRef.current?.contentWindow) {
+            const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+            const newHeight = iframeDocument.body.scrollHeight;
+            setIframeHeight(newHeight);
+        }
+    };
 
 	return (
 		<div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
@@ -71,9 +52,9 @@ const DonationForm = () => {
 					{ __( 'Building Form Preview...', 'give' ) }
 				</h3>
 			</div>
-			<iframe id="donationFormPreview" className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
-		</div>
-	);
+            <iframe ref={iframeRef} id="donationFormPreview" className="give-obw-donation-form-preview__iframe" src={formPreviewUrl} style={iframeStyle} />
+        </div>
+    );
 };
 
 export default DonationForm;

@@ -128,3 +128,12 @@ export const setFeatures = ( features ) => {
 	};
 };
 
+// Dispatch SET_FORM_ID action
+export const setFormId = ( formId ) => {
+    return {
+        type: 'SET_FORM_ID',
+        payload: {
+            formId,
+        },
+    };
+};  

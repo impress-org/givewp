@@ -2,6 +2,12 @@
 
 namespace Give\Onboarding;
 
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
+use Give\Log\Log;
+
 /**
  * @since 2.8.0
  */
@@ -17,8 +23,8 @@ class FormRepository
     /**
      * @since 2.8.0
      *
-     * @param SettingsRepository $settingsRepository
-     *
+     * @param SettingsRepositoryFactory $settingsRepositoryFactory
+     * @param DefaultFormFactory        $defaultFormFactory
      */
     public function __construct(
         SettingsRepositoryFactory $settingsRepositoryFactory,
@@ -66,17 +72,30 @@ class FormRepository
     }
 
     /**
+     * @unreleased Create the default v3 form.
      * @since 2.8.0
      * @return int Form ID
      *
      */
     protected function makeAndPersist()
     {
-        $formID = $this->defaultFormFactory->make();
+        $form = new DonationForm([
+            'title'    => __('GiveWP Donation Form', 'give'),
+            'status'   => DonationFormStatus::PUBLISHED(),
+            'settings' => FormSettings::fromArray([
+                'designId' => 'multi-step',
+                'designSettingsImageUrl' => GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg',
+                'designSettingsImageStyle' => 'above',
+                'designSettingsImageAlt' => 'GiveWP Onboarding Donation Form',
+            ]),
+            'blocks'   => (new GenerateDefaultDonationFormBlockCollection())(),
+        ]);
 
-        $this->settingsRepository->set('form_id', $formID);
+        $form->save();
+
+        $this->settingsRepository->set('form_id', $form->id);
         $this->settingsRepository->save();
 
-        return $formID;
+        return $form->id;
     }
 }
