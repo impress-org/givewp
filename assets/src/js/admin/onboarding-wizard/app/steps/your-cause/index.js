@@ -11,10 +11,10 @@ import CardInput from '../../../components/card-input';
 import Card from '../../../components/card';
 import SelectInput from '../../../components/select-input';
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import IndividualIcon from '../../../components/icons/individual';
 import OrganizationIcon from '../../../components/icons/organization';
 import OtherIcon from '../../../components/icons/other';
-import SkipLink from '../../../components/skip-optin-link';
 
 // Import styles
 import './style.scss';
@@ -27,7 +27,7 @@ const YourCause = () => {
 
 	return (
 		<div className="give-obw-your-cause">
-			<h1>{__( '👋 Hi there! Tell us a little about your Organization.', 'give' )}</h1>
+			<h1>{__( '👋 Hi there! Tell us about your cause.', 'give' )}</h1>
 			<p>{__( 'This information will be used to customize your experience to your fundraising needs.', 'give' )}</p>
 			<CardInput values={userType} onChange={( values ) => dispatch( setUserType( values ) )} checkMultiple={false}>
 				<Card value="individual">
@@ -66,10 +66,12 @@ const YourCause = () => {
 				subscribeToNewsletter( configuration );
 			}} />
 
-			<SkipLink />
-
+            <footer className="give-obw-footer">
+                <ContinueButton testId="cause-continue-button" />
+            </footer>
 		</div>
 	);
 };
 
 export default YourCause;
+

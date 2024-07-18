@@ -33,7 +33,7 @@ const Introduction = () => {
 					</h1>
 					<GiveLogo />
 					<p>
-						{ __( 'You\'re only minutes away from accepting donations on your website! Use the Onboarding Wizard if this is your first time using GiveWP.', 'give' ) }
+						{ __( 'Get started quickly with our Onboarding Wizard and begin accepting donations on your website in minutes.', 'give' ) }
 					</p>
 					<ContinueButton clickCallback={ () => onStartSetup() } label={ __( 'Start Setup', 'give' ) } testId="intro-continue-button" />
 				</div>
