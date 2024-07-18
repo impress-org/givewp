@@ -29,7 +29,7 @@ class Query
     }
 
     /**
-     * @unreleased Consider the donation mode (test or live) instead of querying both modes together
+     * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
      */
     public function getSQL()

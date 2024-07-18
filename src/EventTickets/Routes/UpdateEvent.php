@@ -10,7 +10,7 @@ use WP_REST_Server;
 
 /**
  * @since 3.6.0
- * @unreleased add permission callback check
+ * @since 3.14.0 add permission callback check
  */
 class UpdateEvent implements RestRoute
 {

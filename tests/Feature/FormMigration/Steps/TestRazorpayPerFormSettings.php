@@ -9,14 +9,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.14.0
  */
 class TestRazorpayPerFormSettings extends TestCase
 {
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function testCanHandleShouldReturnFalse()
     {
@@ -31,7 +31,7 @@ class TestRazorpayPerFormSettings extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function testCanHandleShouldReturnTrue()
     {
@@ -46,7 +46,7 @@ class TestRazorpayPerFormSettings extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function testProcessShouldUpdatePaymentGatewaysBlockAttributes(): void
     {

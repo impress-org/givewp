@@ -8,7 +8,7 @@ use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModal;
 
 /**
- * @unreleased Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
+ * @since 3.14.0 Use sumIntendedAmount() and getDonationCount() methods to retrieve the proper values for the raised amount and donations count
  */
 if ($form->has_goal()) : ?>
     <?php

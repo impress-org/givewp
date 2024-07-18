@@ -168,7 +168,7 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
- * @unreleased Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
+ * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *
  * @param array $vars Array of all the sort variables.

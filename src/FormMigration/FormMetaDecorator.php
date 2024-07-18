@@ -1024,7 +1024,7 @@ class FormMetaDecorator extends FormModelDecorator
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     public function isRazorpayPerFormSettingsEnabled(): bool
     {

@@ -1249,7 +1249,7 @@ function give_set_form_closed_status( $form_id ) {
 /**
  * Show Form Goal Stats in Admin ( Listing and Detail page )
  *
- * @unreleased Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
+ * @since 3.14.0 Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
  * @since 2.19.0 Prevent divide by zero issue in goal percentage calculation logic.
  *
  * @since 2.1.0
