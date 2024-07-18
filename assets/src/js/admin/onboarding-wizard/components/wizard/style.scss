@@ -10,4 +10,11 @@
 	line-height: 22px;
 
 	background: #e5e5e5;
+
+    &-footer {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+    }
 }

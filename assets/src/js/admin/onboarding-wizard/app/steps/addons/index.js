@@ -9,6 +9,7 @@ import { setAddons } from '../../store/actions';
 import Card from '../../../components/card';
 import CardInput from '../../../components/card-input';
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import RecurringDonationsIcon from '../../../components/icons/recurring-donations';
 import DonorsCoverFeesIcon from '../../../components/icons/donors-cover-fees';
 import PDFReceiptsIcon from '../../../components/icons/pdf-receipts';
@@ -59,7 +60,10 @@ const Addons = () => {
                     <p>{__('Allow donors to dedicate their donation to someone special.', 'give')}</p>
                 </Card>
             </CardInput>
-            <ContinueButton testId="addons-continue-button" />
+            <footer className="give-obw-footer">
+                <ContinueButton testId="addons-continue-button" />
+                <PreviousButton testId="addons-previous-button" />
+            </footer>
         </div>
     );
 };

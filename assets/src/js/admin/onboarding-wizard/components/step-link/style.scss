@@ -2,6 +2,7 @@
 	flex: 1;
 	display: inline-flex;
 	align-items: center;
+    gap: 20px;
 
 	&:last-of-type {
 		flex: 0;
@@ -11,26 +12,29 @@
 .give-obw-step-button {
 	display: inline-flex;
 	align-items: center;
-
 	border: none;
 	border-radius: 3px;
 	background: none;
+    gap: 20px;
 	padding: 10px 0;
-
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
 	transition: box-shadow 0.2s ease;
 
-	cursor: pointer;
+    &--current {
+        gap: 10px;
 
-	&:focus {
-		box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
-		outline: none;
-	}
+        .give-obw-step-icon {
+            color: #4fa651;
+            outline: 1px solid #4fa651;
+        }
+
+        .give-obw-step-title {
+            font-weight: 800;
+        }
+    }
 }
 
 .give-obw-step-icon {
-	margin: 0 10px;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -47,14 +51,12 @@
 	background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 
-	&.give-obw-step-icon--green {
-		background: #4fa651;
-		color: #fff;
-	}
+    &.give-obw-step-icon--done {
+        background: #4fa651;
+    }
 }
 
 .give-obw-step-title {
-	margin: 0 10px;
 	letter-spacing: 1px;
 	font-family: Montserrat, Arial, Helvetica, sans-serif;
 	font-size: 16px;
@@ -64,7 +66,6 @@
 }
 
 .give-obw-step-progress {
-	margin: 0 10px;
 	flex: 1;
 	height: 1px;
 	background: #c4c4c4;

@@ -11,10 +11,10 @@ import CardInput from '../../../components/card-input';
 import Card from '../../../components/card';
 import SelectInput from '../../../components/select-input';
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import IndividualIcon from '../../../components/icons/individual';
 import OrganizationIcon from '../../../components/icons/organization';
 import OtherIcon from '../../../components/icons/other';
-import SkipLink from '../../../components/skip-optin-link';
 
 // Import styles
 import './style.scss';
@@ -66,10 +66,12 @@ const YourCause = () => {
 				subscribeToNewsletter( configuration );
 			}} />
 
-			<SkipLink />
-
+            <footer className="give-obw-footer">
+                <ContinueButton testId="cause-continue-button" />
+            </footer>
 		</div>
 	);
 };
 
 export default YourCause;
+

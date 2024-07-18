@@ -9,6 +9,7 @@ import { setCountry, setState, setCurrency, fetchStateList } from '../../store/a
 // Import components
 import Card from '../../../components/card';
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import SelectInput from '../../../components/select-input';
 import BackgroundImage from './background';
 
@@ -38,7 +39,10 @@ const Location = () => {
 				<SelectInput testId="state-select" label={ __( 'State / Province', 'give' ) } value={ state } onChange={ ( value ) => dispatch( setState( value ) ) } options={ statesList } isLoading={ fetchingStatesList } />
 				<SelectInput testId="currency-select" label={ __( 'Currency', 'give' ) } value={ currency } onChange={ ( value ) => dispatch( setCurrency( value ) ) } options={ currenciesList } />
 			</Card>
-			<ContinueButton testId="location-continue-button" />
+            <footer className="give-obw-footer">
+                <ContinueButton testId="location-continue-button" />
+                <PreviousButton testId="location-previous-button" />
+            </footer>
 		</div>
 	);
 };

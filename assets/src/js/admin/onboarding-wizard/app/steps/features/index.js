@@ -9,6 +9,7 @@ import { setFeatures } from '../../store/actions';
 import Card from '../../../components/card';
 import CardInput from '../../../components/card-input';
 import ContinueButton from '../../../components/continue-button';
+import PreviousButton from '../../../components/previous-button';
 import OfflineDonationsIcon from '../../../components/icons/offline-donations';
 import DonationGoalIcon from '../../../components/icons/donation-goal';
 import DonationCommentsIcon from '../../../components/icons/donation-comments';
@@ -59,9 +60,12 @@ const Features = () => {
                     <p>{__('Donors can donate via their company.', 'give')}</p>
                 </Card>
             </CardInput>
-            <ContinueButton testId="features-continue-button" />
-		</div>
-	);
+            <footer className="give-obw-footer">
+                <ContinueButton testId="features-continue-button" />
+                <PreviousButton testId="features-previous-button" />
+            </footer>
+        </div>
+    );
 };
 
 export default Features;
