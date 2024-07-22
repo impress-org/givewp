@@ -36,7 +36,7 @@ const Addons = () => {
                 </Card>
                 <Card value="donors-cover-fees">
                     <DonorsCoverFeesIcon />
-                    <h2>{__('Donors Cover Fees', 'give')}</h2>
+                    <h2>{__('Fee Recovery', 'give')}</h2>
                     <p>{__('Enable donors to cover payment processing fees.', 'give')}</p>
                 </Card>
                 <Card value="pdf-receipts">
@@ -51,12 +51,12 @@ const Addons = () => {
                 </Card>
                 <Card value="multiple-currencies">
                     <MultipleCurrenciesIcon />
-                    <h2>{__('Multiple Currencies', 'give')}</h2>
+                    <h2>{__('Currency Switcher', 'give')}</h2>
                     <p>{__('Accept donations in your preferred currencies.', 'give')}</p>
                 </Card>
                 <Card value="dedicate-donations">
                     <DedicateDonationsIcon />
-                    <h2>{__('Dedicate Donations', 'give')}</h2>
+                    <h2>{__('Tributes', 'give')}</h2>
                     <p>{__('Allow donors to dedicate their donation to someone special.', 'give')}</p>
                 </Card>
             </CardInput>
