@@ -7,6 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
+ * @since 3.14.0 updated to validate form id is a donation form post type
  * @since 2.19.0
  */
 class FormActions extends Endpoint
@@ -47,7 +48,7 @@ class FormActions extends Endpoint
                         'required'          => true,
                         'validate_callback' => function ($ids) {
                             foreach ($this->splitString($ids) as $id) {
-                                if ( ! $this->validateInt($id)) {
+                                if ( ! $this->validateInt($id) || !$this->validatePostType($id)) {
                                     return false;
                                 }
                             }

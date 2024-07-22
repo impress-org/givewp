@@ -1022,4 +1022,12 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return (array)$this->getMeta('cs_supported_currency', []);
     }
+
+    /**
+     * @since 3.14.0
+     */
+    public function isRazorpayPerFormSettingsEnabled(): bool
+    {
+        return give_is_setting_enabled($this->getMeta('razorpay_per_form_account_options'));
+    }
 }
