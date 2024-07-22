@@ -4,18 +4,19 @@
 
 .give-obw-donation-form-preview__iframe {
 	border: none;
-	width: 578px;
-    height: 814px;
-	transition: opacity 0.2s ease, height 0.2s ease;
+    height: 678px;
+	transition: opacity 0.3s ease-in-out, height 0.1s ease;
+    min-width: 100%;
+    width: 1px;
 }
 
 .give-obw-donation-form-preview__loading-message {
-	position: absolute;
+	position: relative;
 	top: 10px;
 	left: 10px;
 	border: none;
 	width: 558px;
-    height: 814px;
+    height: 678px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

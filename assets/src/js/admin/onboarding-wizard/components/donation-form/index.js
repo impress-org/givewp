@@ -1,6 +1,7 @@
 // Import vendor dependencies
 import { useState, useEffect, useRef } from 'react';
 import { __ } from '@wordpress/i18n'
+import IframeResizer from 'iframe-resizer-react';
 
 // Import utilities
 import { getWindowData } from '../../utils';
@@ -12,47 +13,50 @@ import ConfigurationIcon from '../icons/configuration';
 import './style.scss';
 
 const DonationForm = ({formId}) => {
-    const formPreviewUrl = getWindowData( 'formPreviewUrl' ) + `${formId}`;
-	const [ iframeLoaded, setIframeLoaded ] = useState( false );
-	const [ iframeHeight, setIframeHeight ] = useState( 749 );
+    const formPreviewUrl = getWindowData('formPreviewUrl') + `${formId}`;
+    const [isLoading, setLoading] = useState(false);
+    const [previewHTML, setPreviewHTML] = useState(null);
     const iframeRef = useRef();
 
-    useEffect( () => {
-        const iframe = iframeRef.current
-        iframe.addEventListener( 'load', onIframeLoaded, false );
-        return () => {
-            iframe.removeEventListener( 'load', onIframeLoaded, false );
-        };
-    }, [] );
+    useEffect(() => {
+        setLoading(true);
+    }, []);
 
-	const iframeStyle = {
-		height: iframeHeight,
-		opacity: iframeLoaded === false ? '0' : '1',
-	};
-	const messageStyle = {
-		height: iframeHeight,
-		opacity: iframeLoaded === false ? '1' : '0',
-	};
+    return (
+        <div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
+            {isLoading && (
+                <div className="give-obw-donation-form-preview__loading-message">
+                    <ConfigurationIcon />
+                    <h3>{__('Building Form Preview...', 'give')}</h3>
+                </div>
+            )}
+            <IframeResizer
+                id="donationFormPreview"
+                className="give-obw-donation-form-preview__iframe"
+                forwardRef={iframeRef}
+                srcDoc={previewHTML}
+                checkOrigin={
+                    false
+                } /** The srcDoc property is not a URL and requires that the origin check be disabled. */
+                style={{
+                    display: isLoading ? 'none' : 'inherit',
+                    opacity: isLoading ? 0.5 : 1,
+                }}
+                onInit={(iframe) => {
+                    iframe.iFrameResizer.resize();
+                    setLoading(false);
+                }}
+            />
 
-    const onIframeLoaded = () => {
-        setIframeLoaded(true);
-
-        if (iframeRef.current?.contentWindow) {
-            const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
-            const newHeight = iframeDocument.body.scrollHeight;
-            setIframeHeight(newHeight);
-        }
-    };
-
-	return (
-		<div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
-			<div className="give-obw-donation-form-preview__loading-message" style={ messageStyle }>
-				<ConfigurationIcon />
-				<h3>
-					{ __( 'Building Form Preview...', 'give' ) }
-				</h3>
-			</div>
-            <iframe ref={iframeRef} id="donationFormPreview" className="give-obw-donation-form-preview__iframe" src={formPreviewUrl} style={iframeStyle} />
+            {/* @note This iFrame is used to load and render the design preview document in the background. */}
+            <iframe
+                onLoad={(event) => {
+                    const target = event.target;
+                    setPreviewHTML(target.contentWindow.document.documentElement.innerHTML);
+                }}
+                src={formPreviewUrl}
+                style={{display: 'none'}}
+            />
         </div>
     );
 };
