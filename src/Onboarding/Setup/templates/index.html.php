@@ -37,6 +37,7 @@
     echo $this->render_template(
         'section',
         [
+            'class' => !$this->isFormConfigured() ? 'current-step' : '',
             'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first donation form', 'give')),
             'badge' => ($this->isFormConfigured()
                 ? $this->render_template('badge', [

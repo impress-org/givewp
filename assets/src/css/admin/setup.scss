@@ -52,6 +52,10 @@ header {
 	align-items: center;
 	border-bottom: 1px solid #ddd;
 
+    &.current-step h2 {
+        font-weight: 700;
+    }
+
 	h2 {
 		margin: 0;
 		font-size: 22px;
