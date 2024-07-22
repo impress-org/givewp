@@ -1,9 +1,9 @@
 // Import vendor dependencies
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
 
 // Import store dependencies
-import { useStoreValue } from '../../store';
-import { setAddons } from '../../store/actions';
+import {useStoreValue} from '../../store';
+import {setAddons} from '../../store/actions';
 
 // Import components
 import Card from '../../../components/card';
@@ -21,8 +21,8 @@ import DedicateDonationsIcon from '../../../components/icons/dedicate-donations'
 import './style.scss';
 
 const Addons = () => {
-	const [ { configuration }, dispatch ] = useStoreValue();
-	const addons = configuration.addons;
+    const [{configuration}, dispatch] = useStoreValue();
+    const addons = configuration.addons;
 
     return (
         <div className="give-obw-fundraising-needs">

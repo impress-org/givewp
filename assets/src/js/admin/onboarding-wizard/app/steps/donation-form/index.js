@@ -23,7 +23,7 @@ const DonationForm = () => {
     return (
         <div className="give-obw-donation-form">
             <div className="give-obw-donation-form__preview">
-              <DonationFormComponent formId={configuration.formId} />
+                <DonationFormComponent formId={configuration.formId} />
             </div>
             <div className="give-obw-donation-form__content">
                 <div className="give-obw-donation-form__fixed">

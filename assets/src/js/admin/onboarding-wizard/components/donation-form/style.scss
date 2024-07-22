@@ -1,33 +1,33 @@
 .give-obw-donation-form-preview {
-	position: relative;
+    position: relative;
 }
 
 .give-obw-donation-form-preview__iframe {
-	border: none;
+    border: none;
     height: 678px;
-	transition: opacity 0.3s ease-in-out, height 0.1s ease;
+    transition: opacity 0.3s ease-in-out, height 0.1s ease;
     min-width: 100%;
     width: 1px;
 }
 
 .give-obw-donation-form-preview__loading-message {
-	position: relative;
-	top: 10px;
-	left: 10px;
-	border: none;
-	width: 558px;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    border: none;
+    width: 558px;
     height: 678px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	transition: opacity 0.2s ease;
-	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
-	background: rgba(255, 255, 255, 0.25);
-	border-radius: 6px;
-	pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    pointer-events: none;
 
-	> h3 {
-		margin-top: 30px;
-	}
+    > h3 {
+        margin-top: 30px;
+    }
 }

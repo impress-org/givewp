@@ -1,10 +1,10 @@
 // Import vendor dependencies
-import { useState, useEffect, useRef } from 'react';
-import { __ } from '@wordpress/i18n'
+import {useEffect, useRef, useState} from 'react';
+import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 
 // Import utilities
-import { getWindowData } from '../../utils';
+import {getWindowData} from '../../utils';
 
 // Import components
 import ConfigurationIcon from '../icons/configuration';

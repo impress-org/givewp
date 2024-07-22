@@ -1,16 +1,16 @@
 .give-obw-card {
-	position: relative;
-	padding: 2.25rem 1.25rem 1.5rem;
-	background: #fff;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	border: 1px solid #fff;
-	border-radius: 8px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	transition: all 0.2s ease-out;
+    position: relative;
+    padding: 2.25rem 1.25rem 1.5rem;
+    background: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #fff;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: all 0.2s ease-out;
 
-	> svg {
+    > svg {
         flex: 1
-	}
+    }
 }

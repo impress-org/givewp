@@ -1,24 +1,24 @@
 .give-obw-step-link {
-	flex: 1;
-	display: inline-flex;
-	align-items: center;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
     gap: 20px;
 
-	&:last-of-type {
-		flex: 0;
-	}
+    &:last-of-type {
+        flex: 0;
+    }
 }
 
 .give-obw-step-button {
-	display: inline-flex;
-	align-items: center;
-	border: none;
-	border-radius: 3px;
-	background: none;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+    background: none;
     gap: 20px;
-	padding: 10px 0;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
-	transition: box-shadow 0.2s ease;
+    padding: 10px 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.2s ease;
 
     &--current {
         gap: 10px;
@@ -35,21 +35,21 @@
 }
 
 .give-obw-step-icon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-	font-family: Montserrat, Arial, Helvetica, sans-serif;
-	font-weight: 600;
-	font-size: 18px;
-	color: #5c5c5c;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #5c5c5c;
 
-	height: 33px;
-	width: 33px;
-	border-radius: 50%;
+    height: 33px;
+    width: 33px;
+    border-radius: 50%;
 
-	background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 
     &.give-obw-step-icon--done {
         background: #4fa651;
@@ -57,27 +57,27 @@
 }
 
 .give-obw-step-title {
-	letter-spacing: 1px;
-	font-family: Montserrat, Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	color: #333;
-	font-weight: 600;
-	white-space: nowrap;
+    letter-spacing: 1px;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .give-obw-step-progress {
-	flex: 1;
-	height: 1px;
-	background: #c4c4c4;
-	position: relative;
+    flex: 1;
+    height: 1px;
+    background: #c4c4c4;
+    position: relative;
 }
 
 .give-obw-step-progress-bar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 0%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
 
-	background: #48bb78;
+    background: #48bb78;
 }

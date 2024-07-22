@@ -1,9 +1,9 @@
 // Import vendor dependencies
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
 
 // Import store dependencies
-import { useStoreValue } from '../../store';
-import { setFeatures } from '../../store/actions';
+import {useStoreValue} from '../../store';
+import {setFeatures} from '../../store/actions';
 
 // Import components
 import Card from '../../../components/card';
@@ -15,18 +15,16 @@ import DonationGoalIcon from '../../../components/icons/donation-goal';
 import DonationCommentsIcon from '../../../components/icons/donation-comments';
 import TermsConditionsIcon from '../../../components/icons/terms-conditions';
 import AnonymousDonationsIcon from '../../../components/icons/anonymous-donations';
-import CompanyDonationsIcon from '../../../components/icons/company-donations';
-
-// Import styles
+import CompanyDonationsIcon from '../../../components/icons/company-donations'; // Import styles
 import './style.scss';
 
 const Features = () => {
-	const [ { configuration }, dispatch ] = useStoreValue();
-	const features = configuration.features;
+    const [{configuration}, dispatch] = useStoreValue();
+    const features = configuration.features;
 
-	return (
-		<div className="give-obw-fundraising-needs">
-			<h1>{ __( 'What do you need in your first donation form?', 'give' ) }</h1>
+    return (
+        <div className="give-obw-fundraising-needs">
+            <h1>{__('What do you need in your first donation form?', 'give')}</h1>
             <p>{__('Select the features you need. These can always be changed later.', 'give')}</p>
             <CardInput values={features} onChange={(value) => dispatch(setFeatures(value))}>
                 <Card value="donation-goal">
