@@ -63,16 +63,25 @@ footer {
 	background-color: #fafafa;
 	padding: 20px 20px 20px 25px;
 	font-size: 16px;
+    align-items: center;
 	display: flex;
-	justify-content: space-between;
-}
-footer a {
-	color: #0073aa;
-	text-decoration: none;
+    gap: 0.25rem;
 
-	> .fa {
-		margin-left: 6px;
-	}
+    p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    a {
+        color: #0073aa;
+        text-decoration: none;
+        margin-left: auto;
+
+        > .fa {
+            margin-left: 6px;
+        }
+    }
 }
 header .badge {
 	font-weight: 600;
