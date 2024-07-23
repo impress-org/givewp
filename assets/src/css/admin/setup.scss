@@ -249,3 +249,98 @@ article.setup-item-form-fields-manager .icon {
 .hidden {
 	display: none;
 }
+
+#give-activate-license-modal {
+    animation: appear 112ms ease-in 0s;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
+    color: #404040;
+    font-family: "Open Sans", sans-serif;
+    max-width: 35rem;
+    padding: 0;
+    position: relative;
+    width: 100%;
+
+    &::backdrop {
+        background-color: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(2px);
+    }
+
+    #give-license-activator-wrap {
+        padding: 0;
+    }
+
+    .give-license-widget-heading {
+        align-items: center;
+        border-bottom: 1px solid #E6E6E6;
+        color: #0e0e0e;
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding: 1rem 1.25rem;
+
+        h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            fill: #737373;
+        }
+    }
+
+    .give-license-widget-content {
+        padding: 1rem 1.5rem 1.5rem;
+
+        .give-field-description {
+            margin-bottom: 1rem;
+
+            a {
+                text-decoration: underline;
+            }
+        }
+
+        .give-license-activation-form {
+            background: none;
+            padding: 0;
+
+            label {
+                color: #404040;
+                display: inline-block;
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 1.5;
+                margin-bottom: 0.25rem;
+            }
+
+            #give-license-activator {
+                border-radius: 0.25rem;
+                border: 1px solid #8C8C8C;
+                background: #FFF;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                height: auto;
+                line-height: 1.5;
+                margin-bottom: 2.5rem;
+
+                &::placeholder {
+                    color: #8C8C8C;
+                }
+            }
+
+            .button {
+                border-radius: 0.25rem;
+                font-size: 1rem;
+                font-weight: 600;
+                height: auto;
+                line-height: 1.5;
+                padding: 0.75rem 2rem;
+            }
+        }
+    }
+}

@@ -158,15 +158,61 @@
 
     <!-- Resources -->
     <?php
+    $needsActivation = true;
+    $licenses = get_option('give_licenses', []);
+
+    foreach ($licenses as $license) {
+        if (empty($license['license_key'])) {
+            continue;
+        }
+
+        $licenseKey = $license['license_key'];
+        $licenseStatus = $license['license'];
+        $expiresTimestamp = strtotime($license['expires']);
+
+        $isLicenseInactive = $licenseStatus !== 'valid';
+        $isLicenseExpired = $licenseStatus === 'expired' || $expiresTimestamp < time();
+
+        if (!$isLicenseInactive && !$isLicenseExpired) {
+            $needsActivation = false;
+            break;
+        }
+    }
+
     echo $this->render_template(
         'section',
         [
             'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Get more from your fundraising campaign with add-ons', 'give')),
+            'badge' => $this->render_template('badge', [
+                'class' => 'optional',
+                'text' => esc_html__('Optional', 'give'),
+            ]),
             'contents' => [
-                ! empty($settings['addons']) ? $this->render_template(
+                (! empty($settings['addons'] || $needsActivation)) ? $this->render_template(
                     'sub-header',
                     [
-                        'text' => 'Based on your selections, Give recommends the following add-ons to support your fundraising.',
+                        'text' => sprintf(
+                            '%s%s',
+                            (! empty($settings['addons']) ? esc_html__('Based on your selections, Give recommends the following add-ons to support your fundraising.', 'give') . ' ' : ''),
+                            ($needsActivation ? $this->render_template('activate-license',
+                                [
+                                    'text' => esc_html__('Already have an add-on license?', 'give'),
+                                    'label' => esc_html__('Activate your license', 'give'),
+                                    'href' => esc_url(admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses')),
+                                    'title' => esc_html__('Activate an Add-on License', 'give'),
+                                    'description' => sprintf(
+										__('Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give'),
+                                        Give_License::get_account_url()
+                                    ),
+                                    'nonce' => wp_nonce_field('give-license-activator-nonce', 'give_license_activator_nonce', true, false),
+                                    'form-label' => esc_html__('License key', 'give'),
+                                    'form-placeholder' => esc_html__('Enter your license key', 'give'),
+                                    'form-submit-activate' => esc_html__('Activate License', 'give'),
+                                    'form-submit-activating' => esc_html__('Verifying License...', 'give'),
+                                    'form-submit-value' => esc_html__('Activate License', 'give'),
+                                ]
+                            ) : '')
+                        )
                     ]
                 ) : '',
                 in_array('recurring-donations', $settings['addons']) ? $this->render_template(
@@ -295,7 +341,7 @@
                         ),
                     ]
                 ) : '',
-                $this->render_template(
+                empty($settings['addons']) ? $this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item',
@@ -315,7 +361,7 @@
                             ]
                         ),
                     ]
-                ),
+                ) : '',
             ],
         ]
     );
