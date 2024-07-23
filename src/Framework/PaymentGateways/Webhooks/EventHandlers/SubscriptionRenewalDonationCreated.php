@@ -64,7 +64,7 @@ class SubscriptionRenewalDonationCreated
                     'Gateway Subscription ID' => $gatewaySubscriptionId,
                     'Gateway Transaction ID' => $gatewayTransactionId,
                     'Message' => $message,
-                    'Subscription' => $subscription,
+                    'Donation' => $donation,
                 ]
             );
 
