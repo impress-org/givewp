@@ -309,6 +309,17 @@ article.setup-item-form-fields-manager .icon {
             background: none;
             padding: 0;
 
+            .give-license-notices {
+                .notice {
+                    left: 1rem;
+                    margin: 0;
+                    position: absolute;
+                    right: 1rem;
+                    top: 50%;
+                    translate: 0 -50%;
+                }
+            }
+
             label {
                 color: #404040;
                 display: inline-block;
