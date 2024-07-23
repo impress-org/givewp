@@ -731,9 +731,10 @@ function give_get_cache_key($action, $query_args)
 
 /**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
- * Non-scalar values are ignored.
+ * Non-scalar values are removed.
  *
  * @since  1.8
+ * @unreleased remove non-scalar values
  *
  * @param string|array $var
  *
@@ -745,7 +746,7 @@ function give_clean($var)
         return array_map('give_clean', $var);
     }
 
-    return is_scalar($var) ? sanitize_text_field(wp_unslash($var)) : $var;
+    return is_scalar($var) ? sanitize_text_field(wp_unslash($var)) : '';
 }
 
 /**
