@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.2
-Stable tag: 3.13.0
+Stable tag: 3.14.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,27 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.14.1: July 24th, 2024 =
+* Fix: Resolved an error with the give_totals shortcode when using multiple form IDs
+
+= 3.14.0: July 17th, 2024 =
+* Enhancement: Updated the visual donation form builder with various UI design improvements
+* Enhancement: Updated the form builder design tab preview to be more responsive
+* Enhancement: Improved the design of single active gateways on forms
+* Enhancement: Improved the login block design
+* Enhancement: Improved the Terms & Conditions block UI
+* Enhancement: Improved the donate button hover state & secure donation tag
+* Enhancement: Improved the donor title prefix setting styles
+* Enhancement: Improved the checkbox style for form builder Build & Design screens
+* Enhancement: Improved the Consent block by removing "Link Text" option when "Show terms in form" display type is selected
+* Enhancement: Improved the File Upload field interactivity to limit the button scope
+* Fix: Resolved an issue with the drag and drop block placement in the form builder
+* Fix: Resolved an issue where the Give Goal and Multi-Form Goal blocks and shortcodes were displaying the wrong donation amount
+* Fix: Resolved an issue when exporting donations that use Razorpay gateway
+* Fix: Resolved an issue in the form builder where recurring donations descriptions were not always matching frequency selection
+* Fix: Resolved an issue with custom donor columns in csv exports and revive filter give_export_donors_get_default_columns
+* Security: Resolved various security issues related to user permissions 
+
 = 3.13.0: June 26th, 2024 =
 * New: Added option to PayPal settings to keep webhooks when disconnecting account
 * Enhancement: Updated donor comment block active state border color to be the primary color

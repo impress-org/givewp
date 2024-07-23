@@ -316,6 +316,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
+     * @since 3.14.0 Added support for Razorpay
      * @since 3.4.2 Added support for Gift Aid
      * @since 3.3.0 Add support to the Funds and Designations addon
      * @since 3.0.0
@@ -353,6 +354,7 @@ class DonationFormsAdminPage
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
             'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
+            'Razorpay' => class_exists('Give_Razorpay_Gateway'),
         ];
 
         $output = [];

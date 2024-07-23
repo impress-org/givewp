@@ -3,10 +3,12 @@
 namespace Give\DonationForms\Routes;
 
 
+use Exception;
 use Give\DonationForms\Controllers\DonateController;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
@@ -62,7 +64,9 @@ class DonateRoute
             $type = DonationFormErrorTypes::GATEWAY;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
-        } catch (\Exception $exception) {
+        } catch (DonationFormForbidden $exception) {
+            wp_die($exception->getMessage(), 403);
+        } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));

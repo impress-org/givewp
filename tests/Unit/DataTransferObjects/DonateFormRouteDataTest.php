@@ -2,9 +2,13 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
+use Exception;
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -225,5 +229,155 @@ class DonateFormRouteDataTest extends TestCase
         $validData = $formData->validated();
 
         $this->assertEquals($validData, $data);
+    }
+
+    /**
+     * @since 3.14.0
+     * @dataProvider donationFormStatusProvider
+     * @throws Exception
+     */
+    public function testValidatedShouldThrowExceptionDonationFormForbidden(DonationFormStatus $formStatus): void
+    {
+        $this->expectException(DonationFormForbidden::class);
+
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create(['status' => $formStatus]);
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [TestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return TestGateway::id();
+        });
+
+        $form->save();
+
+        $form = DonationForm::find($form->id);
+
+        $data = new DonateControllerData();
+
+        $data->gatewayId = TestGateway::id();
+        $data->amount = 100;
+        $data->currency = "USD";
+        $data->firstName = "Bill";
+        $data->lastName = "Murray";
+        $data->email = "billmurray@givewp.com";
+        $data->formId = $form->id;
+        $data->formTitle = $form->title;
+        $data->company = null;
+        $data->wpUserId = 0;
+        $data->honorific = null;
+        $data->donationType = DonationType::SINGLE();
+        $data->subscriptionFrequency = null;
+        $data->subscriptionPeriod = null;
+        $data->subscriptionInstallments = null;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
+
+        $request = array_merge(get_object_vars($data), [
+            'donationType' => $data->donationType->getValue(),
+        ]);
+
+        $formData = DonateFormRouteData::fromRequest($request);
+
+        $formData->validated();
+    }
+
+    /**
+     * @since 3.14.0
+     * @throws Exception
+     */
+    public function testValidatedShouldThrowExceptionDonationFormFieldErrorsException(): void
+    {
+
+        $this->expectException(DonationFormFieldErrorsException::class);
+
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [TestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return TestGateway::id();
+        });
+
+        $customFieldBlockModel = BlockModel::make([
+            'name' => 'givewp/section',
+            'attributes' => ['title' => '', 'description' => ''],
+            'innerBlocks' => [
+                [
+                    'name' => 'givewp/text',
+                    'attributes' => [
+                        'fieldName' => 'text_block_meta',
+                        'title' => 'Custom Text Field',
+                        'description' => '',
+                        'isRequired' => true
+                    ],
+                ]
+            ]
+        ]);
+
+        $form->blocks = BlockCollection::make(
+            array_merge([$customFieldBlockModel], $form->blocks->getBlocks())
+        );
+
+        $form->save();
+
+        $data = new DonateControllerData();
+
+        $data->gatewayId = TestGateway::id();
+        $data->amount = 100;
+        $data->currency = "USD";
+        $data->firstName = "Bill";
+        $data->lastName = "Murray";
+        $data->email = "billmurray@givewp.com";
+        $data->formId = $form->id;
+        $data->formTitle = $form->title;
+        $data->company = null;
+        $data->wpUserId = 0;
+        $data->honorific = null;
+        $data->text_block_meta = null;
+        $data->donationType = DonationType::SINGLE();
+        $data->subscriptionFrequency = null;
+        $data->subscriptionPeriod = null;
+        $data->subscriptionInstallments = null;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
+
+        $request = array_merge(get_object_vars($data), [
+            'text_block_meta' => null,
+            'donationType' => $data->donationType->getValue(),
+        ]);
+
+        $formData = DonateFormRouteData::fromRequest($request);
+
+        $formData->validated();
+    }
+
+    /**
+     * @since 3.14.0
+     */
+    public function donationFormStatusProvider(): array
+    {
+        $notAllowed = [];
+        $allowed = [DonationFormStatus::PUBLISHED()->getValue()];
+        foreach (DonationFormStatus::values() as $status) {
+          if (!in_array($status->getValue(), $allowed, true)) {
+            $notAllowed[] = [$status];
+          }
+        }
+
+        return $notAllowed;
     }
 }

@@ -10,6 +10,7 @@ use WP_REST_Server;
 
 /**
  * @since 3.6.0
+ * @since 3.14.0 add permission callback check
  */
 class UpdateEvent implements RestRoute
 {
@@ -28,7 +29,9 @@ class UpdateEvent implements RestRoute
                 [
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
                 ],
                 'args' => [
                     'event_id' => [
@@ -82,7 +85,7 @@ class UpdateEvent implements RestRoute
     {
         $event = Event::find($request->get_param('event_id'));
 
-        foreach(['title', 'description', 'startDateTime', 'endDateTime'] as $param) {
+        foreach (['title', 'description', 'startDateTime', 'endDateTime'] as $param) {
             if ($request->has_param($param)) {
                 $event->setAttribute($param, $request->get_param($param));
             }
