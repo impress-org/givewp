@@ -262,6 +262,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.14.1: July 24th, 2024 =
+* Fix: Resolved an error with the give_totals shortcode when using multiple form IDs
+
 = 3.14.0: July 17th, 2024 =
 * Enhancement: Updated the visual donation form builder with various UI design improvements
 * Enhancement: Updated the form builder design tab preview to be more responsive
