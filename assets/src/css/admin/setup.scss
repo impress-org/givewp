@@ -105,7 +105,6 @@ footer {
 	justify-content: space-between;
 }
 footer a {
-	color: #0073aa;
 	text-decoration: none;
 
 	> .fa {
@@ -132,18 +131,22 @@ article .icon {
 	width: 75px;
 	grid-area: icon;
 }
-article .action a {
-	color: inherit;
-	font-size: 22px;
-	text-align: right;
-	margin-right: 70px;
-	text-decoration: none;
 
-	/*
-	 * Float the anchor to avoid expanding the focus state.
-	 */
-	float: right;
+article .action {
+    margin-left: auto;
+    padding: 1.5rem;
+
+    a {
+        font-size: 1rem;
+        line-height: 1.5;
+        text-decoration: none;
+
+        i {
+            margin-left: 6px;
+        }
+    }
 }
+
 article .content {
 	grid-area: content;
 	display: flex;
@@ -221,6 +224,10 @@ article.stripe .action button {
 .setup-item-sub-header {
 	display: block; // Override inherited grid layout.
 	padding-left: 20px;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .setup-item-completed .header {

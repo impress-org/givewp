@@ -161,7 +161,7 @@
     echo $this->render_template(
         'section',
         [
-            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Level up your fundraising', 'give')),
+            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Get more from your fundraising campaign with add-ons', 'give')),
             'contents' => [
                 ! empty($settings['addons']) ? $this->render_template(
                     'sub-header',
@@ -177,7 +177,7 @@
                         'icon_alt' => __('Recurring Donations', 'give'),
                         'title' => __('Recurring Donations', 'give'),
                         'description' => __(
-                            'The Recurring Donations add-on for GiveWP brings you more dependable payments by allowing your donors to give regularly at different time intervals. Let your donors choose how often they give and how much. Manage your subscriptions, view specialized reports, and connect more strategically with your recurring donors.',
+                            'Raise funds reliably through subscriptions based donations. Let your donors choose how often they give and how much. Manage your subscriptions, view specialized reports, and strengthen relationships with your recurring donors.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -185,7 +185,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-recurring', // UTM included.
-                                'screenReaderText' => __('Learn more about Recurring Donations', 'give'),
+                                'label' => __('Get Recurring Donations', 'give'),
                             ]
                         ),
                     ]
@@ -198,7 +198,7 @@
                         'icon_alt' => __('Fee Recovery', 'give'),
                         'title' => __('Fee Recovery', 'give'),
                         'description' => __(
-                            'Credit Card processing fees can take away a big chunk of your donations. This means less money goes to your cause. Why not ask your donors to further help your cause by asking them to take care of the payment processing fees? That’s where the Fee Recovery add-on comes into play.',
+                            'Maximize your donations by allowing donors to cover payment processing fees, ensuring more funds go directly to your cause.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -206,7 +206,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-fee-recovery', // UTM included.
-                                'screenReaderText' => __('Learn more about Fee Recovery', 'give'),
+                                'label' => __('Get Fee Recovery', 'give'),
                             ]
                         ),
                     ]
@@ -227,7 +227,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-pdf-receipts', // UTM included.
-                                'screenReaderText' => __('Learn more about PDF Receipts', 'give'),
+                                'label' => __('Get PDF Receipts', 'give'),
                             ]
                         ),
                     ]
@@ -248,7 +248,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-ffm', // UTM included.
-                                'screenReaderText' => __('Learn more about Form Field Manager', 'give'),
+                                'label' => __('Get Form Field Manager', 'give'),
                             ]
                         ),
                     ]
@@ -261,7 +261,7 @@
                         'icon_alt' => __('Currency Switcher', 'give'),
                         'title' => __('Currency Switcher', 'give'),
                         'description' => __(
-                            'Allow your donors to switch to their currency of choice and increase your overall giving with the GiveWP Currency Switcher add-on. Select from an extensive list of currencies, set the currency based on your donor\'s location, pull from live exchange rates and more!',
+                            'Let donors choose from your selected currencies, increasing global donations with live exchange rates and extensive currency options.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -269,7 +269,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-currency-switcher', // UTM included.
-                                'screenReaderText' => __('Learn more about Currency Switcher', 'give'),
+                                'label' => __('Get Currency Switcher', 'give'),
                             ]
                         ),
                     ]
@@ -290,7 +290,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-tributes', // UTM included.
-                                'screenReaderText' => __('Learn more about Tributes', 'give'),
+                                'label' => __('Get Tributes', 'give'),
                             ]
                         ),
                     ]
@@ -303,7 +303,7 @@
                         'icon_alt' => esc_html__('Add-ons', 'give'),
                         'title' => esc_html__('GiveWP Add-ons', 'give'),
                         'description' => esc_html__(
-                            'Make your fundraising even more effective with powerful add-ons like Recurring Donations, Fee Recovery, Google Analytics Donation Tracking, MailChimp, and much more. View our growing library of 35+ add-ons and extend your fundraising now.',
+                            'Boost your fundraising efforts with powerful add-ons like Recurring Donations, Fee Recovery, Google Analytics, Mailchimp, and more. Explore our extensive library of 35+ add-ons to enhance your fundraising now.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -311,7 +311,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-addons', // UTM included.
-                                'screenReaderText' => __('View Add-ons for GiveWP', 'give'),
+                                'label' => esc_html__('View all premium add-ons', 'give'),
                             ]
                         ),
                     ]
@@ -343,7 +343,7 @@
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/getting-started', // UTM included.
-                                'screenReaderText' => __('Learn more about GiveWP', 'give'),
+                                'label' => __('Get started', 'give'),
                             ]
                         ),
                     ]
