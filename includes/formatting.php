@@ -746,7 +746,16 @@ function give_clean($var)
         return array_map('give_clean', $var);
     }
 
-    return is_scalar($var) ? sanitize_text_field(wp_unslash($var)) : '';
+    // remove serialized data
+    if (is_serialized($var)) {
+        return '';
+    }
+
+    if (is_scalar($var)) {
+        return sanitize_text_field(wp_unslash($var));
+    }
+
+    return '';
 }
 
 /**
