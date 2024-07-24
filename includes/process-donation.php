@@ -415,6 +415,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @unreleased add give-form-title
  * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
@@ -438,6 +439,7 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
         'give_last',
         'give_user_login',
         'give_user_pass',
+        'give-form-title',
     ];
 
     foreach ($post_data as $key => $value) {
