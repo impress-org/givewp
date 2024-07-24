@@ -952,8 +952,10 @@ class Give_Donate_Form {
 			}
 		}
 
-		return $this->sales;
-
+        /**
+        * @since 3.14.0
+        */
+		return apply_filters('give_donate_form_get_sales', $this->sales, $this->ID);
 	}
 
 	/**

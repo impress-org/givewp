@@ -4,7 +4,7 @@ import {useEffect, useRef} from 'react';
 import './styles.scss';
 
 /**
- * @unreleased
+ * @since 3.14.0
  * Creates a portal to the Top Level document, rendering children elements within an iframe.
  */
 export default function createIframePortal(children, targetElement = window.top.document.body) {
@@ -52,7 +52,7 @@ export default function createIframePortal(children, targetElement = window.top.
 }
 
 /**
- * @unreleased
+ * @since 3.14.0
  * Fetches stylesheets from the originating document and injects them into the new iframe document's head.
  * This allows user provided styles to be applied to the iframe content.
  * Returns a promise that resolves when all stylesheets are loaded.
