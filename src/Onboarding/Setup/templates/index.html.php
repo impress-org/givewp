@@ -381,7 +381,7 @@
                         'icon_alt' => esc_html__('GiveWP Getting Started Guide', 'give'),
                         'title' => esc_html__('GiveWP Getting Started Guide', 'give'),
                         'description' => esc_html__(
-                            'Start off on the right foot by learning the basics of the plugin and how to get the most out of it to further your online fundraising efforts.',
+                            'Learn the basics and advanced tips to optimize your fundraising with GiveWP.',
                             'give'
                         ),
                         'action' => $this->render_template(
