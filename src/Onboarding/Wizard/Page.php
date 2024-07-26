@@ -126,6 +126,7 @@ class Page
         wp_enqueue_style('givewp-admin-fonts');
 
         $formID = $this->formRepository->getDefaultFormID();
+        $formPreviewUrl = home_url('/?givewp-route=donation-form-view&form-id=');
         $featureGoal = get_post_meta($formID, '_give_goal_option', true);
         $featureComments = get_post_meta($formID, '_give_donor_comment', true);
         $featureTerms = get_post_meta($formID, '_give_terms_option', true);
@@ -142,7 +143,7 @@ class Page
             'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ?
                 admin_url('edit.php?post_type=give_forms&page=give-setup') :
                 DonationFormsAdminPage::getUrl(),
-            'formPreviewUrl' => admin_url('?page=give-form-preview'),
+            'formPreviewUrl' => $formPreviewUrl,
             'localeCurrency' => $this->localeCollection->pluck('currency_code'),
             'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
             'currencySelected' => $currency,
