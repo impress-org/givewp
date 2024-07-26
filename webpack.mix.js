@@ -57,6 +57,7 @@ mix.setPublicPath('assets/dist')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
+   .ts('src/FormTaxonomies/resources/form-builder/index.tsx', 'js/form-taxonomy-settings.js')
 
     .react()
     .sourceMaps(false, 'source-map')
