@@ -1,3 +1,11 @@
+<?php
+/**
+ * GiveWP Onboarding Setup Guide template file
+ *
+ * @unreleased Refactored to make it compatible with v3 forms.
+ * @since 2.8.0
+ */
+?>
 <div class="wrap" class="give-setup-page">
 
     <h1 class="wp-heading-inline">
