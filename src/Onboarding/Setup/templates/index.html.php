@@ -51,12 +51,12 @@
             ),
             'button' => ($this->isFormConfigured()
                 ? $this->render_template('action-button', [
-                    'href' => $customizeFormURL,
-                    'text' => __('Customize form', 'give'),
+                    'href' => esc_urL($customizeFormURL),
+                    'text' => esc_html__('Customize form', 'give'),
                 ])
                 : $this->render_template('action-button', [
-                    'href' => admin_url('?page=give-onboarding-wizard'),
-                    'text' => __('Configure GiveWP', 'give'),
+                    'href' => esc_url(admin_url('?page=give-onboarding-wizard')),
+                    'text' => esc_html__('Configure GiveWP', 'give'),
                 ])
             ),
         ]
