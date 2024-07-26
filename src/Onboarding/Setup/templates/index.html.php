@@ -61,10 +61,12 @@
                 ? $this->render_template('action-button', [
                     'href' => esc_urL($customizeFormURL),
                     'text' => esc_html__('Customize form', 'give'),
+                    'target' => '_blank',
                 ])
                 : $this->render_template('action-button', [
                     'href' => esc_url(admin_url('?page=give-onboarding-wizard')),
                     'text' => esc_html__('Configure GiveWP', 'give'),
+                    'target' => '_blank',
                 ])
             ),
         ]
