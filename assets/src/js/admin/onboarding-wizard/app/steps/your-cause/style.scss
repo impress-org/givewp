@@ -1,107 +1,93 @@
 .give-obw-your-cause {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	font-family: Montserrat, Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
 
-	h1 {
-		font-weight: 600;
-		font-size: 24px;
-		line-height: 34px;
-		color: #333;
-		margin: 0;
-	}
+    h1 {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 1.42;
+        color: #333;
+        margin: 0 0 12px;
+    }
 
-	h2 {
-		font-weight: 600;
-		font-size: 18px;
-		line-height: 25px;
-		color: #333;
-	}
+    h2 {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+        color: #333;
+    }
 
-	> p {
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 24px;
-		color: #333;
-	}
+    > p {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+        color: #333;
+    }
 
-	.give-obw-text-field {
-		font-size: 14px;
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		color: #333;
-		line-height: 1.2;
-		width: 356px;
-		box-sizing: border-box;
-		margin: 10px 0 0;
-		border: 1px solid #b8b8b8;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-		border-radius: 4px;
-		height: 50px;
-		padding: 0 18px;
-		&:focus {
-			box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
-			outline: none;
-		}
+    .give-obw-text-field {
+        font-size: 14px;
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        color: #333;
+        line-height: 1.2;
+        width: 356px;
+        box-sizing: border-box;
+        margin: 10px 0 0;
+        border: 1px solid #b8b8b8;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 4px;
+        height: 50px;
+        padding: 0 18px;
 
-	}
+        &:focus {
+            box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
+            outline: none;
+        }
 
-	.give-obw-optin-field {
-		margin: 0 0 30px;
-		width: 356px;
+    }
 
-		> h2 {
-			text-align: center;
-			margin: 0;
-		}
-	}
+    .give-obw-optin-field {
+        margin: 0 0 30px;
+        width: 356px;
 
-	.give-obw-community-field {
-		width: 750px;
-		text-align: center;
+        > h2 {
+            text-align: center;
+            margin: 0;
+        }
+    }
 
-		p {
-			font-weight: 400;
-			font-size: 16px;
-			line-height: 24px;
-			color: #333;
-		}
-	}
+    .give-obw-usage-tracking-field {
+        margin-bottom: 1.5rem;
+        width: 956px;
+    }
 
-	p.give-obw-email-notice {
-		font-size: 13px;
-		color: #a6a6a6;
-		font-weight: 400;
-	}
+    .give-obw-card {
+        box-sizing: border-box;
+        width: 292px;
+        height: 242px;
+        align-items: center;
+        padding: 39px 30px;
 
+        p {
+            font-family: Montserrat, Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            margin: 14px 0;
+            color: #333;
+        }
 
-
-	.give-obw-button {
-		margin-top: 20px;
-	}
-
-	.give-obw-card {
-		width: 250px;
-		height: 200px;
-		align-items: center;
-
-		p {
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			font-weight: 500;
-			font-size: 14px;
-			line-height: 20px;
-			color: #333;
-		}
-
-		strong {
-			text-transform: uppercase;
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			font-weight: 500;
-			font-size: 19px;
-			line-height: 24px;
-			letter-spacing: 6px;
-			color: #4fa651;
-		}
-	}
+        strong {
+            text-transform: uppercase;
+            font-family: Montserrat, Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 19px;
+            line-height: 24px;
+            letter-spacing: 6px;
+            color: #4fa651;
+        }
+    }
 }

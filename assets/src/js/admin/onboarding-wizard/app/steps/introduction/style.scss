@@ -1,38 +1,38 @@
 .give-obw-introduction {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .give-obw-introduction__content {
-	width: 480px;
-	padding: 100px 225px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+    width: 480px;
+    padding: 100px 225px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-	> h1 {
-		text-transform: uppercase;
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		font-size: 19px;
-		line-height: 24px;
-		letter-spacing: 6px;
+    > h1 {
+        text-transform: uppercase;
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 19px;
+        line-height: 24px;
+        letter-spacing: 6px;
 
-		color: #1da3b0;
+        color: #1da3b0;
 
-		margin: 0 0 30px 0;
-	}
+        margin: 0 0 30px 0;
+    }
 
-	> p {
-		font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-		font-size: 16px;
-		line-height: 1.5;
-		font-weight: 600;
-		text-align: center;
-		color: #424242;
+    > p {
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 600;
+        text-align: center;
+        color: #424242;
 
-		margin: 40px 0 34px 0;
-	}
+        margin: 40px 0 34px 0;
+    }
 }
