@@ -341,7 +341,7 @@
                         ),
                     ]
                 ) : '',
-                empty($settings['addons']) ? $this->render_template(
+                $this->render_template(
                     'row-item',
                     [
                         'class' => 'setup-item',
@@ -361,7 +361,7 @@
                             ]
                         ),
                     ]
-                ) : '',
+                ),
             ],
         ]
     );
