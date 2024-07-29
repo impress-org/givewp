@@ -276,9 +276,12 @@ export default function DonationFormsListTable() {
                 >
                     {__('Switch to Legacy View')}
                 </button>
-                <button className={`button button-primary ${styles.buttonPrimary}`} onClick={addForm}>
-                    {__('Add Form')}
-                </button>
+                <a
+                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                    className={`button button-primary ${styles.buttonPrimary}`}
+                >
+                    {__('Add Form', 'give')}
+                </a>
             </ListTablePage>
         </OnboardingContext.Provider>
     );
@@ -287,8 +290,4 @@ export default function DonationFormsListTable() {
 const showLegacyDonationForms = async (event) => {
     await API.fetchWithArgs('/view', {isLegacy: 1});
     window.location.href = '/wp-admin/edit.php?post_type=give_forms';
-};
-
-const addForm = (event) => {
-    window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder';
 };
