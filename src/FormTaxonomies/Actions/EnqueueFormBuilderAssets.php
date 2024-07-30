@@ -4,6 +4,11 @@ namespace Give\FormTaxonomies\Actions;
 
 class EnqueueFormBuilderAssets
 {
+    /**
+     * @var array
+     */
+    protected $settings;
+
     public function __construct()
     {
         $this->settings = give_get_settings();
