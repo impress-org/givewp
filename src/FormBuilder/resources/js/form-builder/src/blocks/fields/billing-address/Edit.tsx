@@ -133,7 +133,7 @@ export default function Edit({
             </div>
 
             <InspectorControls>
-                <PanelBody title={__('Group', 'give')} initialOpen={false}>
+                <PanelBody title={__('Group', 'give')} initialOpen={true}>
                     <PanelRow>
                         <TextControl
                             label={'Label'}
