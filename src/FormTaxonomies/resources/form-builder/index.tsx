@@ -1,8 +1,9 @@
-import { PanelRow } from "@wordpress/components";
+import {CheckboxControl, PanelRow, TreeSelect} from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
 import { SettingsSection } from "@givewp/form-builder-library";
-import FormTagSetting from "./form-tags";
 import getWindowData from "./windowData";
+import FormTagSetting from "./form-tags";
+import FormCategorySetting from "./form-categories";
 import './style.scss';
 
 wp.hooks.addFilter('givewp_form_builder_settings_additional_routes', 'give-form-tags', (settings) => {
@@ -36,7 +37,7 @@ wp.hooks.addFilter('givewp_form_builder_settings_additional_routes', 'give-form-
                         {isFormCategoriesEnabled && (
                             <SettingsSection title={__('Form Categories', 'give')}>
                                 <PanelRow className={'no-extra-gap'}>
-                                    FORM CATEGORY SETTINGS HERE
+                                    <FormCategorySetting settings={settings} setSettings={setSettings} />
                                 </PanelRow>
                             </SettingsSection>
                         )}

@@ -8,7 +8,9 @@ type FormTagToken = {
 interface TaxonomySettings {
     formTagsEnabled: boolean;
     formCategoriesEnabled: boolean;
-    formTags: FormTagToken[];
+    formTagsSelected: FormTagToken[];
+    formCategoriesSelected: any[];
+    formCategoriesAvailable: any[];
 }
 
 declare const window: {
@@ -20,5 +22,13 @@ export default function getWindowData(): TaxonomySettings {
 }
 
 export function getInitialFormTags(): FormTagToken[] {
-    return window.giveTaxonomySettings.formTags;
+    return window.giveTaxonomySettings.formTagsSelected;
+}
+
+export function getInitialFormCategories(): any[] {
+    return window.giveTaxonomySettings.formCategoriesSelected;
+}
+
+export function getAvailableFormCategories(): any[] {
+    return window.giveTaxonomySettings.formCategoriesAvailable;
 }

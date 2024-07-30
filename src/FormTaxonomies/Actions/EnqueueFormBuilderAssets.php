@@ -16,7 +16,9 @@ class EnqueueFormBuilderAssets
             wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([
                     'formTagsEnabled' => $this->isFormTagsEnabled(),
                     'formCategoriesEnabled' => $this->isFormCategoriesEnabled(),
-                    'formTags' => $this->getFormTags(),
+                    'formTagsSelected' => $this->getSelectedFormTags(),
+                    'formCategoriesAvailable' => $this->getFormCategories(),
+                    'formCategoriesSelected' => $this->getSelectedFormCategories(),
                 ]));
         }
     }
@@ -31,19 +33,51 @@ class EnqueueFormBuilderAssets
         return give_is_setting_enabled($this->settings['categories']);
     }
 
-    public function getFormTags(): array
+    public function getSelectedFormTags(): array
     {
         $terms = get_terms([
             // Form ID not provided by the hook, so we need to get it from the query string (if available).
             'post' => absint($_GET['donationFormID'] ?? 0),
             'taxonomy' => 'give_forms_tag',
+        ]);
+
+        return array_map(function ($term) {
+            return [
+                'id' => $term->term_id,
+                'value' => $term->name,
+            ];
+        }, $terms) ?? [];
+    }
+
+    public function getFormCategories(): array
+    {
+        $terms = get_terms([
+            'taxonomy' => 'give_forms_category',
             'hide_empty' => false,
         ]);
 
-        return array_map(function ($tag) {
+        return array_map(function ($term) {
             return [
-                'id' => $tag->term_id,
-                'value' => $tag->name,
+                'id' => $term->term_id,
+                'name' => $term->name,
+                'parent' => $term->parent,
+            ];
+        }, $terms) ?? [];
+    }
+
+    public function getSelectedFormCategories()
+    {
+        $terms = get_terms([
+            // Form ID not provided by the hook, so we need to get it from the query string (if available).
+            'post' => absint($_GET['donationFormID'] ?? 0),
+            'taxonomy' => 'give_forms_category',
+        ]);
+
+        return array_map(function ($term) {
+            return [
+                'id' => $term->term_id,
+                'name' => $term->name,
+                'parent' => $term->parent,
             ];
         }, $terms) ?? [];
     }

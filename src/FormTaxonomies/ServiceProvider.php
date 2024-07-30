@@ -23,7 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('givewp_form_builder_updated', give(Actions\UpdateFormTags::class));
+        add_action('givewp_form_builder_updated', give(Actions\UpdateFormTaxonomies::class));
         add_action('givewp_form_builder_enqueue_scripts', give(Actions\EnqueueFormBuilderAssets::class));
     }
 }

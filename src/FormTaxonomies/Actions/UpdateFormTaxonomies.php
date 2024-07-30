@@ -7,7 +7,7 @@ use Give\DonationForms\Models\DonationForm;
 /**
  * @unreleased
  */
-class UpdateFormTags
+class UpdateFormTaxonomies
 {
     /**
      * @unreleased
@@ -16,6 +16,10 @@ class UpdateFormTags
     {
         if($form->settings->formTags) {
             wp_set_post_terms($form->id, array_column($form->settings->formTags, 'id'), 'give_forms_tag');
+        }
+
+        if($form->settings->formCategories) {
+            wp_set_post_terms($form->id, array_column($form->settings->formCategories, 'id'), 'give_forms_category');
         }
     }
 }
