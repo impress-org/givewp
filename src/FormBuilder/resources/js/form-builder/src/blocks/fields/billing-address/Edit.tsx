@@ -133,7 +133,7 @@ export default function Edit({
             </div>
 
             <InspectorControls>
-                <PanelBody title={__('Group', 'give')} initialOpen={true}>
+                <PanelBody title={__('Group', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={'Label'}
@@ -142,7 +142,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Country', 'give')} initialOpen={true}>
+                <PanelBody title={__('Country', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -151,7 +151,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Address 1', 'give')} initialOpen={true}>
+                <PanelBody title={__('Address 1', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -167,7 +167,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Address 2', 'give')} initialOpen={true}>
+                <PanelBody title={__('Address 2', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -191,7 +191,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('City', 'give')} initialOpen={true}>
+                <PanelBody title={__('City', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
@@ -207,7 +207,7 @@ export default function Edit({
                         />
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title={__('Zip', 'give')} initialOpen={true}>
+                <PanelBody title={__('Zip', 'give')} initialOpen={false}>
                     <PanelRow>
                         <TextControl
                             label={__('Label')}
