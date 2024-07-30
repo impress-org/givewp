@@ -120,14 +120,13 @@
     justify-content: flex-end;
 }
 
-.buttonSecondary {
-    font-weight: 500;
+.button:is(:global(.button)) {
     height: 32px;
+    line-height: 2.4;
 }
 
-.buttonPrimary {
-    height: 32px;
-    line-height: 2.4 !important;
+.buttonSecondary:is(:global(.button)) {
+    font-weight: 500;
 }
 
 .addFormButton {
