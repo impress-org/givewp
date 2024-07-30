@@ -4,20 +4,16 @@ import PropTypes from 'prop-types';
 // Import styles
 import './style.scss';
 
-const Card = ( { children } ) => {
-	return (
-		<div className="give-obw-card">
-			{ children }
-		</div>
-	);
+const Card = ({children}) => {
+    return <div className="give-obw-card">{children}</div>;
 };
 
 Card.propTypes = {
-	children: PropTypes.node,
+    children: PropTypes.node,
 };
 
 Card.defaultProps = {
-	children: null,
+    children: null,
 };
 
 export default Card;
