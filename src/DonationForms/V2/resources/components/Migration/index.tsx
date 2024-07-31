@@ -18,25 +18,11 @@ export const UpgradeModalContent = () => {
         )}
         <br />
         {supportedAddons.length > 0 && (
-            <>
-                <h3>{__('Supported add-ons', 'give')}</h3>
-                <ul>
-                    {supportedAddons.map((addon) => (
-                        <li key={addon}><CheckVerified /> {addon}</li>
-                    ))}
-                </ul>
-            </>
+            <SupportedItemsList title={__('Supported add-ons', 'give')} items={supportedAddons} />
         )}
         <br />
         {supportedGateways.length > 0 && (
-            <>
-                <h3>{__('Supported gateways', 'give')}</h3>
-                <ul>
-                    {supportedGateways.map((gateway) => (
-                        <li key={gateway}><CheckVerified /> {gateway}</li>
-                    ))}
-                </ul>
-            </>
+            <SupportedItemsList title={__('Supported gateways', 'give')} items={supportedGateways} />
         )}
         <div>
             <a href="https://docs.givewp.com/compat-guide" rel="noopener noreferrer" target="_blank">
@@ -44,4 +30,19 @@ export const UpgradeModalContent = () => {
             </a>
         </div>
     </p>
+}
+
+const SupportedItemsList = ({title, items}) => {
+    return (
+        <>
+            <h3>{title}</h3>
+            <ul>
+                {items.map((item) => (
+                    <li key={item}>
+                        <CheckVerified /> {item}
+                    </li>
+                ))}
+            </ul>
+        </>
+    )
 }
