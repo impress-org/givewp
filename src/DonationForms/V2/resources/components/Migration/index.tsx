@@ -2,6 +2,9 @@ import {__, sprintf} from "@wordpress/i18n";
 import {createInterpolateElement} from "@wordpress/element";
 import {CheckVerified} from "@givewp/components/AdminUI/Icons";
 
+/**
+ * @unreleased
+ */
 export const UpgradeModalContent = () => {
 
     const {supportedAddons, supportedGateways} = window.GiveDonationForms;
