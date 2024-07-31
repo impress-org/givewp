@@ -76,6 +76,14 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     */
+    public function getTotalDonationCountByGatewayTransactionId($gatewayTransactionId): int
+    {
+        return $this->queryByGatewayTransactionId($gatewayTransactionId)->count();
+    }
+
+    /**
      * @since 2.21.0
      */
     public function queryByGatewayTransactionId($gatewayTransactionId): ModelQueryBuilder
