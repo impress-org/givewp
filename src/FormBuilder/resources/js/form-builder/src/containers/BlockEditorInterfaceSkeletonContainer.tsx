@@ -14,6 +14,7 @@ import {Button} from '@wordpress/components';
 import {listView, plus} from '@wordpress/icons';
 import {useEditorState} from '@givewp/form-builder/stores/editor-state';
 import EditorMode from '@givewp/form-builder/types/editorMode';
+import {__} from "@wordpress/i18n";
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {mode} = useEditorState();
@@ -69,6 +70,8 @@ const SchemaEditorSkeleton = () => {
                         isPressed={'add' === selectedSecondarySidebar}
                         icon={plus}
                         variant="primary"
+                        title={__('Toggle block inserter', 'give')}
+                        label={__('Toggle block inserter', 'give')}
                     />
                 </div>
                 <Button
@@ -76,6 +79,8 @@ const SchemaEditorSkeleton = () => {
                     onClick={() => toggleSelectedSecondarySidebar('list')}
                     isPressed={'list' === selectedSecondarySidebar}
                     icon={listView}
+                    title={__('Form Field Overview', 'give')}
+                    label={__('Form Field Overview', 'give')}
                 />
             </>
         );
