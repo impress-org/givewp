@@ -209,9 +209,18 @@ class BlockCollection implements Arrayable
         return $this;
     }
 
+    /**
+     * @unrleeased returns the block collection if block does not exist.
+     * @since 3.0.0
+     */
     public function remove($blockName) {
         $blockCollection = $this->findByNameRecursive($blockName, 0, 'parent');
         $innerBlocks = $blockCollection->blocks;
+
+        if(!$innerBlocks){
+            return $this;
+        }
+
         $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
         array_splice($innerBlocks, $blockIndex, 1);
         $blockCollection->blocks = $innerBlocks;
