@@ -1,9 +1,10 @@
 import {
+    Challenge,
     Gateway,
     isFormResponseGatewayError,
     isFormResponseRedirect,
     isFormResponseValidationError,
-    isResponseRedirected,
+    isResponseRedirected
 } from '@givewp/forms/types';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
@@ -19,8 +20,19 @@ export default async function handleSubmitRequest(
     setError,
     gateway: Gateway,
     donateUrl: string,
-    inlineRedirectRoutes: string[]
+    inlineRedirectRoutes: string[],
+    challenges: Challenge[] = []
 ) {
+    if (challenges.length > 0) {
+        for (const challengeKey in challenges) {
+            if (!await challenges[challengeKey].execute()) {
+                return setError('FORM_ERROR', {
+                    message: __('You must be a human to submit this form.', 'give')
+                });
+            }
+        }
+    }
+
     if (values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
         return setError('FORM_ERROR', {
             message: __(

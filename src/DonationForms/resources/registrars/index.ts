@@ -1,4 +1,5 @@
 import GatewayRegistrar from './gateways';
+import ChallengeRegistrar from './challenges';
 import type {DonationConfirmationReceiptServerExports, FormServerExports} from '@givewp/forms/types';
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import defaultFormTemplates from './templates';
@@ -13,6 +14,7 @@ declare global {
         givewp: {
             gateways: GatewayRegistrar;
             form: {
+                challenges: ChallengeRegistrar;
                 templates: typeof defaultFormTemplates;
                 hooks: {
                     useFormContext: typeof useFormContext;
@@ -35,5 +37,17 @@ if (!window.givewp) {
     };
 }
 
+window.givewp.form.challenges = new ChallengeRegistrar();
 window.givewp.gateways = new GatewayRegistrar();
 window.givewp.form.templates = Object.freeze(defaultFormTemplates);
+
+window.givewp.form.challenges.register({
+    id: 'customReCaptcha',
+    execute(): Promise<boolean> {
+        if (window.confirm("Are you a human?")){
+            return Promise.resolve(true);
+        } else {
+            return Promise.resolve(false);
+        }
+    }
+});
