@@ -96,7 +96,7 @@ class DonateFormRouteData implements Arrayable
         $validData->embedId = $this->embedId;
         $validData->isEmbed = $this->isEmbed;
 
-        return apply_filters('givewp_donate_form_data_validated', $validData, $form, $request);
+        return $validData;
     }
 
     /**

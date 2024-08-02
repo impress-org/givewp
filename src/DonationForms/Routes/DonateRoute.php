@@ -55,6 +55,7 @@ class DonateRoute
 
         try {
             $data = $formData->validated();
+            do_action('givewp_donate_form_data_validated', $data);
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;

@@ -30,7 +30,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot(): void
     {
         if($this->isAkismetEnabledAndConfigured()) {
-            Hooks::addFilter('givewp_donate_form_data_validated', Akismet\Actions\ValidateDonation::class);
+            Hooks::addAction('givewp_donate_form_data_validated', Akismet\Actions\ValidateDonation::class);
         }
     }
 

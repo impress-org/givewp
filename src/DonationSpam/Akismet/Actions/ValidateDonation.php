@@ -35,10 +35,9 @@ class ValidateDonation
     /**
      * @param DonateControllerData $data
      *
-     * @return DonateControllerData
      * @throws SpamDonationException
      */
-    public function __invoke(DonateControllerData $data): DonateControllerData
+    public function __invoke(DonateControllerData $data): void
     {
         if(!$this->whitelist->validate($data->email)) {
 
@@ -54,7 +53,5 @@ class ValidateDonation
                 throw new SpamDonationException($message);
             }
         }
-
-        return $data;
     }
 }

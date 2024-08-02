@@ -29,10 +29,9 @@ final class ValidateDonationTest extends TestCase
             new EmailAddressWhiteList()
         );
 
-        $this->assertEquals(
-            $data,
-            call_user_func($action, $data)
-        );
+        $action->__invoke($data);
+
+        $this->assertTrue(true); // Assert no exception thrown.
     }
 
     public function testThrowsSpamDonationException()
@@ -49,7 +48,8 @@ final class ValidateDonationTest extends TestCase
         );
 
         $this->expectException(SpamDonationException::class);
-        call_user_func($action, $data);
+
+        $action->__invoke($data);
     }
 
     protected function mockAkismetAPI()
