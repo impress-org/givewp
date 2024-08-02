@@ -9,6 +9,7 @@ class API
 {
     public function commentCheck(CommentCheckArgs $args)
     {
+        // @phpstan-ignore class.notFound
         return Akismet::http_post($args->toHttpQuery(), 'comment-check');
     }
 }
