@@ -26,6 +26,9 @@ class ValidateDonation
      */
     protected $whitelist;
 
+    /**
+     * @unreleased
+     */
     public function __construct(API $akismet, EmailAddressWhiteList $whitelist)
     {
         $this->akismet = $akismet;
@@ -33,6 +36,8 @@ class ValidateDonation
     }
 
     /**
+     * @unreleased
+     *
      * @param DonateControllerData $data
      *
      * @throws SpamDonationException

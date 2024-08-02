@@ -4,6 +4,9 @@ namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
 
+/**
+ * @unreleased
+ */
 class CommentCheckArgs
 {
     public $blog;
@@ -17,6 +20,9 @@ class CommentCheckArgs
     public $comment_author;
     public $comment_author_email;
 
+    /**
+     * @unreleased
+     */
     public static function make(DonateControllerData $data)
     {
         $self = new self();
@@ -44,6 +50,9 @@ class CommentCheckArgs
         return $self;
     }
 
+    /**
+     * @unreleased
+     */
     public function toHttpQuery()
     {
         return http_build_query(get_object_vars($this));

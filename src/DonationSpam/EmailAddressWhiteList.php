@@ -2,6 +2,9 @@
 
 namespace Give\DonationSpam;
 
+/**
+ * @unreleased
+ */
 class EmailAddressWhiteList
 {
     /**
@@ -9,12 +12,18 @@ class EmailAddressWhiteList
      */
     protected $whitelistEmails;
 
+    /**
+     * @unreleased
+     */
     public function __construct($whitelistEmails = [])
     {
         $this->whitelistEmails = $whitelistEmails;
     }
 
-    public function validate($email)
+    /**
+     * @unreleased
+     */
+    public function validate($email): bool
     {
         return in_array($email, $this->whitelistEmails, true);
     }
