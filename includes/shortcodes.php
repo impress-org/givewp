@@ -742,8 +742,8 @@ function give_totals_shortcode( $atts ) {
 
 		if ( isset( $forms->posts ) ) {
 			$total = 0;
-            $query = new DonationQuery();
 			foreach ( $forms->posts as $post ) {
+                $query = new DonationQuery();
 				$form_earning = $query->form($post)->sumAmount();
 				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
 

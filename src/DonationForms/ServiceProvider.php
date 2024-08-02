@@ -69,6 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerSingleFormPage();
         $this->registerShortcodes();
         $this->registerPostStatus();
+        $this->registerAddFormSubmenuLink();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -80,6 +81,14 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerAddFormSubmenuLink()
+    {
+        Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'addFormSubmenuLink', 999);
     }
 
     /**
@@ -169,7 +178,7 @@ class ServiceProvider implements ServiceProviderInterface
             } catch (Exception $e) {
                 Log::error('Error registering form designs', [
                     'message' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
+                    'trace' => $e->getTraceAsString(),
                 ]);
             }
         });
