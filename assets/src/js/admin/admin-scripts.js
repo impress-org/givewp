@@ -3142,9 +3142,11 @@ const gravatar = require('gravatar');
 
                         // Fill in rest of the options
                         Object.values(dropdown.options).map((option) => {
+                            console.log('orderedOptions: ', orderedOptions);
                             const included = orderedOptions.filter(
                                 (orderedOption) => orderedOption.text === option.textContent
                             ).length;
+                            console.log('included: ', included);
                             if (!included) {
                                 orderedOptions.push({
                                     text: option.textContent,
@@ -3155,7 +3157,7 @@ const gravatar = require('gravatar');
                         });
 
                         // Rebuild the dropdown
-                        GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
+                        //GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
                     });
             });
         },
@@ -3201,7 +3203,9 @@ const gravatar = require('gravatar');
         },
 
         rebuildDropDown: function (dropdown, options) {
+            console.log('BEFORE: ', dropdown.innerHTML);
             dropdown.innerHTML = '';
+            //removeOptions(dropdown);
             options.map((option) => {
                 const newOption = document.createElement('option');
                 newOption.value = option.value;
@@ -3211,8 +3215,17 @@ const gravatar = require('gravatar');
                 }
                 dropdown.add(newOption);
             });
+            console.log('AFTER: ', dropdown.innerHTML);
         },
     };
+
+    function removeOptions(selectElement) {
+        var i,
+            L = selectElement.options.length - 1;
+        for (i = L; i >= 0; i--) {
+            selectElement.remove(i);
+        }
+    }
 
     // On DOM Ready.
     $(function () {
