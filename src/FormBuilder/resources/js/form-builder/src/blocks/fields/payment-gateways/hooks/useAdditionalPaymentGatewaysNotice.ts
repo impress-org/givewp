@@ -7,6 +7,9 @@ declare const window: {
     };
 } & Window;
 
+/**
+ * @unreleased
+ */
 const useAdditionalPaymentGatewaysNotice = () => {
 
     const {actionUrl, isDismissed} = window.additionalPaymentGatewaysNotificationData;

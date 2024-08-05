@@ -1,17 +1,11 @@
-import {CSSProperties} from "react";
-import {__} from "@wordpress/i18n";
 import {Icon} from "@wordpress/components";
 import {close, external} from "@wordpress/icons";
 import './styles.scss'
 
+/**
+ * @unreleased
+ */
 const InspectorNotice = ({title, description, helpText, helpUrl, onDismiss}) => {
-
-    // const onClose = () => {
-    //     fetch(window.goalNotificationData.actionUrl, {method: 'POST'})
-    //         .then(() => {
-    //             setShowNotice(false);
-    //         });
-    // }
 
     return (
         <div className='givewp-inspector-notice__container'>
