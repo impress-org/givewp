@@ -1,7 +1,13 @@
-import {ReactNode} from 'react';
+import {ReactNode, useState} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {applyFilters} from '@wordpress/hooks';
+import {InspectorControls} from "@wordpress/block-editor";
+import InspectorNotice from "@givewp/form-builder/components/settings/InspectorNotice";
+import {__} from "@wordpress/i18n";
+import { PanelRow } from '@wordpress/components';
+import useAdditionalPaymentGatewaysNotice
+    from "@givewp/form-builder/blocks/fields/payment-gateways/hooks/useAdditionalPaymentGatewaysNotice";
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -20,6 +26,8 @@ const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
 
 export default function Edit(props: BlockEditProps<any>) {
     const {gateways} = getFormBuilderWindowData();
+
+    const [showNotification, onDismissNotification] = useAdditionalPaymentGatewaysNotice()
 
     return (
         <div
@@ -62,6 +70,19 @@ export default function Edit(props: BlockEditProps<any>) {
                         />
                     ))}
             </div>
+            <InspectorControls>
+                {showNotification && (
+                    <PanelRow>
+                        <InspectorNotice
+                            title={__('Additional Payment Gateways', 'give')}
+                            description={__('Enable multiple payment gateways on your forms via the global settings.', 'give')}
+                            helpText={__('Go to payment gateway settings', 'give')}
+                            helpUrl={'/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=gateways-settings&group=v3'}
+                            onDismiss={onDismissNotification}
+                        />
+                    </PanelRow>
+                )}
+            </InspectorControls>
         </div>
     );
 }
