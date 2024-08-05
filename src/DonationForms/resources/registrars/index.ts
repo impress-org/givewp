@@ -40,14 +40,3 @@ if (!window.givewp) {
 window.givewp.form.challenges = new ChallengeRegistrar();
 window.givewp.gateways = new GatewayRegistrar();
 window.givewp.form.templates = Object.freeze(defaultFormTemplates);
-
-window.givewp.form.challenges.register({
-    id: 'customReCaptcha',
-    execute(): Promise<boolean> {
-        if (window.confirm("Are you a human?")){
-            return Promise.resolve(true);
-        } else {
-            return Promise.resolve(false);
-        }
-    }
-});

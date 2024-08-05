@@ -14,6 +14,7 @@ import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
+import {useFormContext} from 'react-hook-form';
 
 export default async function handleSubmitRequest(
     values,
@@ -25,7 +26,8 @@ export default async function handleSubmitRequest(
 ) {
     if (challenges.length > 0) {
         for (const challengeKey in challenges) {
-            if (!await challenges[challengeKey].execute()) {
+            const challenge = challenges[challengeKey];
+            if (!await challenge.execute()) {
                 return setError('FORM_ERROR', {
                     message: __('You must be a human to submit this form.', 'give')
                 });
