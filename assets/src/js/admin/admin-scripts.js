@@ -3108,11 +3108,9 @@ const gravatar = require('gravatar');
             Array.from(selectChosen).forEach((dropdown) => {
                 const order = dropdown.dataset.order ? dropdown.dataset.order.split('|') : [];
 
-                if (order.length <= 0) {
-                    return;
+                if (order.length > 0) {
+                    GiveMultiSelectOptions.reorderItems(dropdown, order);
                 }
-
-                GiveMultiSelectOptions.reorderItems(dropdown, order);
 
                 // Update order on change
                 $(dropdown)
@@ -3203,7 +3201,7 @@ const gravatar = require('gravatar');
         },
 
         rebuildDropDown: function (dropdown, options) {
-            dropdown.innerHTML = '';
+            dropdown.empty();
             options.map((option) => {
                 const newOption = document.createElement('option');
                 newOption.value = option.value;
