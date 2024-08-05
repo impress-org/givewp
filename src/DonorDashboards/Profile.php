@@ -188,4 +188,12 @@ class Profile
             return give_get_country();
         }
     }
+
+    /**
+     * @unreleased
+     */
+    public function avatarBelongsToCurrentUser(): bool
+    {
+        return (int)get_post_field("post_author", $this->getAvatarId()) === get_current_user_id();
+    }
 }

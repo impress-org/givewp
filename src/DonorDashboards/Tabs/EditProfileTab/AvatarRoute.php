@@ -50,7 +50,7 @@ class AvatarRoute extends RouteAbstract
 
         // Delete existing Donor profile avatar attachment
         if (give()->donorDashboard->getAvatarId()) {
-            if (!$this->avatarBelongsToCurrentUser()) {
+            if (!give()->donorDashboard->avatarBelongsToCurrentUser()) {
                 return new WP_REST_Response(
                     [
                         'status' => 401,
@@ -119,16 +119,4 @@ class AvatarRoute extends RouteAbstract
             ]
         );
     }
-
-    /**
-     * @unreleased
-     */
-    private function avatarBelongsToCurrentUser(): bool
-    {
-        return get_post_field(
-                "post_author",
-                give()->donorDashboard->getAvatarId()
-            ) === give()->donorDashboard->getId();
-    }
-
 }
