@@ -121,7 +121,7 @@ class AvatarRoute extends RouteAbstract
     }
 
     /**
-     * @unlreased
+     * @unreleased
      */
     private function avatarBelongsToCurrentUser(): bool
     {
