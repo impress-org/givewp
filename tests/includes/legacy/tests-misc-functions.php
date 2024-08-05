@@ -101,7 +101,9 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 *
 	 * @dataProvider  give_meta_helpers_provider
 	 */
-	public function test_give_meta_helpers( $form_or_donation_id ) {
+	public function test_give_meta_helpers( $form_or_donation_id_generator ) {
+		$form_or_donation_id = $form_or_donation_id_generator();
+
 		$value = give_get_meta( $form_or_donation_id, 'testing_meta', true, 'TEST1' );
 		$this->assertEquals( 'TEST1', $value );
 
@@ -129,10 +131,10 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 * @access private
 	 */
 	public function give_meta_helpers_provider() {
-		return array(
-			array( Give_Helper_Payment::create_simple_payment() ),
-			array( Give_Helper_Form::create_simple_form()->id ),
-		);
+		return [
+			[function () { return Give_Helper_Payment::create_simple_payment(); }],
+			[function () { return Give_Helper_Form::create_simple_form()->id; }],
+		];
 	}
 
 	/**
