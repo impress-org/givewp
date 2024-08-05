@@ -33,10 +33,11 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('testMode', give_is_test_mode());
 
         $listDonations = give(ListDonations::class);
+        $expectedItems = $this->getMockColumns($donations);
 
         $response = $listDonations->handleRequest($mockRequest);
 
-        $this->assertSameSize($donations, $response->data['items']);
+        $this->assertSame($expectedItems, $response->data['items']);
     }
 
     /**
@@ -58,7 +59,39 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('sortDirection', $sortDirection);
         $mockRequest->set_param('testMode', give_is_test_mode());
 
-        $expectedItems = $this->getMockColumns($donations,$sortDirection);
+        $expectedItems = $this->getMockColumns($donations, $sortDirection);
+
+        $listDonations = give(ListDonations::class);
+
+        $response = $listDonations->handleRequest($mockRequest);
+
+        $this->assertSame($expectedItems, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldReturnFilteredListByDonorId()
+    {
+        $donations = Donation::factory()->count(5)->create();
+        $donorId = $donations[0]->donorId;
+
+        $mockRequest = $this->getMockRequest();
+        // set_params
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('donor', (string)$donorId);
+        $mockRequest->set_param('testMode', give_is_test_mode());
+
+        $expectedItems = $this->getMockColumns(
+            array_filter($donations, function ($donation) use ($donorId) {
+                return $donation->donorId === $donorId;
+            })
+        );
 
         $listDonations = give(ListDonations::class);
 
