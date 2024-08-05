@@ -1,4 +1,4 @@
-import {Gateway, isFormResponseGatewayError, isFormResponseValidationError} from '@givewp/forms/types';
+import {Challenge, Gateway, isFormResponseGatewayError, isFormResponseValidationError} from '@givewp/forms/types';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 
@@ -6,6 +6,7 @@ import {__} from '@wordpress/i18n';
 import {FieldValues, UseFormSetError} from 'react-hook-form';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
+import validateChallenges from '@givewp/forms/app/utilities/validateFormChallenges';
 
 /**
  * @since 3.0.0
@@ -14,8 +15,13 @@ export default async function handleValidationRequest(
     validateUrl: string,
     values: FieldValues,
     setError: UseFormSetError<FieldValues>,
-    gateway?: Gateway
+    gateway?: Gateway,
+    challenges: Challenge[] = []
 ) {
+    if (challenges.length > 0) {
+        await validateChallenges(challenges, values, setError);
+    }
+
     if (gateway !== undefined && values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
         return setError('FORM_ERROR', {
             message: __(

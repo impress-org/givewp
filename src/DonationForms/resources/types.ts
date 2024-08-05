@@ -328,6 +328,7 @@ export function isDonationTypeSubscription(donationType: string): boolean {
 }
 
 export interface Challenge {
+    value?: any;
     id: string;
     initialize?(): void;
     execute(): Promise<boolean>;
