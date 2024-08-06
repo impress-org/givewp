@@ -83,7 +83,7 @@ input[type="password"],
 input[type="email"],
 input[type="checkbox"],
 textarea {
-    border-color: var(--givewp-primary-color);
+    border-color: rgb(102, 102, 102);
 
     &:focus {
         border-color: transparent;
@@ -94,4 +94,8 @@ textarea {
     &:invalid {
         border-color: red;
     }
+}
+
+input[type='checkbox'] {
+    border-color: var(--givewp-primary-color);
 }
