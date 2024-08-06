@@ -2,8 +2,11 @@
 
 namespace Give\DonorDashboards\Pipeline\Stages;
 
+use Give\Log\Log;
+use WP_REST_Response;
+
 /**
- * @unreleased added security measure avatarBelongsToCurrentUser to updateAvatarInMetaDB
+ * @unreleased added security measures to updateAvatarInMetaDB
  * @since 2.10.0
  */
 class UpdateDonorAvatar implements Stage
@@ -24,18 +27,32 @@ class UpdateDonorAvatar implements Stage
 
     protected function updateAvatarInMetaDB()
     {
-        if (!give()->donorDashboard->avatarBelongsToCurrentUser()){
-            return;
+        if (!array_key_exists('avatarId', $this->data)) {
+            return false;
         }
 
-         $attributeMetaMap = [
-            'avatarId' => '_give_donor_avatar_id',
-        ];
+        $avatarId = $this->data['avatarId'];
 
-        foreach ($attributeMetaMap as $attribute => $metaKey) {
-            if (array_key_exists($attribute, $this->data)) {
-                $this->donor->update_meta($metaKey, $this->data[$attribute]);
-            }
+        if (give()->donorDashboard->getAvatarId() && !give()->donorDashboard->avatarBelongsToCurrentUser($avatarId)) {
+            Log::error(
+                'Avatar update permission denied.',
+                [
+                    'donorId' => give()->donorDashboard->getId(),
+                    'avatarId' => give()->donorDashboard->getAvatarId()
+                ]
+            );
+
+            return new WP_REST_Response(
+                [
+                    'status' => 401,
+                    'response' => 'unauthorized',
+                    'body_response' => [
+                        'message' => __('Avatar update permission denied.', 'give'),
+                    ],
+                ]
+            );
         }
+
+        return $this->donor->update_meta('_give_donor_avatar_id', $avatarId);
     }
 }

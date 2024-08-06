@@ -192,8 +192,8 @@ class Profile
     /**
      * @unreleased
      */
-    public function avatarBelongsToCurrentUser(): bool
+    public function avatarBelongsToCurrentUser(?int $avatarId = null): bool
     {
-        return (int)get_post_field("post_author", $this->getAvatarId()) === get_current_user_id();
+        return (int)get_post_field("post_author", $avatarId ?? $this->getAvatarId()) === get_current_user_id();
     }
 }
