@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards\Pipeline\Stages;
 
 /**
+ * @unreleased added security measure avatarBelongsToCurrentUser to updateAvatarInMetaDB
  * @since 2.10.0
  */
 class UpdateDonorAvatar implements Stage
@@ -23,12 +24,16 @@ class UpdateDonorAvatar implements Stage
 
     protected function updateAvatarInMetaDB()
     {
-        $attributeMetaMap = [
+        if (!give()->donorDashboard->avatarBelongsToCurrentUser()){
+            return;
+        }
+
+         $attributeMetaMap = [
             'avatarId' => '_give_donor_avatar_id',
         ];
 
         foreach ($attributeMetaMap as $attribute => $metaKey) {
-            if (key_exists($attribute, $this->data)) {
+            if (array_key_exists($attribute, $this->data)) {
                 $this->donor->update_meta($metaKey, $this->data[$attribute]);
             }
         }
