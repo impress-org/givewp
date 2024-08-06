@@ -10,7 +10,7 @@ class LegacyStripeAdapterTest extends \Give\Tests\TestCase
         $formData = new FormData;
         $formData->paymentGateway = 'stripe';
         $formData->cardInfo = CardInfo::fromArray([
-            'name' => 'Spammer P. Spam',
+            'name' => 'Tester T. Test',
             'cvc' => '123',
             'expMonth' => '01',
             'expYear' => '99',
