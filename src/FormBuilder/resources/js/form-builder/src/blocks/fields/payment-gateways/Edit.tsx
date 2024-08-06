@@ -5,9 +5,10 @@ import {applyFilters} from '@wordpress/hooks';
 import {InspectorControls} from "@wordpress/block-editor";
 import InspectorNotice from "@givewp/form-builder/components/settings/InspectorNotice";
 import {__} from "@wordpress/i18n";
-import { PanelRow } from '@wordpress/components';
+import {Icon, PanelRow} from '@wordpress/components';
 import useAdditionalPaymentGatewaysNotice
     from "@givewp/form-builder/blocks/fields/payment-gateways/hooks/useAdditionalPaymentGatewaysNotice";
+import {external} from "@wordpress/icons";
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -71,6 +72,13 @@ export default function Edit(props: BlockEditProps<any>) {
                     ))}
             </div>
             <InspectorControls>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <a href={'/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=gateways-settings&group=v3'}
+                       target="_blank">
+                        <Icon icon={external} className='givewp-inspector-notice__externalIcon' />
+                        {__('Enable more payment gateways', 'give')}
+                    </a>
+                </div>
                 {showNotification && (
                     <PanelRow>
                         <InspectorNotice
