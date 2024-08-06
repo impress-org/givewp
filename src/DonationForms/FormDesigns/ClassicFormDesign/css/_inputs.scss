@@ -58,11 +58,6 @@ textarea {
     font-weight: 500;
     line-height: 1.2;
 
-    &[aria-invalid="true"],
-    &:invalid {
-        border-color: red;
-    }
-
     &::placeholder {
         opacity: 0.6;
     }
