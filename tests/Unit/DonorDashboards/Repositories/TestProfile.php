@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.14.2
  */
 final class TestProfile extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.14.2
      */
     public function testAvatarBelongsToCurrentUserShouldReturnTrue(): void
     {
@@ -44,7 +44,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.14.2
      */
     public function testAvatarBelongsToCurrentUserShouldReturnTrueWithAvatarParam(): void
     {
@@ -73,7 +73,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.14.2
      */
     public function testAvatarBelongsToCurrentUserShouldReturnFalse(): void
     {

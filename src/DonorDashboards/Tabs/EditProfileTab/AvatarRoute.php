@@ -7,7 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased added security measure avatarBelongsToCurrentUser to handleRequest
+ * @since 3.14.2 added security measure avatarBelongsToCurrentUser to handleRequest
  * @since 2.10.3
  */
 class AvatarRoute extends RouteAbstract

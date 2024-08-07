@@ -6,7 +6,7 @@ use Give\Log\Log;
 use WP_REST_Response;
 
 /**
- * @unreleased added security measures to updateAvatarInMetaDB
+ * @since 3.14.2 added security measures to updateAvatarInMetaDB
  * @since 2.10.0
  */
 class UpdateDonorAvatar implements Stage
