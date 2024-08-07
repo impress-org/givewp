@@ -7,6 +7,7 @@ use Give\FormMigration\Steps\DoubleTheDonation;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
  * @since 3.8.0
@@ -15,7 +16,9 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
  */
 class TestDoubleTheDonation extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     public function testProcessShouldUpdateDoubleTheDonationBlockAttributes(): void
     {
