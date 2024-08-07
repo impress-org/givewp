@@ -46,18 +46,56 @@ section {
 }
 
 header {
-	padding: 20px 20px 20px 25px;
+	padding: 1.25rem 1.5rem;
 	display: flex;
-	justify-content: space-between;
+    gap: 1rem;
 	align-items: center;
 	border-bottom: 1px solid #ddd;
+
+    &.current-step h2 {
+        color: #0E0E0E;
+        font-weight: 700;
+    }
 
 	h2 {
 		margin: 0;
 		font-size: 22px;
-		line-height: 22px;
+        font-weight: 500;
+		line-height: 1.55;
 		color: #424242;
 	}
+
+    .badge {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        padding: 0.25rem 0.5rem;
+        border-radius: 10px;
+
+        &.badge-completed {
+            color: #18694C;
+            background: #CEF2CF;
+        }
+
+        &.badge-not-completed {
+            color: #404040;
+            background: #F2F2F2;
+        }
+
+        &.badge-optional {
+            color: #0B72D9;
+            background: #F2F9FF;
+        }
+    }
+
+    .button.button-primary {
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        margin-left: auto;
+        padding: 0.5rem 1rem;
+    }
 }
 footer {
 	background-color: #fafafa;
@@ -73,22 +111,6 @@ footer a {
 	> .fa {
 		margin-left: 6px;
 	}
-}
-header .badge {
-	font-weight: 600;
-	font-size: 12px;
-	line-height: 16px;
-	padding: 10px 20px;
-	border-radius: 3px;
-}
-header .badge.badge-complete {
-	color: #18694c;
-	background: #cbf4c9;
-}
-header .badge.badge-review {
-	color: #696969;
-	border: #ddd 1px solid;
-	background: transparent;
 }
 
 article {

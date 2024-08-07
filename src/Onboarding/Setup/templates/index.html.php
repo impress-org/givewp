@@ -1,3 +1,20 @@
+<?php
+/**
+ * GiveWP Onboarding Setup Guide template file
+ *
+ * @unreleased Refactored to make it compatible with v3 forms.
+ * @since 2.8.0
+ */
+
+use Give\DonationForms\Models\DonationForm;
+
+/**
+ * Variables from onboarding PageView
+ *
+ * @var array $settings
+ */
+
+?>
 <div class="wrap" class="give-setup-page">
 
     <h1 class="wp-heading-inline">
@@ -27,34 +44,39 @@
 
     <!-- Configuration -->
     <?php
+    if ($this->isFormConfigured()) {
+        $form = DonationForm::find((int)$settings['form_id']);
+
+        $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
+
+    }
+
     echo $this->render_template(
         'section',
         [
+            'class' => !$this->isFormConfigured() ? 'current-step' : '',
             'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first donation form', 'give')),
-            'badge' => '<span class="badge badge-review">5 Minutes</span>',
-            'contents' => $this->render_template(
-                'row-item',
-                [
-                    'testId' => 'setup-configuration',
-                    'class' => ($this->isFormConfigured(
-                    )) ? 'setup-item-configuration setup-item-completed' : 'setup-item-configuration',
-                    'icon' => ($this->isFormConfigured())
-                        ? $this->image('check-circle.min.png')
-                        : $this->image('configuration@2x.min.png'),
-                    'icon_alt' => esc_html__('First-Time Configuration', 'give'),
-                    'title' => esc_html__('First-Time Configuration', 'give'),
-                    'description' => esc_html__(
-                        'Every fundraising campaign begins with a donation form. Click here to create your first donation form in minutes. Once created you can use it anywhere on your website.',
-                        'give'
-                    ),
-                    'action' => $this->render_template(
-                        'action-link',
-                        [
-                            'href' => admin_url('?page=give-onboarding-wizard'),
-                            'screenReaderText' => 'Configure GiveWP',
-                        ]
-                    ),
-                ]
+            'badge' => ($this->isFormConfigured()
+                ? $this->render_template('badge', [
+                    'class' => 'completed',
+                    'text' => esc_html__('Completed', 'give'),
+                ])
+                : $this->render_template('badge', [
+                    'class' => 'not-completed',
+                    'text' => esc_html__('Not Completed', 'give'),
+                ])
+            ),
+            'button' => ($this->isFormConfigured()
+                ? $this->render_template('action-button', [
+                    'href' => esc_urL($customizeFormURL),
+                    'text' => esc_html__('Customize form', 'give'),
+                    'target' => '_blank',
+                ])
+                : $this->render_template('action-button', [
+                    'href' => esc_url(admin_url('?page=give-onboarding-wizard')),
+                    'text' => esc_html__('Configure GiveWP', 'give'),
+                    'target' => '_blank',
+                ])
             ),
         ]
     );
