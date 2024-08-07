@@ -11,11 +11,17 @@ use Give\Tests\TestCase;
 use PHPUnit_Framework_MockObject_MockBuilder;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @unreleased
+ */
 final class ValidateDonationTest extends TestCase
 {
     protected $spamResponse = [1 => 'true'];
     protected $notSpamResponse = [1 => 'false'];
 
+    /**
+     * @unreleased
+     */
     public function testValidatesNotSpamDonation()
     {
         $data = new DonateControllerData();
@@ -34,6 +40,9 @@ final class ValidateDonationTest extends TestCase
         $this->assertTrue(true); // Assert no exception thrown.
     }
 
+    /**
+     * @unreleased
+     */
     public function testThrowsSpamDonationException()
     {
         $data = new DonateControllerData();
@@ -52,6 +61,9 @@ final class ValidateDonationTest extends TestCase
         $action->__invoke($data);
     }
 
+    /**
+     * @unreleased
+     */
     protected function mockAkismetAPI()
     {
         return $this->createMock(API::class, function(PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
