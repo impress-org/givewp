@@ -62,12 +62,6 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
         }
 
-        if (StellarSaleBanners::isShowing()) {
-            Hooks::addAction('admin_init', SaleBanners::class, 'startSession');
-            Hooks::addAction('admin_notices', StellarSaleBanners::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', StellarSaleBanners::class, 'loadScripts');
-        }
-
         if (ReportsWidgetBanner::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
         }

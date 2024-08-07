@@ -244,59 +244,6 @@ class SaleBanners
 
     /**
      * @since 3.13.0
-     *
-     *  This method cycles through the visible banners, selecting the next banner in the list
-     *  on each call. If no banners are visible, or if the session index is not set, it returns
-     *  all visible banners.
-     */
-    public function alternateVisibleBanners(): array
-    {
-        $visibleBanners = $this->getVisibleBanners();
-        $bannerCount = count($visibleBanners);
-
-        if ($bannerCount > 0) {
-            $currentIndex = $_SESSION['banner_index'] ?? 0;
-
-            $selectedBanner = $visibleBanners[$currentIndex];
-
-            $currentIndex = ($currentIndex + 1) % $bannerCount;
-
-            $_SESSION['banner_index'] = $currentIndex;
-
-            if( !$selectedBanner){
-                $this->destroySession();
-                return $visibleBanners;
-            }
-
-            return [$selectedBanner];
-        }
-
-        return $visibleBanners;
-    }
-
-    /**
-     * @since 3.13.0
-     */
-    public function startSession(): void
-    {
-        if (!session_id()) {
-            session_start();
-        }
-    }
-
-    /**
-     * @since 3.13.0
-     */
-    public function destroySession(): void
-    {
-        if (session_id()) {
-            session_destroy();
-        }
-    }
-
-
-    /**
-     * @since 3.13.0
      */
     public static function getBasicLicenseSlugs(): array
     {
