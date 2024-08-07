@@ -6,6 +6,8 @@ import {Challenge} from '@givewp/forms/types';
 interface ChallengeRegistrar {
     register(challenge: Challenge): void;
 
+    unregister(challenge: Challenge): void;
+
     getAll(): Challenge[];
 
     get(id: string): Challenge | undefined;
@@ -37,6 +39,15 @@ export default class Registrar implements ChallengeRegistrar {
     /**
      * @unreleased
      */
+    public unregister(challenge: Challenge): void {
+        if (this.get(challenge.id)) {
+            this.challenges = this.challenges.filter(({ id }) => id !== challenge.id);
+        }
+    }
+
+    /**
+     * @unreleased
+     */
     public register(challenge: Challenge): void {
         if (challenge.hasOwnProperty('initialize')) {
             try {
@@ -44,6 +55,10 @@ export default class Registrar implements ChallengeRegistrar {
             } catch (e) {
                 console.error(`Error initializing ${challenge.id} gateway:`, e);
             }
+        }
+
+        if (this.get(challenge.id)) {
+            throw new Error(`Challenge with id ${challenge.id} is already registered.`);
         }
 
         this.challenges.push(challenge);

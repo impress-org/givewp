@@ -331,5 +331,5 @@ export interface Challenge {
     value?: any;
     id: string;
     initialize?(): void;
-    execute(): Promise<boolean>;
+    execute(setValue: Function): Promise<boolean>;
 }
