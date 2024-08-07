@@ -1,3 +1,20 @@
+<?php
+/**
+ * GiveWP Onboarding Setup Guide template file
+ *
+ * @unreleased Refactored to make it compatible with v3 forms.
+ * @since 2.8.0
+ */
+
+use Give\DonationForms\Models\DonationForm;
+
+/**
+ * Variables from onboarding PageView
+ *
+ * @var array $settings
+ */
+
+?>
 <div class="wrap" class="give-setup-page">
 
     <h1 class="wp-heading-inline">
@@ -28,10 +45,9 @@
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
-        $form = \Give\DonationForms\Models\DonationForm::find($settings['form_id']);
-        $customizeFormURL = $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url(
-            'edit.php?post_type=give_forms&page=give-forms'
-        );
+        $form = DonationForm::find((int)$settings['form_id']);
+
+        $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
     }
 
     echo $this->render_template(
@@ -51,12 +67,14 @@
             ),
             'button' => ($this->isFormConfigured()
                 ? $this->render_template('action-button', [
-                    'href' => $customizeFormURL,
-                    'text' => __('Customize form', 'give'),
+                    'href' => esc_url($customizeFormURL),
+                    'text' => esc_html__('Customize form', 'give'),
+                    'target' => '_blank',
                 ])
                 : $this->render_template('action-button', [
-                    'href' => admin_url('?page=give-onboarding-wizard'),
-                    'text' => __('Configure GiveWP', 'give'),
+                    'href' => esc_url(admin_url('?page=give-onboarding-wizard')),
+                    'text' => esc_html__('Configure GiveWP', 'give'),
+                    'target' => '_blank',
                 ])
             ),
         ]
@@ -68,9 +86,52 @@
     echo $this->render_template(
         'section',
         [
+            'class' => ($this->isFormConfigured() && !($this->isStripeSetup() || $this->isPayPalSetup())) ? 'current-step' : '',
             'title' => sprintf('%s 2: %s', __('Step', 'give'), __('Connect a payment gateway', 'give')),
+            'badge' => (($this->isStripeSetup() || $this->isPayPalSetup())
+                ? $this->render_template('badge', [
+                    'class' => 'completed',
+                    'text' => esc_html__('Completed', 'give'),
+                ])
+                : $this->render_template('badge', [
+                    'class' => 'not-completed',
+                    'text' => esc_html__('Not Completed', 'give'),
+                ])
+            ),
             'contents' => [
-                ! $this->isStripeSetup() ? $this->render_template(
+                $this->render_template(
+                    'row-item',
+                    [
+                        'testId' => 'stripe',
+                        'class' => ($this->isStripeSetup()) ? 'stripe setup-item-completed' : 'stripe',
+                        'icon' => ($this->isStripeSetup())
+                            ? $this->image('check-circle.min.png')
+                            : $this->image('stripe@2x.min.png'),
+                        'icon_alt' => esc_html__('Stripe', 'give'),
+                        'title' => esc_html__('Connect to Stripe', 'give'),
+                        'description' => esc_html__(
+                            'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations. Remove the fee by installing and activating the premium Stripe add-on.',
+                            'give'
+                        ),
+                        'action' => ($this->isStripeSetup()) ? sprintf(
+                            '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',
+                            esc_url(add_query_arg(
+                                [
+                                    'post_type' => 'give_forms',
+                                    'page' => 'give-settings',
+                                    'tab' => 'gateways',
+                                    'section' => 'stripe-settings',
+                                ],
+                                admin_url('edit.php')
+                            ))
+                        )
+                            : sprintf(
+                                '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect to Stripe</a>',
+                                $this->stripeConnectURL()
+                            ),
+                    ]
+                ),
+               $this->render_template(
                     'row-item',
                     [
                         'testId' => 'paypal',
@@ -102,48 +163,16 @@
                             )
                         ),
                     ]
-                ) : '',
-                ! $this->isPayPalSetup() ? $this->render_template(
-                    'row-item',
-                    [
-                        'testId' => 'stripe',
-                        'class' => ($this->isStripeSetup()) ? 'stripe setup-item-completed' : 'stripe',
-                        'icon' => ($this->isStripeSetup())
-                            ? $this->image('check-circle.min.png')
-                            : $this->image('stripe@2x.min.png'),
-                        'icon_alt' => esc_html__('Stripe', 'give'),
-                        'title' => esc_html__('Connect to Stripe', 'give'),
-                        'description' => esc_html__(
-                            'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations. Remove the fee by installing and activating the premium Stripe add-on.',
-                            'give'
-                        ),
-                        'action' => ($this->isStripeSetup()) ? sprintf(
-                            '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',
-                            esc_url(add_query_arg(
-                                [
-                                    'post_type' => 'give_forms',
-                                    'page' => 'give-settings',
-                                    'tab' => 'gateways',
-                                    'section' => 'stripe-settings',
-                                ],
-                                admin_url('edit.php')
-                            ))
-                        )
-                            : sprintf(
-                                '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect to Stripe</a>',
-                                $this->stripeConnectURL()
-                            ),
-                    ]
-                ) : '',
+                ),
             ],
             'footer' => $this->render_template(
                 'footer',
                 [
                     'contents' => sprintf(
-                        __(
-                            'Want to use a different gateway? GiveWP has support for many others including Authorize.net, Square, Razorpay and more! %s',
-                            'give'
-                        ),
+                        '<img src="%s" /><p><strong>%s</strong> %s</p> %s',
+                        $this->image('payment-gateway.svg'),
+                        __('Explore other payment gateways:', 'give'),
+                        __('GiveWP has support for many others including Authorize.net, Square, Razorpay and more!', 'give'),
                         sprintf(
                             '<a href="%s" target="_blank">%s <i class="fa fa-chevron-right" aria-hidden="true"></i></a>',
                             'http://docs.givewp.com/payment-gateways', // UTM included.
