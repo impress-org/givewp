@@ -7,6 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
+ * @since 3.14.2 added security measure avatarBelongsToCurrentUser to handleRequest
  * @since 2.10.3
  */
 class AvatarRoute extends RouteAbstract
@@ -35,7 +36,7 @@ class AvatarRoute extends RouteAbstract
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        if ( ! (is_array($_POST) && is_array($_FILES))) {
+        if (!(is_array($_POST) && is_array($_FILES))) {
             return new WP_REST_Response(
                 [
                     'status' => 400,
@@ -49,10 +50,23 @@ class AvatarRoute extends RouteAbstract
 
         // Delete existing Donor profile avatar attachment
         if (give()->donorDashboard->getAvatarId()) {
+            if (!give()->donorDashboard->avatarBelongsToCurrentUser()) {
+                return new WP_REST_Response(
+                    [
+                        'status' => 401,
+                        'response' => 'unauthorized',
+                        'body_response' => [
+                            'message' => __('Permission denied.', 'give'),
+                        ],
+                    ]
+                );
+            }
+
             wp_delete_attachment(give()->donorDashboard->getAvatarId(), true);
         }
 
-        if ( ! function_exists('wp_handle_upload')) {
+
+        if (!function_exists('wp_handle_upload')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
         }
 
@@ -105,5 +119,4 @@ class AvatarRoute extends RouteAbstract
             ]
         );
     }
-
 }
