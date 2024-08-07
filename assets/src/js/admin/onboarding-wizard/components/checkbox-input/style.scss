@@ -1,0 +1,49 @@
+/* stylelint-disable  function-url-quotes */
+
+.give-obw-checkbox-input {
+    margin: 0.5rem 1rem;
+    position: relative;
+    padding-left: 2.5rem;
+
+	> .give-obw-checkbox-input__label {
+        color: #333;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.56;
+	}
+
+    > .give-obw-checkbox-input__help {
+        color: #0e0e0e;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        margin-top: 0.5rem;
+    }
+
+	> .give-obw-checkbox-input__input {
+        appearance: none;
+        background-color: #fff;
+        border: solid 1px #4fa651;
+        border-radius: 0.25rem;
+        color: #4fa651;
+        cursor: pointer;
+        font-size: inherit;
+        height: 1.5rem;
+        left: 0;
+        margin: 0;
+        opacity: 1;
+        top: 0;
+        vertical-align: middle;
+        width: 1.5rem;
+
+        &:checked {
+            --icon-checkbox: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27rgb%28255, 255, 255%29%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%2720 6 9 17 4 12%27%3E%3C/polyline%3E%3C/svg%3E");
+
+            background-color: #4fa651;
+            background-image: var(--icon-checkbox);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 1em auto;
+        }
+	}
+}
