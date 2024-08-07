@@ -9,61 +9,61 @@
 */
 
 .give_forms_page_give-setup .wp-header-end {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .wp-heading-inline {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 section,
 section * {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 section {
-	margin-bottom: 40px;
-	color: #424242;
-	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
-	border-radius: 6px;
-	overflow: hidden;
+    margin-bottom: 40px;
+    color: #424242;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .section-dismiss {
-	text-align: center;
+    text-align: center;
 
-	button {
-		cursor: pointer;
-		border: 0;
-		background-color: inherit;
-		color: #9ea3a8;
-		font-size: 16px;
-		font-weight: 600;
-		text-decoration: underline;
-		font-family: 'Open Sans', sans-serif;
-	}
+    button {
+        cursor: pointer;
+        border: 0;
+        background-color: inherit;
+        color: #9ea3a8;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: underline;
+        font-family: 'Open Sans', sans-serif;
+    }
 }
 
 header {
-	padding: 1.25rem 1.5rem;
-	display: flex;
+    padding: 1.25rem 1.5rem;
+    display: flex;
     gap: 1rem;
-	align-items: center;
-	border-bottom: 1px solid #ddd;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
 
     &.current-step h2 {
         color: #0E0E0E;
         font-weight: 700;
     }
 
-	h2 {
-		margin: 0;
-		font-size: 22px;
+    h2 {
+        margin: 0;
+        font-size: 22px;
         font-weight: 500;
-		line-height: 1.55;
-		color: #424242;
-	}
+        line-height: 1.55;
+        color: #424242;
+    }
 
     .badge {
         font-weight: 600;
@@ -97,16 +97,17 @@ header {
         padding: 0.5rem 1rem;
     }
 }
+
 footer {
-	background-color: #fafafa;
+    background-color: #fafafa;
     padding: 1.25rem 1.5rem;
-	font-size: 16px;
+    font-size: 16px;
     align-items: center;
-	display: flex;
-	justify-content: space-between;
-  gap: 0.25rem;
-  
-  p {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem;
+
+    p {
         font-size: 1rem;
         line-height: 1.5;
         margin: 0;
@@ -121,26 +122,27 @@ footer {
         }
     }
 }
-}
 
 article {
-	padding: 20px 0;
-	border-bottom: 1px solid #ddd;
-	display: grid;
-	grid-template-columns: 125px 3fr 1fr;
-	grid-template-areas: 'icon content action';
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    display: grid;
+    grid-template-columns: 125px 3fr 1fr;
+    grid-template-areas: 'icon content action';
 }
+
 article .icon,
 article .action {
-	align-self: center;
-	justify-content: center;
+    align-self: center;
+    justify-content: center;
 }
+
 article .icon {
-	margin: 8px auto 0;
-	align-self: start;
-	flex: 1;
-	width: 75px;
-	grid-area: icon;
+    margin: 8px auto 0;
+    align-self: start;
+    flex: 1;
+    width: 75px;
+    grid-area: icon;
 }
 
 article .action {
@@ -159,82 +161,84 @@ article .action {
 }
 
 article .content {
-	grid-area: content;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding-right: 24px;
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 24px;
 }
+
 article .header {
-	margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
-	font-size: 20px;
-	line-height: 25px;
+    margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
+    font-size: 20px;
+    line-height: 25px;
 }
+
 article .description {
-	grid-area: description;
-	color: #595959;
-	font-size: 16px;
-	line-height: 1.5;
-	font-weight: 400;
+    grid-area: description;
+    color: #595959;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
 .configuration .icon {
-	margin-top: -25px;
-	margin-left: 15px;
+    margin-top: -25px;
+    margin-left: 15px;
 }
 
 article.paypal .action a,
 article.paypal .action button,
 article.stripe .action a,
 article.stripe .action button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-left: 15px;
-	width: 223px;
-	height: 38px;
-	font-size: 16px;
-	font-weight: 600;
-	line-height: 35px;
-	text-align: center;
-	color: #fff;
-	border: 0;
-	border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    width: 223px;
+    height: 38px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 35px;
+    text-align: center;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
 }
 
 article.paypal .action a,
 article.paypal .action button {
-	background-color: #0070bc;
+    background-color: #0070bc;
 }
 
 article.stripe .action a,
 article.stripe .action button {
-	background: #6772e5;
+    background: #6772e5;
 }
 
 .stripe-webhooks {
-	.fa-spinner {
-		margin-right: 10px;
-	}
+    .fa-spinner {
+        margin-right: 10px;
+    }
 
-	.stripe-webhooks-url {
-		cursor: pointer;
-		display: inline-block;
-		margin-top: 10px;
+    .stripe-webhooks-url {
+        cursor: pointer;
+        display: inline-block;
+        margin-top: 10px;
 
-		input {
-			width: 300px;
-			margin-left: -2px; /* Align input with sibling p.description */
-			border-color: transparent;
-			outline-color: transparent;
-		}
-	}
+        input {
+            width: 300px;
+            margin-left: -2px; /* Align input with sibling p.description */
+            border-color: transparent;
+            outline-color: transparent;
+        }
+    }
 }
 
 .setup-item-sub-header {
     font-size: 14px;
-	display: block; // Override inherited grid layout.
-	padding-left: 20px;
+    display: block; // Override inherited grid layout.
+    padding-left: 20px;
 
     a {
         text-decoration: none;
@@ -242,7 +246,7 @@ article.stripe .action button {
 }
 
 .setup-item-completed .header {
-	text-decoration-color: rgba(66, 66, 66, 0.75);
+    text-decoration-color: rgba(66, 66, 66, 0.75);
 }
 
 /** Normalize icon sizes. */
@@ -253,11 +257,11 @@ article.setup-item-pdf-receipts .icon,
 article.setup-item-currency-switcher .icon,
 article.setup-item-recurring-donations .icon,
 article.setup-item-form-fields-manager .icon {
-	width: 70px;
+    width: 70px;
 }
 
 .hidden {
-	display: none;
+    display: none;
 }
 
 #give-activate-license-modal {
