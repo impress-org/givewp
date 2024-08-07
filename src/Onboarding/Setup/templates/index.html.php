@@ -48,7 +48,6 @@ use Give\DonationForms\Models\DonationForm;
         $form = DonationForm::find((int)$settings['form_id']);
 
         $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
-
     }
 
     echo $this->render_template(
@@ -68,7 +67,7 @@ use Give\DonationForms\Models\DonationForm;
             ),
             'button' => ($this->isFormConfigured()
                 ? $this->render_template('action-button', [
-                    'href' => esc_urL($customizeFormURL),
+                    'href' => esc_url($customizeFormURL),
                     'text' => esc_html__('Customize form', 'give'),
                     'target' => '_blank',
                 ])
@@ -188,15 +187,61 @@ use Give\DonationForms\Models\DonationForm;
 
     <!-- Resources -->
     <?php
+    $needsActivation = true;
+    $licenses = get_option('give_licenses', []);
+
+    foreach ($licenses as $license) {
+        if (empty($license['license_key'])) {
+            continue;
+        }
+
+        $licenseKey = $license['license_key'];
+        $licenseStatus = $license['license'];
+        $expiresTimestamp = strtotime($license['expires']);
+
+        $isLicenseInactive = $licenseStatus !== 'valid';
+        $isLicenseExpired = $licenseStatus === 'expired' || $expiresTimestamp < time();
+
+        if (!$isLicenseInactive && !$isLicenseExpired) {
+            $needsActivation = false;
+            break;
+        }
+    }
+
     echo $this->render_template(
         'section',
         [
-            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Level up your fundraising', 'give')),
+            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Get more from your fundraising campaign with add-ons', 'give')),
+            'badge' => $this->render_template('badge', [
+                'class' => 'optional',
+                'text' => esc_html__('Optional', 'give'),
+            ]),
             'contents' => [
-                ! empty($settings['addons']) ? $this->render_template(
+                (! empty($settings['addons'] || $needsActivation)) ? $this->render_template(
                     'sub-header',
                     [
-                        'text' => 'Based on your selections, Give recommends the following add-ons to support your fundraising.',
+                        'text' => sprintf(
+                            '%s%s',
+                            (! empty($settings['addons']) ? esc_html__('Based on your selections, Give recommends the following add-ons to support your fundraising.', 'give') . ' ' : ''),
+                            ($needsActivation ? $this->render_template('activate-license',
+                                [
+                                    'text' => esc_html__('Already have an add-on license?', 'give'),
+                                    'label' => esc_html__('Activate your license', 'give'),
+                                    'href' => esc_url(admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses')),
+                                    'title' => esc_html__('Activate an Add-on License', 'give'),
+                                    'description' => sprintf(
+										__('Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give'),
+                                        Give_License::get_account_url()
+                                    ),
+                                    'nonce' => wp_nonce_field('give-license-activator-nonce', 'give_license_activator_nonce', true, false),
+                                    'form-label' => esc_html__('License key', 'give'),
+                                    'form-placeholder' => esc_html__('Enter your license key', 'give'),
+                                    'form-submit-activate' => esc_html__('Activate License', 'give'),
+                                    'form-submit-activating' => esc_html__('Verifying License...', 'give'),
+                                    'form-submit-value' => esc_html__('Activate License', 'give'),
+                                ]
+                            ) : '')
+                        )
                     ]
                 ) : '',
                 in_array('recurring-donations', $settings['addons']) ? $this->render_template(
@@ -207,7 +252,7 @@ use Give\DonationForms\Models\DonationForm;
                         'icon_alt' => __('Recurring Donations', 'give'),
                         'title' => __('Recurring Donations', 'give'),
                         'description' => __(
-                            'The Recurring Donations add-on for GiveWP brings you more dependable payments by allowing your donors to give regularly at different time intervals. Let your donors choose how often they give and how much. Manage your subscriptions, view specialized reports, and connect more strategically with your recurring donors.',
+                            'Raise funds reliably through subscriptions based donations. Let your donors choose how often they give and how much. Manage your subscriptions, view specialized reports, and strengthen relationships with your recurring donors.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -215,7 +260,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-recurring', // UTM included.
-                                'screenReaderText' => __('Learn more about Recurring Donations', 'give'),
+                                'label' => __('Get Recurring Donations', 'give'),
                             ]
                         ),
                     ]
@@ -228,7 +273,7 @@ use Give\DonationForms\Models\DonationForm;
                         'icon_alt' => __('Fee Recovery', 'give'),
                         'title' => __('Fee Recovery', 'give'),
                         'description' => __(
-                            'Credit Card processing fees can take away a big chunk of your donations. This means less money goes to your cause. Why not ask your donors to further help your cause by asking them to take care of the payment processing fees? That’s where the Fee Recovery add-on comes into play.',
+                            'Maximize your donations by allowing donors to cover payment processing fees, ensuring more funds go directly to your cause.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -236,7 +281,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-fee-recovery', // UTM included.
-                                'screenReaderText' => __('Learn more about Fee Recovery', 'give'),
+                                'label' => __('Get Fee Recovery', 'give'),
                             ]
                         ),
                     ]
@@ -257,7 +302,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-pdf-receipts', // UTM included.
-                                'screenReaderText' => __('Learn more about PDF Receipts', 'give'),
+                                'label' => __('Get PDF Receipts', 'give'),
                             ]
                         ),
                     ]
@@ -278,7 +323,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-ffm', // UTM included.
-                                'screenReaderText' => __('Learn more about Form Field Manager', 'give'),
+                                'label' => __('Get Form Field Manager', 'give'),
                             ]
                         ),
                     ]
@@ -291,7 +336,7 @@ use Give\DonationForms\Models\DonationForm;
                         'icon_alt' => __('Currency Switcher', 'give'),
                         'title' => __('Currency Switcher', 'give'),
                         'description' => __(
-                            'Allow your donors to switch to their currency of choice and increase your overall giving with the GiveWP Currency Switcher add-on. Select from an extensive list of currencies, set the currency based on your donor\'s location, pull from live exchange rates and more!',
+                            'Let donors choose from your selected currencies, increasing global donations with live exchange rates and extensive currency options.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -299,7 +344,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-currency-switcher', // UTM included.
-                                'screenReaderText' => __('Learn more about Currency Switcher', 'give'),
+                                'label' => __('Get Currency Switcher', 'give'),
                             ]
                         ),
                     ]
@@ -320,7 +365,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-tributes', // UTM included.
-                                'screenReaderText' => __('Learn more about Tributes', 'give'),
+                                'label' => __('Get Tributes', 'give'),
                             ]
                         ),
                     ]
@@ -333,7 +378,7 @@ use Give\DonationForms\Models\DonationForm;
                         'icon_alt' => esc_html__('Add-ons', 'give'),
                         'title' => esc_html__('GiveWP Add-ons', 'give'),
                         'description' => esc_html__(
-                            'Make your fundraising even more effective with powerful add-ons like Recurring Donations, Fee Recovery, Google Analytics Donation Tracking, MailChimp, and much more. View our growing library of 35+ add-ons and extend your fundraising now.',
+                            'Boost your fundraising efforts with powerful add-ons like Recurring Donations, Fee Recovery, Google Analytics, Mailchimp, and more. Explore our extensive library of 35+ add-ons to enhance your fundraising now.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -341,7 +386,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/setup-addons', // UTM included.
-                                'screenReaderText' => __('View Add-ons for GiveWP', 'give'),
+                                'label' => esc_html__('View all premium add-ons', 'give'),
                             ]
                         ),
                     ]
@@ -365,7 +410,7 @@ use Give\DonationForms\Models\DonationForm;
                         'icon_alt' => esc_html__('GiveWP Getting Started Guide', 'give'),
                         'title' => esc_html__('GiveWP Getting Started Guide', 'give'),
                         'description' => esc_html__(
-                            'Start off on the right foot by learning the basics of the plugin and how to get the most out of it to further your online fundraising efforts.',
+                            'Learn the basics and advanced tips to optimize your fundraising with GiveWP.',
                             'give'
                         ),
                         'action' => $this->render_template(
@@ -373,7 +418,7 @@ use Give\DonationForms\Models\DonationForm;
                             [
                                 'target' => '_blank',
                                 'href' => 'http://docs.givewp.com/getting-started', // UTM included.
-                                'screenReaderText' => __('Learn more about GiveWP', 'give'),
+                                'label' => __('Get started', 'give'),
                             ]
                         ),
                     ]
