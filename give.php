@@ -239,6 +239,7 @@ final class Give
         Give\PaymentGateways\Gateways\ServiceProvider::class,
         Give\EventTickets\ServiceProvider::class,
         Give\BetaFeatures\ServiceProvider::class,
+        Give\FormTaxonomies\ServiceProvider::class,
     ];
 
     /**

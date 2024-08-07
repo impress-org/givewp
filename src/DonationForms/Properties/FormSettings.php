@@ -263,6 +263,20 @@ class FormSettings implements Arrayable, Jsonable
     public $currencySwitcherSettings;
 
     /**
+     * Form Tags are a custom taxonomy. This setting is only used to pass the selected terms to the server.
+     * @unreleased
+     * @var array
+     */
+    public $formTags;
+
+    /**
+     * Form Categories are a custom taxonomy. This setting is only used to pass the selected terms to the server.
+     * @unreleased
+     * @var array
+     */
+    public $formCategories;
+
+    /**
      * @since 3.7.0 Added formExcerpt
 
     /**
@@ -374,6 +388,14 @@ class FormSettings implements Arrayable, Jsonable
         $self->currencySwitcherSettings = isset($array['currencySwitcherSettings']) && is_array(
             $array['currencySwitcherSettings']
         ) ? $array['currencySwitcherSettings'] : [];
+
+        $self->formTags = isset($array['formTags']) && is_array(
+            $array['formTags']
+        ) ? $array['formTags'] : [];
+
+        $self->formCategories = isset($array['formCategories']) && is_array(
+            $array['formCategories']
+        ) ? $array['formCategories'] : [];
 
         return $self;
     }
