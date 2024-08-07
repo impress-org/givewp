@@ -120,6 +120,22 @@
     justify-content: flex-end;
 }
 
+.button:is(:global(.button)) {
+    border-radius: 0.125rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: 0.5rem 1rem;
+}
+
+.buttonSecondary:is(:global(.button)) {
+    background-color: #fff;
+
+    &:hover {
+        background-color: #f6f7f7;
+    }
+}
+
 .addFormButton {
     $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
 

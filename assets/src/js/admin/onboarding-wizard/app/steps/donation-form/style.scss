@@ -1,72 +1,87 @@
 .give-obw-donation-form {
-	display: grid;
-	position: relative;
-	grid-template-columns: repeat(2, 1fr);
-	width: 1200px;
-	grid-gap: 62px;
-	align-items: center;
+    display: grid;
+    position: relative;
+    grid-template-columns: 578px 1fr;
+    width: 1256px;
+    grid-gap: 80px;
+    align-items: center;
 }
 
 .give-obw-donation-form__content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	align-self: flex-start;
-	height: calc(100vh - 190px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-self: flex-start;
+    height: calc(100vh - 190px);
 
-	.give-obw-donation-form__fixed {
-		position: fixed;
-	}
+    .give-obw-donation-form__fixed {
+        position: fixed;
+        max-width: 616px;
+    }
 
-	h1 {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 600;
-		font-size: 24px;
-		line-height: 34px;
-		color: #333;
-		margin: 0 0 8px 0;
-	}
+    h1 {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 34px;
+        color: #333;
+        margin: 0 0 8px;
+    }
 
-	p {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		font-size: 16px;
-		line-height: 22px;
-		color: #333;
-		margin: 0 0 38px;
-	}
+    p {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        color: #333;
+        margin: 0 0 24px;
+    }
 
-	h2 {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 600;
-		font-size: 16px;
-		line-height: 22px;
-		color: #333;
-		margin: 0 0 4px 0;
-	}
+    h2 {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        color: #333;
+        margin: 0 0 4px 0;
+    }
 
-	ul {
-		padding: 0;
-		margin: 12px 0 36px 0;
-		list-style: none;
+    ul {
+        padding: 0;
+        margin: 12px 0 36px 0;
+        list-style: none;
 
-		> li {
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			font-weight: 500;
-			font-size: 16px;
-			line-height: 2;
-			color: #333;
+        > li {
+            font-family: Montserrat, Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
 
-			padding: 0;
-			margin: 2px 0;
+            padding: 0;
+            margin: 8px 0 0;
 
-			display: flex;
-			align-items: center;
+            display: flex;
+            align-items: center;
 
-			svg {
-				margin: 0 8px 0 4px;
-			}
-		}
-	}
+            svg {
+                margin-right: 8px;
+            }
+        }
+    }
+
+    .give-obw-newsletter-subscription-field {
+        margin-bottom: 2rem;
+        max-width: 590px;
+
+        .give-obw-checkbox-input {
+            margin-left: 0;
+            margin-right: 0;
+
+            &__help {
+                margin-bottom: 0;
+            }
+        }
+    }
 }

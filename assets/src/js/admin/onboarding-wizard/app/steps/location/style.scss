@@ -1,35 +1,48 @@
 .give-obw-location {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-	> svg {
-		top: 50px;
-		position: absolute;
-	}
+    > svg {
+        top: 50px;
+        position: absolute;
+    }
 
-	> h1 {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 600;
-		font-size: 24px;
-		line-height: 34px;
-		color: #333;
+    > h1 {
+        font-family: Montserrat, Arial, Helvetica, sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 34px;
+        color: #333;
+        margin: 0 0 0.75rem;
+    }
 
-		margin: 0 0 52px 0;
-	}
+    > p {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #333;
+        margin: 0 0 1.5rem
+    }
 
-	.give-obw-card {
-		padding: 40px;
-		margin-bottom: 85px;
-	}
+    .give-obw-card {
+        padding: 40px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+        width: 445px;
+    }
 
-	.give-obw-select-input {
-		width: 100%;
-		margin-bottom: 42px;
+    .give-obw-select-input {
+        width: 100%;
+        margin-bottom: 42px;
 
-		&:last-of-type {
-			margin-bottom: 0;
-		}
-	}
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    .give-obw-footer {
+        width: 445px;
+    }
 }
