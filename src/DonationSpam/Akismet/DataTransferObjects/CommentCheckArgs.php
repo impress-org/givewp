@@ -23,7 +23,7 @@ class CommentCheckArgs
     /**
      * @unreleased
      */
-    public static function make(DonateControllerData $data)
+    public static function make(DonateControllerData $data): CommentCheckArgs
     {
         $self = new self();
 
@@ -53,7 +53,7 @@ class CommentCheckArgs
     /**
      * @unreleased
      */
-    public function toHttpQuery()
+    public function toHttpQuery(): string
     {
         return http_build_query(get_object_vars($this));
     }
