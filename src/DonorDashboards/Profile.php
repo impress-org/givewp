@@ -190,7 +190,7 @@ class Profile
     }
 
     /**
-     * @unreleased
+     * @since 3.14.2
      */
     public function avatarBelongsToCurrentUser(?int $avatarId = null): bool
     {

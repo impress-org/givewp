@@ -415,7 +415,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
- * @unreleased add give-form-title, give_title
+ * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
