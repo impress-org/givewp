@@ -5,6 +5,15 @@
  * @unreleased Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */
+
+use Give\DonationForms\Models\DonationForm;
+
+/**
+ * Variables from onboarding PageView
+ *
+ * @var array $settings
+ */
+
 ?>
 <div class="wrap" class="give-setup-page">
 
@@ -36,10 +45,10 @@
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
-        $form = \Give\DonationForms\Models\DonationForm::find($settings['form_id']);
-        $customizeFormURL = $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url(
-            'edit.php?post_type=give_forms&page=give-forms'
-        );
+        $form = DonationForm::find((int)$settings['form_id']);
+
+        $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
+
     }
 
     echo $this->render_template(
