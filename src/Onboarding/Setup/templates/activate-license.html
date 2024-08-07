@@ -1,0 +1,50 @@
+{{ text }} <a href="{{ href }}" class="activate-license">{{ label }}</a>
+
+<dialog class="give-modal-dialog" id="give-activate-license-modal">
+    <div id="give-license-activator-wrap" class="give-license-top-widget">
+        <div id="give-license-activator-inner">
+            <div class="give-license-widget-heading">
+                <h2>{{ title }}</h2>
+                <button aria-label="Close dialog" class="givewp-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"
+                         aria-label="Close dialog icon">
+                        <path
+                            d="M18.707 6.707a1 1 0 0 0-1.414-1.414L12 10.586 6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="give-license-widget-content">
+                <p class="give-field-description">
+                    {{ description }}
+                </p>
+
+                <form method="post" action="" class="give-license-activation-form">
+
+                    <div class="give-license-notices"></div>
+
+                    {{ nonce }}
+
+                    <label for="give-license-activator">
+                        {{ form-label }}
+                    </label>
+
+                    <input
+                        id="give-license-activator"
+                        type="text"
+                        name="give_license_key"
+                        placeholder="{{ form-placeholder }}"
+                    />
+
+                    <input
+                        data-activate="{{ form-submit-activate }}"
+                        data-activating="{{ form-submit-activating }}"
+                        value="{{ form-submit-value }}"
+                        type="submit"
+                        class="button button-primary"
+                        disabled
+                    />
+                </form>
+            </div>
+        </div>
+    </div>
+</dialog>
