@@ -49,9 +49,13 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
-        add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
+        /*add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
             return (new DonationQuery())->form($donationFormId)->sumAmount();
-        }, 10, 2);
+        }, 10, 2);*/
+
+        /*add_filter('give_goal_amount_raised_output', function ($earnings) {
+        return '0';
+        }, 999);*/
 
         $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
@@ -68,8 +72,9 @@ class GoalColumn extends ModelColumn
             >
                 <span style="width: %2$s%%"></span>
             </div>
-            <div id="giveDonationFormsProgressBar-%1$d">
-                <span class="goal">%3$s</span>%4$s %5$s
+            <div id="giveDonationFormsProgressBar-%1$d" data-form-id="%1$s">
+                <span class="goal"><span class="dashicons dashicons-hourglass"></span></span>%4$s %5$s
+                <!--<span class="goal">%3$s</span>%4$s %5$s-->
             </div>
         ';
 

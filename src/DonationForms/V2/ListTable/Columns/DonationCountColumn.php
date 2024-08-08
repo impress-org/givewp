@@ -48,7 +48,8 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = (new ProgressBarModel(['ids' => [$model->id]]))->getDonationCount();
+        $totalDonations = $model->totalNumberOfDonations;
+        //$totalDonations = (new ProgressBarModel(['ids' => [$model->id]]))->getDonationCount();
 
         $label = $totalDonations > 0
             ? sprintf(

@@ -1976,7 +1976,8 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 1.8.8
 			 */
-			$actual = apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+            $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+            //$actual = apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
 			break;
 	}
 
