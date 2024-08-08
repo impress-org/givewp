@@ -92,28 +92,14 @@ roots.forEach((root) => {
     const formUrl = root.getAttribute('data-form-url');
     const formViewUrl = root.getAttribute('data-form-view-url');
 
-    if (createRoot) {
-        createRoot(root).render(
-            <DonationFormBlockApp
-                openFormButton={openFormButton}
-                formFormat={formFormat}
-                dataSrc={dataSrc}
-                embedId={embedId}
-                formUrl={formUrl}
-                formViewUrl={formViewUrl}
-            />
-        );
-    } else {
-        render(
-            <DonationFormBlockApp
-                openFormButton={openFormButton}
-                formFormat={formFormat}
-                dataSrc={dataSrc}
-                embedId={embedId}
-                formUrl={formUrl}
-                formViewUrl={formViewUrl}
-            />,
-            root
-        );
-    }
+    createRoot(root).render(
+        <DonationFormBlockApp
+            openFormButton={openFormButton}
+            formFormat={formFormat}
+            dataSrc={dataSrc}
+            embedId={embedId}
+            formUrl={formUrl}
+            formViewUrl={formViewUrl}
+        />
+    );
 });

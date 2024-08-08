@@ -1,10 +1,11 @@
 import {StrictMode} from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import DonorsListTable from './components/DonorsListTable';
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('give-admin-donors-root'));
+
+root.render(
     <StrictMode>
         <DonorsListTable />
     </StrictMode>,
-    document.getElementById('give-admin-donors-root')
 );

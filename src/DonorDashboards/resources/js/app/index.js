@@ -2,7 +2,7 @@
 
 // Vendor dependencies
 import {HashRouter as Router} from 'react-router-dom';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import React from 'react';
 import {Provider} from 'react-redux';
 
@@ -39,12 +39,13 @@ window.giveDonorDashboard = {
 window.addEventListener('DOMContentLoaded', (event) => {
     registerDefaultTabs();
 
-    ReactDOM.render(
+    const root = createRoot(document.getElementById('give-donor-dashboard'));
+
+    root.render(
         <Provider store={store}>
             <Router>
                 <App />
             </Router>
         </Provider>,
-        document.getElementById('give-donor-dashboard')
     );
 });

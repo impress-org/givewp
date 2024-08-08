@@ -1,7 +1,7 @@
 // Entry point for dashboard widget
 
 // Vendor dependencies
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import moment from 'moment';
 
 // Reports widget
@@ -30,10 +30,8 @@ const initialState = {
 const container = document.getElementById('givewp-reports-widget');
 
 if (container) {
-    ReactDOM.render(
-        <StoreProvider initialState={initialState} reducer={reducer}>
+    createRoot(container).render(<StoreProvider initialState={initialState} reducer={reducer}>
             <Widget />
-        </StoreProvider>,
-        document.getElementById('givewp-reports-widget')
+        </StoreProvider>
     );
 }

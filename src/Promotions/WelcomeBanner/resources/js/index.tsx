@@ -1,6 +1,6 @@
 import App from './app/app';
 import {StrictMode} from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 type windowData = {
     assets: string;
@@ -33,5 +33,5 @@ if (root) {
     // Place banner underneath Plugin header
     pluginHeader.insertAdjacentElement('afterend', root);
 
-    ReactDOM.render(<RenderApp />, root);
+    createRoot(root).render(<RenderApp />);
 }
