@@ -1259,9 +1259,13 @@ function give_set_form_closed_status( $form_id ) {
  * @return string
  */
 function give_admin_form_goal_stats( $form_id ) {
-    add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
+    /*add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
         return (new DonationQuery())->form($donationFormId)->sumAmount();
-    }, 10, 2);
+    }, 10, 2);*/
+
+    /*add_filter('give_goal_amount_raised_output', function ($earnings) {
+        return '0';
+    }, 999);*/
 
 	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id );
@@ -1276,13 +1280,14 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	$html .= sprintf(
 		( 'percentage' !== $goal_stats['format'] ) ?
-			'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s ' :
-			'<div class="give-goal-text"><a href="%3$s">%1$s </a>',
-		( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
+			'<div class="give-goal-text" data-form-id="%6$s"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a> %5$s ' :
+			'<div class="give-goal-text" data-form-id="%6$s"><a href="%3$s">%1$s </a>',
+		( 'percentage' !== $goal_stats['format'] ) ? /*$goal_stats['actual']*/ '<span class="dashicons dashicons-hourglass"></span>' : $percent_complete . '%',
 		( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 		esc_url( admin_url( "post.php?post={$form_id}&action=edit&give_tab=donation_goal_options" ) ),
 		$goal_stats['goal'],
-		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
+		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) ),
+        $form_id
 	);
 
 	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {

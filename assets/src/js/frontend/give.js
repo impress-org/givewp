@@ -20,6 +20,8 @@ import iFrameResizer from '../plugins/form-template/iframe-content';
 import '../plugins/form-template/parent-page';
 import '../../../../src/Form/LegacyConsumer/resources/js/conditional-fields';
 
+import '../../../../src/DonationForms/resources/utils/loadProgressBarRaisedAmountOnFormListViews';
+
 window.addEventListener('load', function () {
     window.Give.WINDOW_IS_LOADED = true;
 });

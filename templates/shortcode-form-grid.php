@@ -249,7 +249,8 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
+                        'income' => $form->get_earnings(),
+                        //'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,
@@ -263,9 +264,9 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 /**
                  * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
                  */
-                add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
+                /*add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
                     return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-                }, 10, 2);
+                }, 10, 2);*/
 
                 switch ($goal_format) {
                     case 'donation':
@@ -463,7 +464,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo $form->get_sales() ?>
+                                echo give_format_amount($form->get_sales(), ['decimal' => false]) /*echo $form->get_sales()*/ ?>
                             </span>
                             <span class="goal">
                                 <?php
