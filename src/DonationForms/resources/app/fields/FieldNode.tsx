@@ -6,11 +6,13 @@ import memoNode from '@givewp/forms/app/utilities/memoNode';
 
 const formTemplates = window.givewp.form.templates;
 
+const excludeFromTemplateWrapper = ['hidden', 'honeypot'];
+
 function FieldNode({node}: {node: Field}) {
     const {register} = window.givewp.form.hooks.useFormContext();
     const {errors} = window.givewp.form.hooks.useFormState();
     const Field =
-        node.type !== 'hidden'
+        !excludeFromTemplateWrapper.includes(node.type)
             ? useTemplateWrapper<FieldProps>(formTemplates.fields[node.type], 'div', node.name)
             : formTemplates.fields[node.type];
     const fieldProps = registerFieldAndBuildProps(node, register, errors);

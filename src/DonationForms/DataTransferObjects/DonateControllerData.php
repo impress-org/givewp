@@ -128,6 +128,10 @@ class DonateControllerData
      * @var string
      */
     public $comment;
+    /**
+     * @var string|null
+     */
+    public $donationBirthday;
 
     /**
      * @since 3.9.0 Added phone property
@@ -236,6 +240,7 @@ class DonateControllerData
      *
      * TODO: figure out a less static way of doing this
      *
+     * @unreleased added honeypot field donationBirthday
      * @since 3.0.0
      */
     public function getCustomFields(): array
@@ -256,6 +261,7 @@ class DonateControllerData
                         'isEmbed',
                         'embedId',
                         'donationType',
+                        'donationBirthday',
                         'subscriptionPeriod',
                         'subscriptionFrequency',
                         'subscriptionInstallments',

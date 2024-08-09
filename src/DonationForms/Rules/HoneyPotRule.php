@@ -34,7 +34,7 @@ class HoneyPotRule implements ValidationRule, ValidatesOnFrontEnd
     {
         if (!empty($value)) {
             $fail(
-                __('Permission denied.', 'give')
+                __('Thank you for the submission!', 'give')
             );
         }
     }

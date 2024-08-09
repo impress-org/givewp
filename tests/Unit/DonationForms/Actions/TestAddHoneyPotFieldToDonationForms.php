@@ -29,8 +29,8 @@ class TestAddHoneyPotFieldToDonationForms extends TestCase {
 
         /** @var Section $lastSection */
         $lastSection = $formNode->getNodeByName('section-3');
-        $this->assertNotNull($lastSection->getNodeByName('givewp-birthday'));
-        $this->assertInstanceOf(Text::class, $lastSection->getNodeByName('givewp-birthday'));
+        $this->assertNotNull($lastSection->getNodeByName('donationBirthday'));
+        $this->assertInstanceOf(Text::class, $lastSection->getNodeByName('donationBirthday'));
     }
 
     /**
@@ -46,6 +46,6 @@ class TestAddHoneyPotFieldToDonationForms extends TestCase {
         $action = new AddHoneyPotFieldToDonationForms();
         $action($formNode);
 
-        $this->assertNull($formNode->getNodeByName('givewp-birthday'));
+        $this->assertNull($formNode->getNodeByName('donationBirthday'));
     }
 }
