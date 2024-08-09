@@ -249,28 +249,32 @@ class ListDonations extends Endpoint
      */
     protected function getWhereConditions(QueryBuilder $query): array
     {
-        $search = $this->request->get_param('search');
         $dependencies = [];
+        list($query, $dependencies) = $this->getSearchWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getDonorWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getFormWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getDateWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
 
+        return [$query, $dependencies];
+    }
 
-        if ($search) {
-            if (ctype_digit($search)) {
-                $query->where('id', $search);
-            } elseif (strpos($search, '@') !== false) {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
-                $dependencies[] = DonationMetaKeys::EMAIL();
-            } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
-                $dependencies[] = DonationMetaKeys::FIRST_NAME();
-                $dependencies[] = DonationMetaKeys::LAST_NAME();
-            }
+    private function getSearchWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $search = $this->request->get_param('search');
+        if (!$search) return [$query, $dependencies];
+        if (ctype_digit($search)) {
+            $query->where('id', $search);
+        } elseif (strpos($search, '@') !== false) {
+            $query
+                ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
+            $dependencies[] = DonationMetaKeys::EMAIL();
+        } else {
+            $query
+                ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
+                ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+            $dependencies[] = DonationMetaKeys::FIRST_NAME();
+            $dependencies[] = DonationMetaKeys::LAST_NAME();
         }
         return [$query, $dependencies];
     }
