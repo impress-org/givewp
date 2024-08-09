@@ -187,10 +187,17 @@ class DonateControllerData
     }
 
     /**
+     * @unreleased Added "givewp_donation_confirmation_page_redirect_enabled" filter
      * @since 3.0.0
      */
     public function getSuccessUrl(Donation $donation): string
     {
+        $form = $this->getDonationForm();
+
+        if (apply_filters('givewp_donation_confirmation_page_redirect_enabled', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
+            return $this->getDonationConfirmationPageFromSettings($donation);
+        }
+
         return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
@@ -220,6 +227,22 @@ class DonateControllerData
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
         return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->embedId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationPageFromSettings(Donation $donation): string
+    {
+        $settings = give_get_settings();
+
+        $page = isset($settings['success_page'])
+            ? get_permalink(absint($settings['success_page']))
+            : get_bloginfo('url');
+
+        $page = apply_filters('givewp_donation_confirmation_page_redirect_permalink', $page, $donation->formId);
+
+        return esc_url_raw(add_query_arg(['receipt-id' => $donation->purchaseKey], $page));
     }
 
     /**
