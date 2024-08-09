@@ -23,14 +23,16 @@ class ListDonations extends Endpoint
     protected $endpoint = 'admin/donations';
 
     /**
+     * @unreleased becomes public to be usable in hooks
      * @var WP_REST_Request
      */
-    protected $request;
+    public $request;
 
     /**
+     * @unreleased becomes public to be usable in hooks
      * @var DonationsListTable
      */
-    protected $listTable;
+    public $listTable;
 
     /**
      * @since 3.4.0
@@ -46,6 +48,77 @@ class ListDonations extends Endpoint
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1
+            ],
+            'form' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 0
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'validate_callback' => [$this, 'validateDate']
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'validate_callback' => [$this, 'validateDate']
+            ],
+            'donor' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc',
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'testMode' => [
+                'type' => 'boolean',
+                'required' => false,
+                'default' => give_is_test_mode(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns',
+                ],
+            ],
+        ];
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -55,77 +128,22 @@ class ListDonations extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1
-                    ],
-                    'form' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 0
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
-                    ],
-                    'donor' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc',
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'testMode' => [
-                        'type' => 'boolean',
-                        'required' => false,
-                        'default' => give_is_test_mode(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns',
-                        ],
-                    ],
-                ],
+                /**
+                 * Allow adding API endpoint args
+                 *
+                 * @unreleased
+                 * @param array $args Array of api args {
+                 *     Arg details
+                 *
+                 *     @type string   $type              Type of value
+                 *     @type boolean  $required          Is this arg required for each request
+                 *     @type mixed    $default           Optional - Default value for this arg
+                 *     @type callable $validate_callback Optional
+                 *     @type callable $sanitize_callback Optional
+                 *     @type mixed[]  $enum              Optional - Array of allowed values
+                 * }[]
+                 */
+                'args' => apply_filters('give_list-donation_api_args', $args),
             ]
         );
     }
