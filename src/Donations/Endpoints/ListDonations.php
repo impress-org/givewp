@@ -223,9 +223,7 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->groupBy('mode');
+        $query = DB::table('posts')->where('post_type', 'give_payment');
 
         list($query, $dependencies) = $this->getWhereConditions($query);
 
@@ -256,13 +254,9 @@ class ListDonations extends Endpoint
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
-        $testMode = $this->request->get_param('testMode');
+        $dependencies = [];
+        list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
 
-        $dependencies = [
-            DonationMetaKeys::MODE(),
-        ];
-
-        $hasWhereConditions = $search || $start || $end || $form || $donor;
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -307,19 +301,22 @@ class ListDonations extends Endpoint
         } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
+        return [$query, $dependencies];
+    }
 
-        if ($hasWhereConditions) {
-           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
-        } elseif ($testMode) {
+    private function getModeWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $dependencies[] = DonationMetaKeys::MODE();
+        $testMode = $this->request->get_param('testMode');
+        if ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
-            $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-            ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            $query->where(function ($whereBuilder) {
+                $whereBuilder
+                    ->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            });
         }
-
-        return [
-            $query,
-            $dependencies,
-        ];
+        return [$query, $dependencies];
     }
 }
