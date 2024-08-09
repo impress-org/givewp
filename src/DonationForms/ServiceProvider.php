@@ -3,6 +3,7 @@
 namespace Give\DonationForms;
 
 use Exception;
+use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
@@ -69,6 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerShortcodes();
         $this->registerPostStatus();
         $this->registerAddFormSubmenuLink();
+        $this->registerHoneyPotField();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -207,5 +209,13 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('init', static function () {
             register_post_status(DonationFormStatus::UPGRADED);
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerHoneyPotField(): void
+    {
+        Hooks::addAction('givewp_donation_form_schema', AddHoneyPotFieldToDonationForms::class);
     }
 }
