@@ -256,7 +256,17 @@ class ListDonations extends Endpoint
         list($query, $dependencies) = $this->getDateWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
 
-        return [$query, $dependencies];
+        /**
+         * Allow adding request clauses
+         *
+         * @unreleased
+         * @param array $value {
+         *     @type ModelQueryBuilder  $query        Donation query builder
+         *     @type DonationMetaKeys[] $dependencies List of meta dependencies for added where clauses
+         * }
+         * @param ListDonations $endpoint API Endpoint instance
+         */
+        return apply_filters('give_list-donation_where_conditions', [$query, $dependencies], $this);
     }
 
     private function getSearchWhereCondition (QueryBuilder $query, array $dependencies)
