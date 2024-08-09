@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const fetchFormData = (item) => {
+        item.classList.add('list-view-async-data');
+
         const formId = item.id.split('post-')[1];
         const columnGoal = item.querySelector('.column-goal');
         const columnDonations = item.querySelector('.column-donations');
@@ -39,14 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 columnDonations.querySelector('a').innerHTML = response.data.donationsCount;
                 columnEarnings.querySelector('a').innerHTML = response.data.earnings;
-
-                item.classList.add('async-data-loaded');
             }
         });
     }
 
     const maybeLoadAsyncData = () => {
-        const legacyAdminAllFormsListViewItems = document.querySelectorAll('.type-give_forms:not(.async-data-loaded)');
+        const legacyAdminAllFormsListViewItems = document.querySelectorAll('.type-give_forms:not(.list-view-async-data)');
         console.log('legacyAdminAllFormsListViewItems.length: ', legacyAdminAllFormsListViewItems.length);
         if (legacyAdminAllFormsListViewItems.length > 0) {
             legacyAdminAllFormsListViewItems.forEach((item) => {
