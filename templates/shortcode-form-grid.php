@@ -239,7 +239,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             // Maybe display the goal progress bar.
 
             if (!$hide_goal) :
-                $goal_progress_stats = give_goal_progress_stats($form);
+                $goal_progress_stats = give_goal_progress_stats($form, true);
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
@@ -305,7 +305,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                     ?>
                     <div class="form-grid-raised">
-                        <div class="form-grid-raised__details">
+                        <div class="form-grid-raised__details" data-form-id="<?php echo $form_id ?>">
                             <?php
                             if ('amount' === $goal_format) :
 
@@ -413,7 +413,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    esc_attr($formatted_income),
+                                    '<span class="dashicons dashicons-hourglass"></span>', //esc_attr($formatted_income),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );

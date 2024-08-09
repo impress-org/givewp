@@ -1933,13 +1933,15 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
  * @return array
  * @since 2.1
  */
-function give_goal_progress_stats( $form ) {
+function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 
 	if ( ! $form instanceof Give_Donate_Form ) {
 		$form = new Give_Donate_Form( $form );
 	}
 
 	$goal_format = give_get_form_goal_format( $form->ID );
+
+    $placeholder = '<span class="dashicons dashicons-hourglass"></span>';
 
 	/**
 	 * Filter the form.
@@ -1976,12 +1978,12 @@ function give_goal_progress_stats( $form ) {
 			 *
 			 * @since 1.8.8
 			 */
-            $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
-            //$actual = apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+            //$actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+            $actual = $usePlaceholder ? $placeholder : apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
 			break;
 	}
 
-	$progress = $total_goal ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
+	$progress = $total_goal && !$usePlaceholder ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
 
 	$stats_array = [
 		'raw_actual' => $actual,
@@ -1998,17 +2000,17 @@ function give_goal_progress_stats( $form ) {
 	// Define Actual Goal based on the goal format.
 	switch ( $goal_format ) {
 		case 'percentage':
-			$actual     = "{$progress}%";
+			$actual     = $usePlaceholder ? $placeholder : "{$progress}%";
 			$total_goal = '';
 			break;
 
 		case 'amount' === $goal_format:
-			$actual     = give_currency_filter( give_format_amount( $actual ) );
+			$actual     = $usePlaceholder ? $placeholder : give_currency_filter( give_format_amount( $actual ) );
 			$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 			break;
 
 		default:
-			$actual     = give_format_amount( $actual, [ 'decimal' => false ] );
+			$actual     = $usePlaceholder ? $placeholder : give_format_amount( $actual, [ 'decimal' => false ] );
 			$total_goal = give_format_amount( $total_goal, [ 'decimal' => false ] );
 			break;
 	}
@@ -2029,6 +2031,17 @@ function give_goal_progress_stats( $form ) {
 	 * @since 2.1
 	 */
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
+}
+
+function give_goal_progress_stats_placeholder() {
+    return [
+        'progress' => 0,
+        'actual'   => 0,
+        'goal'     => 0,
+        'format'   => 0,
+        'raw_actual'   => 0,
+        'raw_goal'   => 0,
+    ];
 }
 
 /**

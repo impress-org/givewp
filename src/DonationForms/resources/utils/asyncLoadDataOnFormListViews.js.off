@@ -1,0 +1,36 @@
+// Code to handle showing/hiding admin notices (based on dismissed status in localStorage)
+
+document.addEventListener('DOMContentLoaded', () => {
+    const adminAllFormsListViewItems = document.querySelectorAll("[id^='giveDonationFormsProgressBar']");
+    if (adminAllFormsListViewItems.length > 0) {
+        console.log('adminAllFormsListViewItems: ', adminAllFormsListViewItems);
+        adminAllFormsListViewItems.forEach((item) => {
+            const formId = item.getAttribute("data-form-id");
+            item.querySelector('span').innerHTML = formId;
+        });
+    }
+
+    const legacyAdminAllFormsListViewItems = document.querySelectorAll(".column-goal");
+    if (legacyAdminAllFormsListViewItems.length > 0) {
+        legacyAdminAllFormsListViewItems.forEach((item) => {
+            const giveGoalTextElement = item.querySelector(".give-goal-text");
+            const progressBar = item.querySelector(".give-admin-progress-bar");
+            if (!!giveGoalTextElement && !!progressBar){
+                const formId = giveGoalTextElement.getAttribute("data-form-id");
+                progressBar.querySelector('span').style.width = '100%';
+                giveGoalTextElement.querySelector('span').innerHTML = formId;
+            }
+        });
+    }
+
+    const formGridItems = document.querySelectorAll(".form-grid-raised");
+    if (formGridItems.length > 0) {
+        formGridItems.forEach((item) => {
+            const giveGoalTextElement = item.querySelector("div:nth-child(1)");
+            if (!!giveGoalTextElement) {
+                const formId = giveGoalTextElement.getAttribute("data-form-id");
+                giveGoalTextElement.querySelector('span').innerHTML = formId;
+            }
+        });
+    }
+});

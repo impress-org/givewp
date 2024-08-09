@@ -57,7 +57,7 @@ class GoalColumn extends ModelColumn
         return '0';
         }, 999);*/
 
-        $goal = give_goal_progress_stats($model->id);
+        $goal = give_goal_progress_stats($model->id, true);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
             $goal['actual']) : max(min($goal['progress'], 100), 0);
 

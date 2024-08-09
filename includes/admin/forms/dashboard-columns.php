@@ -87,7 +87,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-					echo give_admin_form_goal_stats( $post_id );
+					echo give_admin_form_goal_stats( $post_id, true );
 
 				} else {
 					_e( 'No Goal Set', 'give' );
@@ -105,7 +105,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-						give_get_form_sales_stats( $post_id )
+                        '<span class="dashicons dashicons-hourglass"></span>' //give_get_form_sales_stats( $post_id )
 					);
 				} else {
 					echo '-';
@@ -116,7 +116,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
+						'<span class="dashicons dashicons-hourglass"></span>' //give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
 					);
 				} else {
 					echo '-';
@@ -181,9 +181,9 @@ function give_sort_forms( $vars ) {
 		return $vars;
 	}
 
-    add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
+    /*add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
         return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-    }, 10, 2);
+    }, 10, 2);*/
 
 	switch ( $vars['orderby'] ) {
 		// Check if 'orderby' is set to "sales".

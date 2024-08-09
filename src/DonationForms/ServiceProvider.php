@@ -2,9 +2,11 @@
 
 namespace Give\DonationForms;
 
+use Duplicator\Installer\Core\Hooks\Hook;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
+use Give\DonationForms\Actions\getAsyncFormDataForListView;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -32,6 +34,7 @@ use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 
 class ServiceProvider implements ServiceProviderInterface
@@ -80,6 +83,9 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
+
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
     }
 
     /**
