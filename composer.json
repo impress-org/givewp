@@ -107,6 +107,11 @@
                     "symfony/deprecation-contracts"
                 ]
             },
+            "exclude_from_prefix": {
+                "namespaces": [
+                    "session"
+                ]
+            },
             "delete_vendor_packages": true,
             "override_autoload": {
                 "symfony/polyfill-ctype": {},
