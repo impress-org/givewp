@@ -250,11 +250,10 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $start = $this->request->get_param('start');
-        $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
         $dependencies = [];
+        list($query, $dependencies) = $this->getDateWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
 
 
@@ -293,7 +292,13 @@ class ListDonations extends Endpoint
                 ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
             $dependencies[] = DonationMetaKeys::FORM_ID();
         }
+        return [$query, $dependencies];
+    }
 
+    private function getDateWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
         } elseif ($start) {
