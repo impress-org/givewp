@@ -250,8 +250,8 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $donor = $this->request->get_param('donor');
         $dependencies = [];
+        list($query, $dependencies) = $this->getDonorWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getFormWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getDateWhereCondition($query, $dependencies);
         list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
@@ -272,7 +272,12 @@ class ListDonations extends Endpoint
                 $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
         }
+        return [$query, $dependencies];
+    }
 
+    private function getDonorWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $donor = $this->request->get_param('donor');
         if ($donor) {
             if (ctype_digit($donor)) {
                 $query
