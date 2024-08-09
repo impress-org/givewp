@@ -189,20 +189,22 @@ class ListDonations extends Endpoint
      */
     public function getDonations(): array
     {
+        $query = give()->donations->prepareQuery();
+
+        // Pagination
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+        $query->limit($perPage)->offset(($page - 1) * $perPage);
+
+        // Sort
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
-
-        $query = give()->donations->prepareQuery();
-        list($query) = $this->getWhereConditions($query);
-
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
-            ->offset(($page - 1) * $perPage);
+        // Where
+        list($query) = $this->getWhereConditions($query);
 
         $donations = $query->getAll();
 
