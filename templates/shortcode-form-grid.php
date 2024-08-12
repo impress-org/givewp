@@ -413,7 +413,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    '<span class="dashicons dashicons-hourglass"></span>', //esc_attr($formatted_income),
+                                    give_get_skeleton_placeholder_for_async_data(), //esc_attr($formatted_income),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );

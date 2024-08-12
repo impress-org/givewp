@@ -1926,6 +1926,14 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 }
 
 /**
+ * @unreleased
+ */
+function give_get_skeleton_placeholder_for_async_data($width = '1rem', $height = '0.7rem'): string {
+
+    return '<span class="give-skeleton" style="width: '. $width . '; height: '. $height . ';"></span>';
+}
+
+/**
  * Display/Return a formatted goal for a donation form
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
@@ -1941,7 +1949,7 @@ function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 
 	$goal_format = give_get_form_goal_format( $form->ID );
 
-    $placeholder = '<span class="dashicons dashicons-hourglass"></span>';
+    $placeholder = give_get_skeleton_placeholder_for_async_data('1rem');
 
 	/**
 	 * Filter the form.
