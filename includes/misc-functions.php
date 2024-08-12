@@ -1928,7 +1928,7 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 /**
  * @unreleased
  */
-function give_get_skeleton_placeholder_for_async_data($width = '1rem', $height = '0.7rem'): string {
+function give_get_skeleton_placeholder_for_async_data($width = '100%', $height = '0.7rem'): string {
 
     return '<span class="give-skeleton" style="width: '. $width . '; height: '. $height . ';"></span>';
 }

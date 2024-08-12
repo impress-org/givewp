@@ -413,7 +413,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    give_get_skeleton_placeholder_for_async_data(), //esc_attr($formatted_income),
+                                    give_get_skeleton_placeholder_for_async_data('1rem'), //esc_attr($formatted_income),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -464,7 +464,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo give_format_amount($form->get_sales(), ['decimal' => false]) /*echo $form->get_sales()*/ ?>
+                                echo give_get_skeleton_placeholder_for_async_data('1rem') /*give_format_amount($form->get_sales(), ['decimal' => false]) echo $form->get_sales()*/ ?>
                             </span>
                             <span class="goal">
                                 <?php

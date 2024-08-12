@@ -105,7 +105,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-                        give_get_skeleton_placeholder_for_async_data() //give_get_form_sales_stats( $post_id )
+                        give_get_skeleton_placeholder_for_async_data('1rem') //give_get_form_sales_stats( $post_id )
 					);
 				} else {
 					echo '-';
@@ -116,7 +116,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-                        give_get_skeleton_placeholder_for_async_data() //give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
+                        give_get_skeleton_placeholder_for_async_data('1rem') //give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
 					);
 				} else {
 					echo '-';
