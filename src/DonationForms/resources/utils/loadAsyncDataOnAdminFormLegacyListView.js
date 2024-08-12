@@ -2,13 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Determine if an element is in the visible viewport
     function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
+        /*const rect = element.getBoundingClientRect();
         const html = document.documentElement;
         return (
             rect.top >= 0 &&
             rect.left >= 0 &&
             rect.bottom <= (window.innerHeight || html.clientHeight) &&
             rect.right <= (window.innerWidth || html.clientWidth)
+        );*/
+
+        const { top, bottom } = element.getBoundingClientRect();
+        const vHeight = (window.innerHeight || document.documentElement.clientHeight);
+
+        return (
+            (top > 0 || bottom > 0) &&
+            top < vHeight
         );
     }
 
