@@ -249,7 +249,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => $form->get_earnings(),
+                        'income' => 0,//$form->get_earnings(),
                         //'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],

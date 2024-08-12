@@ -73,8 +73,8 @@ class GoalColumn extends ModelColumn
                 <span style="width: %2$s%%"></span>
             </div>
             <div id="giveDonationFormsProgressBar-%1$d" data-form-id="%1$s">
-                <span class="goal"><span class="dashicons dashicons-hourglass"></span></span>%4$s %5$s
-                <!--<span class="goal">%3$s</span>%4$s %5$s-->
+                <!--<span class="goal"><span class="dashicons dashicons-hourglass"></span></span>%4$s %5$s-->
+                <span class="goal">%3$s</span>%4$s %5$s
             </div>
         ';
 

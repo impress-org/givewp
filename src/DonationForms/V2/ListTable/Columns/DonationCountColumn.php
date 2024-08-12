@@ -48,10 +48,10 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $model->totalNumberOfDonations;
+        //$totalDonations = $model->totalNumberOfDonations;
         //$totalDonations = (new ProgressBarModel(['ids' => [$model->id]]))->getDonationCount();
 
-        $label = $totalDonations > 0
+        /*$label = $totalDonations > 0
             ? sprintf(
                 _n(
                     '%1$s donation',
@@ -60,13 +60,13 @@ class DonationCountColumn extends ModelColumn
                     'give'
                 ),
                 $totalDonations
-            ) : __('No donations', 'give');
+            ) : __('No donations', 'give');*/
 
         return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
+            '<a class="column-donations" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
             __('Visit donations page', 'give'),
-            $label
+            give_get_skeleton_placeholder_for_async_data('1rem')
         );
     }
 }

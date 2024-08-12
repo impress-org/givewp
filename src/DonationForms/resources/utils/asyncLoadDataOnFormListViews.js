@@ -70,8 +70,43 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        handleAdminFormsListViewItems();
         handleAdminLegacyFormsListViewItems();
         handleFormGridItems();
+    }
+
+    function handleAdminFormsListViewItems() {
+        const adminFormsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
+        console.log('adminFormsListViewItems: ', adminFormsListViewItems);
+        if (adminFormsListViewItems.length > 0) {
+            adminFormsListViewItems.forEach((itemElement) => {
+
+                const select = itemElement.querySelector('.giveListTableSelect');
+
+                if (!select) {
+                    return;
+                }
+
+                //console.log('select: ', select);
+
+                const formId = select.getAttribute("data-id")
+                const amountRaisedElement = itemElement.querySelector("[id^='giveDonationFormsProgressBar'] > span");
+                const progressBarElement = itemElement.querySelector(".goalProgress > span");
+
+                //console.log('formId: ', formId);
+                //console.log('amountRaisedElement: ', amountRaisedElement);
+                //console.log('progressBarElement: ', progressBarElement);
+
+
+                const donationsElement = itemElement.querySelector('.column-donations');
+                const earningsElement = itemElement.querySelector('.column-earnings');
+
+                if (isInViewport(itemElement)) {
+                    console.log('item: ', itemElement);
+                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement, earningsElement);
+                }
+            });
+        }
     }
 
     function handleAdminLegacyFormsListViewItems() {
