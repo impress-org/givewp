@@ -15,6 +15,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
+ * @unreleased Use skeleton placeholders for progress bar value to improve performance
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
 
@@ -249,8 +250,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => 0,//$form->get_earnings(),
-                        //'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
+                        'income' => 0,
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,
@@ -260,13 +260,6 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                 $income = $shortcode_stats['income'];
                 $goal = $shortcode_stats['goal'];
-
-                /**
-                 * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
-                 */
-                /*add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
-                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-                }, 10, 2);*/
 
                 switch ($goal_format) {
                     case 'donation':
@@ -413,7 +406,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    give_get_skeleton_placeholder_for_async_data('1rem'), //esc_attr($formatted_income),
+                                    give_get_skeleton_placeholder_for_async_data('1rem'),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -464,7 +457,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo give_get_skeleton_placeholder_for_async_data('1rem') /*give_format_amount($form->get_sales(), ['decimal' => false]) echo $form->get_sales()*/ ?>
+                                echo give_get_skeleton_placeholder_for_async_data('1rem') ?>
                             </span>
                             <span class="goal">
                                 <?php
