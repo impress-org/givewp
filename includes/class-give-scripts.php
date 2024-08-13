@@ -131,6 +131,7 @@ class Give_Scripts {
                     'jquery-query',
                 ]
             )
+            ->registerLocalizeData('ajaxNonce', wp_create_nonce( 'give_ajax_nonce' ))
             ->registerTranslations()
             ->register();
 

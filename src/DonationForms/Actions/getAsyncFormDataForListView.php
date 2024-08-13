@@ -14,6 +14,10 @@ class getAsyncFormDataForListView
      */
     public function __invoke()
     {
+        if ( ! isset($_GET['nonce'] ) || ! check_ajax_referer( 'give_ajax_nonce', 'nonce')) {
+            return false;
+        }
+
         $formId = $_GET['formId'];
 
         $goalStats       = give_goal_progress_stats( $formId );
