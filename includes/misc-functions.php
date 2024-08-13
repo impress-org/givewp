@@ -2041,17 +2041,6 @@ function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
 }
 
-function give_goal_progress_stats_placeholder() {
-    return [
-        'progress' => 0,
-        'actual'   => 0,
-        'goal'     => 0,
-        'format'   => 0,
-        'raw_actual'   => 0,
-        'raw_goal'   => 0,
-    ];
-}
-
 /**
  * Get the admin messages key to show the notices.
  *
