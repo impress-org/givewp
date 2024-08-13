@@ -331,6 +331,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render enabled gateways
          *
+         * @unreleased Set the v3 settings tab as default in the gateways list
          * @since 3.0.0 split gateways into separated tabs for v2 and v3 settings
          * @since  2.0.5
          * @access public
@@ -380,20 +381,6 @@ if (! class_exists('Give_Settings_Gateways')) :
             );
 
             $groups = [
-                'v2' => [
-                    'label' => __('Option-Based Form Editor', 'give'),
-                    'gateways' => $v2Gateways,
-                    'settings' => $settings,
-                    'gatewaysLabel' => give_get_option('gateways_label', []),
-                    'defaultGateway' => give_get_option('default_gateway', current(array_keys($v2Gateways))),
-                    'helper' => [
-                        'text' => __(
-                            'Uses the traditional settings options for creating and customizing a donation form.',
-                            'give'
-                        ),
-                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg',
-                    ]
-                ],
                 'v3' => [
                     'label' => __('Visual Form Builder', 'give'),
                     'gateways' => $v3Gateways,
@@ -407,6 +394,20 @@ if (! class_exists('Give_Settings_Gateways')) :
                         ),
                         'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v3.jpg',
                     ]
+                ],
+                'v2' => [
+                    'label' => __('Option-Based Form Editor', 'give'),
+                    'gateways' => $v2Gateways,
+                    'settings' => $settings,
+                    'gatewaysLabel' => give_get_option('gateways_label', []),
+                    'defaultGateway' => give_get_option('default_gateway', current(array_keys($v2Gateways))),
+                    'helper' => [
+                        'text' => __(
+                            'Uses the traditional settings options for creating and customizing a donation form.',
+                            'give'
+                        ),
+                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg',
+                    ],
                 ],
             ];
             $defaultGroup = current(array_keys($groups));
