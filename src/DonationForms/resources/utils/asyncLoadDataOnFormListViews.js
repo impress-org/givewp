@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    const loadFormData = (formId, itemElement, amountRaisedElement = null, progressBarElement = null, donationsElement = null, earningsElement = null) => {
+    const loadFormData = (formId, itemElement, amountRaisedElement = null, progressBarElement = null, goalAchievedElement = null, donationsElement = null, earningsElement = null) => {
 
         console.log('item: ', itemElement);
 
@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!!amountRaisedElement && !!progressBarElement) {
                     amountRaisedElement.innerHTML = response.data.amountRaised;
                     progressBarElement.style.width = response.data.percentComplete + '%';
+                }
+
+                if (!!goalAchievedElement && response.data.percentComplete >= 100) {
+                    goalAchievedElement.style.opacity = '1';
                 }
 
                 if (!!donationsElement) {
@@ -123,11 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const formId = select.getAttribute("data-id");
                 const amountRaisedElement = itemElement.querySelector("[id^='giveDonationFormsProgressBar'] > span");
                 const progressBarElement = itemElement.querySelector(".goalProgress > span");
+                const goalAchievedElement = itemElement.querySelector(".goalProgress--achieved");
                 const donationsElement = itemElement.querySelector('.column-donations');
                 const earningsElement = itemElement.querySelector('.column-earnings');
 
                 if (isInViewport(itemElement)) {
-                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement, earningsElement);
+                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, goalAchievedElement, donationsElement, earningsElement);
                 }
             });
         }
@@ -144,13 +149,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const formId = itemElement.id.split('post-')[1];
                 const goalElement = itemElement.querySelector('.column-goal');
-                const amountRaisedElement = goalElement.querySelector(".give-goal-text").querySelector('span');
-                const progressBarElement = goalElement.querySelector(".give-admin-progress-bar").querySelector('span');
-                const donationsElement = itemElement.querySelector('.column-donations').querySelector('a');
-                const earningsElement = itemElement.querySelector('.column-earnings').querySelector('a');
+                const amountRaisedElement = goalElement.querySelector(".give-goal-text > span");
+                const progressBarElement = goalElement.querySelector(".give-admin-progress-bar > span");
+                const goalAchievedElement = goalElement.querySelector(".give-admin-goal-achieved");
+                const donationsElement = itemElement.querySelector('.column-donations > a');
+                const earningsElement = itemElement.querySelector('.column-earnings > a');
 
                 if (isInViewport(itemElement)) {
-                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement, earningsElement);
+                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, goalAchievedElement, donationsElement, earningsElement);
                 }
             });
         }
@@ -180,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const donationsElement = formGridRaised.querySelector("div:nth-child(2)").querySelector('span:nth-child(1)');
 
                 if (isInViewport(itemElement)) {
-                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement);
+                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, null, donationsElement);
                 }
             });
         }

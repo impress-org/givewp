@@ -81,7 +81,7 @@ class GoalColumn extends ModelColumn
                 $goal['goal']
             ),
             sprintf(
-                ($goal['progress'] >= 100 ? '<span class="goalProgress--achieved"><img src="%1$s" alt="%2$s" />%3$s</span>' : ''),
+                (/*$goal['progress'] >= 100 ?*/ '<span style="opacity: 0" class="goalProgress--achieved"><img src="%1$s" alt="%2$s" />%3$s</span>' /*: ''*/),
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

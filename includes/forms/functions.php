@@ -1283,8 +1283,8 @@ function give_admin_form_goal_stats( $form_id, $usePlaceholder ) {
 		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
-	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
-		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
+	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] || $usePlaceholder) {
+		$html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
 	}
 
 	$html .= '</div>';
