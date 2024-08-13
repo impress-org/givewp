@@ -2,8 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let abortLoadAsyncData = false;
 
+    const giveListTable = document.querySelector('.giveListTable');
+    const giveListTableIsLoadingEvent = new Event("giveListTableIsLoading");
+
     function isInViewport(element) {
-        const { top, bottom } = element.getBoundingClientRect();
+        const {top, bottom} = element.getBoundingClientRect();
         const vHeight = (window.innerHeight || document.documentElement.clientHeight);
 
         return (
@@ -12,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    const loadFormData = ( formId, itemElement, amountRaisedElement = null, progressBarElement = null, donationsElement = null, earningsElement = null) => {
+    const loadFormData = (formId, itemElement, amountRaisedElement = null, progressBarElement = null, donationsElement = null, earningsElement = null) => {
 
         if (!amountRaisedElement && !progressBarElement && !donationsElement && !earningsElement) {
             return;
@@ -23,22 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        let url = ''
+        let url = '';
         if (typeof give_global_vars !== 'undefined') {
             url = give_global_vars.ajax_vars.ajaxurl + '?action=givewp_get_form_async_data_for_list_view&formId=' + formId;
         } else {
             url = ajaxurl + '?action=givewp_get_form_async_data_for_list_view&formId=' + formId;
         }
 
-        fetch(url, { signal }).
-        then(function(response){
+        fetch(url, {signal}).then(function (response) {
             return response.json();
-        })
-        .then(function(response){
-            console.log('response: ', response)
+        }).then(function (response) {
+            console.log('Response: ', response);
 
             if (response.success) {
-                if (!!amountRaisedElement && !!progressBarElement){
+                if (!!amountRaisedElement && !!progressBarElement) {
                     amountRaisedElement.innerHTML = response.data.amountRaised;
                     progressBarElement.style.width = response.data.percentComplete + '%';
                 }
@@ -51,17 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     earningsElement.innerHTML = response.data.earnings;
                 }
             }
-        }) .catch(error => {
-            console.log('error: ', error);
+        }).catch(error => {
+            itemElement.classList.remove('give-async-data-fetch-triggered');
+            console.log('Error: ', error);
         }).finally(() => {
-            console.log('finally!');
+            console.log('Request finalized.');
         });
 
         addEventListener("beforeunload", (event) => {
             abortLoadAsyncData = true;
             controller.abort('Async request aborted due to exit page.');
         });
-    }
+
+        if (giveListTable) {
+            giveListTable.addEventListener("giveListTableIsLoading", (event) => {
+                //alert('giveListTableIsLoading');
+                abortLoadAsyncData = true;
+                controller.abort('Async request aborted due to table loading.');
+            });
+        }
+    };
 
     const maybeLoadAsyncData = () => {
 
@@ -73,12 +83,34 @@ document.addEventListener('DOMContentLoaded', () => {
         handleAdminFormsListViewItems();
         handleAdminLegacyFormsListViewItems();
         handleFormGridItems();
-    }
+    };
 
     function handleAdminFormsListViewItems() {
         const adminFormsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
-        console.log('adminFormsListViewItems: ', adminFormsListViewItems);
         if (adminFormsListViewItems.length > 0) {
+
+            if (giveListTable) {
+                const observer = new MutationObserver(function (mutations) {
+                    if (giveListTable.classList.contains('giveListTableIsLoading')) {
+                        giveListTable.dispatchEvent(giveListTableIsLoadingEvent);
+                    }
+
+                    if (giveListTable.classList.contains('giveListTableIsLoaded')) {
+                        abortLoadAsyncData = false;
+                        maybeLoadAsyncData();
+                    }
+                });
+
+                // Configuration of the observer
+                const config = {
+                    attributes: true,
+                    childList: true,
+                    characterData: true,
+                };
+
+                // Pass in the target node, as well as the observer options
+                observer.observe(giveListTable, config);
+            }
             adminFormsListViewItems.forEach((itemElement) => {
 
                 const select = itemElement.querySelector('.giveListTableSelect');
@@ -87,17 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                //console.log('select: ', select);
-
-                const formId = select.getAttribute("data-id")
+                const formId = select.getAttribute("data-id");
                 const amountRaisedElement = itemElement.querySelector("[id^='giveDonationFormsProgressBar'] > span");
                 const progressBarElement = itemElement.querySelector(".goalProgress > span");
-
-                //console.log('formId: ', formId);
-                //console.log('amountRaisedElement: ', amountRaisedElement);
-                //console.log('progressBarElement: ', progressBarElement);
-
-
                 const donationsElement = itemElement.querySelector('.column-donations');
                 const earningsElement = itemElement.querySelector('.column-earnings');
 
@@ -146,8 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const formId = giveCard.id.split('give-card-')[1];
-                //console.log('formId: ', formId);
-                const formGridRaised = itemElement.querySelector('.form-grid-raised')
+                const formGridRaised = itemElement.querySelector('.form-grid-raised');
 
                 if (!formGridRaised) {
                     return;
@@ -155,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const amountRaisedElement = formGridRaised.querySelector("div:nth-child(1)").querySelector('span:nth-child(1)');
                 const progressBarElement = itemElement.querySelector(".give-progress-bar").querySelector('span');
-
                 const donationsElement = formGridRaised.querySelector("div:nth-child(2)").querySelector('span:nth-child(1)');
 
                 if (isInViewport(itemElement)) {
@@ -171,9 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // If scrolling near bottom of page, load more async data
     window.addEventListener('scroll', () => {
         //if (
-          //  window.scrollY + window.innerHeight >= document.body.offsetHeight - 100
+        //  window.scrollY + window.innerHeight >= document.body.offsetHeight - 100
         //) {
-            maybeLoadAsyncData();
+        maybeLoadAsyncData();
         //}
     });
 });
