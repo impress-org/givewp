@@ -58,7 +58,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 
 /**
  * Render Give Form Columns
- *
+ * @unreleased Use skeleton placeholder for "goal" and donations" columns to improve performance
  * @since 1.0
  *
  * @param string $column_name Column name
@@ -105,7 +105,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-                        give_get_skeleton_placeholder_for_async_data('1rem') //give_get_form_sales_stats( $post_id )
+                        give_get_skeleton_placeholder_for_async_data('1rem')
 					);
 				} else {
 					echo '-';
@@ -116,7 +116,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-                        give_get_skeleton_placeholder_for_async_data('1rem') //give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
+                        give_get_skeleton_placeholder_for_async_data('1rem')
 					);
 				} else {
 					echo '-';
@@ -168,7 +168,8 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
- * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
+ * @unreleased Replace "give_get_form_earnings_stats" filter logic with skeleton placeholder to improve performance
+ * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *
  * @param array $vars Array of all the sort variables.
@@ -180,10 +181,6 @@ function give_sort_forms( $vars ) {
 	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
 		return $vars;
 	}
-
-    /*add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
-        return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-    }, 10, 2);*/
 
 	switch ( $vars['orderby'] ) {
 		// Check if 'orderby' is set to "sales".
