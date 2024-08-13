@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadFormData = (formId, itemElement, amountRaisedElement = null, progressBarElement = null, donationsElement = null, earningsElement = null) => {
 
+        console.log('item: ', itemElement);
+
         if (!amountRaisedElement && !progressBarElement && !donationsElement && !earningsElement) {
             return;
         }
@@ -66,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (giveListTable) {
             giveListTable.addEventListener("giveListTableIsLoading", (event) => {
-                //alert('giveListTableIsLoading');
                 abortLoadAsyncData = true;
                 controller.abort('Async request aborted due to table loading.');
             });
@@ -126,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const earningsElement = itemElement.querySelector('.column-earnings');
 
                 if (isInViewport(itemElement)) {
-                    console.log('item: ', itemElement);
                     loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement, earningsElement);
                 }
             });
@@ -150,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const earningsElement = itemElement.querySelector('.column-earnings').querySelector('a');
 
                 if (isInViewport(itemElement)) {
-                    console.log('item: ', itemElement);
                     loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement, earningsElement);
                 }
             });
@@ -181,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const donationsElement = formGridRaised.querySelector("div:nth-child(2)").querySelector('span:nth-child(1)');
 
                 if (isInViewport(itemElement)) {
-                    console.log('item: ', itemElement);
                     loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, donationsElement);
                 }
             });
@@ -190,12 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     maybeLoadAsyncData();
 
-    // If scrolling near bottom of page, load more async data
     window.addEventListener('scroll', () => {
-        //if (
-        //  window.scrollY + window.innerHeight >= document.body.offsetHeight - 100
-        //) {
         maybeLoadAsyncData();
-        //}
     });
 });

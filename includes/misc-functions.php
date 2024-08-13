@@ -1936,10 +1936,12 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @unreleased Add $usePlaceholder parameter
+ * @since 2.1
+ *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
  * @return array
- * @since 2.1
  */
 function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 
@@ -1953,7 +1955,6 @@ function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 
 	/**
 	 * Filter the form.
-	 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
 	 * @since 1.8.8
 	 */
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ), 2 ), $form->ID, $form );
@@ -1983,10 +1984,9 @@ function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 		default:
 			/**
 			 * Filter the form income.
-			 *
+			 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
 			 * @since 1.8.8
 			 */
-            //$actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
             $actual = $usePlaceholder ? $placeholder : apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
 			break;
 	}

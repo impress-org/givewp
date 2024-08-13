@@ -36,6 +36,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
+     * @unreleased Use skeleton placeholder to improve performance
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,7 +49,7 @@ class DonationRevenueColumn extends ModelColumn
             '<a class="column-earnings" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=$model->id"),
             __('Visit form reports page', 'give'),
-            give_get_skeleton_placeholder_for_async_data('1rem') //$model->totalAmountDonated->formatToLocale($locale)
+            give_get_skeleton_placeholder_for_async_data('1rem')
         );
     }
 }

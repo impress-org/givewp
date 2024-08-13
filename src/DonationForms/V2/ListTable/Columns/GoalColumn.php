@@ -36,7 +36,8 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since 3.14.0 Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
+     * @unreleased Replace "give_get_form_earnings_stats" filter logic with skeleton placeholder to improve performance
+     * @since 3.14.0 Use the "give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,14 +49,6 @@ class GoalColumn extends ModelColumn
         if ( ! $model->goalOption) {
             return __('No Goal Set', 'give');
         }
-
-        /*add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
-            return (new DonationQuery())->form($donationFormId)->sumAmount();
-        }, 10, 2);*/
-
-        /*add_filter('give_goal_amount_raised_output', function ($earnings) {
-        return '0';
-        }, 999);*/
 
         $goal = give_goal_progress_stats($model->id, true);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
@@ -73,7 +66,6 @@ class GoalColumn extends ModelColumn
                 <span style="width: %2$s%%"></span>
             </div>
             <div id="giveDonationFormsProgressBar-%1$d" data-form-id="%1$s">
-                <!--<span class="goal"><span class="dashicons dashicons-hourglass"></span></span>%4$s %5$s-->
                 <span class="goal">%3$s</span>%4$s %5$s
             </div>
         ';
