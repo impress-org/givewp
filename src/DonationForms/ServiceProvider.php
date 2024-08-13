@@ -2,7 +2,6 @@
 
 namespace Give\DonationForms;
 
-use Duplicator\Installer\Core\Hooks\Hook;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
@@ -34,8 +33,6 @@ use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
-
 
 class ServiceProvider implements ServiceProviderInterface
 {
