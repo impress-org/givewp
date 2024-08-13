@@ -18,7 +18,7 @@ class EnqueueFormBuilderAssets
     {
         if($this->isFormTagsEnabled() || $this->isFormCategoriesEnabled()) {
             wp_enqueue_script('givewp-builder-taxonomy-settings', GIVE_PLUGIN_URL . 'assets/dist/js/form-taxonomy-settings.js');
-            wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([
+            wp_add_inline_script('givewp-builder-taxonomy-settings','const giveTaxonomySettings =' . json_encode([
                     'formTagsEnabled' => $this->isFormTagsEnabled(),
                     'formCategoriesEnabled' => $this->isFormCategoriesEnabled(),
                     'formTagsSelected' => $this->getSelectedFormTags(),
