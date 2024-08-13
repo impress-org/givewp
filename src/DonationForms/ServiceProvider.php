@@ -84,6 +84,14 @@ class ServiceProvider implements ServiceProviderInterface
             UpdateDonationLevelsSchema::class,
         ]);
 
+        $this->registerAjaxFunctions();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerAjaxFunctions()
+    {
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
     }
