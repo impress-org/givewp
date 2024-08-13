@@ -14,8 +14,13 @@ class FormTaxonomies extends FormMigrationStep
      */
     public function process()
     {
-        $this->migrateTaxonomy('give_forms_tag');
-        $this->migrateTaxonomy('give_forms_category');
+        if(taxonomy_exists('give_forms_tag')) {
+            $this->migrateTaxonomy('give_forms_tag');
+        }
+
+        if (taxonomy_exists('give_forms_category')) {
+            $this->migrateTaxonomy('give_forms_category');
+        }
     }
 
     /**
