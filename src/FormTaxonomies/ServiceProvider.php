@@ -2,6 +2,7 @@
 
 namespace Give\FormTaxonomies;
 
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -15,7 +16,12 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        // This section
+        give()->bind(Actions\UpdateFormTaxonomies::class, function() {
+            /** @link https://github.com/impress-org/givewp/pull/7463#discussion_r1706988002 */
+            return new Actions\UpdateFormTaxonomies(
+                json_decode(give_clean($_POST['settings']), true)
+            );
+        });
     }
 
     /**
@@ -23,7 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('givewp_form_builder_updated', give(Actions\UpdateFormTaxonomies::class));
-        add_action('givewp_form_builder_enqueue_scripts', give(Actions\EnqueueFormBuilderAssets::class));
+        Hooks::addAction('givewp_form_builder_updated', Actions\UpdateFormTaxonomies::class);
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', Actions\EnqueueFormBuilderAssets::class);
     }
 }

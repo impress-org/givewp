@@ -79,11 +79,7 @@ class EnqueueFormBuilderAssets
         ]);
 
         return array_map(function ($term) {
-            return [
-                'id' => $term->term_id,
-                'name' => $term->name,
-                'parent' => $term->parent,
-            ];
+            return $term->term_id;
         }, $terms) ?? [];
     }
 }
