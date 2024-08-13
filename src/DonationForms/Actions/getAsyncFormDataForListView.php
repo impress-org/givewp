@@ -35,10 +35,10 @@ class getAsyncFormDataForListView
         }
 
         $goalStats       = give_goal_progress_stats( $formId );
-        $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
-
         $amountRaised = $goalStats['actual'];
         $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
+        $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
+        $percentComplete = $amountRaised >= $goalStats['goal'] ? 100 : $percentComplete;
 
         $response = [
             'amountRaised' => $amountRaised,
