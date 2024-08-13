@@ -19,9 +19,6 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  */
 class DonationQuery extends QueryBuilder
 {
-    /** @var int  */
-    private $formId = 0;
-
     /**
      * @since 3.12.0
      */
@@ -51,7 +48,6 @@ class DonationQuery extends QueryBuilder
      */
     public function form($formId)
     {
-        $this->formId = $formId;
         $this->joinMeta('_give_payment_form_id', 'formId');
         $this->where('formId.meta_value', $formId);
         return $this;
@@ -140,14 +136,6 @@ class DonationQuery extends QueryBuilder
      */
     public function sumAmount($includeOnlyValidStatuses = true, $includeOnlyCurrentMode = true)
     {
-        $transientName = 'give_donation_query_sum_amount_form_' . $this->formId;
-
-        $sum = get_transient($transientName);
-
-        if ($sum) {
-            return $sum;
-        }
-
         if ($includeOnlyValidStatuses) {
             $this->includeOnlyValidStatuses();
         }
@@ -158,13 +146,9 @@ class DonationQuery extends QueryBuilder
 
         $this->joinMeta('_give_payment_total', 'amount');
 
-        $sum = $this->sum(
+        return $this->sum(
             'amount.meta_value'
         );
-
-        set_transient($transientName, $sum, MINUTE_IN_SECONDS * 5);
-
-        return $sum;
     }
 
     public function countDonors()
