@@ -1249,7 +1249,8 @@ function give_set_form_closed_status( $form_id ) {
 /**
  * Show Form Goal Stats in Admin ( Listing and Detail page )
  *
- * @since 3.14.0 Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
+ * @unreleased Replace "give_get_form_earnings_stats" filter logic with skeleton placeholder to improve performance
+ * @since 3.14.0 Use the "give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
  * @since 2.19.0 Prevent divide by zero issue in goal percentage calculation logic.
  *
  * @since 2.1.0
@@ -1259,13 +1260,6 @@ function give_set_form_closed_status( $form_id ) {
  * @return string
  */
 function give_admin_form_goal_stats( $form_id, $usePlaceholder ) {
-    /*add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
-        return (new DonationQuery())->form($donationFormId)->sumAmount();
-    }, 10, 2);*/
-
-    /*add_filter('give_goal_amount_raised_output', function ($earnings) {
-        return '0';
-    }, 999);*/
 
 	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id, $usePlaceholder );
