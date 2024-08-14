@@ -2,6 +2,9 @@
 
 namespace Give\DonorDashboards;
 
+use Give\Donors\Models\Donor;
+use WP_User;
+
 /**
  * @since 2.10.0
  */
@@ -38,14 +41,17 @@ class Helpers
     /**
      * Retrieve donor logged in status
      *
-     * @since 2.20.2
+     * @unreleased added additional user role check
      * @since 3.14.0 Add user capability and user role check
+     * @since 2.20.2
      */
     public static function isDonorLoggedIn(): bool
     {
+        /** @var WP_User $user */
         $user = wp_get_current_user();
+        $allowedRoles = ['administrator', 'give_donor', 'give_subscriber'];
 
-        return is_user_logged_in() && (current_user_can('administrator') || in_array('give_donor', $user->roles)) || (
+        return (is_user_logged_in() && !empty(array_intersect($allowedRoles, $user->roles))) || (
                 give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
                 Give()->email_access->is_valid_token(Give()->email_access->get_token())
         );
