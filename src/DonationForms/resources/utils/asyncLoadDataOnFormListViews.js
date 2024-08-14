@@ -15,13 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    function isPlaceholder(element) {
+        return !!element && Boolean(element.querySelector('.js-give-async-data'));
+    }
+
     const loadFormData = (formId, itemElement, amountRaisedElement = null, progressBarElement = null, goalAchievedElement = null, donationsElement = null, earningsElement = null) => {
 
-        console.log('item: ', itemElement);
-
-        if (!amountRaisedElement && !progressBarElement && !donationsElement && !earningsElement) {
+        if (!isPlaceholder(amountRaisedElement) && !isPlaceholder(donationsElement) && !isPlaceholder(earningsElement)) {
             return;
         }
+
+        console.log('item: ', itemElement);
 
         itemElement.classList.add('give-async-data-fetch-triggered');
 
@@ -41,8 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Response: ', response);
 
             if (response.success) {
-                if (!!amountRaisedElement && !!progressBarElement) {
+                if (isPlaceholder(amountRaisedElement)) {
                     amountRaisedElement.innerHTML = response.data.amountRaised;
+                }
+
+                if (!!progressBarElement && progressBarElement.style.width !== response.data.percentComplete + '%') {
                     progressBarElement.style.width = response.data.percentComplete + '%';
                 }
 
@@ -50,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     goalAchievedElement.style.opacity = '1';
                 }
 
-                if (!!donationsElement) {
+                if (isPlaceholder(donationsElement)) {
                     donationsElement.innerHTML = response.data.donationsCount;
                 }
 
-                if (!!earningsElement) {
-                    earningsElement.innerHTML = response.data.earnings;
+                if (isPlaceholder(earningsElement)) {
+                    earningsElement.innerHTML = response.data.revenue;
                 }
             }
         }).catch(error => {

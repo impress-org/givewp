@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Actions;
 
+use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
@@ -34,17 +35,30 @@ class getAsyncFormDataForListView
             wp_send_json_success( $data );
         }
 
-        $goalStats       = give_goal_progress_stats( $formId );
-        $amountRaised = $goalStats['actual'];
-        $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
-        $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
-        $percentComplete = $amountRaised >= $goalStats['goal'] ? 100 : $percentComplete;
+        $amountRaised = 0;
+        $percentComplete = 0;
+        if (give_is_goal_column_on_form_list_async()) {
+            $goalStats       = give_goal_progress_stats( $formId );
+            $amountRaised = $goalStats['actual'];
+            $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
+            $percentComplete = $amountRaised >= $goalStats['goal'] ? 100 : $percentComplete;
+        }
+
+        $donationsCount = 0;
+        if (give_is_donations_column_on_form_list_async()) {
+            $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
+        }
+
+        $revenue = $amountRaised;
+        if (0 === $revenue && give_is_revenue_column_on_form_list_async()) {
+            $revenue = (new DonationQuery())->form($formId)->sumIntendedAmount();
+        }
 
         $response = [
             'amountRaised' => $amountRaised,
             'percentComplete' => $percentComplete,
-            'earnings' =>  $amountRaised,
-            'donationsCount' => $donationsCount
+            'donationsCount' => $donationsCount,
+            'revenue' =>  $revenue,
         ];
 
         set_transient($transientName, $response, MINUTE_IN_SECONDS * 5);

@@ -114,7 +114,7 @@ function give_render_form_columns( $column_name, $post_id ) {
                         $donationsCountValue = give_get_skeleton_placeholder_for_async_data('1rem');
                     } else {
                         $donationsCountValue = give_is_column_cache_on_form_list_enabled()
-                            ? // use meta keys that store the aggregated values
+                            ? // Use meta keys that store the aggregated values
                             give_get_form_sales_stats( $post_id )
                             : // Use data retrieved in real-time from DB
                             (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$post_id]]))->getDonationCount();
@@ -135,10 +135,10 @@ function give_render_form_columns( $column_name, $post_id ) {
                         $earningsValue = give_get_skeleton_placeholder_for_async_data('1rem');
                     } else {
                         $earningsValue = give_is_column_cache_on_form_list_enabled()
-                            ? // use meta keys that store the aggregated values
+                            ? // Use meta keys that store the aggregated values
                             give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
                             : // Use data retrieved in real-time from DB
-                            (new DonationQuery())->form($post_id)->sumAmount();
+                            (new DonationQuery())->form($post_id)->sumIntendedAmount();
                     }
 
 					printf(

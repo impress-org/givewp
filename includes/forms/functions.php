@@ -1249,7 +1249,7 @@ function give_set_form_closed_status( $form_id ) {
 /**
  * Show Form Goal Stats in Admin ( Listing and Detail page )
  *
- * @unreleased Replace "give_get_form_earnings_stats" filter logic with skeleton placeholder to improve performance
+ * @unreleased Replace "give_get_form_earnings_stats" filter logic with async logic (skeleton placeholder) to improve performance
  * @since 3.14.0 Use the "give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
  * @since 2.19.0 Prevent divide by zero issue in goal percentage calculation logic.
  *
@@ -1260,25 +1260,6 @@ function give_set_form_closed_status( $form_id ) {
  * @return string
  */
 function give_admin_form_goal_stats( $form_id) {
-
-    add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
-
-        if (give_is_column_cache_on_form_list_enabled()) {
-            return $earnings;
-        }
-
-        /**
-         * We just want to use the data retrieved in real-time from DB if the column is set up to
-         * NOT work with async data or when the function is used in a single post page (Detail Page).
-         */
-        if (!give_is_goal_column_on_form_list_async() ||
-            is_single()) {
-            $earnings = (new DonationQuery())->form($donationFormId)->sumAmount();
-        }
-
-        return $earnings;
-    }, 10, 2);
-
 	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id);
 	$percent_complete = $goal_stats['raw_goal'] ? round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100 : 0;
@@ -1301,7 +1282,7 @@ function give_admin_form_goal_stats( $form_id) {
 		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
-    if (give_is_goal_column_on_form_list_async()){
+    if (!is_single() && give_is_goal_column_on_form_list_async()){
         $html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
     }elseif ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal']) {
 		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );

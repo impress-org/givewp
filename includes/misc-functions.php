@@ -1937,34 +1937,34 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
  * @unreleased
  */
 function give_is_goal_column_on_form_list_async() {
-    return true;
+    return false;
 }
 
 /**
  * @unreleased
  */
 function give_is_donations_column_on_form_list_async() {
-    return true;
+    return false;
 }
 
 /**
  * @unreleased
  */
 function give_is_revenue_column_on_form_list_async() {
-    return true;
+    return false;
 }
 
 /**
  * @unreleased
  */
 function give_is_column_cache_on_form_list_enabled() {
-    return false;
+    return true;
 }
 
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @unreleased Add placeholder logic
+ * @unreleased Add async logic (skeleton placeholder) to improve performance
  * @since 2.1
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
@@ -2028,7 +2028,7 @@ function give_goal_progress_stats( $form ) {
                  * @since 1.8.8
                  */
                 $actual = give_is_column_cache_on_form_list_enabled()
-                    ? // use meta keys that store the aggregated values
+                    ? // Use meta keys that store the aggregated values
                     apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form )
                     : // Use data retrieved in real-time from DB
                     apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );

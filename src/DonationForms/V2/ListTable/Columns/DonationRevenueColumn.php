@@ -60,11 +60,11 @@ class DonationRevenueColumn extends ModelColumn
     private function getRevenueValue($model, $locale = '')
     {
         if (give_is_column_cache_on_form_list_enabled()) {
-            // use meta keys that store the aggregated values
+            // Use meta keys that store the aggregated values
             return $model->totalAmountDonated->formatToLocale($locale);
         }
 
         // Return data retrieved in real-time from DB
-        return (new DonationQuery())->form($model->id)->sumAmount();
+        return (new DonationQuery())->form($model->id)->sumIntendedAmount();
     }
 }
