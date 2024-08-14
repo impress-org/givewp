@@ -41,7 +41,7 @@ class Helpers
     /**
      * Retrieve donor logged in status
      *
-     * @unreleased added additional user role check
+     * @since 3.15.0 added additional user role check
      * @since 3.14.0 Add user capability and user role check
      * @since 2.20.2
      */
