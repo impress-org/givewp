@@ -1936,6 +1936,50 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 /**
  * @unreleased
  */
+function give_is_all_progress_bar_stats_async_on_form_grid(): bool
+{
+    if(!defined('GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID')) {
+        define("GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID", true);
+    }
+
+    return (bool)GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID;
+}
+
+/**
+ * @unreleased
+ */
+function give_is_progress_bar_goal_async_on_form_grid(): bool
+{
+    if(defined('GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID')) {
+        return (bool)GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID;
+    }
+
+    return give_is_all_progress_bar_stats_async_on_form_grid();
+}
+
+/**
+ * @unreleased
+ */
+function give_is_progress_bar_donations_async_on_form_grid(): bool
+{
+    if(defined('GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID')) {
+        return (bool)GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID;
+    }
+
+    return give_is_all_progress_bar_stats_async_on_form_grid();
+}
+
+/**
+ * @unreleased
+ */
+function give_is_enabled_stats_cache_on_form_gid(): bool
+{
+    return apply_filters('give_enabled_stats_cache_on_form_grid', false);
+}
+
+/**
+ * @unreleased
+ */
 function give_is_all_stats_columns_async_on_admin_form_list_views(): bool
 {
     if(!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
@@ -1987,14 +2031,6 @@ function give_is_revenue_column_async_on_admin_form_list_views(): bool
 function give_is_enabled_stats_cache_on_admin_form_list_views(): bool
 {
     return apply_filters('give_enabled_stats_cache_on_admin_form_list_views', false);
-}
-
-/**
- * @unreleased
- */
-function give_is_enabled_stats_cache_on_form_gid(): bool
-{
-    return apply_filters('give_enabled_stats_cache_on_form_grid', false);
 }
 
 /**

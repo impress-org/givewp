@@ -238,19 +238,31 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 || !give_is_setting_enabled($goal_option) || 0 === $form->goal;
 
             // Maybe display the goal progress bar.
-
             if (!$hide_goal) :
-                $goal_progress_stats = give_goal_progress_stats($form, true);
+                $goal_progress_stats = give_goal_progress_stats($form);
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
+
+
+                if (give_is_progress_bar_goal_async_on_form_grid()) {
+                    $incomeValue = 0;
+                } else {
+                    $incomeValue = give_is_enabled_stats_cache_on_form_gid()
+                        ? // Use meta keys that store the aggregated values
+                        $form->get_earnings()
+                        : // Return data retrieved in real-time from DB
+                        (new DonationQuery())->form($form->ID)->sumIntendedAmount();
+                }
+
                 /**
+                 * @unreleased Replace (new DonationQuery())->form($form->ID)->sumIntendedAmount() with $incomeValue
                  * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => 0,
+                        'income' => $incomeValue,
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,
@@ -260,6 +272,21 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                 $income = $shortcode_stats['income'];
                 $goal = $shortcode_stats['goal'];
+
+                /**
+                 * @unreleased Add condition to check if it should use cached values or not
+                 * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
+                 */
+                add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
+
+                    if (give_is_enabled_stats_cache_on_form_gid()){
+                        // Use meta keys that store the aggregated values
+                        return $sales;
+                    }
+
+                    // Return data retrieved in real-time from DB
+                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
+                }, 10, 2);
 
                 switch ($goal_format) {
                     case 'donation':
@@ -406,7 +433,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    give_get_skeleton_placeholder_for_async_data('1rem'),
+                                    give_is_progress_bar_goal_async_on_form_grid() ? give_get_skeleton_placeholder_for_async_data('1rem') : esc_attr($formatted_income),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -457,7 +484,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo give_get_skeleton_placeholder_for_async_data('1rem') ?>
+                                echo give_is_progress_bar_donations_async_on_form_grid() ? give_get_skeleton_placeholder_for_async_data('1rem') :  $form->get_sales() ?>
                             </span>
                             <span class="goal">
                                 <?php
