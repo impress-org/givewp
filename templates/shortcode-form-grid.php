@@ -325,7 +325,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                     ?>
                     <div class="form-grid-raised">
-                        <div class="form-grid-raised__details" data-form-id="<?php echo $form_id ?>">
+                        <div class="form-grid-raised__details">
                             <?php
                             if ('amount' === $goal_format) :
 
