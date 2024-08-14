@@ -5,6 +5,6 @@ namespace Give\DonationSpam\Exceptions;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class SpamDonationException extends Exception {}

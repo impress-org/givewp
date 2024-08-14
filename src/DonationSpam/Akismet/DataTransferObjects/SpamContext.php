@@ -3,7 +3,7 @@
 namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class SpamContext
 {
@@ -18,7 +18,7 @@ class SpamContext
     protected $response;
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function __construct(CommentCheckArgs $args, array $response)
     {
@@ -27,7 +27,7 @@ class SpamContext
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function __serialize(): array
     {
@@ -39,7 +39,7 @@ class SpamContext
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function formatMessage(): string
     {

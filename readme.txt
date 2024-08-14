@@ -263,7 +263,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.15.0: Aug 14th, 2024 =
-* New: Updated the onboarding wizard to create a new form with the form builder
+* New: Added Akismet integration support to forms using the visual form builder
+* New: Updated the onboarding wizard to create a new form with the visual form builder
 * Changed: Updated the "Add Form" buttons to use the visual form builder by default
 * Fix: Resolved an issue with Give Subscribers accessing their donor dashboard history
 
