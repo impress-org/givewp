@@ -1,5 +1,3 @@
-import FormTags from "./form-tags";
-
 type FormTagToken = {
     id: number;
     value: string;
@@ -19,6 +17,14 @@ declare const window: {
 
 export default function getWindowData(): TaxonomySettings {
     return window.giveTaxonomySettings;
+}
+
+export function isFormTagsEnabled(): boolean {
+    return window.giveTaxonomySettings.formTagsEnabled;
+}
+
+export function isFormCategoriesEnabled(): boolean {
+    return window.giveTaxonomySettings.formCategoriesEnabled;
 }
 
 export function getInitialFormTags(): FormTagToken[] {

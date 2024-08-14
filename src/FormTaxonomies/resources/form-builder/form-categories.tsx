@@ -48,7 +48,7 @@ const FormCategorySetting = ({settings, setSettings}) => {
         <div style={{display: 'flex', flexDirection: 'column'}}>
             {renderTerms(categoryTree)}
         </div>
-    )
+    );
 }
 
 export default FormCategorySetting;

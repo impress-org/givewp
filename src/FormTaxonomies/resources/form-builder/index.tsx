@@ -1,49 +1,5 @@
-import {CheckboxControl, PanelRow, TreeSelect} from "@wordpress/components";
-import { __ } from "@wordpress/i18n";
-import { SettingsSection } from "@givewp/form-builder-library";
-import getWindowData from "./windowData";
-import FormTagSetting from "./form-tags";
-import FormCategorySetting from "./form-categories";
+import {addFilter} from "@wordpress/hooks";
+import withTaxonomySettingsRoute from "./taxonomy-settings";
 import './style.scss';
 
-wp.hooks.addFilter('givewp_form_builder_settings_additional_routes', 'give-form-tags', (settings) => {
-
-    const isFormTagsEnabled = getWindowData().formTagsEnabled;
-    const isFormCategoriesEnabled = getWindowData().formCategoriesEnabled;
-
-    const getDynamicLabel = () => {
-        return isFormTagsEnabled && isFormCategoriesEnabled ? __('Tags and Categories', '')
-            : isFormTagsEnabled ? __('Form Tags', '')
-                : isFormCategoriesEnabled ? __('Form Categories', '') : '';
-    }
-
-    return [
-        ...settings,
-        {
-            name: getDynamicLabel(),
-            path: 'give-form-tags',
-            element: ({settings, setSettings}) => {
-                return (
-                    <div id={'give-form-settings__form-taxonomies'}>
-
-                        {isFormTagsEnabled && (
-                            <SettingsSection title={__('Form Tags', 'give')}>
-                                <PanelRow className={'no-extra-gap'}>
-                                    <FormTagSetting settings={settings} setSettings={setSettings} />
-                                </PanelRow>
-                            </SettingsSection>
-                        )}
-
-                        {isFormCategoriesEnabled && (
-                            <SettingsSection title={__('Form Categories', 'give')}>
-                                <PanelRow className={'no-extra-gap'}>
-                                    <FormCategorySetting settings={settings} setSettings={setSettings} />
-                                </PanelRow>
-                            </SettingsSection>
-                        )}
-                    </div>
-                )
-            },
-        },
-    ];
-});
+addFilter('givewp_form_builder_settings_additional_routes', 'givewp/form-taxonomies', withTaxonomySettingsRoute);
