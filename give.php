@@ -240,6 +240,7 @@ final class Give
         Give\EventTickets\ServiceProvider::class,
         Give\BetaFeatures\ServiceProvider::class,
         Give\FormTaxonomies\ServiceProvider::class,
+        Give\DonationSpam\ServiceProvider::class,
     ];
 
     /**
