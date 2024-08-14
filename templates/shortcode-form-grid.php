@@ -239,6 +239,11 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
             // Maybe display the goal progress bar.
             if (!$hide_goal) :
+
+                if (give_is_progress_bar_goal_async_on_form_grid()) {
+                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                }
+
                 $goal_progress_stats = give_goal_progress_stats($form);
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];

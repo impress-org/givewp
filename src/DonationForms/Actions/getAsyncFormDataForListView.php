@@ -37,7 +37,7 @@ class getAsyncFormDataForListView
 
         $amountRaised = 0;
         $percentComplete = 0;
-        if (give_is_goal_column_async_on_admin_form_list_views()) {
+        if ($this->isAsyncProgressBar()) {
             $goalStats       = give_goal_progress_stats( $formId );
             $amountRaised = $goalStats['actual'];
             $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
@@ -45,12 +45,12 @@ class getAsyncFormDataForListView
         }
 
         $donationsCount = 0;
-        if (give_is_donations_column_async_on_admin_form_list_views()) {
+        if ($this->isAsyncDonationCount()) {
             $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
         }
 
         $revenue = $amountRaised;
-        if (0 === $revenue && give_is_revenue_column_async_on_admin_form_list_views()) {
+        if (0 === $revenue && $this->isAsyncRevenue()) {
             $revenue = (new DonationQuery())->form($formId)->sumIntendedAmount();
         }
 
@@ -64,5 +64,29 @@ class getAsyncFormDataForListView
         set_transient($transientName, $response, MINUTE_IN_SECONDS * 5);
 
         wp_send_json_success( $response );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isAsyncProgressBar(): bool
+    {
+       return give_is_goal_column_async_on_admin_form_list_views() || give_is_progress_bar_goal_async_on_form_grid();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isAsyncDonationCount(): bool
+    {
+        return give_is_donations_column_async_on_admin_form_list_views() || give_is_progress_bar_donations_async_on_form_grid();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isAsyncRevenue(): bool
+    {
+        return give_is_revenue_column_async_on_admin_form_list_views();
     }
 }
