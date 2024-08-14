@@ -265,6 +265,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 = 3.15.0: Aug 13th, 2024 =
 * New: Updated the onboarding wizard to create a new form with the form builder
 * Changed: Updated the "Add Form" buttons to use the visual form builder by default
+* Fix: Resolved an issue with Give Subscribers accessing their donor dashboard history
 
 = 3.14.2: Aug 7th, 2024 =
 * Security: Added additional security measures to the option-based donation form and the donor dashboard 
