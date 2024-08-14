@@ -61,7 +61,7 @@ class DonateRoute
              * Allow for additional validation of the donation form data.
              * The donation flow can be interrupted by throwing an Exception.
              *
-             * @unreleased
+             * @since 3.15.0
              *
              * @param DonateControllerData $data
              */

@@ -3,7 +3,7 @@
 namespace Give\DonationSpam;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class EmailAddressWhiteList
 {
@@ -13,7 +13,7 @@ class EmailAddressWhiteList
     protected $whitelistEmails;
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function __construct($whitelistEmails = [])
     {
@@ -21,7 +21,7 @@ class EmailAddressWhiteList
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function validate($email): bool
     {
