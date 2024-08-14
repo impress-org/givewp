@@ -67,7 +67,7 @@ class DonationCountColumn extends ModelColumn
             '<a class="column-donations" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
             __('Visit donations page', 'give'),
-            give_is_donations_column_on_form_list_async() ? give_get_skeleton_placeholder_for_async_data('1rem') : $label
+            give_is_donations_column_async_on_admin_form_list_views() ? give_get_skeleton_placeholder_for_async_data('1rem') : $label
         );
     }
 
@@ -76,7 +76,7 @@ class DonationCountColumn extends ModelColumn
      */
     private function getTotalDonationsValue($model)
     {
-        if (give_is_column_cache_on_form_list_enabled()) {
+        if (give_is_enabled_stats_cache_on_admin_form_list_views()) {
             // Return meta keys that store the aggregated values
             return $model->totalNumberOfDonations;
         }

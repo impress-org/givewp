@@ -1282,7 +1282,7 @@ function give_admin_form_goal_stats( $form_id) {
 		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
-    if (!is_single() && give_is_goal_column_on_form_list_async()){
+    if (give_is_goal_column_async_on_admin_form_list_views()){
         $html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
     }elseif ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal']) {
 		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );

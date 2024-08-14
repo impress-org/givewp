@@ -37,7 +37,7 @@ class getAsyncFormDataForListView
 
         $amountRaised = 0;
         $percentComplete = 0;
-        if (give_is_goal_column_on_form_list_async()) {
+        if (give_is_goal_column_async_on_admin_form_list_views()) {
             $goalStats       = give_goal_progress_stats( $formId );
             $amountRaised = $goalStats['actual'];
             $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
@@ -45,12 +45,12 @@ class getAsyncFormDataForListView
         }
 
         $donationsCount = 0;
-        if (give_is_donations_column_on_form_list_async()) {
+        if (give_is_donations_column_async_on_admin_form_list_views()) {
             $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
         }
 
         $revenue = $amountRaised;
-        if (0 === $revenue && give_is_revenue_column_on_form_list_async()) {
+        if (0 === $revenue && give_is_revenue_column_async_on_admin_form_list_views()) {
             $revenue = (new DonationQuery())->form($formId)->sumIntendedAmount();
         }
 

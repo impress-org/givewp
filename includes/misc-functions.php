@@ -1936,29 +1936,65 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 /**
  * @unreleased
  */
-function give_is_goal_column_on_form_list_async() {
-    return false;
+function give_is_all_stats_columns_async_on_admin_form_list_views(): bool
+{
+    if(!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        define("GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS", true);
+    }
+
+    return (bool)GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
 }
 
 /**
  * @unreleased
  */
-function give_is_donations_column_on_form_list_async() {
-    return false;
+function give_is_goal_column_async_on_admin_form_list_views(): bool
+{
+    if(defined('GIVE_IS_GOAL_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        return (bool)GIVE_IS_GOAL_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
+    }
+
+    return give_is_all_stats_columns_async_on_admin_form_list_views();
 }
 
 /**
  * @unreleased
  */
-function give_is_revenue_column_on_form_list_async() {
-    return false;
+function give_is_donations_column_async_on_admin_form_list_views(): bool
+{
+    if(defined('GIVE_IS_DONATIONS_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        return (bool)GIVE_IS_DONATIONS_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
+    }
+
+    return give_is_all_stats_columns_async_on_admin_form_list_views();
 }
 
 /**
  * @unreleased
  */
-function give_is_column_cache_on_form_list_enabled() {
-    return true;
+function give_is_revenue_column_async_on_admin_form_list_views(): bool
+{
+    if(defined('GIVE_IS_REVENUE_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        return (bool)GIVE_IS_REVENUE_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
+    }
+
+    return give_is_all_stats_columns_async_on_admin_form_list_views();
+}
+
+/**
+ * @unreleased
+ */
+function give_is_enabled_stats_cache_on_admin_form_list_views(): bool
+{
+    return apply_filters('give_enabled_stats_cache_on_admin_form_list_views', false);
+}
+
+/**
+ * @unreleased
+ */
+function give_is_enabled_stats_cache_on_form_gid(): bool
+{
+    return apply_filters('give_enabled_stats_cache_on_form_grid', false);
 }
 
 /**
@@ -2027,7 +2063,7 @@ function give_goal_progress_stats( $form ) {
                  * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  * @since 1.8.8
                  */
-                $actual = give_is_column_cache_on_form_list_enabled()
+                $actual = give_is_enabled_stats_cache_on_admin_form_list_views()
                     ? // Use meta keys that store the aggregated values
                     apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form )
                     : // Use data retrieved in real-time from DB

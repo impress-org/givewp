@@ -50,7 +50,7 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
-        if (give_is_goal_column_on_form_list_async()) {
+        if (give_is_goal_column_async_on_admin_form_list_views()) {
             add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
         }
 
@@ -85,12 +85,12 @@ class GoalColumn extends ModelColumn
                 $goal['goal']
             ),
             sprintf(
-                ($goal['progress'] >= 100 || give_is_goal_column_on_form_list_async()
+                ($goal['progress'] >= 100 || give_is_goal_column_async_on_admin_form_list_views()
                     ?
                     '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>'
                     : ''
                 ),
-                give_is_goal_column_on_form_list_async() ? 0 : 1,
+                give_is_goal_column_async_on_admin_form_list_views() ? 0 : 1,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')
