@@ -1934,22 +1934,56 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 }
 
 /**
+ * @unreleased
+ */
+function give_is_goal_column_on_form_list_async() {
+    return true;
+}
+
+/**
+ * @unreleased
+ */
+function give_is_donations_column_on_form_list_async() {
+    return true;
+}
+
+/**
+ * @unreleased
+ */
+function give_is_revenue_column_on_form_list_async() {
+    return true;
+}
+
+/**
+ * @unreleased
+ */
+function give_is_column_cache_on_form_list_enabled() {
+    return false;
+}
+
+/**
  * Display/Return a formatted goal for a donation form
  *
- * @unreleased Add $usePlaceholder parameter
+ * @unreleased Add placeholder logic
  * @since 2.1
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
  * @return array
  */
-function give_goal_progress_stats( $form, $usePlaceholder = false ) {
+function give_goal_progress_stats( $form ) {
 
 	if ( ! $form instanceof Give_Donate_Form ) {
 		$form = new Give_Donate_Form( $form );
 	}
 
 	$goal_format = give_get_form_goal_format( $form->ID );
+
+    /**
+     * @unreleased
+     */
+    $usePlaceholder = apply_filters('give_goal_progress_stats_use_placeholder', false);
+
 
     $placeholder = give_get_skeleton_placeholder_for_async_data('1rem');
 
@@ -1982,12 +2016,23 @@ function give_goal_progress_stats( $form, $usePlaceholder = false ) {
 			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default:
-			/**
-			 * Filter the form income.
-			 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
-			 * @since 1.8.8
-			 */
-            $actual = $usePlaceholder ? $placeholder : apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+
+            if ($usePlaceholder) {
+                $actual = $placeholder;
+            } else {
+                /**
+                 * Filter the form income.
+                 *
+                 * @unreleased Add the option to use the old approach ("$form->earnings") or the new one ("sumIntendedAmount()")
+                 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
+                 * @since 1.8.8
+                 */
+                $actual = give_is_column_cache_on_form_list_enabled()
+                    ? // use meta keys that store the aggregated values
+                    apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form )
+                    : // Use data retrieved in real-time from DB
+                    apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+            }
 			break;
 	}
 

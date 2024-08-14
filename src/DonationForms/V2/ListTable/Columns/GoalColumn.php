@@ -50,7 +50,25 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
-        $goal = give_goal_progress_stats($model->id, true);
+        if (give_is_goal_column_on_form_list_async()) {
+            add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+        }
+
+        add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
+
+            /**
+             * We just want to use the data retrieved in real-time from DB if the column is set up to NOT work with async
+             * data and if the cache (the meta keys that store the aggregated values) for the form list columns is disabled.
+             */
+            if (!give_is_goal_column_on_form_list_async() &&
+                !give_is_column_cache_on_form_list_enabled()) {
+                $earnings = (new DonationQuery())->form($donationFormId)->sumAmount();
+            }
+
+            return $earnings;
+        }, 10, 2);
+
+        $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
             $goal['actual']) : max(min($goal['progress'], 100), 0);
 
@@ -65,7 +83,7 @@ class GoalColumn extends ModelColumn
             >
                 <span style="width: %2$s%%"></span>
             </div>
-            <div id="giveDonationFormsProgressBar-%1$d" data-form-id="%1$s">
+            <div id="giveDonationFormsProgressBar-%1$d">
                 <span class="goal">%3$s</span>%4$s %5$s
             </div>
         ';

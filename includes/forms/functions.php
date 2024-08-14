@@ -1259,10 +1259,28 @@ function give_set_form_closed_status( $form_id ) {
  *
  * @return string
  */
-function give_admin_form_goal_stats( $form_id, $usePlaceholder ) {
+function give_admin_form_goal_stats( $form_id) {
+
+    add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
+
+        if (give_is_column_cache_on_form_list_enabled()) {
+            return $earnings;
+        }
+
+        /**
+         * We just want to use the data retrieved in real-time from DB if the column is set up to
+         * NOT work with async data or when the function is used in a single post page (Detail Page).
+         */
+        if (!give_is_goal_column_on_form_list_async() ||
+            is_single()) {
+            $earnings = (new DonationQuery())->form($donationFormId)->sumAmount();
+        }
+
+        return $earnings;
+    }, 10, 2);
 
 	$html             = '';
-	$goal_stats       = give_goal_progress_stats( $form_id, $usePlaceholder );
+	$goal_stats       = give_goal_progress_stats( $form_id);
 	$percent_complete = $goal_stats['raw_goal'] ? round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100 : 0;
 
 	$html .= sprintf(
@@ -1283,8 +1301,10 @@ function give_admin_form_goal_stats( $form_id, $usePlaceholder ) {
 		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
-	if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] || $usePlaceholder) {
-		$html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
+    if (give_is_goal_column_on_form_list_async()){
+        $html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
+    }elseif ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal']) {
+		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
 	}
 
 	$html .= '</div>';
