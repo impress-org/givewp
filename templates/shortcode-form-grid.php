@@ -239,18 +239,9 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
             // Maybe display the goal progress bar.
             if (!$hide_goal) :
-
+                
                 if (give_is_progress_bar_goal_async_on_form_grid()) {
                     add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-                }
-
-                $goal_progress_stats = give_goal_progress_stats($form);
-                $goal_format = $goal_progress_stats['format'];
-                $color = $atts['progress_bar_color'];
-                $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
-
-
-                if (give_is_progress_bar_goal_async_on_form_grid()) {
                     $incomeValue = 0;
                 } else {
                     $incomeValue = give_is_enabled_stats_cache_on_form_gid()
@@ -259,6 +250,11 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         : // Return data retrieved in real-time from DB
                         (new DonationQuery())->form($form->ID)->sumIntendedAmount();
                 }
+
+                $goal_progress_stats = give_goal_progress_stats($form);
+                $goal_format = $goal_progress_stats['format'];
+                $color = $atts['progress_bar_color'];
+                $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 /**
                  * @unreleased Replace (new DonationQuery())->form($form->ID)->sumIntendedAmount() with $incomeValue
