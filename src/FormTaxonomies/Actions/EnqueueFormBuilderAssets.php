@@ -18,7 +18,7 @@ class EnqueueFormBuilderAssets
     {
         if($this->isFormTagsEnabled() || $this->isFormCategoriesEnabled()) {
             wp_enqueue_script('givewp-builder-taxonomy-settings', GIVE_PLUGIN_URL . 'assets/dist/js/form-taxonomy-settings.js');
-            wp_add_inline_script('givewp-builder-taxonomy-settings','const giveTaxonomySettings =' . json_encode([
+            wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([
                     'formTagsEnabled' => $this->isFormTagsEnabled(),
                     'formCategoriesEnabled' => $this->isFormCategoriesEnabled(),
                     'formTagsSelected' => $this->getSelectedFormTags(),
@@ -40,6 +40,10 @@ class EnqueueFormBuilderAssets
 
     public function getSelectedFormTags(): array
     {
+        if(!$this->isFormTagsEnabled()) {
+            return [];
+        }
+
         $terms = get_terms([
             // Form ID not provided by the hook, so we need to get it from the query string (if available).
             'post' => absint($_GET['donationFormID'] ?? 0),
@@ -56,6 +60,10 @@ class EnqueueFormBuilderAssets
 
     public function getFormCategories(): array
     {
+        if(!$this->isFormCategoriesEnabled()) {
+            return [];
+        }
+
         $terms = get_terms([
             'taxonomy' => 'give_forms_category',
             'hide_empty' => false,
@@ -72,6 +80,10 @@ class EnqueueFormBuilderAssets
 
     public function getSelectedFormCategories()
     {
+        if(!$this->isFormCategoriesEnabled()) {
+            return [];
+        }
+
         $terms = get_terms([
             // Form ID not provided by the hook, so we need to get it from the query string (if available).
             'post' => absint($_GET['donationFormID'] ?? 0),
