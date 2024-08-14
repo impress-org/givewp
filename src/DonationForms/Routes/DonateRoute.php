@@ -5,6 +5,7 @@ namespace Give\DonationForms\Routes;
 
 use Exception;
 use Give\DonationForms\Controllers\DonateController;
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
@@ -55,6 +56,17 @@ class DonateRoute
 
         try {
             $data = $formData->validated();
+
+            /**
+             * Allow for additional validation of the donation form data.
+             * The donation flow can be interrupted by throwing an Exception.
+             *
+             * @unreleased
+             *
+             * @param DonateControllerData $data
+             */
+            do_action('givewp_donate_form_data_validated', $data);
+
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
