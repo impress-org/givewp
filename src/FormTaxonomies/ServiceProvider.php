@@ -22,6 +22,13 @@ class ServiceProvider implements ServiceProviderInterface
                 json_decode(give_clean($_POST['settings']), true)
             );
         });
+
+        give()->bind(Actions\EnqueueFormBuilderAssets::class, function() {
+            $formId = absint($_GET['donationFormID'] ?? 0);
+            return new Actions\EnqueueFormBuilderAssets(
+                new ViewModels\FormTaxonomyViewModel($formId, give_get_settings())
+            );
+        });
     }
 
     /**
