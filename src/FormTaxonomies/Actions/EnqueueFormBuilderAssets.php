@@ -17,7 +17,15 @@ class EnqueueFormBuilderAssets
     public function __invoke()
     {
         if($this->isFormTagsEnabled() || $this->isFormCategoriesEnabled()) {
-            wp_enqueue_script('givewp-builder-taxonomy-settings', GIVE_PLUGIN_URL . 'assets/dist/js/form-taxonomy-settings.js');
+            $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/formTaxonomySettings.asset.php');
+
+            wp_enqueue_script(
+                'givewp-builder-taxonomy-settings',
+                GIVE_PLUGIN_URL . 'build/formTaxonomySettings.js',
+                $scriptAsset['dependencies'],
+                $scriptAsset['version'],
+                true
+            );
             wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([
                     'formTagsEnabled' => $this->isFormTagsEnabled(),
                     'formCategoriesEnabled' => $this->isFormCategoriesEnabled(),
