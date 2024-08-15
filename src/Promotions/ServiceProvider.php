@@ -57,11 +57,6 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
         }
 
-        if (SaleBanners::isShowing()) {
-            Hooks::addAction('admin_notices', SaleBanners::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
-        }
-
         if (ReportsWidgetBanner::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
         }
