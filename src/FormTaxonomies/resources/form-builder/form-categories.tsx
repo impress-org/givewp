@@ -2,14 +2,14 @@ import {getAvailableFormCategories, getInitialFormCategories} from "./windowData
 import {buildTermsTree} from "./utils/terms";
 import {CheckboxControl} from "@wordpress/components";
 import {decodeEntities} from "@wordpress/html-entities";
-
+import {useMemo} from "react";
 
 const FormCategorySetting = ({settings, setSettings}) => {
     const {
         formCategories = getInitialFormCategories(),
     } = settings;
 
-    const categoryTree = buildTermsTree(getAvailableFormCategories());
+    const categoryTree = useMemo(() => buildTermsTree(getAvailableFormCategories()), [])
 
     const onChange = (categoryId ) => {
         setSettings({formCategories: formCategories.includes( categoryId )
