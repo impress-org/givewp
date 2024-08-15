@@ -18,37 +18,37 @@ const FormCategorySetting = ({settings, setSettings}) => {
         })
     };
 
-    const renderTerms = (renderedTerms) => {
-        return renderedTerms.map((term) => {
-            return (
-                <div
-                    key={term.id}
-                    className="editor-post-taxonomies__hierarchical-terms-choice"
-                >
-                    <CheckboxControl
-                        __nextHasNoMarginBottom
-                        checked={ formCategories.indexOf( term.id ) !== -1 }
-                        onChange={ () => {
-                            const termId = parseInt( term.id, 10 );
-                            onChange( termId );
-                        } }
-                        label={ decodeEntities( term.name ) }
-                    />
-                    { !! term.children.length && (
-                        <div className="editor-post-taxonomies__hierarchical-terms-subchoices">
-                            { renderTerms( term.children ) }
-                        </div>
-                    ) }
-                </div>
-            );
-        } );
-    };
-
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
-            {renderTerms(categoryTree)}
+            {renderTerms(categoryTree, formCategories, onChange)}
         </div>
     );
 }
+
+const renderTerms = (availableTerms, selectedTerms, onChange) => {
+    return availableTerms.map((term) => {
+        return (
+            <div
+                key={term.id}
+                className="editor-post-taxonomies__hierarchical-terms-choice"
+            >
+                <CheckboxControl
+                    __nextHasNoMarginBottom
+                    checked={ selectedTerms.indexOf( term.id ) !== -1 }
+                    onChange={ () => {
+                        const termId = parseInt( term.id, 10 );
+                        onChange( termId );
+                    } }
+                    label={ decodeEntities( term.name ) }
+                />
+                { !! term.children.length && (
+                    <div className="editor-post-taxonomies__hierarchical-terms-subchoices">
+                        { renderTerms( term.children, selectedTerms, onChange ) }
+                    </div>
+                ) }
+            </div>
+        );
+    } );
+};
 
 export default FormCategorySetting;
