@@ -210,7 +210,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unrleeased returns the block collection if block does not exist.
+     * @since 3.15.0 returns the block collection if block does not exist.
      * @since 3.0.0
      */
     public function remove($blockName) {

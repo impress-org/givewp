@@ -3,12 +3,12 @@
 namespace Give\DonationForms;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class DonationFormsAdminPage
 {
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function addFormSubmenuLink()
     {
