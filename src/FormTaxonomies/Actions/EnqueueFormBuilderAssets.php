@@ -2,6 +2,8 @@
 
 namespace Give\FormTaxonomies\Actions;
 
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+
 class EnqueueFormBuilderAssets
 {
     /**
