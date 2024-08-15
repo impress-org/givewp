@@ -35,7 +35,7 @@ import './paypal-commerce';
 
 import '../../../../src/DonorDashboards/resources/js/admin';
 
-import '../../../../src/DonationForms/resources/utils/loadAsyncDataOnFormListViews';
+import '../../../../src/DonationForms/AsyncData/resources/loadAsyncData';
 
 GiveAPI.modal = Modals;
 const { init, fn, cache, modal, notice } = GiveAPI;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\FormListViewsAsyncData\FormGrid;
+namespace Give\DonationForms\AsyncData\FormGrid;
 
 /**
  * @unreleased

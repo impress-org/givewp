@@ -5,7 +5,6 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
-use Give\DonationForms\Actions\getAsyncFormDataForListView;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -17,7 +16,8 @@ use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
-use Give\DonationForms\FormListViewsAsyncData\AdminFormListViews\AdminFormListView;
+use Give\DonationForms\AsyncData\Actions\getAsyncFormDataForListView;
+use Give\DonationForms\AsyncData\AdminFormListViews\AdminFormListView;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
 use Give\DonationForms\Migrations\RemoveDuplicateMeta;
@@ -32,7 +32,6 @@ use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
-use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
@@ -86,17 +85,7 @@ class ServiceProvider implements ServiceProviderInterface
             UpdateDonationLevelsSchema::class,
         ]);
 
-        $this->registerAjaxFunctions();
         $this->registerFormListViewsAsyncData();
-    }
-
-    /**
-     * @unreleased
-     */
-    private function registerAjaxFunctions()
-    {
-        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
-        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
     }
 
     /**
@@ -104,6 +93,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerFormListViewsAsyncData()
     {
+        // Async ajax request
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
+
         // Filters from give_goal_progress_stats() function which is used by the admin form list views and the form grid view
         Hooks::addFilter('give_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalProgressStatsFunction');
         Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutputOnGoalProgressStatsFunction',1,2);

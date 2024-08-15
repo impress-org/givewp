@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\FormListViewsAsyncData;
+namespace Give\DonationForms\AsyncData;
 
 use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;

@@ -1,12 +1,10 @@
 <?php
 
-namespace Give\DonationForms\Actions;
+namespace Give\DonationForms\AsyncData\Actions;
 
-use Give\DonationForms\DonationQuery;
-use Give\DonationForms\FormListViewsAsyncData\AdminFormListViews\AdminFormListViewOptions;
-use Give\DonationForms\FormListViewsAsyncData\FormGrid\FormGridViewOptions;
-use Give\DonationForms\FormListViewsAsyncData\FormStats;
-use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
+use Give\DonationForms\AsyncData\AdminFormListViews\AdminFormListViewOptions;
+use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
+use Give\DonationForms\AsyncData\FormStats;
 
 /**
  * @unreleased
@@ -74,7 +72,7 @@ class getAsyncFormDataForListView
      */
     private function isAsyncProgressBar(): bool
     {
-       return AdminFormListViewOptions::isGoalColumnAsync() || FormGridViewOptions::isProgressBarGoalAsync();
+        return AdminFormListViewOptions::isGoalColumnAsync() || FormGridViewOptions::isProgressBarGoalAsync();
     }
 
     /**

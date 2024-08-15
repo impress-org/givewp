@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\DonationForms\FormListViewsAsyncData\AdminFormListViews;
+namespace Give\DonationForms\AsyncData\AdminFormListViews;
 
-use Give\DonationForms\FormListViewsAsyncData\FormStats;
+use Give\DonationForms\AsyncData\FormStats;
 
 /**
  * @unreleased

@@ -5,7 +5,7 @@
 
 // Exit if accessed directly.
 use Give\DonationForms\DonationQuery;
-use Give\DonationForms\FormListViewsAsyncData\FormGrid\FormGridViewOptions;
+use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
