@@ -4,6 +4,9 @@ namespace Give\FormTaxonomies\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
+/**
+ * @unreleased
+ */
 class EnqueueFormBuilderAssets
 {
     /**
@@ -11,11 +14,17 @@ class EnqueueFormBuilderAssets
      */
     protected $settings;
 
+    /**
+     * @unreleased
+     */
     public function __construct()
     {
         $this->settings = give_get_settings();
     }
 
+    /**
+     * @unreleased
+     */
     public function __invoke()
     {
         if($this->isFormTagsEnabled() || $this->isFormCategoriesEnabled()) {
@@ -38,16 +47,25 @@ class EnqueueFormBuilderAssets
         }
     }
 
+    /**
+     * @unreleased
+     */
     public function isFormTagsEnabled()
     {
         return give_is_setting_enabled($this->settings['tags']);
     }
 
+    /**
+     * @unreleased
+     */
     public function isFormCategoriesEnabled()
     {
         return give_is_setting_enabled($this->settings['categories']);
     }
 
+    /**
+     * @unreleased
+     */
     public function getSelectedFormTags(): array
     {
         if(!$this->isFormTagsEnabled()) {
@@ -68,6 +86,9 @@ class EnqueueFormBuilderAssets
         }, $terms) ?? [];
     }
 
+    /**
+     * @unreleased
+     */
     public function getFormCategories(): array
     {
         if(!$this->isFormCategoriesEnabled()) {
@@ -88,6 +109,9 @@ class EnqueueFormBuilderAssets
         }, $terms) ?? [];
     }
 
+    /**
+     * @unreleased
+     */
     public function getSelectedFormCategories()
     {
         if(!$this->isFormCategoriesEnabled()) {
