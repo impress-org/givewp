@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\AsyncData\AdminFormListViews;
+namespace Give\DonationForms\AsyncData\AdminFormListView;
 
 use Give\DonationForms\AsyncData\FormStats;
 
@@ -9,31 +9,6 @@ use Give\DonationForms\AsyncData\FormStats;
  */
 class AdminFormListView
 {
-    /**
-     * @unreleased
-     */
-    public function maybeUsePlaceholderOnGoalProgressStatsFunction(bool $usePlaceholder): bool
-    {
-       $isAdminFormListView =  isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'];
-        if ($isAdminFormListView && AdminFormListViewOptions::isGoalColumnAsync()) {
-            $usePlaceholder = true;
-        }
-
-        return $usePlaceholder;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function maybeChangeAmountRaisedOutputOnGoalProgressStatsFunction($amountRaisedCachedValue, $formId)
-    {
-        if(AdminFormListViewOptions::useCachedMetaKeys()) {
-            return $amountRaisedCachedValue;
-        }
-
-        return FormStats::getRevenueValue($formId);
-    }
-
     /**
      * @unreleased
      */

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\DonationQuery;
-use Give\DonationForms\AsyncData\AdminFormListViews\AdminFormListViewOptions;
+use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 

@@ -2,7 +2,7 @@
 
 namespace Give\DonationForms\AsyncData\Actions;
 
-use Give\DonationForms\AsyncData\AdminFormListViews\AdminFormListViewOptions;
+use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\DonationForms\AsyncData\FormStats;
 

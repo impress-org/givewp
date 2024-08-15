@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\AsyncData\AdminFormListViews;
+namespace Give\DonationForms\AsyncData\AdminFormListView;
 
 /**
  * @unreleased
