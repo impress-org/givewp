@@ -17,9 +17,10 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->bind(Actions\UpdateFormTaxonomies::class, function() {
+            $formBuilderSettingsPostData = isset($_POST['settings']) ? give_clean(@$_POST['settings']) : [];
             /** @link https://github.com/impress-org/givewp/pull/7463#discussion_r1706988002 */
             return new Actions\UpdateFormTaxonomies(
-                json_decode(give_clean($_POST['settings']), true)
+                json_decode($formBuilderSettingsPostData, true)
             );
         });
 
