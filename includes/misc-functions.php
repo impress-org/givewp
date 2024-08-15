@@ -1936,7 +1936,7 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @unreleased Add async logic (skeleton placeholder) to improve performance
+ * @unreleased Add filter to handle the async logic (skeleton placeholder) and improve performance
  * @since 2.1
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
@@ -1955,8 +1955,6 @@ function give_goal_progress_stats( $form ) {
      * @unreleased
      */
     $usePlaceholder = apply_filters('give_goal_progress_stats_use_placeholder', false);
-
-
     $placeholder = give_get_skeleton_placeholder_for_async_data('1rem');
 
 	/**
@@ -1995,7 +1993,7 @@ function give_goal_progress_stats( $form ) {
                 /**
                  * Filter the form income.
                  *
-                 * @unreleased Add the option to use the old approach ("$form->earnings") or the new one ("sumIntendedAmount()")
+                 * @unreleased Revert changes implemented on the 3.14.0 version
                  * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  * @since 1.8.8
                  */

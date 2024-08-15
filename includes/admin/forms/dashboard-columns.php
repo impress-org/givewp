@@ -61,7 +61,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
- * @unreleased Add skeleton placeholder support to improve performance
+ * @unreleased Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
  * @param string $column_name Column name
@@ -90,7 +90,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-					echo give_admin_form_goal_stats( $post_id);
+					echo give_admin_form_goal_stats( $post_id );
 
 				} else {
 					_e( 'No Goal Set', 'give' );
@@ -108,7 +108,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-                        apply_filters('give_admin_form_list_view_donations_column_value', give_get_form_sales_stats( $post_id ), $post_id)
+                        apply_filters('give_admin_form_list_view_donations_count_column_value', give_get_form_sales_stats( $post_id ), $post_id)
 					);
 				} else {
 					echo '-';
@@ -119,7 +119,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-                        apply_filters('give_admin_form_list_view_earnings_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id)
+                        apply_filters('give_admin_form_list_view_revenue_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id)
 					);
 				} else {
 					echo '-';
@@ -171,7 +171,7 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
- * @unreleased Move "give_donate_form_get_sales" filter logic to "give_render_form_columns" method
+ * @unreleased Remove "give_donate_form_get_sales" filter logic
  * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *

@@ -117,8 +117,8 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         // Legacy Admin Form List View Columns
-        Hooks::addFilter('give_admin_form_list_view_donations_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
-        Hooks::addFilter('give_admin_form_list_view_earnings_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
+        Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
+        Hooks::addFilter('give_admin_form_list_view_revenue_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
 
         // Async ajax request
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
