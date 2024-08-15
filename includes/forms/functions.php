@@ -1264,6 +1264,11 @@ function give_admin_form_goal_stats( $form_id) {
 	$goal_stats       = give_goal_progress_stats( $form_id);
 	$percent_complete = $goal_stats['raw_goal'] ? round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100 : 0;
 
+    /**
+     * @unreleased
+     */
+    $show_hide_achieved_icon = apply_filters('give_admin_form_goal_stats_add_hide_achieved_icon', false);
+
 	$html .= sprintf(
 		'<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%1$s">
 <span style="width:%1$s%%;"></span>
@@ -1282,7 +1287,7 @@ function give_admin_form_goal_stats( $form_id) {
 		( 'donors' === $goal_stats['format'] ? __( 'donors', 'give' ) : ( 'donation' === $goal_stats['format'] ? __( 'donations', 'give' ) : '' ) )
 	);
 
-    if (give_is_goal_column_async_on_admin_form_list_views()){
+    if ($show_hide_achieved_icon){
         $html .= sprintf( '<span style="opacity: 0" class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );
     }elseif ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal']) {
 		$html .= sprintf( '<span class="give-admin-goal-achieved"><span class="dashicons dashicons-star-filled"></span> %s</span>', __( 'Goal achieved', 'give' ) );

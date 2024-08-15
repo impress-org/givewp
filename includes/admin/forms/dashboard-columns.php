@@ -92,6 +92,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 
                     if (give_is_goal_column_async_on_admin_form_list_views()) {
                         add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                        add_filter('give_admin_form_goal_stats_add_hide_achieved_icon', '__return_true');
                     }
 
 					echo give_admin_form_goal_stats( $post_id);
