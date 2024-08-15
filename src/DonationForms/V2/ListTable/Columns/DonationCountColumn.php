@@ -50,7 +50,7 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $this->getTotalDonationsValue($model);
+        $totalDonations = $model->totalNumberOfDonations;
 
         $label = $totalDonations > 0
             ? sprintf(
@@ -67,21 +67,7 @@ class DonationCountColumn extends ModelColumn
             '<a class="column-donations" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
             __('Visit donations page', 'give'),
-            give_is_donations_column_async_on_admin_form_list_views() ? give_get_skeleton_placeholder_for_async_data('1rem') : $label
+            apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this)
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getTotalDonationsValue($model)
-    {
-        if (give_is_enabled_stats_cache_on_admin_form_list_views()) {
-            // Return meta keys that store the aggregated values
-            return $model->totalNumberOfDonations;
-        }
-
-        // Return data retrieved in real-time from DB
-        return (new ProgressBarModel(['ids' => [$model->id]]))->getDonationCount();
     }
 }

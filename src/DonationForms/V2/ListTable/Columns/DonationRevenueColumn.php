@@ -50,21 +50,7 @@ class DonationRevenueColumn extends ModelColumn
             '<a class="column-earnings" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=$model->id"),
             __('Visit form reports page', 'give'),
-            give_is_revenue_column_async_on_admin_form_list_views() ? give_get_skeleton_placeholder_for_async_data('1rem') : $this->getRevenueValue($model, $locale)
+            apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $model->totalAmountDonated->formatToLocale($locale), $model, $this)
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getRevenueValue($model, $locale = '')
-    {
-        if (give_is_enabled_stats_cache_on_admin_form_list_views()) {
-            // Use meta keys that store the aggregated values
-            return $model->totalAmountDonated->formatToLocale($locale);
-        }
-
-        // Return data retrieved in real-time from DB
-        return (new DonationQuery())->form($model->id)->sumIntendedAmount();
     }
 }

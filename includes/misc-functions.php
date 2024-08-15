@@ -1934,106 +1934,6 @@ function give_get_skeleton_placeholder_for_async_data($width = '100%', $height =
 }
 
 /**
- * @unreleased
- */
-function give_is_all_progress_bar_stats_async_on_form_grid(): bool
-{
-    if(!defined('GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID')) {
-        define("GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID", true);
-    }
-
-    return (bool)GIVE_IS_ALL_PROGRESS_BAR_STATS_ASYNC_ON_FORM_GRID;
-}
-
-/**
- * @unreleased
- */
-function give_is_progress_bar_goal_async_on_form_grid(): bool
-{
-    if(defined('GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID')) {
-        return (bool)GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID;
-    }
-
-    return give_is_all_progress_bar_stats_async_on_form_grid();
-}
-
-/**
- * @unreleased
- */
-function give_is_progress_bar_donations_async_on_form_grid(): bool
-{
-    if(defined('GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID')) {
-        return (bool)GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID;
-    }
-
-    return give_is_all_progress_bar_stats_async_on_form_grid();
-}
-
-/**
- * @unreleased
- */
-function give_is_enabled_stats_cache_on_form_gid(): bool
-{
-    return apply_filters('give_enabled_stats_cache_on_form_grid', false);
-}
-
-/**
- * @unreleased
- */
-function give_is_all_stats_columns_async_on_admin_form_list_views(): bool
-{
-    if(!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-        define("GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS", true);
-    }
-
-    return (bool)GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
-}
-
-/**
- * @unreleased
- */
-function give_is_goal_column_async_on_admin_form_list_views(): bool
-{
-    if(defined('GIVE_IS_GOAL_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-        return (bool)GIVE_IS_GOAL_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
-    }
-
-    return give_is_all_stats_columns_async_on_admin_form_list_views();
-}
-
-/**
- * @unreleased
- */
-function give_is_donations_column_async_on_admin_form_list_views(): bool
-{
-    if(defined('GIVE_IS_DONATIONS_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-        return (bool)GIVE_IS_DONATIONS_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
-    }
-
-    return give_is_all_stats_columns_async_on_admin_form_list_views();
-}
-
-/**
- * @unreleased
- */
-function give_is_revenue_column_async_on_admin_form_list_views(): bool
-{
-    if(defined('GIVE_IS_REVENUE_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-        return (bool)GIVE_IS_REVENUE_COLUMN_ASYNC_ON_ADMIN_FORM_LIST_VIEWS;
-    }
-
-    return give_is_all_stats_columns_async_on_admin_form_list_views();
-}
-
-/**
- * @unreleased
- */
-function give_is_enabled_stats_cache_on_admin_form_list_views(): bool
-{
-    return apply_filters('give_enabled_stats_cache_on_admin_form_list_views', false);
-}
-
-/**
  * Display/Return a formatted goal for a donation form
  *
  * @unreleased Add async logic (skeleton placeholder) to improve performance
@@ -2099,11 +1999,7 @@ function give_goal_progress_stats( $form ) {
                  * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  * @since 1.8.8
                  */
-                $actual = give_is_enabled_stats_cache_on_admin_form_list_views()
-                    ? // Use meta keys that store the aggregated values
-                    apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form )
-                    : // Use data retrieved in real-time from DB
-                    apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+                $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
             }
 			break;
 	}

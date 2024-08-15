@@ -17,6 +17,7 @@ use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
+use Give\DonationForms\FormListViewsAsyncData\AdminFormListViews\AdminFormListView;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
 use Give\DonationForms\Migrations\RemoveDuplicateMeta;
@@ -26,8 +27,12 @@ use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
+use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
+use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
@@ -82,6 +87,7 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         $this->registerAjaxFunctions();
+        $this->registerFormListViewsAsyncData();
     }
 
     /**
@@ -91,6 +97,38 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerFormListViewsAsyncData()
+    {
+        // Filters from give_goal_progress_stats() function which is used by the admin form list views and the form grid view
+        Hooks::addFilter('give_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalProgressStatsFunction');
+        Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutputOnGoalProgressStatsFunction',1,2);
+
+        // Legacy Admin Form List View Columns
+        Hooks::addFilter('give_admin_form_list_view_donations_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
+        Hooks::addFilter('give_admin_form_list_view_earnings_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
+
+        // Admin Form List View Columns
+        add_filter(
+            sprintf("givewp_list_table_cell_value_%s_content", DonationCountColumn::getId()),
+            function ($value, DonationForm $form){
+                return give(AdminFormListView::class)->maybeSetDonationsColumnAsync($value, $form->id);
+            },
+            10,
+            2
+        );
+        add_filter(
+            sprintf("givewp_list_table_cell_value_%s_content", DonationRevenueColumn::getId()),
+            function ($value, DonationForm $form){
+                return give(AdminFormListView::class)->maybeSetRevenueColumnAsync($value, $form->id);
+            },
+            10,
+            2
+        );
     }
 
     /**

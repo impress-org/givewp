@@ -3,6 +3,9 @@
 namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\DonationQuery;
+use Give\DonationForms\FormListViewsAsyncData\AdminFormListViews\AdminFormListViewOptions;
+use Give\DonationForms\FormListViewsAsyncData\FormGrid\FormGridViewOptions;
+use Give\DonationForms\FormListViewsAsyncData\FormStats;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
@@ -46,12 +49,12 @@ class getAsyncFormDataForListView
 
         $donationsCount = 0;
         if ($this->isAsyncDonationCount()) {
-            $donationsCount = (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
+            $donationsCount = FormStats::getDonationsCountValue($formId);
         }
 
         $revenue = $amountRaised;
         if (0 === $revenue && $this->isAsyncRevenue()) {
-            $revenue = (new DonationQuery())->form($formId)->sumIntendedAmount();
+            $revenue = FormStats::getRevenueValue($formId);
         }
 
         $response = [
@@ -71,7 +74,7 @@ class getAsyncFormDataForListView
      */
     private function isAsyncProgressBar(): bool
     {
-       return give_is_goal_column_async_on_admin_form_list_views() || give_is_progress_bar_goal_async_on_form_grid();
+       return AdminFormListViewOptions::isGoalColumnAsync() || FormGridViewOptions::isProgressBarGoalAsync();
     }
 
     /**
@@ -79,7 +82,7 @@ class getAsyncFormDataForListView
      */
     private function isAsyncDonationCount(): bool
     {
-        return give_is_donations_column_async_on_admin_form_list_views() || give_is_progress_bar_donations_async_on_form_grid();
+        return AdminFormListViewOptions::isDonationColumnAsync() || FormGridViewOptions::isProgressBarDonationsAsync();
     }
 
     /**
@@ -87,6 +90,6 @@ class getAsyncFormDataForListView
      */
     private function isAsyncRevenue(): bool
     {
-        return give_is_revenue_column_async_on_admin_form_list_views();
+        return AdminFormListViewOptions::isRevenueColumnAsync();
     }
 }

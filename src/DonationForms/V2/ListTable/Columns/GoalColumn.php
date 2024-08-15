@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\DonationQuery;
+use Give\DonationForms\FormListViewsAsyncData\AdminFormListViews\AdminFormListViewOptions;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -50,10 +51,6 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
-        if (give_is_goal_column_async_on_admin_form_list_views()) {
-            add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-        }
-
         $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
             $goal['actual']) : max(min($goal['progress'], 100), 0);
@@ -85,12 +82,12 @@ class GoalColumn extends ModelColumn
                 $goal['goal']
             ),
             sprintf(
-                ($goal['progress'] >= 100 || give_is_goal_column_async_on_admin_form_list_views()
+                ($goal['progress'] >= 100 || AdminFormListViewOptions::isGoalColumnAsync()
                     ?
                     '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>'
                     : ''
                 ),
-                give_is_goal_column_async_on_admin_form_list_views() ? 0 : 1,
+                AdminFormListViewOptions::isGoalColumnAsync() ? 0 : 1,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

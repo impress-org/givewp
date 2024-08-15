@@ -90,10 +90,6 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-                    if (give_is_goal_column_async_on_admin_form_list_views()) {
-                        add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-                    }
-
 					echo give_admin_form_goal_stats( $post_id);
 
 				} else {
@@ -109,21 +105,10 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-
-                    if (give_is_donations_column_async_on_admin_form_list_views()) {
-                        $donationsCountValue = give_get_skeleton_placeholder_for_async_data('1rem');
-                    } else {
-                        $donationsCountValue = give_is_enabled_stats_cache_on_admin_form_list_views()
-                            ? // Use meta keys that store the aggregated values
-                            give_get_form_sales_stats( $post_id )
-                            : // Use data retrieved in real-time from DB
-                            (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$post_id]]))->getDonationCount();
-                    }
-
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-                        $donationsCountValue
+                        apply_filters('give_admin_form_list_view_donations_column_value', give_get_form_sales_stats( $post_id ), $post_id)
 					);
 				} else {
 					echo '-';
@@ -131,20 +116,10 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-                    if (give_is_revenue_column_async_on_admin_form_list_views()) {
-                        $earningsValue = give_get_skeleton_placeholder_for_async_data('1rem');
-                    } else {
-                        $earningsValue = give_is_enabled_stats_cache_on_admin_form_list_views()
-                            ? // Use meta keys that store the aggregated values
-                            give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
-                            : // Use data retrieved in real-time from DB
-                            (new DonationQuery())->form($post_id)->sumIntendedAmount();
-                    }
-
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-                        $earningsValue
+                        apply_filters('give_admin_form_list_view_earnings_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id)
 					);
 				} else {
 					echo '-';

@@ -5,6 +5,7 @@
 
 // Exit if accessed directly.
 use Give\DonationForms\DonationQuery;
+use Give\DonationForms\FormListViewsAsyncData\FormGrid\FormGridViewOptions;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
@@ -239,12 +240,12 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
             // Maybe display the goal progress bar.
             if (!$hide_goal) :
-                
-                if (give_is_progress_bar_goal_async_on_form_grid()) {
+
+                if (FormGridViewOptions::isProgressBarGoalAsync()) {
                     add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
                     $incomeValue = 0;
                 } else {
-                    $incomeValue = give_is_enabled_stats_cache_on_form_gid()
+                    $incomeValue = FormGridViewOptions::useCachedMetaKeys()
                         ? // Use meta keys that store the aggregated values
                         $form->get_earnings()
                         : // Return data retrieved in real-time from DB
@@ -280,7 +281,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                  */
                 add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
 
-                    if (give_is_enabled_stats_cache_on_form_gid()){
+                    if (FormGridViewOptions::useCachedMetaKeys()){
                         // Use meta keys that store the aggregated values
                         return $sales;
                     }
@@ -434,7 +435,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    give_is_progress_bar_goal_async_on_form_grid() ? give_get_skeleton_placeholder_for_async_data('1rem') : esc_attr($formatted_income),
+                                    FormGridViewOptions::isProgressBarGoalAsync() ? give_get_skeleton_placeholder_for_async_data('1rem') : esc_attr($formatted_income),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -485,7 +486,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
                                 <?php
-                                echo give_is_progress_bar_donations_async_on_form_grid() ? give_get_skeleton_placeholder_for_async_data('1rem') :  $form->get_sales() ?>
+                                echo FormGridViewOptions::isProgressBarDonationsAsync() ? give_get_skeleton_placeholder_for_async_data('1rem') :  $form->get_sales() ?>
                             </span>
                             <span class="goal">
                                 <?php
