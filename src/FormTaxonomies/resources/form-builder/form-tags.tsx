@@ -5,21 +5,13 @@ import {FormTokenField} from "@wordpress/components";
 import {getInitialFormTags} from "./windowData";
 import {useState} from "react";
 
-/**
- * @note Not sure why it won't let me use a state hook here.
- *       As a workaround, I'm overloading the form settings.
- *       They will be parsed out by the server during publish.
- */
 const FormTagSetting = ({settings, setSettings}) => {
-    const {
-        formTags = getInitialFormTags(),
-        formTagsSearchResults: searchResults = [],
-    } = settings;
-
+    const {formTags = getInitialFormTags()} = settings;
     const setFormTags = (tags) => setSettings({formTags: tags})
-    const setSearchResults = (results) => setSettings({formTagsSearchResults: results})
+    const [searchResults, setSearchResults] = useState([])
 
     const searchTags = (search) => apiFetch({path: '/wp/v2/give_forms_tag?search=' + search}).then(setSearchResults)
+
     const resolveFormTags = ( tags ) => {
         const [newTag, isNewAndUnique] = validateNewAndUnique(tags, formTags);
         isNewAndUnique
