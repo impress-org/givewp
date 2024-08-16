@@ -4,6 +4,7 @@ namespace Give\FormTaxonomies\Actions;
 
 use Give\FormTaxonomies\ViewModels\FormTaxonomyViewModel;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
  * @unreleased
@@ -39,6 +40,8 @@ class EnqueueFormBuilderAssets
                 $scriptAsset['version'],
                 true
             );
+
+            Language::setScriptTranslations('givewp-builder-taxonomy-settings');
 
             wp_enqueue_style(
                 'givewp-builder-taxonomy-settings',
