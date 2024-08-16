@@ -40,7 +40,7 @@ class FormGridView
      */
     public function maybeSetProgressBarDonationsCountAsync($donationsCountCachedValue, $formId)
     {
-        if (FormGridViewOptions::isProgressBarDonationsAsync()) {
+        if (FormGridViewOptions::isProgressBarDonationsCountAsync()) {
             return give_get_skeleton_placeholder_for_async_data('1rem');
         }
 

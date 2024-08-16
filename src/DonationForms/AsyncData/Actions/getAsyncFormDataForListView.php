@@ -72,7 +72,7 @@ class getAsyncFormDataForListView
      */
     private function isAsyncProgressBar(): bool
     {
-        return AdminFormListViewOptions::isGoalColumnAsync() || FormGridViewOptions::isProgressBarGoalAsync();
+        return AdminFormListViewOptions::isGoalColumnAsync() || FormGridViewOptions::isProgressBarAmountRaisedAsync();
     }
 
     /**
@@ -80,7 +80,7 @@ class getAsyncFormDataForListView
      */
     private function isAsyncDonationCount(): bool
     {
-        return AdminFormListViewOptions::isDonationColumnAsync() || FormGridViewOptions::isProgressBarDonationsAsync();
+        return AdminFormListViewOptions::isDonationColumnAsync() || FormGridViewOptions::isProgressBarDonationsCountAsync();
     }
 
     /**

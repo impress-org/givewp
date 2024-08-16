@@ -24,8 +24,8 @@ class FormGridViewOptions
      */
     public static function isProgressBarAmountRaisedAsync(): bool
     {
-        if(defined('GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID')) {
-            return (bool)GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID;
+        if(defined('GIVE_IS_PROGRESS_BAR_AMOUNT_RAISED_ASYNC_ON_FORM_GRID')) {
+            return (bool)GIVE_IS_PROGRESS_BAR_AMOUNT_RAISED_ASYNC_ON_FORM_GRID;
         }
 
         return self::isAllProgressBarStatsAsync();
@@ -34,10 +34,10 @@ class FormGridViewOptions
     /**
      * @unreleased
      */
-    public static function isProgressBarDonationsAsync(): bool
+    public static function isProgressBarDonationsCountAsync(): bool
     {
-        if(defined('GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID')) {
-            return (bool)GIVE_IS_PROGRESS_BAR_DONATIONS_ASYNC_ON_FORM_GRID;
+        if(defined('GIVE_IS_PROGRESS_BAR_DONATIONS_COUNT_ASYNC_ON_FORM_GRID')) {
+            return (bool)GIVE_IS_PROGRESS_BAR_DONATIONS_COUNT_ASYNC_ON_FORM_GRID;
         }
 
         return self::isAllProgressBarStatsAsync();
