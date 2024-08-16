@@ -31,7 +31,7 @@ class FormTaxonomyViewModel
     /**
      * @unreleased
      */
-    public function isFormTagsEnabled()
+    public function isFormTagsEnabled(): bool
     {
         return give_is_setting_enabled($this->settings['tags']);
     }
@@ -39,7 +39,7 @@ class FormTaxonomyViewModel
     /**
      * @unreleased
      */
-    public function isFormCategoriesEnabled()
+    public function isFormCategoriesEnabled(): bool
     {
         return give_is_setting_enabled($this->settings['categories']);
     }
@@ -92,7 +92,7 @@ class FormTaxonomyViewModel
     /**
      * @unreleased
      */
-    public function getSelectedFormCategories()
+    public function getSelectedFormCategories(): array
     {
         if(!$this->isFormCategoriesEnabled()) {
             return [];
