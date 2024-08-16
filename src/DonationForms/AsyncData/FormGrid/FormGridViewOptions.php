@@ -22,7 +22,7 @@ class FormGridViewOptions
     /**
      * @unreleased
      */
-    public static function isProgressBarGoalAsync(): bool
+    public static function isProgressBarAmountRaisedAsync(): bool
     {
         if(defined('GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID')) {
             return (bool)GIVE_IS_PROGRESS_BAR_GOAL_ASYNC_ON_FORM_GRID;

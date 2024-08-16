@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\AsyncData\AdminFormListView;
 
+use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\DonationForms\AsyncData\FormStats;
 
 /**
@@ -9,6 +10,31 @@ use Give\DonationForms\AsyncData\FormStats;
  */
 class AdminFormListView
 {
+    /**
+     * @unreleased
+     */
+    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder): bool
+    {
+
+        if ($this->isAdminFormListView() && AdminFormListViewOptions::isGoalColumnAsync()) {
+            $usePlaceholder = true;
+        }
+
+        return $usePlaceholder;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
+    {
+        if($this->isAdminFormListView() && AdminFormListViewOptions::useCachedMetaKeys()) {
+            return $amountRaisedCachedValue;
+        }
+
+        return FormStats::getRevenueValue($formId);
+    }
+
     /**
      * @unreleased
      */
@@ -39,5 +65,13 @@ class AdminFormListView
         }
 
         return FormStats::getRevenueValue($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isAdminFormListView(): bool
+    {
+        return isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'];
     }
 }

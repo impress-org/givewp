@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
- * @unreleased Use skeleton placeholders for progress bar value to improve performance
+ * @unreleased Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
 
@@ -241,15 +241,13 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             // Maybe display the goal progress bar.
             if (!$hide_goal) :
 
-                if (FormGridViewOptions::isProgressBarGoalAsync()) {
+                $use_placeholder = apply_filters('give_form_grid_goal_progress_stats_use_placeholder', false);
+
+                if ($use_placeholder) {
                     add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-                    $incomeValue = 0;
+                    $income_value = 0;
                 } else {
-                    $incomeValue = FormGridViewOptions::useCachedMetaKeys()
-                        ? // Use meta keys that store the aggregated values
-                        $form->get_earnings()
-                        : // Return data retrieved in real-time from DB
-                        (new DonationQuery())->form($form->ID)->sumIntendedAmount();
+                    $income_value = $form->get_earnings();
                 }
 
                 $goal_progress_stats = give_goal_progress_stats($form);
@@ -258,13 +256,13 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 /**
-                 * @unreleased Replace (new DonationQuery())->form($form->ID)->sumIntendedAmount() with $incomeValue
+                 * @unreleased Replace (new DonationQuery())->form($form->ID)->sumIntendedAmount() with $income_value
                  * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => $incomeValue,
+                        'income' => $income_value,
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,
@@ -274,21 +272,6 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                 $income = $shortcode_stats['income'];
                 $goal = $shortcode_stats['goal'];
-
-                /**
-                 * @unreleased Add condition to check if it should use cached values or not
-                 * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
-                 */
-                add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
-
-                    if (FormGridViewOptions::useCachedMetaKeys()){
-                        // Use meta keys that store the aggregated values
-                        return $sales;
-                    }
-
-                    // Return data retrieved in real-time from DB
-                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-                }, 10, 2);
 
                 switch ($goal_format) {
                     case 'donation':
@@ -435,7 +418,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    FormGridViewOptions::isProgressBarGoalAsync() ? give_get_skeleton_placeholder_for_async_data('1rem') : esc_attr($formatted_income),
+                                    apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -485,8 +468,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
-                                <?php
-                                echo FormGridViewOptions::isProgressBarDonationsAsync() ? give_get_skeleton_placeholder_for_async_data('1rem') :  $form->get_sales() ?>
+                                <?php echo apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ?>
                             </span>
                             <span class="goal">
                                 <?php
