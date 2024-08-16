@@ -35,7 +35,7 @@ class HoneyPotRule implements ValidationRule, ValidatesOnFrontEnd
     {
         if (!empty($value)) {
             Log::spam('Spam donation detected via Honeypot field.', [
-                'formId' => $values['formId'],
+                'formId' => $values['formId'] ?? null,
             ]);
 
             $fail(
