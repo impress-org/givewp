@@ -7,6 +7,8 @@ use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
+use Give\DonationForms\AsyncData\Actions\getAsyncFormDataForListView;
+use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
@@ -17,8 +19,6 @@ use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
-use Give\DonationForms\AsyncData\Actions\getAsyncFormDataForListView;
-use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
 use Give\DonationForms\Migrations\RemoveDuplicateMeta;
@@ -106,6 +106,12 @@ class ServiceProvider implements ServiceProviderInterface
         // Filters from give_goal_progress_stats() function which is used by the admin form list views
         Hooks::addFilter('give_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
         Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);
+
+        // Achieved icon opacity
+        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class,
+            'maybeChangeAchievedIconOpacity');
+        Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class,
+            'maybeChangeAchievedIconOpacity');
 
         // Legacy Admin Form List View Columns
         Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);

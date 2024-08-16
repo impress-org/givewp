@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\DonationQuery;
-use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -82,12 +80,8 @@ class GoalColumn extends ModelColumn
                 $goal['goal']
             ),
             sprintf(
-                ($goal['progress'] >= 100 || AdminFormListViewOptions::isGoalColumnAsync()
-                    ?
-                    '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>'
-                    : ''
-                ),
-                AdminFormListViewOptions::isGoalColumnAsync() ? 0 : 1,
+                '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
+                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goal['progress'] >= 100 ? 1 : 0),
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

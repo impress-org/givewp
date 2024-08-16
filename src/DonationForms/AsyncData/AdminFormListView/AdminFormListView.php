@@ -2,7 +2,6 @@
 
 namespace Give\DonationForms\AsyncData\AdminFormListView;
 
-use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\DonationForms\AsyncData\FormStats;
 
 /**
@@ -33,6 +32,18 @@ class AdminFormListView
         }
 
         return FormStats::getRevenueValue($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function maybeChangeAchievedIconOpacity($achievedIconOpacity)
+    {
+        if ($this->isAdminFormListView() && AdminFormListViewOptions::isGoalColumnAsync()) {
+            $achievedIconOpacity = 0;
+        }
+
+        return $achievedIconOpacity;
     }
 
     /**
