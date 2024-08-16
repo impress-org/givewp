@@ -10,8 +10,6 @@
  */
 
 // Exit if accessed directly.
-use Give\DonationForms\DonationQuery;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

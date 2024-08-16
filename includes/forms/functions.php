@@ -1259,7 +1259,7 @@ function give_set_form_closed_status( $form_id ) {
  *
  * @return string
  */
-function give_admin_form_goal_stats( $form_id) {
+function give_admin_form_goal_stats( $form_id ) {
 	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id );
 	$percent_complete = $goal_stats['raw_goal'] ? round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100 : 0;
