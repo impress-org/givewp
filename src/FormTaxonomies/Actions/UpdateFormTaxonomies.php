@@ -18,11 +18,21 @@ class UpdateFormTaxonomies
         $formBuilderSettings = json_decode($request->get_param('settings'), true);
 
         if(isset($formBuilderSettings['formTags'])) {
-            wp_set_post_terms($form->id, array_column($formBuilderSettings['formTags'], 'id'), 'give_forms_tag');
+            $formTags = $this->validateTermIds(array_column($formBuilderSettings['formTags'], 'id'));
+            wp_set_object_terms($form->id, $formTags, 'give_forms_tag');
         }
 
         if(isset($formBuilderSettings['formCategories'])) {
-            wp_set_post_terms($form->id, $formBuilderSettings['formCategories'], 'give_forms_category');
+            $formCategories = $this->validateTermIds($formBuilderSettings['formCategories']);
+            wp_set_object_terms($form->id, $formCategories, 'give_forms_category');
         }
+    }
+
+    /**
+     * @param $termsIds
+     */
+    public function validateTermIds(array $termsIds): array
+    {
+        return array_unique( array_map( 'intval', $termsIds ) );
     }
 }
