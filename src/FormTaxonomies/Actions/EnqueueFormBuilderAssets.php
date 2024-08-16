@@ -40,6 +40,11 @@ class EnqueueFormBuilderAssets
                 true
             );
 
+            wp_enqueue_style(
+                'givewp-builder-taxonomy-settings',
+                GIVE_PLUGIN_URL . 'build/style-formTaxonomySettings.css'
+            );
+
             wp_add_inline_script('givewp-builder-taxonomy-settings','var giveTaxonomySettings =' . json_encode([
                     'formTagsEnabled' => $this->viewModel->isFormTagsEnabled(),
                     'formCategoriesEnabled' => $this->viewModel->isFormCategoriesEnabled(),
