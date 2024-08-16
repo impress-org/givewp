@@ -27,6 +27,8 @@ use Give\DonationForms\Routes\DonateRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\Framework\FieldsAPI\DonationForm;
+use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
@@ -213,9 +215,14 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @unreleased
+     * @throws EmptyNameException
      */
     private function registerHoneyPotField(): void
     {
-        Hooks::addAction('givewp_donation_form_schema', AddHoneyPotFieldToDonationForms::class);
+        add_action('givewp_donation_form_schema', function (DonationForm $form, int $formId) {
+            if (apply_filters('givewp_donation_forms_honeypot_enabled', false, $formId)) {
+                (new AddHoneyPotFieldToDonationForms())($form);
+            }
+        }, 10, 2);
     }
 }

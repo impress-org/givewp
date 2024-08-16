@@ -10,6 +10,8 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\FieldsAPI\Honeypot;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
@@ -128,10 +130,6 @@ class DonateControllerData
      * @var string
      */
     public $comment;
-    /**
-     * @var string|null
-     */
-    public $donationBirthday;
 
     /**
      * @since 3.9.0 Added phone property
@@ -242,6 +240,7 @@ class DonateControllerData
      *
      * @unreleased added honeypot field donationBirthday
      * @since 3.0.0
+     * @throws NameCollisionException
      */
     public function getCustomFields(): array
     {
@@ -261,7 +260,6 @@ class DonateControllerData
                         'isEmbed',
                         'embedId',
                         'donationType',
-                        'donationBirthday',
                         'subscriptionPeriod',
                         'subscriptionFrequency',
                         'subscriptionInstallments',

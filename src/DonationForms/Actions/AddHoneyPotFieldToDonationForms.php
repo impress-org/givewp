@@ -16,12 +16,8 @@ class AddHoneyPotFieldToDonationForms
      * @unreleased
      * @throws EmptyNameException
      */
-    public function __invoke(DonationForm $form)
+    public function __invoke(DonationForm $form): void
     {
-        if (!apply_filters('givewp_donation_forms_honeypot_enabled', true)) {
-            return;
-        }
-
         $formNodes = $form->all();
         $lastSection = $form->count() ? $formNodes[$form->count() - 1] : null;
 

@@ -2,6 +2,7 @@
 namespace Give\DonationForms\Rules;
 
 use Closure;
+use Give\Log\Log;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
@@ -33,6 +34,10 @@ class HoneyPotRule implements ValidationRule, ValidatesOnFrontEnd
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
         if (!empty($value)) {
+            Log::spam('Spam donation detected via Honeypot field.', [
+                'formId' => $values['formId'],
+            ]);
+
             $fail(
                 __('Thank you for the submission!', 'give')
             );

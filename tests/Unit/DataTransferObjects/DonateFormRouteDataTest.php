@@ -75,7 +75,6 @@ class DonateFormRouteDataTest extends TestCase
         $data->honorific = null;
         $data->text_block_meta = 'text block meta value';
         $data->donationType = DonationType::SINGLE();
-        $data->donationBirthday = null;
         $data->subscriptionFrequency = null;
         $data->subscriptionPeriod = null;
         $data->subscriptionInstallments = null;
