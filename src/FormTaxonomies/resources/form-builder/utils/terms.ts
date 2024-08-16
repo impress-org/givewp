@@ -6,6 +6,8 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Returns terms in a tree form.
  *
+ * @unreleased
+ *
  * @param {Array} flatTerms Array of terms in flat format.
  *
  * @return {Array} Array of terms in tree format.
@@ -61,6 +63,8 @@ export const unescapeString = ( arg ) => {
 /**
  * Returns a term object with name unescaped.
  *
+ * @unreleased
+ *
  * @param {Object} term The term object to unescape.
  *
  * @return {Object} Term object with name property unescaped.
@@ -75,6 +79,8 @@ export const unescapeTerm = ( term ) => {
 /**
  * Returns an array of term objects with names unescaped.
  * The unescape of each term is performed using the unescapeTerm function.
+ *
+ * @unreleased
  *
  * @param {Object[]} terms Array of term objects to unescape.
  *

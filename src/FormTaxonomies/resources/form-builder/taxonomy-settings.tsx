@@ -4,8 +4,10 @@ import {PanelRow} from "@wordpress/components";
 import FormTagSetting from "./form-tags";
 import FormCategorySetting from "./form-categories";
 import getWindowData, {isFormCategoriesEnabled, isFormTagsEnabled} from "./windowData";
-import {useState} from "react";
 
+/**
+ * @unreleased
+ */
 const TaxonomySettings = ({settings, setSettings}) => {
 
     return (
@@ -30,11 +32,17 @@ const TaxonomySettings = ({settings, setSettings}) => {
     )
 }
 
+/**
+ * @unreleased
+ */
 export default function withTaxonomySettingsRoute (routes) {
 
     const isFormTagsEnabled = getWindowData().formTagsEnabled;
     const isFormCategoriesEnabled = getWindowData().formCategoriesEnabled;
 
+    /**
+     * @unreleased
+     */
     const getDynamicLabel = () => {
         return isFormTagsEnabled && isFormCategoriesEnabled ? __('Tags and Categories', '')
             : isFormTagsEnabled ? __('Form Tags', '')

@@ -5,13 +5,22 @@ import {FormTokenField} from "@wordpress/components";
 import {getInitialFormTags} from "./windowData";
 import {useState} from "react";
 
+/**
+ * @unreleased
+ */
 const FormTagSetting = ({settings, setSettings}) => {
     const {formTags = getInitialFormTags()} = settings;
     const setFormTags = (tags) => setSettings({formTags: tags})
     const [searchResults, setSearchResults] = useState([])
 
+    /**
+     * @unreleased
+     */
     const searchTags = (search) => apiFetch({path: '/wp/v2/give_forms_tag?search=' + search}).then(setSearchResults)
 
+    /**
+     * @unreleased
+     */
     const resolveFormTags = ( tags ) => {
         const [newTag, isNewAndUnique] = validateNewAndUnique(tags, formTags);
         isNewAndUnique
@@ -29,6 +38,9 @@ const FormTagSetting = ({settings, setSettings}) => {
     ></FormTokenField>
 }
 
+/**
+ * @unreleased
+ */
 const findOrCreateTag = (name, callback) => {
     apiFetch( {path: '/wp/v2/give_forms_tag', method: 'POST', data: { name }} )
         .then((response: any) => callback(response.id))
@@ -40,6 +52,9 @@ const findOrCreateTag = (name, callback) => {
         })
 }
 
+/**
+ * @unreleased
+ */
 const validateNewAndUnique = (tags, previousTags): [string|null, boolean] => {
     // @note New terms are simple string inputs, as opposed to resolved objects ({id, value}).
     const newTag = tags.find( ( term ) => typeof term === "string" )

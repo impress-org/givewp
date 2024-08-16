@@ -4,6 +4,9 @@ import {CheckboxControl} from "@wordpress/components";
 import {decodeEntities} from "@wordpress/html-entities";
 import {useMemo} from "react";
 
+/**
+ * @unreleased
+ */
 const FormCategorySetting = ({settings, setSettings}) => {
     const {
         formCategories = getInitialFormCategories(),
@@ -11,6 +14,9 @@ const FormCategorySetting = ({settings, setSettings}) => {
 
     const categoryTree = useMemo(() => buildTermsTree(getAvailableFormCategories()), [])
 
+    /**
+     * @unreleased
+     */
     const onChange = (categoryId ) => {
         setSettings({formCategories: formCategories.includes( categoryId )
                 ? formCategories.filter( ( id ) => id !== categoryId )
@@ -25,6 +31,9 @@ const FormCategorySetting = ({settings, setSettings}) => {
     );
 }
 
+/**
+ * @unreleased
+ */
 const renderTerms = (availableTerms, selectedTerms, onChange) => {
     return availableTerms.map((term) => {
         return (
