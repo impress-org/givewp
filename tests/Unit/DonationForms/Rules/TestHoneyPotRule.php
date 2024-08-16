@@ -7,6 +7,9 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
+/**
+ * @unreleased
+ */
 class TestHoneyPotRule extends TestCase
 {
     use RefreshDatabase;

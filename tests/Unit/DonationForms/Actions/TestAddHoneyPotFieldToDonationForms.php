@@ -3,18 +3,20 @@
 namespace Give\Tests\Unit\DonationForms\Actions;
 
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
-use Give\DonationForms\Rules\HoneyPotRule;
-use Give\Framework\FieldsAPI\Honeypot;
-use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\DonationForm;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
+use Give\Framework\FieldsAPI\Honeypot;
 use Give\Framework\FieldsAPI\Section;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TestAddHoneyPotFieldToDonationForms extends TestCase {
+/**
+ * @unreleased
+ */
+class TestAddHoneyPotFieldToDonationForms extends TestCase
+{
     use RefreshDatabase;
 
     /**
