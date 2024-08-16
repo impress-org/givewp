@@ -94,7 +94,11 @@ class FormBuilderResourceController
         $form->status = $updatedSettings->formStatus;
         $form->save();
 
-        do_action('givewp_form_builder_updated', $form);
+        /**
+         * @unreleased Add the request as an additional parameter.
+         * @since 3.0.0
+         */
+        do_action('givewp_form_builder_updated', $form, $request);
 
         return rest_ensure_response([
             'settings' => $form->settings->toJson(),
