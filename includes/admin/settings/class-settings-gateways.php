@@ -331,7 +331,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render enabled gateways
          *
-         * @unreleased Set the v3 settings tab as default in the gateways list
+         * @since 3.15.0 Set the v3 settings tab as default in the gateways list
          * @since 3.0.0 split gateways into separated tabs for v2 and v3 settings
          * @since  2.0.5
          * @access public

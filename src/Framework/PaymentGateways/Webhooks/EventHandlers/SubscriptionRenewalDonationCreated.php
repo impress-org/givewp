@@ -15,6 +15,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
+     * @unreleased Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
      */
     public function __invoke(
@@ -25,6 +26,48 @@ class SubscriptionRenewalDonationCreated
         $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId);
 
         if ( ! $subscription) {
+            PaymentGatewayLog::error(
+                sprintf('The renewal was not created for the gateway transaction ID %s because no subscription with the gateway subscription %s was found.',
+                    $gatewayTransactionId, $gatewaySubscriptionId),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Message' => $message,
+                ]
+            );
+
+            return;
+        }
+
+        if ($subscription->initialDonation()->gatewayTransactionId === $gatewayTransactionId) {
+            PaymentGatewayLog::error(
+                sprintf('The renewal was not created for the gateway transaction ID %s because the initial donation of the subscription %s is already using the informed gateway transaction ID %s.',
+                    $gatewayTransactionId, $subscription->id, $gatewaySubscriptionId),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Message' => $message,
+                    'Subscription' => $subscription->toArray(),
+                ]
+            );
+
+            return;
+        }
+
+        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+
+        if ($donation) {
+            PaymentGatewayLog::error(
+                sprintf('The renewal was not created for the gateway transaction ID %s because the donation %s is already using the informed gateway transaction ID %s.',
+                    $gatewayTransactionId, $donation->id, $gatewaySubscriptionId),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Message' => $message,
+                    'Donation' => $donation->toArray(),
+                ]
+            );
+
             return;
         }
 

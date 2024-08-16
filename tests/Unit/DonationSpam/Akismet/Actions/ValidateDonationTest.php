@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockBuilder;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 final class ValidateDonationTest extends TestCase
 {
@@ -20,7 +20,7 @@ final class ValidateDonationTest extends TestCase
     protected $notSpamResponse = [1 => 'false'];
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function testValidatesNotSpamDonation()
     {
@@ -41,7 +41,7 @@ final class ValidateDonationTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function testThrowsSpamDonationException()
     {
@@ -62,7 +62,7 @@ final class ValidateDonationTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     protected function mockAkismetAPI()
     {

@@ -12,7 +12,7 @@ use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class ValidateDonation
 {
@@ -27,7 +27,7 @@ class ValidateDonation
     protected $whitelist;
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function __construct(API $akismet, EmailAddressWhiteList $whitelist)
     {
@@ -36,7 +36,7 @@ class ValidateDonation
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      *
      * @param DonateControllerData $data
      *

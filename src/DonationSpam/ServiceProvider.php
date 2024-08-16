@@ -6,12 +6,12 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.15.0
      * @inheritDoc
      */
     public function register(): void
@@ -24,7 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      * @inheritDoc
      */
     public function boot(): void
@@ -35,7 +35,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      * @return bool
      */
     public function isAkismetEnabledAndConfigured(): bool
