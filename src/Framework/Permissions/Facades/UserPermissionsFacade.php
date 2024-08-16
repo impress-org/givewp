@@ -11,7 +11,7 @@ use Give\Framework\Permissions\DonationFormsPermissions;
  *
  * @unreleased
  */
-class PermissionsFacade
+class UserPermissionsFacade
 {
     /**
      * @unreleased

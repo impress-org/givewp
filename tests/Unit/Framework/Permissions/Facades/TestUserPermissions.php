@@ -3,14 +3,14 @@
 namespace Give\Tests\Unit\Framework\Permissions\Facades;
 
 use Give\Framework\Permissions\DonationFormsPermissions;
-use Give\Framework\Permissions\Facades\Permissions;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  */
-final class TestPermissions extends TestCase
+final class TestUserPermissions extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,7 +21,7 @@ final class TestPermissions extends TestCase
     {
         $this->assertInstanceOf(
             DonationFormsPermissions::class,
-            Permissions::donationForms()
+            UserPermissions::donationForms()
         );
     }
 

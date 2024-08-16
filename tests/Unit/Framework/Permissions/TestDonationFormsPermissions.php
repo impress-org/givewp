@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Framework\Permissions;
 
-use Give\Framework\Permissions\Facades\Permissions;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -26,11 +26,11 @@ final class TestDonationFormsPermissions extends TestCase
 
         if ($shouldPass) {
             $this->assertTrue(
-                Permissions::donationForms()->can($capability)
+                UserPermissions::donationForms()->can($capability)
             );
         } else {
             $this->assertFalse(
-                Permissions::donationForms()->can($capability)
+                UserPermissions::donationForms()->can($capability)
             );
         }
     }

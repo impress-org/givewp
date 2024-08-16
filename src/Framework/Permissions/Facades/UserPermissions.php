@@ -10,10 +10,10 @@ use Give\Framework\Support\Facades\Facade;
  *
  * @method static DonationFormsPermissions donationForms()
  */
-class Permissions extends Facade
+class UserPermissions extends Facade
 {
     protected function getFacadeAccessor(): string
     {
-        return PermissionsFacade::class;
+        return UserPermissionsFacade::class;
     }
 }
