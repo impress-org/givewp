@@ -5,6 +5,7 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
+use Give\DonationForms\Actions\PrintFormMetaTags;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -79,6 +80,12 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
+
+        /**
+         * @unreleased
+         * Print form meta tags
+         */
+        Hooks::addAction('wp_head', PrintFormMetaTags::class);
     }
 
     /**
