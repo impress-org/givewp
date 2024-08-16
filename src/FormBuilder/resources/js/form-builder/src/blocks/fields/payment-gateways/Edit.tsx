@@ -1,13 +1,10 @@
-import {ReactNode, useState} from 'react';
+import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {applyFilters} from '@wordpress/hooks';
 import {InspectorControls} from "@wordpress/block-editor";
-import InspectorNotice from "@givewp/form-builder/components/settings/InspectorNotice";
 import {__} from "@wordpress/i18n";
-import {Button, Icon, PanelRow} from '@wordpress/components';
-import useAdditionalPaymentGatewaysNotice
-    from "@givewp/form-builder/blocks/fields/payment-gateways/hooks/useAdditionalPaymentGatewaysNotice";
+import {Icon} from '@wordpress/components';
 import {external} from "@wordpress/icons";
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
