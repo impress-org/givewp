@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\DonationQuery;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
-use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
  * @since 2.24.0
@@ -64,7 +62,7 @@ class DonationCountColumn extends ModelColumn
             ) : __('No donations', 'give');
 
         return sprintf(
-            '<a class="column-donations" href="%s" aria-label="%s">%s</a>',
+            '<a class="column-donations-count-value" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
             __('Visit donations page', 'give'),
             apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this)
