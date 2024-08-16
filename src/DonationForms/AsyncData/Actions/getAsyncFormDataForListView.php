@@ -41,8 +41,8 @@ class getAsyncFormDataForListView
         if ($this->isAsyncProgressBar()) {
             $goalStats       = give_goal_progress_stats( $formId );
             $amountRaised = $goalStats['actual'];
-            $percentComplete = $goalStats['raw_goal'] ? round( ( $goalStats['raw_actual'] / $goalStats['raw_goal'] ), 3 ) * 100 : 0;
-            $percentComplete = $amountRaised >= $goalStats['goal'] ? 100 : $percentComplete;
+            $percentComplete = ('percentage' === $goalStats['format']) ? str_replace('%', '',
+                $goalStats['actual']) : max(min($goalStats['progress'], 100), 0);
         }
 
         $donationsCount = 0;
