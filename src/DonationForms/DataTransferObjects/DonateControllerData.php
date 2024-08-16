@@ -237,10 +237,7 @@ class DonateControllerData
      * and only returning custom fields.
      *
      * TODO: figure out a less static way of doing this
-     *
-     * @unreleased added honeypot field donationBirthday
      * @since 3.0.0
-     * @throws NameCollisionException
      */
     public function getCustomFields(): array
     {
