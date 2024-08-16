@@ -1,9 +1,21 @@
+/**
+ * This file contains the whole necessary logic to load async data on all available form list views
+ * in the project - form grid and admin form list views. The async data are loaded (only for the
+ * items visible on the screen) at the page's first load and every time the user scrolls the mouse.
+ */
 document.addEventListener('DOMContentLoaded', () => {
+    /**
+     * We are declaring it at the top to use it in more than one function.
+     */
     let abortLoadAsyncData = false;
-
     const giveListTable = document.querySelector('.giveListTable');
     const giveListTableIsLoadingEvent = new Event('giveListTableIsLoading');
 
+    /**
+     * This function check if the element is visible on the screen.
+     *
+     * @unreleased
+     */
     function isInViewport(element) {
         const {top, bottom} = element.getBoundingClientRect();
         const vHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -11,10 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return (top > 0 || bottom > 0) && top < vHeight;
     }
 
+    /**
+     * Check if an element is a placeholder waiting to have the value updated.
+     * @unreleased
+     */
     function isPlaceholder(element) {
         return !!element && Boolean(element.querySelector('.js-give-async-data'));
     }
 
+    /**
+     * This function fetch the async data from the server and set the values to the proper elements in the DOM.
+     *
+     * @unreleased
+     */
     const loadFormData = (
         formId,
         itemElement,
@@ -24,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         donationsElement = null,
         earningsElement = null
     ) => {
+        // If we don't have any of these elements with a placeholder waiting to be updated, then return.
         if (
             !isPlaceholder(amountRaisedElement) &&
             !isPlaceholder(donationsElement) &&
@@ -32,12 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log('item: ', itemElement);
+        window.GiveDonationFormsAsyncData.scriptDebug && console.log('item: ', itemElement);
 
+        // This class ensures that once the element has the fetch request triggered we'll not try to fetch it again.
         itemElement.classList.add('give-async-data-fetch-triggered');
-
-        const controller = new AbortController();
-        const signal = controller.signal;
 
         url =
             window.GiveDonationFormsAsyncData.ajaxUrl +
@@ -46,13 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
             '&nonce=' +
             window.GiveDonationFormsAsyncData.ajaxNonce;
 
+        // It can be used to abort the async request when necessary.
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         fetch(url, {signal})
             .then(function (response) {
                 return response.json();
             })
             .then(function (response) {
-                console.log('Response: ', response);
+                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Response: ', response);
 
+                // Replace the placeholders with the real data returned by the server.
                 if (response.success) {
                     if (isPlaceholder(amountRaisedElement)) {
                         amountRaisedElement.innerHTML = response.data.amountRaised;
@@ -79,18 +104,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch((error) => {
+                // When there is an error remove the class that prevents fetch request duplication, so we can try fetching it again in the next mouse scroll.
                 itemElement.classList.remove('give-async-data-fetch-triggered');
-                console.log('Error: ', error);
+                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Error: ', error);
             })
             .finally(() => {
-                console.log('Request finalized.');
+                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Request finalized.');
             });
 
+        // Make sure to abort all unfinished async requests when leave or refresh the page.
         addEventListener('beforeunload', (event) => {
             abortLoadAsyncData = true;
             controller.abort('Async request aborted due to exit page.');
         });
 
+        // Make sure to abort all unfinished async requests when changing the giveListTable pagination.
         if (giveListTable) {
             giveListTable.addEventListener('giveListTableIsLoading', (event) => {
                 abortLoadAsyncData = true;
@@ -99,9 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Handle the async data logic for ALL form list views available.
+     *
+     * @unreleased
+     */
     const maybeLoadAsyncData = () => {
+        // If the async requests were aborted on the "beforeunload" or "giveListTableIsLoading" event, we don't want to create more async requests
         if (abortLoadAsyncData) {
-            console.log('abortLoadAsyncData');
+            window.GiveDonationFormsAsyncData.scriptDebug && console.log('abortLoadAsyncData');
             return;
         }
 
@@ -110,31 +144,46 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFormGridItems();
     };
 
+    /**
+     * Check for changes in the "giveListTable" classes to trigger the "giveListTableIsLoadingEvent" when appropriated.
+     *
+     * @unreleased
+     */
+    function maybeTriggerGiveListTableIsLoadingEvent() {
+        if (giveListTable) {
+            const observer = new MutationObserver(function (mutations) {
+                if (giveListTable.classList.contains('giveListTableIsLoading')) {
+                    giveListTable.dispatchEvent(giveListTableIsLoadingEvent);
+                }
+
+                if (giveListTable.classList.contains('giveListTableIsLoaded')) {
+                    abortLoadAsyncData = false;
+                    maybeLoadAsyncData();
+                }
+            });
+
+            // Configuration of the observer
+            const config = {
+                attributes: true,
+                childList: false,
+                characterData: false,
+            };
+
+            // Pass in the target node, as well as the observer options
+            observer.observe(giveListTable, config);
+        }
+    }
+
+    /**
+     * Load the async data of all forms (visible on the screen) from the NEW admin form list view - giveListTable.
+     *
+     * @unreleased
+     */
     function handleAdminFormsListViewItems() {
         const adminFormsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
         if (adminFormsListViewItems.length > 0) {
-            if (giveListTable) {
-                const observer = new MutationObserver(function (mutations) {
-                    if (giveListTable.classList.contains('giveListTableIsLoading')) {
-                        giveListTable.dispatchEvent(giveListTableIsLoadingEvent);
-                    }
+            maybeTriggerGiveListTableIsLoadingEvent();
 
-                    if (giveListTable.classList.contains('giveListTableIsLoaded')) {
-                        abortLoadAsyncData = false;
-                        maybeLoadAsyncData();
-                    }
-                });
-
-                // Configuration of the observer
-                const config = {
-                    attributes: true,
-                    childList: true,
-                    characterData: true,
-                };
-
-                // Pass in the target node, as well as the observer options
-                observer.observe(giveListTable, config);
-            }
             adminFormsListViewItems.forEach((itemElement) => {
                 const select = itemElement.querySelector('.giveListTableSelect');
 
@@ -164,6 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Load the async data of all forms (visible on the screen) from the LEGACY admin form list view.
+     *
+     * @unreleased
+     */
     function handleAdminLegacyFormsListViewItems() {
         const adminLegacyFormsListViewItems = document.querySelectorAll(
             '.type-give_forms:not(.give-async-data-fetch-triggered)'
@@ -197,6 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Load the async data in all form grid items that have the progress bar enabled.
+     *
+     * @unreleased
+     */
     function handleFormGridItems() {
         const formGridItems = document.querySelectorAll('.give-grid__item:not(.give-async-data-fetch-triggered)');
 
@@ -230,8 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Trigger the async logic at the page's first load.
     maybeLoadAsyncData();
 
+    // Trigger the async logic every time the user scrolls the mouse.
     window.addEventListener('scroll', () => {
         maybeLoadAsyncData();
     });

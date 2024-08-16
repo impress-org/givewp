@@ -31,6 +31,7 @@ class LoadAsyncDataAssets
             [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'ajaxNonce' => wp_create_nonce('GiveDonationFormsAsyncDataAjaxNonce'),
+                'scriptDebug' => defined('SCRIPT_DEBUG') && SCRIPT_DEBUG,
             ]
         );
     }
