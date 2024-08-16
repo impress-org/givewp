@@ -8,8 +8,6 @@ use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListen
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
-use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
-use Give\DonationForms\AsyncData\GiveGoalProgressStats;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
 use Give\DonationForms\Controllers\DonationFormViewController;

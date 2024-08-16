@@ -3,12 +3,10 @@
  * This template is used to display the donation grid with [donation_grid]
  */
 
-// Exit if accessed directly.
-use Give\DonationForms\DonationQuery;
-use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
+// Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
 }
