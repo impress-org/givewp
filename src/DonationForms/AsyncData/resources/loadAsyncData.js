@@ -2,6 +2,8 @@
  * This file contains the whole necessary logic to load async data on all available form list views
  * in the project - form grid and admin form list views. The async data are loaded (only for the
  * items visible on the screen) at the page's first load and every time the user scrolls the mouse.
+ *
+ * @unreleased
  */
 document.addEventListener('DOMContentLoaded', () => {
     /**
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Check if an element is a placeholder waiting to have the value updated.
+     *
      * @unreleased
      */
     function isPlaceholder(element) {
