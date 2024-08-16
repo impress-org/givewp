@@ -31,6 +31,6 @@ class AsyncDataHelpers
      */
     public static function getSkeletonPlaceholder($width = '100%', $height = '0.7rem')
     {
-        return '<span class="give-skeleton js-give-async-data" style="width: ' . $width . '; height: ' . $height . ';"></span>';
+        return '<span class="give-skeleton js-give-async-data" style="width: ' . esc_attr($width) . '; height: ' . esc_attr($height) . ';"></span>';
     }
 }
