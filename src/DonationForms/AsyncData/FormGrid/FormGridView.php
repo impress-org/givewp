@@ -2,7 +2,6 @@
 
 namespace Give\DonationForms\AsyncData\FormGrid;
 
-use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\AsyncData\FormStats;
 
 class FormGridView
@@ -28,7 +27,7 @@ class FormGridView
             return give_get_skeleton_placeholder_for_async_data('1rem');
         }
 
-        if(FormGridViewOptions::useCachedMetaKeys()) {
+        if (FormGridViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
@@ -44,7 +43,7 @@ class FormGridView
             return give_get_skeleton_placeholder_for_async_data('1rem');
         }
 
-        if(FormGridViewOptions::useCachedMetaKeys()) {
+        if (FormGridViewOptions::useCachedMetaKeys()) {
             return $donationsCountCachedValue;
         }
 

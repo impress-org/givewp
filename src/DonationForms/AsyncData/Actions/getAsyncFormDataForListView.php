@@ -18,12 +18,14 @@ class getAsyncFormDataForListView
     {
         $options = give_clean($_GET);
 
-        if ( ! isset($options['formId'] )) {
-            wp_send_json_error([ 'errorMsg' => __( 'Missing Form ID.', 'give' ) ] );
+        if ( ! isset($options['formId'])) {
+            wp_send_json_error(['errorMsg' => __('Missing Form ID.', 'give')]);
         }
 
-        if ( ! isset($options['nonce'] ) || ! check_ajax_referer( 'give_ajax_nonce', 'nonce')) {
-            wp_send_json_error([ 'errorMsg' => __( 'The current user does not have permission to execute this operation.', 'give' ) ] );
+        if ( ! isset($options['nonce']) || ! check_ajax_referer('give_ajax_nonce', 'nonce')) {
+            wp_send_json_error([
+                'errorMsg' => __('The current user does not have permission to execute this operation.', 'give'),
+            ]);
         }
 
         $formId = $options['formId'];
@@ -33,13 +35,13 @@ class getAsyncFormDataForListView
         $data = get_transient($transientName);
 
         if ($data) {
-            wp_send_json_success( $data );
+            wp_send_json_success($data);
         }
 
         $amountRaised = 0;
         $percentComplete = 0;
         if ($this->isAsyncProgressBar()) {
-            $goalStats       = give_goal_progress_stats( $formId );
+            $goalStats = give_goal_progress_stats($formId);
             $amountRaised = $goalStats['actual'];
             $percentComplete = ('percentage' === $goalStats['format']) ? str_replace('%', '',
                 $goalStats['actual']) : max(min($goalStats['progress'], 100), 0);
@@ -59,12 +61,12 @@ class getAsyncFormDataForListView
             'amountRaised' => $amountRaised,
             'percentComplete' => $percentComplete,
             'donationsCount' => $donationsCount,
-            'revenue' =>  $revenue,
+            'revenue' => $revenue,
         ];
 
         set_transient($transientName, $response, MINUTE_IN_SECONDS * 5);
 
-        wp_send_json_success( $response );
+        wp_send_json_success($response);
     }
 
     /**

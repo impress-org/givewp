@@ -26,7 +26,6 @@ class AdminFormListView
      */
     public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder): bool
     {
-
         if (AdminFormListViewOptions::isGoalColumnAsync()) {
             $usePlaceholder = true;
         }
@@ -40,7 +39,7 @@ class AdminFormListView
     public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
     {
         $isDetailsPage = isset($_GET['action']) && 'edit' === $_GET['action'];
-        if(!$isDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
+        if ( ! $isDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
@@ -56,7 +55,7 @@ class AdminFormListView
             return give_get_skeleton_placeholder_for_async_data('1rem');
         }
 
-        if(AdminFormListViewOptions::useCachedMetaKeys()) {
+        if (AdminFormListViewOptions::useCachedMetaKeys()) {
             return $donationsCountCachedValue;
         }
 
@@ -66,13 +65,13 @@ class AdminFormListView
     /**
      * @unreleased
      */
-    public function maybeSetRevenueColumnAsync ($revenueCachedValue, $formId)
+    public function maybeSetRevenueColumnAsync($revenueCachedValue, $formId)
     {
         if (AdminFormListViewOptions::isRevenueColumnAsync()) {
             return give_get_skeleton_placeholder_for_async_data('1rem');
         }
 
-        if(AdminFormListViewOptions::useCachedMetaKeys()) {
+        if (AdminFormListViewOptions::useCachedMetaKeys()) {
             return $revenueCachedValue;
         }
 
