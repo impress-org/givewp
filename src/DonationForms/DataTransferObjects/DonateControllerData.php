@@ -10,8 +10,6 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
-use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
-use Give\Framework\FieldsAPI\Honeypot;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
@@ -237,6 +235,7 @@ class DonateControllerData
      * and only returning custom fields.
      *
      * TODO: figure out a less static way of doing this
+     *
      * @since 3.0.0
      */
     public function getCustomFields(): array
