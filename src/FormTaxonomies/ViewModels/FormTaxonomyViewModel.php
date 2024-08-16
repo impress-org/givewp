@@ -22,7 +22,7 @@ class FormTaxonomyViewModel
     /**
      * @unreleased
      */
-    public function __construct($formId, $settings)
+    public function __construct(int $formId, array $settings)
     {
         $this->formId = $formId;
         $this->settings = $settings;
