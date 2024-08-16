@@ -53,10 +53,7 @@ class FormTaxonomyViewModel
             return [];
         }
 
-        $terms = get_terms([
-            'post' => $this->formId,
-            'taxonomy' => 'give_forms_tag',
-        ]);
+        $terms = wp_get_post_terms($this->formId, 'give_forms_tag');
 
         return array_map(function ($term) {
             return [
@@ -98,10 +95,7 @@ class FormTaxonomyViewModel
             return [];
         }
 
-        $terms = get_terms([
-            'post' => $this->formId,
-            'taxonomy' => 'give_forms_category',
-        ]);
+        $terms = wp_get_post_terms($this->formId, 'give_forms_category');
 
         return array_map(function ($term) {
             return $term->term_id;
