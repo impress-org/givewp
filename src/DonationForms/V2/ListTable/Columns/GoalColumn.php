@@ -49,6 +49,12 @@ class GoalColumn extends ModelColumn
             return __('No Goal Set', 'give');
         }
 
+        $usePlaceholder = apply_filters('givewp_admin_list_form_view_goal_progress_stats_use_placeholder', false);
+        if ($usePlaceholder) {
+            //Enable placeholder on the give_goal_progress_stats() function
+            add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+        }
+
         $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
             $goal['actual']) : max(min($goal['progress'], 100), 0);

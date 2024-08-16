@@ -98,26 +98,23 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
 
+        // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
+        Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);
+
         // Form Grid
         Hooks::addFilter('give_form_grid_goal_progress_stats_use_placeholder', FormGridView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
 
-        // Filters from give_goal_progress_stats() function which is used by the admin form list views
-        Hooks::addFilter('give_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
-        Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);
-
-        // Achieved icon opacity
-        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class,
-            'maybeChangeAchievedIconOpacity');
-        Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class,
-            'maybeChangeAchievedIconOpacity');
-
         // Legacy Admin Form List View Columns
+        Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
+        Hooks::addFilter('give_admin_list_form_view_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
         Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
         Hooks::addFilter('give_admin_form_list_view_revenue_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
 
         // Admin Form List View Columns
+        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
+        Hooks::addFilter('givewp_admin_list_form_view_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
         add_filter(
             sprintf("givewp_list_table_cell_value_%s_content", DonationCountColumn::getId()),
             function ($value, DonationForm $form){

@@ -242,6 +242,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $use_placeholder = apply_filters('give_form_grid_goal_progress_stats_use_placeholder', false);
 
                 if ($use_placeholder) {
+                    //Enable placeholder on the give_goal_progress_stats() function
                     add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
                     $income_value = 0;
                 } else {

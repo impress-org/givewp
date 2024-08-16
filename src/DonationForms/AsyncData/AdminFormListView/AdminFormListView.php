@@ -12,10 +12,22 @@ class AdminFormListView
     /**
      * @unreleased
      */
+    public function maybeChangeAchievedIconOpacity($achievedIconOpacity)
+    {
+        if (AdminFormListViewOptions::isGoalColumnAsync()) {
+            $achievedIconOpacity = 0;
+        }
+
+        return $achievedIconOpacity;
+    }
+
+    /**
+     * @unreleased
+     */
     public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder): bool
     {
 
-        if ($this->isAdminFormListView() && AdminFormListViewOptions::isGoalColumnAsync()) {
+        if (AdminFormListViewOptions::isGoalColumnAsync()) {
             $usePlaceholder = true;
         }
 
@@ -27,23 +39,12 @@ class AdminFormListView
      */
     public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
     {
-        if($this->isAdminFormListView() && AdminFormListViewOptions::useCachedMetaKeys()) {
+        $isDetailsPage = isset($_GET['action']) && 'edit' === $_GET['action'];
+        if(!$isDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
         return FormStats::getRevenueValue($formId);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function maybeChangeAchievedIconOpacity($achievedIconOpacity)
-    {
-        if ($this->isAdminFormListView() && AdminFormListViewOptions::isGoalColumnAsync()) {
-            $achievedIconOpacity = 0;
-        }
-
-        return $achievedIconOpacity;
     }
 
     /**
@@ -76,13 +77,5 @@ class AdminFormListView
         }
 
         return FormStats::getRevenueValue($formId);
-    }
-
-    /**
-     * @unreleased
-     */
-    private function isAdminFormListView(): bool
-    {
-        return isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'];
     }
 }
