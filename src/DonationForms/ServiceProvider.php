@@ -7,7 +7,7 @@ use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
-use Give\DonationForms\AsyncData\Actions\getAsyncFormDataForListView;
+use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
 use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
@@ -97,8 +97,8 @@ class ServiceProvider implements ServiceProviderInterface
     {
 
         // Async ajax request
-        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
-        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
 
         // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
         Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);

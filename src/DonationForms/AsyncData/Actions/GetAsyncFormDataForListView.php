@@ -9,7 +9,7 @@ use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 /**
  * @unreleased
  */
-class getAsyncFormDataForListView
+class GetAsyncFormDataForListView
 {
     /**
      * @unreleased
