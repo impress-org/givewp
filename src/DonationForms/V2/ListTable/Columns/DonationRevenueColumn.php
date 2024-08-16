@@ -36,7 +36,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Add skeleton placeholder support to improve performance
+     * @unreleased Add filter to change the cell value content
      * @since 2.24.0
      *
      * @inheritDoc
