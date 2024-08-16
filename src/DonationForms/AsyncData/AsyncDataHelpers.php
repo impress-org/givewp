@@ -8,12 +8,12 @@ use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 /**
  * @unreleased
  */
-class FormStats
+class AsyncDataHelpers
 {
     /**
      * @unreleased
      */
-    public static function getDonationsCountValue($formId): int
+    public static function getFormDonationsCountValue($formId): int
     {
         return (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
     }
@@ -21,8 +21,16 @@ class FormStats
     /**
      * @unreleased
      */
-    public static function getRevenueValue($formId): int
+    public static function getFormRevenueValue($formId): int
     {
         return (new DonationQuery())->form($formId)->sumIntendedAmount();
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getSkeletonPlaceholder($width = '100%', $height = '0.7rem')
+    {
+        return '<span class="give-skeleton js-give-async-data" style="width: ' . $width . '; height: ' . $height . ';"></span>';
     }
 }

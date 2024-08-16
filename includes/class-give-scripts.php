@@ -115,7 +115,6 @@ class Give_Scripts {
 	/**
 	 * Registers all plugin scripts.
 	 *
-     * @unreleased Register "ajaxNonce" js var
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
@@ -132,7 +131,6 @@ class Give_Scripts {
                     'jquery-query',
                 ]
             )
-            ->registerLocalizeData('ajaxNonce', wp_create_nonce( 'give_ajax_nonce' ))
             ->registerTranslations()
             ->register();
 

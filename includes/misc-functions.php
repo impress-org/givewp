@@ -9,10 +9,10 @@
  * @since       1.0
  */
 
-// Exit if accessed directly.
-use Give\DonationForms\DonationQuery;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
 
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -1926,14 +1926,6 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 }
 
 /**
- * @unreleased
- */
-function give_get_skeleton_placeholder_for_async_data($width = '100%', $height = '0.7rem'): string {
-
-    return '<span class="give-skeleton js-give-async-data" style="width: '. $width . '; height: '. $height . ';"></span>';
-}
-
-/**
  * Display/Return a formatted goal for a donation form
  *
  * @unreleased Add filter to handle the async logic (skeleton placeholder) and improve performance
@@ -1955,7 +1947,7 @@ function give_goal_progress_stats( $form ) {
      * @unreleased
      */
     $usePlaceholder = apply_filters('give_goal_progress_stats_use_placeholder', false);
-    $placeholder = give_get_skeleton_placeholder_for_async_data('1rem');
+    $placeholder = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
 
 	/**
 	 * Filter the form.

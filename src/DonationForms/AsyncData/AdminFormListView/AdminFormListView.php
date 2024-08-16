@@ -2,7 +2,7 @@
 
 namespace Give\DonationForms\AsyncData\AdminFormListView;
 
-use Give\DonationForms\AsyncData\FormStats;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 
 /**
  * @unreleased
@@ -43,7 +43,7 @@ class AdminFormListView
             return $amountRaisedCachedValue;
         }
 
-        return FormStats::getRevenueValue($formId);
+        return AsyncDataHelpers::getFormRevenueValue($formId);
     }
 
     /**
@@ -52,14 +52,14 @@ class AdminFormListView
     public function maybeSetDonationsColumnAsync($donationsCountCachedValue, $formId)
     {
         if (AdminFormListViewOptions::isDonationColumnAsync()) {
-            return give_get_skeleton_placeholder_for_async_data('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
         if (AdminFormListViewOptions::useCachedMetaKeys()) {
             return $donationsCountCachedValue;
         }
 
-        return FormStats::getDonationsCountValue($formId);
+        return AsyncDataHelpers::getFormDonationsCountValue($formId);
     }
 
     /**
@@ -68,13 +68,13 @@ class AdminFormListView
     public function maybeSetRevenueColumnAsync($revenueCachedValue, $formId)
     {
         if (AdminFormListViewOptions::isRevenueColumnAsync()) {
-            return give_get_skeleton_placeholder_for_async_data('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
         if (AdminFormListViewOptions::useCachedMetaKeys()) {
             return $revenueCachedValue;
         }
 
-        return FormStats::getRevenueValue($formId);
+        return AsyncDataHelpers::getFormRevenueValue($formId);
     }
 }

@@ -3,8 +3,8 @@
 namespace Give\DonationForms\AsyncData\Actions;
 
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
-use Give\DonationForms\AsyncData\FormStats;
 
 /**
  * @unreleased
@@ -22,7 +22,7 @@ class getAsyncFormDataForListView
             wp_send_json_error(['errorMsg' => __('Missing Form ID.', 'give')]);
         }
 
-        if ( ! isset($options['nonce']) || ! check_ajax_referer('give_ajax_nonce', 'nonce')) {
+        if ( ! isset($options['nonce']) || ! check_ajax_referer('GiveDonationFormsAsyncDataAjaxNonce', 'nonce')) {
             wp_send_json_error([
                 'errorMsg' => __('The current user does not have permission to execute this operation.', 'give'),
             ]);
@@ -49,12 +49,12 @@ class getAsyncFormDataForListView
 
         $donationsCount = 0;
         if ($this->isAsyncDonationCount()) {
-            $donationsCount = FormStats::getDonationsCountValue($formId);
+            $donationsCount = AsyncDataHelpers::getFormDonationsCountValue($formId);
         }
 
         $revenue = $amountRaised;
         if (0 === $revenue && $this->isAsyncRevenue()) {
-            $revenue = FormStats::getRevenueValue($formId);
+            $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
         }
 
         $response = [

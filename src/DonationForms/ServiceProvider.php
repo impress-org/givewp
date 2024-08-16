@@ -8,6 +8,7 @@ use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListen
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\AsyncData\Actions\getAsyncFormDataForListView;
+use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -94,6 +95,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerAsyncData()
     {
+
         // Async ajax request
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', getAsyncFormDataForListView::class);
@@ -102,9 +104,24 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);
 
         // Form Grid
-        Hooks::addFilter('give_form_grid_goal_progress_stats_use_placeholder', FormGridView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
+        add_filter('give_form_grid_goal_progress_stats_use_placeholder', function ($usePlaceholder) {
+            $usePlaceholder = give(FormGridView::class)->maybeUsePlaceholderOnGoalAmountRaised($usePlaceholder);
+
+            if ($usePlaceholder) {
+                // Load assets on form grid pages
+                Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class);
+            }
+
+            return $usePlaceholder;
+        });
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
+
+        // Load assets on the admin list form pages
+        $isAdminListFormPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'];
+        if ($isAdminListFormPage) {
+            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
+        }
 
         // Legacy Admin Form List View Columns
         Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');

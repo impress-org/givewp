@@ -2,7 +2,7 @@
 
 namespace Give\DonationForms\AsyncData\FormGrid;
 
-use Give\DonationForms\AsyncData\FormStats;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 
 class FormGridView
 {
@@ -24,14 +24,14 @@ class FormGridView
     public function maybeSetProgressBarAmountRaisedAsync($amountRaisedCachedValue, $formId)
     {
         if (FormGridViewOptions::isProgressBarAmountRaisedAsync()) {
-            return give_get_skeleton_placeholder_for_async_data('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
         if (FormGridViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
-        return FormStats::getRevenueValue($formId);
+        return AsyncDataHelpers::getFormRevenueValue($formId);
     }
 
     /**
@@ -40,13 +40,13 @@ class FormGridView
     public function maybeSetProgressBarDonationsCountAsync($donationsCountCachedValue, $formId)
     {
         if (FormGridViewOptions::isProgressBarDonationsCountAsync()) {
-            return give_get_skeleton_placeholder_for_async_data('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
         if (FormGridViewOptions::useCachedMetaKeys()) {
             return $donationsCountCachedValue;
         }
 
-        return FormStats::getDonationsCountValue($formId);
+        return AsyncDataHelpers::getFormDonationsCountValue($formId);
     }
 }

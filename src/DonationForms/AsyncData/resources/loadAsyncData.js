@@ -39,17 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        let url = '';
-        if (typeof give_global_vars !== 'undefined') {
-            url =
-                give_global_vars.ajax_vars.ajaxurl +
-                '?action=givewp_get_form_async_data_for_list_view&formId=' +
-                formId +
-                '&nonce=' +
-                give_global_vars.ajax_vars.ajaxNonce;
-        } else {
-            url = ajaxurl + '?action=givewp_get_form_async_data_for_list_view&formId=' + formId + '&nonce=' + ajaxNonce;
-        }
+        url =
+            window.GiveDonationFormsAsyncData.ajaxUrl +
+            '?action=givewp_get_form_async_data_for_list_view&formId=' +
+            formId +
+            '&nonce=' +
+            window.GiveDonationFormsAsyncData.ajaxNonce;
 
         fetch(url, {signal})
             .then(function (response) {
