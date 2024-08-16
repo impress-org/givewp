@@ -6,12 +6,12 @@ use Give\DonationSpam\EmailAddressWhiteList;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 final class EmailAddressWhiteListTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function testValidatesWhitelistedEmailAddress()
     {
@@ -20,7 +20,7 @@ final class EmailAddressWhiteListTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function testDoesNotValidateNonWhitelistedEmailAddress()
     {

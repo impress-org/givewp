@@ -2,7 +2,7 @@
 /**
  * GiveWP Onboarding Setup Guide template file
  *
- * @unreleased Refactored to make it compatible with v3 forms.
+ * @since 3.15.0 Refactored to make it compatible with v3 forms.
  * @since 2.8.0
  */
 

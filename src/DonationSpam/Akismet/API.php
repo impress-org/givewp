@@ -6,12 +6,12 @@ use Akismet;
 use Give\DonationSpam\Akismet\DataTransferObjects\CommentCheckArgs;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class API
 {
     /**
-     * @unreleased
+     * @since 3.15.0
      */
     public function commentCheck(CommentCheckArgs $args): array
     {
