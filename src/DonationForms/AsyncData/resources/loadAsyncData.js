@@ -296,7 +296,36 @@ document.addEventListener('DOMContentLoaded', () => {
     maybeLoadAsyncData();
 
     // Trigger the async logic every time the user scrolls the mouse.
-    window.addEventListener('scroll', () => {
-        maybeLoadAsyncData();
-    });
+    window.addEventListener(
+        'scroll',
+        () => {
+            maybeLoadAsyncData();
+        },
+        true
+    );
+
+    // Trigger the async logic every time the user resize the screen.
+    window.addEventListener(
+        'resize',
+        () => {
+            maybeLoadAsyncData();
+        },
+        true
+    );
+
+    // Trigger the async logic every time the user add a new Form Grid Block to the WordPress Block Editor - Gutenberg.
+    window.onload = function () {
+        const wpBlockEditor = document.querySelector('.wp-block-post-content');
+        if (!!wpBlockEditor) {
+            // create an Observer instance
+            const resizeObserver = new ResizeObserver((entries) => {
+                window.GiveDonationFormsAsyncData.scriptDebug &&
+                    console.log('WP Block Editor height changed:', entries[0].target.clientHeight);
+                maybeLoadAsyncData();
+            });
+
+            // start observing a DOM node
+            resizeObserver.observe(wpBlockEditor);
+        }
+    };
 });

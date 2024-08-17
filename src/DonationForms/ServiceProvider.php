@@ -110,7 +110,6 @@ class ServiceProvider implements ServiceProviderInterface
             if ($usePlaceholder) {
                 // Load assets on form grid pages
                 Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class);
-                Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
             }
 
             return $usePlaceholder;
@@ -123,6 +122,9 @@ class ServiceProvider implements ServiceProviderInterface
         if ($isAdminListFormPage) {
             Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
         }
+
+        // Load assets on the WordPress Block Editor - Gutenberg
+        Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
 
         // Legacy Admin Form List View Columns
         Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
