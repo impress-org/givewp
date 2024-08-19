@@ -36,20 +36,6 @@ class AdminFormListView
     /**
      * @unreleased
      */
-    public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
-    {
-        $isSingleFormPage = 'give_forms' === get_post_type() && is_single();
-        $isFormDetailsPage = isset($_GET['action']) && 'edit' === $_GET['action'];
-        if ( ! $isSingleFormPage && ! $isFormDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
-            return $amountRaisedCachedValue;
-        }
-
-        return AsyncDataHelpers::getFormRevenueValue($formId);
-    }
-
-    /**
-     * @unreleased
-     */
     public function maybeSetDonationsColumnAsync($donationsCountCachedValue, $formId)
     {
         if (AdminFormListViewOptions::isDonationColumnAsync()) {

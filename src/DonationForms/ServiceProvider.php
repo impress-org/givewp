@@ -10,6 +10,7 @@ use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
 use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
@@ -100,7 +101,8 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
 
         // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
-        Hooks::addFilter('give_goal_amount_raised_output', AdminFormListView::class, 'maybeChangeAmountRaisedOutput',1,2);
+        Hooks::addFilter('give_goal_amount_raised_output', AsyncDataHelpers::class, 'maybeChangeAmountRaisedOutput', 1,
+            2);
 
         // Form Grid
         add_filter('give_form_grid_goal_progress_stats_use_placeholder', function ($usePlaceholder) {
