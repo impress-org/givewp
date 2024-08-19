@@ -29,7 +29,7 @@ class UpdateFormTaxonomies
     }
 
     /**
-     * @param $termsIds
+     * @unreleased
      */
     public function validateTermIds(array $termsIds): array
     {
