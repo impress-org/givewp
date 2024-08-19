@@ -9,201 +9,244 @@
 */
 
 .give_forms_page_give-setup .wp-header-end {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .wp-heading-inline {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 section,
 section * {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 section {
-	margin-bottom: 40px;
-	color: #424242;
-	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
-	border-radius: 6px;
-	overflow: hidden;
+    margin-bottom: 40px;
+    color: #424242;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .section-dismiss {
-	text-align: center;
+    text-align: center;
 
-	button {
-		cursor: pointer;
-		border: 0;
-		background-color: inherit;
-		color: #9ea3a8;
-		font-size: 16px;
-		font-weight: 600;
-		text-decoration: underline;
-		font-family: 'Open Sans', sans-serif;
-	}
+    button {
+        cursor: pointer;
+        border: 0;
+        background-color: inherit;
+        color: #9ea3a8;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: underline;
+        font-family: 'Open Sans', sans-serif;
+    }
 }
 
 header {
-	padding: 20px 20px 20px 25px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid #ddd;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
 
-	h2 {
-		margin: 0;
-		font-size: 22px;
-		line-height: 22px;
-		color: #424242;
-	}
+    &.current-step h2 {
+        color: #0E0E0E;
+        font-weight: 700;
+    }
+
+    h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 500;
+        line-height: 1.55;
+        color: #424242;
+    }
+
+    .badge {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        padding: 0.25rem 0.5rem;
+        border-radius: 10px;
+
+        &.badge-completed {
+            color: #18694C;
+            background: #CEF2CF;
+        }
+
+        &.badge-not-completed {
+            color: #404040;
+            background: #F2F2F2;
+        }
+
+        &.badge-optional {
+            color: #0B72D9;
+            background: #F2F9FF;
+        }
+    }
+
+    .button.button-primary {
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        margin-left: auto;
+        padding: 0.5rem 1rem;
+    }
 }
+
 footer {
-	background-color: #fafafa;
-	padding: 20px 20px 20px 25px;
-	font-size: 16px;
-	display: flex;
-	justify-content: space-between;
-}
-footer a {
-	color: #0073aa;
-	text-decoration: none;
+    background-color: #fafafa;
+    padding: 1.25rem 1.5rem;
+    font-size: 16px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem;
 
-	> .fa {
-		margin-left: 6px;
-	}
-}
-header .badge {
-	font-weight: 600;
-	font-size: 12px;
-	line-height: 16px;
-	padding: 10px 20px;
-	border-radius: 3px;
-}
-header .badge.badge-complete {
-	color: #18694c;
-	background: #cbf4c9;
-}
-header .badge.badge-review {
-	color: #696969;
-	border: #ddd 1px solid;
-	background: transparent;
+    p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    a {
+        text-decoration: none;
+        margin-left: auto;
+
+        > .fa {
+            margin-left: 6px;
+        }
+    }
 }
 
 article {
-	padding: 20px 0;
-	border-bottom: 1px solid #ddd;
-	display: grid;
-	grid-template-columns: 125px 3fr 1fr;
-	grid-template-areas: 'icon content action';
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    display: grid;
+    grid-template-columns: 125px 3fr 1fr;
+    grid-template-areas: 'icon content action';
 }
+
 article .icon,
 article .action {
-	align-self: center;
-	justify-content: center;
+    align-self: center;
+    justify-content: center;
 }
-article .icon {
-	margin: 8px auto 0;
-	align-self: start;
-	flex: 1;
-	width: 75px;
-	grid-area: icon;
-}
-article .action a {
-	color: inherit;
-	font-size: 22px;
-	text-align: right;
-	margin-right: 70px;
-	text-decoration: none;
 
-	/*
-	 * Float the anchor to avoid expanding the focus state.
-	 */
-	float: right;
+article .icon {
+    margin: 8px auto 0;
+    align-self: start;
+    flex: 1;
+    width: 75px;
+    grid-area: icon;
 }
+
+article .action {
+    margin-left: auto;
+    padding: 1.5rem;
+
+    a {
+        font-size: 1rem;
+        line-height: 1.5;
+        text-decoration: none;
+
+        i {
+            margin-left: 6px;
+        }
+    }
+}
+
 article .content {
-	grid-area: content;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding-right: 24px;
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 24px;
 }
+
 article .header {
-	margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
-	font-size: 20px;
-	line-height: 25px;
+    margin: 10px 0 10px; /* Enforce minimum spacing via bottom-margin to prevent crowding by grid-layout. */
+    font-size: 20px;
+    line-height: 25px;
 }
+
 article .description {
-	grid-area: description;
-	color: #595959;
-	font-size: 16px;
-	line-height: 1.5;
-	font-weight: 400;
+    grid-area: description;
+    color: #595959;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
 .configuration .icon {
-	margin-top: -25px;
-	margin-left: 15px;
+    margin-top: -25px;
+    margin-left: 15px;
 }
 
 article.paypal .action a,
 article.paypal .action button,
 article.stripe .action a,
 article.stripe .action button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-left: 15px;
-	margin-right: 30px;
-	width: 223px;
-	height: 38px;
-	font-size: 16px;
-	font-weight: 600;
-	line-height: 35px;
-	text-align: center;
-	color: #fff;
-	border: 0;
-	border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    width: 223px;
+    height: 38px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 35px;
+    text-align: center;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
 }
 
 article.paypal .action a,
 article.paypal .action button {
-	background-color: #0070bc;
+    background-color: #0070bc;
 }
 
 article.stripe .action a,
 article.stripe .action button {
-	background: #6772e5;
+    background: #6772e5;
 }
 
 .stripe-webhooks {
-	.fa-spinner {
-		margin-right: 10px;
-	}
+    .fa-spinner {
+        margin-right: 10px;
+    }
 
-	.stripe-webhooks-url {
-		cursor: pointer;
-		display: inline-block;
-		margin-top: 10px;
+    .stripe-webhooks-url {
+        cursor: pointer;
+        display: inline-block;
+        margin-top: 10px;
 
-		input {
-			width: 300px;
-			margin-left: -2px; /* Align input with sibling p.description */
-			border-color: transparent;
-			outline-color: transparent;
-		}
-	}
+        input {
+            width: 300px;
+            margin-left: -2px; /* Align input with sibling p.description */
+            border-color: transparent;
+            outline-color: transparent;
+        }
+    }
 }
 
 .setup-item-sub-header {
-	display: block; // Override inherited grid layout.
-	padding-left: 20px;
+    font-size: 14px;
+    display: block; // Override inherited grid layout.
+    padding-left: 20px;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .setup-item-completed .header {
-	text-decoration: line-through;
-	text-decoration-color: rgba(66, 66, 66, 0.75);
+    text-decoration-color: rgba(66, 66, 66, 0.75);
 }
 
 /** Normalize icon sizes. */
@@ -214,9 +257,115 @@ article.setup-item-pdf-receipts .icon,
 article.setup-item-currency-switcher .icon,
 article.setup-item-recurring-donations .icon,
 article.setup-item-form-fields-manager .icon {
-	width: 70px;
+    width: 70px;
 }
 
 .hidden {
-	display: none;
+    display: none;
+}
+
+#give-activate-license-modal {
+    animation: appear 112ms ease-in 0s;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
+    color: #404040;
+    font-family: "Open Sans", sans-serif;
+    max-width: 35rem;
+    padding: 0;
+    position: relative;
+    width: 100%;
+
+    &::backdrop {
+        background-color: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(2px);
+    }
+
+    #give-license-activator-wrap {
+        padding: 0;
+    }
+
+    .give-license-widget-heading {
+        align-items: center;
+        border-bottom: 1px solid #E6E6E6;
+        color: #0e0e0e;
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding: 1rem 1.25rem;
+
+        h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            fill: #737373;
+        }
+    }
+
+    .give-license-widget-content {
+        padding: 1rem 1.5rem 1.5rem;
+
+        .give-field-description {
+            margin-bottom: 1rem;
+
+            a {
+                text-decoration: underline;
+            }
+        }
+
+        .give-license-activation-form {
+            background: none;
+            padding: 0;
+
+            .give-license-notices {
+                .notice {
+                    left: 1rem;
+                    margin: 0;
+                    position: absolute;
+                    right: 1rem;
+                    top: 50%;
+                    translate: 0 -50%;
+                }
+            }
+
+            label {
+                color: #404040;
+                display: inline-block;
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 1.5;
+                margin-bottom: 0.25rem;
+            }
+
+            #give-license-activator {
+                border-radius: 0.25rem;
+                border: 1px solid #8C8C8C;
+                background: #FFF;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                height: auto;
+                line-height: 1.5;
+                margin-bottom: 2.5rem;
+
+                &::placeholder {
+                    color: #8C8C8C;
+                }
+            }
+
+            .button {
+                border-radius: 0.25rem;
+                font-size: 1rem;
+                font-weight: 600;
+                height: auto;
+                line-height: 1.5;
+                padding: 0.75rem 2rem;
+            }
+        }
+    }
 }
