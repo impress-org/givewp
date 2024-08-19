@@ -18,17 +18,20 @@ class GetAsyncFormDataForListView
     {
         $options = give_clean($_GET);
 
-        if ( ! isset($options['formId'])) {
-            wp_send_json_error(['errorMsg' => __('Missing Form ID.', 'give')]);
-        }
-
         if ( ! isset($options['nonce']) || ! check_ajax_referer('GiveDonationFormsAsyncDataAjaxNonce', 'nonce')) {
             wp_send_json_error([
                 'errorMsg' => __('The current user does not have permission to execute this operation.', 'give'),
             ]);
         }
 
-        $formId = $options['formId'];
+        if ( ! isset($options['formId'])) {
+            wp_send_json_error(['errorMsg' => __('Missing Form ID.', 'give')]);
+        }
+
+        $formId = absint($options['formId']);
+        if ('give_forms' !== get_post_type($formId)) {
+            wp_send_json_error(['errorMsg' => __('Invalid post type.', 'give')]);
+        }
 
         $transientName = 'give_async_data_for_list_view_form_' . $formId;
 
