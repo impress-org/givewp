@@ -4,7 +4,7 @@ import styles from './Pagination.module.scss';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 
-const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage, singleName, pluralName}) => {
+const Pagination = ({currentPage = 1, totalPages = 0, totalItems = -1, disabled = false, setPage = () => {}, singleName, pluralName}) => {
     const [pageInput, setPageInput] = useState(1);
 
     useEffect(() => {
@@ -115,13 +115,6 @@ Pagination.propTypes = {
     setPage: PropTypes.func.isRequired,
     // Is pagination disabled
     disabled: PropTypes.bool.isRequired,
-};
-
-Pagination.defaultProps = {
-    currentPage: 1,
-    totalPages: 0,
-    setPage: () => {},
-    disabled: false,
 };
 
 export default Pagination;
