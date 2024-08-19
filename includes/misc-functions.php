@@ -1947,7 +1947,6 @@ function give_goal_progress_stats( $form ) {
      * @unreleased
      */
     $usePlaceholder = apply_filters('give_goal_progress_stats_use_placeholder', false);
-    $placeholder = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
 
 	/**
 	 * Filter the form.
@@ -1978,23 +1977,18 @@ function give_goal_progress_stats( $form ) {
 			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default:
-
-            if ($usePlaceholder) {
-                $actual = $placeholder;
-            } else {
-                /**
-                 * Filter the form income.
-                 *
-                 * @unreleased Revert changes implemented on the 3.14.0 version
-                 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
-                 * @since 1.8.8
-                 */
-                $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
-            }
+            /**
+             * Filter the form income.
+             *
+             * @unreleased Revert changes implemented on the 3.14.0 version and add placeholder condition
+             * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
+             * @since 1.8.8
+             */
+            $actual = $usePlaceholder ? 0 : apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 			break;
 	}
 
-	$progress = $total_goal && !$usePlaceholder ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
+	$progress = $total_goal ? round( ( $actual / $total_goal ) * 100, 2 ) : 0;
 
 	$stats_array = [
 		'raw_actual' => $actual,
@@ -2011,17 +2005,17 @@ function give_goal_progress_stats( $form ) {
 	// Define Actual Goal based on the goal format.
 	switch ( $goal_format ) {
 		case 'percentage':
-			$actual     = $usePlaceholder ? $placeholder : "{$progress}%";
+			$actual     = "{$progress}%";
 			$total_goal = '';
 			break;
 
 		case 'amount' === $goal_format:
-			$actual     = $usePlaceholder ? $placeholder : give_currency_filter( give_format_amount( $actual ) );
+			$actual     = give_currency_filter( give_format_amount( $actual ) );
 			$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 			break;
 
 		default:
-			$actual     = $usePlaceholder ? $placeholder : give_format_amount( $actual, [ 'decimal' => false ] );
+			$actual     = give_format_amount( $actual, [ 'decimal' => false ] );
 			$total_goal = give_format_amount( $total_goal, [ 'decimal' => false ] );
 			break;
 	}
@@ -2029,7 +2023,7 @@ function give_goal_progress_stats( $form ) {
 	$stats_array = array_merge(
 		[
 			'progress' => $progress,
-			'actual'   => $actual,
+			'actual'   => $usePlaceholder ? AsyncDataHelpers::getSkeletonPlaceholder('1rem') : $actual,
 			'goal'     => $total_goal,
 			'format'   => $goal_format,
 		],
