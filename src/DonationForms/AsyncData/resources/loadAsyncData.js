@@ -67,18 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // This class ensures that once the element has the fetch request triggered we'll not try to fetch it again.
         itemElement.classList.add('give-async-data-fetch-triggered');
 
-        url =
-            window.GiveDonationFormsAsyncData.ajaxUrl +
-            '?action=givewp_get_form_async_data_for_list_view&formId=' +
-            formId +
-            '&nonce=' +
-            window.GiveDonationFormsAsyncData.ajaxNonce;
-
         // It can be used to abort the async request when necessary.
         const controller = new AbortController();
         const signal = controller.signal;
 
-        fetch(url, {signal})
+        fetch(
+            `${window.GiveDonationFormsAsyncData.ajaxUrl}?action=givewp_get_form_async_data_for_list_view&formId=${formId}&nonce=${window.GiveDonationFormsAsyncData.ajaxNonce}`,
+            {signal}
+        )
             .then(function (response) {
                 return response.json();
             })
