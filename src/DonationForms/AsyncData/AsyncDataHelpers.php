@@ -41,7 +41,7 @@ class AsyncDataHelpers
     public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
     {
         // Only use cached values on form list views
-        if ( ! $this->isSingleForm() && AdminFormListViewOptions::useCachedMetaKeys()) {
+        if ( ! $this->isSingleForm() && ! wp_doing_ajax() && AdminFormListViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
