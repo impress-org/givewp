@@ -95,7 +95,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerAsyncData()
     {
-
         // Async ajax request
         Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);

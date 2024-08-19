@@ -1,7 +1,12 @@
 /**
- * This file contains the whole necessary logic to load async data on all available form list views
- * in the project - form grid and admin form list views. The async data are loaded (only for the
- * items visible on the screen) at the page's first load and every time the user scrolls the mouse.
+ * This file contains all the logic to load async data on the project's available form list views, including form grid and admin form list views.
+ *
+ * The async data are loaded (only for the items visible on the screen) on the following conditions:
+ *
+ * 1) At the page's first load
+ * 2) When the user adds a block in the WP block editor
+ * 3) When the user scrolls the mouse
+ * 4) When the user resizes the screen
  *
  * @unreleased
  */
@@ -315,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Trigger the async logic every time the user add a new Form Grid Block to the WordPress Block Editor - Gutenberg.
     window.onload = function () {
-        const wpBlockEditor = document.querySelector('.wp-block-post-content');
-        if (!!wpBlockEditor) {
+        const wpBlockEditorContent = document.querySelector('.wp-block-post-content');
+        if (!!wpBlockEditorContent) {
             // create an Observer instance
             const resizeObserver = new ResizeObserver((entries) => {
                 window.GiveDonationFormsAsyncData.scriptDebug &&
@@ -325,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // start observing a DOM node
-            resizeObserver.observe(wpBlockEditor);
+            resizeObserver.observe(wpBlockEditorContent);
         }
     };
 });
