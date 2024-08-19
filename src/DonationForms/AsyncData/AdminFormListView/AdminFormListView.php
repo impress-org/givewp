@@ -38,8 +38,9 @@ class AdminFormListView
      */
     public function maybeChangeAmountRaisedOutput($amountRaisedCachedValue, $formId)
     {
-        $isDetailsPage = isset($_GET['action']) && 'edit' === $_GET['action'];
-        if ( ! $isDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
+        $isSingleFormPage = 'give_forms' === get_post_type() && is_single();
+        $isFormDetailsPage = isset($_GET['action']) && 'edit' === $_GET['action'];
+        if ( ! $isSingleFormPage && ! $isFormDetailsPage && AdminFormListViewOptions::useCachedMetaKeys()) {
             return $amountRaisedCachedValue;
         }
 
