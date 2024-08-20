@@ -5,6 +5,9 @@ import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary'
 import {upload} from '@wordpress/icons';
 import {ClassicEditor} from '@givewp/form-builder-library';
 
+/**
+ * @unreleased Replace TextareaControl component with ClassicEditor component on the description option
+ */
 export default function Header({dispatch, publishSettings}) {
     const {
         settings: {
