@@ -58,6 +58,7 @@ class GetAsyncFormDataForListView
         $revenue = $amountRaised;
         if (0 === $revenue && $this->isAsyncRevenue()) {
             $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
+            $revenue = give_currency_filter(give_format_amount($revenue));
         }
 
         $response = [

@@ -62,6 +62,8 @@ class AdminFormListView
             return $revenueCachedValue;
         }
 
-        return AsyncDataHelpers::getFormRevenueValue($formId);
+        $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
+
+        return give_currency_filter(give_format_amount($revenue));
     }
 }
