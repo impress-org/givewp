@@ -24,7 +24,7 @@ class AdminFormListView
     /**
      * @unreleased
      */
-    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder): bool
+    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder = false): bool
     {
         if (AdminFormListViewOptions::isGoalColumnAsync()) {
             $usePlaceholder = true;

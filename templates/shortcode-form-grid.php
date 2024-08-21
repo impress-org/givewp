@@ -239,15 +239,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             // Maybe display the goal progress bar.
             if (!$hide_goal) :
 
-                $use_placeholder = apply_filters('give_form_grid_goal_progress_stats_use_placeholder', false);
-
-                if ($use_placeholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-                    $income_value = 0;
-                } else {
-                    $income_value = $form->get_earnings();
-                }
+                do_action('give_form_grid_goal_progress_stats_before', $form_id);
 
                 $goal_progress_stats = give_goal_progress_stats($form);
                 $goal_format = $goal_progress_stats['format'];
@@ -255,13 +247,13 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 /**
-                 * @unreleased Replace (new DonationQuery())->form($form->ID)->sumIntendedAmount() with $income_value
+                 * @unreleased Revert changes implemented on the 3.14.0 version
                  * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => $income_value,
+                        'income' => $form->get_earnings(),
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,

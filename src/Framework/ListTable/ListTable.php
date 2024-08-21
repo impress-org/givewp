@@ -126,6 +126,11 @@ abstract class ListTable implements Arrayable
             /**
              * @unreleased
              */
+            do_action("givewp_list_table_cell_value_{$column::getId()}_before", $column, $model, $locale);
+
+            /**
+             * @unreleased
+             */
             $cellValue = apply_filters("givewp_list_table_cell_value_{$column::getId()}",
                 $column->getCellValue($model, $locale), $column, $model, $locale);
         } catch (Exception $exception) {

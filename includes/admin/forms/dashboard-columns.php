@@ -87,12 +87,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
-
-                    $use_placeholder = apply_filters('give_admin_list_form_view_goal_progress_stats_use_placeholder', false);
-                    if ($use_placeholder) {
-                        //Enable placeholder on the give_goal_progress_stats() function
-                        add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
-                    }
+                    do_action('give_admin_form_list_view_donations_goal_column_before', $post_id);
 
 					echo give_admin_form_goal_stats( $post_id );
 

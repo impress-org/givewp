@@ -32,6 +32,7 @@ use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
+use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
@@ -106,15 +107,21 @@ class ServiceProvider implements ServiceProviderInterface
             2);
 
         // Form Grid
-        add_filter('give_form_grid_goal_progress_stats_use_placeholder', function ($usePlaceholder) {
-            $usePlaceholder = give(FormGridView::class)->maybeUsePlaceholderOnGoalAmountRaised($usePlaceholder);
+        add_filter('give_form_grid_goal_progress_stats_before', function () {
+            $usePlaceholder = give(FormGridView::class)->maybeUsePlaceholderOnGoalAmountRaised();
 
             if ($usePlaceholder) {
                 // Load assets on form grid pages
                 Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class);
-            }
 
-            return $usePlaceholder;
+                //Enable placeholder on the give_goal_progress_stats() function
+                add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                add_filter('give_goal_shortcode_stats', function ($stats) {
+                    $stats['income'] = 0;
+
+                    return $stats;
+                });
+            }
         });
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
@@ -130,13 +137,37 @@ class ServiceProvider implements ServiceProviderInterface
 
         // Legacy Admin Form List View Columns
         Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        Hooks::addFilter('give_admin_list_form_view_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
+        add_action(
+            'give_admin_form_list_view_donations_goal_column_before',
+            function () {
+                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
+
+                if ($usePlaceholder) {
+                    //Enable placeholder on the give_goal_progress_stats() function
+                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                }
+            },
+            10,
+            2
+        );
         Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
         Hooks::addFilter('give_admin_form_list_view_revenue_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
 
         // Admin Form List View Columns
         Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        Hooks::addFilter('givewp_admin_list_form_view_goal_progress_stats_use_placeholder', AdminFormListView::class, 'maybeUsePlaceholderOnGoalAmountRaised');
+        add_action(
+            sprintf("givewp_list_table_cell_value_%s_before", GoalColumn::getId()),
+            function () {
+                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
+
+                if ($usePlaceholder) {
+                    //Enable placeholder on the give_goal_progress_stats() function
+                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                }
+            },
+            10,
+            2
+        );
         add_filter(
             sprintf("givewp_list_table_cell_value_%s_content", DonationCountColumn::getId()),
             function ($value, DonationForm $form){

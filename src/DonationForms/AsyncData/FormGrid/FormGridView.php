@@ -12,7 +12,7 @@ class FormGridView
     /**
      * @unreleased
      */
-    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder): bool
+    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder = false): bool
     {
         if (FormGridViewOptions::isProgressBarAmountRaisedAsync()) {
             $usePlaceholder = true;
