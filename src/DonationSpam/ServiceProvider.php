@@ -16,9 +16,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(): void
     {
+        /**
+         * @unreleased Case filtered value as an array to enforce type.
+         * @since 3.15.0
+         */
         give()->singleton(EmailAddressWhiteList::class, function () {
             return new EmailAddressWhiteList(
-                apply_filters( 'give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails() )
+                (array) apply_filters( 'give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails() )
             );
         });
     }
