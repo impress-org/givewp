@@ -27,7 +27,7 @@ class LoadAsyncDataAssets
     /**
      * @unreleased
      */
-    public  static function registerAssets()
+    public static function registerAssets()
     {
         wp_register_style(
             LoadAsyncDataAssets::handleName(),
@@ -56,7 +56,8 @@ class LoadAsyncDataAssets
     /**
      * @unreleased
      */
-    public static function enqueueAssets(){
+    public static function enqueueAssets()
+    {
         wp_enqueue_style(LoadAsyncDataAssets::handleName());
         wp_enqueue_script(LoadAsyncDataAssets::handleName());
     }
