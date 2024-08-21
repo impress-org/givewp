@@ -25,8 +25,9 @@ class TestDoubleTheDonation extends TestCase
         // Arrange
         $meta = [
             'give_dtd_label' => 'DTD Label',
+            'dtd_enable_disable' => 'enabled',
         ];
-        $v2Form = $this->createSimpleDonationForm();
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
         // Act
         $v3Form = $this->migrateForm($v2Form, DoubleTheDonation::class);
