@@ -6,6 +6,7 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {OnboardingContext} from './Onboarding';
+import {UpgradeModalContent} from "./Migration";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -49,6 +50,18 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         showConfirmModal(__('Trash', 'give'), confirmTrashForm, deleteForm, 'danger');
     };
 
+    const confirmUpgradeModal = (event) => {
+        showConfirmModal(
+            __('Upgrade', 'give'),
+            UpgradeModalContent,
+            async (selected) => {
+                const response = await donationFormsApi.fetchWithArgs("/migrate/" + item.id, {}, 'POST');
+                await mutate(parameters);
+                return response;
+            }
+        );
+    };
+
     return (
         <>
             {parameters.status === 'trash' ? (
@@ -86,6 +99,12 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         displayText={__('Duplicate', 'give')}
                         hiddenText={item?.name}
                     />
+                    {!item.v3form && (<RowAction
+                        onClick={confirmUpgradeModal}
+                        actionId={item.id}
+                        displayText={__('Upgrade', 'give')}
+                        hiddenText={item?.name}
+                    />)}
                 </>
             )}
         </>
