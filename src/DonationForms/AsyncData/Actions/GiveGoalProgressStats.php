@@ -23,6 +23,22 @@ class GiveGoalProgressStats
         return AsyncDataHelpers::getFormRevenueValue($formId);
     }
 
+    public function maybeChangeGoalProgressStatsActualValue($stats)
+    {
+        if (false !== strpos($stats['actual'], 'give-skeleton')) {
+            return $stats;
+        }
+
+        // Only use cached values on form list views
+        if ( ! $this->isSingleForm() && ! wp_doing_ajax() && AdminFormListViewOptions::useCachedMetaKeys()) {
+            return $stats;
+        }
+
+        $stats['actual'] = AsyncDataHelpers::getFormRevenueValue($stats['form_id']);
+
+        return $stats;
+    }
+
     /**
      * @unreleased
      */

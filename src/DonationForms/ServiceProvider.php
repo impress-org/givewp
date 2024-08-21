@@ -11,6 +11,7 @@ use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
 use Give\DonationForms\AsyncData\Actions\GiveGoalProgressStats;
 use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridView;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
@@ -102,8 +103,8 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
 
         // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
-        Hooks::addFilter('give_goal_amount_raised_output', GiveGoalProgressStats::class,
-            'maybeChangeAmountRaisedOutput', 1,
+        Hooks::addFilter('give_goal_progress_stats', GiveGoalProgressStats::class,
+            'maybeChangeGoalProgressStatsActualValue', 999,
             2);
 
         // Form Grid
@@ -115,7 +116,11 @@ class ServiceProvider implements ServiceProviderInterface
                 Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class);
 
                 //Enable placeholder on the give_goal_progress_stats() function
-                add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                add_filter('give_goal_progress_stats', function ($stats) {
+                    $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+
+                    return $stats;
+                });
                 add_filter('give_goal_shortcode_stats', function ($stats) {
                     $stats['income'] = 0;
 
@@ -144,7 +149,11 @@ class ServiceProvider implements ServiceProviderInterface
 
                 if ($usePlaceholder) {
                     //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                    add_filter('give_goal_progress_stats', function ($stats) {
+                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+
+                        return $stats;
+                    });
                 }
             },
             10,
@@ -162,7 +171,11 @@ class ServiceProvider implements ServiceProviderInterface
 
                 if ($usePlaceholder) {
                     //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats_use_placeholder', '__return_true');
+                    add_filter('give_goal_progress_stats', function ($stats) {
+                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+
+                        return $stats;
+                    });
                 }
             },
             10,
