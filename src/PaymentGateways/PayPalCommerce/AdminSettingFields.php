@@ -13,6 +13,7 @@ use Give_License;
  * Class AdminSettingFields
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @unreleased added nonce to disconnect button
  * @since 2.9.0
  */
 class AdminSettingFields
@@ -472,7 +473,9 @@ class AdminSettingFields
                                 <span class="actions">
                                     <button
                                         class="js-give-paypal-disconnect-paypal-account"
-                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                        data-mode="<?php echo $paypalSetting->mode; ?>"
+                                        data-nonce="<?php echo wp_create_nonce('give_paypal_commerce_disconnect_account'); ?>"
+                                    >
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>
