@@ -107,14 +107,20 @@ class ServiceProvider implements ServiceProviderInterface
             'maybeChangeGoalProgressStatsActualValue', 999,
             2);
 
+        // Only register assets on the frontend, but not enqueue to prevent loading them in unnecessary places
+        Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class, 'registerAssets');
+        add_action('give_before_template_part', function ($templateName) {
+            if ('shortcode-form-grid' === $templateName) {
+                // Enqueue assets previously registered on demand - only when the shortcode gets rendered
+                LoadAsyncDataAssets::enqueueAssets();
+            }
+        });
+
         // Form Grid
         add_filter('give_form_grid_goal_progress_stats_before', function () {
             $usePlaceholder = give(FormGridView::class)->maybeUsePlaceholderOnGoalAmountRaised();
 
             if ($usePlaceholder) {
-                // Load assets on form grid pages
-                Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class);
-
                 //Enable placeholder on the give_goal_progress_stats() function
                 add_filter('give_goal_progress_stats', function ($stats) {
                     $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
