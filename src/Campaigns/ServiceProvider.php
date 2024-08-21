@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -25,7 +27,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        // Hooks::addAction('init', Actions\MyAction::class);
-        // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
+        give(MigrationsRegister::class)->addMigrations([
+            MigrateFormsToCampaignForms::class,
+        ]);
     }
 }
