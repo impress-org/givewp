@@ -4,7 +4,7 @@ import {InnerBlocks, InspectorControls, RichText, store as blockEditorStore} fro
 import {PanelBody, PanelRow, TextareaControl, TextControl} from '@wordpress/components';
 import {useSelect} from '@wordpress/data';
 import {BlockEditProps} from '@wordpress/blocks';
-import {getBlockRegistrar} from "@givewp/form-builder/common/getWindowData";
+import {getBlockRegistrar} from '@givewp/form-builder/common/getWindowData';
 
 import BaseEmptyBlockInserter from './EmptyBlockInserter';
 import './styles.scss';
@@ -44,7 +44,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             tagName="h2"
                             value={title}
                             onChange={(val) => setAttributes({title: val})}
-                            style={{margin: '0', fontSize: '22px', fontWeight: 700}}
+                            style={{margin: '0', fontSize: '22px', fontWeight: 700, lineHeight: '1.6'}}
                             allowedFormats={[]}
                         />
                     )}
@@ -53,7 +53,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             tagName="p"
                             value={description}
                             onChange={(val) => setAttributes({description: val})}
-                            style={{fontSize: '16px', fontWeight: 500}}
+                            style={{fontSize: '16px', fontWeight: 500, marginTop: '0.25rem'}}
                             allowedFormats={[]}
                         />
                     )}

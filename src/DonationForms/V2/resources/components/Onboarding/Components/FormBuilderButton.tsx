@@ -8,7 +8,7 @@ export default function FormBuilderButton({onClick}) {
             className={styles.tryNewFormBuilderButton}
             onClick={onClick}
         >
-            <CubeIcon /> {__('Try the new form builder', 'give')}
+            <CubeIcon /> {__('Use the new visual form builder', 'give')}
         </button>
     )
 }

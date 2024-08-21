@@ -99,6 +99,7 @@ const Edit = ({attributes, setAttributes}) => {
     const displayFixedMessage = isFixedAmount && !customAmount;
     const displayFixedRecurringMessage =
         isRecurring &&
+        recurringOptInDefaultBillingPeriod !== 'one-time' &&
         (displayFixedMessage ||
             isRecurringAdmin ||
             Number(recurringLengthOfTime) > 0 ||
@@ -134,7 +135,7 @@ const Edit = ({attributes, setAttributes}) => {
                         <RecurringAmountMessage
                             isFixedAmount={isFixedAmount}
                             fixedAmount={amountFormatted}
-                            period={recurringBillingPeriodOptions[0]}
+                            period={recurringOptInDefaultBillingPeriod}
                             frequency={parseInt(recurringBillingInterval)}
                             installments={parseInt(recurringLengthOfTime)}
                         />

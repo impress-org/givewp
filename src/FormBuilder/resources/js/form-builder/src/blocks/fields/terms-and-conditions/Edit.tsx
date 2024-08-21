@@ -103,7 +103,7 @@ export default function Edit({
                                 />
                             </PanelRow>
 
-                            {isLinkDisplay && (
+                            {(isLinkDisplay || isModalDisplay) && (
                                 <PanelRow>
                                     <TextControl
                                         label={__('Link Text', 'give')}

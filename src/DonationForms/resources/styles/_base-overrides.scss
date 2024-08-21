@@ -81,8 +81,12 @@ input[type="file"] {
 input[type="text"]:not([name="amount"], [name="amount-custom"]),
 input[type="password"],
 input[type="email"],
+input[type="checkbox"],
 textarea {
+    border-color: var(--givewp-primary-color);
+
     &:focus {
         border-color: transparent;
+        --box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
     }
 }

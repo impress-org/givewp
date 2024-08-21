@@ -79,6 +79,7 @@ export default function Edit({
                         options={honorificOptions}
                         value={selectedTitle}
                         onChange={setSelectedTitle}
+                        style={{padding: '16px 38px 16px 16px'}}
                     />
                 )}
                 <TextControl
@@ -104,61 +105,66 @@ export default function Edit({
             <InspectorControls>
                 <PanelBody title={__('Name Title Prefix', 'give')} initialOpen={true}>
                     <PanelRow>
-                        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                            <div>
-                                {/* Wrapper added to control spacing between control and help text. */}
-                                <ToggleControl
-                                    label={__('Show Name Title Prefix', 'give')}
-                                    checked={showHonorific}
-                                    onChange={() => setAttributes({showHonorific: !showHonorific})}
-                                    help={__(
-                                        "Do you want to add a name title prefix dropdown field before the donor's first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for the donor to choose from.",
-                                        'give'
-                                    )}
-                                />
-                                {!!showHonorific && (
-                                    <>
-                                        <SelectControl
-                                            label={__('Options', 'give')}
-                                            onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
-                                            value={useGlobalSettings}
-                                            options={[
-                                                {label: __('Global', 'give'), value: 'true'},
-                                                {label: __('Customize', 'give'), value: 'false'},
-                                            ]}
-                                        />
-                                        {useGlobalSettings && (
-                                            <p
-                                                style={{
-                                                    color: '#595959',
-                                                    fontStyle: 'SF Pro Text',
-                                                    fontSize: '0.75rem',
-                                                    lineHeight: '120%',
-                                                    fontWeight: 400,
-                                                    marginTop: '-0.5rem',
-                                                }}
-                                            >
-                                                {__(' Go to the settings to change the ')}
-                                                <a href="/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=display-settings">
-                                                    {__('global Title Prefixes options.')}
-                                                </a>
-                                            </p>
-                                        )}
-                                    </>
+                        <ToggleControl
+                            label={__('Show Name Title Prefix', 'give')}
+                            checked={showHonorific}
+                            onChange={() => setAttributes({showHonorific: !showHonorific})}
+                            help={__(
+                                "Do you want to add a name title prefix dropdown field before the donor's first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for the donor to choose from.",
+                                'give'
+                            )}
+                        />
+                    </PanelRow>
+                    {!!showHonorific && (
+                        <PanelRow>
+                            <div style={{width: '100%'}}>
+                                <div>
+                                    <SelectControl
+                                        label={__('Options', 'give')}
+                                        onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
+                                        value={useGlobalSettings}
+                                        options={[
+                                            {label: __('Global', 'give'), value: 'true'},
+                                            {label: __('Customize', 'give'), value: 'false'},
+                                        ]}
+                                    />
+                                </div>
+                                {useGlobalSettings && (
+                                    <p
+                                        style={{
+                                            color: '#595959',
+                                            fontStyle: 'SF Pro Text',
+                                            fontSize: '0.75rem',
+                                            lineHeight: '120%',
+                                            fontWeight: 400,
+                                            marginTop: '0.5rem',
+                                        }}
+                                    >
+                                        {__(' Go to the settings to change the ')}
+                                        <a
+                                            href="/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=display-settings"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {__('Global Title Prefixes options.')}
+                                        </a>
+                                    </p>
                                 )}
                             </div>
+                        </PanelRow>
+                    )}
 
-                            {!!showHonorific && !useGlobalSettings && (
-                                <OptionsPanel
-                                    multiple={false}
-                                    selectable={false}
-                                    options={honorificOptions}
-                                    setOptions={setOptions}
-                                    defaultControlsTooltip={__('Title Prefixes', 'give')}
-                                />
-                            )}
+                    {!!showHonorific && !useGlobalSettings && (
+                        <div style={{marginTop: '1rem'}}>
+                            <OptionsPanel
+                                multiple={false}
+                                selectable={false}
+                                options={honorificOptions}
+                                setOptions={setOptions}
+                                defaultControlsTooltip={__('Title Prefixes', 'give')}
+                            />
                         </div>
-                    </PanelRow>
+                    )}
                 </PanelBody>
                 <PanelBody title={__('First Name', 'give')} initialOpen={true}>
                     <PanelRow>
