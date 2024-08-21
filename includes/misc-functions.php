@@ -1928,7 +1928,7 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @unreleased Add filter to handle the async logic (skeleton placeholder) and improve performance
+ * @unreleased Add form_id to the array return
  * @since 2.1
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
@@ -1942,11 +1942,6 @@ function give_goal_progress_stats( $form ) {
 	}
 
 	$goal_format = give_get_form_goal_format( $form->ID );
-
-    /**
-     * @unreleased
-     */
-    $usePlaceholder = apply_filters('give_goal_progress_stats_use_placeholder', false);
 
 	/**
 	 * Filter the form.
@@ -1980,11 +1975,11 @@ function give_goal_progress_stats( $form ) {
             /**
              * Filter the form income.
              *
-             * @unreleased Revert changes implemented on the 3.14.0 version and add placeholder condition
+             * @unreleased Revert changes implemented on the 3.14.0 version
              * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
              * @since 1.8.8
              */
-            $actual = $usePlaceholder ? 0 : apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+            $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 			break;
 	}
 
@@ -2023,9 +2018,10 @@ function give_goal_progress_stats( $form ) {
 	$stats_array = array_merge(
 		[
 			'progress' => $progress,
-			'actual'   => $usePlaceholder ? AsyncDataHelpers::getSkeletonPlaceholder('1rem') : $actual,
+			'actual'   => $actual,
 			'goal'     => $total_goal,
 			'format'   => $goal_format,
+			'form_id' => $form->ID
 		],
 		$stats_array
 	);
