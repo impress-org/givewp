@@ -5,13 +5,13 @@ namespace Give\Onboarding;
 use Give\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 3.15.0
  */
 class BlockFactory
 {
     /**
      *
-     * @unreleased
+     * @since 3.15.0
      *
      * @param array $attributes
      *
@@ -30,7 +30,7 @@ class BlockFactory
 
     /**
      *
-     * @unreleased
+     * @since 3.15.0
      *
      * @param array $attributes
      *
@@ -58,7 +58,7 @@ class BlockFactory
 
     /**
      *
-     * @unreleased
+     * @since 3.15.0
      *
      * @param array $attributes
      *
@@ -77,7 +77,7 @@ class BlockFactory
 
     /**
      *
-     * @unreleased
+     * @since 3.15.0
      *
      * @param array $attributes
      *
