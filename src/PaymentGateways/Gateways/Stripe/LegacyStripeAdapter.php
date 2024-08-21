@@ -114,7 +114,7 @@ class LegacyStripeAdapter
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function validateCardInformation()
     {

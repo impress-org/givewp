@@ -120,7 +120,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @since 3.0.0
-     * @unreleased Add validation of card info.
+     * @since 3.16.0 Add validation of card info.
      */
     private function addLegacyStripeAdapter()
     {
