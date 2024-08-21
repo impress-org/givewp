@@ -139,7 +139,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         // Load assets on the admin list form pages
         $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && !isset($_GET['page']);
-        $isAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && isset($_GET['page']) && 'give-forms' === $_GET['page'];
+        $isAdminFormListPage = isset($_GET['page']) && 'give-forms' === $_GET['page'];
         if ($isLegacyAdminFormListPage || $isAdminFormListPage) {
             Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
         }
