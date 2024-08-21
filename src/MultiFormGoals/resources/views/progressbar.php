@@ -32,7 +32,7 @@ $uniqueId = uniqid('', true);
         </div>
         <div part="stat-count" class="give-progress-bar-block__stat">
             <div part="stat-count-value"><?php
-                echo esc_html($this->getDonationCount()); ?></div>
+                echo esc_html($this->getFormattedDonationCount()); ?></div>
             <div part="stat-count-label"><?php
                 echo _n('donation', 'donations', $this->getDonationCount(), 'give'); ?></div>
         </div>
