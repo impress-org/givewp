@@ -24,7 +24,10 @@ class GiveGoalProgressStats
             return $stats;
         }
 
-        $stats['actual'] = AsyncDataHelpers::getFormRevenueValue($stats['form_id']);
+        if ('amount' === $stats['format']) {
+            $actual = AsyncDataHelpers::getFormRevenueValue($stats['form_id']);
+            $stats['actual'] = give_currency_filter(give_format_amount($actual));
+        }
 
         return $stats;
     }
