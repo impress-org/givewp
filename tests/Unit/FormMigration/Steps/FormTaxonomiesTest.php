@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormTaxonomiesTest extends TestCase
 {
@@ -18,7 +18,7 @@ class FormTaxonomiesTest extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMigratesFormTags()
     {
@@ -43,7 +43,7 @@ class FormTaxonomiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testDoesNotMigrateFormTagsWhenTagsDisabled()
     {
@@ -71,7 +71,7 @@ class FormTaxonomiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMigratesFormCategories()
     {
@@ -99,7 +99,7 @@ class FormTaxonomiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testDoesNotMigrateFormCategoriesWhenCategoriesDisabled()
     {

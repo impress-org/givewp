@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormTaxonomies extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function process()
     {
@@ -24,7 +24,7 @@ class FormTaxonomies extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function migrateTaxonomy($taxonomy): void
     {

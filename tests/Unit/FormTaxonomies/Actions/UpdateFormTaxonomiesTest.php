@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class UpdateFormTaxonomiesTest extends TestCase
 {
@@ -17,7 +17,7 @@ class UpdateFormTaxonomiesTest extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testUpdatesFormTags()
     {
@@ -39,7 +39,7 @@ class UpdateFormTaxonomiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testUpdatesFormCategory()
     {
