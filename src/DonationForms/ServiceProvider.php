@@ -137,9 +137,10 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
 
-        // Load assets on the admin list form pages and pages with the WordPress clock editor enable
-        $isAdminListFormPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'];
-        if ($isAdminListFormPage) {
+        // Load assets on the admin list form pages
+        $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && !isset($_GET['page']);
+        $isAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && isset($_GET['page']) && 'give-forms' === $_GET['page'];
+        if ($isLegacyAdminFormListPage || $isAdminFormListPage) {
             Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
         }
 
