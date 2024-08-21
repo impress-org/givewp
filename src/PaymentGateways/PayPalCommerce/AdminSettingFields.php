@@ -474,7 +474,7 @@ class AdminSettingFields
                                     <button
                                         class="js-give-paypal-disconnect-paypal-account"
                                         data-mode="<?php echo $paypalSetting->mode; ?>"
-                                        data-nonce="<?php echo wp_create_nonce('give_paypal_commerce_disconnect_account'); ?>"
+                                        data-nonce="<?php echo esc_attr(wp_create_nonce('give_paypal_commerce_disconnect_account')); ?>"
                                     >
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
