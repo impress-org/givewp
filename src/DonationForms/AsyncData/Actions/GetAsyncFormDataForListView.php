@@ -37,9 +37,9 @@ class GetAsyncFormDataForListView
 
         $data = get_transient($transientName);
 
-        /*if ($data) {
+        if ($data) {
             wp_send_json_success($data);
-        }*/
+        }
 
         $amountRaised = 0;
         $percentComplete = 0;
