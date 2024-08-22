@@ -13,7 +13,7 @@ class EmailAddressWhiteList
     protected $whitelistEmails;
 
     /**
-     * @unreleased Add array type to enforce type.
+     * @since 3.15.1 Add array type to enforce type.
      * @since 3.15.0
      */
     public function __construct(array $whitelistEmails = [])

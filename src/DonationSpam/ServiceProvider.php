@@ -17,7 +17,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(): void
     {
         /**
-         * @unreleased Case filtered value as an array to enforce type.
+         * @since 3.15.1 Case filtered value as an array to enforce type.
          * @since 3.15.0
          */
         give()->singleton(EmailAddressWhiteList::class, function () {
