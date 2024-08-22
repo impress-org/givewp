@@ -98,15 +98,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerAsyncData()
     {
-        // Async ajax request
-        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
-        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
-
-        // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
-        Hooks::addFilter('give_goal_progress_stats', GiveGoalProgressStats::class,
-            'maybeChangeGoalProgressStatsActualValue', 999,
-            2);
-
         // Only register assets on the frontend, but not enqueue to prevent loading them in unnecessary places
         Hooks::addAction('wp_enqueue_scripts', LoadAsyncDataAssets::class, 'registerAssets');
         add_action('give_before_template_part', function ($templateName) {
@@ -115,6 +106,25 @@ class ServiceProvider implements ServiceProviderInterface
                 LoadAsyncDataAssets::enqueueAssets();
             }
         });
+
+        // Load assets on the admin list form pages
+        $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && ! isset($_GET['page']);
+        $isAdminFormListPage = isset($_GET['page']) && 'give-forms' === $_GET['page'];
+        if ($isLegacyAdminFormListPage || $isAdminFormListPage) {
+            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
+        }
+
+        // Load assets on the WordPress Block Editor - Gutenberg
+        Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
+
+        // Async ajax request
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+
+        // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
+        Hooks::addFilter('give_goal_progress_stats', GiveGoalProgressStats::class,
+            'maybeChangeGoalProgressStatsActualValue', 999,
+            2);
 
         // Form Grid
         add_filter('give_form_grid_goal_progress_stats_before', function () {
@@ -136,16 +146,6 @@ class ServiceProvider implements ServiceProviderInterface
         });
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
-
-        // Load assets on the admin list form pages
-        $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && !isset($_GET['page']);
-        $isAdminFormListPage = isset($_GET['page']) && 'give-forms' === $_GET['page'];
-        if ($isLegacyAdminFormListPage || $isAdminFormListPage) {
-            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
-        }
-
-        // Load assets on the WordPress Block Editor - Gutenberg
-        Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
 
         // Legacy Admin Form List View Columns
         Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
