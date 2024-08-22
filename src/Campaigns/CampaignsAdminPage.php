@@ -17,7 +17,7 @@ class CampaignsAdminPage
             esc_html__('Campaigns', 'give'),
             esc_html__('Campaigns', 'give'),
             'edit_give_forms',
-            'campaigns',
+            'give-campaigns',
             [$this, 'renderCampaignsPage'],
             0
         );
