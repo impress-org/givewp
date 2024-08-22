@@ -25,7 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        // Hooks::addAction('init', Actions\MyAction::class);
-        // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
+        Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
+        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 }
