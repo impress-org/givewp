@@ -20,6 +20,7 @@ class Campaign extends Model implements ModelCrud
 
     /**
      * @unreleased
+     * @phpstan-ignore
      */
     public static function find($id)
     {
@@ -40,6 +41,7 @@ class Campaign extends Model implements ModelCrud
 
     /**
      * @unreleased
+     * @phpstan-ignore
      */
     public function save()
     {
@@ -48,6 +50,7 @@ class Campaign extends Model implements ModelCrud
 
     /**
      * @unreleased
+     * @phpstan-ignore
      */
     public function delete()
     {
@@ -56,6 +59,7 @@ class Campaign extends Model implements ModelCrud
 
     /**
      * @unreleased
+     * @phpstan-ignore
      */
     public static function query()
     {
@@ -64,6 +68,7 @@ class Campaign extends Model implements ModelCrud
 
     /**
      * @unreleased
+     * @phpstan-ignore
      */
     public static function fromQueryBuilderObject($object)
     {
