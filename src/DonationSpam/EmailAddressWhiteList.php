@@ -13,9 +13,10 @@ class EmailAddressWhiteList
     protected $whitelistEmails;
 
     /**
+     * @since 3.15.1 Add array type to enforce type.
      * @since 3.15.0
      */
-    public function __construct($whitelistEmails = [])
+    public function __construct(array $whitelistEmails = [])
     {
         $this->whitelistEmails = $whitelistEmails;
     }

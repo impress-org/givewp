@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.15.0
+Stable tag: 3.15.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.15.1: Aug 22nd, 2024 =
+* Fix: Resolved an issue with the Akismet integration preventing form submissions when settings are not yet configured
+
 = 3.15.0: Aug 14th, 2024 =
 * New: Added Akismet integration support to forms using the visual form builder
 * New: Updated the onboarding wizard to create a new form with the visual form builder
