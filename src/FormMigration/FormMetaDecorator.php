@@ -881,7 +881,7 @@ class FormMetaDecorator extends FormModelDecorator
         $isGloballyEnabled = $this->getMeta('_give_convertkit_override_option') === 'default' &&
                              give_is_setting_enabled(give_get_option('give_convertkit_show_subscribe_checkbox'));
 
-        return $isFormEnabled ? $isGloballyEnabled : $isFormDisabled;
+        return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
     }
 
     /**

@@ -269,6 +269,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Security: Resolved security issues related to file paths and permissions
 * Security: Added protection against invalid donations on Legacy forms when using Stripe credit card gateway 
 * Fix: Added prevention of subscription renewals with gateway transaction IDs already used previously
+* Fix: Resolved an issue with the form grid not showing header images and link previews
+
+= 3.15.1: Aug 22nd, 2024 =
+* Fix: Resolved an issue with the Akismet integration preventing form submissions when settings are not yet configured
+
 
 = 3.15.0: Aug 14th, 2024 =
 * New: Added Akismet integration support to forms using the visual form builder
