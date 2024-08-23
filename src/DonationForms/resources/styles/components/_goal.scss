@@ -11,6 +11,10 @@
             margin: 0;
             padding: 0;
             list-style: none;
+
+            @media (max-width: 400px) {
+                flex-wrap: wrap; /* Enable wrapping on screens 400px or narrower */
+            }
         }
 
         &__list-item {
