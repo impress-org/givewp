@@ -264,6 +264,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 3.16.0: Aug 28th, 2024 =
 * New: Added support for form taxonomy tags and categories in the visual form builder settings
+* New: Added a setting to the visual form builder to enable redirecting to an individual donation confirmation page 
 * Enhancement: Multi-step form designs now scroll to the top of the form on step change
 * Enhancement: Added individual form migration links to the donation form list table 
 * Security: Resolved security issues related to file paths and permissions (CVE-2024-6551)

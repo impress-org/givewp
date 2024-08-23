@@ -9,7 +9,7 @@ import {createInterpolateElement} from '@wordpress/element';
 const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 /**
- * @unreleased Added setting for enableReceiptConfirmationPage
+ * @since 3.16.0 Added setting for enableReceiptConfirmationPage
  * @since 3.3.0
  */
 export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {
