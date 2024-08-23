@@ -40,8 +40,11 @@ class TestEmailSettings extends TestCase
                 $prefix . '_email_header' => 'Header for: ' . $notification->config['label'],
                 $prefix . '_email_message' => 'Message for: ' . $notification->config['label'],
                 $prefix . '_email_content_type' => 'text/html',
-                $prefix . '_recipient' => [['email' => 'donor@charity.org']],
             ];
+
+            if ($notification->config['has_recipient_field']) {
+                $notificationMeta[$prefix . '_recipient'] = [['email' => 'donor@charity.org']];
+            }
             $meta = array_merge($meta, $notificationMeta);
         }
         $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
