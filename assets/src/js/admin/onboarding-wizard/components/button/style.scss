@@ -1,31 +1,51 @@
 .give-obw-button {
-	font-family: Montserrat, Arial, Helvetica, sans-serif;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 21px;
-	line-height: 26px;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 26px;
 
-	display: flex;
-	position: relative;
-	align-items: center;
-	text-align: center;
-	letter-spacing: 1px;
-	text-transform: capitalize;
-	color: #fff;
+    display: flex;
+    position: relative;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    color: #fff;
 
-	padding: 14px 34px;
-	background: #4fa651;
-	box-shadow: 0 2px 10px rgba(105, 184, 107, 0.6);
-	border-radius: 4px;
-	border: none;
+    padding: 14px 34px;
+    background: #4fa651;
+    box-shadow: 0 2px 10px rgba(105, 184, 107, 0.6);
+    border-radius: 4px;
+    border: none;
 
-	&:focus {
-		box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
-		outline: none;
-	}
+    &--reverse {
+        flex-direction: row-reverse;
+    }
 
-	&:hover {
-		background-color: #4fa651;
-		filter: brightness(1.2);
-	}
+    &--secondary.give-obw-button {
+        background: #fff;
+        box-shadow: none;
+        color: #4fa651;
+        outline: 1px solid #4fa651;
+
+        &:focus {
+            outline: 1px solid #4fa651;
+        }
+
+        &:hover {
+            background: #f2fff3;
+            filter: none;
+        }
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
+        outline: none;
+    }
+
+    &:hover {
+        background-color: #4fa651;
+        filter: brightness(1.2);
+    }
 }

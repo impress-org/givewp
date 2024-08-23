@@ -102,7 +102,6 @@ class DonationFormsAdminPage
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'showBanner' => !get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
@@ -316,6 +315,7 @@ class DonationFormsAdminPage
     /**
      * Get an array of supported addons
      *
+     * @since 3.14.0 Added support for Razorpay
      * @since 3.4.2 Added support for Gift Aid
      * @since 3.3.0 Add support to the Funds and Designations addon
      * @since 3.0.0
@@ -353,6 +353,7 @@ class DonationFormsAdminPage
             //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
             'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
+            'Razorpay' => class_exists('Give_Razorpay_Gateway'),
         ];
 
         $output = [];

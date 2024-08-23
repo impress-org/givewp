@@ -982,4 +982,52 @@ class FormMetaDecorator extends FormModelDecorator
         return ! empty($this->getMeta('give_activecampaign_tags')) ?
             $this->getMeta('give_activecampaign_tags') : $defaultMeta;
     }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherStatus(): string
+    {
+        return $this->getMeta('cs_status', 'global');
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherMessage(): string
+    {
+        return $this->getMeta(
+            'cs_message',
+            sprintf(
+                __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give-currency-switcher'),
+                '{base_currency}',
+                '{new_currency_rate}',
+                '{new_currency}'
+            )
+        );
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherDefaultCurrency(): string
+    {
+        return $this->getMeta('give_cs_default_currency', '');
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherSupportedCurrencies(): array
+    {
+        return (array)$this->getMeta('cs_supported_currency', []);
+    }
+
+    /**
+     * @since 3.14.0
+     */
+    public function isRazorpayPerFormSettingsEnabled(): bool
+    {
+        return give_is_setting_enabled($this->getMeta('razorpay_per_form_account_options'));
+    }
 }

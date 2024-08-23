@@ -6,6 +6,7 @@ import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import FieldError from '../layouts/FieldError';
+import styles from '../styles.module.scss';
 
 const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
@@ -76,6 +77,11 @@ export default function Authentication({
     const [isAuth, setIsAuth] = useState<boolean>(isAuthenticated);
     const [showLogin, setShowLogin] = useState<boolean>(required);
     const toggleShowLogin = () => setShowLogin(!showLogin);
+    const redirectToLoginPage = (e) => {
+        e.preventDefault();
+        const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
+        window.top.location.assign(loginUrl);
+    };
 
     return (
         <>
@@ -91,18 +97,9 @@ export default function Authentication({
                 </LoginForm>
             )}
             {!isAuth && !showLogin && (
-                <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                <div style={{display: 'flex'}}>
                     {loginRedirect ? (
-                        <button
-                            type="button"
-                            onClick={() => {
-                                const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
-
-                                window.top.location.assign(loginUrl);
-                            }}
-                        >
-                            {loginNotice}
-                        </button>
+                        <LoginNotice onClick={redirectToLoginPage}>{loginNotice}</LoginNotice>
                     ) : (
                         <LoginNotice onClick={toggleShowLogin}>{loginNotice}</LoginNotice>
                     )}
@@ -147,24 +144,17 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     };
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
-            <div style={{display: 'flex', flexDirection: 'row', gap: '15px'}}>{children}</div>
+        <div className={styles['authentication__login-form']}>
+            <div className={styles['authentication__login-form__fields-wrapper']}>{children}</div>
 
             {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    gap: '15px',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                }}
-            >
-                <button style={{width: 'auto'}} onClick={tryLogin}>
+            <div className={styles['authentication__login-form__buttons-wrapper']}>
+                <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
                     {__('Log In', 'give')}
                 </button>
                 <a
+                    className={styles['authentication__login-form__reset-button']}
                     onClick={(event) => {
                         event.preventDefault();
                         const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
@@ -172,7 +162,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                         window.top.location.assign(passwordResetUrl);
                     }}
                 >
-                    {__('Reset Password', 'give')}
+                    {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
                 </a>
             </div>
         </div>
@@ -181,11 +171,8 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
 
 const LoginNotice = ({children, onClick}) => {
     return (
-        <button
-            onClick={onClick}
-            style={{width: 'auto', backgroundColor: 'transparent', border: 0, color: 'var(--wp-admin-theme-color)'}}
-        >
+        <button className={styles['authentication__login-notice']} onClick={onClick}>
             {children}
         </button>
-    )
-}
+    );
+};

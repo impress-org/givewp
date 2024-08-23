@@ -5,7 +5,6 @@ namespace Give\Promotions\InPluginUpsells;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Give\Framework\Shims\Shim;
 
 /**
  * @since 2.17.0
@@ -78,7 +77,7 @@ class SaleBanners
                         'Free' => 'https://go.givewp.com/bf23',
                         'Basic' => 'https://go.givewp.com/bfup23',
                         'Plus' => 'https://go.givewp.com/bfup23',
-                        'Default' => 'https://go.givewp.com/bfup23',
+                        'default' => 'https://go.givewp.com/bfup23',
                     ]
                 ),
                 'startDate' => '2023-11-20 00:00',
@@ -95,10 +94,6 @@ class SaleBanners
      */
     public function getVisibleBanners(): array
     {
-        if (self::getUserPricingPlan() === 'Pro') {
-            return [];
-        }
-
         $currentDateTime = current_datetime();
         $currentUserId = get_current_user_id();
         $giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');
@@ -189,6 +184,7 @@ class SaleBanners
     }
 
     /**
+     * @since 3.13.0 remove all_access_pass.
      * @since 3.1.0 retrieve licensed plugin slugs.
      */
     public static function getLicensedPluginSlugs(): array
@@ -197,10 +193,8 @@ class SaleBanners
         $licenses = get_option("give_licenses", []);
 
         foreach ($licenses as $license) {
-            if (isset($license['is_all_access_pass']) && $license['is_all_access_pass'] && !empty($license['download'])) {
-                $pluginSlugs = ['is_all_access_pass'];
-            } else {
-                $pluginSlugs[] = $license['plugin_slug'];
+            foreach ($license['download'] as $plugin) {
+                $pluginSlugs[] = $plugin['plugin_slug'];
             }
         }
 
@@ -215,17 +209,9 @@ class SaleBanners
         $plan = 'Free';
 
         $pricingPlans = [
-            'Basic' => ['pdf' => 'give-pdf-receipts'],
-            'Plus' => [
-                'pdf_receipts' => 'give-pdf-receipts',
-                'recurring_donations' => 'give-recurring',
-                'fee_recovery' => 'give-fee-recovery',
-                'form_field_manager' => 'give-form-field-manager',
-                'tributes' => 'give-tributes',
-                'annual_receipts' => 'give-annual-receipts',
-                'peer_to_peer' => 'give-peer-to-peer',
-            ],
-            'Pro' => ['is_all_access_pass'],
+            'Basic' => self::getBasicLicenseSlugs(),
+            'Plus'  => self::getPlusLicenseSlugs(),
+            'Pro'   => self::getProLicenseSlugs(),
         ];
 
         $licensedPluginSlugs = self::getLicensedPluginSlugs();
@@ -241,17 +227,149 @@ class SaleBanners
     }
 
     /**
+     * @since 3.13.0 add type for $data.
      * @since 3.1.0 return data by user pricing plan.
      */
-    public static function getDataByPricingPlan($data): string
+    public static function getDataByPricingPlan(array $data): string
     {
         $userPricingPlan = self::getUserPricingPlan();
 
         if (array_key_exists($userPricingPlan, $data)) {
+
             return $data[$userPricingPlan];
         }
 
         return $data['default'];
     }
+
+    /**
+     * @since 3.13.0
+     *
+     *  This method cycles through the visible banners, selecting the next banner in the list
+     *  on each call. If no banners are visible, or if the session index is not set, it returns
+     *  all visible banners.
+     */
+    public function alternateVisibleBanners(): array
+    {
+        $visibleBanners = $this->getVisibleBanners();
+        $bannerCount = count($visibleBanners);
+
+        if ($bannerCount > 0) {
+            $currentIndex = $_SESSION['banner_index'] ?? 0;
+
+            $selectedBanner = $visibleBanners[$currentIndex];
+
+            $currentIndex = ($currentIndex + 1) % $bannerCount;
+
+            $_SESSION['banner_index'] = $currentIndex;
+
+            if( !$selectedBanner){
+                $this->destroySession();
+                return $visibleBanners;
+            }
+
+            return [$selectedBanner];
+        }
+
+        return $visibleBanners;
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function startSession(): void
+    {
+        if (!session_id()) {
+            session_start();
+        }
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function destroySession(): void
+    {
+        if (session_id()) {
+            session_destroy();
+        }
+    }
+
+
+    /**
+     * @since 3.13.0
+     */
+    public static function getBasicLicenseSlugs(): array
+    {
+        return [
+            'give-bitpay',
+            'give-text-to-give',
+            'give-activecampaign',
+            'give-moneris',
+            'give-square',
+            'give-mollie',
+            'give-payfast',
+            'give-sofort',
+            'give-americloud-payments',
+            'give-paytm',
+            'give-gocardless',
+            'give-razorpay',
+            'give-payumoney',
+            'give-convertkit',
+            'give-aweber',
+            'give-per-form-gateways',
+            'give-email-reports',
+            'give-manual-donations',
+            'give-zapier',
+            'give-google-analytics',
+            'ccavenue'            => 'give-ccavenue',
+            'give-constant-contact',
+            'give-braintree',
+            'give-iats',
+            'give-2checkout',
+            'give-pdf-receipts',
+            'give-paymill',
+            'give-stripe',
+            'give-authorize-net',
+            'give-mailchimp',
+        ];
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public static function getPlusLicenseSlugs(): array
+    {
+        $basicLicenseSlugs = self::getBasicLicenseSlugs();
+
+        $plusLicenseSlugs = [
+            'give-webhooks',
+            'give-salesforce',
+            'give-funds',
+            'give-annual-receipts',
+            'give-currency-switcher',
+            'give-donation-upsells-woocommerce',
+            'give-tributes',
+            'give-fee-recovery',
+            'give-email-reports',
+            'give-gift-aid',
+            'give-recurring',
+            'give-form-field-manager',
+        ];
+
+        return array_merge($basicLicenseSlugs, $plusLicenseSlugs);
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public static function getProLicenseSlugs(): array
+    {
+        $plusLicenseSlugs = self::getPlusLicenseSlugs();
+
+        $proLicenseSlugs = ['give-peer-to-peer'];
+
+        return array_merge($plusLicenseSlugs, $proLicenseSlugs);
+    }
+
 }
 

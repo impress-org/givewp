@@ -89,6 +89,8 @@ class StripePaymentElementGateway extends PaymentGateway
     }
 
     /**
+     * @since 3.12.1 updated to send billing address details to Stripe
+     * @since 3.0.0
      * @inheritDoc
      * @throws ApiErrorException
      */
@@ -144,7 +146,15 @@ class StripePaymentElementGateway extends PaymentGateway
             'returnUrl' => $stripeGatewayData->successUrl,
             'billingDetails' => [
                 'name' => trim("$donation->firstName $donation->lastName"),
-                'email' => $donation->email
+                'email' => $donation->email,
+                'address' => [
+                    'city' => $donation->billingAddress->city,
+                    'country' => $donation->billingAddress->country,
+                    'line1' => $donation->billingAddress->address1,
+                    'line2' => $donation->billingAddress->address2,
+                    'postal_code' => $donation->billingAddress->zip,
+                    'state' => $donation->billingAddress->state,
+                ],
             ],
         ]);
     }

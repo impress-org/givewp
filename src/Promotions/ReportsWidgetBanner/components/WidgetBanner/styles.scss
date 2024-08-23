@@ -1,0 +1,60 @@
+#givewp-reports-widget .givewp-reports-widget-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem 2rem 1.5rem;
+    min-height: 8rem;
+    background: #1D202F;
+    color: #ffffff;
+
+    &__header {
+        &__main {
+            font-size: 1.5rem;
+            color: #fff4f2;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        &__secondary {
+            font-size: 1.25rem;
+            color: #fff4f2;
+            font-weight: 500;
+            line-height: normal;
+            padding: 0;
+        }
+    }
+
+    &__cta {
+        font-family: 'Inconsolata', Montserrat, sans-serif;;
+        margin-top: 1.125rem;
+        display: inline-flex;
+        padding: .5rem 1.5rem;
+        justify-content: center;
+        align-items: center;
+        background: #62B265;
+        color: #fff4f2;
+        font-weight: 600;
+        border-radius: 9999px;
+        border: none;
+        text-decoration: none;
+    }
+
+    &__dismiss {
+        position: absolute;
+        top: .75rem;
+        right: .5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.15);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+

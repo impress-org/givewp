@@ -1,48 +1,61 @@
 .give-obw-fundraising-needs {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-	> h1 {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 600;
-		font-size: 24px;
-		line-height: 34px;
-		text-align: center;
-		color: #333;
-		margin: 0 0 8px 0;
-	}
+    > h1 {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 34px;
+        text-align: center;
+        color: #333;
+        margin: 0 0 8px;
+    }
 
-	> p {
-		font-family: Montserrat, Arial, Helvetica, sans-serif;
-		font-weight: 500;
-		font-size: 16px;
-		line-height: 22px;
-		text-align: center;
-		color: #333;
-		margin: 0 0 52px 0;
-	}
+    > p {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        text-align: center;
+        color: #333;
+        margin: 0;
+    }
 
-	.give-obw-card {
-		box-sizing: border-box;
-		height: 218px;
-		width: 242px;
-		align-items: center;
-		justify-content: center;
+    .give-obw-card {
+        align-items: center;
+        box-sizing: border-box;
+        width: 17.5rem;
+        min-height: 15rem;
+        position: relative;
+        padding-top: 7.25rem;
 
-		> strong {
-			font-family: Montserrat, Arial, Helvetica, sans-serif;
-			text-transform: uppercase;
-			font-weight: 500;
-			font-size: 18px;
-			line-height: 24px;
-			text-align: center;
-			letter-spacing: 3.5px;
-			color: #4a5568;
-		}
-	}
+        > svg {
+            position: absolute;
+            top: 2.25rem;
+            left: 50%;
+            translate: -50%;
+        }
 
-	> .give-obw-button {
-		margin-top: 52px;
-	}
+        > h2 {
+            color: #4a5568;
+            display: flex;
+            align-items: flex-end;
+            height: 2.66em;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.33;
+            margin: 0 0 0.25rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        > p {
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.57;
+            margin: 0;
+            text-align: center;
+        }
+    }
 }
