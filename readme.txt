@@ -266,7 +266,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Added support for form taxonomy tags and categories in the visual form builder settings
 * Enhancement: Multi-step form designs now scroll to the top of the form on step change
 * Enhancement: Added individual form migration links to the donation form list table 
-* Security: Resolved security issues related to file paths and permissions
+* Security: Resolved security issues related to file paths and permissions (CVE-2024-6551)
 * Security: Added protection against invalid donations on Legacy forms when using Stripe credit card gateway 
 * Fix: Added prevention of subscription renewals with gateway transaction IDs already used previously
 * Fix: Resolved an issue with the form grid not showing header images and link previews
