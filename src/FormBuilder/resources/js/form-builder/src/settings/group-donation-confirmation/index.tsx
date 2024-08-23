@@ -4,6 +4,7 @@ import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags';
+import {createInterpolateElement} from '@wordpress/element';
 
 const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
@@ -50,12 +51,14 @@ export default function FormDonationConfirmationSettingsGroup({settings, setSett
             <SettingsSection title={__('Confirmation Page Redirect', 'give')}>
                 <PanelRow>
                     <ToggleControl
-                        label={__('Enable redirect to confirmation page', 'give')}
+                        label={__('Enable redirect', 'give')}
                         checked={enableReceiptConfirmationPage}
                         onChange={() => setSettings({enableReceiptConfirmationPage: !enableReceiptConfirmationPage})}
-                        help={__(
-                            'If enabled, donors will be sent to a donation confirmation page after successfully donating.  This page can be customized in the GiveWP settings under "Success Page".',
-                            'give'
+                        help={createInterpolateElement(
+                          __( 'When enabled, donors are redirected to a separate page to view their donation confirmation rather than viewing it on the donation form page. This can be useful for event and conversion tracking tools like Google Analytics. <a>Learn how to customize the confirmation page.</a>', 'give' ),
+                          {
+                            a: <a href="https://docs.givewp.com/success-page" target="_blank" title="GiveWP success page docs"/>,
+                          }
                         )}
                     />
                 </PanelRow>
