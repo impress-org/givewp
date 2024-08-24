@@ -7,7 +7,9 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
+use Give_Email_Notification_Util;
 use Give_Email_Notifications;
+use Give_Email_Setting_Field;
 
 /**
  * @unreleased
@@ -33,6 +35,8 @@ class TestEmailSettings extends TestCase
 
         $notifications = Give_Email_Notifications::get_instance()->get_email_notifications();
         foreach ($notifications as $notification) {
+            add_filter("give_{$notification->config['id']}_get_recipients", [$this, 'getNotificationRecipients'], 1, 3);
+
             $prefix = '_give_' . $notification->config['id'];
             $notificationMeta = [
                 $prefix . '_notification' => 'enabled',
@@ -71,6 +75,17 @@ class TestEmailSettings extends TestCase
                 $this->assertSame(['donor@charity.org'],
                     $v3Form->settings->emailTemplateOptions[$configId]['recipient']);
             }
+
+            remove_filter("give_{$notification->config['id']}_get_recipients", [$this, 'getNotificationRecipients'], 1);
         }
+    }
+
+    public function getNotificationRecipients($recipientEmail, $instance, $formId)
+    {
+        return Give_Email_Notification_Util::get_value(
+            $instance,
+            Give_Email_Setting_Field::get_prefix( $instance, $formId ) . 'recipient',
+            $formId
+        );
     }
 }
