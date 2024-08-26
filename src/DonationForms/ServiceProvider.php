@@ -5,6 +5,8 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
+use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
+use Give\DonationForms\Actions\PrintFormMetaTags;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
@@ -80,6 +82,12 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
+
+        /**
+         * @unreleased
+         * Print form meta tags
+         */
+        Hooks::addAction('wp_head', PrintFormMetaTags::class);
     }
 
     /**
@@ -197,6 +205,17 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerShortcodes()
     {
         Hooks::addFilter('givewp_form_shortcode_output', GiveFormShortcode::class, '__invoke', 10, 2);
+        Hooks::addFilter('give_donation_confirmation_success_page_shortcode_view', ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe::class);
+        Hooks::addFilter('give_receipt_shortcode_output', ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe::class);
+        add_action('give_donation_confirmation_page_enqueue_scripts', function() {
+            wp_enqueue_script(
+                'givewp-donation-form-embed',
+                GIVE_PLUGIN_URL . 'build/donationFormEmbed.js',
+                [],
+                GIVE_VERSION,
+                true
+            );
+        });
     }
 
     /**

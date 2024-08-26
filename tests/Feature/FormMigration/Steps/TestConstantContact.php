@@ -2,94 +2,91 @@
 
 namespace Give\Tests\Feature\FormMigration\Steps;
 
-use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\ConstantContact;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
+ * @unreleased Update to use FormMigrationProcessor trait
  * @since 3.7.0
- *
- * @covers \Give\FormMigration\Steps\DonationGoal
  */
 class TestConstantContact extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
+     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.7.0
      */
-    public function testProcessShouldUpdateConstantContactBlockAttributesWithV2FormMeta(): void
+    public function testFormMigratesUsingGlobalSettingsWhenGloballyEnabled(): void
     {
-        $meta = [
-            '_give_constant_contact_custom_label'    => 'Subscribe to our newsletter?',
-            '_give_constant_contact_checked_default' => 'on',
-            '_give_constant_contact'                 => ['1928414891'],
+        // Arrange
+        $options = [
+            'give_constant_contact_show_checkout_signup' => 'on',
+            'give_constant_contact_label' => 'Subscribe to our newsletter?',
+            'give_constant_contact_checked_default' => 'on',
+            'give_constant_contact_list' => ['1928414891'],
         ];
+        foreach ($options as $key => $value) {
+            give_update_option($key, $value);
+        }
+        $meta = ['_give_constant_contact_disabled' => 'false'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ConstantContact::class);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/constantcontact');
+        $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
+        $this->assertSame($options['give_constant_contact_label'], $block->getAttribute('label'));
+        $this->assertSame($options['give_constant_contact_list'], $block->getAttribute('selectedEmailLists'));
+    }
 
-        $constantContact = new ConstantContact($payload);
+    /**
+     * @unreleased
+     */
+    public function testFormConfiguredToDisableConstantContactIsMigratedWithoutConstantContactBlock()
+    {
+        // Arrange
+        give_update_option('give_constant_contact_show_checkout_signup', 'on');
+        $meta = ['_give_constant_contact_disable' => 'true'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $constantContact->process();
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ConstantContact::class);
 
-        $block = $payload->formV3->blocks->findByName('givewp/constantcontact');
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/constantcontact');
+        $this->assertNull($block);
+    }
 
+    /**
+     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.7.0
+     */
+    public function testFormConfiguredToUseCustomizedConstantContactSettingsIsMigrated(): void
+    {
+        // Arrange
+        $meta = [
+            '_give_constant_contact_enable' => 'true',
+            '_give_constant_contact_custom_label' => 'Subscribe to our newsletter?',
+            '_give_constant_contact_checked_default' => 'on',
+            '_give_constant_contact' => ['1928414891'],
+        ];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
+
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ConstantContact::class);
+
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/constantcontact');
         $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
         $this->assertSame($meta['_give_constant_contact_custom_label'], $block->getAttribute('label'));
         $this->assertSame($meta['_give_constant_contact'], $block->getAttribute('selectedEmailLists'));
-    }
-
-    /**
-     * @since 3.7.0
-     */
-    public function testProcessShouldUpdateConstantContactBlockAttributesWithGlobalSettings(): void
-    {
-        $meta = [
-            'give_constant_contact_label'           => 'Subscribe to our newsletter?',
-            'give_constant_contact_checked_default' => 'on',
-            'give_constant_contact_list'            => ['1928414891'],
-        ];
-
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
-
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        foreach ($meta as $key => $value) {
-            give_update_option($key, $value);
-        }
-
-        $constantContact = new ConstantContact($payload);
-
-        $constantContact->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/constantcontact');
-
-        $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
-        $this->assertSame($meta['give_constant_contact_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['give_constant_contact_list'], $block->getAttribute('selectedEmailLists'));
-    }
-
-    /**
-     * @since 3.7.0
-     */
-    public function testProcessShouldUpdateConstantContactBlockAttributesWhenNoMeta(): void
-    {
-        $formV2 = $this->createSimpleDonationForm();
-
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $constantContact = new ConstantContact($payload);
-
-        $constantContact->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/constantcontact');
-
-        $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
-        $this->assertSame('Subscribe to our newsletter?', $block->getAttribute('label'));
-        $this->assertNull(null, $block->getAttribute('selectedEmailLists'));
     }
 }
