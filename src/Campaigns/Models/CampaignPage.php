@@ -2,8 +2,10 @@
 
 namespace Give\Campaigns\Models;
 
+use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 
 /**
@@ -43,30 +45,22 @@ class CampaignPage extends Model implements ModelCrud
      */
     public static function find($id)
     {
-        $post = get_post($id);
-
-        if(!$post || $post->post_type !== 'give_campaign_page') {
-            throw new \Exception('Campaign page not found');
-        }
-
-        return new self(['id' => $post->ID]);
+        return give(CampaignPageRepository::class)
+            ->prepareQuery()
+            ->where('ID', $id)
+            ->get();
     }
 
     /**
      * @unreleased
      */
-    public static function create(array $attributes)
+    public static function create(array $attributes): CampaignPage
     {
-        $id = wp_insert_post([
-            'post_type' => 'give_campaign_page',
-            'post_status' => 'publish',
-        ]);
+        $campaignPage = new static($attributes);
 
-        if(is_wp_error($id)) {
-            throw new \Exception('Failed to create campaign page');
-        }
+        give(CampaignPageRepository::class)->insert($campaignPage);
 
-        return new self(['id' => $id]);
+        return $campaignPage;
     }
 
     /**
@@ -74,7 +68,11 @@ class CampaignPage extends Model implements ModelCrud
      */
     public function save(): void
     {
-        // TODO: Implement save() method.
+        if (!$this->id) {
+            give(CampaignPageRepository::class)->insert($this);
+        } else {
+            give(CampaignPageRepository::class)->update($this);
+        }
     }
 
     /**
@@ -82,22 +80,26 @@ class CampaignPage extends Model implements ModelCrud
      */
     public function delete(): bool
     {
-        return (bool) wp_delete_post($this->id);
+        return give(CampaignPageRepository::class)->delete($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<CampaignPage>
+     */
+    public static function query(): ModelQueryBuilder
+    {
+        return give(CampaignPageRepository::class)->prepareQuery();
     }
 
     /**
      * @unreleased
      */
-    public static function query()
+    public static function fromQueryBuilderObject($object): CampaignPage
     {
-        // TODO: Implement query() method.
-    }
-
-    /**
-     * @unreleased
-     */
-    public static function fromQueryBuilderObject($object)
-    {
-        // TODO: Implement fromQueryBuilderObject() method.
+        return new CampaignPage([
+            'id' => $object->ID,
+        ]);
     }
 }
