@@ -15,7 +15,7 @@ class AsyncDataHelpers
      */
     public static function getFormDonationsCountValue($formId): int
     {
-        return (new ProgressBarModel(['ids' => [$formId]]))->getDonationCount();
+        return (new ProgressBarModel(['ids' => [$formId], 'statusList' => ['any']]))->getDonationCount();
     }
 
     /**
