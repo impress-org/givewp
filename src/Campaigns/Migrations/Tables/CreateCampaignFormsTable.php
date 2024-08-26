@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
  * @unreleased
- * Creates give_core_campaign_forms table
+ * Creates give_campaign_forms table
  */
 class CreateCampaignFormsTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateCampaignFormsTable extends Migration
      */
     public static function id(): string
     {
-        return 'give-campaigns-create-give-core-campaign-forms-table';
+        return 'give-campaigns-create-give-campaign-forms-table';
     }
 
     /**
@@ -26,7 +26,7 @@ class CreateCampaignFormsTable extends Migration
      */
     public static function title(): string
     {
-        return 'Create give_core_campaign_forms table';
+        return 'Create give_campaign_forms table';
     }
 
     /**
@@ -45,7 +45,7 @@ class CreateCampaignFormsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'give_core_campaign_forms';
+        $table = $wpdb->prefix . 'give_campaign_forms';
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
