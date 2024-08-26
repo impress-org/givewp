@@ -283,7 +283,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an issue with Give Subscribers accessing their donor dashboard history
 
 = 3.14.2: Aug 7th, 2024 =
-* Security: Added additional security measures to the option-based donation form and the donor dashboard 
+* Security: Added additional security measures to the option-based donation form and the donor dashboard (CVE-2024-37099) 
 
 = 3.14.1: July 24th, 2024 =
 * Fix: Resolved an error with the give_totals shortcode when using multiple form IDs
