@@ -12,7 +12,7 @@ use Give_Email_Notifications;
 use Give_Email_Setting_Field;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\EmailSettings
  */
