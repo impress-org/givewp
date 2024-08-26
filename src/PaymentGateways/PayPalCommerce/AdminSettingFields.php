@@ -13,7 +13,7 @@ use Give_License;
  * Class AdminSettingFields
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @unreleased added nonce to disconnect button
+ * @since 3.16.0 added nonce to disconnect button
  * @since 2.9.0
  */
 class AdminSettingFields
