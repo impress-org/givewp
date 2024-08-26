@@ -51,7 +51,6 @@ class CreateCampaignsTable extends Migration
         $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			title TEXT NOT NULL,
-			url TEXT NOT NULL,
 			description TEXT NOT NULL,
 			logo TEXT NOT NULL,
 			image TEXT NOT NULL,
