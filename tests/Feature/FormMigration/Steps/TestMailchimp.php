@@ -4,40 +4,74 @@ namespace Feature\FormMigration\Steps;
 
 namespace Give\Tests\Feature\FormMigration\Steps;
 
-use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\Mailchimp;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 class TestMailchimp extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
-     * @since 3.7.0
+     * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesFromV2FormMeta(): void
+    public function testMailchimpSettingsAreMigratedWhenGloballyEnabledAndNotDisabledForSpecificFormUsingGlobalSettings(): void
     {
-        $meta = [
-            '_give_mailchimp_custom_label'    => __('Subscribe to newsletter?'),
-            '_give_mailchimp_tags'            => ['Animal-Rescue-Campaign', 'Housing-And-Shelter-Campaign'],
-            '_give_mailchimp'                 => ['de73f3f82f'],
-            '_give_mailchimp_checked_default' => true,
-            '_give_mailchimp_send_donation_data'   => true,
-            '_give_mailchimp_send_ffm'        => true,
+        // Arrange
+        $options = [
+            'give_mailchimp_show_checkout_signup' => 'on',
+            'give_mailchimp_label' => __('Subscribe to newsletter?'),
+            'give_mailchimp_list' => ['de73f3f82f'],
+            'give_mailchimp_checked_default' => true,
+            'give_mailchimp_double_opt_in' => true,
+            'give_mailchimp_donation_data' => true,
+            'give_mailchimp_ffm_pass_field' => true,
         ];
+        foreach ($options as $key => $value) {
+            give_update_option($key, $value);
+        }
+        $v2Form = $this->createSimpleDonationForm();
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, Mailchimp::class);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/mailchimp');
+        $this->assertSame($options['give_mailchimp_label'], $block->getAttribute('label'));
+        $this->assertSame($options['give_mailchimp_list'], $block->getAttribute('defaultAudiences'));
+        $this->assertNull(null, $block->getAttribute('subscriberTags'));
+        $this->assertTrue(true, $block->getAttribute('checked'));
+        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
+        $this->assertTrue(true, $block->getAttribute('sendDonationData'));
+        $this->assertTrue(true, $block->getAttribute('sendFFMData'));
+    }
 
-        $mailchimp = new Mailchimp($payload);
+    /**
+     * @unreleased
+     */
+    public function testMailchimpSettingsAreMigratedWhenGloballyEnabledAndNotDisabledForSpecificFormUsingFormSettings(): void
+    {
+        // Arrange
+        give_update_option('give_mailchimp_show_checkout_signup', 'on');
+        $meta = [
+            '_give_mailchimp_custom_label' => __('Subscribe to newsletter?'),
+            '_give_mailchimp_tags' => ['Animal-Rescue-Campaign', 'Housing-And-Shelter-Campaign'],
+            '_give_mailchimp' => ['de73f3f82f'],
+            '_give_mailchimp_checked_default' => true,
+            '_give_mailchimp_send_donation_data' => true,
+            '_give_mailchimp_send_ffm' => true,
+        ];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $mailchimp->process();
+        // Act
+        $v3Form = $this->migrateForm($v2Form, Mailchimp::class);
 
-        $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
-
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/mailchimp');
         $this->assertSame($meta['_give_mailchimp_custom_label'], $block->getAttribute('label'));
         $this->assertSame($meta['_give_mailchimp_tags'], $block->getAttribute('subscriberTags'));
         $this->assertSame($meta['_give_mailchimp'], $block->getAttribute('defaultAudiences'));
@@ -47,63 +81,38 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @since 3.7.0
+     * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesFromGlobalSettings(): void
+    public function testMailchimpSettingsAreNotMigratedWhenNotGloballyEnabledOrEnabledPerForm()
     {
-        $meta = [
-            'give_mailchimp_label'           => __('Subscribe to newsletter?'),
-            'give_mailchimp_list'            => ['de73f3f82f'],
-            'give_mailchimp_checked_default' => true,
-            'give_mailchimp_double_opt_in'   => true,
-            'give_mailchimp_donation_data'   => true,
-            'give_mailchimp_ffm_pass_field'  => true,
-        ];
+        // Arrange
+        give_update_option('give_mailchimp_show_checkout_signup', 'off');
+        $meta = ['_give_mailchimp_enable' => 'false'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        foreach ($meta as $key => $value) {
-            give_update_option($key, $value);
-        }
+        // Act
+        $v3Form = $this->migrateForm($v2Form, Mailchimp::class);
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
-
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $mailchimp = new Mailchimp($payload);
-
-        $mailchimp->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
-
-        $this->assertSame($meta['give_mailchimp_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['give_mailchimp_list'], $block->getAttribute('defaultAudiences'));
-        $this->assertNull(null, $block->getAttribute('subscriberTags'));
-        $this->assertTrue(true, $block->getAttribute('checked'));
-        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
-        $this->assertTrue(true, $block->getAttribute('sendDonationData'));
-        $this->assertTrue(true, $block->getAttribute('sendFFMData'));
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/mailchimp');
+        $this->assertNull($block);
     }
 
     /**
-     * @since 3.7.0
+     * @unreleased
      */
-    public function testProcessShouldUpdateMailchimpBlockAttributesWhenNoMeta(): void
+    public function testMailchimpSettingsAreNotMigratedWhenGloballyEnabledButDisabledForSpecificForm()
     {
-        $formV2 = $this->createSimpleDonationForm();
+        // Arrange
+        give_update_option('give_mailchimp_show_checkout_signup', 'off');
+        $meta = ['_give_mailchimp_disable' => 'false'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, Mailchimp::class);
 
-        $mailchimp = new Mailchimp($payload);
-
-        $mailchimp->process();
-
-        $block = $payload->formV3->blocks->findByName('givewp/mailchimp');
-
-        $this->assertSame(__('Subscribe to newsletter?'), $block->getAttribute('label'));
-        $this->assertNull(null, $block->getAttribute('subscriberTags'));
-        $this->assertSame([''], $block->getAttribute('defaultAudiences'));
-        $this->assertTrue(true, $block->getAttribute('checked'));
-        $this->assertTrue(true, $block->getAttribute('doubleOptIn'));
-        $this->assertTrue(true, $block->getAttribute('sendDonationData'));
-        $this->assertTrue(true, $block->getAttribute('sendFFMData'));
+        // Assert
+        $block = $v3Form->blocks->findByName('givewp/mailchimp');
+        $this->assertNull($block);
     }
 }
