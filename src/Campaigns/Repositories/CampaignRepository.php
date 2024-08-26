@@ -53,7 +53,7 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::table('give_core_campaigns')
+            DB::table('give_campaigns')
                 ->insert([
                     'campaign_type' => $campaign->type,
                     'campaign_title' => $campaign->title,
@@ -101,7 +101,7 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::table('give_core_campaigns')
+            DB::table('give_campaigns')
                 ->where('id', $campaign->id)
                 ->update([
                     'campaign_title' => $campaign->title,
@@ -183,7 +183,7 @@ class CampaignRepository
     {
         $builder = new ModelQueryBuilder(Campaign::class);
 
-        return $builder->from('give_core_campaigns')
+        return $builder->from('give_campaigns')
             ->select(
                 'id',
                 ['campaign_type', 'type'],
