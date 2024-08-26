@@ -267,6 +267,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Added a setting to the visual form builder to enable redirecting to an individual donation confirmation page 
 * Enhancement: Multi-step form designs now scroll to the top of the form on step change
 * Enhancement: Added individual form migration links to the donation form list table 
+* Enhancement: Updated various strings throughout GiveWP to be translatable (Open-source contribution by @DAnn2012)
 * Security: Resolved security issues related to file paths and permissions (CVE-2024-6551)
 * Security: Added protection against invalid donations on Legacy forms when using Stripe credit card gateway
 * Security: Resolved security issue related to the PayPal disconnect button  
