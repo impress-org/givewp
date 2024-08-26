@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * We are declaring it at the top to use it in more than one function.
      */
+    let throttleTimer = false;
     let abortLoadAsyncData = false;
     const giveListTable = document.querySelector('.giveListTable');
     const giveListTableIsLoadingEvent = new Event('giveListTableIsLoading');
@@ -61,6 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
             return;
         }
+
+        // Limit requests to run one per time.
+        if (window.GiveDonationFormsAsyncData.throttlingEnabled && throttleTimer) {
+            window.GiveDonationFormsAsyncData.scriptDebug && console.log('throttleTimer start: ', throttleTimer);
+            return;
+        }
+
+        throttleTimer = true;
+        console.log('request start: ', new Date().toLocaleTimeString());
 
         window.GiveDonationFormsAsyncData.scriptDebug && console.log('item: ', itemElement);
 
@@ -113,6 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.GiveDonationFormsAsyncData.scriptDebug && console.log('Error: ', error);
             })
             .finally(() => {
+                window.GiveDonationFormsAsyncData.scriptDebug &&
+                    console.log('request end: ', new Date().toLocaleTimeString());
+                if (window.GiveDonationFormsAsyncData.throttlingEnabled && throttleTimer) {
+                    throttleTimer = false;
+                    window.GiveDonationFormsAsyncData.scriptDebug && console.log('throttleTimer end: ', throttleTimer);
+                    maybeLoadAsyncData();
+                }
                 window.GiveDonationFormsAsyncData.scriptDebug && console.log('Request finalized.');
             });
 
