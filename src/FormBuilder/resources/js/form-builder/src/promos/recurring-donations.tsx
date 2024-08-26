@@ -19,8 +19,8 @@ const RecurringDonationsPromo = () => {
             {__('Provide donors the option of making flexible recurring donations.', 'give')}
         </div>
         <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'primary'} style={{backgroundColor:'var(--givewp-primary-500)', padding: '4px 8px', height: 'auto'}}>Upgrade your plan</Button>
-            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'link'} style={{color: 'var(--givewp-gray-100)'}}>Read more</Button>
+            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'primary'} style={{backgroundColor:'var(--givewp-primary-500)', padding: '4px 8px', height: 'auto'}}>{__('Upgrade your plan', 'give')}</Button>
+            <Button href='https://givewp.com/addons/recurring-donations' target="_blank" rel="noopener noreferrer" variant={'link'} style={{color: 'var(--givewp-gray-100)'}}>{__('Read more', 'give')}</Button>
         </div>
     </div>
 }
