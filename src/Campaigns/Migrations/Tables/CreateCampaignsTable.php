@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
  * @unreleased
- * Creates give_core_campaigns table
+ * Creates give_campaigns table
  */
 class CreateCampaignsTable extends Migration
 {
@@ -26,7 +26,7 @@ class CreateCampaignsTable extends Migration
      */
     public static function title(): string
     {
-        return 'Create give_core_campaigns table';
+        return 'Create give_campaigns table from core';
     }
 
     /**
@@ -45,22 +45,27 @@ class CreateCampaignsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'give_core_campaigns';
+        $table = $wpdb->prefix . 'give_campaigns';
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			title TEXT NOT NULL,
-			description TEXT NOT NULL,
-			logo TEXT NOT NULL,
-			image TEXT NOT NULL,
+			form_id INT NOT NULL,
+			campaign_title TEXT NOT NULL,
+			campaign_url TEXT NOT NULL,
+			short_desc TEXT NOT NULL,
+			long_desc TEXT NOT NULL,
+			campaign_logo TEXT NOT NULL,
+			campaign_image TEXT NOT NULL,
 			primary_color VARCHAR(7) NOT NULL,
 			secondary_color VARCHAR(7) NOT NULL,
-			goal INT UNSIGNED NOT NULL,
+			campaign_goal INT UNSIGNED NOT NULL,
 			status VARCHAR(12) NOT NULL,
+			start_date DATETIME NULL,
+			end_date DATETIME NULL,
 			date_created DATETIME NOT NULL,
 			PRIMARY KEY  (id)
-		) {$charset}";
+		) $charset";
 
         try {
             DB::delta($sql);
