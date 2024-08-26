@@ -9,10 +9,10 @@
  * @since       1.0
  */
 
-// Exit if accessed directly.
-use Give\DonationForms\DonationQuery;
+use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
 
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -1928,10 +1928,12 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @unreleased Add form_id to the array return
+ * @since 2.1
+ *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
  *
  * @return array
- * @since 2.1
  */
 function give_goal_progress_stats( $form ) {
 
@@ -1943,7 +1945,6 @@ function give_goal_progress_stats( $form ) {
 
 	/**
 	 * Filter the form.
-	 * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
 	 * @since 1.8.8
 	 */
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ), 2 ), $form->ID, $form );
@@ -1971,12 +1972,14 @@ function give_goal_progress_stats( $form ) {
 			$actual = apply_filters( 'give_goal_donors_target_output', give_get_form_donor_count( $form->ID ), $form->ID, $form );
 			break;
 		default:
-			/**
-			 * Filter the form income.
-			 *
-			 * @since 1.8.8
-			 */
-			$actual = apply_filters( 'give_goal_amount_raised_output', (new DonationQuery())->form($form->ID)->sumIntendedAmount(), $form->ID, $form );
+            /**
+             * Filter the form income.
+             *
+             * @unreleased Revert changes implemented on the 3.14.0 version
+             * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
+             * @since 1.8.8
+             */
+            $actual = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 			break;
 	}
 
@@ -2018,6 +2021,7 @@ function give_goal_progress_stats( $form ) {
 			'actual'   => $actual,
 			'goal'     => $total_goal,
 			'format'   => $goal_format,
+			'form_id' => $form->ID
 		],
 		$stats_array
 	);
