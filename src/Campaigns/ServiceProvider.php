@@ -2,6 +2,9 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
+use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -28,7 +31,22 @@ class ServiceProvider implements ServiceProviderInterface
         // Hooks::addAction('init', Actions\MyAction::class);
         // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
 
+        $this->registerMigrations();
         $this->registerMenus();
+    }
+
+
+    /**
+     * @unreleased
+     */
+    private function registerMigrations(): void
+    {
+        give(MigrationsRegister::class)->addMigrations(
+            [
+                CreateCampaignsTable::class,
+                CreateCampaignFormsTable::class,
+            ]
+        );
     }
 
     /**
