@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
- * @unreleased Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
+ * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
 
@@ -247,7 +247,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 /**
-                 * @unreleased Revert changes implemented on the 3.14.0 version
+                 * @since 3.16.0 Revert changes implemented on the 3.14.0 version
                  * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(

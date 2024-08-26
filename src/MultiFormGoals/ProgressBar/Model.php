@@ -5,7 +5,7 @@ namespace Give\MultiFormGoals\ProgressBar;
 use Give\DonationForms\DonationQuery;
 
 /**
- * @unreleased Add $statusList property
+ * @since 3.16.0 Add $statusList property
  * @since      2.9.0
  */
 class Model
@@ -28,7 +28,7 @@ class Model
     /**
      * Constructs and sets up setting variables for a new Progress Bar model
      *
-     * @unreleased Add statusList support for $args
+     * @since 3.16.0 Add statusList support for $args
      * @since 2.9.0
      **@param array $args Arguments for new Progress Bar, including 'ids'
      */
@@ -46,7 +46,7 @@ class Model
     /**
      * Get forms associated with Progress Bar
      *
-     * @unreleased Use $statusList property
+     * @since 3.16.0 Use $statusList property
      * @since 3.0.3 Return empty array instead of false
      * @since 2.9.0
      */

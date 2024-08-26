@@ -272,6 +272,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Security: Added protection against invalid donations on Legacy forms when using Stripe credit card gateway
 * Security: Resolved security issue related to the PayPal disconnect button  
 * Fix: Added prevention of subscription renewals with gateway transaction IDs already used previously
+* Fix: Resolved an issue where the donation form list table and form grid not loading properly on sites with a large number of forms and donations
 * Fix: Resolved an issue with the form grid not showing header images and link previews
 * Fix: Resolved an issue with the subscription payment failed email not saving the supported gateways information
 

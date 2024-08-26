@@ -3,12 +3,12 @@
 namespace Give\DonationForms\AsyncData\AdminFormListView;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class AdminFormListViewOptions
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isAllStatsColumnsAsync(): bool
     {
@@ -20,7 +20,7 @@ class AdminFormListViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isGoalColumnAsync(): bool
     {
@@ -32,7 +32,7 @@ class AdminFormListViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isDonationColumnAsync(): bool
     {
@@ -44,7 +44,7 @@ class AdminFormListViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isRevenueColumnAsync(): bool
     {
@@ -56,7 +56,7 @@ class AdminFormListViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function useCachedMetaKeys()
     {

@@ -5,12 +5,12 @@ namespace Give\DonationForms\AsyncData\AdminFormListView;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class AdminFormListView
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeChangeAchievedIconOpacity($achievedIconOpacity)
     {
@@ -22,7 +22,7 @@ class AdminFormListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder = false): bool
     {
@@ -34,7 +34,7 @@ class AdminFormListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeSetDonationsColumnAsync($donationsCountCachedValue, $formId)
     {
@@ -50,7 +50,7 @@ class AdminFormListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeSetRevenueColumnAsync($revenueCachedValue, $formId)
     {

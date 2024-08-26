@@ -215,7 +215,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function registerAddFormSubmenuLink()
     {

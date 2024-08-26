@@ -5,12 +5,12 @@ namespace Give\DonationForms\AsyncData\FormGrid;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormGridView
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder = false): bool
     {
@@ -22,7 +22,7 @@ class FormGridView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeSetProgressBarAmountRaisedAsync($amountRaisedCachedValue, $formId)
     {
@@ -38,7 +38,7 @@ class FormGridView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeSetProgressBarDonationsCountAsync($donationsCountCachedValue, $formId)
     {

@@ -6,12 +6,12 @@ use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class GiveGoalProgressStats
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function maybeChangeGoalProgressStatsActualValue($stats)
     {
@@ -33,7 +33,7 @@ class GiveGoalProgressStats
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function isSingleForm(): bool
     {

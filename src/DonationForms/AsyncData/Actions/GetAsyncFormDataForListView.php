@@ -7,12 +7,12 @@ use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class GetAsyncFormDataForListView
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __invoke()
     {
@@ -74,7 +74,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function isAsyncProgressBar(): bool
     {
@@ -82,7 +82,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function isAsyncDonationCount(): bool
     {
@@ -90,7 +90,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function isAsyncRevenue(): bool
     {
