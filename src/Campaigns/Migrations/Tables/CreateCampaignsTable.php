@@ -45,10 +45,10 @@ class CreateCampaignsTable extends Migration
     {
         global $wpdb;
 
-        $wpdb->give_core_campaigns = $wpdb->prefix . 'give_core_campaigns';
+        $table = $wpdb->give_core_campaigns = $wpdb->prefix . 'give_core_campaigns';
         $charset = DB::get_charset_collate();
 
-        $sql = "CREATE TABLE {$wpdb->give_core_campaigns} (
+        $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			title TEXT NOT NULL,
 			url TEXT NOT NULL,
@@ -66,7 +66,7 @@ class CreateCampaignsTable extends Migration
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the {$wpdb->give_core_campaigns} table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while creating the $table table", 0, $exception);
         }
     }
 }
