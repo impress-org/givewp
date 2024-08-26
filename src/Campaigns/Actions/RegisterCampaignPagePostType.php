@@ -12,23 +12,21 @@ class RegisterCampaignPagePostType
      */
     public function __invoke()
     {
-        $args = [
-            'label'           => __('Campaign Page', 'give-peer-to-peer'),
-            'labels'          => [],
-            'supports'        => [
-                'editor',
+        register_post_type( 'give_campaign_page', [
+            'label' => __('Campaign Page', 'give-peer-to-peer'),
+            'public' => false,
+            'show_ui' => true,
+            'show_in_menu' => false,
+            'show_in_rest' => true,
+            'supports' => [
+                'editor'
             ],
-            'show_in_rest'    => true,
-            'show_ui'         => true,
-            'show_in_menu'    => true,
-            'public'          => true,
-            'has_archive'     => false,
-            'hierarchical'    => false,
-            'capability_type' => 'post',
-            'rewrite'         => ['slug' => 'campaign'],
-            'template'        => [],
-        ];
-
-        register_post_type( 'give_campaign_page', $args );
+            'rewrite' => [
+                'slug' => 'campaign'
+            ],
+            'template' => [
+                // TODO: Add default blocks template.
+            ],
+        ] );
     }
 }

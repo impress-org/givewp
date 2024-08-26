@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Models;
 
+use DateTime;
 use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
@@ -12,12 +13,15 @@ use Give\Framework\Models\ValueObjects\Relationship;
  * @unreleased
  *
  * @property int $id
- * @property int $campaignId
+ * @property DateTime $createdAt
+ * @property DateTime $updatedAt
  */
 class CampaignPage extends Model implements ModelCrud
 {
     public $properties = [
         'id' => 'int',
+        'createdAt' => DateTime::class,
+        'updatedAt' => DateTime::class,
     ];
 
     public $relationships = [
@@ -29,7 +33,9 @@ class CampaignPage extends Model implements ModelCrud
      */
     public function getEditLinkUrl(): string
     {
-        return get_edit_post_link($this->id);
+        // By default, the URL is encoded for display purposes.
+        // Setting any other value prevents encoding the URL.
+        return get_edit_post_link($this->id, 'redirect');
     }
 
     /**
