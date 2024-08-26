@@ -123,7 +123,16 @@ abstract class ListTable implements Arrayable
     private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale)
     {
         try {
-            $cellValue = $column->getCellValue($model, $locale);
+            /**
+             * @unreleased
+             */
+            do_action("givewp_list_table_cell_value_{$column::getId()}_before", $column, $model, $locale);
+
+            /**
+             * @unreleased
+             */
+            $cellValue = apply_filters("givewp_list_table_cell_value_{$column::getId()}",
+                $column->getCellValue($model, $locale), $column, $model, $locale);
         } catch (Exception $exception) {
             Log::error(
                 sprintf(

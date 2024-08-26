@@ -3,11 +3,10 @@
  * This template is used to display the donation grid with [donation_grid]
  */
 
-// Exit if accessed directly.
-use Give\DonationForms\DonationQuery;
 use Give\Helpers\Form\Template;
 use Give\Helpers\Form\Utils as FormUtils;
 
+// Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -15,6 +14,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
+ * @unreleased Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
 
@@ -237,19 +237,23 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 || !give_is_setting_enabled($goal_option) || 0 === $form->goal;
 
             // Maybe display the goal progress bar.
-
             if (!$hide_goal) :
+
+                do_action('give_form_grid_goal_progress_stats_before', $form_id);
+
                 $goal_progress_stats = give_goal_progress_stats($form);
                 $goal_format = $goal_progress_stats['format'];
                 $color = $atts['progress_bar_color'];
                 $show_goal = isset($atts['show_goal']) ? filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN) : true;
+
                 /**
+                 * @unreleased Revert changes implemented on the 3.14.0 version
                  * @since 3.14.0 Replace "$form->get_earnings()" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
                  */
                 $shortcode_stats = apply_filters(
                     'give_goal_shortcode_stats',
                     [
-                        'income' => (new DonationQuery())->form($form->ID)->sumIntendedAmount(),
+                        'income' => $form->get_earnings(),
                         'goal' => $goal_progress_stats['raw_goal'],
                     ],
                     $form_id,
@@ -259,13 +263,6 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                 $income = $shortcode_stats['income'];
                 $goal = $shortcode_stats['goal'];
-
-                /**
-                 * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
-                 */
-                add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
-                    return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-                }, 10, 2);
 
                 switch ($goal_format) {
                     case 'donation':
@@ -412,7 +409,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    esc_attr($formatted_income),
+                                    apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 );
@@ -462,8 +459,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
-                                <?php
-                                echo $form->get_sales() ?>
+                                <?php echo apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ?>
                             </span>
                             <span class="goal">
                                 <?php
