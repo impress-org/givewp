@@ -25,7 +25,17 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
+        $this->registerMenus();
+
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
-        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
+        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class); 
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerMenus()
+    {
+        Hooks::addAction('admin_menu', CampaignsAdminPage::class, 'addCampaignsSubmenuPage', 999);
     }
 }
