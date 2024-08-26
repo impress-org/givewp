@@ -45,7 +45,7 @@ class CreateCampaignFormsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->give_core_campaign_forms = $wpdb->prefix . 'give_core_campaign_forms';
+        $table = $wpdb->prefix . 'give_core_campaign_forms';
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (

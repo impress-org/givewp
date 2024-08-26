@@ -45,7 +45,7 @@ class CreateCampaignsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->give_core_campaigns = $wpdb->prefix . 'give_core_campaigns';
+        $table = $wpdb->prefix . 'give_core_campaigns';
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
