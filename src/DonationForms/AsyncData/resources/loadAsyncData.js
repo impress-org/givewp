@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         throttleTimer = true;
-        console.log('request start: ', new Date().toLocaleTimeString());
+        window.GiveDonationFormsAsyncData.scriptDebug &&
+            console.log('request start: ', new Date().toLocaleTimeString());
 
         window.GiveDonationFormsAsyncData.scriptDebug && console.log('item: ', itemElement);
 
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch((error) => {
-                // When there is an error remove the class that prevents fetch request duplication, so we can try fetching it again in the next mouse scroll.
+                // When there is an error remove the class that prevents fetch request duplication, so we can try fetching it again in the next try.
                 itemElement.classList.remove('give-async-data-fetch-triggered');
                 window.GiveDonationFormsAsyncData.scriptDebug && console.log('Error: ', error);
             })
