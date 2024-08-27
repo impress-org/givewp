@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\Donations\Models\Donation;
 use Give\Helpers\Gateways\Stripe;
-use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give_Stripe;
 
@@ -109,27 +108,6 @@ class LegacyStripeAdapter
 
             if ($donation->gatewayId === StripePaymentElementGateway::id()) {
                 Stripe::addAccountDetail($donationId, $donation->formId);
-            }
-        });
-    }
-
-    /**
-     * @unreleased
-     */
-    public function validateCardInformation()
-    {
-        add_action('give_donation_form_processing_start', function(FormData $data) {
-            if('stripe' === $data->paymentGateway) {
-                /**
-                 * Validate card information to prevent spam donations and fake donors.
-                 */
-                if(! $data->cardInfo->number || ! $data->cardInfo->expMonth || ! $data->cardInfo->expYear || ! $data->cardInfo->cvc) {
-                    wp_die(
-                        esc_html__('Incomplete card information.', 'give'),
-                        esc_html__('Error', 'give'),
-                        ['response' => 403]
-                    );
-                }
             }
         });
     }
