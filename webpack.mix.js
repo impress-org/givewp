@@ -18,7 +18,10 @@ mix.setPublicPath('assets/dist')
     .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
     .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
     .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
-    .sass('src/Promotions/InPluginUpsells/resources/css/stellarwp-sales-banner.scss', 'css/admin-stellarwp-sales-banner.css')
+    .sass(
+        'src/Promotions/InPluginUpsells/resources/css/stellarwp-sales-banner.scss',
+        'css/admin-stellarwp-sales-banner.css'
+    )
 
     .js('assets/src/js/frontend/give.js', 'js/')
     .js('assets/src/js/frontend/give-stripe.js', 'js/')
@@ -46,17 +49,16 @@ mix.setPublicPath('assets/dist')
     .ts('src/DonationForms/V2/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
     .ts('src/DonationForms/V2/resources/edit-v2form.tsx', 'js/give-edit-v2form.js')
     .ts('src/DonationForms/V2/resources/add-v2form.tsx', 'js/give-add-v2form.js')
-    .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js').
-    ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js').
-    ts('src/EventTickets/resources/admin/events-list-table.tsx',
-        'js/give-admin-event-tickets.js').
-    ts('src/EventTickets/resources/admin/event-details.tsx',
-        'js/give-admin-event-tickets-details.js')
+    .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js')
+    .ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js')
+    .ts('src/EventTickets/resources/admin/events-list-table.tsx', 'js/give-admin-event-tickets.js')
+    .ts('src/EventTickets/resources/admin/event-details.tsx', 'js/give-admin-event-tickets-details.js')
     .ts('src/Subscriptions/resources/admin-subscriptions.tsx', 'js/give-admin-subscriptions.js')
     .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
+    .ts('src/Campaigns/resources/admin/campaigns-list-table.tsx', 'js/give-admin-campaigns-list-table.js')
 
     .react()
     .sourceMaps(false, 'source-map')
