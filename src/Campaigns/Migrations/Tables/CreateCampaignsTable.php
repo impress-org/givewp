@@ -18,7 +18,7 @@ class CreateCampaignsTable extends Migration
      */
     public static function id(): string
     {
-        return 'give-campaigns-create-give-campaigns-table';
+        return 'give-campaigns-create-give-core-campaigns-table';
     }
 
     /**
@@ -51,6 +51,7 @@ class CreateCampaignsTable extends Migration
         $sql = "CREATE TABLE $table (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			form_id INT NOT NULL,
+			campaign_type VARCHAR(12) NOT NULL DEFAULT '',
 			campaign_title TEXT NOT NULL,
 			campaign_url TEXT NOT NULL,
 			short_desc TEXT NOT NULL,

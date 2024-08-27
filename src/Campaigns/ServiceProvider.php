@@ -2,7 +2,6 @@
 
 namespace Give\Campaigns;
 
-use Give\Campaigns\Migrations\Tables\AddCampaignTypeColumn;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -45,7 +44,6 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations(
             [
                 CreateCampaignsTable::class,
-                AddCampaignTypeColumn::class,
                 CreateCampaignFormsTable::class,
             ]
         );
