@@ -43,7 +43,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'campaignPageId' => 'int',
+        'pageId' => 'int',
         'type' => CampaignType::class,
         'title' => 'string',
         'shortDescription' => 'string',
