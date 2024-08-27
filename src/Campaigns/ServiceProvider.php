@@ -31,9 +31,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        $this->registerMigrations();
-        $this->registerActions();
         $this->registerMenus();
+        $this->registerActions();
+        $this->registerMigrations();        
     }
 
 
@@ -63,6 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
         $wpdb->give_campaigns = $wpdb->prefix . 'give_campaigns';
         $wpdb->give_campaign_forms = $wpdb->prefix . 'give_campaign_forms';
     }
+
 
     /**
      * @unreleased

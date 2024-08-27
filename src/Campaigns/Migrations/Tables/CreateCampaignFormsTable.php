@@ -34,7 +34,7 @@ class CreateCampaignFormsTable extends Migration
      */
     public static function timestamp(): string
     {
-        return strtotime('2024-08-26 00:00:03');
+        return strtotime('2024-08-26 00:00:01');
     }
 
     /**
@@ -45,19 +45,20 @@ class CreateCampaignFormsTable extends Migration
     {
         global $wpdb;
 
+        $table = $wpdb->give_campaign_forms;
         $charset = DB::get_charset_collate();
 
-        $sql = "CREATE TABLE {$wpdb->give_campaign_forms} (
-			campaign_id INT UNSIGNED NOT NULL,
-			form_id INT UNSIGNED NOT NULL,
-			PRIMARY KEY  (campaign_id),
-			KEY form_id (form_id)
-		) $charset";
+        $sql = "CREATE TABLE $table (
+            campaign_id INT UNSIGNED NOT NULL,
+            form_id INT UNSIGNED NOT NULL,
+            PRIMARY KEY  (campaign_id),
+            KEY form_id (form_id)
+        ) $charset";
 
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the {$wpdb->give_campaign_forms} table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while creating the $table table", 0, $exception);
         }
     }
 }
