@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Factories;
 
+use DateTime;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Models\Factories\ModelFactory;
@@ -23,6 +24,13 @@ class CampaignFactory extends ModelFactory
             'longDescription' => __('Campaign long description', 'give'),
             'goal' => 1000,
             'status' => CampaignStatus::ACTIVE(),
+            'logo' => '',
+            'image' => '',
+            'primaryColor' => '',
+            'secondaryColor' => '',
+            'startDate' => new DateTime(),
+            'endDate' => (new DateTime())->modify('+1 day'),
+            'createdAt' => new DateTime(),
         ];
     }
 }
