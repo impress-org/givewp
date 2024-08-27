@@ -45,14 +45,12 @@ class SetCampaignType extends Migration
      */
     public function run()
     {
-        global $wpdb;
-
         try {
-            DB::update($wpdb->give_campaigns, [
-                'campaign_type' => CampaignType::PEER_TO_PEER(),
-            ], [
-                'campaign_type' => '',
-            ]);
+            DB::table('give_campaigns')
+                ->where('column_type', '')
+                ->update([
+                    'column_type' => CampaignType::PEER_TO_PEER
+                ]);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred while updating the campaign type', 0, $exception);
         }
