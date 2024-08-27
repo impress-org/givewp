@@ -49,6 +49,8 @@ class CampaignRepository
 
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
+        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
+        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
 
         DB::query('START TRANSACTION');
 
@@ -65,8 +67,8 @@ class CampaignRepository
                     'secondary_color' => $campaign->secondaryColor,
                     'goal' => $campaign->goal,
                     'status' => $campaign->status->getValue(),
-                    'start_date' => $campaign->startDate,
-                    'end_date' => $campaign->endDate,
+                    'start_date' => $startDateFormatted,
+                    'end_date' => $endDateFormatted,
                     'date_created' => $dateCreatedFormatted
                 ]);
 
@@ -96,6 +98,9 @@ class CampaignRepository
     {
         $this->validateProperties($campaign);
 
+        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
+        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+
         Hooks::doAction('givewp_campaign_updating', $campaign);
 
         DB::query('START TRANSACTION');
@@ -113,8 +118,8 @@ class CampaignRepository
                     'secondary_color' => $campaign->secondaryColor,
                     'goal' => $campaign->goal,
                     'status' => $campaign->status->getValue(),
-                    'start_date' => $campaign->startDate,
-                    'end_date' => $campaign->endDate,
+                    'start_date' => $startDateFormatted,
+                    'end_date' => $endDateFormatted,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
