@@ -4,6 +4,7 @@ namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
+use Give\Campaigns\Migrations\Tables\AddCampaignTypeColumn;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -30,6 +31,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
+        // Hooks::addAction('init', Actions\MyAction::class);
+        // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
+
         $this->registerMigrations();
         $this->registerActions();
         $this->registerMenus();
@@ -45,6 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
             [
                 CreateCampaignsTable::class,
                 SetCampaignType::class,
+                AddCampaignTypeColumn::class,
                 CreateCampaignFormsTable::class,
             ]
         );
