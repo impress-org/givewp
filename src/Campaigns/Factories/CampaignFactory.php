@@ -18,6 +18,7 @@ class CampaignFactory extends ModelFactory
     public function definition(): array
     {
         return [
+            'pageId' => 1,
             'type' => CampaignType::CORE(),
             'title' => __('GiveWP Campaign', 'give'),
             'shortDescription' => __('Campaign short description', 'give'),

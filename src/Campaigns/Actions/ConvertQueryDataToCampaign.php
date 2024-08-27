@@ -18,6 +18,7 @@ class ConvertQueryDataToCampaign
     {
         return new Campaign([
             'id' => (int)$queryObject->id,
+            'pageId' => (int)$queryObject->pageId,
             'type' => $queryObject->type,
             'title' => $queryObject->title,
             'shortDescription' => $queryObject->shortDescription,

@@ -20,6 +20,7 @@ use Give\Framework\Models\ModelQueryBuilder;
  * @unreleased
  *
  * @property int            $id
+ * @property int            $pageId
  * @property CampaignType   $type
  * @property string         $title
  * @property string         $url
@@ -42,6 +43,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'campaignPageId' => 'int',
         'type' => CampaignType::class,
         'title' => 'string',
         'shortDescription' => 'string',
