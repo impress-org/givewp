@@ -33,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->registerMenus();
         $this->registerActions();
-        $this->registerMigrations();        
+        $this->registerMigrations();
     }
 
 
@@ -45,7 +45,6 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations(
             [
                 CreateCampaignsTable::class,
-                AddCampaignTypeColumn::class,
                 SetCampaignType::class,
                 CreateCampaignFormsTable::class,
             ]
