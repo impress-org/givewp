@@ -47,9 +47,9 @@ class SetCampaignType extends Migration
     {
         try {
             DB::table('give_campaigns')
-                ->where('column_type', '')
+                ->where('campaign_type', '')
                 ->update([
-                    'column_type' => CampaignType::PEER_TO_PEER
+                    'campaign_type' => CampaignType::PEER_TO_PEER
                 ]);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred while updating the campaign type', 0, $exception);
