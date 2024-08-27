@@ -7,13 +7,13 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * @unreleased
  *
- * @method static CampaignStatus CORE()
- * @method static CampaignStatus P2P()
+ * @method static CampaignType CORE()
+ * @method static CampaignType PEER_TO_PEER()
  * @method bool isCore()
- * @method bool isP2p()
+ * @method bool isPeerToPeer()
  */
 class CampaignType extends Enum
 {
     const CORE = 'core';
-    const P2P = 'p2p';
+    const PEER_TO_PEER = 'p2p';
 }
