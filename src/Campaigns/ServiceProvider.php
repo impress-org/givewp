@@ -31,9 +31,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        // Hooks::addAction('init', Actions\MyAction::class);
-        // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
-
         $this->registerMigrations();
         $this->registerActions();
         $this->registerMenus();
