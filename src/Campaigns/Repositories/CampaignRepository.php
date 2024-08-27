@@ -145,8 +145,6 @@ class CampaignRepository
                 ->where('id', $campaign->id)
                 ->delete();
 
-            // todo: also delete campaign page?
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
