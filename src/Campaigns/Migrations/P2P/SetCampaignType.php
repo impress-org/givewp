@@ -45,8 +45,10 @@ class SetCampaignType extends Migration
      */
     public function run()
     {
+        global $wpdb;
+
         try {
-            DB::update('give_campaigns', [
+            DB::update($wpdb->give_campaigns, [
                 'campaign_type' => CampaignType::PEER_TO_PEER(),
             ], [
                 'campaign_type' => '',
