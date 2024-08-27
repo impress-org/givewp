@@ -47,7 +47,7 @@ class AddCampaignTypeColumn extends Migration
         global $wpdb;
 
         try {
-            DB::query("ALTER TABLE {$wpdb->give_campaigns} ADD COLUMN `campaign_type` VARCHAR(12) NOT NULL DEFAULT ''");
+            DB::query("ALTER TABLE {$wpdb->give_campaigns} ADD campaign_type VARCHAR(12) NOT NULL DEFAULT ''");
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the {$wpdb->give_campaigns} table", 0, $exception);
         }
