@@ -19,7 +19,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(): void
     {
-        //
+        $this->registerTableNames();
     }
 
     /**
@@ -47,6 +47,18 @@ class ServiceProvider implements ServiceProviderInterface
                 CreateCampaignFormsTable::class,
             ]
         );
+    }
+
+
+    /**
+     * @unreleased
+     */
+    private function registerTableNames(): void
+    {
+        global $wpdb;
+
+        $wpdb->give_campaigns = $wpdb->prefix . 'give_campaigns';
+        $wpdb->give_campaign_forms = $wpdb->prefix . 'give_campaign_forms';
     }
 
     /**
