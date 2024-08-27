@@ -122,4 +122,30 @@ class FormTaxonomiesTest extends TestCase
             wp_list_pluck(get_the_terms($donationFormV3->id, 'give_forms_category'), 'term_id')
         );
     }
+
+    /**
+     * @since 3.16.0
+     */
+    public function testMigratesOnlySelectedTerms()
+    {
+        $donationFormV2 = $this->createSimpleDonationForm();
+        $donationFormV3 = DonationForm::factory()->create();
+
+        give_update_option('tags', 'enabled');
+        give_setup_taxonomies();
+
+        $term1 = wp_create_term('aye', 'give_forms_tag');
+        $term2 = wp_create_term('bee', 'give_forms_tag');
+        wp_set_post_terms($donationFormV2->id, [$term1['term_id']], 'give_forms_tag');
+
+        $step = new FormTaxonomies(
+            new FormMigrationPayload($donationFormV2, $donationFormV3)
+        );
+        $step->process();
+
+        $migratedTermIds = wp_list_pluck(get_the_terms($donationFormV3->id, 'give_forms_tag'), 'term_id');
+
+        $this->assertContains($term1['term_id'], $migratedTermIds);
+        $this->assertNotContains($term2['term_id'], $migratedTermIds);
+    }
 }
