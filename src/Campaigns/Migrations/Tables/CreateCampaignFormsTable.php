@@ -45,10 +45,9 @@ class CreateCampaignFormsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'give_campaign_forms';
         $charset = DB::get_charset_collate();
 
-        $sql = "CREATE TABLE $table (
+        $sql = "CREATE TABLE {$wpdb->give_campaign_forms} (
 			campaign_id INT UNSIGNED NOT NULL,
 			form_id INT UNSIGNED NOT NULL,
 			PRIMARY KEY  (campaign_id),
@@ -58,7 +57,7 @@ class CreateCampaignFormsTable extends Migration
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the $table table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while creating the {$wpdb->give_campaign_forms} table", 0, $exception);
         }
     }
 }
