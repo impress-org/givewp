@@ -48,8 +48,8 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations(
             [
                 CreateCampaignsTable::class,
-                SetCampaignType::class,
                 AddCampaignTypeColumn::class,
+                SetCampaignType::class,
                 CreateCampaignFormsTable::class,
             ]
         );

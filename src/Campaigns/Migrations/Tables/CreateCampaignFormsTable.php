@@ -34,7 +34,7 @@ class CreateCampaignFormsTable extends Migration
      */
     public static function timestamp(): string
     {
-        return strtotime('2024-08-26 00:00:02');
+        return strtotime('2024-08-26 00:00:03');
     }
 
     /**
