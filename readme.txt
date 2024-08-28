@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.15.0
+Stable tag: 3.16.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,22 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.16.0: Aug 28th, 2024 =
+* New: Added support for form taxonomy tags and categories in the visual form builder settings
+* New: Added a setting to the visual form builder to enable redirecting to an individual donation confirmation page 
+* Enhancement: Multi-step form designs now scroll to the top of the form on step change
+* Enhancement: Added individual form migration links to the donation form list table 
+* Enhancement: Updated various strings throughout GiveWP to be translatable (Open-source contribution by @DAnn2012)
+* Security: Resolved security issues related to file paths and permissions (CVE-2024-6551)
+* Security: Resolved security issue related to the PayPal disconnect button  
+* Fix: Added prevention of subscription renewals with gateway transaction IDs already used previously
+* Fix: Resolved an issue where the donation form list table and form grid not loading properly on sites with a large number of forms and donations
+* Fix: Resolved an issue with the form grid not showing header images and link previews
+* Fix: Resolved an issue with the subscription payment failed email not saving the supported gateways information
+
+= 3.15.1: Aug 22nd, 2024 =
+* Fix: Resolved an issue with the Akismet integration preventing form submissions when settings are not yet configured
+
 = 3.15.0: Aug 14th, 2024 =
 * New: Added Akismet integration support to forms using the visual form builder
 * New: Updated the onboarding wizard to create a new form with the visual form builder
@@ -269,7 +285,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Resolved an issue with Give Subscribers accessing their donor dashboard history
 
 = 3.14.2: Aug 7th, 2024 =
-* Security: Added additional security measures to the option-based donation form and the donor dashboard 
+* Security: Added additional security measures to the option-based donation form and the donor dashboard (CVE-2024-37099) 
 
 = 3.14.1: July 24th, 2024 =
 * Fix: Resolved an error with the give_totals shortcode when using multiple form IDs

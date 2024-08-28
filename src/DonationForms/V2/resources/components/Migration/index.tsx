@@ -3,7 +3,7 @@ import {createInterpolateElement} from "@wordpress/element";
 import {CheckVerified} from "@givewp/components/AdminUI/Icons";
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export const UpgradeModalContent = () => {
 
