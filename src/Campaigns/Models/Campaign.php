@@ -8,7 +8,6 @@ use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -74,7 +73,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     public static function find($id): ?Campaign
     {
-        return give(DonationFormRepository::class)->getById($id);
+        return give(CampaignRepository::class)->getById($id);
     }
 
     /**
