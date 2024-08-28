@@ -71,6 +71,9 @@ class MigrateFormsToCampaignForms extends Migration
             ]);
     }
 
+   /**
+     * @unreleased
+     */
     public function mapFormStatusToCampaignStatus(DonationFormStatus $status)
     {
         switch ($status) {
