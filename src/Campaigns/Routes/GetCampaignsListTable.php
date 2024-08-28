@@ -2,7 +2,9 @@
 
 namespace Give\Campaigns\Routes;
 
+use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -12,7 +14,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class GetCampaignsListTable
+class GetCampaignsListTable implements RestRoute
 {
     /**
      * @var string
@@ -41,6 +43,7 @@ class GetCampaignsListTable
                 [
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequestMockup'],
+                    //'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
@@ -150,7 +153,7 @@ class GetCampaignsListTable
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = give()->campaigns->prepareQuery();
+        $query = give(CampaignRepository::class)->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
