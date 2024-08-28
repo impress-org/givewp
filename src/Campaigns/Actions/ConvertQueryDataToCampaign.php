@@ -4,6 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
@@ -19,7 +20,7 @@ class ConvertQueryDataToCampaign
         return new Campaign([
             'id' => (int)$queryObject->id,
             'pageId' => (int)$queryObject->pageId,
-            'type' => $queryObject->type,
+            'type' => new CampaignType($queryObject->type),
             'title' => $queryObject->title,
             'shortDescription' => $queryObject->shortDescription,
             'longDescription' => $queryObject->longDescription,
