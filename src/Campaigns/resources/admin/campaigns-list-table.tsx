@@ -1,6 +1,6 @@
 import {createRoot} from 'react-dom/client';
 
-const container = document.getElementById('give-admin-campaigns-list-table-root');
+const container = document.getElementById('give-admin-campaigns-root');
 const root = createRoot(container!);
 root.render(
     <div style={{padding: '200px 30px'}}>

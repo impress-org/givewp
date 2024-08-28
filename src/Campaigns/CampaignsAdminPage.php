@@ -32,6 +32,6 @@ class CampaignsAdminPage
     {
         give(LoadCampaignsListTableAssets::class)();
 
-        echo '<div id="give-admin-campaigns-list-table-root"></div>';
+        echo '<div id="give-admin-campaigns-root"></div>';
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
-use Give\EventTickets\Models\Event;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -30,11 +29,9 @@ class IdColumn extends ModelColumn
 
     /**
      * @unreleased
-     *
-     * @param Event $model
      */
     public function getCellValue($model): int
     {
-        return $model->id;
+        return 1; //return $model->id;
     }
 }
