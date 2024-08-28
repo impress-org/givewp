@@ -3,7 +3,9 @@
 namespace Give\Campaigns\Migrations;
 
 use Give\Campaigns\Actions\CreateParentCampaignForDonationForm;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
+use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
@@ -28,13 +30,31 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
+     * @unreleased
      * @inheritDoc
      */
     public function run()
     {
-        array_map(
-            [new CreateParentCampaignForDonationForm, '__invoke'],
-            DonationForm::query()->getAll() ?? []
-        );
+        foreach(DonationForm::query()->getAll() ?? [] as $form) {
+            $this->createParentCampaignForDonationForm($form);
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function createParentCampaignForDonationForm($form)
+    {
+        $campaign = Campaign::create([
+            'title' => $form->title,
+            'goal' => $form->setting->goalAmount, // TODO: Reconcile form float goalAmount wih campaign integer goal.
+            'status' => $form->status, // TODO: Map form status to campaign status.
+        ]);
+
+        DB::table('give_campaign_forms')
+            ->insert([
+                'form_id' => $form->id,
+                'campaign_id' => $campaign->id,
+            ]);
     }
 }

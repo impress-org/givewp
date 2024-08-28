@@ -14,12 +14,10 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\Models\ValueObjects\Relationship;
 
 /**
  * @unreleased
  *
- * @property string $title
  * @property int            $id
  * @property int            $pageId
  * @property CampaignType   $type
@@ -43,7 +41,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $properties = [
-        'title' => 'string',
         'id' => 'int',
         'pageId' => 'int',
         'type' => CampaignType::class,
