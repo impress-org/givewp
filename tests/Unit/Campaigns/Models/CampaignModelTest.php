@@ -19,11 +19,9 @@ final class CampaignModelTest extends TestCase
     public function testFindShouldReturnCampaign()
     {
         $mockCampaign = Campaign::factory()->create();
-
         $campaign = Campaign::find($mockCampaign->id);
 
         $this->assertInstanceOf(Campaign::class, $campaign);
-        $this->assertSame($mockCampaign->id, $campaign->id);
-        $this->assertEquals($campaign, $mockCampaign);
+        $this->assertEquals($campaign->toArray(), $mockCampaign->toArray());
     }
 }
