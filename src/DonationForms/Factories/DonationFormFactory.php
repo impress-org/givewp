@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms\Factories;
 
+use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -11,7 +13,10 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationFormFactory extends ModelFactory
 {
     /**
+     * @unreleased add campaignId
      * @since 3.0.0
+     *
+     * @throws Exception
      */
     public function definition(): array
     {
@@ -22,6 +27,7 @@ class DonationFormFactory extends ModelFactory
         return [
             'title' => __('GiveWP Donation Form', 'give'),
             'status' => DonationFormStatus::PUBLISHED(),
+            'campaignId' => Campaign::factory()->create()->id,
             'settings' => FormSettings::fromArray([
                 'enableDonationGoal' => false,
                 'goalAmount' => $this->faker->numberBetween(100, 5000),
