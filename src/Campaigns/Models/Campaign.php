@@ -8,12 +8,14 @@ use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 
 /**
  * @unreleased
@@ -57,6 +59,15 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'endDate' => DateTime::class,
         'createdAt' => DateTime::class,
     ];
+
+    public function forms()
+    {
+        return DonationForm::query()
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'forms.id');
+            })->where('campaign_forms.campaign_id', $this->id);
+    }
 
     /**
      * @unreleased
