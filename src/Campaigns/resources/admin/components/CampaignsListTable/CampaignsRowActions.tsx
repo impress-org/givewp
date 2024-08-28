@@ -5,16 +5,16 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import {useSWRConfig} from 'swr';
 import ListTableApi from '@givewp/components/ListTable/api';
 
-const eventTicketsApi = new ListTableApi(window.GiveCampaignsListTable);
+const campaignsApi = new ListTableApi(window.GiveCampaignsListTable);
 
 export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
-    const salesCount = parseInt(item?.salesCount?.match(/^\d+/)[0], 10);
+    const donationsCount = parseInt(item?.donationsCount?.match(/^\d+/)[0], 10);
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await eventTicketsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        const response = await campaignsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
@@ -22,11 +22,11 @@ export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
 
     const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '', item.id, 'DELETE');
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Really delete event #%d?', 'give'), item.id)}</p>;
+    const confirmDelete = (selected) => <p>{sprintf(__('Really delete campaign #%d?', 'give'), item.id)}</p>;
 
-    const confirmModal = (event) => {
-        if (salesCount > 0) {
-            alert(__('This event cannot be deleted because it has donations associated with it.', 'give'));
+    const confirmModal = (campaign) => {
+        if (donationsCount > 0) {
+            alert(__('This campaign cannot be deleted because it has donations associated with it.', 'give'));
             return;
         }
 
@@ -36,7 +36,7 @@ export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
     return (
         <>
             <RowAction
-                href={`edit.php?post_type=give_forms&page=give-event-tickets&id=${item.id}`}
+                href={`edit.php?post_type=give_forms&page=give-campaigns&id=${item.id}`}
                 displayText={__('Edit', 'give')}
             />
             <RowAction

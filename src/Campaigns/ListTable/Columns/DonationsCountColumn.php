@@ -2,22 +2,19 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
-use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
  * @unreleased
  */
-class IdColumn extends ModelColumn
+class DonationsCountColumn extends ModelColumn
 {
-    protected $sortColumn = 'id';
-
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'id';
+        return 'donationsCount';
     }
 
     /**
@@ -25,16 +22,14 @@ class IdColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('ID', 'give');
+        return __('Donations', 'give');
     }
 
     /**
      * @unreleased
-     *
-     * @param Campaign $model
      */
-    public function getCellValue($model): int
+    public function getCellValue($model): string
     {
-        return $model->id;
+        return (string)$model->query()->count(); //Temp count
     }
 }

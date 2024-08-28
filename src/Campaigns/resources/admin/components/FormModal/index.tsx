@@ -5,7 +5,7 @@ import styles from './FormModal.module.scss';
 /**
  * Form Modal component that renders a modal with a styled form inside
  *
- * @since 3.6.0
+ * @unreleased
  */
 export default function FormModal({
     isOpen,
@@ -24,7 +24,7 @@ export default function FormModal({
             title={title}
             wrapperClassName={styles.formModal}
         >
-            <form className={`givewp-event-tickets__form ${className}`} onSubmit={handleSubmit}>
+            <form className={`givewp-campaigns__form ${className}`} onSubmit={handleSubmit}>
                 <ErrorMessages errors={errors} />
 
                 {children}

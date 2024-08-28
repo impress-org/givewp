@@ -8,16 +8,14 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class IdColumn extends ModelColumn
+class StatusColumn extends ModelColumn
 {
-    protected $sortColumn = 'id';
-
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'id';
+        return 'status';
     }
 
     /**
@@ -25,7 +23,7 @@ class IdColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('ID', 'give');
+        return __('Status', 'give');
     }
 
     /**
@@ -33,8 +31,8 @@ class IdColumn extends ModelColumn
      *
      * @param Campaign $model
      */
-    public function getCellValue($model): int
+    public function getCellValue($model)
     {
-        return $model->id;
+        return $model->status->getValue();
     }
 }

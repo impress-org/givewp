@@ -2,7 +2,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
-import EventTicketsApi from '../api';
+import CampaignsApi from '../api';
 
 /**
  * Get the next sharp hour
@@ -38,12 +38,12 @@ const removeTimezoneFromDateISOString = (date: string) => {
 };
 
 /**
- * Event Form Modal component
+ * Campaign Form Modal component
  *
  * @unreleased
  */
-export default function EventFormModal({isOpen, handleClose, apiSettings, title, event}: EventModalProps) {
-    const API = new EventTicketsApi(apiSettings);
+export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
+    const API = new CampaignsApi(apiSettings);
 
     const {
         register,
@@ -51,13 +51,13 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
         formState: {errors, isDirty},
     } = useForm<Inputs>({
         defaultValues: {
-            title: event?.title ?? '',
-            description: event?.description ?? '',
+            title: campaign?.title ?? '',
+            description: campaign?.description ?? '',
             startDateTime: getDateString(
-                event?.startDateTime?.date ? new Date(event?.startDateTime?.date) : getNextSharpHour(1)
+                campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
             endDateTime: getDateString(
-                event?.endDateTime?.date ? new Date(event?.endDateTime?.date) : getNextSharpHour(2)
+                campaign?.endDateTime?.date ? new Date(campaign?.endDateTime?.date) : getNextSharpHour(2)
             ),
         },
     });
@@ -67,12 +67,12 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
             inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
 
-            const endpoint = event?.id ? `/event/${event.id}` : '';
+            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
             handleClose(response);
         } catch (error) {
-            console.error('Error submitting event event', error);
+            console.error('Error submitting campaign campaign', error);
         }
     };
 
@@ -83,31 +83,31 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
             title={title}
             handleSubmit={handleSubmit(onSubmit)}
             errors={errors}
-            className={styles.eventForm}
+            className={styles.campaignForm}
         >
-            <div className="givewp-event-tickets__form-row">
-                <label htmlFor="title">{__('Event Name', 'give')}</label>
+            <div className="givewp-campaigns__form-row">
+                <label htmlFor="title">{__('Campaign Name', 'give')}</label>
                 <input
                     type="text"
-                    {...register('title', {required: __('The event must have a name!', 'give')})}
+                    {...register('title', {required: __('The campaign must have a name!', 'give')})}
                     aria-invalid={errors.title ? 'true' : 'false'}
-                    placeholder={__('Enter event name', 'give')}
+                    placeholder={__('Enter campaign name', 'give')}
                 />
             </div>
-            <div className="givewp-event-tickets__form-row">
+            <div className="givewp-campaigns__form-row">
                 <label htmlFor="description">{__('Description', 'give')}</label>
                 <textarea {...register('description')} rows={4} />
             </div>
-            <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
-                <div className="givewp-event-tickets__form-column">
+            <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                <div className="givewp-campaigns__form-column">
                     <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
                     <input
                         type="datetime-local"
-                        {...register('startDateTime', {required: __('The event must have a start date!', 'give')})}
+                        {...register('startDateTime', {required: __('The campaign must have a start date!', 'give')})}
                         aria-invalid={errors.startDateTime ? 'true' : 'false'}
                     />
                 </div>
-                <div className="givewp-event-tickets__form-column">
+                <div className="givewp-campaigns__form-column">
                     <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
                     <input type="datetime-local" {...register('endDateTime')} />
                 </div>
@@ -119,13 +119,13 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
                 aria-disabled={!isDirty}
                 disabled={!isDirty}
             >
-                {event?.id ? __('Save changes', 'give') : __('Save event', 'give')}
+                {campaign?.id ? __('Save changes', 'give') : __('Save campaign', 'give')}
             </button>
         </FormModal>
     );
 }
 
-type Event = {
+type Campaign = {
     id?: number;
     title: string;
     description: string;
@@ -150,7 +150,7 @@ type Inputs = {
     endDateTime: string;
 };
 
-interface EventModalProps {
+interface CampaignModalProps {
     isOpen: boolean;
     handleClose: (response?: any) => void;
     apiSettings: {
@@ -158,5 +158,5 @@ interface EventModalProps {
         apiNonce: string;
     };
     title: string;
-    event?: Event;
+    campaign?: Campaign;
 }

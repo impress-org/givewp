@@ -1,4 +1,4 @@
-export default class EventTicketsApi {
+export default class CampaignsApi {
     private readonly apiRoot: string;
     private readonly headers: {'X-WP-Nonce': string; 'Content-Type': string};
 

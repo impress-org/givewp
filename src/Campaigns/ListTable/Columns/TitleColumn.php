@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
+use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -24,22 +25,21 @@ class TitleColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Campaign', 'give');
+        return __('Title', 'give');
     }
 
     /**
      * @unreleased
+     *
+     * @param Campaign $model
      */
     public function getCellValue($model): string
     {
-        $id = 1; //$model->id;
-        $title = 'Camping Title #1'; //$model->title
-
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id=$id"),
+            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id=$model->id"),
             __('Visit campaign page', 'give'),
-            $title
+            $model->title
         );
     }
 }

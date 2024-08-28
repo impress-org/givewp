@@ -5,7 +5,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import {CampaignsRowActions} from './CampaignsRowActions';
-import styles from './EventTicketsListTable.module.scss';
+import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 
@@ -17,13 +17,15 @@ declare global {
 
 const API = new ListTableApi(window.GiveCampaignsListTable);
 
+console.log('window.GiveCampaignsListTable: ', window.GiveCampaignsListTable);
+
 const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
         text: __('Search by keyword', 'give'),
-        ariaLabel: __('search events', 'give'),
+        ariaLabel: __('search campaigns', 'give'),
     },
 ];
 
@@ -37,11 +39,11 @@ const bulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following events?', 'give')}</p>
+                <p>{__('Really delete the following campaigns?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
-                    {selected.map((eventId, index) => (
-                        <li key={eventId}>
-                            <IdBadge id={eventId} />{' '}
+                    {selected.map((campaignId, index) => (
+                        <li key={campaignId}>
+                            <IdBadge id={campaignId} />{' '}
                             <span>
                                 {__('from ', 'give')} <Interweave content={names[index]} />
                             </span>
@@ -54,36 +56,36 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 /**
- * Displays a blank slate for the EventTickets table.
+ * Displays a blank slate for the Campaigns table.
  *
- * @since 3.6.0
+ * @unreleased
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveCampaignsListTable.pluginUrl}/assets/dist/images/list-table/blank-slate-events-icon.svg`;
+    const imagePath = `${window.GiveCampaignsListTable.pluginUrl}/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
     return (
         <div className={styles.container}>
-            <img src={imagePath} alt={__('No event created yet', 'give')} />
-            <h3>{__('No event created yet', 'give')}</h3>
-            <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first event.', 'give')}</p>
+            <img src={imagePath} alt={__('No campaign created yet', 'give')} />
+            <h3>{__('No campaign created yet', 'give')}</h3>
+            <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first campaign.', 'give')}</p>
             <p>
                 <a
-                    href={`${window.GiveCampaignsListTable.adminUrl}edit.php?post_type=give_forms&page=give-event-tickets&new=event`}
+                    href={`${window.GiveCampaignsListTable.adminUrl}edit.php?post_type=give_forms&page=give-campaigns&new=campaign`}
                     className={`button button-primary ${styles.button}`}
                 >
-                    {__('Create event', 'give')}
+                    {__('Create campaign', 'give')}
                 </a>
             </p>
         </div>
     );
 };
 
-export default function EventTicketsListTable() {
+export default function CampaignsListTable() {
     return (
         <>
             <ListTablePage
-                title={__('Events', 'give')}
-                singleName={__('event', 'give')}
-                pluralName={__('events', 'give')}
+                title={__('Campaigns', 'give')}
+                singleName={__('campaign', 'give')}
+                pluralName={__('campaigns', 'give')}
                 apiSettings={window.GiveCampaignsListTable}
                 filterSettings={filters}
                 bulkActions={bulkActions}

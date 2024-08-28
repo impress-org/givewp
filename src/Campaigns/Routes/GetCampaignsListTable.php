@@ -88,18 +88,18 @@ class GetCampaignsListTable
             [
                 'id' => 1,
                 'title' => '<a href="https://givewp.local/wp-admin/edit.php?post_type=give_forms&page=campaigns&id=1" aria-label="Visit Campaigns page">Campaign 1</a>',
-                'description' => '',
-                'salesAmount' => '<div role="progressbar" aria-labelledby="giveEventTicketsProgressBar-2" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="goalProgress"><span style="width: 0%"></span></div><div id="giveEventTicketsProgressBar-2">$0.00 of $1,500.00</div>',
-                'salesCount' => '0 out of 100',
-                'startDateTime' => '06/05/2024 at 11:00am',
+                'description' => 'This is the campaign 1',
+                'donationsCount' => '8',
+                'startDate' => '06/05/2024 at 11:00am',
+                'status' => 'DRAFT',
             ],
             [
                 'id' => 2,
                 'title' => '<a href="https://givewp.local/wp-admin/edit.php?post_type=give_forms&page=campaigns&id=2" aria-label="Visit Campaigns page">Campaign 2</a>',
-                'description' => '',
-                'salesAmount' => '<div role="progressbar" aria-labelledby="giveEventTicketsProgressBar-2" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="goalProgress"><span style="width: 0%"></span></div><div id="giveEventTicketsProgressBar-2">$0.00 of $1,500.00</div>',
-                'salesCount' => '0 out of 100',
-                'startDateTime' => '06/05/2024 at 11:00am',
+                'description' => 'This is the campaign 2',
+                'donationsCount' => '16',
+                'startDate' => '06/05/2024 at 11:00am',
+                'status' => 'PUBLISHED',
             ],
         ];
 

@@ -8,16 +8,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class IdColumn extends ModelColumn
+class StartDateColumn extends ModelColumn
 {
-    protected $sortColumn = 'id';
+    protected $sortColumn = 'startDate';
 
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'id';
+        return 'startDate';
     }
 
     /**
@@ -25,7 +25,7 @@ class IdColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('ID', 'give');
+        return __('Start Date', 'give');
     }
 
     /**
@@ -33,8 +33,10 @@ class IdColumn extends ModelColumn
      *
      * @param Campaign $model
      */
-    public function getCellValue($model): int
+    public function getCellValue($model, $locale = ''): string
     {
-        return $model->id;
+        $format = _x('m/d/Y \a\t g:ia', 'date format', 'give');
+
+        return $model->startDate->format($format);
     }
 }

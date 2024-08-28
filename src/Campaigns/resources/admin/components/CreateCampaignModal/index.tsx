@@ -12,15 +12,15 @@ const autoOpenModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const newParam = queryParams.get('new');
 
-    return newParam === 'event';
+    return newParam === 'campaign';
 };
 
 /**
- * Create Event Modal component
+ * Create Campaign Modal component
  *
  * @unreleased
  */
-export default function CreateEventModal() {
+export default function CreateCampaignModal() {
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
     const openModal = () => setOpen(true);
     const closeModal = (response: ResponseProps = {}) => {
@@ -29,7 +29,7 @@ export default function CreateEventModal() {
         if (response?.id) {
             window.location.href =
                 window.GiveCampaignsListTable.adminUrl +
-                'edit.php?post_type=give_forms&page=give-event-tickets&id=' +
+                'edit.php?post_type=give_forms&page=give-campaigns&id=' +
                 response?.id;
         }
     };
@@ -40,13 +40,13 @@ export default function CreateEventModal() {
 
     return (
         <>
-            <a className={`button button-primary ${styles.createEventButton}`} onClick={openModal}>
-                {__('Create event', 'give')}
+            <a className={`button button-primary ${styles.createCampaignButton}`} onClick={openModal}>
+                {__('Create campaign', 'give')}
             </a>
             <CampaignFormModal
                 isOpen={isOpen}
                 handleClose={closeModal}
-                title={__('Create your event', 'give')}
+                title={__('Create your campaign', 'give')}
                 apiSettings={apiSettings}
             />
         </>
