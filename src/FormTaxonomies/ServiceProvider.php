@@ -6,13 +6,13 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function register()
     {
@@ -25,7 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function boot()
     {

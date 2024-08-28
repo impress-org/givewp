@@ -7,7 +7,7 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class EnqueueFormBuilderAssets
 {
@@ -17,7 +17,7 @@ class EnqueueFormBuilderAssets
     protected $viewModel;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __construct(FormTaxonomyViewModel $viewModel)
     {
@@ -25,7 +25,7 @@ class EnqueueFormBuilderAssets
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __invoke()
     {

@@ -3,6 +3,7 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\DeleteCampaignPage;
+use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
@@ -38,7 +39,6 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class); 
     }
 
-
     /**
      * @unreleased
      */
@@ -49,10 +49,10 @@ class ServiceProvider implements ServiceProviderInterface
                 CreateCampaignsTable::class,
                 SetCampaignType::class,
                 CreateCampaignFormsTable::class,
+                MigrateFormsToCampaignForms::class,
             ]
         );
     }
-
 
     /**
      * @unreleased
@@ -64,7 +64,6 @@ class ServiceProvider implements ServiceProviderInterface
         $wpdb->give_campaigns = $wpdb->prefix . 'give_campaigns';
         $wpdb->give_campaign_forms = $wpdb->prefix . 'give_campaign_forms';
     }
-
 
     /**
      * @unreleased
