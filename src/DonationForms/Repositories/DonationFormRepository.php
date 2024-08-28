@@ -35,6 +35,7 @@ class DonationFormRepository
     private $paymentGatewayRegister;
 
     /**
+     * @unreleased add campaignId
      * @since 3.0.0
      *
      * @var string[]
@@ -43,6 +44,7 @@ class DonationFormRepository
         'status',
         'title',
         'blocks',
+        'campaignId',
     ];
 
     /**
@@ -70,6 +72,7 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased Save campaignId in give_formmeta
      * @since 3.7.0 Add post_excerpt to the list of fields being inserted
      * @since 3.0.0
      *
@@ -125,6 +128,13 @@ class DonationFormRepository
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
                     'meta_value' => $donationForm->blocks->toJson(),
+                ]);
+
+            DB::table('give_formmeta')
+                ->insert([
+                    'form_id' => $donationFormId,
+                    'meta_key' => DonationFormMetaKeys::CAMPAIGN_ID()->getValue(),
+                    'meta_value' => $donationForm->campaignId,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

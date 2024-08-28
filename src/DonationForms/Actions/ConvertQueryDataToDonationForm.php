@@ -20,6 +20,7 @@ class ConvertQueryDataToDonationForm
     {
         return new DonationForm([
             'id' => (int)$queryObject->id,
+            'campaignId' => (int)$queryObject->campaignId,
             'title' => $queryObject->title,
             'createdAt' => Temporal::toDateTime($queryObject->createdAt),
             'updatedAt' => Temporal::toDateTime($queryObject->updatedAt),

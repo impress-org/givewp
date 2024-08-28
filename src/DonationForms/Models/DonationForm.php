@@ -19,9 +19,11 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 
 /**
+ * @unreleased add campaignId
  * @since 3.0.0
  *
  * @property int $id
+ * @property int $campaignId
  * @property string $title
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
@@ -36,6 +38,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'campaignId' => 'int',
         'title' => 'string',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,

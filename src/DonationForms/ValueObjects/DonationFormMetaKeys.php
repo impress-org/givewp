@@ -10,8 +10,10 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  *
  * @method static DonationFormMetaKeys SETTINGS()
  * @method static DonationFormMetaKeys FIELDS()
+ * @method static DonationFormMetaKeys CAMPAIGN_ID()
  * @method bool isSettings()
  * @method bool isFields()
+ * @method bool isCampaignId()
  */
 class DonationFormMetaKeys extends Enum
 {
@@ -20,4 +22,6 @@ class DonationFormMetaKeys extends Enum
     const SETTINGS = 'formBuilderSettings';
 
     const FIELDS = 'formBuilderFields';
+
+    const CAMPAIGN_ID = 'campaignId';
 }
