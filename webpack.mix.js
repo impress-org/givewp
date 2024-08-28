@@ -22,6 +22,7 @@ mix.setPublicPath('assets/dist')
         'src/Promotions/InPluginUpsells/resources/css/stellarwp-sales-banner.scss',
         'css/admin-stellarwp-sales-banner.css'
     )
+    .sass('src/DonationForms/AsyncData/resources/loadAsyncData.scss', 'css/give-donation-forms-load-async-data.css')
 
     .js('assets/src/js/frontend/give.js', 'js/')
     .js('assets/src/js/frontend/give-stripe.js', 'js/')
@@ -45,6 +46,7 @@ mix.setPublicPath('assets/dist')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .js('src/Promotions/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
+    .js('src/DonationForms/AsyncData/resources/loadAsyncData.js', 'js/give-donation-forms-load-async-data.js')
 
     .ts('src/DonationForms/V2/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
     .ts('src/DonationForms/V2/resources/edit-v2form.tsx', 'js/give-edit-v2form.js')
@@ -58,7 +60,6 @@ mix.setPublicPath('assets/dist')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
-    .ts('src/Campaigns/resources/admin/campaigns-list-table.tsx', 'js/give-admin-campaigns-list-table.js')
 
     .react()
     .sourceMaps(false, 'source-map')
