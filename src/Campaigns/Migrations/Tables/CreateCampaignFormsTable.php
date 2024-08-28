@@ -45,15 +45,15 @@ class CreateCampaignFormsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'give_campaign_forms';
+        $table = $wpdb->give_campaign_forms;
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
-			campaign_id INT UNSIGNED NOT NULL,
-			form_id INT UNSIGNED NOT NULL,
-			PRIMARY KEY  (campaign_id),
-			KEY form_id (form_id)
-		) $charset";
+            campaign_id INT UNSIGNED NOT NULL,
+            form_id INT UNSIGNED NOT NULL,
+            PRIMARY KEY  (campaign_id),
+            KEY form_id (form_id)
+        ) $charset";
 
         try {
             DB::delta($sql);

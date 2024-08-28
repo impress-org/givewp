@@ -18,7 +18,7 @@ class CreateCampaignsTable extends Migration
      */
     public static function id(): string
     {
-        return 'give-campaigns-create-give-core-campaigns-table';
+        return 'give-campaigns-create-give-campaigns-table';
     }
 
     /**
@@ -45,28 +45,29 @@ class CreateCampaignsTable extends Migration
     {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'give_campaigns';
+        $table = $wpdb->give_campaigns;
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE $table (
-			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			form_id INT NOT NULL,
-			campaign_type VARCHAR(12) NOT NULL DEFAULT '',
-			campaign_title TEXT NOT NULL,
-			campaign_url TEXT NOT NULL,
-			short_desc TEXT NOT NULL,
-			long_desc TEXT NOT NULL,
-			campaign_logo TEXT NOT NULL,
-			campaign_image TEXT NOT NULL,
-			primary_color VARCHAR(7) NOT NULL,
-			secondary_color VARCHAR(7) NOT NULL,
-			campaign_goal INT UNSIGNED NOT NULL,
-			status VARCHAR(12) NOT NULL,
-			start_date DATETIME NULL,
-			end_date DATETIME NULL,
-			date_created DATETIME NOT NULL,
-			PRIMARY KEY  (id)
-		) $charset";
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            campaign_page_id INT UNSIGNED NULL,
+            form_id INT NOT NULL,
+            campaign_type VARCHAR(12) NOT NULL DEFAULT '',
+            campaign_title TEXT NOT NULL,
+            campaign_url TEXT NOT NULL,
+            short_desc TEXT NOT NULL,
+            long_desc TEXT NOT NULL,
+            campaign_logo TEXT NOT NULL,
+            campaign_image TEXT NOT NULL,
+            primary_color VARCHAR(7) NOT NULL,
+            secondary_color VARCHAR(7) NOT NULL,
+            campaign_goal INT UNSIGNED NOT NULL,
+            status VARCHAR(12) NOT NULL,
+            start_date DATETIME NULL,
+            end_date DATETIME NULL,
+            date_created DATETIME NOT NULL,
+            PRIMARY KEY  (id)
+        ) $charset";
 
         try {
             DB::delta($sql);

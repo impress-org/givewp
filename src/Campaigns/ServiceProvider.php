@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Actions\DeleteCampaignPage;
+use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -28,11 +30,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        // Hooks::addAction('init', Actions\MyAction::class);
-        // Hooks::addAction('rest_api_init', Controllers\MyEndpoint::class);
-
-        $this->registerMigrations();
         $this->registerMenus();
+        $this->registerActions();
+        $this->registerMigrations();
     }
 
 
@@ -44,6 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations(
             [
                 CreateCampaignsTable::class,
+                SetCampaignType::class,
                 CreateCampaignFormsTable::class,
             ]
         );
@@ -59,6 +60,15 @@ class ServiceProvider implements ServiceProviderInterface
 
         $wpdb->give_campaigns = $wpdb->prefix . 'give_campaigns';
         $wpdb->give_campaign_forms = $wpdb->prefix . 'give_campaign_forms';
+    }
+
+
+    /**
+     * @unreleased
+     */
+    private function registerActions(): void
+    {
+        Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
     }
 
     /**
