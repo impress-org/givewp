@@ -218,6 +218,7 @@
 
         &:not([contenteditable]):focus::after {
             box-shadow: none;
+            outline-width: 0;
         }
 
         &.is-highlighted {
