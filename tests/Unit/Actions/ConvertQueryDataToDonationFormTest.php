@@ -32,6 +32,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase
 
         $queryData = (object)[
             'id' => 1,
+            'campaignId' => 1,
             'title' => 'Donation Form',
             'createdAt' => Temporal::getCurrentFormattedDateForDatabase(),
             'updatedAt' => Temporal::getCurrentFormattedDateForDatabase(),
@@ -49,6 +50,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase
 
         $mockDonationForm = new DonationForm([
             'id' => 1,
+            'campaignId' => 1,
             'title' => 'Donation Form',
             'createdAt' => Temporal::toDateTime($createdAt),
             'updatedAt' => Temporal::toDateTime($updatedAt),
