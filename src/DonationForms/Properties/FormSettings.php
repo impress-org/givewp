@@ -13,9 +13,10 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
+ * @since 3.16.0 Added $enableReceiptConfirmationPage property
  * @since 3.12.0 Add goalProgressType
- * @since      3.2.0 Remove addSlashesRecursive method
- * @since      3.0.0
+ * @since 3.2.0 Remove addSlashesRecursive method
+ * @since 3.0.0
  */
 class FormSettings implements Arrayable, Jsonable
 {
@@ -261,11 +262,15 @@ class FormSettings implements Arrayable, Jsonable
      * @var array
      */
     public $currencySwitcherSettings;
+    /**
+     * @since 3.16.0
+     * @var bool
+     */
+    public $enableReceiptConfirmationPage;
 
     /**
+     * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
-
-    /**
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
@@ -313,6 +318,9 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
+
+        $self->enableReceiptConfirmationPage = $array['enableReceiptConfirmationPage'] ?? false;
+
         $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();

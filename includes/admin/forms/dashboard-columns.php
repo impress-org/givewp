@@ -59,6 +59,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
+ * @since 3.16.0 Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
  * @param string $column_name Column name
@@ -86,6 +87,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
+                    do_action('give_admin_form_list_view_donations_goal_column_before', $post_id);
 
 					echo give_admin_form_goal_stats( $post_id );
 
@@ -105,7 +107,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
-						give_get_form_sales_stats( $post_id )
+                        apply_filters('give_admin_form_list_view_donations_count_column_value', give_get_form_sales_stats( $post_id ), $post_id)
 					);
 				} else {
 					echo '-';
@@ -116,7 +118,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
-						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) )
+                        apply_filters('give_admin_form_list_view_revenue_column_value', give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), [ 'sanitize' => false ] ) ), $post_id)
 					);
 				} else {
 					echo '-';
@@ -168,7 +170,8 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
- * @since 3.14.0 Use the 'give_donate_form_get_sales" filter to ensure the correct donation count will be used
+ * @since 3.16.0 Remove "give_donate_form_get_sales" filter logic
+ * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *
  * @param array $vars Array of all the sort variables.
@@ -180,10 +183,6 @@ function give_sort_forms( $vars ) {
 	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
 		return $vars;
 	}
-
-    add_filter('give_donate_form_get_sales', function ($sales, $donationFormId) {
-        return (new Give\MultiFormGoals\ProgressBar\Model(['ids' => [$donationFormId]]))->getDonationCount();
-    }, 10, 2);
 
 	switch ( $vars['orderby'] ) {
 		// Check if 'orderby' is set to "sales".

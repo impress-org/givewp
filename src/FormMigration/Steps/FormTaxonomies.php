@@ -5,12 +5,12 @@ namespace Give\FormMigration\Steps;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormTaxonomies extends FormMigrationStep
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function process()
     {
@@ -24,11 +24,11 @@ class FormTaxonomies extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function migrateTaxonomy($taxonomy): void
     {
-        $terms = get_terms(['post' => $this->formV2->id, 'taxonomy' => $taxonomy]);
+        $terms = wp_get_post_terms($this->formV2->id, $taxonomy);
         wp_set_post_terms($this->formV3->id, array_column($terms, 'term_id'), $taxonomy);
     }
 }

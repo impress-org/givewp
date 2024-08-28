@@ -49,8 +49,8 @@ class ServiceProvider implements ServiceProviderInterface
             $this->registerGateways();
         } catch (Exception $e) {
             Log::error('Error Registering Gateways', [
-                    'message' => $e->getMessage()
-                ]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -77,8 +77,8 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootOfflineDonations();
     }
 
-      /**
-       * @since 3.0.0
+    /**
+     * @since 3.0.0
      */
     private function addStripeWebhookListeners()
     {
@@ -120,7 +120,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @since 3.0.0
-     * @unreleased Add validation of card info.
      */
     private function addLegacyStripeAdapter()
     {
@@ -129,7 +128,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         $legacyStripeAdapter->addDonationDetails();
         $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
-        $legacyStripeAdapter->validateCardInformation();
     }
 
     /**
