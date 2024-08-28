@@ -110,6 +110,7 @@ class CampaignRepository
             DB::table('give_campaigns')
                 ->where('id', $campaign->id)
                 ->update([
+                    'campaign_type' => $campaign->type->getValue(),
                     'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
