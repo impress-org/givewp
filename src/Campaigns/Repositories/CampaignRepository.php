@@ -58,7 +58,7 @@ class CampaignRepository
             DB::table('give_campaigns')
                 ->insert([
                     'campaign_page_id' => $campaign->pageId,
-                    'campaign_type' => $campaign->type,
+                    'campaign_type' => $campaign->type->getValue(),
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
                     'long_desc' => $campaign->longDescription,
