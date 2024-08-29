@@ -3,7 +3,7 @@
 namespace Give\Campaigns\ListTable;
 
 use Give\Campaigns\ListTable\Columns\DescriptionColumn;
-use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
+use Give\Campaigns\ListTable\Columns\EndDateColumn;
 use Give\Campaigns\ListTable\Columns\IdColumn;
 use Give\Campaigns\ListTable\Columns\StartDateColumn;
 use Give\Campaigns\ListTable\Columns\StatusColumn;
@@ -35,8 +35,9 @@ class CampaignsListTable extends ListTable
             new IdColumn(),
             new TitleColumn(),
             new DescriptionColumn(),
-            new DonationsCountColumn(),
+            //new DonationsCountColumn(),
             new StartDateColumn(),
+            new EndDateColumn(),
             new StatusColumn(),
         ];
     }
@@ -52,8 +53,9 @@ class CampaignsListTable extends ListTable
             IdColumn::getId(),
             TitleColumn::getId(),
             DescriptionColumn::getId(),
-            DonationsCountColumn::getId(),
+            //DonationsCountColumn::getId(),
             StartDateColumn::getId(),
+            EndDateColumn::getId(),
             StatusColumn::getId(),
         ];
     }

@@ -15,7 +15,7 @@ class DescriptionColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'description';
+        return 'shortDescription';
     }
 
     /**
@@ -23,7 +23,7 @@ class DescriptionColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Description', 'give');
+        return __('Short Description', 'give');
     }
 
     /**
