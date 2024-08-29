@@ -17,8 +17,6 @@ declare global {
 
 const API = new ListTableApi(window.GiveCampaignsListTable);
 
-console.log('window.GiveCampaignsListTable: ', window.GiveCampaignsListTable);
-
 const filters: Array<FilterConfig> = [
     {
         name: 'search',

@@ -31,13 +31,6 @@ class LoadCampaignsListTableAssets
      */
     public static function registerAssets()
     {
-        /*wp_register_style(
-            LoadCampaignsListTableAssets::handleName(),
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-admin-campaigns-list-table.css',
-            [],
-            GIVE_VERSION
-        );*/
-
         wp_register_script(
             LoadCampaignsListTableAssets::handleName(),
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-campaigns-list-table.js',
@@ -64,7 +57,6 @@ class LoadCampaignsListTableAssets
     public static function enqueueAssets()
     {
         wp_enqueue_style('givewp-design-system-foundation');
-        //wp_enqueue_style(LoadCampaignsListTableAssets::handleName());
         wp_enqueue_script(LoadCampaignsListTableAssets::handleName());
     }
 }

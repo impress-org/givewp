@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Routes;
 
+use DateTime;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignStatus;
@@ -51,7 +52,7 @@ class CreateCampaign implements RestRoute
                         'required' => true,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
-                            return new \DateTime($value);
+                            return new DateTime($value);
                         },
                     ],
                     'endDateTime' => [
@@ -60,7 +61,7 @@ class CreateCampaign implements RestRoute
                         'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
-                            return new \DateTime($value);
+                            return new DateTime($value);
                         },
                     ],
                 ],
