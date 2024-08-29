@@ -31,6 +31,7 @@ class CampaignsListTable extends ListTable
      */
     protected function getDefaultColumns(): array
     {
+        // TODO We need to decide which columns should be displayed
         return [
             new IdColumn(),
             new TitleColumn(),
