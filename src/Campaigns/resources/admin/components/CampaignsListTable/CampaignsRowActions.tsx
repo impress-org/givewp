@@ -25,10 +25,10 @@ export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
     const confirmDelete = (selected) => <p>{sprintf(__('Really delete campaign #%d?', 'give'), item.id)}</p>;
 
     const confirmModal = (campaign) => {
-        if (donationsCount > 0) {
+        /*if (donationsCount > 0) {
             alert(__('This campaign cannot be deleted because it has donations associated with it.', 'give'));
             return;
-        }
+        }*/
 
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
     };

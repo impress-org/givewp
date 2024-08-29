@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
+use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -27,6 +28,8 @@ class DonationsCountColumn extends ModelColumn
 
     /**
      * @unreleased
+     *
+     * @param Campaign $model
      */
     public function getCellValue($model): string
     {
