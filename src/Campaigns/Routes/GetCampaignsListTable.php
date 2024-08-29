@@ -42,8 +42,8 @@ class GetCampaignsListTable implements RestRoute
             [
                 [
                     'methods' => WP_REST_Server::READABLE,
-                    'callback' => [$this, 'handleRequestMockup'],
-                    //'callback' => [$this, 'handleRequest'],
+                    //'callback' => [$this, 'handleRequestMockup'],
+                    'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
