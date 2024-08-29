@@ -194,8 +194,8 @@ class GetCampaignsListTable implements RestRoute
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('title', $search);
-                $query->orWhereLike('shortDescription', $search);
+                $query->whereLike('campaign_title', $search);
+                $query->orWhereLike('short_desc', $search);
             }
         }
 
