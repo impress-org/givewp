@@ -76,12 +76,19 @@ class CreateCampaign implements RestRoute
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $event = Campaign::create([
+            'pageId' => 0,
+            'type' => CampaignType::CORE(),
             'title' => $request->get_param('title'),
             'shortDescription' => $request->get_param('description'),
+            'longDescription' => $request->get_param('description'),
+            'logo' => '',
+            'image' => '',
+            'primaryColor' => '',
+            'secondaryColor' => '',
+            'goal' => 0,
+            'status' => CampaignStatus::DRAFT(),
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),
-            'status' => CampaignStatus::DRAFT(),
-            'type' => CampaignType::CORE(),
         ]);
 
         return new WP_REST_Response($event->toArray(), 201);
