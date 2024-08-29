@@ -52,7 +52,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     } = useForm<Inputs>({
         defaultValues: {
             title: campaign?.title ?? '',
-            description: campaign?.description ?? '',
+            shortDescription: campaign?.shortDescription ?? '',
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
@@ -95,8 +95,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 />
             </div>
             <div className="givewp-campaigns__form-row">
-                <label htmlFor="description">{__('Description', 'give')}</label>
-                <textarea {...register('description')} rows={4} />
+                <label htmlFor="shortDescription">{__('Short Description', 'give')}</label>
+                <textarea {...register('shortDescription')} rows={4} />
             </div>
             <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
                 <div className="givewp-campaigns__form-column">
@@ -128,7 +128,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 type Campaign = {
     id?: number;
     title: string;
-    description: string;
+    shortDescription: string;
     startDateTime: {
         date: string;
         timezone_type: number;
@@ -145,7 +145,7 @@ type Campaign = {
 
 type Inputs = {
     title: string;
-    description: string;
+    shortDescription: string;
     startDateTime: string;
     endDateTime: string;
 };
