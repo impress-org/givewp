@@ -3,8 +3,8 @@
 namespace Give\Campaigns\Routes;
 
 use Give\API\RestRoute;
+use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\EventTickets\ListTable\EventTicketsListTable;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -26,7 +26,7 @@ class DeleteCampaignListTable implements RestRoute
     protected $request;
 
     /**
-     * @var EventTicketsListTable
+     * @var CampaignsListTable
      */
     protected $listTable;
 
@@ -75,8 +75,8 @@ class DeleteCampaignListTable implements RestRoute
         $successes = [];
 
         foreach ($ids as $id) {
-            $eventDeleted = give(CampaignRepository::class)->getById($id)->delete();
-            $eventDeleted ? $successes[] = $id : $errors[] = $id;
+            $campaignDeleted = give(CampaignRepository::class)->getById($id)->delete();
+            $campaignDeleted ? $successes[] = $id : $errors[] = $id;
         }
 
         return new WP_REST_Response(['errors' => $errors, 'successes' => $successes]);
