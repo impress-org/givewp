@@ -13,6 +13,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
  * @unreleased
  *
  * @property int $id
+ * @property int $campaignId
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  */
@@ -20,6 +21,7 @@ class CampaignPage extends Model implements ModelCrud
 {
     public $properties = [
         'id' => 'int',
+        'campaignId' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -43,7 +45,7 @@ class CampaignPage extends Model implements ModelCrud
      */
     public function campaign()
     {
-        // TODO: Implement campaign() relationship method.
+        return Campaign::find($this->campaignId);
     }
 
     /**
@@ -105,7 +107,8 @@ class CampaignPage extends Model implements ModelCrud
     public static function fromQueryBuilderObject($object): CampaignPage
     {
         return new CampaignPage([
-            'id' => $object->ID,
+            'id' => (int) $object->id,
+            'campaignId' => (int) $object->campaignId,
         ]);
     }
 }

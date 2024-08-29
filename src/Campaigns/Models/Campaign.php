@@ -19,7 +19,6 @@ use Give\Framework\Models\ModelQueryBuilder;
  * @unreleased
  *
  * @property int            $id
- * @property int            $pageId
  * @property CampaignType   $type
  * @property string         $title
  * @property string         $url
@@ -42,7 +41,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'pageId' => 'int',
         'type' => CampaignType::class,
         'title' => 'string',
         'shortDescription' => 'string',
@@ -57,6 +55,14 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'endDate' => DateTime::class,
         'createdAt' => DateTime::class,
     ];
+
+    public function page()
+    {
+        return CampaignPage::query()
+            // TODO: Update the query builder to support attached meta in where clause.
+            ->where('postmeta_attach_meta_campaignId.meta_value', $this->id)
+            ->get();
+    }
 
     /**
      * @unreleased

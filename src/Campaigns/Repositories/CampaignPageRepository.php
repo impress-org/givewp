@@ -14,7 +14,7 @@ use Give\Log\Log;
 class CampaignPageRepository
 {
     protected $requiredProperties = [
-        //
+        'campaignId',
     ];
 
     public function insert(CampaignPage $campaignPage): void
@@ -44,6 +44,13 @@ class CampaignPageRepository
             $campaignPage->id = DB::last_insert_id();;
             $campaignPage->createdAt = $dateCreated;
             $campaignPage->updatedAt = $dateUpdated;
+
+            DB::table('postmeta')
+                ->insert([
+                    'post_id' => $campaignPage->id,
+                    'meta_key' => 'campaignId',
+                    'meta_value' => $campaignPage->campaignId,
+                ]);
 
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -81,6 +88,13 @@ class CampaignPageRepository
 
             $campaignPage->updatedAt = $now;
 
+            DB::table('postmeta')
+                ->where('post_id', $campaignPage->id)
+                ->where('meta_key', 'campaignId')
+                ->update([
+                    'meta_value' => $campaignPage->campaignId,
+                ]);
+
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -103,6 +117,10 @@ class CampaignPageRepository
         try {
             DB::table('posts')
                 ->where('id', $campaignPage->id)
+                ->delete();
+
+            DB::table('postmeta')
+                ->where('post_id', $campaignPage->id)
                 ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -134,6 +152,12 @@ class CampaignPageRepository
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status']
+            )
+            ->attachMeta(
+                'postmeta',
+                'ID',
+                'post_id',
+                'campaignId'
             )
             ->where('post_type', 'give_campaign_page');
     }

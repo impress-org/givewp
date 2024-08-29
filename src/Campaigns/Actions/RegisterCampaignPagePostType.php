@@ -14,7 +14,7 @@ class RegisterCampaignPagePostType
     {
         register_post_type( 'give_campaign_page', [
             'label' => __('Campaign Page', 'give-peer-to-peer'),
-            'public' => false,
+            'public' => true,
             'show_ui' => true,
             'show_in_menu' => false,
             'show_in_rest' => true,
