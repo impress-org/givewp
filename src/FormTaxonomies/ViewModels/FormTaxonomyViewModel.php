@@ -3,24 +3,24 @@
 namespace Give\FormTaxonomies\ViewModels;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormTaxonomyViewModel
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      * @var int
      */
     protected $formId;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      * @var array
      */
     protected $settings;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __construct(int $formId, array $settings)
     {
@@ -29,7 +29,7 @@ class FormTaxonomyViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function isFormTagsEnabled(): bool
     {
@@ -37,7 +37,7 @@ class FormTaxonomyViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function isFormCategoriesEnabled(): bool
     {
@@ -45,7 +45,7 @@ class FormTaxonomyViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function getSelectedFormTags(): array
     {
@@ -64,7 +64,7 @@ class FormTaxonomyViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function getFormCategories(): array
     {
@@ -87,7 +87,7 @@ class FormTaxonomyViewModel
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function getSelectedFormCategories(): array
     {
