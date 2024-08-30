@@ -39,7 +39,7 @@ use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
-use Give\Framework\FieldsAPI\DonationForm;
+use Give\Framework\FieldsAPI\DonationForm as DonationFormModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -362,7 +362,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerHoneyPotField(): void
     {
-        add_action('givewp_donation_form_schema', function (DonationForm $form, int $formId) {
+        add_action('givewp_donation_form_schema', function (DonationFormModel $form, int $formId) {
             if (apply_filters('givewp_donation_forms_honeypot_enabled', false, $formId)) {
                 (new AddHoneyPotFieldToDonationForms())($form);
             }

@@ -3,13 +3,12 @@ namespace Give\DonationForms\Rules;
 
 use Closure;
 use Give\Log\Log;
-use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
  * @unreleased
  */
-class HoneyPotRule implements ValidationRule, ValidatesOnFrontEnd
+class HoneyPotRule implements ValidationRule
 {
 
     /**
@@ -42,13 +41,5 @@ class HoneyPotRule implements ValidationRule, ValidatesOnFrontEnd
                 __('Thank you for the submission!', 'give')
             );
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function serializeOption()
-    {
-        return null;
     }
 }
