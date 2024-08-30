@@ -339,6 +339,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows a donation receipt.
  *
+ * @since 3.16.0 add give_donation_confirmation_page_enqueue_scripts
  * @since 3.7.0 Sanitize and escape attributes
  * @since  1.0
  *
@@ -390,13 +391,15 @@ function give_receipt_shortcode( $atts ) {
 	if ( ! wp_doing_ajax() ) {
 		give_get_template_part( 'receipt/placeholder' );
 
-		return sprintf(
+        do_action('give_donation_confirmation_page_enqueue_scripts');
+
+		return apply_filters('give_receipt_shortcode_output', sprintf(
 			'<div id="give-receipt" data-shortcode="%1$s" data-receipt-type="%2$s" data-donation-key="%3$s" >%4$s</div>',
 			htmlspecialchars( wp_json_encode( $give_receipt_args ) ),
 			esc_attr($receipt_type),
 			esc_attr($donation_id),
 			ob_get_clean()
-		);
+		));
 	}
 
 	return give_display_donation_receipt( $atts );
@@ -630,7 +633,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
- * @unreleased Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
+ * @since 3.14.0 Replace "_give_form_earnings" form meta with $query->form($post)->sumAmount()
  * @since 3.7.0 Sanitize attributes
  * @since  2.1
  *
@@ -739,8 +742,8 @@ function give_totals_shortcode( $atts ) {
 
 		if ( isset( $forms->posts ) ) {
 			$total = 0;
-            $query = new DonationQuery();
 			foreach ( $forms->posts as $post ) {
+                $query = new DonationQuery();
 				$form_earning = $query->form($post)->sumAmount();
 				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
 

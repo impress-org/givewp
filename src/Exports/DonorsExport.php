@@ -157,12 +157,12 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 3.14.0
      */
     protected function filterColumnData(array $defaultColumns): array
     {
         /**
-         * @unreleased
+         * @since 3.14.0
          *
          * @param array $defaultColumns
          */
@@ -170,7 +170,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased allow cols to be filtered.
+     * @since 3.14.0 allow cols to be filtered.
      * @since 3.12.1 Include donor_phone_number col.
      * @since      2.29.0 Include donor created col
      * @since      2.21.2

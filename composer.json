@@ -103,6 +103,9 @@
             "exclude_from_copy": {
                 "packages": [
                     "symfony/deprecation-contracts"
+                ],
+                "file_patterns": [
+                    "/Tests/"
                 ]
             },
             "delete_vendor_packages": true,

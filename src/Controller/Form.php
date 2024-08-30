@@ -62,6 +62,7 @@ class Form
     /**
      * Load receipt view.
      *
+     * @since 3.16.0 add action give_donation_confirmation_page_enqueue_scripts
      * @since 2.7.0
      */
     public function loadReceiptView()
@@ -70,6 +71,8 @@ class Form
         if (FormUtils::isLegacyForm()) {
             return;
         }
+
+       do_action('give_donation_confirmation_page_enqueue_scripts');
 
         // Handle success page.
         if (FormUtils::isViewingFormReceipt() && ! FormUtils::isLegacyForm()) {
@@ -113,7 +116,6 @@ class Form
                 include $formTemplate->getReceiptView();
                 exit();
             }
-
             // Render receipt on success page in iframe.
             add_filter('the_content', [$this, 'showReceiptInIframeOnSuccessPage'], 1);
         }
@@ -164,6 +166,7 @@ class Form
     /**
      * Handle receipt shortcode on success page
      *
+     * @since 3.16.0 add filter give_donation_confirmation_success_page_shortcode_view
      * @since 2.7.0
      *
      * @param string $content
@@ -173,9 +176,10 @@ class Form
     public function showReceiptInIframeOnSuccessPage($content)
     {
         $receiptShortcode = ShortcodeUtils::getReceiptShortcodeFromConfirmationPage();
-        $content = str_replace($receiptShortcode, give_form_shortcode([]), $content);
 
-        return $content;
+        $view = apply_filters('give_donation_confirmation_success_page_shortcode_view', give_form_shortcode([]));
+
+        return str_replace($receiptShortcode, $view, $content);
     }
 
     /**
