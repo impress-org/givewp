@@ -5,6 +5,7 @@ namespace Give\Campaigns\Models;
 use DateTime;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
 use Give\Campaigns\Factories\CampaignFactory;
+use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -56,12 +57,12 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'createdAt' => DateTime::class,
     ];
 
+    /**
+     * @unreleased
+     */
     public function page()
     {
-        return CampaignPage::query()
-            // TODO: Update the query builder to support attached meta in where clause.
-            ->where('postmeta_attach_meta_campaignId.meta_value', $this->id)
-            ->get();
+        return give(CampaignPageRepository::class)->findByCampaignId($this->id);
     }
 
     /**

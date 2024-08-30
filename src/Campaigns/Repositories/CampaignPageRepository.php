@@ -17,6 +17,13 @@ class CampaignPageRepository
         'campaignId',
     ];
 
+    public function findByCampaignId(int $campaignId): ?CampaignPage
+    {
+        return $this->prepareQuery()
+            ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId)
+            ->get();
+    }
+
     public function insert(CampaignPage $campaignPage): void
     {
         $this->validate($campaignPage);
