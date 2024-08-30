@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\FormExcerpt
  */
@@ -20,7 +20,7 @@ class TestFormExcerpt extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormExcerptProcess(): void
     {

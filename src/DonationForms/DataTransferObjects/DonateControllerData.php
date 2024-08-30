@@ -187,7 +187,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased Added "givewp_donation_confirmation_page_redirect_enabled" filter
+     * @since 3.16.0 Added "givewp_donation_confirmation_page_redirect_enabled" filter
      * @since 3.0.0
      */
     public function getSuccessUrl(Donation $donation): string
@@ -230,7 +230,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function getDonationConfirmationPageFromSettings(Donation $donation): string
     {

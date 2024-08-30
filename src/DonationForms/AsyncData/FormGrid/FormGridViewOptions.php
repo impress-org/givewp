@@ -3,12 +3,12 @@
 namespace Give\DonationForms\AsyncData\FormGrid;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormGridViewOptions
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isAllProgressBarStatsAsync(): bool
     {
@@ -20,7 +20,7 @@ class FormGridViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isProgressBarAmountRaisedAsync(): bool
     {
@@ -32,7 +32,7 @@ class FormGridViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function isProgressBarDonationsCountAsync(): bool
     {
@@ -44,7 +44,7 @@ class FormGridViewOptions
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function useCachedMetaKeys()
     {

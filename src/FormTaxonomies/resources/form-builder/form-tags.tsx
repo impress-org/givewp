@@ -6,7 +6,7 @@ import {getInitialFormTags} from "./windowData";
 import {useState} from "react";
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const FormTagSetting = ({settings, setSettings}) => {
     const {formTags = getInitialFormTags()} = settings;
@@ -14,12 +14,12 @@ const FormTagSetting = ({settings, setSettings}) => {
     const [searchResults, setSearchResults] = useState([])
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     const searchTags = (search) => apiFetch({path: '/wp/v2/give_forms_tag?search=' + search}).then(setSearchResults)
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     const resolveFormTags = ( tags ) => {
         const [newTag, isNewAndUnique] = validateNewAndUnique(tags, formTags);
@@ -39,7 +39,7 @@ const FormTagSetting = ({settings, setSettings}) => {
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const findOrCreateTag = (name, callback) => {
     apiFetch( {path: '/wp/v2/give_forms_tag', method: 'POST', data: { name }} )
@@ -53,7 +53,7 @@ const findOrCreateTag = (name, callback) => {
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const validateNewAndUnique = (tags, previousTags): [string|null, boolean] => {
     // @note New terms are simple string inputs, as opposed to resolved objects ({id, value}).

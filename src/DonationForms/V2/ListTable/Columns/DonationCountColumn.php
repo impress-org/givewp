@@ -38,7 +38,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Add filter to change the cell value content
+     * @since 3.16.0 Add filter to change the cell value content
      * @since 3.14.0 Use the "getDonationCount()" method from progress bar model to ensure the correct donation count will be used
      * @since 2.24.0
      *

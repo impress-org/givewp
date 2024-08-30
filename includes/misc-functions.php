@@ -1928,7 +1928,7 @@ function give_get_nonce_field( $action, $name, $referer = false ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @unreleased Add form_id to the array return
+ * @since 3.16.0 Add form_id to the array return
  * @since 2.1
  *
  * @param int|Give_Donate_Form $form Form ID or Form Object.
@@ -1975,7 +1975,7 @@ function give_goal_progress_stats( $form ) {
             /**
              * Filter the form income.
              *
-             * @unreleased Revert changes implemented on the 3.14.0 version
+             * @since 3.16.0 Revert changes implemented on the 3.14.0 version
              * @since 3.14.0 Replace "$form->earnings" with (new DonationQuery())->form($form->ID)->sumIntendedAmount()
              * @since 1.8.8
              */

@@ -59,7 +59,7 @@ add_filter( 'manage_edit-give_forms_columns', 'give_form_columns' );
 /**
  * Render Give Form Columns
  *
- * @unreleased Add new filters for the "donations count" and "revenue" columns
+ * @since 3.16.0 Add new filters for the "donations count" and "revenue" columns
  * @since 1.0
  *
  * @param string $column_name Column name
@@ -170,7 +170,7 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
 /**
  * Sorts Columns in the Forms List Table
  *
- * @unreleased Remove "give_donate_form_get_sales" filter logic
+ * @since 3.16.0 Remove "give_donate_form_get_sales" filter logic
  * @since 3.14.0 Use the "give_donate_form_get_sales" filter to ensure the correct donation count will be used
  * @since 1.0
  *

@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\OfflineDonations
  */
@@ -20,7 +20,7 @@ class TestOfflineDonations extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testOfflineDonationsProcessAddsBillingAddressFieldWhenEnabled(): void
     {
@@ -40,7 +40,7 @@ class TestOfflineDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testOfflineDonationsProcessMigratesNotes(): void
     {

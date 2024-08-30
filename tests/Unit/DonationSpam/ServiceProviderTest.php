@@ -6,12 +6,12 @@ use Give\DonationSpam\EmailAddressWhiteList;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 final class ServiceProviderTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFilteredWhitelistIsArray()
     {

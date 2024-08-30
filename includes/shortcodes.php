@@ -339,7 +339,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * Shows a donation receipt.
  *
- * @unreleased add give_donation_confirmation_page_enqueue_scripts
+ * @since 3.16.0 add give_donation_confirmation_page_enqueue_scripts
  * @since 3.7.0 Sanitize and escape attributes
  * @since  1.0
  *

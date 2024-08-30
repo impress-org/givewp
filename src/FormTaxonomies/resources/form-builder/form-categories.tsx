@@ -5,7 +5,7 @@ import {decodeEntities} from "@wordpress/html-entities";
 import {useMemo} from "react";
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const FormCategorySetting = ({settings, setSettings}) => {
     const {
@@ -15,7 +15,7 @@ const FormCategorySetting = ({settings, setSettings}) => {
     const categoryTree = useMemo(() => buildTermsTree(getAvailableFormCategories()), [])
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     const onChange = (categoryId ) => {
         setSettings({formCategories: formCategories.includes( categoryId )
@@ -32,7 +32,7 @@ const FormCategorySetting = ({settings, setSettings}) => {
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const renderTerms = (availableTerms, selectedTerms, onChange) => {
     return availableTerms.map((term) => {

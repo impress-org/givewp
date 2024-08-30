@@ -3,12 +3,12 @@
 namespace Give\DonationForms\AsyncData\Actions;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class LoadAsyncDataAssets
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __invoke()
     {
@@ -17,7 +17,7 @@ class LoadAsyncDataAssets
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function handleName(): string
     {
@@ -25,7 +25,7 @@ class LoadAsyncDataAssets
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function registerAssets()
     {
@@ -55,7 +55,7 @@ class LoadAsyncDataAssets
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function enqueueAssets()
     {

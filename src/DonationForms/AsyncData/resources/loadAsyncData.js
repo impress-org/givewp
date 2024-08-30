@@ -8,7 +8,7 @@
  * 3) When the user scrolls the mouse
  * 4) When the user resizes the screen
  *
- * @unreleased
+ * @since 3.16.0
  */
 document.addEventListener('DOMContentLoaded', () => {
     /**
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * This function check if the element is visible on the screen.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function isInViewport(element) {
         const {top, bottom} = element.getBoundingClientRect();
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Check if an element is a placeholder waiting to have the value updated.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function isPlaceholder(element) {
         return !!element && Boolean(element.querySelector('.js-give-async-data'));
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * This function fetch the async data from the server and set the values to the proper elements in the DOM.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     const loadFormData = (
         formId,
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Handle the async data logic for ALL form list views available.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     const maybeLoadAsyncData = () => {
         // If the async requests were aborted on the "beforeunload" or "giveListTableIsLoading" event, we don't want to create more async requests
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Check for changes in the "giveListTable" classes to trigger the "giveListTableIsLoadingEvent" when appropriated.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function maybeTriggerGiveListTableIsLoadingEvent() {
         if (giveListTable) {
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Load the async data of all forms (visible on the screen) from the NEW admin form list view - giveListTable.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function handleAdminFormsListViewItems() {
         const adminFormsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Load the async data of all forms (visible on the screen) from the LEGACY admin form list view.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function handleAdminLegacyFormsListViewItems() {
         const adminLegacyFormsListViewItems = document.querySelectorAll(
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Load the async data in all form grid items that have the progress bar enabled.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     function handleFormGridItems() {
         const formGridItems = document.querySelectorAll('.give-grid__item:not(.give-async-data-fetch-triggered)');

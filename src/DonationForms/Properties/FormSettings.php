@@ -13,7 +13,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
- * @unreleased Added $enableReceiptConfirmationPage property
+ * @since 3.16.0 Added $enableReceiptConfirmationPage property
  * @since 3.12.0 Add goalProgressType
  * @since 3.2.0 Remove addSlashesRecursive method
  * @since 3.0.0
@@ -263,13 +263,13 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $currencySwitcherSettings;
     /**
-     * @unreleased
+     * @since 3.16.0
      * @var bool
      */
     public $enableReceiptConfirmationPage;
 
     /**
-     * @unreleased Added $enableReceiptConfirmationPage
+     * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification

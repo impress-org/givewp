@@ -9,7 +9,7 @@ class ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe
     /**
      * Replace the give_receipt shortcode with the v3 confirmation page iframe.
      *
-     * @unreleased
+     * @since 3.16.0
      */
     public function __invoke(string $view): string
     {

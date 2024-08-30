@@ -93,7 +93,7 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         /**
-         * @unreleased
+         * @since 3.16.0
          * Print form meta tags
          */
         Hooks::addAction('wp_head', PrintFormMetaTags::class);
@@ -215,7 +215,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     private function registerAddFormSubmenuLink()
     {

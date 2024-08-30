@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class TestReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testShouldNotReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe()
     {
@@ -28,7 +28,7 @@ class TestReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe extends 
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testShouldNotReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframeIfInvalidReceiptId(): void
     {
@@ -41,7 +41,7 @@ class TestReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe extends 
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testShouldReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe(): void
     {

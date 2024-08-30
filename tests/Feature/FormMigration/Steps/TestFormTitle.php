@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\FormTitle
  */
@@ -20,7 +20,7 @@ class TestFormTitle extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormTitleProcess(): void
     {

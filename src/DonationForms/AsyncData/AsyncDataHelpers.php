@@ -6,12 +6,12 @@ use Give\DonationForms\DonationQuery;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class AsyncDataHelpers
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function getFormDonationsCountValue($formId): int
     {
@@ -19,7 +19,7 @@ class AsyncDataHelpers
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function getFormRevenueValue($formId): int
     {
@@ -27,7 +27,7 @@ class AsyncDataHelpers
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public static function getSkeletonPlaceholder($width = '100%', $height = '0.7rem'): string
     {
