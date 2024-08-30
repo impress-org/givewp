@@ -11,12 +11,21 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
+/**
+ * @unreleased
+ */
 class CampaignPageRepository
 {
+    /**
+     * @unreleased
+     */
     protected $requiredProperties = [
         'campaignId',
     ];
 
+    /**
+     * @unreleased
+     */
     public function findByCampaignId(int $campaignId): ?CampaignPage
     {
         return $this->prepareQuery()
@@ -24,6 +33,9 @@ class CampaignPageRepository
             ->get();
     }
 
+    /**
+     * @unreleased
+     */
     public function insert(CampaignPage $campaignPage): void
     {
         $this->validate($campaignPage);
@@ -72,6 +84,9 @@ class CampaignPageRepository
         Hooks::doAction('givewp_campaign_page_created', $campaignPage);
     }
 
+    /**
+     * @unreleased
+     */
     public function update(CampaignPage $campaignPage): void
     {
         $this->validate($campaignPage);
@@ -115,6 +130,9 @@ class CampaignPageRepository
         Hooks::doAction('givewp_campaign_page_updated', $campaignPage);
     }
 
+    /**
+     * @unreleased
+     */
     public function delete(CampaignPage $campaignPage): bool
     {
         DB::query('START TRANSACTION');
@@ -169,6 +187,9 @@ class CampaignPageRepository
             ->where('post_type', 'give_campaign_page');
     }
 
+    /**
+     * @unreleased
+     */
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
