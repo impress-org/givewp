@@ -79,11 +79,7 @@ function DonationConfirmationReceiptApp() {
 
 const root = document.getElementById('root-givewp-donation-confirmation-receipt');
 
-if (createRoot) {
-    createRoot(root).render(<DonationConfirmationReceiptApp />);
-} else {
-    render(<DonationConfirmationReceiptApp />, root);
-}
+createRoot(root).render(<DonationConfirmationReceiptApp />);
 
 root.scrollIntoView({
     behavior: 'smooth',
