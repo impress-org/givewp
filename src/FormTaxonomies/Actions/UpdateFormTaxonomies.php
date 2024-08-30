@@ -6,12 +6,12 @@ use Give\DonationForms\Models\DonationForm;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class UpdateFormTaxonomies
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function __invoke(DonationForm $form, WP_REST_Request $request)
     {
@@ -29,7 +29,7 @@ class UpdateFormTaxonomies
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function validateTermIds(array $termsIds): array
     {

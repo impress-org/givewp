@@ -177,7 +177,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							],
 						],
 						[
-							'name'        => 'GiveWP Cache',
+							'name'        => __( 'GiveWP Cache', 'give' ),
 							'id'          => 'give-clear-cache',
 							'buttonTitle' => __( 'Clear Cache', 'give' ),
 							'desc'        => __( 'Click this button if you want to clear GiveWP\'s cache. The plugin stores common settings and queries in cache to optimize performance. Clearing cache will remove and begin rebuilding these saved queries.', 'give' ),
