@@ -26,6 +26,16 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
+    public function getById(int $id)
+    {
+        return $this->prepareQuery()
+            ->where('id', $id)
+            ->get();
+    }
+
+    /**
+     * @unreleased
+     */
     public function findByCampaignId(int $campaignId): ?CampaignPage
     {
         return $this->prepareQuery()

@@ -8,6 +8,7 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @unreleased
@@ -109,6 +110,8 @@ class CampaignPage extends Model implements ModelCrud
         return new CampaignPage([
             'id' => (int) $object->id,
             'campaignId' => (int) $object->campaignId,
+            'createdAt' => Temporal::toDateTime($object->createdAt),
+            'updatedAt' => Temporal::toDateTime($object->updatedAt),
         ]);
     }
 }
