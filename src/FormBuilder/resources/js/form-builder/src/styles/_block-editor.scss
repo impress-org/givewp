@@ -218,6 +218,7 @@
 
         &:not([contenteditable]):focus::after {
             box-shadow: none;
+            content: none;
             outline-width: 0;
         }
 
