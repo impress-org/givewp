@@ -3,6 +3,7 @@ import {useDonationFormMultiStepState} from "@givewp/forms/app/form/MultiStepFor
 import usePrevious from "@givewp/forms/app/form/MultiStepForm/hooks/usePreviousValue";
 import classNames from "classnames";
 import StepsWrapper from "@givewp/forms/app/form/MultiStepForm/components/StepsWrapper";
+import { useEffect } from "react";
 
 /**
  * @since 3.0.0
@@ -15,6 +16,14 @@ import StepsWrapper from "@givewp/forms/app/form/MultiStepForm/components/StepsW
 export default function Steps({steps}: { steps: StepObject[] }) {
     const {currentStep} = useDonationFormMultiStepState();
     const previousStep = usePrevious(currentStep);
+
+    /**
+     * @since 3.16.0 Scroll to the top of the iframe when the step changes.
+     */
+    useEffect(() => {
+        /* @ts-ignore */
+        window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
+    }, [currentStep]);
 
     const stepElements = steps?.map(({id, element}) => {
         const shouldRenderElement = currentStep >= id;

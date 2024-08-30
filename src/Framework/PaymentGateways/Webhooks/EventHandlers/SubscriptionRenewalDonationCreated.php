@@ -15,7 +15,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
-     * @unreleased Add log messages and a defensive approach to prevent duplicated renewals
+     * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
      */
     public function __invoke(

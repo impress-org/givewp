@@ -314,6 +314,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     formData.append('action', 'give_paypal_commerce_disconnect_account');
                     formData.append('mode', button.getAttribute('data-mode'));
                     formData.append('keep-webhooks', Boolean(keepWebhooks));
+                    formData.append('_ajax_nonce', button.getAttribute('data-nonce'));
 
                     requestData.method = 'POST';
                     requestData.body = formData;
