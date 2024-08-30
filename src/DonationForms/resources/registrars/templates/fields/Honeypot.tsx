@@ -18,6 +18,7 @@ export default function Honeypot({
     const {setError, clearErrors} = window.givewp.form.hooks.useFormContext();
 
     useEffect(() => {
+        // relocate the field error to a form error if the field error is present
         if (fieldError) {
             clearErrors(inputProps.name);
 

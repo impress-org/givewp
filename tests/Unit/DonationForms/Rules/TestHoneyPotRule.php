@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\DonationForms\Actions;
 
 use Give\DonationForms\Rules\HoneyPotRule;
+use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
@@ -21,13 +22,13 @@ class TestHoneyPotRule extends TestCase
      */
     public function testHoneyPotRule($value, bool $shouldBeValid): void
     {
+        if (!$shouldBeValid) {
+            $this->expectException(SpamDonationException::class);
+        }
+
         $rule = new HoneyPotRule();
 
-        if ($shouldBeValid) {
-            self::assertValidationRulePassed($rule, $value);
-        } else {
-            self::assertValidationRuleFailed($rule, $value);
-        }
+        self::assertValidationRulePassed($rule, $value);
     }
 
     /**

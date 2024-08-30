@@ -2,6 +2,7 @@
 namespace Give\DonationForms\Rules;
 
 use Closure;
+use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\Log\Log;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
@@ -29,6 +30,7 @@ class HoneyPotRule implements ValidationRule
 
     /**
     * @unreleased
+     * @throws SpamDonationException
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -37,9 +39,7 @@ class HoneyPotRule implements ValidationRule
                 'formId' => $values['formId'] ?? null,
             ]);
 
-            $fail(
-                __('Thank you for the submission!', 'give')
-            );
+            throw new SpamDonationException(__('Thank you for the submission!', 'give'));
         }
     }
 }
