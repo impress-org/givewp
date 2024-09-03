@@ -57,7 +57,6 @@ class CampaignRepository
         try {
             DB::table('give_campaigns')
                 ->insert([
-                    'campaign_page_id' => $campaign->pageId,
                     'campaign_type' => $campaign->type->getValue(),
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
@@ -111,7 +110,6 @@ class CampaignRepository
                 ->where('id', $campaign->id)
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
-                    'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
                     'long_desc' => $campaign->longDescription,
@@ -192,7 +190,6 @@ class CampaignRepository
         return $builder->from('give_campaigns')
             ->select(
                 'id',
-                ['campaign_page_id', 'pageId'],
                 ['campaign_type', 'type'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],

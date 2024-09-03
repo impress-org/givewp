@@ -5,6 +5,7 @@ namespace Give\Campaigns\Models;
 use DateTime;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
 use Give\Campaigns\Factories\CampaignFactory;
+use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -21,7 +22,6 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @unreleased
  *
  * @property int            $id
- * @property int            $pageId
  * @property CampaignType   $type
  * @property string         $title
  * @property string         $url
@@ -44,7 +44,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'pageId' => 'int',
         'type' => CampaignType::class,
         'title' => 'string',
         'shortDescription' => 'string',
@@ -67,6 +66,14 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
                 $builder->leftJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', 'forms.id');
             })->where('campaign_forms.campaign_id', $this->id);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function page()
+    {
+        return give(CampaignPageRepository::class)->findByCampaignId($this->id);
     }
 
     /**
