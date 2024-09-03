@@ -62,7 +62,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function forms()
+    public function forms(): ModelQueryBuilder
     {
         return DonationForm::query()
             ->join(function (JoinQueryBuilder $builder) {
