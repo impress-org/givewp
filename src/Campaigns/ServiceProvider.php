@@ -33,6 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->registerMenus();
         $this->registerActions();
+        $this->setupCampaignPages();
         $this->registerMigrations();
         $this->registerRoutes();
     }
@@ -87,5 +88,11 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerMenus()
     {
         Hooks::addAction('admin_menu', CampaignsAdminPage::class, 'addCampaignsSubmenuPage', 999);
+    }
+
+    private function setupCampaignPages()
+    {
+        Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
+        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 }

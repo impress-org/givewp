@@ -49,7 +49,6 @@ class MigrateFormsToCampaignForms extends Migration
     public function createParentCampaignForDonationForm(DonationForm $form)
     {
         $campaign = Campaign::create([
-            'pageId' => 0,
             'type' => CampaignType::CORE(),
             'title' => $form->title,
             'shortDescription' => $form->settings->formExcerpt,

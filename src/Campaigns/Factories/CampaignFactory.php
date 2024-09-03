@@ -20,7 +20,6 @@ class CampaignFactory extends ModelFactory
         $currentDate = Temporal::getCurrentDateTime();
 
         return [
-            'pageId' => 1,
             'type' => CampaignType::CORE(),
             'title' => __('GiveWP Campaign', 'give'),
             'shortDescription' => __('Campaign short description', 'give'),
