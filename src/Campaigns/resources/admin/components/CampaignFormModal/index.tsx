@@ -4,6 +4,42 @@ import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 
+type Campaign = {
+    id?: number;
+    title: string;
+    shortDescription: string;
+    startDateTime: {
+        date: string;
+        timezone_type: number;
+        timezone: string;
+    };
+    endDateTime: {
+        date: string;
+        timezone_type: number;
+        timezone: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+};
+
+type Inputs = {
+    title: string;
+    shortDescription: string;
+    startDateTime: string;
+    endDateTime: string;
+};
+
+interface CampaignModalProps {
+    isOpen: boolean;
+    handleClose: (response?: any) => void;
+    apiSettings: {
+        apiRoot: string;
+        apiNonce: string;
+    };
+    title: string;
+    campaign?: Campaign;
+}
+
 /**
  * Get the next sharp hour
  *
@@ -123,40 +159,4 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             </button>
         </FormModal>
     );
-}
-
-type Campaign = {
-    id?: number;
-    title: string;
-    shortDescription: string;
-    startDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
-    endDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
-    createdAt: string;
-    updatedAt: string;
-};
-
-type Inputs = {
-    title: string;
-    shortDescription: string;
-    startDateTime: string;
-    endDateTime: string;
-};
-
-interface CampaignModalProps {
-    isOpen: boolean;
-    handleClose: (response?: any) => void;
-    apiSettings: {
-        apiRoot: string;
-        apiNonce: string;
-    };
-    title: string;
-    campaign?: Campaign;
 }
