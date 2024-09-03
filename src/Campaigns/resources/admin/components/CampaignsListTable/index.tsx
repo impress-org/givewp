@@ -13,7 +13,11 @@ declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
 } & Window;
 
-const API = new ListTableApi(window.GiveCampaignsListTable);
+export function getGiveCampaignsListTableWindowData() {
+    return window.GiveCampaignsListTable;
+}
+
+const API = new ListTableApi(getGiveCampaignsListTableWindowData());
 
 const filters: Array<FilterConfig> = [
     {
@@ -57,7 +61,9 @@ const bulkActions: Array<BulkActionsConfig> = [
  * @unreleased
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveCampaignsListTable.pluginUrl}/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
+    const imagePath = `${
+        getGiveCampaignsListTableWindowData().pluginUrl
+    }/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
     return (
         <div className={styles.container}>
             <img src={imagePath} alt={__('No campaign created yet', 'give')} />
@@ -65,7 +71,9 @@ const ListTableBlankSlate = () => {
             <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first campaign.', 'give')}</p>
             <p>
                 <a
-                    href={`${window.GiveCampaignsListTable.adminUrl}edit.php?post_type=give_forms&page=give-campaigns&new=campaign`}
+                    href={`${
+                        getGiveCampaignsListTableWindowData().adminUrl
+                    }edit.php?post_type=give_forms&page=give-campaigns&new=campaign`}
                     className={`button button-primary ${styles.button}`}
                 >
                     {__('Create campaign', 'give')}
@@ -82,7 +90,7 @@ export default function CampaignsListTable() {
                 title={__('Campaigns', 'give')}
                 singleName={__('campaign', 'give')}
                 pluralName={__('campaigns', 'give')}
-                apiSettings={window.GiveCampaignsListTable}
+                apiSettings={getGiveCampaignsListTableWindowData()}
                 filterSettings={filters}
                 bulkActions={bulkActions}
                 rowActions={CampaignsRowActions}

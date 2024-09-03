@@ -4,8 +4,9 @@ import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import {useSWRConfig} from 'swr';
 import ListTableApi from '@givewp/components/ListTable/api';
+import {getGiveCampaignsListTableWindowData} from './index';
 
-const campaignsApi = new ListTableApi(window.GiveCampaignsListTable);
+const campaignsApi = new ListTableApi(getGiveCampaignsListTableWindowData());
 
 export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
