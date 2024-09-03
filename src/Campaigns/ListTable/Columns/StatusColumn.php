@@ -33,6 +33,29 @@ class StatusColumn extends ModelColumn
      */
     public function getCellValue($model)
     {
-        return $model->status->getValue();
+        switch ($model->status->getValue()) {
+            case 'active':
+                $status = __('Active', 'give');
+                break;
+            case 'inactive':
+                $status = __('Inactive', 'give');
+                break;
+            case 'draft':
+                $status = __('Draft', 'give');
+                break;
+            case 'pending':
+                $status = __('Pending', 'give');
+                break;
+            case 'processing':
+                $status = __('Processing', 'give');
+                break;
+            case 'failed':
+                $status = __('Failed', 'give');
+                break;
+            default:
+                $status = __('Draft', 'give');
+        }
+
+        return $status;
     }
 }
