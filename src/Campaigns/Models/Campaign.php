@@ -59,6 +59,9 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'createdAt' => DateTime::class,
     ];
 
+    /**
+     * @unreleased
+     */
     public function forms()
     {
         return DonationForm::query()
