@@ -13,7 +13,7 @@ class RegisterCampaignPagePostType
     public function __invoke()
     {
         register_post_type( 'give_campaign_page', [
-            'label' => __('Campaign Page', 'give-peer-to-peer'),
+            'label' => __('Campaign Page', 'give'),
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => false,

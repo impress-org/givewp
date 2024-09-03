@@ -86,7 +86,7 @@ class CampaignPageRepository
 
             Log::error('Failed creating a campaign page', [$campaignPage]);
 
-            throw new $exception('Failed creating a donation');
+            throw new $exception('Failed creating a campaign page');
         }
 
         DB::query('COMMIT');
