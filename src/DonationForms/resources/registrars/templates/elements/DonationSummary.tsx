@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useEffect, useMemo} from 'react';
 import {__} from '@wordpress/i18n';
 import {isSubscriptionPeriod, SubscriptionPeriod} from '../groups/DonationAmount/subscriptionPeriod';
 import {createInterpolateElement} from '@wordpress/element';
@@ -17,12 +17,13 @@ const getDonationTotal = (totals: any, amount: any) =>
     );
 
 /**
+ * @unreleased Moved amount and frequency items to reducer and added support for items sorting and visibility control
  * @since 3.0.0
  */
 export default function DonationSummary() {
     const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;
     const {useWatch, useCurrencyFormatter, useDonationSummary} = window.givewp.form.hooks;
-    const {items, totals} = useDonationSummary();
+    const {addItem, items, totals} = useDonationSummary();
     const currency = useWatch({name: 'currency'});
     const formatter = useCurrencyFormatter(currency);
 
@@ -46,19 +47,37 @@ export default function DonationSummary() {
         return __('One time', 'give');
     }, [period, frequency]);
 
-    const amountItem = {
-        id: 'amount',
-        label: __('Payment Amount', 'give'),
-        value: formatter.format(Number(amount)),
-    };
+    useEffect(() => {
+        addItem({
+            id: 'amount',
+            label: __('Payment Amount', 'give'),
+            value: formatter.format(Number(amount)),
+        });
 
-    const frequencyItem = {
-        id: 'frequency',
-        label: __('Giving Frequency', 'give'),
-        value: givingFrequency,
-    };
+        addItem({
+            id: 'frequency',
+            label: __('Giving Frequency', 'give'),
+            value: givingFrequency,
+        });
+    }, []);
 
-    const donationSummaryItems = [amountItem, frequencyItem, ...Object.values(items)];
+    const donationSummaryItems = Object.values(items)
+        .sort((a, b) => {
+            if (a.priority === undefined && b.priority === undefined) {
+                return 0;
+            }
+
+            if (a.priority === undefined) {
+                return 1;
+            }
+
+            if (b.priority === undefined) {
+                return -1;
+            }
+
+            return a.priority - b.priority;
+        })
+        .filter((item) => item?.visible !== false);
 
     const donationTotal = formatter.format(getDonationTotal(totals, amount));
 
