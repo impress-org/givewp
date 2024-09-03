@@ -9,11 +9,9 @@ import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 
-declare global {
-    interface Window {
-        GiveCampaignsListTable: GiveCampaignsListTable;
-    }
-}
+declare const window: {
+    GiveCampaignsListTable: GiveCampaignsListTable;
+} & Window;
 
 const API = new ListTableApi(window.GiveCampaignsListTable);
 
