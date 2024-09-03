@@ -12,6 +12,7 @@ export type DonationTotals = {[key: string]: number};
 export type DonationSummaryItems = {[key: string]: DonationSummaryLineItem};
 
 /**
+ * @unreleased Added priority and visible properties
  * @since 3.0.0
  */
 export type DonationSummaryLineItem = {
@@ -19,6 +20,8 @@ export type DonationSummaryLineItem = {
     label: string;
     value: string | ReactElement;
     description?: string | ReactElement;
+    priority?: number;
+    visible?: boolean;
 };
 
 type PropTypes = {

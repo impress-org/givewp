@@ -2,10 +2,13 @@ import {DonationSummaryLineItem} from '@givewp/forms/app/store/donation-summary/
 
 const ADD_ITEM = 'add_item';
 const REMOVE_ITEM = 'remove_item';
+const SHOW_ITEM = 'show_item';
+const HIDE_ITEM = 'hide_item';
 const ADD_AMOUNT_TO_TOTAL = 'add_amount_to_total';
 const REMOVE_AMOUNT_FROM_TOTAL = 'remove_amount_from_total';
 
 /**
+ * @unreleased Added SHOW_ITEM and HIDE_ITEM actions
  * @since 3.0.0
  */
 export default function reducer(draft, action) {
@@ -16,6 +19,14 @@ export default function reducer(draft, action) {
 
         case REMOVE_ITEM:
             delete draft.items[action.itemId];
+            break;
+
+        case SHOW_ITEM:
+            draft.items[action.itemId].visible = true;
+            break;
+
+        case HIDE_ITEM:
+            draft.items[action.itemId].visible = false;
             break;
 
         case ADD_AMOUNT_TO_TOTAL:
@@ -43,6 +54,36 @@ export function addItem(item: DonationSummaryLineItem) {
 /**
  * @since 3.0.0
  */
+export function removeItem(itemId: string) {
+    return {
+        type: REMOVE_ITEM,
+        itemId,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function showItem(itemId: string) {
+    return {
+        type: SHOW_ITEM,
+        itemId,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function hideItem(itemId: string) {
+    return {
+        type: HIDE_ITEM,
+        itemId,
+    };
+}
+
+/**
+ * @since 3.0.0
+ */
 export function addAmountToTotal(itemId: string, amount: number) {
     return {
         type: ADD_AMOUNT_TO_TOTAL,
@@ -57,16 +98,6 @@ export function addAmountToTotal(itemId: string, amount: number) {
 export function removeAmountFromTotal(itemId: string) {
     return {
         type: REMOVE_AMOUNT_FROM_TOTAL,
-        itemId,
-    };
-}
-
-/**
- * @since 3.0.0
- */
-export function removeItem(itemId: string) {
-    return {
-        type: REMOVE_ITEM,
         itemId,
     };
 }
