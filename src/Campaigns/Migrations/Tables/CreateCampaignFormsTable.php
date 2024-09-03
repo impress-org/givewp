@@ -51,7 +51,7 @@ class CreateCampaignFormsTable extends Migration
         $sql = "CREATE TABLE $table (
             campaign_id INT UNSIGNED NOT NULL,
             form_id INT UNSIGNED NOT NULL,
-            KEY form_id (form_id)
+            PRIMARY KEY (campaign_id, form_id),
         ) $charset";
 
         try {
