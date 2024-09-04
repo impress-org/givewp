@@ -53,7 +53,7 @@ class CreateCampaignFormsTable extends Migration
             form_id INT UNSIGNED NOT NULL,
             KEY form_id (form_id),
             KEY campaign_id (campaign_id),
-            PRIMARY KEY (campaign_id, form_id),
+            PRIMARY KEY (campaign_id, form_id)
         ) $charset";
 
         try {
