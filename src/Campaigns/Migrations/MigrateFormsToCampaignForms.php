@@ -60,6 +60,7 @@ class MigrateFormsToCampaignForms extends Migration
                 ['ID', 'id'],
                 ['post_title', 'title'],
                 ['post_status', 'status'],
+                ['post_date', 'createdAt'],
                 ['meta_value', 'settings']
             )
             ->join(function (JoinQueryBuilder $builder) {
@@ -77,25 +78,27 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public function createParentCampaignForDonationForm($formData): void
     {
-        $formId = $formData['id'];
-        $formTitle = $formData['title'];
-        $formStatus = $formData['status'];
-        $formSettings = json_decode($formData['settings']);
+        $formId = $formData->id;
+        $formTitle = $formData->title;
+        $formStatus = $formData->status;
+        $formCreatedAt = $formData->createdAt;
+        $formSettings = json_decode($formData->settings);
 
         $campaignId = DB::table('give_campaigns')
             ->insert([
-                'type' => CampaignType::CORE(),
-                'title' => $formTitle,
+                'campaign_type' => CampaignType::CORE()->getValue(),
+                'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
-                'shortDescription' => $formSettings->formExcerpt,
-                'longDescription' => $formSettings->description,
-                'logo' => $formSettings->designSettingsLogoUrl,
-                'image' => $formSettings->designSettingsImageUrl,
-                'primaryColor' => $formSettings->primaryColor,
-                'secondaryColor' => $formSettings->secondaryColor,
-                'goal' => $formSettings->goalAmount,
-                'startDate' => $formSettings->goalStartDate,
-                'endDate' => $formSettings->goalEndDate,
+                'short_desc' => $formSettings->formExcerpt,
+                'long_desc' => $formSettings->description,
+                'campaign_logo' => $formSettings->designSettingsLogoUrl,
+                'campaign_image' => $formSettings->designSettingsImageUrl,
+                'primary_color' => $formSettings->primaryColor,
+                'secondary_color' => $formSettings->secondaryColor,
+                'campaign_goal' => $formSettings->goalAmount,
+                'start_date' => $formSettings->goalStartDate,
+                'end_date' => $formSettings->goalEndDate,
+                'date_created' => $formCreatedAt,
             ]);
 
         DB::table('give_campaign_forms')
@@ -110,7 +113,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public function mapFormToCampaignStatus(string $status): string
     {
-        switch (new DonationFormStatus($status)) {
+        switch ($status) {
 
             case DonationFormStatus::PENDING():
                 return CampaignStatus::PENDING()->getValue();

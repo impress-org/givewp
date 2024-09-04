@@ -24,7 +24,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $form = DonationForm::factory()->create();
         $migration = new MigrateFormsToCampaignForms();
 
-        $migration->createParentCampaignForDonationForm($form);
+        $migration->run();
 
         $relationship = DB::table('give_campaign_forms')->where('form_id', $form->id)->get();
 
