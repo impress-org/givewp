@@ -94,12 +94,9 @@ class GetCampaignsListTable implements RestRoute
         $campaignsCount = $this->getTotalCampaignsCount();
         $pageCount = (int)ceil($campaignsCount / $request->get_param('perPage'));
 
-        if ('model' === $this->request->get_param('return')) {
-            $items = $campaigns;
-        } else {
-            $this->listTable->items($campaigns, $this->request->get_param('locale') ?? '');
-            $items = $this->listTable->getItems();
-        }
+        $this->listTable->items($campaigns, $this->request->get_param('locale') ?? '');
+        $items = $this->listTable->getItems();
+
 
         return new WP_REST_Response(
             [
