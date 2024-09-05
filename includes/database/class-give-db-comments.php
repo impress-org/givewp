@@ -252,7 +252,7 @@ class Give_DB_Comments extends Give_DB {
         comment_date datetime NOT NULL,
         comment_date_gmt datetime NOT NULL,
         PRIMARY KEY  (comment_ID)
-        ) {$charset_collate};";
+        ) {$charset_collate} ENGINE=InnoDB;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );

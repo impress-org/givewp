@@ -97,7 +97,7 @@ class Give_DB_Sessions extends Give_DB {
   				session_expiry BIGINT UNSIGNED NOT NULL,
   				PRIMARY KEY  (session_key),
   				UNIQUE KEY session_id (session_id)
-			) {$charset_collate};";
+			) {$charset_collate} ENGINE=InnoDB;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );

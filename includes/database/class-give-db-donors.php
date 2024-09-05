@@ -576,7 +576,7 @@ class Give_DB_Donors extends Give_DB {
 		PRIMARY KEY  (id),
 		UNIQUE KEY email (email),
 		KEY user (user_id)
-		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
+		) CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB;";
 
 		dbDelta( $sql );
 

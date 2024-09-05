@@ -58,7 +58,7 @@ class CreateMigrationsTable extends Migration
 			error text NULL,
 			last_run DATETIME NOT NULL,
 			PRIMARY KEY  (id)
-		) {$charset}";
+		) {$charset} ENGINE=InnoDB;";
 
         try {
             DB::delta($sql);
