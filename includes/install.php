@@ -515,14 +515,14 @@ add_action('update_option_give_version', 'give_install_tables_on_plugin_update',
 function __give_get_tables()
 {
     $tables = [
-        'donors_db' => new Give_DB_Donors(),
-        'donor_meta_db' => new Give_DB_Donor_Meta(),
-        'comment_db' => new Give_DB_Comments(),
-        'comment_db_meta' => new Give_DB_Comment_Meta(),
-        'give_session' => new Give_DB_Sessions(),
-        'formmeta_db' => new Give_DB_Form_Meta(),
-        'sequential_db' => new Give_DB_Sequential_Ordering(),
-        'donation_meta' => new Give_DB_Payment_Meta(),
+        'donors_db' => give()->get(Give_DB_Donors::class),
+        'donor_meta_db' => give()->get(Give_DB_Donor_Meta::class),
+        'comment_db' => give()->get(Give_DB_Comments::class),
+        'comment_db_meta' => give()->get(Give_DB_Comment_Meta::class),
+        'give_session' => give()->get(Give_DB_Sessions::class),
+        'formmeta_db' => give()->get(Give_DB_Form_Meta::class),
+        'sequential_db' => give()->get(Give_DB_Sequential_Ordering::class),
+        'donation_meta' => give()->get(Give_DB_Payment_Meta::class),
     ];
 
     return $tables;
