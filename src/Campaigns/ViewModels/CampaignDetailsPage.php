@@ -7,7 +7,7 @@ use Give\Campaigns\Models\Campaign;
 /**
  * @unreleased
  */
-class CampaignDetails
+class CampaignDetailsPage
 {
     /**
      * @unreleased
@@ -29,6 +29,13 @@ class CampaignDetails
      */
     public function exports(): array
     {
-        return $this->campaign->toArray();
+        return [
+            'overviewTab' => $this->campaign->toArray(),
+            'settingsTab' => [
+                'landingPageUrl' => admin_url('?action=edit_campaign_page&campaign_id=' . $this->campaign->id),
+            ],
+            'reportTab' => [],
+            'updatesTab' => [],
+        ];
     }
 }

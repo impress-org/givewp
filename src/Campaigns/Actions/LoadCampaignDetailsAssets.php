@@ -3,7 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ViewModels\CampaignDetails;
+use Give\Campaigns\ViewModels\CampaignDetailsPage;
 
 /**
  * @unreleased
@@ -31,7 +31,7 @@ class LoadCampaignDetailsAssets
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'adminUrl' => admin_url(),
                 'pluginUrl' => GIVE_PLUGIN_URL,
-                'campaign' => (new CampaignDetails($campaign))->exports(),
+                'campaignDetailsPage' => (new CampaignDetailsPage($campaign))->exports(),
             ]
         );
 
