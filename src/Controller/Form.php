@@ -62,7 +62,7 @@ class Form
     /**
      * Load receipt view.
      *
-     * @unreleased add action give_donation_confirmation_page_enqueue_scripts
+     * @since 3.16.0 add action give_donation_confirmation_page_enqueue_scripts
      * @since 2.7.0
      */
     public function loadReceiptView()
@@ -166,7 +166,7 @@ class Form
     /**
      * Handle receipt shortcode on success page
      *
-     * @unreleased add filter give_donation_confirmation_success_page_shortcode_view
+     * @since 3.16.0 add filter give_donation_confirmation_success_page_shortcode_view
      * @since 2.7.0
      *
      * @param string $content

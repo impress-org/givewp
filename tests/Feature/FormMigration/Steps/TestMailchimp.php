@@ -17,7 +17,7 @@ class TestMailchimp extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMailchimpSettingsAreMigratedWhenGloballyEnabledAndNotDisabledForSpecificFormUsingGlobalSettings(): void
     {
@@ -51,7 +51,7 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMailchimpSettingsAreMigratedWhenGloballyEnabledAndNotDisabledForSpecificFormUsingFormSettings(): void
     {
@@ -81,7 +81,7 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMailchimpSettingsAreNotMigratedWhenNotGloballyEnabledOrEnabledPerForm()
     {
@@ -99,7 +99,7 @@ class TestMailchimp extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testMailchimpSettingsAreNotMigratedWhenGloballyEnabledButDisabledForSpecificForm()
     {

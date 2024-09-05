@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased Update to use FormMigrationProcessor trait
+ * @since 3.16.0 Update to use FormMigrationProcessor trait
  * @since 3.8.0
  *
  * @covers \Give\FormMigration\Steps\DoubleTheDonation

@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\FormFields
  */
@@ -20,7 +20,7 @@ class TestFormFields extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testDonorNameFormFieldProcess(): void
     {
@@ -49,7 +49,7 @@ class TestFormFields extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testDonorCommentsFormFieldProcess()
     {
@@ -68,7 +68,7 @@ class TestFormFields extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testAnonymousDonationsFormFieldProcess()
     {

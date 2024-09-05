@@ -11,7 +11,7 @@ const {BaseControl, Button} = wp.components;
 const {MediaUpload} = wp.blockEditor;
 import { __ } from '@wordpress/i18n'
 
-const ImageControl = ({name, label, help, className, value, hideLabelFromVision, onChange}) => {
+const ImageControl = ({name, label, help, className, value, hideLabelFromVision, onChange = null}) => {
     const instanceId = useInstanceId(ImageControl);
     const id = `give-image-control-${name}-${instanceId}`;
     return (
@@ -51,11 +51,6 @@ ImageControl.propTypes = {
     help: PropTypes.string,
     className: PropTypes.string,
     hideLabelFromVision: PropTypes.bool,
-};
-
-ImageControl.defaultProps = {
-    onChange: null,
-    options: null,
 };
 
 export default ImageControl;

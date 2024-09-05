@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 3.16.0
  */
 type FormTagToken = {
     id: number;
@@ -7,7 +7,7 @@ type FormTagToken = {
 };
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 type CategoryTerm = {
     id: number;
@@ -16,7 +16,7 @@ type CategoryTerm = {
 };
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 interface TaxonomySettings {
     formTagsEnabled: boolean;
@@ -31,42 +31,42 @@ declare const window: {
 } & Window;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export default function getWindowData(): TaxonomySettings {
     return window.giveTaxonomySettings;
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export function isFormTagsEnabled(): boolean {
     return window.giveTaxonomySettings.formTagsEnabled;
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export function isFormCategoriesEnabled(): boolean {
     return window.giveTaxonomySettings.formCategoriesEnabled;
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export function getInitialFormTags(): FormTagToken[] {
     return window.giveTaxonomySettings.formTagsSelected;
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export function getInitialFormCategories(): any[] {
     return window.giveTaxonomySettings.formCategoriesSelected;
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export function getAvailableFormCategories(): any[] {
     return window.giveTaxonomySettings.formCategoriesAvailable;

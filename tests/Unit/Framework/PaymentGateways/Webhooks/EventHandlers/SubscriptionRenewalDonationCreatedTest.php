@@ -46,7 +46,7 @@ class SubscriptionRenewalDonationCreatedTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      *
      * @throws Exception
      */
@@ -70,7 +70,7 @@ class SubscriptionRenewalDonationCreatedTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      *
      * @throws Exception
      */

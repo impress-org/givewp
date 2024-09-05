@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\FeeRecovery
  */
@@ -20,7 +20,7 @@ class TestFeeRecovery extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFeeRecoveryProcessWithGlobalSettings(): void
     {
@@ -60,7 +60,7 @@ class TestFeeRecovery extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFeeRecoveryProcessWithPerFormSettings(): void
     {
@@ -95,7 +95,7 @@ class TestFeeRecovery extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFeeRecoveryProcessWithGlobalSettingsDisabled(): void
     {

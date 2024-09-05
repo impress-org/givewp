@@ -79,7 +79,7 @@ class SubscriptionsAdminPage
         return array_merge([
             [
                 'value' => '0',
-                'text' => 'Any',
+                'text' => __('Any', 'give'),
             ]
         ], $options);
     }

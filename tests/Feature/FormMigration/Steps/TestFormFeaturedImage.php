@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  *
  * @covers \Give\FormMigration\Steps\FormFeaturedImage
  */
@@ -20,7 +20,7 @@ class TestFormFeaturedImage extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testSequoiaTemplateFeaturedImageIsMigratedCorrectly(): void
     {
@@ -44,7 +44,7 @@ class TestFormFeaturedImage extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testClassicTemplateHeaderBackgroundImageIsMigratedCorrectly(): void
     {
@@ -67,7 +67,7 @@ class TestFormFeaturedImage extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFallbackImageIsMigratedWhenFeaturedImageIsMissing(): void
     {
@@ -90,7 +90,7 @@ class TestFormFeaturedImage extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testNoImageIsMigratedWhenNoImageExists ()
     {

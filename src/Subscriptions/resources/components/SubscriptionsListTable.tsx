@@ -141,7 +141,7 @@ export default function SubscriptionsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
-                {__('Switch to Legacy View')}
+                {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>
     );
