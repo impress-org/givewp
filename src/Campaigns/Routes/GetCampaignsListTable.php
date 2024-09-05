@@ -4,6 +4,7 @@ namespace Give\Campaigns\Routes;
 
 use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -141,7 +142,7 @@ class GetCampaignsListTable implements RestRoute
      */
     public function getTotalCampaignsCount(): int
     {
-        $query = DB::table('give_campaigns');
+        $query = Campaign::query();
         $query = $this->getWhereConditions($query);
 
         return $query->count();
