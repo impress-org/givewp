@@ -22,7 +22,7 @@ export default function CampaignsDetailsPage() {
             <p>Just below you can see a few data from the details page separated by tabs.</p>
             <br />
             <h2>
-                <strong>Overview Tab Data</strong>
+                <strong>Overview Tab</strong>
             </h2>
             <ul>
                 {Object.entries(campaignDetailsPage.overviewTab).map(([property, value], index) => (
@@ -35,7 +35,7 @@ export default function CampaignsDetailsPage() {
             </ul>
             <br />
             <h2>
-                <strong>Settings Tab Data</strong>
+                <strong>Settings Tab</strong>
             </h2>
             <p>
                 <a
@@ -44,7 +44,7 @@ export default function CampaignsDetailsPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    Campaign Landing Page ⭷
+                    Edit Campaign Landing Page ⭷
                 </a>
             </p>
         </div>
