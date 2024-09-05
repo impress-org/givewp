@@ -159,4 +159,30 @@ final class CampaignRepositoryTest extends TestCase
 
         $this->assertNull($campaign);
     }
+
+    public function testPeerToPeerCampaignsAreExcludedFromQuery()
+    {
+        $repository = new CampaignRepository();
+
+        $p2p_campaign = Campaign::factory()->create([
+            'type' => CampaignType::PEER_TO_PEER(),
+        ]);
+
+        $this->assertNull($repository->getById($p2p_campaign->id));
+    }
+
+    public function testPeerToPeerCampaignsAreExcludedFromCount()
+    {
+        $repository = new CampaignRepository();
+
+        Campaign::factory()->create([
+            'type' => CampaignType::CORE(),
+        ]);
+
+        Campaign::factory()->create([
+            'type' => CampaignType::PEER_TO_PEER(),
+        ]);
+
+        $this->assertEquals(1, $repository->prepareQuery()->count());
+    }
 }
