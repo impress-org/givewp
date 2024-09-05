@@ -77,7 +77,6 @@ class CreateCampaign implements RestRoute
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $campaign = Campaign::create([
-            'pageId' => 0,
             'type' => CampaignType::CORE(),
             'title' => $request->get_param('title'),
             'shortDescription' => $request->get_param('shortDescription'),
