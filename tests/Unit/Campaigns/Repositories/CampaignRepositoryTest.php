@@ -160,6 +160,11 @@ final class CampaignRepositoryTest extends TestCase
         $this->assertNull($campaign);
     }
 
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testPeerToPeerCampaignsAreExcludedFromQuery()
     {
         $repository = new CampaignRepository();
@@ -171,6 +176,11 @@ final class CampaignRepositoryTest extends TestCase
         $this->assertNull($repository->getById($p2p_campaign->id));
     }
 
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testPeerToPeerCampaignsAreExcludedFromCount()
     {
         $repository = new CampaignRepository();
