@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Actions\LoadCampaignsListTableAssets;
+
 /**
  * @unreleased
  */
@@ -28,6 +30,8 @@ class CampaignsAdminPage
      */
     public function renderCampaignsPage()
     {
-        echo '<div id="give-admin-campaigns-root"><p style="padding: 200px 30px">The campaigns list table will be loaded here...</p></div>';
+        give(LoadCampaignsListTableAssets::class)();
+
+        echo '<div id="give-admin-campaigns-root"></div>';
     }
 }
