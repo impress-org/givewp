@@ -2,7 +2,9 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Actions\LoadCampaignDetailsAssets;
 use Give\Campaigns\Actions\LoadCampaignsListTableAssets;
+use Give\Campaigns\Models\Campaign;
 
 /**
  * @unreleased
@@ -30,7 +32,17 @@ class CampaignsAdminPage
      */
     public function renderCampaignsPage()
     {
-        give(LoadCampaignsListTableAssets::class)();
+        if (isset($_GET['id'])) {
+            $campaign = Campaign::find(absint($_GET['id']));
+
+            if ( ! $campaign) {
+                wp_die(__('Campaign not found', 'give'), 404);
+            }
+
+            give(LoadCampaignDetailsAssets::class)($campaign);
+        } else {
+            give(LoadCampaignsListTableAssets::class)();
+        }
 
         echo '<div id="give-admin-campaigns-root"></div>';
     }
