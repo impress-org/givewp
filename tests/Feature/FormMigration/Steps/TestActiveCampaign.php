@@ -4,94 +4,106 @@ namespace Feature\FormMigration\Steps;
 
 namespace Give\Tests\Feature\FormMigration\Steps;
 
-use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Steps\ActiveCampaign;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 class TestActiveCampaign extends TestCase
 {
-    use RefreshDatabase, LegacyDonationFormAdapter;
+    use FormMigrationProcessor;
+    use LegacyDonationFormAdapter;
+    use RefreshDatabase;
 
     /**
-     * @since 3.10.0
+     * @since 3.16.0
      */
-    public function testProcessShouldUpdateActiveCampaignBlockAttributesFromV2FormMeta(): void
+    public function testFormConfiguredToUseGlobalActiveCampaignSettingsMigratesUsingGlobalSettingsWhenGloballyEnabled()
     {
-        $meta = [
-            'give_activecampaign_label'            => __('Subscribe to our newsletter?'),
-            'give_activecampaign_lists'            => ['1', '2'],
-            'give_activecampaign_tags'             => ['tag 1', 'tag 2'],
+        // Arrange
+        $options = [
+            'give_activecampaign_globally_enabled' => 'on',
+            'give_activecampaign_label' => __('Subscribe to our newsletter?'),
+            'give_activecampaign_lists' => ['1', '2'],
+            'give_activecampaign_tags' => ['tag 1', 'tag 2'],
             'give_activecampaign_checkbox_default' => true,
         ];
-
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
-
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $mailchimp = new ActiveCampaign($payload);
-
-        $mailchimp->process();
-
-        $block = $payload->formV3->blocks->findByName('give-activecampaign/activecampaign');
-
-        $this->assertSame($meta['give_activecampaign_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['give_activecampaign_lists'], $block->getAttribute('selectedLists'));
-        $this->assertSame($meta['give_activecampaign_tags'], $block->getAttribute('selectedTags'));
-        $this->assertTrue(true, $block->getAttribute('defaultChecked'));
-    }
-
-    /**
-     * @since 3.10.0
-     */
-    public function testProcessShouldUpdateActiveCampaignBlockAttributesFromGlobalSettings(): void
-    {
-        $meta = [
-            'give_activecampaign_label'            => __('Subscribe to our newsletter?'),
-            'give_activecampaign_lists'            => ['1', '2'],
-            'give_activecampaign_tags'             => ['tag 1', 'tag 2'],
-            'give_activecampaign_checkbox_default' => true,
-        ];
-
-        foreach ($meta as $key => $value) {
+        foreach ($options as $key => $value) {
             give_update_option($key, $value);
         }
+        $meta = ['activecampaign_per_form_options' => 'global'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $formV2 = $this->createSimpleDonationForm(['meta' => $meta]);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ActiveCampaign::class);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
-
-        $mailchimp = new ActiveCampaign($payload);
-
-        $mailchimp->process();
-
-        $block = $payload->formV3->blocks->findByName('give-activecampaign/activecampaign');
-
-        $this->assertSame($meta['give_activecampaign_label'], $block->getAttribute('label'));
-        $this->assertSame($meta['give_activecampaign_lists'], $block->getAttribute('selectedLists'));
-        $this->assertSame($meta['give_activecampaign_tags'], $block->getAttribute('selectedTags'));
+        // Assert
+        $block = $v3Form->blocks->findByName('give-activecampaign/activecampaign');
+        $this->assertSame($options['give_activecampaign_label'], $block->getAttribute('label'));
+        $this->assertSame($options['give_activecampaign_lists'], $block->getAttribute('selectedLists'));
+        $this->assertSame($options['give_activecampaign_tags'], $block->getAttribute('selectedTags'));
         $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 
     /**
-     * @since 3.10.0
+     * @since 3.16.0
      */
-    public function testProcessShouldUpdateActiveCampaignBlockAttributesWhenNoMeta(): void
+    public function testFormConfiguredToUseGlobalActiveCampaignSettingsIsMigratedWithoutActiveCampaignBlockWhenNotGloballyEnabled()
     {
-        $formV2 = $this->createSimpleDonationForm();
+        // Arrange
+        give_update_option('give_activecampaign_globally_enabled', 'off');
+        $meta = ['activecampaign_per_form_options' => 'global'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $payload = FormMigrationPayload::fromFormV2($formV2);
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ActiveCampaign::class);
 
-        $mailchimp = new ActiveCampaign($payload);
+        // Assert
+        $block = $v3Form->blocks->findByName('give-activecampaign/activecampaign');
+        $this->assertNull($block);
+    }
 
-        $mailchimp->process();
+    /**
+     * @since 3.16.0
+     */
+    public function testFormConfiguredToDisableActiveCampaignIsMigratedWithoutActiveCampaignBlock()
+    {
+        // Arrange
+        $meta = ['activecampaign_per_form_options' => 'disabled'];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 
-        $block = $payload->formV3->blocks->findByName('give-activecampaign/activecampaign');
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ActiveCampaign::class);
 
-        $this->assertSame(__('Subscribe to our newsletter?'), $block->getAttribute('label'));
-        $this->assertSame([], $block->getAttribute('selectedLists'));
-        $this->assertNull(null, $block->getAttribute('selectedTags'));
+        // Assert
+        $block = $v3Form->blocks->findByName('give-activecampaign/activecampaign');
+        $this->assertNull($block);
+    }
+
+    /**
+     * @since 3.16.0
+     */
+    public function testFormConfiguredToUseCustomizedActiveCampaignSettingsIsMigrated()
+    {
+        // Arrange
+        $meta = [
+            'activecampaign_per_form_options' => 'customized',
+            'give_activecampaign_label' => __('Subscribe to our newsletter?'),
+            'give_activecampaign_lists' => ['1', '2'],
+            'give_activecampaign_tags' => ['tag 1', 'tag 2'],
+            'give_activecampaign_checkbox_default' => true,
+        ];
+        $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
+
+        // Act
+        $v3Form = $this->migrateForm($v2Form, ActiveCampaign::class);
+
+        // Assert
+        $block = $v3Form->blocks->findByName('give-activecampaign/activecampaign');
+        $this->assertSame($meta['give_activecampaign_label'], $block->getAttribute('label'));
+        $this->assertSame($meta['give_activecampaign_lists'], $block->getAttribute('selectedLists'));
+        $this->assertSame($meta['give_activecampaign_tags'], $block->getAttribute('selectedTags'));
         $this->assertTrue(true, $block->getAttribute('defaultChecked'));
     }
 }
