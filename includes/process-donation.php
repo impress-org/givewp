@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @unreleased Use give_maybe_safe_unserialize() on $user_info data
+ * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
  * @throws ReflectionException Exception Handling.
