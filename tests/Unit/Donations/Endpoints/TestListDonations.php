@@ -158,6 +158,38 @@ class TestListDonations extends TestCase
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldAllowUsingDependencyTwice()
+    {
+        $donations = Donation::factory()->count(5)->create();
+
+        $firstName = $donations[3]->firstName;
+        $expectedItems = array_filter($donations, function ($donation) use ($firstName) {
+            return $donation->firstName == $firstName;
+        });
+        $expectedItems = $this->getMockColumns($expectedItems);
+
+        $mockRequest = $this->getMockRequest();
+        // set_params
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('donor', $firstName);
+        $mockRequest->set_param('search', $firstName);
+
+        $listDonations = give(ListDonations::class);
+
+        $response = $listDonations->handleRequest($mockRequest);
+
+        $this->assertSame($expectedItems, $response->data['items']);
+    }
+
+    /**
      *
      * @since 2.25.0
      */

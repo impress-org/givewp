@@ -227,6 +227,7 @@ class ListDonations extends Endpoint
 
         list($query, $dependencies) = $this->getWhereConditions($query);
 
+        $dependencies = array_unique($dependencies);
         $query->attachMeta(
             'give_donationmeta',
             'ID',
