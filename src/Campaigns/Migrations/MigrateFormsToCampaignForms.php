@@ -55,22 +55,31 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getFormData(): array
     {
-        return DB::table('posts', 'forms')
+        $query = DB::table('posts', 'forms')
             ->select(
-                ['ID', 'id'],
-                ['post_title', 'title'],
-                ['post_status', 'status'],
-                ['post_date', 'createdAt'],
-                ['meta_value', 'settings']
+                ['forms.ID', 'id'],
+                ['forms.post_title', 'title'],
+                ['forms.post_status', 'status'],
+                ['forms.post_date', 'createdAt']
             )
+            ->where('forms.post_type', 'give_forms');
+
+        $query->select(['formmeta.meta_value', 'settings'])
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
                     ->leftJoin('give_formmeta', 'formmeta')
                     ->on('formmeta.form_id', 'forms.ID');
             })
-            ->where('forms.post_type', 'give_forms')
-            ->where('formmeta.meta_key', 'formBuilderSettings')
-            ->getAll();
+            ->where('formmeta.meta_key', 'formBuilderSettings');
+
+        $query->join(function (JoinQueryBuilder $builder) {
+                $builder
+                    ->leftJoin('give_campaigns', 'campaigns')
+                    ->on('campaigns.form_id', 'forms.ID');
+            })
+            ->whereIsNull('campaigns.id');
+
+        return $query->getAll();
     }
 
     /**
