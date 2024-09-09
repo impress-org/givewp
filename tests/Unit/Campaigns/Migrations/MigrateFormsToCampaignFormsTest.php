@@ -4,8 +4,8 @@ namespace Give\Tests\Unit\Campaigns\Migrations;
 
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -47,5 +47,20 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
         $this->assertNull($relationship);
         $this->assertEquals(1, DB::table('give_campaigns')->count());
+    }
+
+    public function testUpgradedFormsAreNotMigrated()
+    {
+        $form = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $relationship = DB::table('give_campaign_forms')->where('form_id', $form->id)->get();
+
+        $this->assertNull($relationship);
+        $this->assertEquals(0, DB::table('give_campaigns')->count());
     }
 }

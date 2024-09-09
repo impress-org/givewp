@@ -70,12 +70,16 @@ class MigrateFormsToCampaignForms extends Migration
             })
             ->where('formmeta.meta_key', 'formBuilderSettings');
 
+        // Exclude forms already associated with a campaign (ie Peer-to-peer).
         $query->join(function (JoinQueryBuilder $builder) {
                 $builder
                     ->leftJoin('give_campaigns', 'campaigns')
                     ->on('campaigns.form_id', 'forms.ID');
             })
             ->whereIsNull('campaigns.id');
+
+        // Exclude forms with an `upgraded` status, which are archived.
+        $query->where('forms.post_status', 'upgraded', '!=');
 
         return $query->getAll();
     }
@@ -133,7 +137,6 @@ class MigrateFormsToCampaignForms extends Migration
 
             case 'publish':
             case 'private':
-            case 'upgraded':
                 return 'active';
 
             default: // TODO: How do we handle an unknown form status?
