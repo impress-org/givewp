@@ -95,7 +95,7 @@ class MigrateFormsToCampaignForms extends Migration
 
         $campaignId = DB::table('give_campaigns')
             ->insert([
-                'campaign_type' => CampaignType::CORE()->getValue(),
+                'campaign_type' => 'core',
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
@@ -124,22 +124,22 @@ class MigrateFormsToCampaignForms extends Migration
     {
         switch ($status) {
 
-            case DonationFormStatus::PENDING():
-                return CampaignStatus::PENDING()->getValue();
+            case 'pending':
+                return 'pending';
 
-            case DonationFormStatus::DRAFT():
-                return CampaignStatus::DRAFT()->getValue();
+            case 'draft':
+                return 'draft';
 
-            case DonationFormStatus::TRASH():
-                return CampaignStatus::INACTIVE()->getValue();
+            case 'trash':
+                return 'inactive';
 
-            case DonationFormStatus::PUBLISHED():
-            case DonationFormStatus::UPGRADED(): // TODO: How do we handle upgraded, non-upgraded forms?
-            case DonationFormStatus::PRIVATE(): // TODO: How do we handle Private forms?
-                return CampaignStatus::ACTIVE()->getValue();
+            case 'publish':
+            case 'private':
+            case 'upgraded':
+                return 'active';
 
             default: // TODO: How do we handle an unknown form status?
-                return CampaignStatus::INACTIVE()->getValue();
+                return 'inactive';
         }
     }
 }
