@@ -2,9 +2,6 @@
 
 namespace Give\Campaigns\Migrations;
 
-use Give\Campaigns\ValueObjects\CampaignStatus;
-use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
@@ -35,6 +32,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      * @inheritDoc
+     * @throws \Exception
      */
     public function run()
     {
