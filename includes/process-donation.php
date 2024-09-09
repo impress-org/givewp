@@ -152,7 +152,7 @@ function give_process_donation_form() {
 	);
 
 	// Setup donation information.
-	$user_info = array_map('give_maybe_safe_unserialize', stripslashes_deep( $user_info ));
+	$user_info = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $user_info ));
 	$donation_data = [
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
