@@ -18,16 +18,16 @@ import './style.scss';
 
 const MultiSelectControl = ({
     name,
-    label,
+    label = null,
     help,
     className,
-    value,
-    placeholder,
+    value = null,
+    placeholder = `${__('Select', 'give')}...`,
     hideLabelFromVision,
     isLoading,
     isDisabled,
-    onChange,
-    options,
+    onChange = null,
+    options = null,
 }) => {
     const instanceId = useInstanceId(MultiSelectControl);
     const id = `give-multi-select-control-${name}-${instanceId}`;
@@ -74,14 +74,6 @@ MultiSelectControl.propTypes = {
     isLoading: PropTypes.bool,
     isDisabled: PropTypes.bool,
     placeholder: PropTypes.string,
-};
-
-MultiSelectControl.defaultProps = {
-    label: null,
-    value: null,
-    onChange: null,
-    placeholder: `${__('Select', 'give')}...`,
-    options: null,
 };
 
 export default MultiSelectControl;
