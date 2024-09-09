@@ -274,7 +274,7 @@ class DonationFormRepository
     {
         $builder = new ModelQueryBuilder(DonationForm::class);
 
-        return $builder->from('posts')
+        return $builder->from('posts', 'forms')
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],

@@ -60,6 +60,8 @@ mix.setPublicPath('assets/dist')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
+    .ts('src/Campaigns/resources/admin/campaigns-list-table.tsx', 'js/give-admin-campaigns-list-table.js')
+    .ts('src/Campaigns/resources/admin/campaign-details.tsx', 'js/give-admin-campaign-details.js')
 
     .react()
     .sourceMaps(false, 'source-map')
