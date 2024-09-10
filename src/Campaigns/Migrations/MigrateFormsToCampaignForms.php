@@ -139,6 +139,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_id' => $campaignId,
+                'is_default' => true,
             ]);
     }
 

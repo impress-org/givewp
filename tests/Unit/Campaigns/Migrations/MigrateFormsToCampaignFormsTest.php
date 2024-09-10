@@ -63,4 +63,32 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $this->assertNull($relationship);
         $this->assertEquals(0, DB::table('give_campaigns')->count());
     }
+
+    public function testMigratedFormsAreDefault()
+    {
+        $form = DonationForm::factory()->create();
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $relationship = DB::table('give_campaign_forms')->where('form_id', $form->id)->get();
+
+        $this->assertEquals(1, $relationship->is_default);
+    }
+
+    public function testUpgradedFormsAreNotDefault()
+    {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $relationship = DB::table('give_campaign_forms')->where('form_id', $form1->id)->get();
+
+        $this->assertEquals(0, $relationship->is_default);
+    }
 }
