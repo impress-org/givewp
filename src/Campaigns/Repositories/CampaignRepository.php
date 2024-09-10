@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -203,6 +204,8 @@ class CampaignRepository
                 ['start_date', 'startDate'],
                 ['end_date', 'endDate'],
                 ['date_created', 'createdAt']
-            );
+            )
+            // Exclude Peer to Peer campaign type until it is fully supported.
+            ->where('campaign_type', CampaignType::PEER_TO_PEER, '!=');
     }
 }

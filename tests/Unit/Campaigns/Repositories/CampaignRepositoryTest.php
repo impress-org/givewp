@@ -128,7 +128,6 @@ final class CampaignRepositoryTest extends TestCase
         // update campaign
         $campaignFactory->title = 'Updated campaign title';
         $campaignFactory->shortDescription = 'Updated short description';
-        $campaignFactory->type = CampaignType::PEER_TO_PEER();
         $campaignFactory->status = CampaignStatus::INACTIVE();
 
         $repository->update($campaignFactory);
@@ -137,7 +136,6 @@ final class CampaignRepositoryTest extends TestCase
             ->where('id', $campaignFactory->id)
             ->get();
 
-        $this->assertNotEquals(CampaignType::CORE()->getValue(), $campaign->type->getValue());
         $this->assertNotEquals(CampaignStatus::ACTIVE()->getValue(), $campaign->status->getValue());
         $this->assertEquals('Updated campaign title', $campaign->title);
         $this->assertEquals('Updated short description', $campaign->shortDescription);
@@ -160,5 +158,41 @@ final class CampaignRepositoryTest extends TestCase
             ->get();
 
         $this->assertNull($campaign);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testPeerToPeerCampaignsAreExcludedFromQuery()
+    {
+        $repository = new CampaignRepository();
+
+        $p2p_campaign = Campaign::factory()->create([
+            'type' => CampaignType::PEER_TO_PEER(),
+        ]);
+
+        $this->assertNull($repository->getById($p2p_campaign->id));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testPeerToPeerCampaignsAreExcludedFromCount()
+    {
+        $repository = new CampaignRepository();
+
+        Campaign::factory()->create([
+            'type' => CampaignType::CORE(),
+        ]);
+
+        Campaign::factory()->create([
+            'type' => CampaignType::PEER_TO_PEER(),
+        ]);
+
+        $this->assertEquals(1, $repository->prepareQuery()->count());
     }
 }
