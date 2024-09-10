@@ -38,12 +38,8 @@ class MigrateFormsToCampaignForms extends Migration
     {
         DB::transaction(function() {
             try {
-                foreach($this->getFormData() as $formData) {
-                    $this->createParentCampaignForDonationForm($formData);
-                }
-                foreach($this->getMigratedFormData() as $migratedFormData) {
-                    $this->attachMigratedFormToCampaign($migratedFormData);
-                }
+                array_map([$this, 'createCampaignForForm'], $this->getFormData());
+                array_map([$this, 'addUpgradedFormToCampaign'], $this->getUpgradedFormData());
             } catch (DatabaseQueryException $exception) {
                 DB::rollback();
                 throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
@@ -91,7 +87,7 @@ class MigrateFormsToCampaignForms extends Migration
      * @unreleased
      * @return array [{formId, campaignId, migratedFormId}]
      */
-    protected function getMigratedFormData(): array
+    protected function getUpgradedFormData(): array
     {
         return DB::table('posts', 'forms')
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
@@ -110,7 +106,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    public function createParentCampaignForDonationForm($formData): void
+    public function createCampaignForForm($formData): void
     {
         $formId = $formData->id;
         $formTitle = $formData->title;
@@ -143,7 +139,10 @@ class MigrateFormsToCampaignForms extends Migration
             ]);
     }
 
-    protected function attachMigratedFormToCampaign($data): void
+    /**
+     * @param $data
+     */
+    protected function addUpgradedFormToCampaign($data): void
     {
         DB::table('give_campaign_forms')
             ->insert([
