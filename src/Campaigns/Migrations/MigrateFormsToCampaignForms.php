@@ -41,6 +41,9 @@ class MigrateFormsToCampaignForms extends Migration
                 foreach($this->getFormData() as $formData) {
                     $this->createParentCampaignForDonationForm($formData);
                 }
+                foreach($this->getMigratedFormData() as $migratedFormData) {
+                    $this->attachMigratedFormToCampaign($migratedFormData);
+                }
             } catch (DatabaseQueryException $exception) {
                 DB::rollback();
                 throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
@@ -86,6 +89,26 @@ class MigrateFormsToCampaignForms extends Migration
 
     /**
      * @unreleased
+     * @return array [{formId, campaignId, migratedFormId}]
+     */
+    protected function getMigratedFormData(): array
+    {
+        return DB::table('posts', 'forms')
+            ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
+            ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder
+                    ->rightJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'forms.ID');
+            })
+            ->where('forms.post_type', 'give_forms')
+            ->where('forms.post_status', 'trash', '!=')
+            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
+            ->getAll();
+    }
+
+    /**
+     * @unreleased
      */
     public function createParentCampaignForDonationForm($formData): void
     {
@@ -116,6 +139,15 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_id' => $campaignId,
+            ]);
+    }
+
+    protected function attachMigratedFormToCampaign($data): void
+    {
+        DB::table('give_campaign_forms')
+            ->insert([
+                'form_id' => $data->migratedFormId,
+                'campaign_id' => $data->campaignId,
             ]);
     }
 
