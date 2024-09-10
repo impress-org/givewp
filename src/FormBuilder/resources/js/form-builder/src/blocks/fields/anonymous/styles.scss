@@ -7,10 +7,9 @@
     }
 
     .components-base-control__help {
-        display: inline-block;
-        margin-inline-start: calc(var(--checkbox-input-size, 20px) + 12px);
+        margin-left: calc(var(--checkbox-input-size, 20px) + 12px);
         font-size: 0.875rem;
-        line-height: 1rem;
+        margin-bottom: 0;
         color: var(--givewp-grey-700);
 
         .components-checkbox-control__help {
