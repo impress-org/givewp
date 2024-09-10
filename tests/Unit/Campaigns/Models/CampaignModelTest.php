@@ -43,6 +43,9 @@ final class CampaignModelTest extends TestCase
         $this->assertEquals(2, $campaign->forms()->count());
     }
 
+    /**
+     * @unreleased
+     */
     public function testCampaignHasDefaultForm()
     {
         $campaign = Campaign::factory()->create();
