@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
+ * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
  * @throws ReflectionException Exception Handling.
@@ -151,12 +152,13 @@ function give_process_donation_form() {
 	);
 
 	// Setup donation information.
+	$user_info = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $user_info ));
 	$donation_data = [
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
 		'user_email'   => $user['user_email'],
 		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-		'user_info'    => stripslashes_deep( $user_info ),
+		'user_info'    => $user_info,
 		'post_data'    => $post_data,
 		'gateway'      => $valid_data['gateway'],
 		'card_info'    => $valid_data['cc_info'],
