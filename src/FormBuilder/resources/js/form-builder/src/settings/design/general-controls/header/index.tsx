@@ -104,6 +104,7 @@ export default function Header({dispatch, publishSettings}) {
                     {showDescription && (
                         <PanelRow>
                             <ClassicEditor
+                                key={'givewp-header-description'}
                                 id={'givewp-header-description'}
                                 label={__('Description', 'give')}
                                 content={description}
