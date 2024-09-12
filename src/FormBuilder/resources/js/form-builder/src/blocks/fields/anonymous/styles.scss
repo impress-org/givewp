@@ -7,9 +7,8 @@
     }
 
     .components-base-control__help {
-        margin-left: calc(var(--checkbox-input-size, 20px) + 12px);
         font-size: 0.875rem;
-        margin-bottom: 0;
+        margin: 0.25rem 0 0 calc(var(--checkbox-input-size, 20px) + 12px);;
         color: var(--givewp-grey-700);
 
         .components-checkbox-control__help {
