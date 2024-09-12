@@ -42,4 +42,20 @@ final class CampaignModelTest extends TestCase
 
         $this->assertEquals(2, $campaign->forms()->count());
     }
+
+    /**
+     * @unreleased
+     */
+    public function testCampaignHasDefaultForm()
+    {
+        $campaign = Campaign::factory()->create();
+        $form1 = DonationForm::factory()->create();
+        $form2 = DonationForm::factory()->create();
+
+        $db = DB::table('give_campaign_forms');
+        $db->insert(['form_id' => $form1->id, 'campaign_id' => $campaign->id, 'is_default' => 1]);
+        $db->insert(['form_id' => $form2->id, 'campaign_id' => $campaign->id]);
+
+        $this->assertEquals($form1->id, $campaign->form()->id);
+    }
 }
