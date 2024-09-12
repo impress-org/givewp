@@ -111,4 +111,20 @@ class Utils
 
         return is_plugin_active($plugin);
     }
+
+    /**
+     * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
+     *
+     * @since 3.16.1
+     *
+     * @param string $data Data that might be unserialized.
+     *
+     * @return mixed Unserialized data can be any type.
+     */
+    public static function maybeSafeUnserialize($data)
+    {
+        return is_serialized($data)
+            ? @unserialize(trim($data), ['allowed_classes' => false])
+            : $data;
+    }
 }
