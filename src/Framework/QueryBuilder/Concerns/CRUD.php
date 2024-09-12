@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @since 2.19.0
@@ -27,6 +28,20 @@ trait CRUD
             $data,
             $format
         );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param array        $columns
+     * @param QueryBuilder $query
+     *
+     * @return bool|int
+     */
+    public function insertInto(array $columns, QueryBuilder $query)
+    {
+        $columns = implode(', ', $columns);
+        return DB::query("INSERT INTO {$this->getTable()} ({$columns}) {$query->getSQL()}");
     }
 
     /**
