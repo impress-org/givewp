@@ -1,4 +1,4 @@
-import {GiveCampaignDetails} from './types';
+import {detailsPageTab, GiveCampaignDetails} from './types';
 import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
 import {useState} from 'react';
@@ -12,18 +12,59 @@ export function getGiveCampaignDetailsWindowData() {
     return window.GiveCampaignDetails;
 }
 
-const {adminUrl, campaignDetailsPage} = getGiveCampaignDetailsWindowData();
+const {adminUrl, campaign} = getGiveCampaignDetailsWindowData();
 
-console.log(Object.values(campaignDetailsPage.overviewTab));
-
-const tabs = {
-    overview: __('Overview', 'give'),
-    settings: __('Settings', 'give'),
-    forms: __('Forms', 'give'),
-};
+const tabs: detailsPageTab[] = [
+    {
+        id: 'overview',
+        title: __('Overview', 'give'),
+        content: () => (
+            <>
+                <p>Overview component goes here...</p>
+                <ul>
+                    {Object.entries(campaign.properties).map(([property, value], index) => (
+                        <li key={index}>
+                            <span>
+                                <strong>{property}:</strong> {String(value)}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        id: 'settings',
+        title: __('Settings', 'give'),
+        content: () => (
+            <>
+                <p>Settings component goes here...</p>
+                <p>
+                    <a
+                        style={{fontSize: '1.5rem'}}
+                        href={campaign.settings.landingPageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Edit Campaign Landing Page ⭷
+                    </a>
+                </p>
+            </>
+        ),
+    },
+    {
+        id: 'forms',
+        title: __('Forms', 'give'),
+        content: () => (
+            <>
+                <p>Forms list table goes here...</p>
+            </>
+        ),
+    },
+];
 
 export default function CampaignsDetailsPage() {
-    const [activeTab, setActiveTab] = useState<'overview' | 'settings' | 'forms'>('overview');
+    const [activeTab, setActiveTab] = useState<detailsPageTab>(tabs[0]);
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
         successes: [],
@@ -35,7 +76,7 @@ export default function CampaignsDetailsPage() {
                 <header className={styles.pageHeader}>
                     <div className={styles.breadcrumb}>
                         {' '}
-                        {` ${__('Campaigns', 'give')} > ${campaignDetailsPage.overviewTab.title}`}
+                        {` ${__('Campaigns', 'give')} > ${campaign.properties.title}`}
                     </div>
                     <div className={styles.flexContainer}>
                         <div className={styles.flexRow}>
@@ -55,47 +96,19 @@ export default function CampaignsDetailsPage() {
                 <div className={cx('wp-header-end', 'hidden')} />
 
                 <nav className={styles.tabsNav}>
-                    {Object.keys(tabs).map((tab) => (
+                    {Object.values(tabs).map((tab) => (
                         <button
-                            key={tab}
+                            key={tab.id}
                             className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
-                            onClick={() => setActiveTab(tab as 'overview' | 'settings' | 'forms')}
+                            onClick={() => setActiveTab(tab)}
                         >
-                            {tabs[tab]}
+                            {tab.title}
                         </button>
                     ))}
                 </nav>
 
                 <div className={styles.pageContent}>
-                    {activeTab === 'settings' ? (
-                        <>
-                            <p>Settings component goes here...</p>
-                            <p>
-                                <a
-                                    style={{fontSize: '1.5rem'}}
-                                    href={campaignDetailsPage.settingsTab.landingPageUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Edit Campaign Landing Page ⭷
-                                </a>
-                            </p>
-                        </>
-                    ) : (
-                        <>
-                            <p>Overview component goes here...</p>
-
-                            <ul>
-                                {Object.entries(campaignDetailsPage.overviewTab).map(([property, value], index) => (
-                                    <li key={index}>
-                                        <span>
-                                            <strong>{property}:</strong> {String(value)}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </>
-                    )}
+                    <activeTab.content />
                 </div>
             </article>
         </>

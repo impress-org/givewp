@@ -31,7 +31,7 @@ class LoadCampaignDetailsAssets
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'adminUrl' => admin_url(),
                 'pluginUrl' => GIVE_PLUGIN_URL,
-                'campaignDetailsPage' => (new CampaignDetailsPage($campaign))->exports(),
+                'campaign' => (new CampaignDetailsPage($campaign))->exports(),
             ]
         );
 
