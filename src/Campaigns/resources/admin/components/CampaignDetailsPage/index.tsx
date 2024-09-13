@@ -129,6 +129,15 @@ export default function CampaignsDetailsPage() {
                         </div>
 
                         <div className={styles.flexRow}>
+                            {campaign.properties.status === 'draft' && (
+                                <button
+                                    disabled={submitting}
+                                    className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
+                                    onClick={updateCampaign}
+                                >
+                                    {__('Save as draft', 'give')}
+                                </button>
+                            )}
                             <button
                                 disabled={submitting}
                                 className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
