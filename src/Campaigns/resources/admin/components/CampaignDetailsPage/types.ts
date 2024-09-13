@@ -13,7 +13,7 @@ export interface GiveCampaignDetails {
     };
 }
 
-export type detailsPageTab = {
+export type campaignDetailsTab = {
     id: string;
     title: string;
     content: FC;

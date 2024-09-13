@@ -1,8 +1,9 @@
-import {detailsPageTab, GiveCampaignDetails} from './types';
+import {campaignDetailsTab, GiveCampaignDetails} from './types';
 import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import cx from 'classnames';
+import CampaignDetailsTabs from './tabs';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -14,57 +15,10 @@ export function getGiveCampaignDetailsWindowData() {
 
 const {adminUrl, campaign} = getGiveCampaignDetailsWindowData();
 
-const tabs: detailsPageTab[] = [
-    {
-        id: 'overview',
-        title: __('Overview', 'give'),
-        content: () => (
-            <>
-                <p>Overview component goes here...</p>
-                <ul>
-                    {Object.entries(campaign.properties).map(([property, value], index) => (
-                        <li key={index}>
-                            <span>
-                                <strong>{property}:</strong> {String(value)}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
-    {
-        id: 'settings',
-        title: __('Settings', 'give'),
-        content: () => (
-            <>
-                <p>Settings component goes here...</p>
-                <p>
-                    <a
-                        style={{fontSize: '1.5rem'}}
-                        href={campaign.settings.landingPageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Edit Campaign Landing Page ⭷
-                    </a>
-                </p>
-            </>
-        ),
-    },
-    {
-        id: 'forms',
-        title: __('Forms', 'give'),
-        content: () => (
-            <>
-                <p>Forms list table goes here...</p>
-            </>
-        ),
-    },
-];
+const tabs: campaignDetailsTab[] = CampaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
-    const [activeTab, setActiveTab] = useState<detailsPageTab>(tabs[0]);
+    const [activeTab, setActiveTab] = useState<campaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -75,7 +29,7 @@ export default function CampaignsDetailsPage() {
         return tab;
     };
 
-    const handleTabNavigation = (newTab: detailsPageTab) => {
+    const handleTabNavigation = (newTab: campaignDetailsTab) => {
         // @ts-ignore
         const url = new URL(window.location);
         const urlParams = new URLSearchParams(url.search);
