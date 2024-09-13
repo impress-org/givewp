@@ -78,26 +78,33 @@ export default function CampaignsDetailsPage() {
         };
     }, []);
 
+    const updateCampaign = () => {};
+
     return (
         <>
             <article className={styles.page}>
                 <header className={styles.pageHeader}>
                     <div className={styles.breadcrumb}>
-                        {' '}
-                        {` ${__('Campaigns', 'give')} > ${campaign.properties.title}`}
+                        <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
+                            {__('Campaigns', 'give')}
+                        </a>
+                        {' > '}
+                        <span>{campaign.properties.title}</span>
                     </div>
                     <div className={styles.flexContainer}>
                         <div className={styles.flexRow}>
-                            <h1 className={styles.pageTitle}>{__('Campaign details', 'give')}</h1>
+                            <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
                         </div>
 
                         <div className={styles.flexRow}>
-                            <a
-                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
-                                className={`button button-secondary ${styles.updateCampaignsButton}`}
+                            <button
+                                className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
+                                onClick={updateCampaign}
                             >
-                                {__('Save', 'give')}
-                            </a>
+                                {campaign.properties.status === 'draft'
+                                    ? __('Publish campaign', 'give')
+                                    : __('Update campaign', 'give')}
+                            </button>
                         </div>
                     </div>
                 </header>

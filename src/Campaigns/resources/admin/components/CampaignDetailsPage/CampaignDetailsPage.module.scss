@@ -58,7 +58,6 @@
     background-color: #fff;
     padding-block: 1em;
     padding-inline: 1.5em;
-    border-bottom: 0.0625rem solid #dbdbdb;
 }
 
 .flexContainer {
@@ -78,6 +77,7 @@
     flex-direction: row;
     align-items: center;
     column-gap: 1rem;
+    margin-top: auto;
 
     & > span {
         padding-inline: 0.5rem;
@@ -100,7 +100,22 @@
 
 .breadcrumb {
     font-size: 0.7rem;
-    margin-left: 0.1rem;
+
+
+    color: #424242;
+
+    & > span {
+        font-weight: bold;
+    }
+
+    & > a {
+        text-decoration: none;
+        color: #696969;
+    }
+
+    & > a:hover {
+        text-decoration: underline;
+    }
 }
 
 .pageTitle {
@@ -111,7 +126,7 @@
 }
 
 .tabsNav {
-    background: var(--givewp-grey-100);
+    background-color: #fff;
     display: flex;
     margin-bottom: var(--givewp-spacing-6);
     padding: 0 var(--givewp-spacing-6);
@@ -123,12 +138,11 @@
     color: var(--givewp-grey-900);
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.5;
-    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    line-height: 2;
+    padding: 0 var(--givewp-spacing-4) 0 var(--givewp-spacing-4);
 
     &:hover {
-        background-color: var(--givewp-grey-50);
+        font-weight: 600;
     }
 
     &:focus {
@@ -136,8 +150,8 @@
     }
 
     &.activeTab {
-        background-color: var(--givewp-grey-5);
-        box-shadow: inset 0 4px 0 var(--givewp-green-500);
+        font-weight: 600;
+        border-bottom: var(--givewp-green-500) solid medium;
     }
 }
 
@@ -157,14 +171,12 @@
 }
 
 :global(#give-admin-campaigns-root) {
-    .updateCampaignsButton {
-        background: none;
+    .updateCampaignButton {
         border-radius: var(--givewp-rounded-2);
         font-size: 0.875rem;
-        font-weight: 600;
         line-height: 1.43;
-        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         text-align: center;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     }
 }
 
