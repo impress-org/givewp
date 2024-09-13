@@ -1,7 +1,7 @@
 import {detailsPageTab, GiveCampaignDetails} from './types';
 import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import cx from 'classnames';
 
 declare const window: {
@@ -65,10 +65,64 @@ const tabs: detailsPageTab[] = [
 
 export default function CampaignsDetailsPage() {
     const [activeTab, setActiveTab] = useState<detailsPageTab>(tabs[0]);
-    const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
-        errors: [],
-        successes: [],
-    });
+
+    const getTabFromURL = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabId = urlParams.get('tab') || activeTab.id;
+        const tab = tabs.find((tab) => tab.id === tabId);
+        console.log('tab: ', tab);
+
+        return tab;
+    };
+
+    const handleTabNavigation = (newTab: detailsPageTab) => {
+        // @ts-ignore
+        const url = new URL(window.location);
+        const urlParams = new URLSearchParams(url.search);
+
+        if (newTab) {
+            urlParams.set('tab', newTab.id);
+        } else {
+            urlParams.delete('tab');
+        }
+
+        const newUrl = `${url.pathname}?${urlParams.toString()}`;
+        window.history.pushState(null, activeTab.title, newUrl);
+
+        setActiveTab(newTab);
+    };
+
+    const handleUrlTabParamOnFirstLoad = () => {
+        // @ts-ignore
+        const url = new URL(window.location);
+        const urlParams = new URLSearchParams(url.search);
+
+        // Add the 'tab' parameter only if it's not in the URL yet
+        if (!urlParams.has('tab')) {
+            urlParams.set('tab', activeTab.id);
+            const newUrl = `${url.pathname}?${urlParams.toString()}`;
+            window.history.replaceState(null, activeTab.title, newUrl);
+        } else {
+            setActiveTab(getTabFromURL());
+        }
+    };
+
+    useEffect(() => {
+        handleUrlTabParamOnFirstLoad();
+
+        const handlePopState = () => {
+            console.log('handlePopState');
+            setActiveTab(getTabFromURL());
+        };
+
+        // Updates state based on URL when user navigates with "Back" or "Forward" buttons
+        window.addEventListener('popstate', handlePopState);
+
+        // Cleanup listener on unmount
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
 
     return (
         <>
@@ -100,7 +154,7 @@ export default function CampaignsDetailsPage() {
                         <button
                             key={tab.id}
                             className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
-                            onClick={() => setActiveTab(tab)}
+                            onClick={() => handleTabNavigation(tab)}
                         >
                             {tab.title}
                         </button>
