@@ -60,7 +60,7 @@ final class CRUDTest extends TestCase
     /**
      * @unreleased
      */
-    public function testInsertIntoShouldAddMultipleRowsToTheDatabase()
+    public function testInsertIntoShouldAddSubQueryAsMultipleRowsToTheDatabase()
     {
         DB::table('posts')->insert(['post_title' => 'Aye Post']);
         $postIdAye = DB::last_insert_id();
@@ -68,14 +68,11 @@ final class CRUDTest extends TestCase
         DB::table('posts')->insert(['post_title' => 'Bee Post']);
         $postIdBee = DB::last_insert_id();
 
-        DB::table('postmeta')
-            ->insertInto(
-                ['post_id', 'meta_key', 'meta_value'],
-                DB::table('posts') // SELECT ID AS post_id, (SELECT "postTitle") as meta_key, post_title AS meta_value FROM wp_posts
-                    ->select(['ID', 'post_id'])
-                    ->selectRaw('(SELECT "postTitle") as meta_key')
-                    ->select(['post_title', 'meta_value'])
-            );
+        DB::table('posts')
+            ->select(['ID', 'post_id'])
+            ->selectRaw('(SELECT "postTitle") as meta_key')
+            ->select(['post_title', 'meta_value'])
+            ->insertInto('postmeta', ['post_id', 'meta_key', 'meta_value']);
 
         $this->assertEquals('Aye Post', get_post_meta($postIdAye, 'postTitle', true));
         $this->assertEquals('Bee Post', get_post_meta($postIdBee, 'postTitle', true));

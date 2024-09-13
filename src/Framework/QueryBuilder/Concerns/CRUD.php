@@ -33,15 +33,21 @@ trait CRUD
     /**
      * @unreleased
      *
-     * @param array        $columns
-     * @param QueryBuilder $query
+     * @param string $table
+     * @param array  $columns
      *
-     * @return bool|int
+     * @return false|int
      */
-    public function insertInto(array $columns, QueryBuilder $query)
+    public function insertInto(string $table, array $columns)
     {
-        $columns = implode(', ', $columns);
-        return DB::query("INSERT INTO {$this->getTable()} ({$columns}) {$query->getSQL()}");
+        return DB::query(
+            sprintf(
+                'INSERT INTO %s (%s) %s',
+                $this->prefixTable($table),
+                implode(', ', $columns),
+                $this->getSQL()
+            )
+        );
     }
 
     /**
