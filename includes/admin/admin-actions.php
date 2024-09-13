@@ -1,6 +1,7 @@
 <?php
 
 use Give\Framework\Database\DB;
+use Give\Helpers\Utils;
 use Give\Log\ValueObjects\LogType;
 
 /**
@@ -680,6 +681,7 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 /**
  * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
  *
+ * @since 3.16.1 Use Utils::giveMaybeSafeUnserialize() method
  * @since 3.5.0
  *
  * @param string $data Data that might be unserialized.
@@ -688,9 +690,7 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  */
 function give_maybe_safe_unserialize($data)
 {
-    return is_serialized($data)
-        ? @unserialize(trim($data), ['allowed_classes' => false])
-        : $data;
+    return Utils::maybeSafeUnserialize($data);
 }
 
 /**
