@@ -1,10 +1,10 @@
-import {campaignDetailsTab} from './types';
+import {CampaignDetailsTab} from './types';
 import {__} from '@wordpress/i18n';
 import {getGiveCampaignDetailsWindowData} from './index';
 
 const {campaign} = getGiveCampaignDetailsWindowData();
 
-const CampaignDetailsTabs: campaignDetailsTab[] = [
+const campaignDetailsTabs: CampaignDetailsTab[] = [
     {
         id: 'overview',
         title: __('Overview', 'give'),
@@ -53,4 +53,4 @@ const CampaignDetailsTabs: campaignDetailsTab[] = [
     },
 ];
 
-export default CampaignDetailsTabs;
+export default campaignDetailsTabs;

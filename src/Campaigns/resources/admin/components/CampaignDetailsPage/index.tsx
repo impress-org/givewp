@@ -1,9 +1,9 @@
-import {campaignDetailsTab, GiveCampaignDetails} from './types';
+import {CampaignDetailsTab, GiveCampaignDetails} from './types';
 import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import cx from 'classnames';
-import CampaignDetailsTabs from './tabs';
+import campaignDetailsTabs from './tabs';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -15,10 +15,10 @@ export function getGiveCampaignDetailsWindowData() {
 
 const {adminUrl, campaign} = getGiveCampaignDetailsWindowData();
 
-const tabs: campaignDetailsTab[] = CampaignDetailsTabs;
+const tabs: CampaignDetailsTab[] = campaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
-    const [activeTab, setActiveTab] = useState<campaignDetailsTab>(tabs[0]);
+    const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -29,7 +29,7 @@ export default function CampaignsDetailsPage() {
         return tab;
     };
 
-    const handleTabNavigation = (newTab: campaignDetailsTab) => {
+    const handleTabNavigation = (newTab: CampaignDetailsTab) => {
         // @ts-ignore
         const url = new URL(window.location);
         const urlParams = new URLSearchParams(url.search);
