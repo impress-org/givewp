@@ -4,6 +4,7 @@ import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import cx from 'classnames';
 import campaignDetailsTabs from './tabs';
+import CampaignsApi from '../api';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -13,12 +14,13 @@ export function getGiveCampaignDetailsWindowData() {
     return window.GiveCampaignDetails;
 }
 
-const {adminUrl, campaign} = getGiveCampaignDetailsWindowData();
-
+const {adminUrl, campaign, apiRoot, apiNonce} = getGiveCampaignDetailsWindowData();
+const API = new CampaignsApi({apiNonce, apiRoot});
 const tabs: CampaignDetailsTab[] = campaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
+    const [submitting, setSubmitting] = useState(false);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -78,7 +80,37 @@ export default function CampaignsDetailsPage() {
         };
     }, []);
 
-    const updateCampaign = () => {};
+    const publishCampaign: any = async () => {
+        try {
+            setSubmitting(true);
+            const endpoint = `/publish/${campaign.properties.id}`;
+            const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
+            console.log('Campaign published', response);
+            location.reload();
+        } catch (error) {
+            setSubmitting(false);
+            console.error('Error publishing campaign campaign', error);
+        }
+    };
+
+    const updateCampaign: any = async () => {
+        try {
+            setSubmitting(true);
+            const endpoint = `/${campaign.properties.id}`;
+            const response = await API.fetchWithArgs(
+                endpoint,
+                {
+                    title: 'Random ' + Math.random(),
+                },
+                'PUT'
+            );
+            console.log('Campaign updated', response);
+            location.reload();
+        } catch (error) {
+            setSubmitting(false);
+            console.error('Error updating campaign campaign', error);
+        }
+    };
 
     return (
         <>
@@ -98,8 +130,9 @@ export default function CampaignsDetailsPage() {
 
                         <div className={styles.flexRow}>
                             <button
+                                disabled={submitting}
                                 className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
-                                onClick={updateCampaign}
+                                onClick={campaign.properties.status === 'draft' ? publishCampaign : updateCampaign}
                             >
                                 {campaign.properties.status === 'draft'
                                     ? __('Publish campaign', 'give')
