@@ -4,11 +4,11 @@ import {joiResolver} from '@hookform/resolvers/joi';
 import {getValidationSchema} from '../../../../utils';
 
 type FormInputs = {
-    campaignTitle: string;
+    title: string;
     longDescription: string;
-    campaignImage: string;
-    campaignGoalType: string;
-    campaignGoal: number;
+    image: string;
+    goalType: string;
+    goal: number;
 };
 
 type PropTypes = {
@@ -21,11 +21,11 @@ type PropTypes = {
 export default ({defaultValues}: PropTypes) => {
 
     const validationSchema = getValidationSchema({
-        campaignTitle: Joi.string().required(),
+        title: Joi.string().required(),
         longDescription: Joi.string(),
-        campaignImage: Joi.string(),
-        campaignGoalType: Joi.string().required(),
-        campaignGoal: Joi.number().required(),
+        image: Joi.string(),
+        goalType: Joi.string().required(),
+        goal: Joi.number().required(),
     });
 
     const {handleSubmit, control} = useForm<FormInputs>({
@@ -41,7 +41,7 @@ export default ({defaultValues}: PropTypes) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-
+                Campaign settings
             </div>
         </form>
     )
