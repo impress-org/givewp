@@ -86,7 +86,7 @@ export default function CampaignsDetailsPage() {
     /**
      * FORM LOGIC
      */
-    const [isPublishing, setIsPublishing] = useState(false);
+    const [isPublishMode, setIsPublishMode] = useState(false);
 
     const methods = useForm<CampaignDetailsInputs>({
         defaultValues: {
@@ -106,7 +106,7 @@ export default function CampaignsDetailsPage() {
         event.preventDefault();
 
         try {
-            if (isPublishing) {
+            if (isPublishMode) {
                 console.log('publishing...');
                 const endpoint = `/publish/${campaign.properties.id}`;
                 const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
@@ -140,11 +140,12 @@ export default function CampaignsDetailsPage() {
                             <div className={styles.flexRow}>
                                 <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
                                 <span
-                                    className={
+                                    className={cx(
+                                        styles.status,
                                         campaign.properties.status === 'draft'
                                             ? styles.draftStatus
                                             : styles.activeStatus
-                                    }
+                                    )}
                                 >
                                     {campaign.properties.status}
                                 </span>
@@ -162,10 +163,13 @@ export default function CampaignsDetailsPage() {
                                 <button
                                     onClick={() => {
                                         campaign.properties.status === 'draft'
-                                            ? setIsPublishing(true)
-                                            : setIsPublishing(false);
+                                            ? setIsPublishMode(true)
+                                            : setIsPublishMode(false);
                                     }}
-                                    disabled={formState.isSubmitting || !formState.isDirty}
+                                    disabled={
+                                        campaign.properties.status !== 'draft' &&
+                                        (formState.isSubmitting || !formState.isDirty)
+                                    }
                                     className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
                                 >
                                     {campaign.properties.status === 'draft'
