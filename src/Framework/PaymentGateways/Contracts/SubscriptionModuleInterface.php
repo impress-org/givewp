@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -29,6 +30,27 @@ interface SubscriptionModuleInterface
      * @since 2.20.0
      */
     public function cancelSubscription(Subscription $subscription);
+
+    /**
+     * Pause subscription.
+     *
+     * @unreleased
+     */
+    public function pauseSubscription(Subscription $subscription, DateTime $resumesAt);
+
+    /**
+     * Resume subscription.
+     *
+     * @unreleased
+     */
+    public function resumeSubscription(Subscription $subscription);
+
+    /**
+     * Whether the gateway supports pausing subscriptions.
+     *
+     * @unreleased
+     */
+    public function canPauseSubscription(): bool;
 
     /**
      * Returns whether the gateway supports syncing subscriptions.

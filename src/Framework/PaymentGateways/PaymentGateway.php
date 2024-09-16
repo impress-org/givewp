@@ -2,12 +2,14 @@
 
 namespace Give\Framework\PaymentGateways;
 
+use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
@@ -136,6 +138,52 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function cancelSubscription(Subscription $subscription)
     {
         $this->subscriptionModule->cancelSubscription($subscription);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function pauseSubscription(Subscription $subscription, DateTime $resumesAt = null)
+    {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
+            $this->subscriptionModule->pauseSubscription($subscription, $resumesAt);
+
+            return;
+        }
+
+        throw new Exception('Gateway does not support pausing the subscription.');
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function resumeSubscription(Subscription $subscription)
+    {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
+            $this->subscriptionModule->resumeSubscription($subscription);
+
+            return;
+        }
+
+        throw new Exception('Gateway does not support resuming the subscription.');
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function canPauseSubscription(): bool
+    {
+        if ($this->subscriptionModule) {
+            return $this->subscriptionModule->canPauseSubscription();
+        }
+
+        return $this->isFunctionImplementedInGatewayClass('pauseSubscription');
     }
 
     /**
