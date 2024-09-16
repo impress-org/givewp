@@ -1,6 +1,7 @@
 import {CampaignDetailsTab} from './types';
 import {__} from '@wordpress/i18n';
 import {getGiveCampaignDetailsWindowData} from './index';
+import SettingsTab from './Tabs/Settings'
 
 const {campaign} = getGiveCampaignDetailsWindowData();
 
@@ -26,21 +27,7 @@ const campaignDetailsTabs: CampaignDetailsTab[] = [
     {
         id: 'settings',
         title: __('Settings', 'give'),
-        content: () => (
-            <>
-                <p>Settings component goes here...</p>
-                <p>
-                    <a
-                        style={{fontSize: '1.5rem'}}
-                        href={campaign.settings.landingPageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Edit Campaign Landing Page ⭷
-                    </a>
-                </p>
-            </>
-        ),
+        content: () => <SettingsTab defaultValues={...campaign.properties} />,
     },
     {
         id: 'forms',
