@@ -1,4 +1,4 @@
-import {createRoot, render} from '@wordpress/element';
+import {createRoot} from '@wordpress/element';
 import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
 import {DonationFormStateProvider} from './store';
@@ -146,8 +146,4 @@ function AppPreview() {
 const root = document.getElementById('root-givewp-donation-form');
 const style = document.getElementById('root-givewp-donation-form-style');
 
-if (createRoot) {
-    createRoot(root).render(previewMode ? <AppPreview /> : <App form={form} />);
-} else {
-    render(previewMode ? <AppPreview /> : <App form={form} />, root);
-}
+createRoot(root).render(previewMode ? <AppPreview /> : <App form={form} />);

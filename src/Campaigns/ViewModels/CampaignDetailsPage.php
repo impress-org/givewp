@@ -30,12 +30,10 @@ class CampaignDetailsPage
     public function exports(): array
     {
         return [
-            'overviewTab' => $this->campaign->toArray(),
-            'settingsTab' => [
+            'properties' => $this->campaign->toArray(),
+            'settings' => [
                 'landingPageUrl' => admin_url('?action=edit_campaign_page&campaign_id=' . $this->campaign->id),
             ],
-            'reportTab' => [],
-            'updatesTab' => [],
         ];
     }
 }

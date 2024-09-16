@@ -62,6 +62,16 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
+    public function form(): DonationForm
+    {
+        return $this->forms()
+            ->where('campaign_forms.is_default', true)
+            ->get();
+    }
+
+    /**
+     * @unreleased
+     */
     public function forms(): ModelQueryBuilder
     {
         return DonationForm::query()

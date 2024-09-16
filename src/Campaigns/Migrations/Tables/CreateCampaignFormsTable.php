@@ -51,6 +51,7 @@ class CreateCampaignFormsTable extends Migration
         $sql = "CREATE TABLE $table (
             campaign_id INT UNSIGNED NOT NULL,
             form_id INT UNSIGNED NOT NULL,
+            is_default BOOLEAN NOT NULL DEFAULT 0,
             KEY form_id (form_id),
             KEY campaign_id (campaign_id),
             PRIMARY KEY (campaign_id, form_id)
