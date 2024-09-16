@@ -18,3 +18,7 @@ export type CampaignDetailsTab = {
     title: string;
     content: FC;
 };
+
+export type CampaignDetailsInputs = {
+    title: string;
+};

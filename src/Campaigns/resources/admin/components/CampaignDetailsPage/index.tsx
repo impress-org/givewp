@@ -1,10 +1,11 @@
-import {CampaignDetailsTab, GiveCampaignDetails} from './types';
+import {CampaignDetailsInputs, CampaignDetailsTab, GiveCampaignDetails} from './types';
 import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
 import cx from 'classnames';
 import campaignDetailsTabs from './tabs';
 import CampaignsApi from '../api';
+import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -20,7 +21,9 @@ const tabs: CampaignDetailsTab[] = campaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
-    const [submitting, setSubmitting] = useState(false);
+    const methods = useForm<CampaignDetailsInputs>();
+    const {formState, handleSubmit} = methods;
+    const [isPublishing, setIsPublishing] = useState(false);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -80,94 +83,92 @@ export default function CampaignsDetailsPage() {
         };
     }, []);
 
-    const publishCampaign: any = async () => {
-        try {
-            setSubmitting(true);
-            const endpoint = `/publish/${campaign.properties.id}`;
-            const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
-            console.log('Campaign published', response);
-            location.reload();
-        } catch (error) {
-            setSubmitting(false);
-            console.error('Error publishing campaign campaign', error);
-        }
-    };
+    const onSubmit: SubmitHandler<CampaignDetailsInputs> = async (campaignDetailsInputs, event) => {
+        event.preventDefault();
 
-    const updateCampaign: any = async () => {
+        console.log('is Dirty: ', formState.isDirty);
+        console.log('formState.dirtyFields: ', formState.dirtyFields);
+        console.log('formState.dirtyFields: ', Object.keys(formState.dirtyFields).length);
+
         try {
-            setSubmitting(true);
-            const endpoint = `/${campaign.properties.id}`;
-            const response = await API.fetchWithArgs(
-                endpoint,
-                {
-                    title: 'Random ' + Math.random(),
-                },
-                'PUT'
-            );
-            console.log('Campaign updated', response);
-            location.reload();
+            if (isPublishing) {
+                console.log('publishing...');
+                const endpoint = `/publish/${campaign.properties.id}`;
+                const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
+                console.log('Campaign published.', response);
+                location.reload();
+            } else if (formState.isDirty) {
+                console.log('updating...');
+                const endpoint = `/${campaign.properties.id}`;
+                const response = await API.fetchWithArgs(endpoint, campaignDetailsInputs, 'PUT');
+                console.log('Campaign updated.', response);
+                location.reload();
+            }
         } catch (error) {
-            setSubmitting(false);
-            console.error('Error updating campaign campaign', error);
+            console.error('Error updating campaign.', error);
         }
     };
 
     return (
-        <>
-            <article className={styles.page}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.breadcrumb}>
-                        <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
-                            {__('Campaigns', 'give')}
-                        </a>
-                        {' > '}
-                        <span>{campaign.properties.title}</span>
-                    </div>
-                    <div className={styles.flexContainer}>
-                        <div className={styles.flexRow}>
-                            <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
+        <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <article className={styles.page}>
+                    <header className={styles.pageHeader}>
+                        <div className={styles.breadcrumb}>
+                            <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
+                                {__('Campaigns', 'give')}
+                            </a>
+                            {' > '}
+                            <span>{campaign.properties.title}</span>
                         </div>
+                        <div className={styles.flexContainer}>
+                            <div className={styles.flexRow}>
+                                <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
+                            </div>
 
-                        <div className={styles.flexRow}>
-                            {campaign.properties.status === 'draft' && (
+                            <div className={styles.flexRow}>
+                                {campaign.properties.status === 'draft' && (
+                                    <button
+                                        disabled={formState.isSubmitting}
+                                        className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
+                                    >
+                                        {__('Save as draft', 'give')}
+                                    </button>
+                                )}
                                 <button
-                                    disabled={submitting}
-                                    className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
-                                    onClick={updateCampaign}
+                                    onClick={() => {
+                                        campaign.properties.status === 'draft'
+                                            ? setIsPublishing(true)
+                                            : setIsPublishing(false);
+                                    }}
+                                    disabled={formState.isSubmitting}
+                                    className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
                                 >
-                                    {__('Save as draft', 'give')}
+                                    {campaign.properties.status === 'draft'
+                                        ? __('Publish campaign', 'give')
+                                        : __('Update campaign', 'give')}
                                 </button>
-                            )}
-                            <button
-                                disabled={submitting}
-                                className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
-                                onClick={campaign.properties.status === 'draft' ? publishCampaign : updateCampaign}
-                            >
-                                {campaign.properties.status === 'draft'
-                                    ? __('Publish campaign', 'give')
-                                    : __('Update campaign', 'give')}
-                            </button>
+                            </div>
                         </div>
+                    </header>
+                    <nav className={styles.tabsNav}>
+                        {Object.values(tabs).map((tab) => (
+                            <button
+                                key={tab.id}
+                                className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
+                                onClick={() => handleTabNavigation(tab)}
+                            >
+                                {tab.title}
+                            </button>
+                        ))}
+                    </nav>
+                    <div className={cx('wp-header-end', 'hidden')} />
+
+                    <div className={styles.pageContent}>
+                        <activeTab.content />
                     </div>
-                </header>
-                <div className={cx('wp-header-end', 'hidden')} />
-
-                <nav className={styles.tabsNav}>
-                    {Object.values(tabs).map((tab) => (
-                        <button
-                            key={tab.id}
-                            className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
-                            onClick={() => handleTabNavigation(tab)}
-                        >
-                            {tab.title}
-                        </button>
-                    ))}
-                </nav>
-
-                <div className={styles.pageContent}>
-                    <activeTab.content />
-                </div>
-            </article>
-        </>
+                </article>
+            </form>
+        </FormProvider>
     );
 }
