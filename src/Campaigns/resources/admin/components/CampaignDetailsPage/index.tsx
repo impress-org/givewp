@@ -20,10 +20,10 @@ const API = new CampaignsApi({apiNonce, apiRoot});
 const tabs: CampaignDetailsTab[] = campaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
+    /**
+     * TABS LOGIC
+     */
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
-    const methods = useForm<CampaignDetailsInputs>();
-    const {formState, handleSubmit} = methods;
-    const [isPublishing, setIsPublishing] = useState(false);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -83,12 +83,27 @@ export default function CampaignsDetailsPage() {
         };
     }, []);
 
+    /**
+     * FORM LOGIC
+     */
+    const [isPublishing, setIsPublishing] = useState(false);
+
+    const methods = useForm<CampaignDetailsInputs>({
+        defaultValues: {
+            title: campaign.properties.title ?? '',
+        },
+    });
+    const {formState, handleSubmit, watch} = methods;
+    const formWatch = watch();
+
+    useEffect(() => {
+        console.log('formWatch: ', formWatch);
+        console.log('formState.dirtyFields: ', formState.dirtyFields);
+        console.log('formState.isDirty: ', formState.isDirty);
+    }, [formWatch]);
+
     const onSubmit: SubmitHandler<CampaignDetailsInputs> = async (campaignDetailsInputs, event) => {
         event.preventDefault();
-
-        console.log('is Dirty: ', formState.isDirty);
-        console.log('formState.dirtyFields: ', formState.dirtyFields);
-        console.log('formState.dirtyFields: ', Object.keys(formState.dirtyFields).length);
 
         try {
             if (isPublishing) {
@@ -124,12 +139,21 @@ export default function CampaignsDetailsPage() {
                         <div className={styles.flexContainer}>
                             <div className={styles.flexRow}>
                                 <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
+                                <span
+                                    className={
+                                        campaign.properties.status === 'draft'
+                                            ? styles.draftStatus
+                                            : styles.activeStatus
+                                    }
+                                >
+                                    {campaign.properties.status}
+                                </span>
                             </div>
 
                             <div className={styles.flexRow}>
                                 {campaign.properties.status === 'draft' && (
                                     <button
-                                        disabled={formState.isSubmitting}
+                                        disabled={formState.isSubmitting || !formState.isDirty}
                                         className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
                                     >
                                         {__('Save as draft', 'give')}
@@ -141,7 +165,7 @@ export default function CampaignsDetailsPage() {
                                             ? setIsPublishing(true)
                                             : setIsPublishing(false);
                                     }}
-                                    disabled={formState.isSubmitting}
+                                    disabled={formState.isSubmitting || !formState.isDirty}
                                     className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
                                 >
                                     {campaign.properties.status === 'draft'

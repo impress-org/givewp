@@ -2,19 +2,11 @@ import {CampaignDetailsTab} from './types';
 import {__} from '@wordpress/i18n';
 import {getGiveCampaignDetailsWindowData} from './index';
 import {useFormContext} from 'react-hook-form';
-import {useEffect} from 'react';
 
 const {campaign} = getGiveCampaignDetailsWindowData();
 
-// TODO: We need to remove this component after creating the final settings component
 const TestSettings = () => {
-    const {register, watch, formState} = useFormContext();
-    const formWatch = watch();
-
-    useEffect(() => {
-        console.log('formWatch: ', formWatch);
-        console.log('formState.isDirty: ', formState.isDirty);
-    }, [formWatch]);
+    const {register} = useFormContext();
 
     return (
         <>
