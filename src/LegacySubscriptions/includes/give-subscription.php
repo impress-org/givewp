@@ -790,6 +790,19 @@ class Give_Subscription {
 		return apply_filters( 'give_subscription_can_cancel', false, $this );
 	}
 
+    /**
+     * Can Pause.
+     *
+     * This method is filtered by payment gateways in order to return true on subscriptions
+     * that can be paused with a profile ID through the merchant processor.
+     *
+     * @return mixed
+     */
+    public function can_pause()
+    {
+        return apply_filters('give_subscription_can_pause', false, $this);
+    }
+
 	/**
 	 * Can Sync.
 	 *
