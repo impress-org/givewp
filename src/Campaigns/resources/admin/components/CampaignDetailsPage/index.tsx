@@ -1,10 +1,12 @@
-import {CampaignDetailsTab, GiveCampaignDetails} from './types';
-import styles from './CampaignDetailsPage.module.scss';
 import {__} from '@wordpress/i18n';
-import {useEffect, useState} from 'react';
+import {useDispatch, useSelect} from '@wordpress/data';
+import {useEffect, useState} from '@wordpress/element';
 import cx from 'classnames';
+import {CampaignDetailsTab, GiveCampaignDetails} from './types';
+
 import campaignDetailsTabs from './tabs';
 import CampaignsApi from '../api';
+import styles from './CampaignDetailsPage.module.scss';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -14,13 +16,39 @@ export function getGiveCampaignDetailsWindowData() {
     return window.GiveCampaignDetails;
 }
 
-const {adminUrl, campaign, apiRoot, apiNonce} = getGiveCampaignDetailsWindowData();
+const {adminUrl, apiRoot, apiNonce} = getGiveCampaignDetailsWindowData();
 const API = new CampaignsApi({apiNonce, apiRoot});
 const tabs: CampaignDetailsTab[] = campaignDetailsTabs;
 
 export default function CampaignsDetailsPage() {
+
+    useEffect(() => {
+        handleUrlTabParamOnFirstLoad();
+
+        const handlePopState = () => {
+            console.log('handlePopState');
+            setActiveTab(getTabFromURL());
+        };
+
+        // Updates state based on URL when user navigates with "Back" or "Forward" buttons
+        window.addEventListener('popstate', handlePopState);
+
+        // Cleanup listener on unmount
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
+
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
     const [submitting, setSubmitting] = useState(false);
+
+    const store = useSelect(select => select('givewp/campaigns'), []);
+    const actions = useDispatch('givewp/campaigns');
+
+    const campaign = store.getCampaign();
+
+    console.log(campaign.title)
+
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -63,23 +91,6 @@ export default function CampaignsDetailsPage() {
         }
     };
 
-    useEffect(() => {
-        handleUrlTabParamOnFirstLoad();
-
-        const handlePopState = () => {
-            console.log('handlePopState');
-            setActiveTab(getTabFromURL());
-        };
-
-        // Updates state based on URL when user navigates with "Back" or "Forward" buttons
-        window.addEventListener('popstate', handlePopState);
-
-        // Cleanup listener on unmount
-        return () => {
-            window.removeEventListener('popstate', handlePopState);
-        };
-    }, []);
-
     const publishCampaign: any = async () => {
         try {
             setSubmitting(true);
@@ -102,7 +113,7 @@ export default function CampaignsDetailsPage() {
                 {
                     title: 'Random ' + Math.random(),
                 },
-                'PUT'
+                'PUT',
             );
             console.log('Campaign updated', response);
             location.reload();
@@ -115,21 +126,21 @@ export default function CampaignsDetailsPage() {
     return (
         <>
             <article className={styles.page}>
-                <header className={styles.pageHeader}>
+                <header className={styles.pageHeader} onClick={() => actions.updateCampaign({title: 'Title ' + Math.random()})}>
                     <div className={styles.breadcrumb}>
                         <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
                             {__('Campaigns', 'give')}
                         </a>
                         {' > '}
-                        <span>{campaign.properties.title}</span>
+                        <span>{campaign.title}</span>
                     </div>
                     <div className={styles.flexContainer}>
                         <div className={styles.flexRow}>
-                            <h1 className={styles.pageTitle}>{campaign.properties.title}</h1>
+                            <h1 className={styles.pageTitle}>{campaign.title}</h1>
                         </div>
 
                         <div className={styles.flexRow}>
-                            {campaign.properties.status === 'draft' && (
+                            {campaign.status === 'draft' && (
                                 <button
                                     disabled={submitting}
                                     className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
@@ -141,9 +152,9 @@ export default function CampaignsDetailsPage() {
                             <button
                                 disabled={submitting}
                                 className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
-                                onClick={campaign.properties.status === 'draft' ? publishCampaign : updateCampaign}
+                                onClick={campaign.status === 'draft' ? publishCampaign : updateCampaign}
                             >
-                                {campaign.properties.status === 'draft'
+                                {campaign.status === 'draft'
                                     ? __('Publish campaign', 'give')
                                     : __('Update campaign', 'give')}
                             </button>
