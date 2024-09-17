@@ -25,7 +25,13 @@ export default async function handleSubmitRequest(
     challenges: Challenge[] = []
 ) {
     if (challenges.length > 0) {
-        await validateChallenges(challenges, values, setError);
+        const isValid = await validateChallenges(challenges, values, setError);
+
+        if (!isValid) {
+            return setError('FORM_ERROR', {
+                message: __('You must be a human to submit this form.', 'give')
+            });
+        }
     }
 
     if (values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
