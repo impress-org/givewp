@@ -3,42 +3,8 @@ import {__} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
-
-type Campaign = {
-    id?: number;
-    title: string;
-    shortDescription: string;
-    startDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
-    endDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
-    createdAt: string;
-    updatedAt: string;
-};
-
-type Inputs = {
-    title: string;
-    shortDescription: string;
-    startDateTime: string;
-    endDateTime: string;
-};
-
-interface CampaignModalProps {
-    isOpen: boolean;
-    handleClose: (response?: any) => void;
-    apiSettings: {
-        apiRoot: string;
-        apiNonce: string;
-    };
-    title: string;
-    campaign?: Campaign;
-}
+import {CampaignFormInputs, CampaignModalProps} from './types';
+import {useState} from 'react';
 
 /**
  * Get the next sharp hour
@@ -80,12 +46,14 @@ const removeTimezoneFromDateISOString = (date: string) => {
  */
 export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
+    const [formModalTitle, setFormModalTitle] = useState<string>(title);
+    const [step, setStep] = useState<number>(1);
 
     const {
         register,
         handleSubmit,
         formState: {errors, isDirty},
-    } = useForm<Inputs>({
+    } = useForm<CampaignFormInputs>({
         defaultValues: {
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
@@ -98,7 +66,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = async (inputs) => {
+    const onSubmit: SubmitHandler<CampaignFormInputs> = async (inputs, event) => {
+        event.preventDefault();
+
+        if (step !== 2) {
+            return;
+        }
+
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
             inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
@@ -112,51 +86,96 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
     };
 
+    const Step1 = () => {
+        setFormModalTitle('Step 1');
+
+        return (
+            <>
+                <div className="givewp-campaigns__form-row">
+                    <label htmlFor="title">{__('Campaign Name', 'give')}</label>
+                    <input
+                        type="text"
+                        {...register('title', {required: __('The campaign must have a name!', 'give')})}
+                        aria-invalid={errors.title ? 'true' : 'false'}
+                        placeholder={__('Enter campaign name', 'give')}
+                    />
+                </div>
+                <div className="givewp-campaigns__form-row">
+                    <label htmlFor="shortDescription">{__('Short Description', 'give')}</label>
+                    <textarea {...register('shortDescription')} rows={4} />
+                </div>
+                <button
+                    type="submit"
+                    onClick={() => setStep(2)}
+                    className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
+                    aria-disabled={!isDirty}
+                    disabled={!isDirty}
+                >
+                    {__('Continue', 'give')}
+                </button>
+            </>
+        );
+    };
+
+    const Step2 = () => {
+        setFormModalTitle('Step 2');
+
+        return (
+            <>
+                <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                    <div className="givewp-campaigns__form-column">
+                        <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
+                        <input
+                            type="datetime-local"
+                            {...register('startDateTime', {
+                                required: __('The campaign must have a start date!', 'give'),
+                            })}
+                            aria-invalid={errors.startDateTime ? 'true' : 'false'}
+                        />
+                    </div>
+                    <div className="givewp-campaigns__form-column">
+                        <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
+                        <input type="datetime-local" {...register('endDateTime')} />
+                    </div>
+                </div>
+
+                <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                    <button type="submit" onClick={() => setStep(1)} className={`button button-secondary`}>
+                        {__('Previous', 'give')}
+                    </button>
+
+                    <button
+                        type="submit"
+                        className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
+                        aria-disabled={!isDirty}
+                        disabled={!isDirty}
+                    >
+                        {__('Continue', 'give')}
+                    </button>
+                </div>
+            </>
+        );
+    };
+
+    const FormSteps = () => {
+        switch (step) {
+            case 1:
+                return <Step1 />;
+            case 2:
+                return <Step2 />;
+        }
+    };
+
     return (
         <FormModal
             isOpen={isOpen}
             handleClose={handleClose}
-            title={title}
+            title={formModalTitle}
             handleSubmit={handleSubmit(onSubmit)}
             errors={errors}
             className={styles.campaignForm}
         >
-            <div className="givewp-campaigns__form-row">
-                <label htmlFor="title">{__('Campaign Name', 'give')}</label>
-                <input
-                    type="text"
-                    {...register('title', {required: __('The campaign must have a name!', 'give')})}
-                    aria-invalid={errors.title ? 'true' : 'false'}
-                    placeholder={__('Enter campaign name', 'give')}
-                />
-            </div>
-            <div className="givewp-campaigns__form-row">
-                <label htmlFor="shortDescription">{__('Short Description', 'give')}</label>
-                <textarea {...register('shortDescription')} rows={4} />
-            </div>
-            <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                <div className="givewp-campaigns__form-column">
-                    <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
-                    <input
-                        type="datetime-local"
-                        {...register('startDateTime', {required: __('The campaign must have a start date!', 'give')})}
-                        aria-invalid={errors.startDateTime ? 'true' : 'false'}
-                    />
-                </div>
-                <div className="givewp-campaigns__form-column">
-                    <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
-                    <input type="datetime-local" {...register('endDateTime')} />
-                </div>
-            </div>
-
-            <button
-                type="submit"
-                className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
-                aria-disabled={!isDirty}
-                disabled={!isDirty}
-            >
-                {campaign?.id ? __('Save changes', 'give') : __('Save campaign', 'give')}
-            </button>
+            {<FormSteps />}
         </FormModal>
     );
 }
