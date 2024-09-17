@@ -24,3 +24,23 @@ export const updateSubscriptionWithAPI = ({id, amount, paymentMethod}) => {
             return response;
         });
 };
+
+export const managePausingSubscriptionWithAPI = ({id, action = 'pause', resumesAt = null}) => {
+    const {dispatch} = store;
+    return donorDashboardApi.post(
+        'recurring-donations/subscription/manage-pausing',
+        {
+            id,
+            action,
+            resumes_at: resumesAt,
+        },
+        {}
+    ).then(async (response) => {
+        if (response.data.status === 400) {
+            dispatch(setError(response.data.body_response.message));
+            return;
+        }
+        await fetchSubscriptionsDataFromAPI();
+        return response;
+    });
+};
