@@ -2,7 +2,8 @@ import {useForm} from 'react-hook-form';
 import Joi from 'joi';
 import {joiResolver} from '@hookform/resolvers/joi';
 import {getValidationSchema} from '../../../../utils';
-
+import styles from '../../CampaignDetailsPage.module.scss';
+import {__} from '@wordpress/i18n';
 type FormInputs = {
     title: string;
     longDescription: string;
@@ -28,7 +29,7 @@ export default ({defaultValues}: PropTypes) => {
         goal: Joi.number().required(),
     });
 
-    const {handleSubmit, control} = useForm<FormInputs>({
+    const {handleSubmit, register, control} = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(validationSchema),
         reValidateMode: 'onBlur',
@@ -40,8 +41,18 @@ export default ({defaultValues}: PropTypes) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                Campaign settings
+            <div className={styles.sections}>
+                <div className={styles.section}>
+                    <div>
+                        <h2>
+                            {__('Campaign Details', 'give')}
+                        </h2>
+                        {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
+                    </div>
+                    <div>
+                        R
+                    </div>
+                </div>
             </div>
         </form>
     )
