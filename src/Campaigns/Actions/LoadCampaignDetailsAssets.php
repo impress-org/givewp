@@ -20,7 +20,7 @@ class LoadCampaignDetailsAssets
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-campaign-details.js',
-            [],
+            ['wp-data', 'wp-element'],
             GIVE_VERSION,
             true
         );
