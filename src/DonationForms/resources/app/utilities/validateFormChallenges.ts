@@ -13,7 +13,7 @@ export default async function validateChallenges(challenges: Challenge[], values
             });
         }
 
-        if (challenge.id in values && challenge?.value !== values[challenge.id]) {
+        if (challenge.id in values && challenge?.value && challenge?.value !== values[challenge.id]) {
             values[challenge.id] = challenge?.value;
         }
     }
