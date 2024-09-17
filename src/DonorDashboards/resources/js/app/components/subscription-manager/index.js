@@ -8,7 +8,10 @@ import {__} from '@wordpress/i18n';
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
 
-import {updateSubscriptionWithAPI} from './utils';
+import {
+    managePausingSubscriptionWithAPI,
+    updateSubscriptionWithAPI,
+} from './utils';
 
 import './style.scss';
 
@@ -62,9 +65,7 @@ const SubscriptionManager = ({id, subscription}) => {
 
         setIsUpdating(true);
 
-        const paymentMethod = gatewayRef.current ?
-            await gatewayRef.current.getPaymentMethod() :
-            {};
+        const paymentMethod = gatewayRef.current ? await gatewayRef.current.getPaymentMethod() : {};
 
         if ('error' in paymentMethod) {
             setIsUpdating(false);
@@ -79,6 +80,19 @@ const SubscriptionManager = ({id, subscription}) => {
 
         setUpdated(true);
         setIsUpdating(false);
+    };
+
+    const handlePause = async () => {
+        await managePausingSubscriptionWithAPI({
+            id,
+        })
+    };
+
+    const handleResume = async () => {
+        await managePausingSubscriptionWithAPI({
+            id,
+            action: 'resume'
+        })
     };
 
     return (
@@ -101,7 +115,7 @@ const SubscriptionManager = ({id, subscription}) => {
                     <Button onClick={handleUpdate}>
                         {updated ? (
                             <Fragment>
-                                {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth/>
+                                {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
                             </Fragment>
                         ) : (
                             <Fragment>
@@ -116,6 +130,20 @@ const SubscriptionManager = ({id, subscription}) => {
                     </Button>
                 </div>
             </FieldRow>
+
+            {subscription.gateway.can_pause && (
+                <FieldRow>
+                    <div>
+                        {subscription.payment.status.id === 'active' ? (
+                            <Button onClick={handlePause}>Pause
+                                Subscription</Button>
+                        ) : (
+                            <Button onClick={handleResume}>Resume
+                                Subscription</Button>
+                        )}
+                    </div>
+                </FieldRow>
+            )}
         </Fragment>
     );
 };
