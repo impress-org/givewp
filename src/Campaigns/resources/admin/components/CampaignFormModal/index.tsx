@@ -4,8 +4,11 @@ import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps} from './types';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import UploadCoverImage from './UploadCoverImage';
+//import {upload} from '@wordpress/icons';
+
+//console.log('upload: ', upload);
 
 /**
  * Get the next sharp hour
@@ -51,6 +54,17 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const [step, setStep] = useState<number>(1);
     const [coverImageUrl, setCoverImageUrl] = useState<string>('');
 
+    useEffect(() => {
+        switch (step) {
+            case 1:
+                setFormModalTitle(__('Tell us about your fundraising cause', 'give'));
+                break;
+            case 2:
+                setFormModalTitle(__('Set up your campaign goal', 'give'));
+                break;
+        }
+    }, [step]);
+
     const {
         register,
         handleSubmit,
@@ -60,7 +74,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         defaultValues: {
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
-            coverImageUrl: campaign?.image ?? coverImageUrl,
+            image: campaign?.image ?? coverImageUrl,
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
@@ -91,13 +105,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     };
 
     const Step1 = () => {
-        //setFormModalTitle(__('Tell us about your fundraising cause', 'give'));
-
         return (
             <>
                 <div className="givewp-campaigns__form-row">
                     <label htmlFor="title">{__("What's the title of your campaign?", 'give')}</label>
-                    <span>{__("Give your campaign a title that tells donors what it's about.", 'give')}</span>
+                    <span className={styles.description}>
+                        {__("Give your campaign a title that tells donors what it's about.", 'give')}
+                    </span>
                     <input
                         type="text"
                         {...register('title', {required: __('The campaign must have a title!', 'give')})}
@@ -107,7 +121,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 </div>
                 <div className="givewp-campaigns__form-row">
                     <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
-                    <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
+                    <span className={styles.description}>
+                        {__('Let your donors know the story behind your campaign.', 'give')}
+                    </span>
                     <textarea
                         {...register('shortDescription')}
                         rows={4}
@@ -121,7 +137,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                     <label htmlFor="shortDescription">
                         {__('Add a cover image or video for your campaign.', 'give')}
                     </label>
-                    <span>{__('Upload an image or video to represent and inspire your campaign.', 'give')}</span>
+                    <span className={styles.description}>
+                        {__('Upload an image or video to represent and inspire your campaign.', 'give')}
+                    </span>
                     <UploadCoverImage
                         id="givewp-campaigns-upload-cover-image"
                         label={__('Image', 'give')}
@@ -130,11 +148,11 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         onChange={(coverImageUrl, coverImageAlt) => {
                             console.log('coverImageUrl: ', coverImageUrl);
                             setCoverImageUrl(coverImageUrl);
-                            setValue('coverImageUrl', coverImageUrl);
+                            setValue('image', coverImageUrl);
                         }}
                         reset={() => {
                             setCoverImageUrl('');
-                            setValue('coverImageUrl', '');
+                            setValue('image', '');
                         }}
                     />
                 </div>
@@ -152,8 +170,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     };
 
     const Step2 = () => {
-        //setFormModalTitle(__('Set up your campaign goal', 'give'));
-
         return (
             <>
                 <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">

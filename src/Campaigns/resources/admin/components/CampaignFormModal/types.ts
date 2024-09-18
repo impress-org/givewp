@@ -14,7 +14,7 @@ export interface CampaignModalProps {
 export type CampaignFormInputs = {
     title: string;
     shortDescription: string;
-    coverImageUrl: string;
+    image: string;
     startDateTime: string;
     endDateTime: string;
 };

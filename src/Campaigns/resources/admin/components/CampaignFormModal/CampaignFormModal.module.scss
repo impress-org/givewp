@@ -7,5 +7,17 @@
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         text-align: center;
     }
+
+    input,
+    label {
+        font-size: 1rem;
+    }
+
+    .description {
+        font-size: 0.875rem;
+        margin-bottom: 0.4rem;
+    }
 }
+
+
 

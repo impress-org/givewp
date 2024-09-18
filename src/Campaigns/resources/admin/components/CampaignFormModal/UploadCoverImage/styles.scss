@@ -2,6 +2,24 @@ div.media-modal.wp-core-ui {
     z-index: 99999999999999;
 }
 
+.givewp-media-library-drop-area {
+    text-align: center;
+    padding: 1rem 0 0 0;
+    border: 1px dotted;
+
+    button {
+        cursor: pointer;
+        width: fit-content;
+        margin: 8px auto;
+        background: #E5E7EB;
+        height: initial;
+        border: initial;
+        padding: 4px 8px 4px 8px;
+        border-radius: 4px
+    }
+}
+
+
 .givewp-media-library-control {
     cursor: pointer;
 
