@@ -5,6 +5,7 @@ import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps} from './types';
 import {useState} from 'react';
+import UploadCoverImage from './UploadCoverImage';
 
 /**
  * Get the next sharp hour
@@ -48,15 +49,18 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const API = new CampaignsApi(apiSettings);
     const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
+    const [coverImageUrl, setCoverImageUrl] = useState<string>('');
 
     const {
         register,
         handleSubmit,
         formState: {errors, isDirty},
+        setValue,
     } = useForm<CampaignFormInputs>({
         defaultValues: {
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
+            coverImageUrl: campaign?.image ?? coverImageUrl,
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
@@ -87,22 +91,52 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     };
 
     const Step1 = () => {
-        setFormModalTitle('Step 1');
+        //setFormModalTitle(__('Tell us about your fundraising cause', 'give'));
 
         return (
             <>
                 <div className="givewp-campaigns__form-row">
-                    <label htmlFor="title">{__('Campaign Name', 'give')}</label>
+                    <label htmlFor="title">{__("What's the title of your campaign?", 'give')}</label>
+                    <span>{__("Give your campaign a title that tells donors what it's about.", 'give')}</span>
                     <input
                         type="text"
-                        {...register('title', {required: __('The campaign must have a name!', 'give')})}
+                        {...register('title', {required: __('The campaign must have a title!', 'give')})}
                         aria-invalid={errors.title ? 'true' : 'false'}
-                        placeholder={__('Enter campaign name', 'give')}
+                        placeholder={__('Eg. Holiday Food Drive', 'give')}
                     />
                 </div>
                 <div className="givewp-campaigns__form-row">
-                    <label htmlFor="shortDescription">{__('Short Description', 'give')}</label>
-                    <textarea {...register('shortDescription')} rows={4} />
+                    <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
+                    <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
+                    <textarea
+                        {...register('shortDescription')}
+                        rows={4}
+                        placeholder={__(
+                            'Every family deserves a home-cooked holiday meal. Our organization collects non-perishable food and monetary donations each year to deliver holiday meal boxes to dozens of families in need from our own community.',
+                            'give'
+                        )}
+                    />
+                </div>
+                <div className="givewp-campaigns__form-row">
+                    <label htmlFor="shortDescription">
+                        {__('Add a cover image or video for your campaign.', 'give')}
+                    </label>
+                    <span>{__('Upload an image or video to represent and inspire your campaign.', 'give')}</span>
+                    <UploadCoverImage
+                        id="givewp-campaigns-upload-cover-image"
+                        label={__('Image', 'give')}
+                        actionLabel={__('Select to upload', 'give')}
+                        value={coverImageUrl}
+                        onChange={(coverImageUrl, coverImageAlt) => {
+                            console.log('coverImageUrl: ', coverImageUrl);
+                            setCoverImageUrl(coverImageUrl);
+                            setValue('coverImageUrl', coverImageUrl);
+                        }}
+                        reset={() => {
+                            setCoverImageUrl('');
+                            setValue('coverImageUrl', '');
+                        }}
+                    />
                 </div>
                 <button
                     type="submit"
@@ -118,7 +152,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     };
 
     const Step2 = () => {
-        setFormModalTitle('Step 2');
+        //setFormModalTitle(__('Set up your campaign goal', 'give'));
 
         return (
             <>
