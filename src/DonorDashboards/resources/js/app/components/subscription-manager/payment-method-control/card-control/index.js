@@ -6,7 +6,7 @@ import {useAccentColor} from '../../../../hooks';
 
 import './style.scss';
 
-const CardControl = ({label, value, forwardedRef}) => {
+const CardControl = ({label = null, value = null, forwardedRef}) => {
     const [cardNumber, setCardNumber] = useState(value ? value.card_number : '');
     const [cardExpiryDate, setCardExpiryDate] = useState(
         value ? `${value.card_exp_month} \ ${value.card_exp_year}` : ''
@@ -122,12 +122,6 @@ CardControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.object,
     onChange: PropTypes.func,
-};
-
-CardControl.defaultProps = {
-    label: null,
-    value: null,
-    onChange: null,
 };
 
 export default CardControl;

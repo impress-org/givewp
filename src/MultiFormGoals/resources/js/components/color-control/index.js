@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 const {useInstanceId} = wp.compose;
 const {BaseControl, ColorPalette} = wp.components;
 
-const ColorControl = ({name, label, help, className, value, hideLabelFromVision, onChange, colors}) => {
+const ColorControl = ({name, label, help, className, value, hideLabelFromVision, onChange = null, colors}) => {
     const instanceId = useInstanceId(ColorControl);
     const id = `give-color-control-${name}-${instanceId}`;
     return (
@@ -27,11 +27,6 @@ ColorControl.propTypes = {
     help: PropTypes.string,
     className: PropTypes.string,
     hideLabelFromVision: PropTypes.bool,
-};
-
-ColorControl.defaultProps = {
-    onChange: null,
-    options: null,
 };
 
 export default ColorControl;

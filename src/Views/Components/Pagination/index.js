@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { __ } from '@wordpress/i18n'
 
-const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
+const Pagination = ({currentPage = 1, totalPages = 0, disabled = false, setPage = () => {}}) => {
     if (1 >= totalPages) {
         return false;
     }
@@ -98,13 +98,6 @@ Pagination.propTypes = {
     setPage: PropTypes.func.isRequired,
     // Is pagination disabled
     disabled: PropTypes.bool.isRequired,
-};
-
-Pagination.defaultProps = {
-    currentPage: 1,
-    totalPages: 0,
-    setPage: () => {},
-    disabled: false,
 };
 
 export default Pagination;

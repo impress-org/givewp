@@ -11,7 +11,7 @@ import './style.scss';
 
 import {__} from '@wordpress/i18n';
 
-const SelectControl = ({label, value, isLoading, onChange, options, placeholder, width, isClearable}) => {
+const SelectControl = ({value, options, isLoading, label = null, onChange = null, placeholder = __('Select...', 'give'), width = null, isClearable = false}) => {
     if (options && options.length < 2) {
         return null;
     }
@@ -105,16 +105,6 @@ SelectControl.propTypes = {
     placeholder: PropTypes.string,
     width: PropTypes.string,
     isClearable: PropTypes.bool,
-};
-
-SelectControl.defaultProps = {
-    label: null,
-    value: null,
-    onChange: null,
-    options: null,
-    placeholder: __('Select...', 'give'),
-    width: null,
-    isClearable: false,
 };
 
 export default SelectControl;

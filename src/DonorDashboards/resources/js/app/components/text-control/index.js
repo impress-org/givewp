@@ -3,7 +3,7 @@ import {toUniqueId} from '../../utils';
 
 import './style.scss';
 
-const TextControl = ({label, value, onChange, icon, type}) => {
+const TextControl = ({label = null, value = '', onChange = null, icon = null, type = 'text'}) => {
     const id = toUniqueId(label);
 
     return (
@@ -19,14 +19,6 @@ const TextControl = ({label, value, onChange, icon, type}) => {
             </div>
         </div>
     );
-};
-
-TextControl.defaultProps = {
-    label: null,
-    value: '',
-    onChange: null,
-    icon: null,
-    type: 'text',
 };
 
 export default TextControl;
