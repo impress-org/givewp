@@ -44,4 +44,52 @@ class SubscriptionRenewalDonationCreatedTest extends TestCase
 
         $this->assertEquals($subscription->id, $renewalDonation->subscriptionId);
     }
+
+    /**
+     * @since 3.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldNotCreateRenewalDonationWithFirstGatewayTransactionId()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = $subscription->initialDonation();
+
+        $firstGatewayTransactionId = 'first-gateway-transaction-id';
+
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $firstGatewayTransactionId;
+        $donation->save();
+
+        give(SubscriptionRenewalDonationCreated::class)($subscription->gatewaySubscriptionId,
+            $firstGatewayTransactionId);
+
+        $totalDonations = give()->donations->getTotalDonationCountByGatewayTransactionId($firstGatewayTransactionId);
+
+        $this->assertEquals(1, $totalDonations);
+    }
+
+    /**
+     * @since 3.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldNotCreateRenewalDonationWithDuplicatedGatewayTransactionId()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+
+        $duplicatedGatewayTransactionId = 'duplicated-gateway-transaction-id';
+
+        // #1 Renewal Donation
+        give(SubscriptionRenewalDonationCreated::class)($subscription->gatewaySubscriptionId,
+            $duplicatedGatewayTransactionId);
+
+        // #2 Renewal Donation - This one should not be created
+        give(SubscriptionRenewalDonationCreated::class)($subscription->gatewaySubscriptionId,
+            $duplicatedGatewayTransactionId);
+
+        $totalDonations = give()->donations->getTotalDonationCountByGatewayTransactionId($duplicatedGatewayTransactionId);
+
+        $this->assertEquals(1, $totalDonations);
+    }
 }
