@@ -52,7 +52,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const API = new CampaignsApi(apiSettings);
     const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
-    const [coverImageUrl, setCoverImageUrl] = useState<string>('');
 
     useEffect(() => {
         switch (step) {
@@ -68,13 +67,15 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const {
         register,
         handleSubmit,
-        formState: {errors, isDirty},
+        formState: {errors, isDirty, isSubmitting},
         setValue,
+        watch,
+        trigger,
     } = useForm<CampaignFormInputs>({
         defaultValues: {
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
-            image: campaign?.image ?? coverImageUrl,
+            image: campaign?.image ?? '',
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
@@ -83,6 +84,18 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             ),
         },
     });
+
+    const image = watch('image');
+
+    const validateTitle = async () => {
+        const isValid = await trigger('title');
+
+        if (!isValid) {
+            console.log('Title is invalid!');
+        }
+
+        return isValid;
+    };
 
     const onSubmit: SubmitHandler<CampaignFormInputs> = async (inputs, event) => {
         event.preventDefault();
@@ -104,11 +117,15 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
     };
 
+    const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
+
     const Step1 = () => {
         return (
             <>
                 <div className="givewp-campaigns__form-row">
-                    <label htmlFor="title">{__("What's the title of your campaign?", 'give')}</label>
+                    <label htmlFor="title">
+                        {__("What's the title of your campaign?", 'give')} {requiredAsterisk}
+                    </label>
                     <span className={styles.description}>
                         {__("Give your campaign a title that tells donors what it's about.", 'give')}
                     </span>
@@ -117,7 +134,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         {...register('title', {required: __('The campaign must have a title!', 'give')})}
                         aria-invalid={errors.title ? 'true' : 'false'}
                         placeholder={__('Eg. Holiday Food Drive', 'give')}
+                        onBlur={validateTitle}
                     />
+                    {errors.title && (
+                        <div className={'givewp-campaigns__form-errors'}>
+                            <p>{errors.title.message}</p>
+                        </div>
+                    )}
                 </div>
                 <div className="givewp-campaigns__form-row">
                     <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
@@ -144,21 +167,17 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         id="givewp-campaigns-upload-cover-image"
                         label={__('Image', 'give')}
                         actionLabel={__('Select to upload', 'give')}
-                        value={coverImageUrl}
+                        value={image}
                         onChange={(coverImageUrl, coverImageAlt) => {
                             console.log('coverImageUrl: ', coverImageUrl);
-                            setCoverImageUrl(coverImageUrl);
                             setValue('image', coverImageUrl);
                         }}
-                        reset={() => {
-                            setCoverImageUrl('');
-                            setValue('image', '');
-                        }}
+                        reset={() => setValue('image', '')}
                     />
                 </div>
                 <button
                     type="submit"
-                    onClick={() => setStep(2)}
+                    onClick={async () => (await validateTitle()) && setStep(2)}
                     className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
                     aria-disabled={!isDirty}
                     disabled={!isDirty}
@@ -196,9 +215,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
                     <button
                         type="submit"
-                        className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
-                        aria-disabled={!isDirty}
-                        disabled={!isDirty}
+                        className={`button button-primary ${!isDirty || isSubmitting ? 'disabled' : ''}`}
+                        aria-disabled={!isDirty || isSubmitting}
+                        disabled={!isDirty || isSubmitting}
                     >
                         {__('Continue', 'give')}
                     </button>
@@ -222,7 +241,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             handleClose={handleClose}
             title={formModalTitle}
             handleSubmit={handleSubmit(onSubmit)}
-            errors={errors}
+            errors={[]}
             className={styles.campaignForm}
         >
             {<FormSteps />}

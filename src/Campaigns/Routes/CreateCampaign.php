@@ -41,15 +41,20 @@ class CreateCampaign implements RestRoute
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
-                    'description' => [
+                    'shortDescription' => [
                         'type' => 'string',
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
+                    'image' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_url',
+                    ],
                     'startDateTime' => [
                         'type' => 'string',
                         'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
-                        'required' => true,
+                        'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
                             return new DateTime($value);
@@ -78,17 +83,17 @@ class CreateCampaign implements RestRoute
     {
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
-            'title' => $request->get_param('title'),
-            'shortDescription' => $request->get_param('shortDescription'),
+            'title' => $request->get_param('title') ?? '',
+            'shortDescription' => $request->get_param('shortDescription') ?? '',
             'longDescription' => '',
             'logo' => '',
-            'image' => '',
+            'image' => $request->get_param('image') ?? '',
             'primaryColor' => '',
             'secondaryColor' => '',
             'goal' => 0,
             'status' => CampaignStatus::DRAFT(),
-            'startDate' => $request->get_param('startDateTime'),
-            'endDate' => $request->get_param('endDateTime'),
+            'startDate' => $request->get_param('startDateTime') ?? null,
+            'endDate' => $request->get_param('endDateTime') ?? null,
         ]);
 
         return new WP_REST_Response($campaign->toArray(), 201);
