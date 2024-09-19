@@ -138,8 +138,10 @@
 
 .tabs {
     display: flex;
-    gap: 2.25rem;
+    gap: 0.25rem;
     background-color: #fff;
+    margin-bottom: var(--givewp-spacing-6);
+    padding: 0 var(--givewp-spacing-6);
 }
 
 .tabs [data-reach-tab],
@@ -150,7 +152,6 @@
     border: 0;
     background-color: transparent;
     color: inherit;
-    font-weight: 600;
     font-size: 0.8rem;
     cursor: pointer;
 }
@@ -174,11 +175,16 @@
     transition: background-color 100ms ease-in-out;
 }
 
+.tabs [role='tab']:hover,
+.tabs [data-reach-tab][aria-selected='true'],
+.tabs [role='tab'][aria-selected='true'] {
+    font-weight: 600;
+}
+
 .tabs [data-reach-tab][aria-selected='true']::after,
 .tabs [role='tab'][aria-selected='true']::after {
     background-color: #66bb6a;
 }
-
 
 .pageContent {
     padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
