@@ -38,15 +38,15 @@ export default function CampaignsDetailsPage() {
     const handleTabNavigation = (tabId: string) => {
         const newTab = tabs.find((tab) => tab.id === tabId);
 
+        if (!newTab) {
+            return;
+        }
+
         // @ts-ignore
         const url = new URL(window.location);
         const urlParams = new URLSearchParams(url.search);
 
-        if (newTab) {
-            urlParams.set('tab', newTab.id);
-        } else {
-            urlParams.delete('tab');
-        }
+        urlParams.set('tab', newTab.id);
 
         const newUrl = `${url.pathname}?${urlParams.toString()}`;
         window.history.pushState(null, activeTab.title, newUrl);
