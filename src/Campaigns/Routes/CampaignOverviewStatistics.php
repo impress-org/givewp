@@ -10,6 +10,9 @@ use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
+/**
+ * @unreleased
+ */
 class CampaignOverviewStatistics implements RestRoute
 {
     /** @var string */
