@@ -35,7 +35,9 @@ export default function CampaignsDetailsPage() {
         return tab;
     };
 
-    const handleTabNavigation = (newTab: CampaignDetailsTab) => {
+    const handleTabNavigation = (tabId: string) => {
+        const newTab = tabs.find((tab) => tab.id === tabId);
+
         // @ts-ignore
         const url = new URL(window.location);
         const urlParams = new URLSearchParams(url.search);
@@ -185,7 +187,7 @@ export default function CampaignsDetailsPage() {
                         className={styles.root}
                         defaultSelectedKey={activeTab.id}
                         selectedKey={activeTab.id}
-                        onSelectionChange={(tabId) => handleTabNavigation(tabs.find((tab) => tab.id === tabId))}
+                        onSelectionChange={handleTabNavigation}
                     >
                         <div>
                             <TabList className={styles.tabs}>
