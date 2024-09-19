@@ -32,24 +32,29 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
 
-        Donation::factory()->create([
+        $donation1 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('-35 days'),
         ]);
-        Donation::factory()->create([
+        give_update_meta($donation1->id, '_give_completed_date', $donation1->createdAt->format('Y-m-d H:i:s'));
+
+        $donation2 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('-5 days'),
         ]);
-        Donation::factory()->create([
+        give_update_meta($donation2->id, '_give_completed_date', $donation2->createdAt->format('Y-m-d H:i:s'));
+
+        $donation3 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('now'),
         ]);
+        give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
         $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
         $request->set_param('campaignId', $campaign->id);
@@ -73,24 +78,29 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
 
-        Donation::factory()->create([
+        $donation1 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('-35 days'),
         ]);
-        Donation::factory()->create([
+        give_update_meta($donation1->id, '_give_completed_date', $donation1->createdAt->format('Y-m-d H:i:s'));
+
+        $donation2 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('-5 days'),
         ]);
-        Donation::factory()->create([
+        give_update_meta($donation2->id, '_give_completed_date', $donation2->createdAt->format('Y-m-d H:i:s'));
+
+        $donation3 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
             'createdAt' => new DateTime('now'),
         ]);
+        give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
         $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
         $request->set_param('campaignId', $campaign->id);
