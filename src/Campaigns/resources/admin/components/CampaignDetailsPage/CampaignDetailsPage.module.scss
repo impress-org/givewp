@@ -86,30 +86,6 @@
     justify-content: flex-end;
 }
 
-
-.status {
-    padding-inline: 0.5rem;
-    padding-block: 0.185rem;
-    border-radius: 1rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: capitalize;
-    letter-spacing: 0.04rem;
-    transform: translateY(0.075rem);
-    color: #ffffff;
-
-    &.draftStatus {
-        background: #FFDAA6;
-        color: #1A0F00;
-
-    }
-
-    &.activeStatus {
-        background: #CEF2CF;
-        color: #022603;
-    }
-}
-
 .breadcrumb {
     font-size: 0.7rem;
 
@@ -137,35 +113,72 @@
     font-weight: 600;
 }
 
-.tabsNav {
-    background-color: #fff;
+.status {
+    padding-inline: 0.5rem;
+    padding-block: 0.185rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0.04rem;
+    transform: translateY(0.075rem);
+    color: #ffffff;
+
+    &.draftStatus {
+        background: #FFDAA6;
+        color: #1A0F00;
+
+    }
+
+    &.activeStatus {
+        background: #CEF2CF;
+        color: #022603;
+    }
+}
+
+.tabs {
     display: flex;
-    margin-bottom: var(--givewp-spacing-6);
-    padding: 0 var(--givewp-spacing-6);
+    gap: 2.25rem;
+    background-color: #fff;
 }
 
-.tabButton {
-    background: none;
+.tabs [data-reach-tab],
+.tabs [role='tab'] {
+    position: relative;
+    appearance: none;
+    padding: 1em;
     border: 0;
-    color: var(--givewp-grey-900);
+    background-color: transparent;
+    color: inherit;
+    font-weight: 600;
+    font-size: 0.8rem;
     cursor: pointer;
-    font-size: 1rem;
-    line-height: 2;
-    padding: 0 var(--givewp-spacing-4) 0 var(--givewp-spacing-4);
+}
 
-    &:hover {
-        font-weight: 600;
-    }
-
-    &:focus {
-        outline: none;
-    }
-
-    &.activeTab {
-        font-weight: 600;
-        border-bottom: var(--givewp-green-500) solid medium;
+@media screen and (min-width: 48rem) {
+    .tabs [data-reach-tab],
+    .tabs [role='tab'] {
+        font-size: 1rem;
     }
 }
+
+.tabs [data-reach-tab]::after,
+.tabs [role='tab']:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(100% - 0.1875em);
+    width: calc(100% - 2em);
+    height: 0.1875em;
+    background-color: transparent;
+    transition: background-color 100ms ease-in-out;
+}
+
+.tabs [data-reach-tab][aria-selected='true']::after,
+.tabs [role='tab'][aria-selected='true']::after {
+    background-color: #66bb6a;
+}
+
 
 .pageContent {
     padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
@@ -191,4 +204,3 @@
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     }
 }
-

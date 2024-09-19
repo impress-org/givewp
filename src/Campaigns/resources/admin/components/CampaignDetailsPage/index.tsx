@@ -6,6 +6,7 @@ import cx from 'classnames';
 import campaignDetailsTabs from './tabs';
 import CampaignsApi from '../api';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -179,22 +180,33 @@ export default function CampaignsDetailsPage() {
                             </div>
                         </div>
                     </header>
-                    <nav className={styles.tabsNav}>
-                        {Object.values(tabs).map((tab) => (
-                            <button
-                                key={tab.id}
-                                className={cx(styles.tabButton, activeTab === tab && styles.activeTab)}
-                                onClick={() => handleTabNavigation(tab)}
-                            >
-                                {tab.title}
-                            </button>
-                        ))}
-                    </nav>
-                    <div className={cx('wp-header-end', 'hidden')} />
 
-                    <div className={styles.pageContent}>
-                        <activeTab.content />
-                    </div>
+                    <Tabs
+                        className={styles.root}
+                        defaultSelectedKey={activeTab.id}
+                        selectedKey={activeTab.id}
+                        onSelectionChange={(tabId) => handleTabNavigation(tabs.find((tab) => tab.id === tabId))}
+                    >
+                        <div>
+                            <TabList className={styles.tabs}>
+                                {Object.values(tabs).map((tab) => (
+                                    <Tab key={tab.id} id={tab.id}>
+                                        {tab.title}{' '}
+                                    </Tab>
+                                ))}
+                            </TabList>
+                        </div>
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
+                        <div className={styles.pageContent}>
+                            {Object.values(tabs).map((tab) => (
+                                <TabPanel key={tab.id} id={tab.id}>
+                                    <tab.content />
+                                </TabPanel>
+                            ))}
+                        </div>
+                    </Tabs>
                 </article>
             </form>
         </FormProvider>
