@@ -37,7 +37,12 @@ import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
 import FormError from './layouts/FormError';
 import HeaderImage from './layouts/HeaderImage';
+import Honeypot from '@givewp/forms/registrars/templates/fields/Honeypot';
 
+/**
+ * @unreleased added Honeypot
+ * @since 3.0.0
+ */
 const defaultFormTemplates = {
     fields: {
         amount: AmountField,
@@ -56,6 +61,7 @@ const defaultFormTemplates = {
         phone: PhoneField,
         file: FileField,
         url: UrlField,
+        honeypot: Honeypot,
     },
     elements: {
         paragraph: Paragraph,
