@@ -111,7 +111,7 @@ export default function CampaignsDetailsPage() {
         try {
             if (isPublishMode) {
                 console.log('publishing...');
-                const endpoint = `/publish/${campaign.properties.id}`;
+                const endpoint = `/${campaign.properties.id}/publish`;
                 const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
                 console.log('Campaign published.', response);
                 location.reload();
