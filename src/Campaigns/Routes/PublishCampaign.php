@@ -5,7 +5,6 @@ namespace Give\Campaigns\Routes;
 use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Routes\Traits\RestResponses;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -16,7 +15,6 @@ use WP_REST_Server;
  */
 class PublishCampaign implements RestRoute
 {
-    use RestResponses;
 
     /** @var string */
     protected $endpoint = 'campaigns/(?P<id>[0-9]+)/publish';
