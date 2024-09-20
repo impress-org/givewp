@@ -3,13 +3,12 @@ import FieldRow from '../field-row';
 import {FieldContent} from './field-content';
 import Button from '../button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-
 import {__} from '@wordpress/i18n';
-
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
-
+import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {managePausingSubscriptionWithAPI, updateSubscriptionWithAPI} from './utils';
+import PauseDurationDropdown from './pause-duration-dropdown';
 
 import './style.scss';
 
@@ -25,6 +24,7 @@ const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(de
 // There is no error handling whatsoever, that will be necessary.
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
+    const [isOpen, setIsOpen] = useState(false);
 
     const [amount, setAmount] = useState(() =>
         normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
@@ -81,6 +81,8 @@ const SubscriptionManager = ({id, subscription}) => {
     };
 
     const handlePause = async () => {
+        setIsOpen(true);
+
         await managePausingSubscriptionWithAPI({
             id,
         });
@@ -108,7 +110,16 @@ const SubscriptionManager = ({id, subscription}) => {
                 label={__('Payment Method', 'give')}
                 gateway={subscription.gateway}
             />
-            <FieldContent>
+            <ModalDialog
+                wrapperClassName={'give-donor-dashboard__subscription-manager-modal'}
+                title={__('Pause Subscription', 'give')}
+                showHeader={true}
+                isOpen={isOpen}
+                handleClose={() => setIsOpen(false)}
+            >
+                <PauseDurationDropdown />
+            </ModalDialog>
+            <FieldContent classNames={'give-donor-dashboard__subscription-manager'}>
                 <FieldRow>
                     <div>
                         <Button onClick={handleUpdate}>
@@ -141,7 +152,7 @@ const SubscriptionManager = ({id, subscription}) => {
                             {subscription.payment.status.id === 'active' ? (
                                 <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
                                     <Button variant onClick={handlePause}>
-                                        {__('Pause', 'give')}{' '}
+                                        {__('Pause', 'give')}
                                     </Button>
                                 </div>
                             ) : (

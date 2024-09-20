@@ -5,12 +5,9 @@
         animation: spin infinite 1s linear;
     }
 
-    &-pause-content {
-        margin-bottom: 4.25rem;
-
-        .give-donor-dashboard__subscription-manager-pause-container {
-            margin-bottom: 44px;
-        }
+    .give-donor-dashboard__subscription-manager-pause-container {
+        margin-bottom: 44px;
+        
     }
 
     &-resume-header {

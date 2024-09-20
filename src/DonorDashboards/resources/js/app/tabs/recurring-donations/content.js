@@ -15,6 +15,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import './style.scss';
 import SubscriptionStatus from '../../components/subscription-manager/subscription-status';
+import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 
 const Content = () => {
     const subscriptions = useSelector((state) => state.subscriptions);
