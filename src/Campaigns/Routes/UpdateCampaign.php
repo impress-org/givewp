@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Routes\Traits\RestResponses;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @unreleased
@@ -29,7 +30,7 @@ class UpdateCampaign implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'PUT',
+                    'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
@@ -73,6 +74,6 @@ class UpdateCampaign implements RestRoute
 
         $response = json_encode($this->campaign->toArray());
 
-        return new WP_REST_Response($response);
+        return new WP_REST_Response($response, 200);
     }
 }
