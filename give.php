@@ -241,6 +241,7 @@ final class Give
         Give\BetaFeatures\ServiceProvider::class,
         Give\FormTaxonomies\ServiceProvider::class,
         Give\DonationSpam\ServiceProvider::class,
+        Give\Settings\ServiceProvider::class
     ];
 
     /**
