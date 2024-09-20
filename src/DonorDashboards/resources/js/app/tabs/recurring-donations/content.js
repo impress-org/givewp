@@ -14,6 +14,7 @@ import {useSelector} from './hooks';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import './style.scss';
+import SubscriptionStatus from '../../components/subscription-manager/subscription-status';
 
 const Content = () => {
     const subscriptions = useSelector((state) => state.subscriptions);
@@ -81,7 +82,10 @@ const Content = () => {
                     </Fragment>
                 ) : (
                     <Fragment>
-                        <Heading>{__('Manage Subscription', 'give')}</Heading>
+                        <Heading>
+                            {__('Manage Subscription', 'give')}
+                            <SubscriptionStatus subscription={getSubscriptionById(id)} />
+                        </Heading>
                         <Divider />
                         <SubscriptionManager id={id} subscription={getSubscriptionById(id)} />
                         <Divider />

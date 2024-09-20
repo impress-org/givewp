@@ -1,0 +1,19 @@
+.givewp-dashboard-subscription-status {
+    position: absolute;
+    // content container padding
+    right: 30px;
+    color: #fff;
+    padding: .5rem 0;
+    min-width: 8rem;
+    border-radius: 3px;
+    font-weight: normal;
+    text-align: center;
+
+    &--paused {
+        background: #0073aa;
+    }
+
+    &--active {
+        background: rgb(104, 187, 108);
+    }
+}

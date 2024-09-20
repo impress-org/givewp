@@ -1,5 +1,6 @@
 import {Fragment, useMemo, useRef, useState} from 'react';
 import FieldRow from '../field-row';
+import {FieldContent} from './field-content';
 import Button from '../button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -8,10 +9,7 @@ import {__} from '@wordpress/i18n';
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
 
-import {
-    managePausingSubscriptionWithAPI,
-    updateSubscriptionWithAPI,
-} from './utils';
+import {managePausingSubscriptionWithAPI, updateSubscriptionWithAPI} from './utils';
 
 import './style.scss';
 
@@ -85,14 +83,14 @@ const SubscriptionManager = ({id, subscription}) => {
     const handlePause = async () => {
         await managePausingSubscriptionWithAPI({
             id,
-        })
+        });
     };
 
     const handleResume = async () => {
         await managePausingSubscriptionWithAPI({
             id,
-            action: 'resume'
-        })
+            action: 'resume',
+        });
     };
 
     return (
@@ -110,40 +108,59 @@ const SubscriptionManager = ({id, subscription}) => {
                 label={__('Payment Method', 'give')}
                 gateway={subscription.gateway}
             />
-            <FieldRow>
-                <div>
-                    <Button onClick={handleUpdate}>
-                        {updated ? (
-                            <Fragment>
-                                {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                {__('Update Subscription', 'give')}{' '}
-                                <FontAwesomeIcon
-                                    className={isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : ''}
-                                    icon={isUpdating ? 'spinner' : 'save'}
-                                    fixedWidth
-                                />
-                            </Fragment>
-                        )}
-                    </Button>
-                </div>
-            </FieldRow>
-
-            {subscription.gateway.can_pause && (
+            <FieldContent>
                 <FieldRow>
                     <div>
-                        {subscription.payment.status.id === 'active' ? (
-                            <Button onClick={handlePause}>Pause
-                                Subscription</Button>
-                        ) : (
-                            <Button onClick={handleResume}>Resume
-                                Subscription</Button>
-                        )}
+                        <Button onClick={handleUpdate}>
+                            {updated ? (
+                                <Fragment>
+                                    {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
+                                </Fragment>
+                            ) : (
+                                <Fragment>
+                                    {__('Update Subscription', 'give')}{' '}
+                                    <FontAwesomeIcon
+                                        className={
+                                            isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : ''
+                                        }
+                                        icon={isUpdating ? 'spinner' : 'save'}
+                                        fixedWidth
+                                    />
+                                </Fragment>
+                            )}
+                        </Button>
                     </div>
                 </FieldRow>
-            )}
+
+                {subscription.gateway.can_pause && (
+                    <FieldRow>
+                        <div className={'give-donor-dashboard__subscription-manager-pause-content'}>
+                            <p className={'give-donor-dashboard__subscription-manager-resume-header'}>
+                                {__('Subscription Renewal', 'give')}
+                            </p>
+                            {subscription.payment.status.id === 'active' ? (
+                                <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
+                                    <Button variant onClick={handlePause}>
+                                        {__('Pause', 'give')}{' '}
+                                    </Button>
+                                </div>
+                            ) : (
+                                <>
+                                    <Button variant onClick={handleResume}>
+                                        {__('Resume', 'give')}{' '}
+                                    </Button>
+                                    <span className={'give-donor-dashboard__subscription-manager-resume-description'}>
+                                        {__(
+                                            'When you resume, your donations will resume on the next scheduled renewal date.',
+                                            'give'
+                                        )}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    </FieldRow>
+                )}
+            </FieldContent>
         </Fragment>
     );
 };
