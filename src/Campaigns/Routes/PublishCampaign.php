@@ -2,13 +2,14 @@
 
 namespace Give\Campaigns\Routes;
 
+use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Routes\Traits\RestResponses;
 use Give\Campaigns\ValueObjects\CampaignStatus;
-use Give\Framework\Exceptions\Primitives\Exception;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @unreleased
@@ -18,7 +19,10 @@ class PublishCampaign implements RestRoute
     use RestResponses;
 
     /** @var string */
-    protected $endpoint = 'campaigns/publish/(?P<id>[0-9]+)';
+    protected $endpoint = 'campaigns/(?P<id>[0-9]+)/publish';
+
+    /** @var Campaign */
+    protected $campaign;
 
     /**
      * @unreleased
@@ -30,7 +34,7 @@ class PublishCampaign implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'PUT',
+                    'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
@@ -41,6 +45,9 @@ class PublishCampaign implements RestRoute
                         'type' => 'string',
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
+                        'validate_callback' => function ($id) {
+                            return $this->campaign = Campaign::find($id);
+                        },
                     ],
                 ],
             ]
@@ -49,25 +56,16 @@ class PublishCampaign implements RestRoute
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function handleRequest(WP_REST_Request $request): WP_Rest_Response
     {
-        $campaignId = $request->get_param('id');
-        $campaign = Campaign::find($campaignId);
+        $this->campaign->status = CampaignStatus::ACTIVE();
+        $this->campaign->save();
 
-        if ( ! $campaign) {
-            return $this->notFoundResponse(esc_html__(sprintf('Campaign %s not found.', $campaignId), 'give'));
-        }
+        $response = json_encode($this->campaign->toArray());
 
-        try {
-            $campaign->status = CampaignStatus::ACTIVE();
-            $campaign->save();
-
-            $response = json_encode($campaign->toArray());
-        } catch (Exception $e) {
-            return $this->badRequestResponse($e);
-        }
-
-        return new WP_REST_Response($response);
+        return new WP_REST_Response($response, 200);
     }
 }
