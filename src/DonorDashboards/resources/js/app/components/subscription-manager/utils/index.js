@@ -13,7 +13,7 @@ export const updateSubscriptionWithAPI = ({id, amount, paymentMethod}) => {
                 amount: amount,
                 payment_method: paymentMethod,
             },
-            {},
+            {}
         )
         .then(async (response) => {
             if (response.data.status === 400) {
@@ -25,22 +25,24 @@ export const updateSubscriptionWithAPI = ({id, amount, paymentMethod}) => {
         });
 };
 
-export const managePausingSubscriptionWithAPI = ({id, action = 'pause', resumesAt = null}) => {
+export const managePausingSubscriptionWithAPI = ({id, action = 'pause', intervalInMonths = null}) => {
     const {dispatch} = store;
-    return donorDashboardApi.post(
-        'recurring-donations/subscription/manage-pausing',
-        {
-            id,
-            action,
-            resumes_at: resumesAt,
-        },
-        {}
-    ).then(async (response) => {
-        if (response.data.status === 400) {
-            dispatch(setError(response.data.body_response.message));
-            return;
-        }
-        await fetchSubscriptionsDataFromAPI();
-        return response;
-    });
+    return donorDashboardApi
+        .post(
+            'recurring-donations/subscription/manage-pausing',
+            {
+                id,
+                action,
+                interval_in_months: intervalInMonths,
+            },
+            {}
+        )
+        .then(async (response) => {
+            if (response.data.status === 400) {
+                dispatch(setError(response.data.body_response.message));
+                return;
+            }
+            await fetchSubscriptionsDataFromAPI();
+            return response;
+        });
 };
