@@ -2,7 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 
-use DateTime;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -15,14 +14,14 @@ interface SubscriptionPausable
      *
      * @unreleased
      */
-    public function pauseSubscription(Subscription $subscription, DateTime $resumesAt);
+    public function pauseSubscription(Subscription $subscription, int $intervalInMonths): void;
 
     /**
      * Resume subscription.
      *
      * @unreleased
      */
-    public function resumeSubscription(Subscription $subscription);
+    public function resumeSubscription(Subscription $subscription): void;
 
     /**
      * Check if subscription can be paused.

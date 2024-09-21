@@ -2,7 +2,6 @@
 
 namespace Give\Framework\PaymentGateways;
 
-use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
@@ -145,10 +144,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @unreleased
      */
-    public function pauseSubscription(Subscription $subscription, DateTime $resumesAt = null)
+    public function pauseSubscription(Subscription $subscription, int $intervalInMonths = null): void
     {
         if ($this->subscriptionModule instanceof SubscriptionPausable) {
-            $this->subscriptionModule->pauseSubscription($subscription, $resumesAt);
+            $this->subscriptionModule->pauseSubscription($subscription, $intervalInMonths);
 
             return;
         }
@@ -161,7 +160,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @unreleased
      */
-    public function resumeSubscription(Subscription $subscription)
+    public function resumeSubscription(Subscription $subscription): void
     {
         if ($this->subscriptionModule instanceof SubscriptionPausable) {
             $this->subscriptionModule->resumeSubscription($subscription);
