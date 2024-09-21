@@ -23,4 +23,11 @@ interface SubscriptionPausable
      * @unreleased
      */
     public function resumeSubscription(Subscription $subscription);
+
+    /**
+     * Check if subscription can be paused.
+     *
+     * @unreleased
+     */
+    public function canPauseSubscription(): bool;
 }

@@ -179,11 +179,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function canPauseSubscription(): bool
     {
-        if ($this->subscriptionModule) {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
             return $this->subscriptionModule->canPauseSubscription();
         }
 
-        return $this->isFunctionImplementedInGatewayClass('pauseSubscription');
+        return false;
     }
 
     /**
