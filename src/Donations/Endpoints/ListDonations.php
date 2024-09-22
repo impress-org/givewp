@@ -23,14 +23,16 @@ class ListDonations extends Endpoint
     protected $endpoint = 'admin/donations';
 
     /**
+     * @unreleased becomes public to be usable in hooks
      * @var WP_REST_Request
      */
-    protected $request;
+    public $request;
 
     /**
+     * @unreleased becomes public to be usable in hooks
      * @var DonationsListTable
      */
-    protected $listTable;
+    public $listTable;
 
     /**
      * @since 3.4.0
@@ -46,6 +48,77 @@ class ListDonations extends Endpoint
      */
     public function registerRoute()
     {
+        $args = [
+            'page' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 1,
+                'minimum' => 1
+            ],
+            'perPage' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 30,
+                'minimum' => 1
+            ],
+            'form' => [
+                'type' => 'integer',
+                'required' => false,
+                'default' => 0
+            ],
+            'search' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'start' => [
+                'type' => 'string',
+                'required' => false,
+                'validate_callback' => [$this, 'validateDate']
+            ],
+            'end' => [
+                'type' => 'string',
+                'required' => false,
+                'validate_callback' => [$this, 'validateDate']
+            ],
+            'donor' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortColumn' => [
+                'type' => 'string',
+                'required' => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sortDirection' => [
+                'type' => 'string',
+                'required' => false,
+                'enum' => [
+                    'asc',
+                    'desc',
+                ],
+            ],
+            'locale' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => get_locale(),
+            ],
+            'testMode' => [
+                'type' => 'boolean',
+                'required' => false,
+                'default' => give_is_test_mode(),
+            ],
+            'return' => [
+                'type' => 'string',
+                'required' => false,
+                'default' => 'columns',
+                'enum' => [
+                    'model',
+                    'columns',
+                ],
+            ],
+        ];
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -55,77 +128,22 @@ class ListDonations extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => [
-                    'page' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 1,
-                        'minimum' => 1
-                    ],
-                    'perPage' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 30,
-                        'minimum' => 1
-                    ],
-                    'form' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 0
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'start' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
-                    ],
-                    'end' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
-                    ],
-                    'donor' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortColumn' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'sortDirection' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'enum' => [
-                            'asc',
-                            'desc',
-                        ],
-                    ],
-                    'locale' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => get_locale(),
-                    ],
-                    'testMode' => [
-                        'type' => 'boolean',
-                        'required' => false,
-                        'default' => give_is_test_mode(),
-                    ],
-                    'return' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'default' => 'columns',
-                        'enum' => [
-                            'model',
-                            'columns',
-                        ],
-                    ],
-                ],
+                /**
+                 * Allow adding API endpoint args
+                 *
+                 * @unreleased
+                 * @param array $args Array of api args {
+                 *     Arg details
+                 *
+                 *     @type string   $type              Type of value
+                 *     @type boolean  $required          Is this arg required for each request
+                 *     @type mixed    $default           Optional - Default value for this arg
+                 *     @type callable $validate_callback Optional
+                 *     @type callable $sanitize_callback Optional
+                 *     @type mixed[]  $enum              Optional - Array of allowed values
+                 * }[]
+                 */
+                'args' => apply_filters('give_list-donation_api_args', $args),
             ]
         );
     }
@@ -171,20 +189,22 @@ class ListDonations extends Endpoint
      */
     public function getDonations(): array
     {
+        $query = give()->donations->prepareQuery();
+
+        // Pagination
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+        $query->limit($perPage)->offset(($page - 1) * $perPage);
+
+        // Sort
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
-
-        $query = give()->donations->prepareQuery();
-        list($query) = $this->getWhereConditions($query);
-
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
-            ->offset(($page - 1) * $perPage);
+        // Where
+        list($query) = $this->getWhereConditions($query);
 
         $donations = $query->getAll();
 
@@ -203,12 +223,11 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->groupBy('mode');
+        $query = DB::table('posts')->where('post_type', 'give_payment');
 
         list($query, $dependencies) = $this->getWhereConditions($query);
 
+        $dependencies = array_unique($dependencies);
         $query->attachMeta(
             'give_donationmeta',
             'ID',
@@ -231,35 +250,49 @@ class ListDonations extends Endpoint
      */
     protected function getWhereConditions(QueryBuilder $query): array
     {
+        $dependencies = [];
+        list($query, $dependencies) = $this->getSearchWhereCondition($query, $dependencies);
+        list($query, $dependencies) = $this->getDonorWhereCondition($query, $dependencies);
+        list($query, $dependencies) = $this->getFormWhereCondition($query, $dependencies);
+        list($query, $dependencies) = $this->getDateWhereCondition($query, $dependencies);
+        list($query, $dependencies) = $this->getModeWhereCondition($query, $dependencies);
+
+        /**
+         * Allow adding request clauses
+         *
+         * @unreleased
+         * @param array $value {
+         *     @type ModelQueryBuilder  $query        Donation query builder
+         *     @type DonationMetaKeys[] $dependencies List of meta dependencies for added where clauses
+         * }
+         * @param ListDonations $endpoint API Endpoint instance
+         */
+        return apply_filters('give_list-donation_where_conditions', [$query, $dependencies], $this);
+    }
+
+    private function getSearchWhereCondition (QueryBuilder $query, array $dependencies)
+    {
         $search = $this->request->get_param('search');
-        $start = $this->request->get_param('start');
-        $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
-        $donor = $this->request->get_param('donor');
-        $testMode = $this->request->get_param('testMode');
-
-        $dependencies = [
-            DonationMetaKeys::MODE(),
-        ];
-
-        $hasWhereConditions = $search || $start || $end || $form || $donor;
-
-        if ($search) {
-            if (ctype_digit($search)) {
-                $query->where('id', $search);
-            } elseif (strpos($search, '@') !== false) {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
-                $dependencies[] = DonationMetaKeys::EMAIL();
-            } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
-                $dependencies[] = DonationMetaKeys::FIRST_NAME();
-                $dependencies[] = DonationMetaKeys::LAST_NAME();
-            }
+        if (!$search) return [$query, $dependencies];
+        if (ctype_digit($search)) {
+            $query->where('id', $search);
+        } elseif (strpos($search, '@') !== false) {
+            $query
+                ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
+            $dependencies[] = DonationMetaKeys::EMAIL();
+        } else {
+            $query
+                ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
+                ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+            $dependencies[] = DonationMetaKeys::FIRST_NAME();
+            $dependencies[] = DonationMetaKeys::LAST_NAME();
         }
+        return [$query, $dependencies];
+    }
 
+    private function getDonorWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $donor = $this->request->get_param('donor');
         if ($donor) {
             if (ctype_digit($donor)) {
                 $query
@@ -273,13 +306,24 @@ class ListDonations extends Endpoint
                 $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
         }
+        return [$query, $dependencies];
+    }
 
+    private function getFormWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $form = $this->request->get_param('form');
         if ($form) {
             $query
                 ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
             $dependencies[] = DonationMetaKeys::FORM_ID();
         }
+        return [$query, $dependencies];
+    }
 
+    private function getDateWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
         } elseif ($start) {
@@ -287,19 +331,22 @@ class ListDonations extends Endpoint
         } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
+        return [$query, $dependencies];
+    }
 
-        if ($hasWhereConditions) {
-           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
-        } elseif ($testMode) {
+    private function getModeWhereCondition (QueryBuilder $query, array $dependencies)
+    {
+        $dependencies[] = DonationMetaKeys::MODE();
+        $testMode = $this->request->get_param('testMode');
+        if ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
-            $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-            ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            $query->where(function ($whereBuilder) {
+                $whereBuilder
+                    ->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            });
         }
-
-        return [
-            $query,
-            $dependencies,
-        ];
+        return [$query, $dependencies];
     }
 }

@@ -51,9 +51,12 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
 };
 
 // figure out what the initial filter state should be based on the filter configuration
-export const getInitialFilterState = (filters) => {
+export const getInitialFilterState = (filters, apiSettings) => {
     const state = {};
     const urlParams = new URLSearchParams(window.location.search);
+
+    // Allow third party extends filters
+    filters = wp.hooks.applyFilters(`give-${apiSettings.table.id}-list-table-filters`, filters);
     filters.map((filter) => {
         // if the search parameters contained a value for the filter, use that
         const filterQuery = decodeURI(urlParams.get(filter.name));
