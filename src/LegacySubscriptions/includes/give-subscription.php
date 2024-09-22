@@ -919,6 +919,22 @@ class Give_Subscription {
 
 	}
 
+    /**
+     * Is Paused.
+     *
+     * @return bool $ret Whether the subscription is paused or not.
+     */
+    public function is_paused()
+    {
+        $ret = false;
+
+        if ('paused' === $this->status) {
+            $ret = true;
+        }
+
+        return apply_filters('give_subscription_is_paused', $ret, $this->id, $this);
+    }
+
 
 	/**
 	 * Is Expired.
@@ -1011,7 +1027,7 @@ class Give_Subscription {
 		$frequency = ! empty( $this->frequency ) ? intval( $this->frequency ) : 1;
 
 		// If renewal date is already in the future it's set so return it.
-		if ( $expires > current_time( 'timestamp' ) && $this->is_active() ) {
+        if ($expires > current_time('timestamp') && ($this->is_active() || $this->is_paused())) {
 			return $localized
 				? date_i18n( give_date_format(), strtotime( $this->expiration ) )
 				: date( 'Y-m-d H:i:s', strtotime( $this->expiration ) );
