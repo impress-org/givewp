@@ -31,7 +31,7 @@ const campaignSchema: JSONSchemaType<CampaignInputFields> = {
         },
         goalType: {
             type: 'string',
-            enum: ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
+            enum: ['amount', 'donations'],
             errorMessage: __('Required field', 'give'),
             nullable: true
         },
