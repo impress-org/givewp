@@ -32,6 +32,9 @@ const SubscriptionManager = ({id, subscription}) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [updated, setUpdated] = useState(false);
 
+    const showPausingControls =
+        subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
+
     // Prepare data for amount control
     const {max, min, options} = useMemo(() => {
         const {numberDecimals} = subscription.payment.currency;
@@ -143,7 +146,7 @@ const SubscriptionManager = ({id, subscription}) => {
                     </div>
                 </FieldRow>
 
-                {subscription.gateway.can_pause && (
+                {showPausingControls && (
                     <FieldRow>
                         <div className={'give-donor-dashboard__subscription-manager-pause-content'}>
                             <p className={'give-donor-dashboard__subscription-manager-resume-header'}>
