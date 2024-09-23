@@ -32,6 +32,10 @@ export type CampaignDetailsTab = {
     content: FC;
 };
 
-export type CampaignDetailsInputs = {
+export type CampaignInputFields = {
     title: string;
+    status: string;
+    longDescription?: string;
+    goal: number;
+    goalType: string;
 };
