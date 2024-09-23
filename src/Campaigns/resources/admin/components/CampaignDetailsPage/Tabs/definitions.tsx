@@ -2,6 +2,7 @@ import {CampaignDetailsTab} from '../types';
 import {__} from '@wordpress/i18n';
 import OverviewTab from './Overview';
 import SettingsTab from './Settings';
+import FormsTab from './Forms';
 
 const campaignDetailsTabs: CampaignDetailsTab[] = [
     {
@@ -17,11 +18,7 @@ const campaignDetailsTabs: CampaignDetailsTab[] = [
     {
         id: 'forms',
         title: __('Forms', 'give'),
-        content: () => (
-            <>
-                <p>Forms list table goes here...</p>
-            </>
-        ),
+        content: () => <FormsTab />,
     },
 ];
 
