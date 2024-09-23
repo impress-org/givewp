@@ -199,6 +199,27 @@
             margin: 0 0 var(--givewp-spacing-2);
         }
     }
+
+    .sections {
+        .section {
+            display: flex;
+            background-color: #fff;
+            padding: var(--givewp-spacing-4);
+            border-radius: var(--givewp-spacing-2);
+            margin-bottom: var(--givewp-spacing-4);
+            align-content: flex-start;
+            flex-direction: row;
+
+            :first-child {
+                flex: 1;
+            }
+
+            :last-child {
+                flex: 2;
+            }
+
+        }
+    }
 }
 
 :global(#give-admin-campaigns-root) {
