@@ -71,9 +71,12 @@ class UpdateCampaign implements RestRoute
                 case 'id':
                     break;
                 case 'status':
-                    if (array_key_exists($value, $statusMap)) {
-                        $this->campaign->setAttribute($key, $statusMap[$value]);
-                    }
+                    $status = array_key_exists($value, $statusMap)
+                        ? $statusMap[$value]
+                        : CampaignStatus::DRAFT();
+
+                    $this->campaign->setAttribute('status', $status);
+
                     break;
                 default:
                     if ($this->campaign->hasProperty($key)) {
