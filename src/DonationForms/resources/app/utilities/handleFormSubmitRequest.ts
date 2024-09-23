@@ -1,9 +1,10 @@
 import {
+    Challenge,
     Gateway,
     isFormResponseGatewayError,
     isFormResponseRedirect,
     isFormResponseValidationError,
-    isResponseRedirected,
+    isResponseRedirected
 } from '@givewp/forms/types';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
@@ -13,31 +14,43 @@ import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
+import validateChallenges from '@givewp/forms/app/utilities/validateFormChallenges';
 
 export default async function handleSubmitRequest(
     values,
     setError,
     gateway: Gateway,
     donateUrl: string,
-    inlineRedirectRoutes: string[]
+    inlineRedirectRoutes: string[],
+    challenges: Challenge[] = []
 ) {
+    if (challenges.length > 0) {
+        const isValid = await validateChallenges(challenges, values, setError);
+
+        if (!isValid) {
+            return setError('FORM_ERROR', {
+                message: __('You must be a human to submit this form.', 'give')
+            });
+        }
+    }
+
     if (values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
         return setError('FORM_ERROR', {
             message: __(
                 'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
                 'give'
-            ),
+            )
         });
     }
 
     try {
-        const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
+        const { originUrl, isEmbed, embedId } = getCurrentFormUrlData();
 
         const formValues = {
             ...values,
             originUrl,
             isEmbed,
-            embedId,
+            embedId
         };
 
         const formData = convertValuesToFormData(formValues);
@@ -52,7 +65,7 @@ export default async function handleSubmitRequest(
             }
         }
 
-        const {response} = await postFormData(donateUrl, formData);
+        const { response } = await postFormData(donateUrl, formData);
 
         if (isResponseRedirected(response)) {
             await handleRedirect(response.url, inlineRedirectRoutes);
@@ -77,7 +90,7 @@ export default async function handleSubmitRequest(
         }
 
         return setError('FORM_ERROR', {
-            message: error?.message ?? __('Something went wrong, please try again or contact support.', 'give'),
+            message: error?.message ?? __('Something went wrong, please try again or contact support.', 'give')
         });
     }
 };

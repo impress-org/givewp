@@ -8,6 +8,7 @@ import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGetGatewayById';
 
 const {validateUrl} = getWindowData();
+const challenges = window.givewp.form.challenges.getAll();
 
 /**
  * @since 3.0.0
@@ -44,7 +45,8 @@ export default function NextButton({buttonText = __('Continue')}: {buttonText?: 
                         validateUrl,
                         values,
                         setError,
-                        getGateway(values?.gatewayId)
+                        getGateway(values?.gatewayId),
+                        challenges.filter(({id}) => fieldNames.includes(id))
                     );
 
                     setIsValidating(false);

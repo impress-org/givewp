@@ -14,6 +14,7 @@ import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
+const challenges = window.givewp.form.challenges.getAll();
 
 const MultiStepFormTemplate = withTemplateWrapper(formTemplates.layouts.multiStepForm);
 /**
@@ -58,7 +59,8 @@ export default function StepForm({
                                 setError,
                                 getGateway(values.gatewayId),
                                 donateUrl,
-                                inlineRedirectRoutes
+                                inlineRedirectRoutes,
+                                challenges
                             )
                         ),
                     }}
