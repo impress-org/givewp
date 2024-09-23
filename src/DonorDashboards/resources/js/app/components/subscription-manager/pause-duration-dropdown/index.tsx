@@ -1,44 +1,40 @@
-import {__} from '@wordpress/i18n';
-import {useState} from 'react';
+import { __ } from '@wordpress/i18n';
+import { useState } from 'react';
 
 import './style.scss';
 
-type pauseDurationDropDownProps = {
-    handlePause :() => void;
-}
+type PauseDurationDropDownProps = {
+    handlePause: (pauseDuration: number | null) => void;
+    closeModal: () => void;
+};
 
-export default function PauseDurationDropdown({handlePause}: pauseDurationDropDownProps) {
-    const [durationOptions, setDurationOptions] = useState(getOptions('months'));
+type durationOptions = { value: string; label: string }[];
 
-    function getOptions(configType) {
-        switch (configType) {
-            case 'months':
-                return [
-                    {value: '1', label: __('1 month', 'give')},
-                    {value: '2', label: __('2 months', 'give')},
-                    {value: '3', label: __('3 months', 'give')},
-                ];
-            case 'days':
-                return Array.from({length: 30}, (_, i) => ({
-                    value: (i + 1).toString(),
-                    label: `${i + 1} ${__('days', 'give')}`,
-                }));
-            case 'weeks':
-                return [
-                    {value: '1', label: __('1 week', 'give')},
-                    {value: '2', label: __('2 weeks', 'give')},
-                    {value: '3', label: __('3 weeks', 'give')},
-                ];
-            default:
-                return [];
-        }
-    }
+export default function PauseDurationDropdown({handlePause, closeModal}: PauseDurationDropDownProps) {
+    const [pauseDuration, setPauseDuration] = useState<number | null>(null);
+
+    const durationOptions: durationOptions = [
+        { value: '1', label: __('1 month', 'give') },
+        { value: '2', label: __('2 months', 'give') },
+        { value: '3', label: __('3 months', 'give') },
+    ];
+
+    const updateSubscription = () => {
+        closeModal();
+        handlePause(pauseDuration);
+    };
 
     return (
-        <label className={'give-donor-dashboard__subscription-manager-pause-label'}>
-            <span> {__('Duration of pause', 'give')}</span>
-            <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
-                <select className={'give-donor-dashboard__subscription-manager-pause-select'}>
+        <label className="give-donor-dashboard__subscription-manager-pause-label">
+            <span>{__('Duration of pause', 'give')}</span>
+            <div className="give-donor-dashboard__subscription-manager-pause-container">
+                <select
+                    className="give-donor-dashboard__subscription-manager-pause-select"
+                    onChange={(e) => setPauseDuration(parseInt(e.target.value))}
+                >
+                    <option value="0" disabled>
+                        {__('How long would you like to pause your subscription?', 'give')}
+                    </option>
                     {durationOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -55,8 +51,7 @@ export default function PauseDurationDropdown({handlePause}: pauseDurationDropDo
                     />
                 </svg>
             </div>
-            <button className={'give-donor-dashboard__subscription-manager-pause-update'}
-             onClick={handlePause}>
+            <button className="give-donor-dashboard__subscription-manager-pause-update" onClick={updateSubscription}>
                 {__('Pause Subscription', 'give')}
             </button>
         </label>

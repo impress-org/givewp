@@ -83,9 +83,10 @@ const SubscriptionManager = ({id, subscription}) => {
         setIsUpdating(false);
     };
 
-    const handlePause = async () => {
+    const handlePause = async (pauseDuration) => {
         await managePausingSubscriptionWithAPI({
             id,
+            intervalInMonths: pauseDuration,
         });
     };
 
@@ -152,7 +153,7 @@ const SubscriptionManager = ({id, subscription}) => {
                                 isOpen={isOpen}
                                 handleClose={toggleModal}
                             >
-                                <PauseDurationDropdown handlePause={handlePause}/>
+                                <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal}/>
                             </ModalDialog>
                             {subscription.payment.status.id === 'active' ? (
                                 <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
