@@ -1,5 +1,17 @@
 import {FC} from 'react';
 
+
+export interface Campaign {
+    id: number;
+    title: string;
+    type: string;
+    shortDescription: string;
+    longDescription: string;
+    logo: string;
+    image: string;
+    goal: number;
+}
+
 export interface GiveCampaignDetails {
     apiRoot: string;
     apiNonce: string;
