@@ -4,6 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ViewModels\CampaignDetailsPage;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
  * @unreleased
@@ -16,12 +17,13 @@ class LoadCampaignDetailsAssets
     public function __invoke(Campaign $campaign)
     {
         $handleName = 'givewp-admin-campaign-details';
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'assets/dist/js/give-admin-campaign-details.asset.php');
 
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-campaign-details.js',
-            [],
-            GIVE_VERSION,
+            $asset['dependencies'],
+            $asset['version'],
             true
         );
 
@@ -31,7 +33,7 @@ class LoadCampaignDetailsAssets
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'adminUrl' => admin_url(),
                 'pluginUrl' => GIVE_PLUGIN_URL,
-                'campaignDetailsPage' => (new CampaignDetailsPage($campaign))->exports(),
+                'campaign' => (new CampaignDetailsPage($campaign))->exports(),
             ]
         );
 

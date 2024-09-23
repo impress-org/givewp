@@ -2,3 +2,211 @@
     margin-top: 3rem;
     padding: 3rem;
 }
+
+:global {
+    :root {
+        --give-primary-color: #69b868;
+    }
+
+    .post-type-give_forms #wpbody {
+        box-sizing: border-box;
+
+        & > a {
+            text-decoration: underline;
+        }
+    }
+
+    .post-type-give_forms #wpbody-content {
+        box-sizing: border-box;
+    }
+
+    .post-type-give_forms #wpbody::after {
+        all: revert;
+    }
+
+    .give-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    #wpcontent {
+        padding: 0;
+    }
+}
+
+.page {
+    box-sizing: border-box;
+    color: #333;
+    font-family: Open Sans, system-ui, sans-serif;
+    font-size: 1rem;
+
+    *,
+    ::before,
+    ::after {
+        box-sizing: inherit;
+    }
+}
+
+.pageHeader {
+    background-color: #fff;
+    padding-block: 1em;
+    padding-inline: 1.5em;
+}
+
+.flexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    & > * {
+        flex-shrink: 0;
+    }
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+    margin-top: auto;
+}
+
+
+.flexRow:not(:first-child) {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.breadcrumb {
+    font-size: 0.7rem;
+
+
+    color: #424242;
+
+    & > span {
+        font-weight: bold;
+    }
+
+    & > a {
+        text-decoration: none;
+        color: #696969;
+    }
+
+    & > a:hover {
+        text-decoration: underline;
+    }
+}
+
+.pageTitle {
+    color: #424242;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.status {
+    padding-inline: 0.5rem;
+    padding-block: 0.185rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0.04rem;
+    transform: translateY(0.075rem);
+    color: #ffffff;
+
+    &.draftStatus {
+        background: #FFDAA6;
+        color: #1A0F00;
+
+    }
+
+    &.activeStatus {
+        background: #CEF2CF;
+        color: #022603;
+    }
+}
+
+.tabs {
+    display: flex;
+    gap: 0.25rem;
+    background-color: #fff;
+    margin-bottom: var(--givewp-spacing-6);
+    padding: 0 var(--givewp-spacing-6);
+}
+
+.tabs [data-reach-tab],
+.tabs [role='tab'] {
+    position: relative;
+    appearance: none;
+    padding: 1em;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 48rem) {
+    .tabs [data-reach-tab],
+    .tabs [role='tab'] {
+        font-size: 1rem;
+    }
+}
+
+.tabs [data-reach-tab]::after,
+.tabs [role='tab']:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(100% - 0.1875em);
+    width: calc(100% - 2em);
+    height: 0.1875em;
+    background-color: transparent;
+    transition: background-color 100ms ease-in-out;
+}
+
+.tabs [role='tab']:hover,
+.tabs [data-reach-tab][aria-selected='true'],
+.tabs [role='tab'][aria-selected='true'] {
+    font-weight: 600;
+}
+
+.tabs [data-reach-tab][aria-selected='true']::after,
+.tabs [role='tab'][aria-selected='true']::after {
+    background-color: #66bb6a;
+}
+
+.pageContent {
+    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+
+    section {
+        margin-bottom: var(--givewp-spacing-14);
+        position: relative;
+
+        h2 {
+            font-size: 1.125rem;
+            line-height: 1.56;
+            margin: 0 0 var(--givewp-spacing-2);
+        }
+    }
+}
+
+:global(#give-admin-campaigns-root) {
+    .updateCampaignButton {
+        border-radius: var(--givewp-rounded-2);
+        font-size: 0.875rem;
+        line-height: 1.43;
+        text-align: center;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+    }
+}
