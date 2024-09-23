@@ -5,6 +5,7 @@ namespace Give\Campaigns\Routes;
 use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -60,9 +61,24 @@ class UpdateCampaign implements RestRoute
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
+        $statusMap = [
+            'draft' => CampaignStatus::DRAFT(),
+            'active' => CampaignStatus::ACTIVE(),
+        ];
+
         foreach ($request->get_params() as $key => $value) {
-            if ('id' !== $key) {
-                $this->campaign->setAttribute($key, $value);
+            switch ($key) {
+                case 'id':
+                    break;
+                case 'status':
+                    if (array_key_exists($value, $statusMap)) {
+                        $this->campaign->setAttribute($key, $statusMap[$value]);
+                    }
+                    break;
+                default:
+                    if ($this->campaign->hasProperty($key)) {
+                        $this->campaign->setAttribute($key, $value);
+                    }
             }
         }
 
@@ -70,8 +86,6 @@ class UpdateCampaign implements RestRoute
             $this->campaign->save();
         }
 
-        $response = json_encode($this->campaign->toArray());
-
-        return new WP_REST_Response($response, 200);
+        return new WP_REST_Response($this->campaign->toArray());
     }
 }
