@@ -18,10 +18,7 @@ export default () => {
 
     const getTabFromURL = () => {
         const tabId = urlParams.get('tab') || activeTab.id;
-        const tab = tabs.find((tab) => tab.id === tabId);
-        console.log('tab: ', tab);
-
-        return tab;
+        return tabs.find((tab) => tab.id === tabId);
     };
 
     const handleTabNavigation = (tabId: string) => {
@@ -51,10 +48,7 @@ export default () => {
     useEffect(() => {
         handleUrlTabParamOnFirstLoad();
 
-        const handlePopState = () => {
-            console.log('handlePopState');
-            setActiveTab(getTabFromURL());
-        };
+        const handlePopState = () => setActiveTab(getTabFromURL())
 
         // Updates state based on URL when user navigates with "Back" or "Forward" buttons
         window.addEventListener('popstate', handlePopState);
