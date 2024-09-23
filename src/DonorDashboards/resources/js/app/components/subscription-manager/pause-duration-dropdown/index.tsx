@@ -3,7 +3,11 @@ import {useState} from 'react';
 
 import './style.scss';
 
-export default function PauseDurationDropdown() {
+type pauseDurationDropDownProps = {
+    handlePause :() => void;
+}
+
+export default function PauseDurationDropdown({handlePause}: pauseDurationDropDownProps) {
     const [durationOptions, setDurationOptions] = useState(getOptions('months'));
 
     function getOptions(configType) {
@@ -51,7 +55,8 @@ export default function PauseDurationDropdown() {
                     />
                 </svg>
             </div>
-            <button className={'give-donor-dashboard__subscription-manager-pause-update'}>
+            <button className={'give-donor-dashboard__subscription-manager-pause-update'}
+             onClick={handlePause}>
                 {__('Pause Subscription', 'give')}
             </button>
         </label>

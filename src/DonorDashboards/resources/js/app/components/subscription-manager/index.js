@@ -84,8 +84,6 @@ const SubscriptionManager = ({id, subscription}) => {
     };
 
     const handlePause = async () => {
-        setIsOpen(true);
-
         await managePausingSubscriptionWithAPI({
             id,
         });
@@ -96,6 +94,10 @@ const SubscriptionManager = ({id, subscription}) => {
             id,
             action: 'resume',
         });
+    };
+
+    const toggleModal = () => {
+        setIsOpen(!isOpen);
     };
 
     return (
@@ -113,15 +115,6 @@ const SubscriptionManager = ({id, subscription}) => {
                 label={__('Payment Method', 'give')}
                 gateway={subscription.gateway}
             />
-            <ModalDialog
-                wrapperClassName={'give-donor-dashboard__subscription-manager-modal'}
-                title={__('Pause Subscription', 'give')}
-                showHeader={true}
-                isOpen={isOpen}
-                handleClose={() => setIsOpen(false)}
-            >
-                <PauseDurationDropdown />
-            </ModalDialog>
             <FieldContent classNames={'give-donor-dashboard__subscription-manager'}>
                 <FieldRow>
                     <div>
@@ -152,9 +145,18 @@ const SubscriptionManager = ({id, subscription}) => {
                             <p className={'give-donor-dashboard__subscription-manager-resume-header'}>
                                 {__('Subscription Renewal', 'give')}
                             </p>
+                            <ModalDialog
+                                wrapperClassName={'give-donor-dashboard__subscription-manager-modal'}
+                                title={__('Pause Subscription', 'give')}
+                                showHeader={true}
+                                isOpen={isOpen}
+                                handleClose={toggleModal}
+                            >
+                                <PauseDurationDropdown handlePause={handlePause}/>
+                            </ModalDialog>
                             {subscription.payment.status.id === 'active' ? (
                                 <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
-                                    <Button variant onClick={handlePause}>
+                                    <Button variant onClick={toggleModal}>
                                         {__('Pause', 'give')}
                                     </Button>
                                 </div>
