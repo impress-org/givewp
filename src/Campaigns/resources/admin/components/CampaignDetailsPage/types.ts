@@ -5,6 +5,7 @@ export interface Campaign {
     id: number;
     title: string;
     type: string;
+    status: string;
     shortDescription: string;
     longDescription: string;
     logo: string;
