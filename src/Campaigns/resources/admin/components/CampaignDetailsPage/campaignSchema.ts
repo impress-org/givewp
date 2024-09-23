@@ -23,7 +23,7 @@ const campaignSchema: JSONSchemaType<CampaignInputFields> = {
             nullable: true
         },
         goal: {
-            type: 'integer',
+            type: 'number',
             default: 10000,
             minimum: 0,
             nullable: true,

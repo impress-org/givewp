@@ -74,7 +74,7 @@ export default () => {
                         {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
                     </div>
 
-                    <input type="number" {...register('goal')} />
+                    <input {...register('goal', {valueAsNumber: true})} />
 
                     {errors.goal && (
                         // @ts-ignore
