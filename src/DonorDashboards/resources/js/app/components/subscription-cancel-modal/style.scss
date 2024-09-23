@@ -33,7 +33,6 @@
             padding: 30px 36px 20px 36px;
             font-size: 15px;
             font-weight: 500;
-            line-height: 24px;
             color: #555;
         }
 
@@ -41,9 +40,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 2rem;
 
             a.give-donor-dashboard-cancel-modal__cancel {
+                flex: 1;
+                max-width: 240px;
+                border-radius: 3px;
                 cursor: pointer;
+                border: 1px solid var(--give-donor-dashboard-accent-color);
+                box-sizing: border-box;
+                padding: 12px 20px;
+                font-size: 16px;
+                font-weight: 600;
+                text-align: center;
             }
         }
     }

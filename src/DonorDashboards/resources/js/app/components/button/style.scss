@@ -28,7 +28,9 @@
     }
 
     &.give-donor-dashboard-button--primary {
-        width: 239.609px;
+        flex: 1;
+        max-width: 240px;
+        border: 1px solid #0073aa;
         color: #fff !important;
         background: #0073aa;
         box-shadow: none;
@@ -36,10 +38,12 @@
     }
 
     &.give-donor-dashboard-button--variant {
-        width: 239.609px;
+        flex: 1;
+        width: 240px;
         color: #0073aa !important;
         background: var(--givewp-shades-white);
         box-shadow: none;
+        border: 1px solid #0073aa;
         margin: 0;
         justify-content: center;
     }
