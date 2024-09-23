@@ -1,11 +1,13 @@
 import {__} from '@wordpress/i18n';
-import {useState} from '@wordpress/element';
+import {useState, useEffect} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
+import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
 import {Campaign, GiveCampaignDetails} from './types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner} from '@givewp/components';
 import Tabs from './Tabs';
+import campaignSchema from './campaignSchema';
 
 import styles from './style.module.scss';
 
@@ -14,24 +16,40 @@ declare const window: {
 } & Window;
 
 export default function CampaignsDetailsPage({campaignId}) {
-    const {record: campaign, hasResolved, save}: {
+    const {record: campaign, hasResolved}: {
         record: Campaign,
         hasResolved: boolean,
         save: Function
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
+    const methods = useForm<Campaign>({
+        defaultValues: {
+            ...campaign
+        },
+        resolver: ajvResolver(campaignSchema)
+    });
+
+
+    const {formState, handleSubmit, reset} = methods;
+
+    // Set default values when campaign is loaded
+    useEffect(() => {
+        if (hasResolved){
+            reset({...campaign });
+        }
+    }, [hasResolved]);
+
 
     const [submitting, setSubmitting] = useState(false);
     const [isPublishMode, setIsPublishMode] = useState(false);
 
-    const methods = useForm<Campaign>({
-        defaultValues: campaign,
-    });
 
-    const {formState, handleSubmit, watch} = methods;
-    const formWatch = watch();
+    console.log(campaign)
 
-    const onSubmit: SubmitHandler<Campaign> = async (campaign, event) => {
+    const onSubmit: SubmitHandler<Campaign> = async (data, event) => {
+
+        console.log(data)
+
         event.preventDefault();
 
         try {
@@ -87,23 +105,23 @@ export default function CampaignsDetailsPage({campaignId}) {
                             <div className={styles.flexRow}>
                                 {campaign.status === 'draft' && (
                                     <button
+                                        type="submit"
                                         disabled={formState.isSubmitting || !formState.isDirty}
-                                        className={`button button-secondary ${styles.button} ${styles.updateCampaignButton}`}
+                                        className={`button button-secondary ${styles.updateCampaignButton}`}
                                     >
                                         {__('Save as draft', 'give')}
                                     </button>
                                 )}
                                 <button
+                                    type="submit"
                                     onClick={() => {
-                                        campaign.status === 'draft'
-                                            ? setIsPublishMode(true)
-                                            : setIsPublishMode(false);
+                                        setIsPublishMode(campaign.status === 'draft')
                                     }}
                                     disabled={
                                         campaign.status !== 'draft' &&
                                         (formState.isSubmitting || !formState.isDirty)
                                     }
-                                    className={`button button-primary ${styles.button} ${styles.updateCampaignButton}`}
+                                    className={`button button-primary ${styles.updateCampaignButton}`}
                                 >
                                     {campaign.status === 'draft'
                                         ? __('Publish campaign', 'give')
