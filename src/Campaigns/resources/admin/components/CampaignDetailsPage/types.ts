@@ -18,9 +18,9 @@ export interface GiveCampaignDetails {
     apiNonce: string;
     adminUrl: string;
     pluginUrl: string;
-    campaign: {
-        properties: any;
-        settings: {
+    campaignDetailsPage: {
+        overviewTab: any;
+        settingsTab: {
             landingPageUrl: string;
         };
     };
