@@ -1,9 +1,9 @@
 import {__} from '@wordpress/i18n';
-import {useState, useEffect} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
-import {Campaign, GiveCampaignDetails} from './types';
+import {Campaign, CampaignInputFields, GiveCampaignDetails} from './types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner} from '@givewp/components';
 import Tabs from './Tabs';
@@ -16,58 +16,37 @@ declare const window: {
 } & Window;
 
 export default function CampaignsDetailsPage({campaignId}) {
-    const {record: campaign, hasResolved}: {
+    const {record: campaign, hasResolved, save, edit}: {
         record: Campaign,
         hasResolved: boolean,
-        save: Function
+        save: () => any,
+        edit: (data: any) => void,
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
-    const methods = useForm<Campaign>({
-        defaultValues: {
-            ...campaign
-        },
-        resolver: ajvResolver(campaignSchema)
+    const methods = useForm<CampaignInputFields>({
+        resolver: ajvResolver(campaignSchema),
     });
 
-
-    const {formState, handleSubmit, reset} = methods;
+    const {formState, handleSubmit, reset, setValue} = methods;
 
     // Set default values when campaign is loaded
     useEffect(() => {
-        if (hasResolved){
-            reset({...campaign });
+        if (hasResolved) {
+            reset({...campaign});
         }
     }, [hasResolved]);
 
+    console.log(formState.isDirty);
 
-    const [submitting, setSubmitting] = useState(false);
-    const [isPublishMode, setIsPublishMode] = useState(false);
+    const onSubmit: SubmitHandler<Campaign> = async (data, e) => {
+        e.preventDefault();
 
+        if (formState.isDirty) {
+            edit(data);
 
-    console.log(campaign)
-
-    const onSubmit: SubmitHandler<Campaign> = async (data, event) => {
-
-        console.log(data)
-
-        event.preventDefault();
-
-        try {
-            // if (isPublishMode) {
-            //     console.log('publishing...');
-            //     const endpoint = `/${campaign.properties.id}/publish`;
-            //     const response = await API.fetchWithArgs(endpoint, {}, 'PUT');
-            //     console.log('Campaign published.', response);
-            //     location.reload();
-            // } else if (formState.isDirty) {
-            //     console.log('updating...');
-            //     const endpoint = `/${campaign.properties.id}`;
-            //     const response = await API.fetchWithArgs(endpoint, campaignDetailsInputs, 'PUT');
-            //     console.log('Campaign updated.', response);
-            //     location.reload();
-            // }
-        } catch (error) {
-            console.error('Error updating campaign.', error);
+            save().then((response: Campaign) => {
+                reset(response);
+            });
         }
     };
 
@@ -103,25 +82,27 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={styles.flexRow}>
-                                {campaign.status === 'draft' && (
+                                {campaign.status === 'active' && (
                                     <button
                                         type="submit"
-                                        disabled={formState.isSubmitting || !formState.isDirty}
+                                        disabled={!formState.isDirty}
                                         className={`button button-secondary ${styles.updateCampaignButton}`}
+                                        onClick={e => {
+                                            setValue('status', 'draft');
+                                        }}
                                     >
                                         {__('Save as draft', 'give')}
                                     </button>
                                 )}
                                 <button
                                     type="submit"
-                                    onClick={() => {
-                                        setIsPublishMode(campaign.status === 'draft')
-                                    }}
-                                    disabled={
-                                        campaign.status !== 'draft' &&
-                                        (formState.isSubmitting || !formState.isDirty)
-                                    }
+                                    disabled={campaign.status !== 'draft' && !formState.isDirty}
                                     className={`button button-primary ${styles.updateCampaignButton}`}
+                                    onClick={e => {
+                                        if (campaign.status === 'draft') {
+                                            setValue('status', 'active', {shouldDirty: true});
+                                        }
+                                    }}
                                 >
                                     {campaign.status === 'draft'
                                         ? __('Publish campaign', 'give')
