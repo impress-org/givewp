@@ -15,7 +15,6 @@ const campaignSchema: JSONSchemaType<CampaignInputFields> = {
         status: {
             type: 'string',
             enum: ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
-            errorMessage: __('Required field', 'give'),
             nullable: true
         },
         longDescription: {
@@ -38,7 +37,7 @@ const campaignSchema: JSONSchemaType<CampaignInputFields> = {
         },
     },
     // @ts-ignore
-    required: ['title', 'status', 'goal', 'goalType'],
+    required: ['title'],
     additionalProperties: true
 };
 
