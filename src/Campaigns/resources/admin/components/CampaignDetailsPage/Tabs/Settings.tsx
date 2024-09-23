@@ -14,16 +14,19 @@ export default () => {
         <div className={styles.sections}>
             <div className={styles.section}>
                 <div>
-                    <h2>
+                    <div className={styles.sectionTitle}>
                         {__('Campaign Details', 'give')}
-                    </h2>
-                    {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
+                    </div>
+                    <div className={styles.sectionDescription}>
+                        {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
+                    </div>
+
                 </div>
                 <div>
-                    <h3>
+                    <div className={styles.sectionSubtitle}>
                         {__("What's the title of your campaign?", 'give')}
-                    </h3>
-                    <div>
+                    </div>
+                    <div className={styles.sectionFieldDescription}>
                         {__('Give your campaign a title that tells donors what it’s about.', 'give')}
                     </div>
 
@@ -31,22 +34,24 @@ export default () => {
 
                     {errors.title && (
                         // @ts-ignore
-                        <div className="error-message">{errors.title.message}</div>
+                        <div className={styles.errorMsg}>{errors.title.message}</div>
                     )}
                 </div>
             </div>
 
             <div className={styles.section}>
                 <div>
-                    <h2>
+                    <div className={styles.sectionTitle}>
                         {__('Campaign Goal', 'give')}
-                    </h2>
-                    {__('How would you like to set your goal?', 'give')}
+                    </div>
+                    <div className={styles.sectionDescription}>
+                        {__('How would you like to set your goal?', 'give')}
+                    </div>
                 </div>
                 <div>
-                    <h3>
+                    <div className={styles.sectionSubtitle}>
                         {__('Set the details of your campaign goal here.', 'give')}
-                    </h3>
+                    </div>
 
                     <select {...register('goalType')}>
                         <option value="amount">
@@ -59,13 +64,13 @@ export default () => {
 
                     {errors.goalType && (
                         // @ts-ignore
-                        <div className="error-message">{errors.goalType.message}</div>
+                        <div className={styles.errorMsg}>{errors.goalType.message}</div>
                     )}
 
-                    <h3>
+                    <div className={styles.sectionSubtitle}>
                         {__('How much do you want to raise?', 'give')}
-                    </h3>
-                    <div>
+                    </div>
+                    <div className={styles.sectionFieldDescription}>
                         {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
                     </div>
 
@@ -73,7 +78,7 @@ export default () => {
 
                     {errors.goal && (
                         // @ts-ignore
-                        <div className="error-message">{errors.goal.message}</div>
+                        <div className={styles.errorMsg}>{errors.goal.message}</div>
                     )}
                 </div>
             </div>
