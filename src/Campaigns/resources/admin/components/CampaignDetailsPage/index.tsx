@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect, useState} from '@wordpress/element';
+import {useEffect} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
@@ -20,7 +20,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         record: Campaign,
         hasResolved: boolean,
         save: () => any,
-        edit: (data: any) => void,
+        edit: (data: Campaign) => void,
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
     const methods = useForm<CampaignInputFields>({
