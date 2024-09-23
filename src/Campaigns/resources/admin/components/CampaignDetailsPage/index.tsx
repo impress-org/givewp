@@ -3,7 +3,7 @@ import {useEffect} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
-import {Campaign, CampaignInputFields, GiveCampaignDetails} from './types';
+import {Campaign, GiveCampaignDetails} from './types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner} from '@givewp/components';
 import Tabs from './Tabs';
@@ -23,7 +23,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         edit: (data: Campaign) => void,
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
-    const methods = useForm<CampaignInputFields>({
+    const methods = useForm<Campaign>({
         resolver: ajvResolver(campaignSchema),
     });
 
@@ -39,9 +39,6 @@ export default function CampaignsDetailsPage({campaignId}) {
     const onSubmit: SubmitHandler<Campaign> = async (data, e) => {
         e.preventDefault();
 
-
-        console.log(campaign.goal)
-
         if (formState.isDirty) {
             edit(data);
 
@@ -52,7 +49,16 @@ export default function CampaignsDetailsPage({campaignId}) {
     };
 
     if (!hasResolved) {
-        return <Spinner />;
+        return (
+            <div className={styles.loadingContainer}>
+                <div className={styles.loadingContainerContent}>
+                    <Spinner />
+                    <div className={styles.loadingContainerContentText}>
+                        {__('Loading campaign...', 'give')}
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
