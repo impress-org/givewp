@@ -36,8 +36,6 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     }, [hasResolved]);
 
-    console.log(formState.isDirty);
-
     const onSubmit: SubmitHandler<Campaign> = async (data, e) => {
         e.preventDefault();
 
