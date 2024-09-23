@@ -34,7 +34,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerSecuritySettings(): void
     {
-        Hooks::addFilter('give_get_sections_advanced', RegisterSection::class);
-        Hooks::addFilter('give_get_settings_advanced', RegisterSettings::class);
+        Hooks::addFilter('give_get_sections_general', RegisterSection::class);
+        Hooks::addFilter('give_get_settings_general', RegisterSettings::class);
     }
 }
