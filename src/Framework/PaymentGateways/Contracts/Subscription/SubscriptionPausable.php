@@ -14,7 +14,7 @@ interface SubscriptionPausable
      *
      * @unreleased
      */
-    public function pauseSubscription(Subscription $subscription, int $intervalInMonths): void;
+    public function pauseSubscription(Subscription $subscription, array $data): void;
 
     /**
      * Resume subscription.
