@@ -23,5 +23,43 @@
     color: var(--givewp-red-500);
 }
 
+.goalType {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0.5rem 0 0.5rem 0;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+
+    div {
+        cursor: pointer;
+        border: 1px solid #9CA0AF;
+        border-radius: 1rem;
+        padding: 12px 24px 12px 24px;
+
+        label,
+        .description {
+            cursor: pointer;
+        }
+    }
+
+    .selected {
+        background-color: #374151;
+
+        label,
+        .description {
+            color: #FFF !important;
+        }
+    }
+}
+
 
 

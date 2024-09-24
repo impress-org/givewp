@@ -4,7 +4,7 @@ import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps} from './types';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import UploadCoverImage from './UploadCoverImage';
 
 /**
@@ -120,6 +120,31 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const goal = watch('goal');
     console.log('goal: ', goal);
 
+    const GoalTypeOption = ({type, label, description}: any) => {
+        const divRef = useRef(null);
+        const labelRef = useRef(null);
+
+        const handleDivClick = () => {
+            // Simula o clique no label
+            labelRef.current.click();
+        };
+
+        return (
+            <div
+                className={`${selectedGoalType === type ? styles.selected : ''}`}
+                ref={divRef}
+                onClick={handleDivClick}
+            >
+                <label ref={labelRef}>
+                    <input type="radio" value={type} {...register('goalType')} />
+                    {label}
+                    <br />
+                    <span className={styles.description}>{description}</span>
+                </label>
+            </div>
+        );
+    };
+
     return (
         <FormModal
             isOpen={isOpen}
@@ -200,46 +225,31 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <span className={styles.description}>
                             {__('Set the goal your fundraising efforts will work toward.', 'give')}
                         </span>
-                        <div>
-                            <div>
-                                <label>
-                                    <input type="radio" value={'amount'} {...register('goalType')} />
-                                    {__('Amount raised', 'give')}
-                                    <br />
-                                    <span className={styles.description}>
-                                        {__(
-                                            'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                                            'give'
-                                        )}
-                                    </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="radio" value={'donations'} {...register('goalType')} />
-                                    {__('Number of Donations', 'give')}
-                                    <br />
-                                    <span className={styles.description}>
-                                        {__(
-                                            'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
-                                            'give'
-                                        )}
-                                    </span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="radio" value={'donors'} {...register('goalType')} />
-                                    {__('Number of Donors', 'give')}
-                                    <br />
-                                    <span className={styles.description}>
-                                        {__(
-                                            'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
-                                            'give'
-                                        )}
-                                    </span>
-                                </label>
-                            </div>
+                        <div className={styles.goalType}>
+                            <GoalTypeOption
+                                type={'amount'}
+                                label={__('Amount raised', 'give')}
+                                description={__(
+                                    'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
+                                    'give'
+                                )}
+                            />
+                            <GoalTypeOption
+                                type={'donations'}
+                                label={__('Number of Donations', 'give')}
+                                description={__(
+                                    'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
+                                    'give'
+                                )}
+                            />
+                            <GoalTypeOption
+                                type={'donors'}
+                                label={__('Number of Donors', 'give')}
+                                description={__(
+                                    'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
+                                    'give'
+                                )}
+                            />
                         </div>
                         {errors.goalType && (
                             <div className={'givewp-campaigns__form-errors'}>
