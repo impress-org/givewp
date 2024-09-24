@@ -1,4 +1,4 @@
-import {createRoot} from '@wordpress/element';
+import {createRoot} from 'react-dom/client';
 import CampaignsListTable from './components/CampaignsListTable';
 
 const container = document.getElementById('give-admin-campaigns-root');

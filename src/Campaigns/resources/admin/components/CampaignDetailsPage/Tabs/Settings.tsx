@@ -1,14 +1,29 @@
 import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
+import CurrencyInput from '../Components/CurrencyInput';
+import {GiveCampaignDetails} from '../types';
 
 import styles from '../style.module.scss';
+
+declare const window: {
+    GiveCampaignDetails: GiveCampaignDetails;
+} & Window;
 
 /**
  * @unreleased
  */
 export default () => {
 
-    const {register, formState: {errors}} = useFormContext();
+    const {
+        register,
+        watch,
+        formState: {errors}
+    } = useFormContext();
+
+    const goalType = watch('goalType');
+    const goal = watch('goal');
+
+    console.log(goal)
 
     return (
         <div className={styles.sections}>
@@ -24,7 +39,7 @@ export default () => {
                 </div>
                 <div>
                     <div className={styles.sectionSubtitle}>
-                        {__("What's the title of your campaign?", 'give')}
+                        {__('What\'s the title of your campaign?', 'give')}
                     </div>
                     <div className={styles.sectionFieldDescription}>
                         {__('Give your campaign a title that tells donors what it’s about.', 'give')}
@@ -58,8 +73,11 @@ export default () => {
                         <option value="amount">
                             {__('Amount raised', 'give')}
                         </option>
-                        <option value="donations">
-                            {__('Donations', 'give')}
+                        <option value="donation">
+                            {__('Number of Donations', 'give')}
+                        </option>
+                        <option value="donors">
+                            {__('Number of Donors', 'give')}
                         </option>
                     </select>
 
@@ -76,7 +94,11 @@ export default () => {
                         {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
                     </div>
 
-                    <input {...register('goal', {valueAsNumber: true})} />
+                    {goalType === 'amount' ? (
+                        <CurrencyInput name="goal" currency={window.GiveCampaignDetails.currency} />
+                    ) : (
+                        <input type="number" {...register('goal', {valueAsNumber: true})} />
+                    )}
 
                     {errors.goal && (
                         <div className={styles.errorMsg}>
