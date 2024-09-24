@@ -39,13 +39,15 @@ class CampaignOverviewStatistics implements RestRoute
                     'campaignId' => [
                         'type' => 'integer',
                         'required' => true,
+                        'sanitize_callback' => 'absint',
                         'validate_callback' => 'is_numeric',
                     ],
                     'rangeInDays' => [
                         'type' => 'integer',
                         'required' => false,
-                        'validate_callback' => 'is_numeric',
+                        'sanitize_callback' => 'absint',
                         'default' => 0, // Zero to mean "all time".
+                        'validate_callback' => 'is_numeric',
                     ],
                 ],
             ]
