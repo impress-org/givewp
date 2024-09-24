@@ -32,6 +32,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @property string         $primaryColor
  * @property string         $secondaryColor
  * @property int            $goal
+ * @property string         $goalType
  * @property CampaignStatus $status
  * @property DateTime       $startDate
  * @property DateTime       $endDate
@@ -53,6 +54,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'primaryColor' => 'string',
         'secondaryColor' => 'string',
         'goal' => 'int',
+        'goalType' => 'string',
         'status' => CampaignStatus::class,
         'startDate' => DateTime::class,
         'endDate' => DateTime::class,
