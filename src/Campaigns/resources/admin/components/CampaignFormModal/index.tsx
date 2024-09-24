@@ -125,7 +125,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         const labelRef = useRef(null);
 
         const handleDivClick = () => {
-            // Simula o clique no label
             labelRef.current.click();
         };
 
