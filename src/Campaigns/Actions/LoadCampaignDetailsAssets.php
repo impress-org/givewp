@@ -17,6 +17,8 @@ class LoadCampaignDetailsAssets
         $handleName = 'givewp-admin-campaign-details';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignDetails.asset.php');
 
+        wp_enqueue_editor();
+
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/campaignDetails.js',
