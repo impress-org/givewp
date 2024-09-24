@@ -33,8 +33,9 @@ export default () => {
                     <input {...register('title')} />
 
                     {errors.title && (
-                        // @ts-ignore
-                        <div className={styles.errorMsg}>{errors.title.message}</div>
+                        <div className={styles.errorMsg}>
+                            {`${errors.title.message}`}
+                        </div>
                     )}
                 </div>
             </div>
@@ -63,8 +64,9 @@ export default () => {
                     </select>
 
                     {errors.goalType && (
-                        // @ts-ignore
-                        <div className={styles.errorMsg}>{errors.goalType.message}</div>
+                        <div className={styles.errorMsg}>
+                            {`${errors.goalType.message}`}
+                        </div>
                     )}
 
                     <div className={styles.sectionSubtitle}>
@@ -77,8 +79,9 @@ export default () => {
                     <input {...register('goal', {valueAsNumber: true})} />
 
                     {errors.goal && (
-                        // @ts-ignore
-                        <div className={styles.errorMsg}>{errors.goal.message}</div>
+                        <div className={styles.errorMsg}>
+                            {`${errors.goal.message}`}
+                        </div>
                     )}
                 </div>
             </div>
