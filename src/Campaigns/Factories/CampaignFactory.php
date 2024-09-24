@@ -25,6 +25,7 @@ class CampaignFactory extends ModelFactory
             'shortDescription' => __('Campaign short description', 'give'),
             'longDescription' => __('Campaign long description', 'give'),
             'goal' => 10000000,
+            'goalType' => 'amount',
             'status' => CampaignStatus::ACTIVE(),
             'logo' => '',
             'image' => '',
