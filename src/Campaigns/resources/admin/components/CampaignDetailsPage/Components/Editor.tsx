@@ -9,7 +9,7 @@ type Props = {
 /**
  * @unreleased
  */
-export default ({name, rows = 6, ...rest}: Props) => {
+export default ({name, rows = 4, ...rest}: Props) => {
 
     const {control} = useFormContext();
 

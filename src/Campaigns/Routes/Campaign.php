@@ -150,7 +150,6 @@ class Campaign implements RestRoute
     public function getSchema(): array
     {
         return [
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'campaign',
             'type' => 'object',
             'properties' => [
@@ -161,6 +160,9 @@ class Campaign implements RestRoute
                 'title' => [
                     'type' => 'string',
                     'description' => esc_html__('Campaign title', 'give'),
+                    'minLength' => 3,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('Title length should be anything from 3 to 128 chars', 'give')
                 ],
                 'status' => [
                     'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
@@ -172,9 +174,10 @@ class Campaign implements RestRoute
                 ],
                 'goal' => [
                     'type' => 'number',
-                    'default' => 1000000,
-                    'minimum' => 100,
+                    'default' => 100000,
+                    'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
+                    'errorMessage' => esc_html__('Campaign goal is required', 'give')
                 ],
                 'goalType' => [
                     'enum' => ['amount', 'donation', 'donors'],

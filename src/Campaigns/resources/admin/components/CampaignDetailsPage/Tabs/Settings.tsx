@@ -75,9 +75,9 @@ export default () => {
 
                         <Editor name="shortDescription" />
 
-                        {errors.title && (
+                        {errors.shortDescription && (
                             <div className={styles.errorMsg}>
-                                {`${errors.title.message}`}
+                                {`${errors.shortDescription.message}`}
                             </div>
                         )}
                     </div>
