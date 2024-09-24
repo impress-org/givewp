@@ -28,6 +28,7 @@ class LoadCampaignDetailsAssets
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
+                'currency' => give_get_currency()
             ]
         );
 
