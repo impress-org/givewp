@@ -210,11 +210,12 @@
             align-content: flex-start;
             flex-direction: row;
 
-            :first-child {
+            .leftColumn {
                 flex: 1;
+                padding-right: var(--givewp-spacing-6);
             }
 
-            :last-child {
+            .rightColumn {
                 flex: 2;
             }
 
@@ -239,6 +240,10 @@
                 padding: var(--givewp-spacing-2) 0;
             }
 
+            .sectionField {
+                margin-bottom: var(--givewp-spacing-6);
+            }
+
             .sectionFieldDescription {
                 font-size: 14px;
                 color: #4b5563;
@@ -248,6 +253,22 @@
                 font-size: 14px;
                 padding: var(--givewp-spacing-2) 0;
                 color: #ff0000;
+            }
+
+            input,
+            select {
+                font-size: 16px;
+                line-height: 2;
+                display: block;
+                width: 100%;
+                border: 1px solid #9ca0af;
+                border-radius: var(--givewp-spacing-1);
+                padding: var(--givewp-spacing-2);
+                margin: var(--givewp-spacing-2) 0;
+            }
+
+            select {
+                max-width: 100%;
             }
         }
     }
