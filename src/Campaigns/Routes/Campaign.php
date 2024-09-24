@@ -4,7 +4,7 @@ namespace Give\Campaigns\Routes;
 
 use Exception;
 use Give\API\RestRoute;
-use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\Campaign as CampaignModel;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -13,20 +13,50 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class UpdateCampaign implements RestRoute
+class Campaign implements RestRoute
 {
+
     /** @var string */
     protected $endpoint = 'campaigns/(?P<id>[0-9]+)';
 
+    /**
+     * @unreleased
+     */
     public function registerRoute()
     {
+        // Get campaign
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint,
+            [
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => [$this, 'handleGetRequest'],
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                        'validate_callback' => function ($id) {
+                            return filter_var($id, FILTER_VALIDATE_INT);
+                        },
+                    ],
+                ],
+            ]
+        );
+
+
+        // Update Campaign
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
             [
                 [
                     'methods' => WP_REST_Server::EDITABLE,
-                    'callback' => [$this, 'handleRequest'],
+                    'callback' => [$this, 'handleUpdateRequest'],
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
                     },
@@ -55,9 +85,27 @@ class UpdateCampaign implements RestRoute
      *
      * @throws Exception
      */
-    public function handleRequest(WP_REST_Request $request): WP_REST_Response
+    public function handleGetRequest(WP_REST_Request $request): WP_Rest_Response
     {
-        $campaign = Campaign::find($request->get_param('id'));
+        $campaign = CampaignModel::find($request->get_param('id'));
+
+        if ( ! $campaign) {
+            return new WP_REST_Response([
+                'message' => __('Campaign not found', 'give'),
+            ], 400);
+        }
+
+        return new WP_REST_Response($campaign->toArray());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function handleUpdateRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
             return new WP_REST_Response([
