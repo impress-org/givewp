@@ -5,6 +5,7 @@ namespace Give\Campaigns\Routes;
 use DateInterval;
 use DatePeriod;
 use DateTimeImmutable;
+use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
@@ -56,6 +57,8 @@ class CampaignOverviewStatistics implements RestRoute
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function handleRequest($request)
     {
