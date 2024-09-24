@@ -1,5 +1,6 @@
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 import Logs from './Logs';
 
-ReactDOM.render(<Logs />, document.getElementById('give-logs-list-table-app'));
+const root = createRoot(document.getElementById('give-logs-list-table-app'));
+root.render(<Logs />);
