@@ -25,13 +25,13 @@ const campaignSchema: JSONSchemaType<CampaignInputFields> = {
         goal: {
             type: 'number',
             default: 10000,
-            minimum: 0,
+            minimum: 1,
             nullable: true,
             errorMessage: __('Required field', 'give'),
         },
         goalType: {
             type: 'string',
-            enum: ['amount', 'donations'],
+            enum: ['amount', 'donation', 'donors'],
             errorMessage: __('Required field', 'give'),
             nullable: true
         },
