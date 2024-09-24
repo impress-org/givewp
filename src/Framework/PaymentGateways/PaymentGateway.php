@@ -144,10 +144,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @unreleased
      */
-    public function pauseSubscription(Subscription $subscription, int $intervalInMonths = null): void
+    public function pauseSubscription(Subscription $subscription, array $data = []): void
     {
         if ($this->subscriptionModule instanceof SubscriptionPausable) {
-            $this->subscriptionModule->pauseSubscription($subscription, $intervalInMonths);
+            $this->subscriptionModule->pauseSubscription($subscription, $data);
 
             return;
         }
