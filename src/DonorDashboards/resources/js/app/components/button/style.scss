@@ -46,5 +46,10 @@
         border: 1px solid #0073aa;
         margin: 0;
         justify-content: center;
+
+        &:hover {
+            background: #0073aa;
+            color: #fff !important;
+        }
     }
 }
