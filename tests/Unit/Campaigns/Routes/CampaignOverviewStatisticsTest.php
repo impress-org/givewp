@@ -62,9 +62,9 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $route = new CampaignOverviewStatistics;
         $response = $route->handleRequest($request);
 
-        $this->assertEquals(3, $response[0]['donorCount']);
-        $this->assertEquals(3, $response[0]['donationCount']);
-        $this->assertEquals(30, $response[0]['amountRaised']);
+        $this->assertEquals(3, $response->data[0]['donorCount']);
+        $this->assertEquals(3, $response->data[0]['donationCount']);
+        $this->assertEquals(30, $response->data[0]['amountRaised']);
     }
 
     /**
@@ -109,12 +109,12 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $route = new CampaignOverviewStatistics;
         $response = $route->handleRequest($request);
 
-        $this->assertEquals(2, $response[0]['donorCount']);
-        $this->assertEquals(2, $response[0]['donationCount']);
-        $this->assertEquals(20, $response[0]['amountRaised']);
+        $this->assertEquals(2, $response->data[0]['donorCount']);
+        $this->assertEquals(2, $response->data[0]['donationCount']);
+        $this->assertEquals(20, $response->data[0]['amountRaised']);
 
-        $this->assertEquals(1, $response[1]['donorCount']);
-        $this->assertEquals(1, $response[1]['donationCount']);
-        $this->assertEquals(10, $response[1]['amountRaised']);
+        $this->assertEquals(1, $response->data[1]['donorCount']);
+        $this->assertEquals(1, $response->data[1]['donationCount']);
+        $this->assertEquals(10, $response->data[1]['amountRaised']);
     }
 }

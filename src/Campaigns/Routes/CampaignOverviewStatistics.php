@@ -10,6 +10,7 @@ use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use WP_REST_Response;
 use WP_REST_Server;
 
 /**
@@ -60,18 +61,18 @@ class CampaignOverviewStatistics implements RestRoute
      *
      * @throws Exception
      */
-    public function handleRequest($request)
+    public function handleRequest($request): WP_REST_Response
     {
         $campaign = Campaign::find($request->get_param('campaignId'));
 
         $query = new CampaignDonationQuery($campaign);
 
         if(!$request->get_param('rangeInDays')) {
-            return [[
+            return new WP_REST_Response([[
                 'amountRaised' => $query->sumIntendedAmount(),
                 'donationCount' => $query->countDonations(),
                 'donorCount' => $query->countDonors(),
-            ]];
+            ]]);
         }
 
         $days = $request->get_param('rangeInDays');
@@ -79,7 +80,7 @@ class CampaignOverviewStatistics implements RestRoute
         $interval = DateInterval::createFromDateString("-$days days");
         $period = new DatePeriod($date, $interval, 1);
 
-        return array_map(function($targetDate) use ($query, $interval) {
+        return new WP_REST_Response(array_map(function($targetDate) use ($query, $interval) {
 
             $query = $query->between(
                 Temporal::withStartOfDay($targetDate->add($interval)),
@@ -91,6 +92,6 @@ class CampaignOverviewStatistics implements RestRoute
                 'donationCount' => $query->countDonations(),
                 'donorCount' => $query->countDonors(),
             ];
-        }, iterator_to_array($period) );
+        }, iterator_to_array($period) ));
     }
 }
