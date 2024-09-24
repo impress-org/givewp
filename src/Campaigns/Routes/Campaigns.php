@@ -13,7 +13,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class GetCampaigns implements RestRoute
+class Campaigns implements RestRoute
 {
 
     /** @var string */
