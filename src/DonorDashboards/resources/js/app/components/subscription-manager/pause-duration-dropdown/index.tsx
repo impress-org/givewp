@@ -11,7 +11,7 @@ type PauseDurationDropDownProps = {
 type durationOptions = { value: string; label: string }[];
 
 export default function PauseDurationDropdown({handlePause, closeModal}: PauseDurationDropDownProps) {
-    const [pauseDuration, setPauseDuration] = useState<number | null>(null);
+    const [pauseDuration, setPauseDuration] = useState<number>(1);
 
     const durationOptions: durationOptions = [
         { value: '1', label: __('1 month', 'give') },
