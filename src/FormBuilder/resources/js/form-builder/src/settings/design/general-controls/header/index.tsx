@@ -6,7 +6,7 @@ import {upload} from '@wordpress/icons';
 import {ClassicEditor} from '@givewp/form-builder-library';
 
 /**
- * @unreleased Replace TextareaControl component with ClassicEditor component on the description option
+ * @since 3.16.2 Replace TextareaControl component with ClassicEditor component on the description option
  */
 export default function Header({dispatch, publishSettings}) {
     const {

@@ -417,7 +417,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
- * @unreleased added additional check for stripslashes_deep
+ * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */

@@ -9,7 +9,7 @@ const formTemplates = window.givewp.form.templates;
 const excludeFromTemplateWrapper = ['hidden', 'honeypot'];
 
 /**
- * @unreleased added excludeFromTemplateWrapper
+ * @since 3.16.2 added excludeFromTemplateWrapper
  * @since 3.0.0
  */
 function FieldNode({node}: {node: Field}) {
