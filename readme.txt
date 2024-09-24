@@ -262,7 +262,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.16.2: September 24th, 2024 =
+= 3.16.2: September 25th, 2024 =
 * Enhancement: Updated the visual builder header description field to use the rich text editor
 * Enhancement: Updated the strings in the form builder onboarding buttons to be translatable (Open source submission by @DAnn2012)
 * Enhancement: Updated strings in give settings to be translatable (Open source submission by @DAnn2012)
