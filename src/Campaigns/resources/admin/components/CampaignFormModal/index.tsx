@@ -130,16 +130,19 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
         return (
             <div
-                className={`${selectedGoalType === type ? styles.selected : ''}`}
+                className={`${styles.flexContainer}  ${selectedGoalType === type ? styles.selected : ''}`}
                 ref={divRef}
                 onClick={handleDivClick}
             >
-                <label ref={labelRef}>
-                    <input type="radio" value={type} {...register('goalType')} />
-                    {label}
-                    <br />
-                    <span className={styles.description}>{description}</span>
-                </label>
+                <div className={styles.flexRow} style={{width: '40px', height: '40px', background: '#f5f5f5'}}></div>
+                <div className={styles.flexRow}>
+                    <label ref={labelRef}>
+                        <input type="radio" value={type} {...register('goalType')} />
+                        {label}
+                        <br />
+                        <span className={styles.description}>{description}</span>
+                    </label>
+                </div>
             </div>
         );
     };
