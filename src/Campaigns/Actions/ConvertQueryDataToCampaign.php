@@ -28,6 +28,7 @@ class ConvertQueryDataToCampaign
             'primaryColor' => $queryObject->primaryColor,
             'secondaryColor' => $queryObject->secondaryColor,
             'goal' => (int)$queryObject->goal,
+            'goalType' => $queryObject->goalType,
             'startDate' => Temporal::toDateTime($queryObject->startDate),
             'endDate' => Temporal::toDateTime($queryObject->endDate),
             'status' => new CampaignStatus($queryObject->status),
