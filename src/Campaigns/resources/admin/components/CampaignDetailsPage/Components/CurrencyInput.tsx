@@ -6,6 +6,9 @@ type Props = {
     currency: string;
 };
 
+/**
+ * @unreleased
+ */
 export default ({
     name,
     currency,
