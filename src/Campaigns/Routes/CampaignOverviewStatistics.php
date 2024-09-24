@@ -9,6 +9,7 @@ use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use WP_REST_Server;
 
 /**
  * @unreleased
@@ -28,7 +29,7 @@ class CampaignOverviewStatistics implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'GET',
+                    'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
