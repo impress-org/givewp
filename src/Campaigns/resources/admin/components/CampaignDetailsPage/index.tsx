@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
@@ -7,7 +7,6 @@ import {Campaign, GiveCampaignDetails} from './types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner} from '@givewp/components';
 import Tabs from './Tabs';
-import campaignSchema from './campaignSchema';
 
 import styles from './style.module.scss';
 
@@ -16,6 +15,19 @@ declare const window: {
 } & Window;
 
 export default function CampaignsDetailsPage({campaignId}) {
+
+    const [resolver, setResolver] = useState({});
+
+    useEffect(() => {
+        fetch(`/wp-json/give-api/v2/campaigns/${campaignId}`, {method: 'OPTIONS'})
+            .then(res => res.json())
+            .then(data => {
+                setResolver({
+                    resolver: ajvResolver(data.schema),
+                });
+            });
+    }, []);
+
     const {record: campaign, hasResolved, save, edit}: {
         record: Campaign,
         hasResolved: boolean,
@@ -23,9 +35,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         edit: (data: Campaign) => void,
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
-    const methods = useForm<Campaign>({
-        resolver: ajvResolver(campaignSchema),
-    });
+    const methods = useForm<Campaign>(resolver);
 
     const {formState, handleSubmit, reset, setValue} = methods;
 
