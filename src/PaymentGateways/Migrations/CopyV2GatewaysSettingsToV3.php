@@ -11,7 +11,7 @@ class CopyV2GatewaysSettingsToV3 extends Migration
 {
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function id()
     {
@@ -19,7 +19,7 @@ class CopyV2GatewaysSettingsToV3 extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function timestamp()
     {
@@ -27,7 +27,7 @@ class CopyV2GatewaysSettingsToV3 extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public function run()
     {
@@ -55,7 +55,7 @@ class CopyV2GatewaysSettingsToV3 extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function title()
     {

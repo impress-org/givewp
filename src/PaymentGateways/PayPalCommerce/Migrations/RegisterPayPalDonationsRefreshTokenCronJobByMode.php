@@ -21,7 +21,7 @@ class RegisterPayPalDonationsRefreshTokenCronJobByMode extends Migration
 {
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      * @since 2.30.0
      */
     public function run()
@@ -57,7 +57,7 @@ class RegisterPayPalDonationsRefreshTokenCronJobByMode extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      * @since 2.30.0
      */
     public static function id()
@@ -66,7 +66,7 @@ class RegisterPayPalDonationsRefreshTokenCronJobByMode extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      * @since 2.30.0
      */
     public static function timestamp()
@@ -75,7 +75,7 @@ class RegisterPayPalDonationsRefreshTokenCronJobByMode extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      * @since 2.30.0
      */
     public static function title()

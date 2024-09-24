@@ -12,7 +12,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
 {
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function id()
     {
@@ -20,7 +20,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function timestamp()
     {
@@ -28,7 +28,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public function run()
     {
@@ -71,7 +71,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function title()
     {

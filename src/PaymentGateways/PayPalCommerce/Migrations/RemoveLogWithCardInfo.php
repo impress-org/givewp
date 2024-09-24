@@ -26,7 +26,7 @@ class RemoveLogWithCardInfo extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function id()
     {
@@ -34,7 +34,7 @@ class RemoveLogWithCardInfo extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function timestamp()
     {
@@ -42,7 +42,7 @@ class RemoveLogWithCardInfo extends Migration
     }
 
     /**
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public static function title()
     {

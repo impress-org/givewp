@@ -15,7 +15,7 @@ class PaymentIntentSucceeded extends StripeEventListener
 
     /**
      * @since 2.21.0
-     * @inerhitDoc
+     * @@inheritDoc
      */
     public function processEvent(Event $event)
     {

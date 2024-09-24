@@ -136,7 +136,7 @@ class BECSGateway extends PaymentGateway
 
     /**
      * @since 2.20.0
-     * @inerhitDoc
+     * @@inheritDoc
      * @throws Exception
      */
     public function refundDonation(Donation $donation)
