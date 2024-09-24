@@ -31,6 +31,7 @@ class GetCampaigns implements RestRoute
                 [
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
+                    'permission_callback' => '__return_true',
                 ],
                 'args' => [
                     'page' => [
@@ -42,6 +43,7 @@ class GetCampaigns implements RestRoute
                         'type' => 'integer',
                         'default' => 30,
                         'minimum' => 1,
+                        'maximum' => 100,
                     ],
                 ],
             ]
