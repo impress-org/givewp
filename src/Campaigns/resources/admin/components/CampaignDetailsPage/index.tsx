@@ -42,9 +42,14 @@ export default function CampaignsDetailsPage({campaignId}) {
         if (formState.isDirty) {
             edit(data);
 
-            save().then((response: Campaign) => {
-                reset(response);
-            });
+            save()
+                .then((response: Campaign) => {
+                    reset(response);
+                })
+                .catch((response: any) => {
+                    //todo: add error handling
+                    console.log(response);
+                });
         }
     };
 
@@ -58,7 +63,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
