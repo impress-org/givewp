@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
-import CurrencyInput from '../Components/CurrencyInput';
+import {CurrencyInput, Editor} from '../Components';
 import {GiveCampaignDetails} from '../types';
 
 import styles from '../style.module.scss';
@@ -48,20 +48,39 @@ export default () => {
 
                 </div>
                 <div className={styles.rightColumn}>
-                    <div className={styles.sectionSubtitle}>
-                        {__('What\'s the title of your campaign?', 'give')}
-                    </div>
-                    <div className={styles.sectionFieldDescription}>
-                        {__("Give your campaign a title that tells donors what it's about.", 'give')}
-                    </div>
-
-                    <input {...register('title')} />
-
-                    {errors.title && (
-                        <div className={styles.errorMsg}>
-                            {`${errors.title.message}`}
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__("What's the title of your campaign?", 'give')}
                         </div>
-                    )}
+                        <div className={styles.sectionFieldDescription}>
+                            {__('Give your campaign a title that tells donors what it\'s about.', 'give')}
+                        </div>
+
+                        <input {...register('title')} />
+
+                        {errors.title && (
+                            <div className={styles.errorMsg}>
+                                {`${errors.title.message}`}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__("What's your campaign about?", 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('Let your donors know the story behind your campaign.', 'give')}
+                        </div>
+
+                        <Editor name="shortDescription" />
+
+                        {errors.title && (
+                            <div className={styles.errorMsg}>
+                                {`${errors.title.message}`}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
