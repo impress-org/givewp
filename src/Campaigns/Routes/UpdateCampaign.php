@@ -41,7 +41,7 @@ class UpdateCampaign implements RestRoute
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
                         'validate_callback' => function ($id) {
-                            return $this->campaign = Campaign::find($id);
+                            return filter_var($id, FILTER_VALIDATE_INT);
                         },
                     ],
                     'title' => [
@@ -61,6 +61,14 @@ class UpdateCampaign implements RestRoute
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
+        $campaign = Campaign::find($request->get_param('id'));
+
+        if ( ! $campaign) {
+            return new WP_REST_Response([
+                'message' => __('Campaign not found', 'give'),
+            ], 400);
+        }
+
         $statusMap = [
             'draft' => CampaignStatus::DRAFT(),
             'active' => CampaignStatus::ACTIVE(),
@@ -75,20 +83,20 @@ class UpdateCampaign implements RestRoute
                         ? $statusMap[$value]
                         : CampaignStatus::DRAFT();
 
-                    $this->campaign->setAttribute('status', $status);
+                    $campaign->setAttribute('status', $status);
 
                     break;
                 default:
-                    if ($this->campaign->hasProperty($key)) {
-                        $this->campaign->setAttribute($key, $value);
+                    if ($campaign->hasProperty($key)) {
+                        $campaign->setAttribute($key, $value);
                     }
             }
         }
 
-        if ($this->campaign->isDirty()) {
-            $this->campaign->save();
+        if ($campaign->isDirty()) {
+            $campaign->save();
         }
 
-        return new WP_REST_Response($this->campaign->toArray());
+        return new WP_REST_Response($campaign->toArray());
     }
 }
