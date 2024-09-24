@@ -15,12 +15,8 @@ use WP_REST_Server;
  */
 class UpdateCampaign implements RestRoute
 {
-
     /** @var string */
     protected $endpoint = 'campaigns/(?P<id>[0-9]+)';
-
-    /** @var Campaign */
-    protected $campaign;
 
     public function registerRoute()
     {
@@ -37,9 +33,8 @@ class UpdateCampaign implements RestRoute
                 ],
                 'args' => [
                     'id' => [
-                        'type' => 'string',
+                        'type' => 'integer',
                         'required' => true,
-                        'sanitize_callback' => 'sanitize_text_field',
                         'validate_callback' => function ($id) {
                             return filter_var($id, FILTER_VALIDATE_INT);
                         },
@@ -50,6 +45,7 @@ class UpdateCampaign implements RestRoute
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -98,5 +94,46 @@ class UpdateCampaign implements RestRoute
         }
 
         return new WP_REST_Response($campaign->toArray());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            'title' => 'campaign',
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                ],
+                'title' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Campaign title', 'give'),
+                ],
+                'status' => [
+                    'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
+                    'description' => esc_html__('Campaign status', 'give'),
+                ],
+                'shortDescription' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Campaign short description', 'give'),
+                ],
+                'goal' => [
+                    'type' => 'number',
+                    'default' => 1000000,
+                    'minimum' => 100,
+                    'description' => esc_html__('Campaign goal', 'give'),
+                ],
+                'goalType' => [
+                    'enum' => ['amount', 'donation', 'donors'],
+                    'description' => esc_html__('Campaign goal type', 'give'),
+                ],
+            ],
+            'required' => ['title', 'goal', 'goalType'],
+        ];
     }
 }
