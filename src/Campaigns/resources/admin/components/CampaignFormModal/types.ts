@@ -15,6 +15,8 @@ export type CampaignFormInputs = {
     title: string;
     shortDescription: string;
     image: string;
+    goalType: string;
+    goal: number;
     startDateTime: string;
     endDateTime: string;
 };

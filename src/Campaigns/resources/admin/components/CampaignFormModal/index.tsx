@@ -53,7 +53,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const {
         register,
         handleSubmit,
-        formState: {errors, isDirty, isSubmitting},
+        formState: {errors, isDirty, dirtyFields, isSubmitting},
         setValue,
         watch,
         trigger,
@@ -115,6 +115,10 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 break;
         }
     }, [step]);
+
+    const selectedGoalType = watch('goalType');
+    const goal = watch('goal');
+    console.log('goal: ', goal);
 
     return (
         <FormModal
@@ -191,7 +195,103 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             )}
             {step === 2 && (
                 <>
-                    <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                    <div className="givewp-campaigns__form-row">
+                        <label htmlFor="goalType">{__('How would you like to set your goal?', 'give')}</label>
+                        <span className={styles.description}>
+                            {__('Set the goal your fundraising efforts will work toward.', 'give')}
+                        </span>
+                        <div>
+                            <div>
+                                <label>
+                                    <input type="radio" value={'amount'} {...register('goalType')} />
+                                    {__('Amount raised', 'give')}
+                                    <br />
+                                    <span className={styles.description}>
+                                        {__(
+                                            'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
+                                            'give'
+                                        )}
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" value={'donations'} {...register('goalType')} />
+                                    {__('Number of Donations', 'give')}
+                                    <br />
+                                    <span className={styles.description}>
+                                        {__(
+                                            'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
+                                            'give'
+                                        )}
+                                    </span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="radio" value={'donors'} {...register('goalType')} />
+                                    {__('Number of Donors', 'give')}
+                                    <br />
+                                    <span className={styles.description}>
+                                        {__(
+                                            'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
+                                            'give'
+                                        )}
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        {errors.goalType && (
+                            <div className={'givewp-campaigns__form-errors'}>
+                                <p>{errors.goalType.message}</p>
+                            </div>
+                        )}
+                    </div>
+                    {selectedGoalType === 'amount' && (
+                        <div className="givewp-campaigns__form-row">
+                            <label htmlFor="title">
+                                {__('How much do you want to raise?', 'give')} {requiredAsterisk}
+                            </label>
+                            <span className={styles.description}>
+                                {__('Set the target amount your campaign should raise.', 'give')}
+                            </span>
+                            <input
+                                type="number"
+                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                aria-invalid={errors.title ? 'true' : 'false'}
+                                placeholder={__('Eg. $2,000', 'give')}
+                            />
+                        </div>
+                    )}
+                    {selectedGoalType === 'donations' && (
+                        <div className="givewp-campaigns__form-row">
+                            <label htmlFor="title">{__('How many donations do you need?', 'give')}</label>
+                            <span className={styles.description}>
+                                {__("Let us know the target number you're aiming for your campaign.", 'give')}
+                            </span>
+                            <input
+                                type="number"
+                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                aria-invalid={errors.goal ? 'true' : 'false'}
+                                placeholder={__('Eg. 100 donations', 'give')}
+                            />
+                        </div>
+                    )}
+                    {selectedGoalType === 'donors' && (
+                        <div className="givewp-campaigns__form-row">
+                            <label htmlFor="title">{__('How many donors do you need?', 'give')}</label>
+                            <span className={styles.description}>
+                                {__("Let us know the target number you're aiming for your campaign.", 'give')}
+                            </span>
+                            <input
+                                type="number"
+                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                aria-invalid={errors.goal ? 'true' : 'false'}
+                                placeholder={__('Eg. 100 donors', 'give')}
+                            />
+                        </div>
+                    )}
+                    {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
                         <div className="givewp-campaigns__form-column">
                             <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
                             <input
@@ -206,8 +306,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
                             <input type="datetime-local" {...register('endDateTime')} />
                         </div>
-                    </div>
-
+                    </div>*/}
                     <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
                         <button type="submit" onClick={() => setStep(1)} className={`button button-secondary`}>
                             {__('Previous', 'give')}
@@ -215,9 +314,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
                         <button
                             type="submit"
-                            className={`button button-primary ${!isDirty || isSubmitting ? 'disabled' : ''}`}
-                            aria-disabled={!isDirty || isSubmitting}
-                            disabled={!isDirty || isSubmitting}
+                            className={`button button-primary ${!goal || isSubmitting ? 'disabled' : ''}`}
+                            aria-disabled={!goal || isSubmitting}
+                            disabled={!goal || isSubmitting}
                         >
                             {__('Continue', 'give')}
                         </button>

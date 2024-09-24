@@ -51,6 +51,16 @@ class CreateCampaign implements RestRoute
                         'required' => false,
                         'sanitize_callback' => 'sanitize_url',
                     ],
+                    'goalType' => [
+                        'type' => 'string',
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'goal' => [
+                        'type' => 'int',
+                        'required' => true,
+                        'sanitize_callback' => 'absint',
+                    ],
                     'startDateTime' => [
                         'type' => 'string',
                         'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
@@ -90,7 +100,8 @@ class CreateCampaign implements RestRoute
             'image' => $request->get_param('image') ?? '',
             'primaryColor' => '',
             'secondaryColor' => '',
-            'goal' => 0,
+            //'goalType' => $request->get_param('goalType') ?? '',
+            'goal' => $request->get_param('goal') ?? '',
             'status' => CampaignStatus::DRAFT(),
             'startDate' => $request->get_param('startDateTime') ?? null,
             'endDate' => $request->get_param('endDateTime') ?? null,
