@@ -62,7 +62,7 @@ class CreateCampaignsTable extends Migration
             primary_color VARCHAR(7) NOT NULL,
             secondary_color VARCHAR(7) NOT NULL,
             campaign_goal INT UNSIGNED NOT NULL,
-            goal_type VARCHAR(12) NOT NULL,
+            goal_type VARCHAR(12) NOT NULL DEFAULT 'amount',
             status VARCHAR(12) NOT NULL,
             start_date DATETIME NULL,
             end_date DATETIME NULL,
