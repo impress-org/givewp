@@ -20,3 +20,9 @@ export type CampaignFormInputs = {
     startDateTime: string;
     endDateTime: string;
 };
+
+export type GoalInputAttributes = {
+    label: string;
+    description: string;
+    placeholder: string;
+};

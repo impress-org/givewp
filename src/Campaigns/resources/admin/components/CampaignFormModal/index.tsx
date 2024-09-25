@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
-import {CampaignFormInputs, CampaignModalProps} from './types';
+import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes} from './types';
 import {useEffect, useRef, useState} from 'react';
 import UploadCoverImage from './UploadCoverImage';
 import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
@@ -39,6 +39,40 @@ const getDateString = (date: Date) => {
  */
 const removeTimezoneFromDateISOString = (date: string) => {
     return date.slice(0, -5);
+};
+
+/**
+ *
+ * @unreleased
+ */
+const GoalTypeOption = ({type, label, description, selected, register}: any) => {
+    const divRef = useRef(null);
+    const labelRef = useRef(null);
+
+    const handleDivClick = () => {
+        labelRef.current.click();
+    };
+
+    return (
+        <div
+            className={`${styles.goalTypeOption}  ${selected ? styles.goalTypeOptionSelected : ''}`}
+            ref={divRef}
+            onClick={handleDivClick}
+        >
+            <div className={styles.goalTypeOptionIcon}>
+                {type === 'amount' && <AmountIcon />}
+                {type === 'donations' && <DonationsIcon />}
+                {type === 'donors' && <DonorsIcon />}
+            </div>
+            <div className={styles.goalTypeOptionText}>
+                <label ref={labelRef}>
+                    <input type="radio" value={type} {...register('goalType')} />
+                    {label}
+                </label>
+                <span>{description}</span>
+            </div>
+        </div>
+    );
 };
 
 /**
@@ -123,82 +157,38 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const goal = watch('goal');
     console.log('goal: ', goal);
 
-    const GoalTypeOption = ({type, label, description}: any) => {
-        const divRef = useRef(null);
-        const labelRef = useRef(null);
+    const [goalInputAttributes, setGoalInputAttributes] = useState<GoalInputAttributes>({
+        label: '',
+        description: '',
+        placeholder: '',
+    });
 
-        const handleDivClick = () => {
-            labelRef.current.click();
-        };
-
-        return (
-            <div
-                className={`${styles.goalTypeOption}  ${
-                    selectedGoalType === type ? styles.goalTypeOptionSelected : ''
-                }`}
-                ref={divRef}
-                onClick={handleDivClick}
-            >
-                <div className={styles.goalTypeOptionIcon}>
-                    {type === 'amount' && <AmountIcon />}
-                    {type === 'donations' && <DonationsIcon />}
-                    {type === 'donors' && <DonorsIcon />}
-                </div>
-                <div className={styles.goalTypeOptionText}>
-                    <label ref={labelRef}>
-                        <input type="radio" value={type} {...register('goalType')} />
-                        {label}
-                    </label>
-                    <span>{description}</span>
-                </div>
-            </div>
-        );
-    };
-
-    const Goal = ({type}: any) => {
-        const inputData: {
-            label: string;
-            description: string;
-            placeholder: string;
-        } = {
-            label: '',
-            description: '',
-            placeholder: '',
-        };
-
-        switch (type) {
+    useEffect(() => {
+        console.log('selectedGoalType: ', selectedGoalType);
+        switch (selectedGoalType) {
             case 'amount':
-                inputData.label = __('How much do you want to raise?', 'give');
-                inputData.description = __('Set the target amount your campaign should raise.', 'give');
-                inputData.placeholder = __('Eg. $2,000', 'give');
+                setGoalInputAttributes({
+                    label: __('How much do you want to raise?', 'give'),
+                    description: __('Set the target amount your campaign should raise.', 'give'),
+                    placeholder: __('Eg. $2,000', 'give'),
+                });
                 break;
             case 'donations':
-                inputData.label = __('How many donations do you need?', 'give');
-                inputData.description = __("Let us know the target number you're aiming for your campaign.", 'give');
-                inputData.placeholder = __('Eg. 100 donations', 'give');
+                setGoalInputAttributes({
+                    label: __('How many donations do you need?', 'give'),
+                    description: __("Let us know the target number you're aiming for your campaign.", 'give'),
+                    placeholder: __('Eg. 100 donations', 'give'),
+                });
                 break;
             case 'donors':
-                inputData.label = __('How many donors do you need?', 'give');
-                inputData.description = __("Let us know the target number you're aiming for your campaign.", 'give');
-                inputData.placeholder = __('Eg. 100 donors', 'give');
+                setGoalInputAttributes({
+                    label: __('How many donors do you need?', 'give'),
+                    description: __("Let us know the target number you're aiming for your campaign.", 'give'),
+                    placeholder: __('Eg. 100 donors', 'give'),
+                });
                 break;
         }
-
-        return (
-            <div className="givewp-campaigns__form-row">
-                <label htmlFor="title">
-                    {inputData.label} {requiredAsterisk}
-                </label>
-                <span className={styles.description}>{inputData.description}</span>
-                <input
-                    type="number"
-                    {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
-                    aria-invalid={errors.goal ? 'true' : 'false'}
-                    placeholder={inputData.placeholder}
-                />
-            </div>
-        );
-    };
+    }, [selectedGoalType]);
 
     return (
         <FormModal
@@ -290,6 +280,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
                                     'give'
                                 )}
+                                selected={selectedGoalType === 'amount'}
+                                register={register}
                             />
                             <GoalTypeOption
                                 type={'donations'}
@@ -298,6 +290,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
                                     'give'
                                 )}
+                                selected={selectedGoalType === 'donations'}
+                                register={register}
                             />
                             <GoalTypeOption
                                 type={'donors'}
@@ -306,15 +300,35 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
                                     'give'
                                 )}
+                                selected={selectedGoalType === 'donors'}
+                                register={register}
                             />
                         </div>
-                        {errors.goalType && (
+                        {/*errors.goalType && (
                             <div className={'givewp-campaigns__form-errors'}>
                                 <p>{errors.goalType.message}</p>
                             </div>
-                        )}
+                        )*/}
                     </div>
-                    {selectedGoalType && <Goal type={selectedGoalType} />}
+                    {selectedGoalType && (
+                        <div className="givewp-campaigns__form-row">
+                            <label htmlFor="title">
+                                {goalInputAttributes.label} {requiredAsterisk}
+                            </label>
+                            <span className={styles.description}>{goalInputAttributes.description}</span>
+                            <input
+                                type="number"
+                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                aria-invalid={errors.goal ? 'true' : 'false'}
+                                placeholder={goalInputAttributes.placeholder}
+                            />
+                            {/*errors.goal && (
+                                <div className={'givewp-campaigns__form-errors'}>
+                                    <p>{errors.goal.message}</p>
+                                </div>
+                            )*/}
+                        </div>
+                    )}
                     {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
                         <div className="givewp-campaigns__form-column">
                             <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
