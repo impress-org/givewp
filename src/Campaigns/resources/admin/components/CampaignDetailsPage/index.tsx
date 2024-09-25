@@ -90,7 +90,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <article className={styles.page}>
+                <article className={`interface-interface-skeleton__content ${styles.page}`}>
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
