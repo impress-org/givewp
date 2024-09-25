@@ -5,7 +5,7 @@ import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes} from './types';
 import {useEffect, useRef, useState} from 'react';
-import UploadCoverImage from './UploadCoverImage';
+import UploadCoverImage from '../UploadMedia';
 import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
 
 /**
@@ -242,7 +242,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </span>
                         <UploadCoverImage
                             id="givewp-campaigns-upload-cover-image"
-                            label={__('Image', 'give')}
+                            label={__('Cover', 'give')}
                             actionLabel={__('Select to upload', 'give')}
                             value={image}
                             onChange={(coverImageUrl, coverImageAlt) => {

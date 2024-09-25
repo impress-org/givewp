@@ -31,6 +31,7 @@ div.media-modal.wp-core-ui {
         width: 100%;
         padding: 0;
         color: var(--givewp-shades-white);
+        border: none;
 
         &:hover {
             svg {
@@ -56,6 +57,8 @@ div.media-modal.wp-core-ui {
         object-fit: cover;
         object-position: center;
         transition: filter 0.3s ease;
+        border-radius: 4px;
+        cursor: pointer;
 
         &:hover {
             filter: brightness(80%); /* Adjust the brightness percentage for the desired tint */
@@ -72,6 +75,33 @@ div.media-modal.wp-core-ui {
         &--update {
             margin-top: var(--givewp-spacing-2);
             border: 1px solid;
+        }
+    }
+
+    &__options {
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        background: none;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+
+        button {
+            margin-top: var(--givewp-spacing-2);
+            padding: 0.4rem 0.8rem 0.4rem 0.8rem;
+        }
+
+        &--remove {
+            border: 1px solid #F2320C;
+            color: #F2320C;
+
+        }
+
+        &--update {
+            border: 1px solid #9CA0AF;
+            color: #060C1A;
         }
     }
 

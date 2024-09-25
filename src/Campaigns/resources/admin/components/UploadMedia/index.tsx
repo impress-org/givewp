@@ -5,7 +5,7 @@
 
 import React from 'react';
 import _ from 'lodash';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import './styles.scss';
 
 type MediaLibrary = {
@@ -83,12 +83,24 @@ export default function UploadCoverImage({id, value, onChange, label, help, acti
                         </svg>
                     </button>
 
-                    <button
-                        className={'givewp-media-library-control__button givewp-media-library-control__button--update'}
-                        onClick={openMediaLibrary}
-                    >
-                        {__('Change Cover', 'give')}
-                    </button>
+                    <div className={'givewp-media-library-control__options'}>
+                        <button
+                            className={
+                                'givewp-media-library-control__options givewp-media-library-control__options--remove'
+                            }
+                            onClick={resetImage}
+                        >
+                            {sprintf(__('Remove %s', 'give'), label.toLowerCase())}
+                        </button>
+                        <button
+                            className={
+                                'givewp-media-library-control__options givewp-media-library-control__options--update'
+                            }
+                            onClick={openMediaLibrary}
+                        >
+                            {sprintf(__('Change %s', 'give'), label.toLowerCase())}
+                        </button>
+                    </div>
                 </div>
             ) : (
                 <div className={'givewp-media-library-drop-area'} onDragOver={dropHandler}>
