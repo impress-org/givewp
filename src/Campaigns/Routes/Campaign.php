@@ -40,9 +40,6 @@ class Campaign implements RestRoute
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
-                        'validate_callback' => function ($id) {
-                            return filter_var($id, FILTER_VALIDATE_INT);
-                        },
                     ],
                 ],
             ]
@@ -65,9 +62,6 @@ class Campaign implements RestRoute
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
-                        'validate_callback' => function ($id) {
-                            return filter_var($id, FILTER_VALIDATE_INT);
-                        },
                     ],
                     'title' => [
                         'type' => 'string',
