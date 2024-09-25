@@ -267,6 +267,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Enhancement: Updated the strings in the form builder onboarding buttons to be translatable (Open source submission by @DAnn2012)
 * Enhancement: Updated strings in give settings to be translatable (Open source submission by @DAnn2012)
 * Security: Added additional prevention for serialized data in the option-based donation form request 
+* Security: Added additional security measures to the legacy donor list table request (CVE-2024-9130) 
 * Fix: Resolved a styling issue with some text fields not respecting error border styling
 * Fix: Resolved a styling issue with the anonymous block for WP 6.6 compatibility
 * Dev: Removed defaultProps in favor of ES6 default parameters for React 19 compatibility
