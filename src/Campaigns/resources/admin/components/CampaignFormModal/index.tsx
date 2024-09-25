@@ -6,6 +6,7 @@ import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps} from './types';
 import {useEffect, useRef, useState} from 'react';
 import UploadCoverImage from './UploadCoverImage';
+import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
 
 /**
  * Get the next sharp hour
@@ -62,6 +63,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
             image: campaign?.image ?? '',
+            goalType: campaign?.goalType ?? '',
+            goal: campaign?.goal ?? null,
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
@@ -130,19 +133,69 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
         return (
             <div
-                className={`${styles.flexContainer}  ${selectedGoalType === type ? styles.selected : ''}`}
+                className={`${styles.goalTypeOption}  ${
+                    selectedGoalType === type ? styles.goalTypeOptionSelected : ''
+                }`}
                 ref={divRef}
                 onClick={handleDivClick}
             >
-                <div className={styles.flexRow} style={{width: '40px', height: '40px', background: '#f5f5f5'}}></div>
-                <div className={styles.flexRow}>
+                <div className={styles.goalTypeOptionIcon}>
+                    {type === 'amount' && <AmountIcon />}
+                    {type === 'donations' && <DonationsIcon />}
+                    {type === 'donors' && <DonorsIcon />}
+                </div>
+                <div className={styles.goalTypeOptionText}>
                     <label ref={labelRef}>
                         <input type="radio" value={type} {...register('goalType')} />
                         {label}
-                        <br />
-                        <span className={styles.description}>{description}</span>
                     </label>
+                    <span>{description}</span>
                 </div>
+            </div>
+        );
+    };
+
+    const Goal = ({type}: any) => {
+        const inputData: {
+            label: string;
+            description: string;
+            placeholder: string;
+        } = {
+            label: '',
+            description: '',
+            placeholder: '',
+        };
+
+        switch (type) {
+            case 'amount':
+                inputData.label = __('How much do you want to raise?', 'give');
+                inputData.description = __('Set the target amount your campaign should raise.', 'give');
+                inputData.placeholder = __('Eg. $2,000', 'give');
+                break;
+            case 'donations':
+                inputData.label = __('How many donations do you need?', 'give');
+                inputData.description = __("Let us know the target number you're aiming for your campaign.", 'give');
+                inputData.placeholder = __('Eg. 100 donations', 'give');
+                break;
+            case 'donors':
+                inputData.label = __('How many donors do you need?', 'give');
+                inputData.description = __("Let us know the target number you're aiming for your campaign.", 'give');
+                inputData.placeholder = __('Eg. 100 donors', 'give');
+                break;
+        }
+
+        return (
+            <div className="givewp-campaigns__form-row">
+                <label htmlFor="title">
+                    {inputData.label} {requiredAsterisk}
+                </label>
+                <span className={styles.description}>{inputData.description}</span>
+                <input
+                    type="number"
+                    {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                    aria-invalid={errors.goal ? 'true' : 'false'}
+                    placeholder={inputData.placeholder}
+                />
             </div>
         );
     };
@@ -223,7 +276,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             {step === 2 && (
                 <>
                     <div className="givewp-campaigns__form-row">
-                        <label htmlFor="goalType">{__('How would you like to set your goal?', 'give')}</label>
+                        <label htmlFor="goalType">
+                            {__('How would you like to set your goal?', 'give')} {requiredAsterisk}
+                        </label>
                         <span className={styles.description}>
                             {__('Set the goal your fundraising efforts will work toward.', 'give')}
                         </span>
@@ -259,50 +314,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             </div>
                         )}
                     </div>
-                    {selectedGoalType === 'amount' && (
-                        <div className="givewp-campaigns__form-row">
-                            <label htmlFor="title">
-                                {__('How much do you want to raise?', 'give')} {requiredAsterisk}
-                            </label>
-                            <span className={styles.description}>
-                                {__('Set the target amount your campaign should raise.', 'give')}
-                            </span>
-                            <input
-                                type="number"
-                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
-                                aria-invalid={errors.title ? 'true' : 'false'}
-                                placeholder={__('Eg. $2,000', 'give')}
-                            />
-                        </div>
-                    )}
-                    {selectedGoalType === 'donations' && (
-                        <div className="givewp-campaigns__form-row">
-                            <label htmlFor="title">{__('How many donations do you need?', 'give')}</label>
-                            <span className={styles.description}>
-                                {__("Let us know the target number you're aiming for your campaign.", 'give')}
-                            </span>
-                            <input
-                                type="number"
-                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
-                                aria-invalid={errors.goal ? 'true' : 'false'}
-                                placeholder={__('Eg. 100 donations', 'give')}
-                            />
-                        </div>
-                    )}
-                    {selectedGoalType === 'donors' && (
-                        <div className="givewp-campaigns__form-row">
-                            <label htmlFor="title">{__('How many donors do you need?', 'give')}</label>
-                            <span className={styles.description}>
-                                {__("Let us know the target number you're aiming for your campaign.", 'give')}
-                            </span>
-                            <input
-                                type="number"
-                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
-                                aria-invalid={errors.goal ? 'true' : 'false'}
-                                placeholder={__('Eg. 100 donors', 'give')}
-                            />
-                        </div>
-                    )}
+                    {selectedGoalType && <Goal type={selectedGoalType} />}
                     {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
                         <div className="givewp-campaigns__form-column">
                             <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>

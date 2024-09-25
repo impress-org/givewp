@@ -8,6 +8,7 @@ export type Campaign = {
     image: string;
     primaryColor: string;
     secondaryColor: string;
+    goalType: string;
     goal: number;
     status: string;
     startDateTime: {
