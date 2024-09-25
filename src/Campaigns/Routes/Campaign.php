@@ -43,6 +43,7 @@ class Campaign implements RestRoute
                         'required' => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
 
@@ -70,7 +71,6 @@ class Campaign implements RestRoute
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -87,7 +87,7 @@ class Campaign implements RestRoute
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_Error('campaign_not_found',  __('Campaign not found', 'give'), ['status' => 404]);
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
         return new WP_REST_Response($campaign->toArray());
@@ -105,7 +105,7 @@ class Campaign implements RestRoute
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_Error('campaign_not_found',  __('Campaign not found', 'give'), ['status' => 404]);
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
         $statusMap = [
@@ -157,7 +157,7 @@ class Campaign implements RestRoute
                     'description' => esc_html__('Campaign title', 'give'),
                     'minLength' => 3,
                     'maxLength' => 128,
-                    'errorMessage' => esc_html__('Title length should be anything from 3 to 128 chars', 'give')
+                    'errorMessage' => esc_html__('Campaign title is required', 'give'),
                 ],
                 'status' => [
                     'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
@@ -169,7 +169,6 @@ class Campaign implements RestRoute
                 ],
                 'goal' => [
                     'type' => 'number',
-                    'default' => 100000,
                     'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
                     'errorMessage' => esc_html__('Campaign goal is required', 'give')
@@ -179,7 +178,72 @@ class Campaign implements RestRoute
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
             ],
-            'required' => ['title', 'goal', 'goalType'],
+            'required' => ['id', 'title', 'goal', 'goalType'],
+            'allOf' => [
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
+                                'const' => 'amount',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Goal amount is required', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
+                                'const' => 'donors',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Number of donors is required', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
+                                'const' => 'donation',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Number of donations is required', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }
