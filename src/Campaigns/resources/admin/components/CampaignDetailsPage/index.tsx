@@ -6,7 +6,8 @@ import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
 import {Campaign, GiveCampaignDetails} from './types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {Spinner} from '@givewp/components';
+import {Spinner as GiveSpinner} from '@givewp/components';
+import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 
 import styles from './style.module.scss';
@@ -18,6 +19,7 @@ declare const window: {
 export default function CampaignsDetailsPage({campaignId}) {
 
     const [resolver, setResolver] = useState({});
+    const [isSaving, setIsSaving] = useState<null | string>(null);
 
     useEffect(() => {
         apiFetch({
@@ -55,13 +57,17 @@ export default function CampaignsDetailsPage({campaignId}) {
         e.preventDefault();
 
         if (formState.isDirty) {
+            setIsSaving(data.status);
+
             edit(data);
 
             save()
                 .then((response: Campaign) => {
+                    setIsSaving(null);
                     reset(response);
                 })
                 .catch((response: any) => {
+                    setIsSaving(null);
                     //todo: add error handling
                     console.log(response);
                 });
@@ -72,7 +78,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         return (
             <div className={styles.loadingContainer}>
                 <div className={styles.loadingContainerContent}>
-                    <Spinner />
+                    <GiveSpinner />
                     <div className={styles.loadingContainerContentText}>
                         {__('Loading campaign...', 'give')}
                     </div>
@@ -118,7 +124,14 @@ export default function CampaignsDetailsPage({campaignId}) {
                                             setValue('status', 'draft');
                                         }}
                                     >
-                                        {__('Save as draft', 'give')}
+                                        {isSaving === 'draft' ? (
+                                            <>
+                                                {__('Saving draft', 'give')}
+                                                <Spinner />
+                                            </>
+                                        ) : (
+                                            __('Save as draft', 'give')
+                                        )}
                                     </button>
                                 )}
                                 <button
@@ -131,9 +144,16 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         }
                                     }}
                                 >
-                                    {campaign.status === 'draft'
-                                        ? __('Publish campaign', 'give')
-                                        : __('Update campaign', 'give')}
+                                    {isSaving === 'active' ? (
+                                        <>
+                                            {__('Updating campaign', 'give')}
+                                            <Spinner />
+                                        </>
+                                    ) : (
+                                        campaign.status === 'draft'
+                                            ? __('Publish campaign', 'give')
+                                            : __('Update campaign', 'give')
+                                    )}
                                 </button>
                             </div>
                         </div>
