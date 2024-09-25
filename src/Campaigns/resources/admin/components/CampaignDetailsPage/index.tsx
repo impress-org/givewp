@@ -37,7 +37,10 @@ export default function CampaignsDetailsPage({campaignId}) {
         edit: (data: Campaign) => void,
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
-    const methods = useForm<Campaign>(resolver);
+    const methods = useForm<Campaign>({
+        mode: 'onChange',
+        ...resolver,
+    });
 
     const {formState, handleSubmit, reset, setValue} = methods;
 

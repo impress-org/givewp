@@ -171,7 +171,7 @@ class Campaign implements RestRoute
                     'type' => 'number',
                     'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
-                    'errorMessage' => esc_html__('Campaign goal is required', 'give')
+                    'errorMessage' => esc_html__('Must be a number', 'give')
                 ],
                 'goalType' => [
                     'enum' => ['amount', 'donation', 'donors'],
@@ -196,7 +196,7 @@ class Campaign implements RestRoute
                         ],
                         'errorMessage' => [
                             'properties' => [
-                                'goal' => esc_html__('Goal amount is required', 'give'),
+                                'goal' => esc_html__('Goal amount must be greater than 0', 'give'),
                             ],
                         ],
                     ],
@@ -217,7 +217,7 @@ class Campaign implements RestRoute
                         ],
                         'errorMessage' => [
                             'properties' => [
-                                'goal' => esc_html__('Number of donors is required', 'give'),
+                                'goal' => esc_html__('Number of donors must be greater than 0', 'give'),
                             ],
                         ],
                     ],
@@ -238,7 +238,7 @@ class Campaign implements RestRoute
                         ],
                         'errorMessage' => [
                             'properties' => [
-                                'goal' => esc_html__('Number of donations is required', 'give'),
+                                'goal' => esc_html__('Number of donations must be greater than 0', 'give'),
                             ],
                         ],
                     ],
