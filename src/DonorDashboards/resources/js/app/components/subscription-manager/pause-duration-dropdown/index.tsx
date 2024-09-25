@@ -10,14 +10,14 @@ type PauseDurationDropDownProps = {
 
 type durationOptions = { value: string; label: string }[];
 
+const durationOptions: durationOptions = [
+    { value: '1', label: __('1 month', 'give') },
+    { value: '2', label: __('2 months', 'give') },
+    { value: '3', label: __('3 months', 'give') },
+];
+
 export default function PauseDurationDropdown({handlePause, closeModal}: PauseDurationDropDownProps) {
     const [pauseDuration, setPauseDuration] = useState<number>(1);
-
-    const durationOptions: durationOptions = [
-        { value: '1', label: __('1 month', 'give') },
-        { value: '2', label: __('2 months', 'give') },
-        { value: '3', label: __('3 months', 'give') },
-    ];
 
     const updateSubscription = () => {
         closeModal();
