@@ -298,10 +298,16 @@
 
 :global(#give-admin-campaigns-root) {
     .updateCampaignButton {
-        border-radius: var(--givewp-rounded-2);
+        display: flex;
+        align-content: center;
+        border-radius: var(--givewp-rounded-4);
         font-size: 0.875rem;
         line-height: 1.43;
         text-align: center;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+        svg {
+            margin: 3px 0 0 8px !important;
+        }
     }
 }
