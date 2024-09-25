@@ -87,7 +87,7 @@ class Campaign implements RestRoute
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_Error(400,  __('Campaign not found', 'give'));
+            return new WP_Error('campaign_not_found',  __('Campaign not found', 'give'), ['status' => 404]);
         }
 
         return new WP_REST_Response($campaign->toArray());
@@ -105,7 +105,7 @@ class Campaign implements RestRoute
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_Error(400,  __('Campaign not found', 'give'));
+            return new WP_Error('campaign_not_found',  __('Campaign not found', 'give'), ['status' => 404]);
         }
 
         $statusMap = [
