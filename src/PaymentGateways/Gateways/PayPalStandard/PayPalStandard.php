@@ -274,7 +274,7 @@ class PayPalStandard extends PaymentGateway
 
     /**
      * @since 2.20.0
-     * @@inheritDoc
+     * @inerhitDoc
      * @throws Exception
      */
     public function refundDonation(Donation $donation)

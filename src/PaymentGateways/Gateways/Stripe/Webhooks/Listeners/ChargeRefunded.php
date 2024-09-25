@@ -16,7 +16,7 @@ class ChargeRefunded extends StripeEventListener
     /**
      * @since 2.21.0
      *
-     * @@inheritDoc
+     * @inerhitDoc
      */
     public function processEvent(Event $event)
     {
@@ -56,7 +56,7 @@ class ChargeRefunded extends StripeEventListener
 
     /**
      * @since 2.21.0
-     * @@inheritDoc
+     * @inerhitDoc
      */
     protected function getDonation(Event $event)
     {

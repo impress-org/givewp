@@ -128,7 +128,7 @@ class TestOffsiteGateway extends PaymentGateway
     /**
      * @since 2.29.0 Return PaymentRefunded instead of a bool value
      * @since      2.20.0
-     * @@inheritDoc
+     * @inerhitDoc
      */
     public function refundDonation(Donation $donation): PaymentRefunded
     {

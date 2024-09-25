@@ -76,7 +76,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @@inheritDoc
+     * @inerhitDoc
      * @since 2.19.0
      *
      * @param array{paypalOrder: PayPalOrder} $gatewayData
@@ -245,7 +245,7 @@ class PayPalCommerce extends PaymentGateway
 
     /**
      * @since 2.20.0
-     * @@inheritDoc
+     * @inerhitDoc
      * @throws Exception
      */
     public function refundDonation(Donation $donation)

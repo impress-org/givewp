@@ -15,7 +15,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     use HasStripeStatementDescriptorText;
 
     /**
-     * @@inheritDoc
+     * @inerhitDoc
      * @since 2.19.0
      * @since 2.19.1 Use old stripe statement descriptor requirements to filter text.
      *             https://github.com/impress-org/givewp/pull/6269
@@ -42,7 +42,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     }
 
     /**
-     * @@inheritDoc
+     * @inerhitDoc
      * @since 2.19.0
      */
     public static function id()
@@ -51,7 +51,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     }
 
     /**
-     * @@inheritDoc
+     * @inerhitDoc
      * @since 2.19.0
      */
     public static function timestamp()
@@ -60,7 +60,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     }
 
     /**
-     * @@inheritDoc
+     * @inerhitDoc
      * @since 2.19.0
      */
     public static function title()
