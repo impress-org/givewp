@@ -6,6 +6,7 @@ use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign as CampaignModel;
 use Give\Campaigns\ValueObjects\CampaignStatus;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -22,7 +23,7 @@ class Campaign implements RestRoute
     /**
      * @unreleased
      */
-    public function registerRoute()
+    public function registerRoute(): void
     {
         // Get campaign
         register_rest_route(
@@ -77,16 +78,16 @@ class Campaign implements RestRoute
     /**
      * @unreleased
      *
+     * @return WP_Error | WP_REST_Response
+     *
      * @throws Exception
      */
-    public function handleGetRequest(WP_REST_Request $request): WP_Rest_Response
+    public function handleGetRequest(WP_REST_Request $request)
     {
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_REST_Response([
-                'message' => __('Campaign not found', 'give'),
-            ], 400);
+            return new WP_Error(400,  __('Campaign not found', 'give'));
         }
 
         return new WP_REST_Response($campaign->toArray());
@@ -95,16 +96,16 @@ class Campaign implements RestRoute
     /**
      * @unreleased
      *
+     * @return WP_Error | WP_REST_Response
+     *
      * @throws Exception
      */
-    public function handleUpdateRequest(WP_REST_Request $request): WP_REST_Response
+    public function handleUpdateRequest(WP_REST_Request $request)
     {
         $campaign = CampaignModel::find($request->get_param('id'));
 
         if ( ! $campaign) {
-            return new WP_REST_Response([
-                'message' => __('Campaign not found', 'give'),
-            ], 400);
+            return new WP_Error(400,  __('Campaign not found', 'give'));
         }
 
         $statusMap = [
