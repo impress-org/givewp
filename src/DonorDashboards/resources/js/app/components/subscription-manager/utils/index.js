@@ -1,34 +1,46 @@
+import {__} from '@wordpress/i18n';
 import {store} from '../../../tabs/recurring-donations/store';
 import {donorDashboardApi} from '../../../utils';
 import {fetchSubscriptionsDataFromAPI} from '../../../tabs/recurring-donations/utils';
 import {setError} from '../../../tabs/recurring-donations/store/actions';
 
-export const updateSubscriptionWithAPI = ({id, amount, paymentMethod}) => {
+export const updateSubscriptionWithAPI = async ({id, amount, paymentMethod}) => {
     const {dispatch} = store;
-    return donorDashboardApi
-        .post(
+
+    try {
+        const response = await donorDashboardApi.post(
             'recurring-donations/subscription/update',
             {
-                id: id,
-                amount: amount,
+                id,
+                amount,
                 payment_method: paymentMethod,
             },
             {}
-        )
-        .then(async (response) => {
-            if (response.data.status === 400) {
-                dispatch(setError(response.data.body_response.message));
-                return;
-            }
-            await fetchSubscriptionsDataFromAPI();
-            return response;
-        });
+        );
+
+        await fetchSubscriptionsDataFromAPI();
+
+        return response;
+    } catch (error) {
+        if (error.response.status === 500) {
+            dispatch(
+                setError(
+                    __(
+                        'An error occurred while processing your request.  Please try again later, or contact support if the issue persists.',
+                        'give'
+                    )
+                )
+            );
+        } else {
+            dispatch(setError(error.response.data.message));
+        }
+    }
 };
 
-export const managePausingSubscriptionWithAPI = ({id, action = 'pause', intervalInMonths = null}) => {
+export const managePausingSubscriptionWithAPI = async ({id, action = 'pause', intervalInMonths = null}) => {
     const {dispatch} = store;
-    return donorDashboardApi
-        .post(
+    try {
+        const response = await donorDashboardApi.post(
             'recurring-donations/subscription/manage-pausing',
             {
                 id,
@@ -36,13 +48,23 @@ export const managePausingSubscriptionWithAPI = ({id, action = 'pause', interval
                 interval_in_months: intervalInMonths,
             },
             {}
-        )
-        .then(async (response) => {
-            if (response.data.status === 400) {
-                dispatch(setError(response.data.body_response.message));
-                return;
-            }
-            await fetchSubscriptionsDataFromAPI();
-            return response;
-        });
+        );
+
+        await fetchSubscriptionsDataFromAPI();
+
+        return response;
+    } catch (error) {
+        if (error.response.status === 500) {
+            dispatch(
+                setError(
+                    __(
+                        'An error occurred while processing your request.  Please try again later, or contact support if the issue persists.',
+                        'give'
+                    )
+                )
+            );
+        } else {
+            dispatch(setError(error.response.data.message));
+        }
+    }
 };
