@@ -1,7 +1,8 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import cx from 'classnames';
 import './style.scss';
 
-const Button = ({icon, children, onClick, href, type, ...rest}) => {
+const Button = ({icon, children, onClick, href, type, variant, ...rest}) => {
     const handleHrefClick = (e) => {
         e.preventDefault();
         window.parent.location = href;
@@ -22,7 +23,9 @@ const Button = ({icon, children, onClick, href, type, ...rest}) => {
     }
     return (
         <button
-            className="give-donor-dashboard-button give-donor-dashboard-button--primary"
+            className={cx('give-donor-dashboard-button', 'give-donor-dashboard-button--primary', {
+                'give-donor-dashboard-button--variant': variant,
+            })}
             onClick={onClick ? () => onClick() : null}
             type={type}
             {...rest}

@@ -1,61 +1,52 @@
 /* stylelint-disable selector-class-pattern */
 
-.give-donor-dashboard-cancel-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 99;
+/* stylelint-disable selector-class-pattern */
 
-    .give-donor-dashboard-cancel-modal__frame {
-        background: #fff;
-        z-index: 2;
-        box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
+.givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.5) !important;
+
+    .givewp-modal-dialog {
         border-radius: 8px;
-        overflow: hidden;
-        width: 90%;
-        max-width: 480px;
 
-        .give-donor-dashboard-cancel-modal__header {
-            background: var(--give-donor-dashboard-accent-color);
-            font-size: 21px;
-            font-weight: 500;
-            padding: 26px 36px;
-            line-height: 26px;
-            color: #fff;
+        .givewp-modal-header {
+            border-radius: 8px 8px 0 0;
+            background-color: #fafafa;
+            padding: 1rem 1.5rem;
         }
 
-        .give-donor-dashboard-cancel-modal__body {
-            padding: 30px 36px 20px 36px;
-            font-size: 15px;
-            font-weight: 500;
-            line-height: 24px;
-            color: #555;
+        .givewp-modal-close {
+            right: 1rem;
         }
 
-        .give-donor-dashboard-cancel-modal__buttons {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .givewp-modal-content {
+            padding: 1.5rem 1.5rem 2rem 1.5rem;
 
-            a.give-donor-dashboard-cancel-modal__cancel {
-                cursor: pointer;
+            .give-donor-dashboard-cancel-modal__buttons {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2rem;
+
+                .give-donor-dashboard-cancel-modal__cancel {
+                    flex: 1;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    max-width: 240px;
+                    padding: 12px 20px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    border-radius: 3px;
+                    color: var(--give-donor-dashboard-accent-color) !important;
+                    background: var(--givewp-shades-white);
+                    box-shadow: none;
+                    border: 1px solid var(--give-donor-dashboard-accent-color);
+                    margin: 0;
+                    cursor: pointer;
+                }
             }
         }
-    }
-
-    .give-donor-dashboard-cancel-modal__bg {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        background: rgba(255, 255, 255, 0.6);
-        border-radius: 8px;
     }
 }
