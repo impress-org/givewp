@@ -8,14 +8,14 @@ import Divider from '../../components/divider';
 import SubscriptionReceipt from '../../components/subscription-receipt';
 import SubscriptionManager from '../../components/subscription-manager';
 import SubscriptionTable from '../../components/subscription-table';
+import SubscriptionStatus from '../../components/subscription-manager/subscription-status';
 
 import {useSelector} from './hooks';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import './style.scss';
-import SubscriptionStatus from '../../components/subscription-manager/subscription-status';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
+import ErrorMessage from '../../components/error-message';
 
 const Content = () => {
     const subscriptions = useSelector((state) => state.subscriptions);
@@ -39,8 +39,7 @@ const Content = () => {
     if (error) {
         return (
             <Fragment>
-                <Heading icon="exclamation-triangle">{__('Error', 'give')}</Heading>
-                <p style={{color: '#6b6b6b'}}>{error}</p>
+                <ErrorMessage error={error} />
             </Fragment>
         );
     }
