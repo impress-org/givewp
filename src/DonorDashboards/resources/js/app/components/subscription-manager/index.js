@@ -9,7 +9,7 @@ import PaymentMethodControl from './payment-method-control';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {managePausingSubscriptionWithAPI, updateSubscriptionWithAPI} from './utils';
 import PauseDurationDropdown from './pause-duration-dropdown';
-import DashboardLoadingSpinner from "../dashboard-loading-spinner";
+import DashboardLoadingSpinner from '../dashboard-loading-spinner';
 
 import './style.scss';
 
@@ -22,11 +22,10 @@ import './style.scss';
  */
 const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
 
-// There is no error handling whatsoever, that will be necessary.
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
     const [isOpen, setIsOpen] = useState(false);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [amount, setAmount] = useState(() =>
         normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
@@ -150,7 +149,6 @@ const SubscriptionManager = ({id, subscription}) => {
 
                 {showPausingControls && (
                     <FieldRow>
-
                         <div className={'give-donor-dashboard__subscription-manager-pause-content'}>
                             <p className={'give-donor-dashboard__subscription-manager-resume-header'}>
                                 {__('Subscription Renewal', 'give')}
@@ -162,7 +160,7 @@ const SubscriptionManager = ({id, subscription}) => {
                                 isOpen={isOpen}
                                 handleClose={toggleModal}
                             >
-                                <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal}/>
+                                <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal} />
                             </ModalDialog>
                             {subscription.payment.status.id === 'active' ? (
                                 <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
