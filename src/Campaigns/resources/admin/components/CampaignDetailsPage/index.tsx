@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
+import apiFetch from '@wordpress/api-fetch';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
 import {Campaign, GiveCampaignDetails} from './types';
@@ -19,13 +20,14 @@ export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
 
     useEffect(() => {
-        fetch(`/wp-json/give-api/v2/campaigns/${campaignId}`, {method: 'OPTIONS'})
-            .then(res => res.json())
-            .then(data => {
-                setResolver({
-                    resolver: ajvResolver(data.schema),
-                });
+        apiFetch({
+            path: `/give-api/v2/campaigns/${campaignId}`,
+            method: 'OPTIONS',
+        }).then(({schema}) => {
+            setResolver({
+                resolver: ajvResolver(schema),
             });
+        });
     }, []);
 
     const {record: campaign, hasResolved, save, edit}: {
