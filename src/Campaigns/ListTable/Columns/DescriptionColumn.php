@@ -33,6 +33,6 @@ class DescriptionColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return wpautop($model->shortDescription);
+        return wp_strip_all_tags($model->shortDescription, true);
     }
 }
