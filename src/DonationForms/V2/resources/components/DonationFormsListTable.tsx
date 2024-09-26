@@ -34,7 +34,11 @@ declare global {
     }
 }
 
+console.log('window.GiveDonationForms: ', window.GiveDonationForms);
+
 const API = new ListTableApi(window.GiveDonationForms);
+
+console.log('API: ', API);
 
 const donationStatus = [
     {
@@ -63,6 +67,16 @@ const donationStatus = [
     },
 ];
 
+const urlParams = new URLSearchParams(window.location.search);
+urlParams.get('id');
+
+const isCampaignDetailsPage =
+    urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
+const campaignId = urlParams.get('id');
+
+console.log('isCampaignDetailsPage: ', isCampaignDetailsPage);
+console.log('campaignId: ', campaignId);
+
 const donationFormsFilters: Array<FilterConfig> = [
     {
         name: 'search',
@@ -77,11 +91,17 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
-    {
+    isCampaignDetailsPage && {
         name: 'campaignId',
-        type: 'search',
+        type: 'select',
         text: __('Campaign ID', 'give'),
         ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+        options: [
+            {
+                value: campaignId,
+                text: campaignId,
+            },
+        ],
     },
 ];
 

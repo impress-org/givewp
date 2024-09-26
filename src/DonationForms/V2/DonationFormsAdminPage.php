@@ -171,7 +171,12 @@ class DonationFormsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 30,
+
         ];
+
+        if (isset($_GET['id']) && isset($_GET['page']) && 'give-campaigns' == isset($_GET['page'])) {
+            $queryParameters['campaignId'] = absint($_GET['id']);
+        }
 
         $request = WP_REST_Request::from_url(
             add_query_arg(

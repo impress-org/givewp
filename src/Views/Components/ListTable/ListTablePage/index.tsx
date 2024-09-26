@@ -130,10 +130,6 @@ export default function ListTablePage({
     const urlParams = new URLSearchParams(window.location.search);
     const campaignId = urlParams.get('id');
 
-    console.log('filters BEFORE: ', filters);
-    //setFilters((prevState) => ({...prevState, campaignId: campaignId}));
-    //console.log('filters AFTER: ', filters);
-
     const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
