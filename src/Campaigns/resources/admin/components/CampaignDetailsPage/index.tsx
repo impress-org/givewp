@@ -27,7 +27,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             method: 'OPTIONS',
         }).then(({schema}) => {
             setResolver({
-                resolver: ajvResolver(schema),
+                //resolver: ajvResolver(schema),
             });
         });
     }, []);

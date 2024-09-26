@@ -63,8 +63,7 @@ class RegisterCampaignRoutes
                         'type' => 'integer',
                         'required' => true,
                     ],
-                ],
-                'schema' => [$this, 'getSchema'],
+                ]
             ]
         );
     }
@@ -131,10 +130,11 @@ class RegisterCampaignRoutes
                     ],
                     'title' => [
                         'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'rest_sanitize_request_arg',
+                        'validate_callback' => 'rest_validate_request_arg'
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
