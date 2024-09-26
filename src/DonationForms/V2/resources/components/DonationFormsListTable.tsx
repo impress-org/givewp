@@ -99,7 +99,7 @@ const donationFormsFilters: Array<FilterConfig> = [
         options: [
             {
                 value: campaignId,
-                text: campaignId,
+                text: __('All Campaign Forms', 'give'),
             },
         ],
     },
@@ -282,6 +282,7 @@ export default function DonationFormsListTable() {
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                contentMode={isCampaignDetailsPage}
             >
                 <button
                     className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
