@@ -14,11 +14,10 @@ type MediaLibrary = {
     onChange: (url: string, alt: string) => void;
     reset: () => void;
     label: string;
-    help?: string;
     actionLabel?: string;
-    icon?;
 };
-export default function UploadCoverImage({id, value, onChange, label, help, actionLabel, icon, reset}: MediaLibrary) {
+
+export default function UploadMedia({id, value, onChange, label, actionLabel, reset}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -60,7 +59,7 @@ export default function UploadCoverImage({id, value, onChange, label, help, acti
     };
 
     return (
-        <>
+        <div id={id}>
             {value ? (
                 <div className={'givewp-media-library-control'}>
                     <button className={'givewp-media-library-control__reset'} onClick={resetImage}>
@@ -119,6 +118,6 @@ export default function UploadCoverImage({id, value, onChange, label, help, acti
                     <p>{__('or drag your image or video here', 'give')}</p>
                 </div>
             )}
-        </>
+        </div>
     );
 }

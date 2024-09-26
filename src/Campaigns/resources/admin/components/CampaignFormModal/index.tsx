@@ -5,7 +5,7 @@ import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes} from './types';
 import {useEffect, useRef, useState} from 'react';
-import UploadCoverImage from '../UploadMedia';
+import UploadMedia from '../UploadMedia';
 import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
 
 /**
@@ -42,6 +42,7 @@ const removeTimezoneFromDateISOString = (date: string) => {
 };
 
 /**
+ * Goal Type Option component
  *
  * @unreleased
  */
@@ -84,11 +85,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const API = new CampaignsApi(apiSettings);
     const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
+    const [goalInputAttributes, setGoalInputAttributes] = useState<GoalInputAttributes>({
+        label: '',
+        description: '',
+        placeholder: '',
+    });
 
     const {
         register,
         handleSubmit,
-        formState: {errors, isDirty, dirtyFields, isSubmitting},
+        formState: {errors, isDirty, isSubmitting},
         setValue,
         watch,
         trigger,
@@ -109,38 +115,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     });
 
     const image = watch('image');
-
-    const validateTitle = async () => {
-        const isValid = await trigger('title');
-
-        if (!isValid) {
-            console.log('Title is invalid!');
-        }
-
-        return isValid;
-    };
-
-    const onSubmit: SubmitHandler<CampaignFormInputs> = async (inputs, event) => {
-        event.preventDefault();
-
-        if (step !== 2) {
-            return;
-        }
-
-        try {
-            inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
-
-            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
-            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
-
-            handleClose(response);
-        } catch (error) {
-            console.error('Error submitting campaign campaign', error);
-        }
-    };
-
-    const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
+    const selectedGoalType = watch('goalType');
+    const goal = watch('goal');
 
     useEffect(() => {
         switch (step) {
@@ -153,18 +129,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
     }, [step]);
 
-    const selectedGoalType = watch('goalType');
-    const goal = watch('goal');
-    console.log('goal: ', goal);
-
-    const [goalInputAttributes, setGoalInputAttributes] = useState<GoalInputAttributes>({
-        label: '',
-        description: '',
-        placeholder: '',
-    });
-
     useEffect(() => {
-        console.log('selectedGoalType: ', selectedGoalType);
         switch (selectedGoalType) {
             case 'amount':
                 setGoalInputAttributes({
@@ -189,6 +154,32 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 break;
         }
     }, [selectedGoalType]);
+
+    const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
+
+    const validateTitle = async () => {
+        return await trigger('title');
+    };
+
+    const onSubmit: SubmitHandler<CampaignFormInputs> = async (inputs, event) => {
+        event.preventDefault();
+
+        if (step !== 2) {
+            return;
+        }
+
+        try {
+            inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
+            inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
+
+            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
+            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
+
+            handleClose(response);
+        } catch (error) {
+            console.error('Error submitting campaign campaign', error);
+        }
+    };
 
     return (
         <FormModal
@@ -240,13 +231,12 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <span className={styles.description}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </span>
-                        <UploadCoverImage
+                        <UploadMedia
                             id="givewp-campaigns-upload-cover-image"
                             label={__('Cover', 'give')}
                             actionLabel={__('Select to upload', 'give')}
                             value={image}
                             onChange={(coverImageUrl, coverImageAlt) => {
-                                console.log('coverImageUrl: ', coverImageUrl);
                                 setValue('image', coverImageUrl);
                             }}
                             reset={() => setValue('image', '')}
@@ -304,11 +294,11 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 register={register}
                             />
                         </div>
-                        {/*errors.goalType && (
+                        {errors.goalType && (
                             <div className={'givewp-campaigns__form-errors'}>
                                 <p>{errors.goalType.message}</p>
                             </div>
-                        )*/}
+                        )}
                     </div>
                     {selectedGoalType && (
                         <div className="givewp-campaigns__form-row">
@@ -322,11 +312,11 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 aria-invalid={errors.goal ? 'true' : 'false'}
                                 placeholder={goalInputAttributes.placeholder}
                             />
-                            {/*errors.goal && (
+                            {errors.goal && (
                                 <div className={'givewp-campaigns__form-errors'}>
                                     <p>{errors.goal.message}</p>
                                 </div>
-                            )*/}
+                            )}
                         </div>
                     )}
                     {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
