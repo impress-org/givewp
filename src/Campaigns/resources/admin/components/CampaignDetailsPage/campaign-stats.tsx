@@ -78,9 +78,7 @@ const StatWidget = ({label, values, description}) => {
             }}>
                 <span style={{fontSize: '2em'}}>{values[0]}</span>
                 {!! values[1] && (
-                    <span>
-                        {Math.round(100 * Math.abs( (values[1] - values[0]) / values[0] )) / 10 ?? 0}%
-                    </span>
+                    <PercentChangePill value={values[0]} comparison={values[1]} />
                 )}
             </div>
             <footer style={{flex: '1'}}>
@@ -88,6 +86,32 @@ const StatWidget = ({label, values, description}) => {
             </footer>
         </div>
     )
+}
+
+const PercentChangePill = ({value, comparison}) => {
+
+    const change = Math.round(100 * ((value - comparison) / comparison)) ?? 0
+
+    console.log(value, comparison, change)
+
+    const [color, backgroundColor, symbol] = change == 0
+        ? ['#060c1a', '#f2f2f2', '⯈']
+        : change > 0
+            ? ['#2d802f', '#f2fff3', '⯅']
+            : ['#e35f45', '#fff4f2', '⯆']
+
+    return (
+        <span style={{
+            padding: '0.5rem',
+            fontSize: '.8rem',
+            borderRadius: '1rem',
+            backgroundColor: backgroundColor,
+            color: color,
+        }}>
+            <small>{symbol}</small> {Math.abs(change)}%
+        </span>
+    )
+
 }
 
 const DateRangeFilters = ({options, onSelect, selected}) => {
