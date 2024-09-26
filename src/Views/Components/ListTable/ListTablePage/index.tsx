@@ -127,9 +127,6 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const campaignId = urlParams.get('id');
-
     const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
