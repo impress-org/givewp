@@ -2,37 +2,58 @@
 
 namespace Give\Campaigns\Routes;
 
-use Exception;
-use Give\API\RestRoute;
-use Give\Campaigns\Models\Campaign as CampaignModel;
-use Give\Campaigns\ValueObjects\CampaignStatus;
-use WP_Error;
+use DateTime;
+use Give\Campaigns\Controllers\CampaignRequestController;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use WP_REST_Request;
-use WP_REST_Response;
 use WP_REST_Server;
 
 /**
  * @unreleased
  */
-class Campaign implements RestRoute
+class RegisterCampaignRoutes
 {
+    /**
+     * @var CampaignRequestController
+     */
+    protected $campaignRequestController;
 
-    /** @var string */
-    protected $endpoint = 'campaigns/(?P<id>[0-9]+)';
 
     /**
      * @unreleased
      */
-    public function registerRoute(): void
+    public function __construct(CampaignRequestController $campaignRequestController)
     {
-        // Get campaign
+        $this->campaignRequestController = $campaignRequestController;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function __invoke()
+    {
+        $this->registerGetCampaign();
+        $this->registerUpdateCampaign();
+        $this->registerGetCampaigns();
+        $this->registerCreateCampaign();
+    }
+
+    /**
+     * Get Campaign route
+     *
+     * @unreleased
+     */
+    public function registerGetCampaign()
+    {
         register_rest_route(
-            'give-api/v2',
-            $this->endpoint,
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN,
             [
                 [
                     'methods' => WP_REST_Server::READABLE,
-                    'callback' => [$this, 'handleGetRequest'],
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->getCampaign($request);
+                    },
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
                     },
@@ -46,16 +67,59 @@ class Campaign implements RestRoute
                 'schema' => [$this, 'getSchema'],
             ]
         );
+    }
 
-
-        // Update Campaign
+    /**
+     * Get Campaigns route
+     *
+     * @unreleased
+     */
+    public function registerGetCampaigns()
+    {
         register_rest_route(
-            'give-api/v2',
-            $this->endpoint,
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGNS,
+            [
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->getCampaigns($request);
+                    },
+                    'permission_callback' => '__return_true',
+                ],
+                'args' => [
+                    'page' => [
+                        'type' => 'integer',
+                        'default' => 1,
+                        'minimum' => 1,
+                    ],
+                    'per_page' => [
+                        'type' => 'integer',
+                        'default' => 30,
+                        'minimum' => 1,
+                        'maximum' => 100,
+                    ],
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Update Campaign route
+     *
+     * @unreleased
+     */
+    public function registerUpdateCampaign()
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN,
             [
                 [
                     'methods' => WP_REST_Server::EDITABLE,
-                    'callback' => [$this, 'handleUpdateRequest'],
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->updateCampaign($request);
+                    },
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
                     },
@@ -75,69 +139,61 @@ class Campaign implements RestRoute
         );
     }
 
-    /**
-     * @unreleased
-     *
-     * @return WP_Error | WP_REST_Response
-     *
-     * @throws Exception
-     */
-    public function handleGetRequest(WP_REST_Request $request)
-    {
-        $campaign = CampaignModel::find($request->get_param('id'));
-
-        if ( ! $campaign) {
-            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
-        }
-
-        return new WP_REST_Response($campaign->toArray());
-    }
 
     /**
+     * Create Campaign route
+     *
      * @unreleased
-     *
-     * @return WP_Error | WP_REST_Response
-     *
-     * @throws Exception
      */
-    public function handleUpdateRequest(WP_REST_Request $request)
+    public function registerCreateCampaign()
     {
-        $campaign = CampaignModel::find($request->get_param('id'));
-
-        if ( ! $campaign) {
-            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
-        }
-
-        $statusMap = [
-            'draft' => CampaignStatus::DRAFT(),
-            'active' => CampaignStatus::ACTIVE(),
-        ];
-
-        foreach ($request->get_params() as $key => $value) {
-            switch ($key) {
-                case 'id':
-                    break;
-                case 'status':
-                    $status = array_key_exists($value, $statusMap)
-                        ? $statusMap[$value]
-                        : CampaignStatus::DRAFT();
-
-                    $campaign->setAttribute('status', $status);
-
-                    break;
-                default:
-                    if ($campaign->hasProperty($key)) {
-                        $campaign->setAttribute($key, $value);
-                    }
-            }
-        }
-
-        if ($campaign->isDirty()) {
-            $campaign->save();
-        }
-
-        return new WP_REST_Response($campaign->toArray());
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGNS,
+            [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->createCampaign($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'title' => [
+                        'type' => 'string',
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'description' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'startDateTime' => [
+                        'type' => 'string',
+                        'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
+                        'required' => true,
+                        'validate_callback' => 'rest_parse_date',
+                        'sanitize_callback' => function ($value) {
+                            return new DateTime($value);
+                        },
+                    ],
+                    'endDateTime' => [
+                        'type' => 'string',
+                        'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
+                        'required' => false,
+                        'validate_callback' => 'rest_parse_date',
+                        'sanitize_callback' => function ($value) {
+                            return new DateTime($value);
+                        },
+                    ],
+                ],
+            ]
+        );
     }
+
 
     /**
      * @unreleased
@@ -171,7 +227,7 @@ class Campaign implements RestRoute
                     'type' => 'number',
                     'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
-                    'errorMessage' => esc_html__('Must be a number', 'give')
+                    'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
                 'goalType' => [
                     'enum' => ['amount', 'donation', 'donors'],
