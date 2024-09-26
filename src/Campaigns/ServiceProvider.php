@@ -44,8 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerRoutes()
     {
-        Hooks::addAction('rest_api_init', Routes\Campaign::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\Campaigns::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\RegisterCampaignRoutes::class);
         Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
     }
