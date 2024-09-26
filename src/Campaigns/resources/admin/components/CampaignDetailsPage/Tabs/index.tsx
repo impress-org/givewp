@@ -3,7 +3,7 @@ import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import cx from 'classnames';
 import {CampaignDetailsTab} from '../types';
 
-import styles from '../style.module.scss';
+import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
@@ -13,7 +13,6 @@ const urlParams = new URLSearchParams(window.location.search);
  * @unreleased
  */
 export default () => {
-
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
@@ -48,7 +47,7 @@ export default () => {
     useEffect(() => {
         handleUrlTabParamOnFirstLoad();
 
-        const handlePopState = () => setActiveTab(getTabFromURL())
+        const handlePopState = () => setActiveTab(getTabFromURL());
 
         // Updates state based on URL when user navigates with "Back" or "Forward" buttons
         window.addEventListener('popstate', handlePopState);
@@ -87,4 +86,4 @@ export default () => {
             </div>
         </Tabs>
     );
-}
+};

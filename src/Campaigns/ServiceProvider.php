@@ -7,6 +7,7 @@ use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -37,6 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerMigrations();
         $this->registerRoutes();
         $this->registerCampaignEntity();
+        Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
     }
 
     /**

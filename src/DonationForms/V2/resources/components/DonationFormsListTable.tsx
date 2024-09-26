@@ -77,6 +77,12 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
+    {
+        name: 'campaignId',
+        type: 'search',
+        text: __('Campaign ID', 'give'),
+        ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+    },
 ];
 
 const columnFilters: Array<ColumnFilterConfig> = [

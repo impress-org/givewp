@@ -161,7 +161,10 @@ class ListDonationForms extends Endpoint
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = give()->donationForms->prepareQuery();
+        $campaignId = 264; //$this->request->get_param('campaignId');
+        $query = $campaignId ? give()->donationForms->getFormsByCampaignId($campaignId) : give()->donationForms->prepareQuery();
+
+        //$query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {

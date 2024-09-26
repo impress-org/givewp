@@ -48,7 +48,7 @@ export interface FilterConfig {
 
 export interface ColumnFilterConfig {
     column: string;
-    filter: Function
+    filter: Function;
 }
 
 export interface BulkActionsConfig {
@@ -80,7 +80,7 @@ export default function ListTablePage({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
-    banner
+    banner,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -126,6 +126,13 @@ export default function ListTablePage({
     };
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const campaignId = urlParams.get('id');
+
+    console.log('filters BEFORE: ', filters);
+    //setFilters((prevState) => ({...prevState, campaignId: campaignId}));
+    //console.log('filters AFTER: ', filters);
 
     const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
         setModalContent({confirm, action, label, type});
@@ -214,11 +221,7 @@ export default function ListTablePage({
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
-                {banner && (
-                    <section role="banner">
-                        {banner()}
-                    </section>
-                )}
+                {banner && <section role="banner">{banner()}</section>}
                 <section role="search" id={styles.searchContainer}>
                     {filterSettings.map((filter) => (
                         <Filter

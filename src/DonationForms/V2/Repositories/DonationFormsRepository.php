@@ -6,6 +6,7 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\Models\Donation;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 
 /**
  * @since 2.24.0 add support methods for donation form model
@@ -51,5 +52,23 @@ class DonationFormsRepository
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getFormsByCampaignId(int $campaignId): ModelQueryBuilder
+    {
+        //$sql = $this->prepareQuery()->getSQL();
+
+        $query = $this->prepareQuery()
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'ID');
+            })->where('campaign_forms.campaign_id', $campaignId);
+
+        $sqlJoin = $query->getSQL();
+
+        return $query;
     }
 }

@@ -265,7 +265,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
     }
 
     /**

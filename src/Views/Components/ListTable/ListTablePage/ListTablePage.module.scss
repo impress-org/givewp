@@ -1,4 +1,5 @@
 :global {
+
     :root {
         --give-primary-color: #69b868;
     }
@@ -37,6 +38,7 @@
 }
 
 .page {
+    /*background-color: red !important;*/
     box-sizing: border-box;
     color: #333;
     font-family: Open Sans, system-ui, sans-serif;
