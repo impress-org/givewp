@@ -2,21 +2,23 @@ import {__} from '@wordpress/i18n';
 import {useEffect, useState} from "react";
 import CampaignsApi from "../api";
 import {getGiveCampaignDetailsWindowData} from "./index";
-import {setDates} from "../../../../../../assets/src/js/admin/reports/store/actions";
-import amount from "@givewp/form-builder/blocks/fields/amount";
-
-interface DateRangeOption {
-    label: string;
-    value: number;
-}
 
 const {adminUrl, campaign, apiRoot, apiNonce} = getGiveCampaignDetailsWindowData();
 const API = new CampaignsApi({apiNonce, apiRoot});
 
+const pluck = (array: any[], property: string) => array.map(element => element[property])
+
+const filterOptions = [
+    { label: __('Today'), value: 1, description: __('from today') },
+    { label: __('Last 7 days'), value: 7, description: __('from the last 7 days') },
+    { label: __('Last 30 days'), value: 30, description: __('from the last 30 days') },
+    { label: __('Last 90 days'), value: 90, description: __('from the last 90 days') },
+    { label: __('All-time'), value: 0, description: '' }, // Note: description intentionally left empty.
+]
+
 const CampaignStats = ({ campaign }) => {
 
     const [dayRange, setDayRange] = useState(null);
-
     const [stats, setStats] = useState([]);
 
     useEffect(() => {
@@ -31,23 +33,11 @@ const CampaignStats = ({ campaign }) => {
         setStats(response)
     }
 
-    const pluck = property => element => element[property]
-
-    const amountRaised = stats.map(pluck('amountRaised'))
-    const donationCount = stats.map(pluck('donationCount'))
-    const donorCount = stats.map(pluck('donorCount'))
-
-    console.log(amountRaised)
+    const widgetDescription = filterOptions.find(option => option.value === dayRange)?.description
 
     return (
         <>
-            <DateRangeFilters selected={dayRange} onSelect={onDayRangeChange} options={[
-                { label: __('Today'), value: 1 },
-                { label: __('Last 7 days'), value: 7 },
-                { label: __('Last 30 days'), value: 30 },
-                { label: __('Last 90 days'), value: 90 },
-                { label: __('All-time'), value: 0 },
-            ]} />
+            <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
 
             <div style={{
                 display: 'flex',
@@ -55,16 +45,15 @@ const CampaignStats = ({ campaign }) => {
                 gap: '20px',
                 padding: '1rem',
             }}>
-                <StatWidget label={__('Amount Raised')} values={amountRaised} />
-                <StatWidget label={__('Donation Count')} values={donationCount} />
-                <StatWidget label={__('Donor Count')} values={donorCount} />
+                <StatWidget label={__('Amount Raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} />
+                <StatWidget label={__('Donation Count')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
+                <StatWidget label={__('Donor Count')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
             </div>
         </>
     )
 }
 
-const StatWidget = ({label, values}) => {
-values[1] = 10
+const StatWidget = ({label, values, description}) => {
     return (
         <div style={{
             flex: 1,
@@ -91,12 +80,11 @@ values[1] = 10
                 {!! values[1] && (
                     <span>
                         {Math.round(100 * Math.abs( (values[1] - values[0]) / values[0] )) / 10 ?? 0}%
-
                     </span>
                 )}
             </div>
             <footer style={{flex: '1'}}>
-                {/*{!! values[1] && <small>from last X days</small>}*/}
+                <small>{description}</small>
             </footer>
         </div>
     )
