@@ -16,10 +16,10 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class CampaignOverviewStatistics implements RestRoute
+class GetCampaignOverviewStats implements RestRoute
 {
     /** @var string */
-    protected $endpoint = 'campaign-overview-statistics';
+    protected $endpoint = 'campaigns/(?P<campaignId>[0-9]+)/stats';
 
     /**
      * @unreleased
@@ -42,14 +42,12 @@ class CampaignOverviewStatistics implements RestRoute
                         'type' => 'integer',
                         'required' => true,
                         'sanitize_callback' => 'absint',
-                        'validate_callback' => 'is_numeric',
                     ],
                     'rangeInDays' => [
                         'type' => 'integer',
                         'required' => false,
                         'sanitize_callback' => 'absint',
                         'default' => 0, // Zero to mean "all time".
-                        'validate_callback' => 'is_numeric',
                     ],
                 ],
             ]

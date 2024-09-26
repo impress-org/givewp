@@ -2,6 +2,7 @@ import {CampaignDetailsTab} from './types';
 import {__} from '@wordpress/i18n';
 import {getGiveCampaignDetailsWindowData} from './index';
 import {useFormContext} from 'react-hook-form';
+import CampaignStats from './campaign-stats';
 
 const {campaign} = getGiveCampaignDetailsWindowData();
 
@@ -35,7 +36,7 @@ const campaignDetailsTabs: CampaignDetailsTab[] = [
         title: __('Overview', 'give'),
         content: () => (
             <>
-                <p>Overview component goes here...</p>
+                <CampaignStats campaign={campaign} />
                 <ul>
                     {Object.entries(campaign.properties).map(([property, value], index) => (
                         <li key={index}>
