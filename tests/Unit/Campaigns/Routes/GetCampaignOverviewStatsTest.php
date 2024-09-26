@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\Campaigns\Routes;
 
 use DateTime;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Routes\CampaignOverviewStatistics;
+use Give\Campaigns\Routes\GetCampaignOverviewStats;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -17,7 +17,7 @@ use WP_REST_Request;
 /**
  * @unreleased
  */
-final class CampaignOverviewStatisticsTest extends TestCase
+final class GetCampaignOverviewStatsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -59,7 +59,7 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
         $request->set_param('campaignId', $campaign->id);
 
-        $route = new CampaignOverviewStatistics;
+        $route = new GetCampaignOverviewStats;
         $response = $route->handleRequest($request);
 
         $this->assertEquals(3, $response->data[0]['donorCount']);
@@ -106,7 +106,7 @@ final class CampaignOverviewStatisticsTest extends TestCase
         $request->set_param('campaignId', $campaign->id);
         $request->set_param('rangeInDays', 30);
 
-        $route = new CampaignOverviewStatistics;
+        $route = new GetCampaignOverviewStats;
         $response = $route->handleRequest($request);
 
         $this->assertEquals(2, $response->data[0]['donorCount']);
