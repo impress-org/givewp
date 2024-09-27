@@ -4,27 +4,26 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 
 import {useWindowSize} from '../../hooks';
-import {cancelSubscriptionWithAPI} from '../subscription-cancel-modal/utils';
+import {cancelSubscriptionWithAPI} from '../subscription-cancel/utils';
 
-import SubscriptionCancel from '../subscription-cancel-modal';
+import SubscriptionCancel from '../subscription-cancel';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import DashboardLoadingSpinner from '../dashboard-loading-spinner';
+import PauseDurationDropdown from '../subscription-manager/pause-duration-dropdown';
+import usePauseSubscription, {pauseDuration} from '../subscription-manager/hooks/pause-subscription';
 
 const SubscriptionRow = ({subscription}) => {
-    const [cancelModalOpen, setCancelModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
+    const [isPauseResume, setIsPauseResume] = useState<boolean>(false);
+    const {handlePause, handleResume, loading, setLoading} = usePauseSubscription(subscription.id);
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
 
-    const toggleModal = () => {
-        setCancelModalOpen(!cancelModalOpen);
-    };
-
     const handleCancel = async () => {
         setLoading(true);
         await cancelSubscriptionWithAPI(id);
-        toggleModal();
+        setIsCancelModalOpen(false);
         setLoading(false);
     };
 
@@ -77,20 +76,29 @@ const SubscriptionRow = ({subscription}) => {
                     <>
                         <ModalDialog
                             wrapperClassName={'give-donor-dashboard-cancel-modal'}
-                            title={__('Cancel Subscription', 'give')}
+                            title={isPauseResume ? __('Pause Subscription', 'give') : __('Cancel Subscription', 'give')}
                             showHeader={true}
-                            isOpen={cancelModalOpen}
-                            handleClose={toggleModal}
+                            isOpen={isCancelModalOpen}
+                            handleClose={() => setIsCancelModalOpen(false)}
                         >
-                            <SubscriptionCancel
-                                onRequestClose={toggleModal}
-                                handleCancel={handleCancel}
-                                cancelling={loading}
-                            />
+                            {isPauseResume ? (
+                                <PauseDurationDropdown
+                                    handlePause={handlePause}
+                                    closeModal={() => setIsCancelModalOpen(false)}
+                                />
+                            ) : (
+                                <SubscriptionCancel
+                                    subscription={subscription}
+                                    handlePauseRequest={() => setIsPauseResume(true)}
+                                    closeModal={() => setIsCancelModalOpen(false)}
+                                    handleCancel={handleCancel}
+                                    cancelling={loading}
+                                />
+                            )}
                         </ModalDialog>
                         {loading && <DashboardLoadingSpinner />}
                         <div className="give-donor-dashboard-table__donation-receipt">
-                            <a onClick={toggleModal}>{__('Cancel Subscription', 'give')}</a>
+                            <a onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
                         </div>
                     </>
                 )}
