@@ -85,11 +85,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const API = new CampaignsApi(apiSettings);
     const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
-    const [goalInputAttributes, setGoalInputAttributes] = useState<GoalInputAttributes>({
-        label: '',
-        description: '',
-        placeholder: '',
-    });
 
     const {
         register,
@@ -129,31 +124,23 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
     }, [step]);
 
-    useEffect(() => {
-        switch (selectedGoalType) {
-            case 'amount':
-                setGoalInputAttributes({
-                    label: __('How much do you want to raise?', 'give'),
-                    description: __('Set the target amount your campaign should raise.', 'give'),
-                    placeholder: __('Eg. $2,000', 'give'),
-                });
-                break;
-            case 'donations':
-                setGoalInputAttributes({
-                    label: __('How many donations do you need?', 'give'),
-                    description: __("Let us know the target number you're aiming for your campaign.", 'give'),
-                    placeholder: __('Eg. 100 donations', 'give'),
-                });
-                break;
-            case 'donors':
-                setGoalInputAttributes({
-                    label: __('How many donors do you need?', 'give'),
-                    description: __("Let us know the target number you're aiming for your campaign.", 'give'),
-                    placeholder: __('Eg. 100 donors', 'give'),
-                });
-                break;
-        }
-    }, [selectedGoalType]);
+    const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
+        amount: {
+            label: __('How much do you want to raise?', 'give'),
+            description: __('Set the target amount your campaign should raise.', 'give'),
+            placeholder: __('Eg. $2,000', 'give'),
+        },
+        donations: {
+            label: __('How many donations do you need?', 'give'),
+            description: __("Let us know the target number you're aiming for your campaign.", 'give'),
+            placeholder: __('Eg. 100 donations', 'give'),
+        },
+        donors: {
+            label: __('How many donors do you need?', 'give'),
+            description: __("Let us know the target number you're aiming for your campaign.", 'give'),
+            placeholder: __('Eg. 100 donors', 'give'),
+        },
+    };
 
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
 
@@ -303,14 +290,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                     {selectedGoalType && (
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="title">
-                                {goalInputAttributes.label} {requiredAsterisk}
+                                {goalInputAttributes[selectedGoalType].label} {requiredAsterisk}
                             </label>
-                            <span className={styles.description}>{goalInputAttributes.description}</span>
+                            <span className={styles.description}>
+                                {goalInputAttributes[selectedGoalType].description}
+                            </span>
                             <input
                                 type="number"
                                 {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
                                 aria-invalid={errors.goal ? 'true' : 'false'}
-                                placeholder={goalInputAttributes.placeholder}
+                                placeholder={goalInputAttributes[selectedGoalType].placeholder}
                             />
                             {errors.goal && (
                                 <div className={'givewp-campaigns__form-errors'}>
