@@ -57,7 +57,7 @@ class CreateCampaign implements RestRoute
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
                     'goal' => [
-                        'type' => 'int',
+                        'type' => 'integer',
                         'required' => true,
                         'sanitize_callback' => 'absint',
                     ],
