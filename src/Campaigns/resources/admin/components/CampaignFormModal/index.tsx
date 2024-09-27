@@ -42,6 +42,20 @@ const removeTimezoneFromDateISOString = (date: string) => {
 };
 
 /**
+ * @unreleased
+ */
+const getGoalTypeIcon = (type: string) => {
+    switch (type) {
+        case 'amount':
+            return <AmountIcon />;
+        case 'donations':
+            return <DonationsIcon />;
+        case 'donors':
+            return <DonorsIcon />;
+    }
+};
+
+/**
  * Goal Type Option component
  *
  * @unreleased
@@ -60,11 +74,7 @@ const GoalTypeOption = ({type, label, description, selected, register}: any) => 
             ref={divRef}
             onClick={handleDivClick}
         >
-            <div className={styles.goalTypeOptionIcon}>
-                {type === 'amount' && <AmountIcon />}
-                {type === 'donations' && <DonationsIcon />}
-                {type === 'donors' && <DonorsIcon />}
-            </div>
+            <div className={styles.goalTypeOptionIcon}>{getGoalTypeIcon(type)}</div>
             <div className={styles.goalTypeOptionText}>
                 <label ref={labelRef}>
                     <input type="radio" value={type} {...register('goalType')} />
