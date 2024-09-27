@@ -78,7 +78,7 @@ class CampaignsRequestControllerTest extends TestCase
         $response = (new CampaignRequestController())->updateCampaign($request);
 
         $this->assertInstanceOf(WP_Error::class, $response);
-        $this->assertSame(404, $response->get_error_code());
+        $this->assertSame('campaign_not_found', $response->get_error_code());
     }
 
     /**
@@ -92,7 +92,7 @@ class CampaignsRequestControllerTest extends TestCase
         $response = (new CampaignRequestController())->getCampaign($request);
 
         $this->assertInstanceOf(WP_Error::class, $response);
-        $this->assertSame(404, $response->get_error_code());
+        $this->assertSame('campaign_not_found', $response->get_error_code());
     }
 
 
