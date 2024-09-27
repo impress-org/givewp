@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 
-import styles from '../style.module.scss';
+import styles from '../CampaignDetailsPage.module.scss';
 
 /**
  * @unreleased

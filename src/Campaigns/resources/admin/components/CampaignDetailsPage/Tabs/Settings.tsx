@@ -3,7 +3,7 @@ import {useFormContext} from 'react-hook-form';
 import {CurrencyInput, Editor} from '../Components';
 import {GiveCampaignDetails} from '../types';
 
-import styles from '../style.module.scss';
+import styles from '../CampaignDetailsPage.module.scss';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;

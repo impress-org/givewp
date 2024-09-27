@@ -3,7 +3,7 @@ import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import cx from 'classnames';
 import {CampaignDetailsTab} from '../types';
 
-import styles from '../style.module.scss';
+import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
@@ -61,7 +61,6 @@ export default () => {
 
     return (
         <Tabs
-            className={styles.root}
             defaultSelectedKey={activeTab.id}
             selectedKey={activeTab.id}
             onSelectionChange={handleTabNavigation}

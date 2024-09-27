@@ -10,7 +10,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 
-import styles from './style.module.scss';
+import styles from './CampaignDetailsPage.module.scss';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -27,7 +27,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             method: 'OPTIONS',
         }).then(({schema}) => {
             setResolver({
-                //resolver: ajvResolver(schema),
+                resolver: ajvResolver(schema),
             });
         });
     }, []);

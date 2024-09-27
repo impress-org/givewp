@@ -38,7 +38,7 @@ class LoadCampaignDetailsAssets
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style(
             $handleName,
-            GIVE_PLUGIN_URL . 'build/style-campaignDetails.css'
+            GIVE_PLUGIN_URL . 'build/campaignDetails.css'
         );
     }
 }
