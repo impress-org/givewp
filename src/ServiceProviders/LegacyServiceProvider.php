@@ -232,8 +232,10 @@ class LegacyServiceProvider implements ServiceProvider
             give()->instance($alias, $class());
         } elseif ($singleton) {
             give()->instance($alias, $class::get_instance());
+            give()->alias($alias, $class);
         } else {
             give()->instance($alias, new $class());
+            give()->alias($alias, $class);
         }
     }
 
