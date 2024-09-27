@@ -60,7 +60,6 @@ export default () => {
 
     return (
         <Tabs
-            className={styles.root}
             defaultSelectedKey={activeTab.id}
             selectedKey={activeTab.id}
             onSelectionChange={handleTabNavigation}
