@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
+import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
 import {Campaign, GiveCampaignDetails} from './types';
@@ -25,7 +26,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/give-api/v2/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}) => {
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
