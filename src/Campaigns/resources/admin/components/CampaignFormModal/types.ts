@@ -26,3 +26,11 @@ export type GoalInputAttributes = {
     description: string;
     placeholder: string;
 };
+
+export type GoalTypeOption = {
+    type: string;
+    label: string;
+    description: string;
+    selected: boolean;
+    register: any;
+};

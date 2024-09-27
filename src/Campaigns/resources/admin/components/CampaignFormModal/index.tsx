@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
-import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes} from './types';
+import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes, GoalTypeOption} from './types';
 import {useEffect, useRef, useState} from 'react';
 import UploadMedia from '../UploadMedia';
 import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
@@ -60,7 +60,7 @@ const getGoalTypeIcon = (type: string) => {
  *
  * @unreleased
  */
-const GoalTypeOption = ({type, label, description, selected, register}: any) => {
+const GoalTypeOption = ({type, label, description, selected, register}: GoalTypeOption) => {
     const divRef = useRef(null);
     const labelRef = useRef(null);
 
