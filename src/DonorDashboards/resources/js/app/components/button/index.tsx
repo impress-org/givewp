@@ -2,7 +2,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
 import './style.scss';
 
-const Button = ({icon, children, onClick, href, type, variant, ...rest}) => {
+type ButtonProps = {
+    icon?: any;
+    children: React.ReactNode;
+    onClick?: () => void;
+    href?: string;
+    type?: 'button' | 'submit' | 'reset';
+    variant?: boolean;
+    disabled?: boolean;
+};
+
+const Button = ({icon, children, onClick, href, type, variant, ...rest}: ButtonProps) => {
     const handleHrefClick = (e) => {
         e.preventDefault();
         window.parent.location = href;
