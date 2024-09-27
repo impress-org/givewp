@@ -5,7 +5,7 @@ import cx from 'classnames';
 import './style.scss';
 
 type SubscriptionCancelProps = {
-    exitCancelModal: any;
+    closeModal: any;
     handlePauseRequest: any;
     handleCancel: any;
     cancelling: any;
@@ -25,7 +25,7 @@ const SubscriptionCancel = ({
     handleCancel,
     cancelling,
     subscription,
-    exitCancelModal,
+    closeModal,
 }: SubscriptionCancelProps) => {
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
@@ -37,7 +37,7 @@ const SubscriptionCancel = ({
                     {!cancelling ? __('Yes, cancel', 'give') : __('Cancelling...', 'give')}
                 </Button>
                 {showPausingControls && (
-                    <Button onClick={() => handlePauseRequest} variant>
+                    <Button onClick={handlePauseRequest} variant>
                         {__('Pause', 'give')}
                     </Button>
                 )}
@@ -46,7 +46,7 @@ const SubscriptionCancel = ({
                 className={cx('give-donor-dashboard-cancel-modal__cancel', {
                     ['give-donor-dashboard-cancel-modal__cancel--pause']: showPausingControls,
                 })}
-                onClick={exitCancelModal}
+                onClick={closeModal}
             >
                 {__('Nevermind', 'give')}
             </a>
