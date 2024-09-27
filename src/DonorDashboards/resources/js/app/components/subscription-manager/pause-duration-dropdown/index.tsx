@@ -4,7 +4,7 @@ import { useState } from 'react';
 import './style.scss';
 
 type PauseDurationDropDownProps = {
-    handlePause: (pauseDuration: number | null) => void;
+    handlePause: (pauseDuration: number) => void;
     closeModal: () => void;
 };
 
