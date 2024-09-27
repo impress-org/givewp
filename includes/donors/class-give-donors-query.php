@@ -482,7 +482,7 @@ class Give_Donors_Query {
 		// Create query.
 		foreach ( $ordersby as $orderby => $order ) {
             /**
-             * @unreleased Prevent SQL Injection by not using the user defined order value directly in the query.
+             * @since 3.16.2 Prevent SQL Injection by not using the user defined order value directly in the query.
              */
             $sanitizedOrder = $order === 'ASC' ? 'ASC' : 'DESC';
 

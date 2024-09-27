@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class TestHoneyPotRule extends TestCase
 {
@@ -17,7 +17,7 @@ class TestHoneyPotRule extends TestCase
     use HasValidationRules;
 
     /**
-     * @unreleased
+     * @since 3.16.2
      * @dataProvider honeyPotProvider
      */
     public function testHoneyPotRule($value, bool $shouldBeValid): void
@@ -32,7 +32,7 @@ class TestHoneyPotRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.2
      *
      * @return array<int, array<mixed, bool>>
      */

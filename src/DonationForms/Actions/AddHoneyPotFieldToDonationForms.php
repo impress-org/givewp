@@ -8,12 +8,12 @@ use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Honeypot;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class AddHoneyPotFieldToDonationForms
 {
     /**
-     * @unreleased
+     * @since 3.16.2
      * @throws EmptyNameException
      */
     public function __invoke(DonationForm $form): void
