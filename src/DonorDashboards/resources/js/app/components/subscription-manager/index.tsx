@@ -12,6 +12,7 @@ import PauseDurationDropdown from './pause-duration-dropdown';
 import DashboardLoadingSpinner from '../dashboard-loading-spinner';
 
 import './style.scss';
+import usePauseSubscription from './hooks/pause-subscription';
 
 /**
  * Normalize an amount
@@ -25,13 +26,13 @@ const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(de
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
     const [isOpen, setIsOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const [amount, setAmount] = useState(() =>
         normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
     );
     const [isUpdating, setIsUpdating] = useState(false);
     const [updated, setUpdated] = useState(false);
+    const {handlePause, handleResume, loading} = usePauseSubscription(id);
 
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
@@ -67,6 +68,7 @@ const SubscriptionManager = ({id, subscription}) => {
 
         setIsUpdating(true);
 
+        // @ts-ignore
         const paymentMethod = gatewayRef.current ? await gatewayRef.current.getPaymentMethod() : {};
 
         if ('error' in paymentMethod) {
@@ -82,24 +84,6 @@ const SubscriptionManager = ({id, subscription}) => {
 
         setUpdated(true);
         setIsUpdating(false);
-    };
-
-    const handlePause = async (pauseDuration) => {
-        setLoading(true);
-        await managePausingSubscriptionWithAPI({
-            id,
-            intervalInMonths: pauseDuration,
-        });
-        setLoading(false);
-    };
-
-    const handleResume = async () => {
-        setLoading(true);
-        await managePausingSubscriptionWithAPI({
-            id,
-            action: 'resume',
-        });
-        setLoading(false);
     };
 
     const toggleModal = () => {
