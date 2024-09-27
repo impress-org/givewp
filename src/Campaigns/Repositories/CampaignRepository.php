@@ -4,6 +4,7 @@ namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -42,11 +43,11 @@ class CampaignRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(Campaign $campaign): void
+    public function insert(Campaign $campaign, DonationForm $defaultDonationForm = null): void
     {
         $this->validateProperties($campaign);
 
-        Hooks::doAction('givewp_campaign_creating', $campaign);
+        Hooks::doAction('givewp_campaign_creating', $campaign, $defaultDonationForm);
 
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
@@ -75,6 +76,15 @@ class CampaignRepository
                 ]);
 
             $campaignId = DB::last_insert_id();
+
+            if ( ! is_null($defaultDonationForm)) {
+                DB::table('give_campaign_forms')
+                    ->insert([
+                        'form_id' => $defaultDonationForm->id,
+                        'campaign_id' => $campaignId,
+                        'is_default' => true,
+                    ]);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -88,7 +98,7 @@ class CampaignRepository
         $campaign->id = $campaignId;
         $campaign->createdAt = $dateCreated;
 
-        Hooks::doAction('givewp_campaign_created', $campaign);
+        Hooks::doAction('givewp_campaign_created', $campaign, $defaultDonationForm);
     }
 
     /**
@@ -96,14 +106,18 @@ class CampaignRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(Campaign $campaign): void
+    public function update(
+        Campaign $campaign,
+        DonationForm $donationForm = null,
+        $updateDefaultDonationForm = false
+    ): void
     {
         $this->validateProperties($campaign);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
         $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
 
-        Hooks::doAction('givewp_campaign_updating', $campaign);
+        Hooks::doAction('givewp_campaign_updating', $campaign, $donationForm, $updateDefaultDonationForm);
 
         DB::query('START TRANSACTION');
 
@@ -125,6 +139,31 @@ class CampaignRepository
                     'start_date' => $startDateFormatted,
                     'end_date' => $endDateFormatted,
                 ]);
+
+            if ( ! is_null($donationForm)) {
+                // Make sure we won't try to add the same form more than once
+                DB::table('give_campaign_forms')
+                    ->where('form_id', $donationForm->id)
+                    ->where('campaign_id', $campaign->id)
+                    ->delete();
+
+                // Make sure we'll have only one default form
+                if ($updateDefaultDonationForm) {
+                    DB::table('give_campaign_forms')
+                        ->where('form_id', $donationForm->id)
+                        ->where('campaign_id', $campaign->id)
+                        ->update([
+                            'is_default' => false,
+                        ]);
+                }
+
+                DB::table('give_campaign_forms')
+                    ->insert([
+                        'form_id' => $donationForm->id,
+                        'campaign_id' => $campaign->id,
+                        'is_default' => $updateDefaultDonationForm,
+                    ]);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -135,7 +174,7 @@ class CampaignRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaign_updated', $campaign);
+        Hooks::doAction('givewp_campaign_updated', $campaign, $donationForm, $updateDefaultDonationForm);
     }
 
     /**

@@ -284,18 +284,34 @@ export default function DonationFormsListTable() {
                 banner={Onboarding}
                 contentMode={isCampaignDetailsPage}
             >
-                <button
-                    className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                    onClick={showLegacyDonationForms}
-                >
-                    {__('Switch to Legacy View', 'give')}
-                </button>
-                <a
-                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                    className={`button button-primary ${styles.button}`}
-                >
-                    {__('Add Form', 'give')}
-                </a>
+                {isCampaignDetailsPage ? (
+                    <a
+                        href={
+                            'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                            campaignId
+                        }
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className={`button button-primary ${styles.button}`}
+                    >
+                        {__('Add Campaign Form', 'give')}
+                    </a>
+                ) : (
+                    <>
+                        <button
+                            className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                            onClick={showLegacyDonationForms}
+                        >
+                            {__('Switch to Legacy View', 'give')}
+                        </button>
+                        <a
+                            href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                            className={`button button-primary ${styles.button}`}
+                        >
+                            {__('Add Form', 'give')}
+                        </a>
+                    </>
+                )}
             </ListTablePage>
         </OnboardingContext.Provider>
     );

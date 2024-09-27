@@ -64,7 +64,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function form(): DonationForm
+    public function defaultForm(): ?DonationForm
     {
         return $this->forms()
             ->where('campaign_forms.is_default', true)
@@ -134,6 +134,24 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
             give(CampaignRepository::class)->insert($this);
         } else {
             give(CampaignRepository::class)->update($this);
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function saveWithForm(DonationForm $donationForm, $updateDefaultDonationForm = false)
+    {
+        if ( ! $this->id) {
+            give(CampaignRepository::class)->insert($this, $donationForm);
+        } else {
+            if ( ! $this->defaultForm() && ! $updateDefaultDonationForm) {
+                $updateDefaultDonationForm = true;
+            }
+
+            give(CampaignRepository::class)->update($this, $donationForm, $updateDefaultDonationForm);
         }
     }
 
