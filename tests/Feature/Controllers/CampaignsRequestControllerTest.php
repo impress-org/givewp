@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Controllers\CampaignRequestController;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignRoute;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Error;
@@ -35,7 +36,10 @@ class CampaignsRequestControllerTest extends TestCase
         $response = (new CampaignRequestController())->getCampaign($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
-        $this->assertSame($response->data, $campaign->toArray());
+        $this->assertSame(
+            $this->campaignViewModelFromArray($response->data),
+            $this->campaignViewModelFromArray($campaign->toArray())
+        );
     }
 
     /**
@@ -55,7 +59,10 @@ class CampaignsRequestControllerTest extends TestCase
         $response = (new CampaignRequestController())->updateCampaign($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
-        $this->assertSame($response->data, $campaign->toArray());
+        $this->assertSame(
+            $this->campaignViewModelFromArray($response->data),
+            $this->campaignViewModelFromArray($campaign->toArray())
+        );
     }
 
     /**
@@ -99,6 +106,31 @@ class CampaignsRequestControllerTest extends TestCase
             $method,
             CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGN
         );
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function campaignViewModelFromArray(array $data): array
+    {
+        return [
+            'id' => $data['id'],
+            'type' => $data['type']->getValue(),
+            'title' => $data['title'],
+            'shortDescription' => $data['shortDescription'],
+            'longDescription' => $data['longDescription'],
+            'logo' => $data['logo'],
+            'image' => $data['image'],
+            'primaryColor' => $data['primaryColor'],
+            'secondaryColor' => $data['secondaryColor'],
+            'goal' => (int)$data['goal'],
+            'goalType' => $data['goalType'],
+            'status' => $data['status']->getValue(),
+            'startDate' => Temporal::getFormattedDateTime($data['startDate']),
+            'endDate' => Temporal::getFormattedDateTime($data['endDate']),
+            'createdAt' => Temporal::getFormattedDateTime($data['createdAt']),
+        ];
     }
 }
 
