@@ -10,6 +10,7 @@ export interface GiveCampaignDetails {
         settings: {
             landingPageUrl: string;
         };
+        goalProgress: number;
     };
 }
 

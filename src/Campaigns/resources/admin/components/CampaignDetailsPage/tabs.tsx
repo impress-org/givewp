@@ -3,6 +3,7 @@ import {__} from '@wordpress/i18n';
 import {getGiveCampaignDetailsWindowData} from './index';
 import {useFormContext} from 'react-hook-form';
 import CampaignStats from './campaign-stats';
+import CampaignGoalProgressWidget from "./campaign-goal-progress-widget";
 
 const {campaign} = getGiveCampaignDetailsWindowData();
 
@@ -37,6 +38,10 @@ const campaignDetailsTabs: CampaignDetailsTab[] = [
         content: () => (
             <>
                 <CampaignStats campaign={campaign} />
+                <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr'}}>
+                    <div>REVENUE CHART HERE</div>
+                    <CampaignGoalProgressWidget value={campaign.goalProgress} goal={campaign.properties.goal} />
+                </div>
                 <ul>
                     {Object.entries(campaign.properties).map(([property, value], index) => (
                         <li key={index}>

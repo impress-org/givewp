@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\ViewModels;
 
+use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 
 /**
@@ -34,6 +35,7 @@ class CampaignDetailsPage
             'settings' => [
                 'landingPageUrl' => admin_url('?action=edit_campaign_page&campaign_id=' . $this->campaign->id),
             ],
+            'goalProgress' => (new CampaignDonationQuery($this->campaign))->sumIntendedAmount(),
         ];
     }
 }
