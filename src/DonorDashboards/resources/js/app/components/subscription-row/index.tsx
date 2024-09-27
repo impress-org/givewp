@@ -14,11 +14,16 @@ import usePauseSubscription, {pauseDuration} from '../subscription-manager/hooks
 
 const SubscriptionRow = ({subscription}) => {
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
-    const [isPauseResume, setIsPauseResume] = useState<boolean>(false);
-    const {handlePause, handleResume, loading, setLoading} = usePauseSubscription(subscription.id);
+    const [isPauseResumeContent, setIsPauseResumeContent] = useState<boolean>(false);
+    const {handlePause, loading, setLoading} = usePauseSubscription(subscription.id);
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
+
+    const showPausingControls =
+        subscription.payment.status.id === 'active' &&
+        subscription.gateway.can_pause &&
+        !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
 
     const handleCancel = async () => {
         setLoading(true);
@@ -76,20 +81,25 @@ const SubscriptionRow = ({subscription}) => {
                     <>
                         <ModalDialog
                             wrapperClassName={'give-donor-dashboard-cancel-modal'}
-                            title={isPauseResume ? __('Pause Subscription', 'give') : __('Cancel Subscription', 'give')}
+                            title={
+                                isPauseResumeContent && showPausingControls
+                                    ? __('Pause Subscription', 'give')
+                                    : __('Cancel Subscription', 'give')
+                            }
                             showHeader={true}
                             isOpen={isCancelModalOpen}
                             handleClose={() => setIsCancelModalOpen(false)}
                         >
-                            {isPauseResume ? (
+                            {isPauseResumeContent && showPausingControls ? (
                                 <PauseDurationDropdown
                                     handlePause={handlePause}
                                     closeModal={() => setIsCancelModalOpen(false)}
                                 />
                             ) : (
                                 <SubscriptionCancel
+                                    showPausingControls={showPausingControls}
                                     subscription={subscription}
-                                    handlePauseRequest={() => setIsPauseResume(true)}
+                                    handlePauseRequest={() => setIsPauseResumeContent(true)}
                                     closeModal={() => setIsCancelModalOpen(false)}
                                     handleCancel={handleCancel}
                                     cancelling={loading}
