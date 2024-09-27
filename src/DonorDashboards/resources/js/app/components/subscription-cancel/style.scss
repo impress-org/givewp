@@ -24,10 +24,13 @@
             padding: 1.5rem 1.5rem 2rem 1.5rem;
 
             .give-donor-dashboard-cancel-modal__buttons {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 2rem;
+
+                > div {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 2rem;
+                }
 
                 .give-donor-dashboard-cancel-modal__cancel {
                     flex: 1;
@@ -45,6 +48,15 @@
                     border: 1px solid var(--give-donor-dashboard-accent-color);
                     margin: 0;
                     cursor: pointer;
+
+                    &--pause {
+                        display: block;
+                        margin: auto;
+                        border: none;
+                        width: fit-content;
+                        font-size: 14px;
+                        text-align: center;
+                    }
                 }
             }
         }
