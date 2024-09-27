@@ -357,7 +357,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.16.2
      * @throws EmptyNameException
      */
     private function registerHoneyPotField(): void

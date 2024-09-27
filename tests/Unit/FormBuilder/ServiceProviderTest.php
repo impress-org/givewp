@@ -6,14 +6,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class ServiceProviderTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.2
      */
     public function testItDismissesTheAdditionalPaymentGatewaysNotice() {
 
