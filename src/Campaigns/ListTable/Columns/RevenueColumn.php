@@ -8,14 +8,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class DonationsCountColumn extends ModelColumn
+class RevenueColumn extends ModelColumn
 {
+    protected $sortColumn = 'revenue';
+
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'donationsCount';
+        return 'revenue';
     }
 
     /**
@@ -23,7 +25,7 @@ class DonationsCountColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Donations', 'give');
+        return __('Revenue', 'give');
     }
 
     /**
@@ -31,8 +33,8 @@ class DonationsCountColumn extends ModelColumn
      *
      * @param Campaign $model
      */
-    public function getCellValue($model): string
+    public function getCellValue($model): int
     {
-        return (string)$model->query()->count(); //Temp count
+        return 0;
     }
 }
