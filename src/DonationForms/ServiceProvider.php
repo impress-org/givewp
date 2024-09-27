@@ -363,7 +363,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerHoneyPotField(): void
     {
         add_action('givewp_donation_form_schema', function (DonationFormModel $form, int $formId) {
-            if (apply_filters('givewp_donation_forms_honeypot_enabled', give_is_setting_enabled(give_get_option( 'givewp_donation_forms_honeypot_enabled', 'disabled')), $formId)) {
+            if (apply_filters('givewp_donation_forms_honeypot_enabled', give_is_setting_enabled(give_get_option( 'givewp_donation_forms_honeypot_enabled', 'enabled')), $formId)) {
                 (new AddHoneyPotFieldToDonationForms())($form);
             }
         }, 10, 2);
