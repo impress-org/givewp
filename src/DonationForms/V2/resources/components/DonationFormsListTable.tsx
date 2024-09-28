@@ -289,7 +289,10 @@ export default function DonationFormsListTable() {
             >
                 {isCampaignDetailsPage ? (
                     <a
-                        href={'edit.php?post_type=give_forms&page=givewp-form-builder&campaignId=' + campaignId}
+                        href={
+                            'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                            campaignId
+                        }
                         className={styles.addCampaignFormButton}
                     >
                         {__('Add campaign form', 'give')}
