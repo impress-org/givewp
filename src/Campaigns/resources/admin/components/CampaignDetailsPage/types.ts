@@ -1,6 +1,5 @@
 import {FC} from 'react';
 
-
 export interface Campaign {
     id: number;
     title: string;
@@ -22,6 +21,7 @@ export type CampaignDetailsTab = {
     id: string;
     title: string;
     content: FC;
+    fullwidth?: boolean;
 };
 
 export type CampaignInputFields = {

@@ -59,13 +59,9 @@ export default () => {
     }, []);
 
     return (
-        <Tabs
-            defaultSelectedKey={activeTab.id}
-            selectedKey={activeTab.id}
-            onSelectionChange={handleTabNavigation}
-        >
+        <Tabs defaultSelectedKey={activeTab.id} selectedKey={activeTab.id} onSelectionChange={handleTabNavigation}>
             <div>
-                <TabList className={styles.tabs}>
+                <TabList className={`${styles.tabs} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                     {Object.values(tabs).map((tab) => (
                         <Tab key={tab.id} id={tab.id}>
                             {tab.title}{' '}
@@ -76,7 +72,7 @@ export default () => {
 
             <div className={cx('wp-header-end', 'hidden')} />
 
-            <div className={styles.pageContent}>
+            <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (
                     <TabPanel key={tab.id} id={tab.id}>
                         <tab.content />

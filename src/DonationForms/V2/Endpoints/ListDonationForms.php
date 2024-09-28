@@ -4,6 +4,7 @@ namespace Give\DonationForms\V2\Endpoints;
 
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -105,8 +106,6 @@ class ListDonationForms extends Endpoint
                     'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
-                        'default' => 1,
-                        'minimum' => 1,
                     ],
                 ],
             ]
@@ -196,6 +195,13 @@ class ListDonationForms extends Endpoint
     {
         $query = DB::table('posts')
             ->where('post_type', 'give_forms');
+
+        if ($campaignId = $this->request->get_param('campaignId')) {
+            $query->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'ID');
+            })->where('campaign_forms.campaign_id', $campaignId);
+        }
 
         $query = $this->getWhereConditions($query);
 

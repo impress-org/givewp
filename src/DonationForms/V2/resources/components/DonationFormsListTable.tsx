@@ -91,7 +91,10 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
-    isCampaignDetailsPage && {
+];
+
+if (isCampaignDetailsPage) {
+    donationFormsFilters.push({
         name: 'campaignId',
         type: 'select',
         text: __('Campaign ID', 'give'),
@@ -102,8 +105,8 @@ const donationFormsFilters: Array<FilterConfig> = [
                 text: __('All Campaign Forms', 'give'),
             },
         ],
-    },
-];
+    });
+}
 
 const columnFilters: Array<ColumnFilterConfig> = [
     {
@@ -286,15 +289,10 @@ export default function DonationFormsListTable() {
             >
                 {isCampaignDetailsPage ? (
                     <a
-                        href={
-                            'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
-                            campaignId
-                        }
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className={`button button-primary ${styles.button}`}
+                        href={'edit.php?post_type=give_forms&page=givewp-form-builder&campaignId=' + campaignId}
+                        className={styles.addCampaignFormButton}
                     >
-                        {__('Add Campaign Form', 'give')}
+                        {__('Add campaign form', 'give')}
                     </a>
                 ) : (
                     <>
