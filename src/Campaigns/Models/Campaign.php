@@ -184,9 +184,4 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     {
         return (new ConvertQueryDataToCampaign())($object);
     }
-
-
-    private function createFirstCampaignForm()
-    {
-    }
 }
