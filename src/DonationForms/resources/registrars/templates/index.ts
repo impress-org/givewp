@@ -40,7 +40,7 @@ import HeaderImage from './layouts/HeaderImage';
 import Honeypot from '@givewp/forms/registrars/templates/fields/Honeypot';
 
 /**
- * @unreleased added Honeypot
+ * @since 3.16.2 added Honeypot
  * @since 3.0.0
  */
 const defaultFormTemplates = {
