@@ -123,17 +123,7 @@ class RegisterCampaignRoutes
                         return current_user_can('manage_options');
                     },
                 ],
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                    'title' => [
-                        'type' => 'string',
-                        'sanitize_callback' => 'rest_sanitize_request_arg',
-                        'validate_callback' => 'rest_validate_request_arg'
-                    ],
-                ],
+                'args' => rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::EDITABLE),
                 'schema' => [$this, 'getSchema'],
             ]
         );
