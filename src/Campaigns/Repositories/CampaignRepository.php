@@ -2,11 +2,12 @@
 
 namespace Give\Campaigns\Repositories;
 
+use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -47,6 +48,13 @@ class CampaignRepository
     {
         $this->validateProperties($campaign);
 
+        if (is_null($defaultDonationForm)) {
+            $defaultDonationForm = DonationForm::factory()->create([
+                'title' => $campaign->title,
+                'status' => DonationFormStatus::DRAFT(),
+            ]);
+        }
+
         Hooks::doAction('givewp_campaign_creating', $campaign, $defaultDonationForm);
 
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
@@ -77,14 +85,12 @@ class CampaignRepository
 
             $campaignId = DB::last_insert_id();
 
-            if ( ! is_null($defaultDonationForm)) {
-                DB::table('give_campaign_forms')
-                    ->insert([
-                        'form_id' => $defaultDonationForm->id,
-                        'campaign_id' => $campaignId,
-                        'is_default' => true,
-                    ]);
-            }
+            DB::table('give_campaign_forms')
+                ->insert([
+                    'form_id' => $defaultDonationForm->id,
+                    'campaign_id' => $campaignId,
+                    'is_default' => true,
+                ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Models;
 
 use DateTime;
+use Exception;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
 use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
@@ -10,7 +11,6 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -142,7 +142,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception
      */
-    public function saveWithForm(DonationForm $donationForm, $updateDefaultDonationForm = false)
+    public function addForm(DonationForm $donationForm, $updateDefaultDonationForm = false)
     {
         if ( ! $this->id) {
             give(CampaignRepository::class)->insert($this, $donationForm);
@@ -183,5 +183,10 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     public static function fromQueryBuilderObject($object): Campaign
     {
         return (new ConvertQueryDataToCampaign())($object);
+    }
+
+
+    private function createFirstCampaignForm()
+    {
     }
 }
