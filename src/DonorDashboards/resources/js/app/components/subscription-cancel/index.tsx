@@ -29,16 +29,20 @@ const SubscriptionCancel = ({
     closeModal,
 }: SubscriptionCancelProps) => {
     return (
-        <div className="give-donor-dashboard-cancel-modal__buttons">
+        <div
+            className={cx('give-donor-dashboard-cancel-modal__buttons', {
+                ['give-donor-dashboard-cancel-modal__buttons--pause']: showPausingControls,
+            })}
+        >
             <div className={cx('give-donor-dashboard-cancel-modal__buttons-wrapper')}>
-                <Button disabled={cancelling} onClick={() => handleCancel()}>
-                    {!cancelling ? __('Yes, cancel', 'give') : __('Cancelling...', 'give')}
-                </Button>
                 {showPausingControls && (
                     <Button onClick={handlePauseRequest} variant>
                         {__('Pause', 'give')}
                     </Button>
                 )}
+                <Button disabled={cancelling} onClick={() => handleCancel()}>
+                    {!cancelling ? __('Yes, cancel', 'give') : __('Cancelling...', 'give')}
+                </Button>
             </div>
             <a
                 className={cx('give-donor-dashboard-cancel-modal__cancel', {
