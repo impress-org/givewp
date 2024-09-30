@@ -141,10 +141,10 @@ class CampaignRequestController
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
             'title' => $request->get_param('title'),
-            'shortDescription' => $request->get_param('shortDescription'),
+            'shortDescription' => $request->get_param('shortDescription') ?? '',
             'longDescription' => '',
             'logo' => '',
-            'image' => '',
+            'image' => $request->get_param('shortDescription') ?? '',
             'primaryColor' => '',
             'secondaryColor' => '',
             'goal' => 1000,
