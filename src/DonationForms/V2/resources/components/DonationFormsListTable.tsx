@@ -34,11 +34,7 @@ declare global {
     }
 }
 
-console.log('window.GiveDonationForms: ', window.GiveDonationForms);
-
 const API = new ListTableApi(window.GiveDonationForms);
-
-console.log('API: ', API);
 
 const donationStatus = [
     {
@@ -73,9 +69,6 @@ urlParams.get('id');
 const isCampaignDetailsPage =
     urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
 const campaignId = urlParams.get('id');
-
-console.log('isCampaignDetailsPage: ', isCampaignDetailsPage);
-console.log('campaignId: ', campaignId);
 
 const donationFormsFilters: Array<FilterConfig> = [
     {
