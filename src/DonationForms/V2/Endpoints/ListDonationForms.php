@@ -30,6 +30,7 @@ class ListDonationForms extends Endpoint
     protected $listTable;
 
     /**
+     * @unreleased Add campaignId parameter
      * @inheritDoc
      */
     public function registerRoute()
@@ -166,8 +167,7 @@ class ListDonationForms extends Endpoint
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $campaignId = $this->request->get_param('campaignId'); //264;
-        $query = $campaignId ? give()->donationForms->getFormsByCampaignId($campaignId) : give()->donationForms->prepareQuery();
+        $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
@@ -196,19 +196,13 @@ class ListDonationForms extends Endpoint
         $query = DB::table('posts')
             ->where('post_type', 'give_forms');
 
-        if ($campaignId = $this->request->get_param('campaignId')) {
-            $query->join(function (JoinQueryBuilder $builder) {
-                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
-                    ->on('campaign_forms.form_id', 'ID');
-            })->where('campaign_forms.campaign_id', $campaignId);
-        }
-
         $query = $this->getWhereConditions($query);
 
         return $query->count();
     }
 
     /**
+     * @unreleased Add "campaignId" support
      * @since 2.24.0
      *
      * @param QueryBuilder $query
@@ -239,6 +233,13 @@ class ListDonationForms extends Endpoint
                     }
                 }
             }
+        }
+
+        if ($campaignId = $this->request->get_param('campaignId')) {
+            $query->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'ID');
+            })->where('campaign_forms.campaign_id', $campaignId);
         }
 
         return $query;
