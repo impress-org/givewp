@@ -166,7 +166,7 @@ class RegisterCampaignRoutes
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
-                    'description' => [
+                    'shortDescription' => [
                         'type' => 'string',
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
