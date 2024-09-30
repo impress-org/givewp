@@ -32,6 +32,11 @@ const SubscriptionRow = ({subscription}) => {
         setLoading(false);
     };
 
+    const handleModalClose = () => {
+        setIsCancelModalOpen(false);
+        setIsPauseResumeContent(false);
+    };
+
     return (
         <div className="give-donor-dashboard-table__row">
             <div className="give-donor-dashboard-table__column">
@@ -88,13 +93,10 @@ const SubscriptionRow = ({subscription}) => {
                             }
                             showHeader={true}
                             isOpen={isCancelModalOpen}
-                            handleClose={() => setIsCancelModalOpen(false)}
+                            handleClose={handleModalClose}
                         >
                             {isPauseResumeContent && showPausingControls ? (
-                                <PauseDurationDropdown
-                                    handlePause={handlePause}
-                                    closeModal={() => setIsCancelModalOpen(false)}
-                                />
+                                <PauseDurationDropdown handlePause={handlePause} closeModal={handleModalClose} />
                             ) : (
                                 <SubscriptionCancel
                                     showPausingControls={showPausingControls}
