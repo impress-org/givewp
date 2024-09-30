@@ -174,7 +174,7 @@ class RegisterCampaignRoutes
                     'startDateTime' => [
                         'type' => 'string',
                         'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
-                        'required' => true,
+                        'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
                             return new DateTime($value);
