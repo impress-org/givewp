@@ -131,12 +131,7 @@ class MigrateFormsToCampaignForms extends Migration
                 'date_created' => $formCreatedAt,
             ]);
 
-        DB::table('give_campaign_forms')
-            ->insert([
-                'form_id' => $formId,
-                'campaign_id' => $campaignId,
-                'is_default' => true,
-            ]);
+        $this->addCampaignFormRelationship($formId, $campaignId, true);
     }
 
     /**
@@ -144,11 +139,27 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function addUpgradedFormToCampaign($data): void
     {
-        DB::table('give_campaign_forms')
-            ->insert([
-                'form_id' => $data->migratedFormId,
-                'campaign_id' => $data->campaignId,
-            ]);
+        $this->addCampaignFormRelationship($data->migratedFormId, $data->campaignId, false);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function addCampaignFormRelationship($formId, $campaignId, $isDefault)
+    {
+        $relationshipExists = (bool)DB::table('give_campaign_forms')
+            ->where('form_id', $formId)
+            ->where('campaign_id', $campaignId)
+            ->get();
+
+        if ( ! $relationshipExists) {
+            DB::table('give_campaign_forms')
+                ->insert([
+                    'form_id' => $formId,
+                    'campaign_id' => $campaignId,
+                    'is_default' => $isDefault,
+                ]);
+        }
     }
 
     /**
