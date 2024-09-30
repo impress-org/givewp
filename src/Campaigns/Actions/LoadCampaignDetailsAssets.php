@@ -30,7 +30,7 @@ class LoadCampaignDetailsAssets
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
-                'currency' => give_get_currency()
+                'currency' => give_get_currency(),
             ]
         );
 
@@ -38,7 +38,9 @@ class LoadCampaignDetailsAssets
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style(
             $handleName,
-            GIVE_PLUGIN_URL . 'build/campaignDetails.css'
+            GIVE_PLUGIN_URL . 'build/campaignDetails.css',
+            [],
+            $scriptAsset['version']
         );
     }
 }
