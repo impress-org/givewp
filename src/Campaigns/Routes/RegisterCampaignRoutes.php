@@ -123,17 +123,7 @@ class RegisterCampaignRoutes
                         return current_user_can('manage_options');
                     },
                 ],
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                    'title' => [
-                        'type' => 'string',
-                        'sanitize_callback' => 'rest_sanitize_request_arg',
-                        'validate_callback' => 'rest_validate_request_arg'
-                    ],
-                ],
+                'args' => rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::EDITABLE),
                 'schema' => [$this, 'getSchema'],
             ]
         );
@@ -166,7 +156,7 @@ class RegisterCampaignRoutes
                         'required' => true,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
-                    'description' => [
+                    'shortDescription' => [
                         'type' => 'string',
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
@@ -174,7 +164,7 @@ class RegisterCampaignRoutes
                     'startDateTime' => [
                         'type' => 'string',
                         'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
-                        'required' => true,
+                        'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
                             return new DateTime($value);
