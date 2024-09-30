@@ -14,7 +14,7 @@ class RegisterCampaignEntity
      */
     public function __invoke()
     {
-        $handleName = 'givewp-campaign-entitiy';
+        $handleName = 'givewp-campaign-entity';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignEntity.asset.php');
 
         wp_register_script(
