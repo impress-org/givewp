@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns;
 
+use DateTimeInterface;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
@@ -37,6 +38,21 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
+     * @unreleased
+     */
+    public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
+    {
+        $query = clone $this;
+        $query->joinDonationMeta('_give_completed_date', 'completed');
+        $query->whereBetween(
+            'completed.meta_value',
+            $startDate->format('Y-m-d H:i:s'),
+            $endDate->format('Y-m-d H:i:s')
+        );
+        return $query;
+    }
+
+    /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
      * @unreleased
@@ -45,9 +61,10 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function sumIntendedAmount()
     {
-        $this->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $this->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
-        return $this->sum(
+        $query = clone $this;
+        $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
+        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        return $query->sum(
             /**
              * The intended amount meta and the amount meta could either be 0 or NULL.
              * So we need to use the NULLIF function to treat the 0 values as NULL.
@@ -63,7 +80,8 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function countDonations(): int
     {
-        return $this->count('donation.ID');
+        $query = clone $this;
+        return $query->count('donation.ID');
     }
 
     /**
@@ -71,8 +89,9 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function countDonors(): int
     {
-        $this->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
-        return $this->count('DISTINCT donorId.meta_value');
+        $query = clone $this;
+        $query->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
+        return $query->count('DISTINCT donorId.meta_value');
     }
 
     /**

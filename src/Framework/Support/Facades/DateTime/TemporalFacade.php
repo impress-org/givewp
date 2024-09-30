@@ -54,26 +54,51 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the microseconds set to 0.
      *
+     * @unreleased Extracted new immutableOrClone method.
      * @since 2.20.0
      */
     public function withoutMicroseconds(DateTimeInterface $dateTime)
     {
-        if ($dateTime instanceof DateTimeImmutable) {
-            return $dateTime->setTime(
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(
                 $dateTime->format('H'),
                 $dateTime->format('i'),
                 $dateTime->format('s')
             );
-        }
+    }
 
-        $newDateTime = clone $dateTime;
+    /**
+     * Immutably returns a new DateTime instance with the time set to the start of the day.
+     *
+     * @unreleased
+     */
+    public function withStartOfDay(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(0, 0, 0, 0);
+    }
 
-        $newDateTime->setTime(
-            $newDateTime->format('H'),
-            $newDateTime->format('i'),
-            $newDateTime->format('s')
-        );
+    /**
+     * Immutably returns a new DateTime instance with the time set to the end of the day.
+     *
+     * @unreleased
+     */
+    public function withEndOfDay(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(23, 59, 59, 999999);
+    }
 
-        return $newDateTime;
+    /**
+     * @unreleased
+     */
+    public function immutableOrClone(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $dateTime instanceof DateTimeImmutable
+            ? $dateTime
+            : clone $dateTime;
     }
 }

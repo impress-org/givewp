@@ -417,6 +417,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @unreleased added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */
@@ -448,6 +449,10 @@ function give_donation_form_has_serialized_fields(array $post_data): bool
     foreach ($post_data as $key => $value) {
         if ( ! in_array($key, $post_data_keys, true)) {
             continue;
+        }
+
+        if (is_serialized(stripslashes_deep($value))) {
+            return true;
         }
 
         if (is_serialized($value)) {
