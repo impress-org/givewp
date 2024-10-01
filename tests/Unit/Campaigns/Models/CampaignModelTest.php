@@ -56,6 +56,6 @@ final class CampaignModelTest extends TestCase
         $db->insert(['form_id' => $form1->id, 'campaign_id' => $campaign->id, 'is_default' => 1]);
         $db->insert(['form_id' => $form2->id, 'campaign_id' => $campaign->id]);
 
-        $this->assertEquals($form1->id, $campaign->form()->id);
+        $this->assertEquals($form1->id, $campaign->defaultForm()->id);
     }
 }
