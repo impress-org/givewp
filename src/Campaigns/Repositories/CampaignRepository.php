@@ -156,7 +156,6 @@ class CampaignRepository
                 // Make sure we'll have only one default form
                 if ($updateDefaultDonationForm) {
                     DB::table('give_campaign_forms')
-                        ->where('form_id', $donationForm->id)
                         ->where('campaign_id', $campaign->id)
                         ->update([
                             'is_default' => false,

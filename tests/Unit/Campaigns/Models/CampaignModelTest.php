@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Campaigns\Models;
 
+use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
@@ -40,22 +41,21 @@ final class CampaignModelTest extends TestCase
         $db->insert(['form_id' => $form1->id, 'campaign_id' => $campaign->id]);
         $db->insert(['form_id' => $form2->id, 'campaign_id' => $campaign->id]);
 
-        $this->assertEquals(2, $campaign->forms()->count());
+        $this->assertEquals(3, $campaign->forms()->count());
     }
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function testCampaignHasDefaultForm()
     {
+        /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
-        $form1 = DonationForm::factory()->create();
-        $form2 = DonationForm::factory()->create();
+        $newDefaultForm = DonationForm::factory()->create();
+        $campaign->addForm($newDefaultForm, true);
 
-        $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form1->id, 'campaign_id' => $campaign->id, 'is_default' => 1]);
-        $db->insert(['form_id' => $form2->id, 'campaign_id' => $campaign->id]);
-
-        $this->assertEquals($form1->id, $campaign->defaultForm()->id);
+        $this->assertEquals($newDefaultForm->id, $campaign->defaultForm()->id);
     }
 }
