@@ -35,27 +35,31 @@ class StatusColumn extends ModelColumn
     {
         switch ($model->status->getValue()) {
             case 'active':
-                $status = __('Active', 'give');
+                $statusLabel = __('Active', 'give');
                 break;
             case 'inactive':
-                $status = __('Inactive', 'give');
+                $statusLabel = __('Inactive', 'give');
                 break;
             case 'draft':
-                $status = __('Draft', 'give');
+                $statusLabel = __('Draft', 'give');
                 break;
             case 'pending':
-                $status = __('Pending', 'give');
+                $statusLabel = __('Pending', 'give');
                 break;
             case 'processing':
-                $status = __('Processing', 'give');
+                $statusLabel = __('Processing', 'give');
                 break;
             case 'failed':
-                $status = __('Failed', 'give');
+                $statusLabel = __('Failed', 'give');
                 break;
             default:
-                $status = __('Draft', 'give');
+                $statusLabel = __('Draft', 'give');
         }
 
-        return $status;
+        return sprintf(
+            '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
+            $model->status->getValue(),
+            $statusLabel
+        );
     }
 }
