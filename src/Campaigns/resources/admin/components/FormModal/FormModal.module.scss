@@ -1,7 +1,7 @@
 .formModal {
     :global {
         .givewp-modal-dialog {
-            max-width: 37.5rem;
+            max-width: 35rem;
 
             .givewp-modal-header {
                 font-size: 1.25rem;
@@ -39,7 +39,7 @@
                     }
                 }
 
-                span {
+                span:not(.givewp-field-required) {
                     color: var(--givewp-grey-400);
                     font-size: 0.75rem;
                     line-height: 1.5;
@@ -80,11 +80,17 @@
             }
 
             &__form-errors {
-                list-style: disc;
-                margin-bottom: var(--givewp-spacing-6);
-                margin-top: 0;
-                padding-left: var(--givewp-spacing-4);
 
+                padding-left: var(--givewp-spacing-1);
+
+                ul {
+                    list-style: disc;
+                    margin-bottom: var(--givewp-spacing-6);
+                    margin-top: 0;
+                    padding-left: var(--givewp-spacing-4);
+                }
+
+                p,
                 li {
                     color: var(--givewp-red-500);
                     font-size: 0.875rem;
