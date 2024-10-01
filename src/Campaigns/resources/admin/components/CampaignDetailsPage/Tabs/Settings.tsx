@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {CurrencyInput, Editor} from '../Components';
+import UploadMedia from '../../UploadMedia';
 import {GiveCampaignDetails} from '../types';
 
 import styles from '../CampaignDetailsPage.module.scss';
@@ -17,6 +18,7 @@ export default () => {
     const {
         register,
         watch,
+        setValue,
         formState: {errors},
     } = useFormContext();
 
@@ -34,6 +36,7 @@ export default () => {
     };
 
     const goalType = watch('goalType');
+    const image = watch('image');
 
     return (
         <div className={styles.sections}>
@@ -50,7 +53,7 @@ export default () => {
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
-                            {__("What's the title of your campaign?", 'give')}
+                            {__('What\'s the title of your campaign?', 'give')}
                         </div>
                         <div className={styles.sectionFieldDescription}>
                             {__('Give your campaign a title that tells donors what it\'s about.', 'give')}
@@ -67,7 +70,7 @@ export default () => {
 
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
-                            {__("What's your campaign about?", 'give')}
+                            {__('What\'s your campaign about?', 'give')}
                         </div>
                         <div className={styles.sectionFieldDescription}>
                             {__('Let your donors know the story behind your campaign.', 'give')}
@@ -81,6 +84,33 @@ export default () => {
                             </div>
                         )}
                     </div>
+
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__('Add a cover image or video for your campaign.', 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('Upload an image or video to represent and inspire your campaign.', 'give')}
+                        </div>
+
+                        <UploadMedia
+                            id="givewp-campaigns-upload-cover-image"
+                            label={__('Cover', 'give')}
+                            actionLabel={__('Select to upload', 'give')}
+                            value={image}
+                            onChange={(coverImageUrl, coverImageAlt) => {
+                                setValue('image', coverImageUrl, {shouldDirty: true});
+                            }}
+                            reset={() => setValue('image', '', {shouldDirty: true})}
+                        />
+
+                        {errors.title && (
+                            <div className={styles.errorMsg}>
+                                {`${errors.title.message}`}
+                            </div>
+                        )}
+                    </div>
+
                 </div>
             </div>
 
