@@ -1,16 +1,21 @@
 import {FC} from 'react';
 
+
+export interface Campaign {
+    id: number;
+    title: string;
+    type: string;
+    status: string;
+    shortDescription: string;
+    longDescription: string;
+    logo: string;
+    image: string;
+    goal: number;
+}
+
 export interface GiveCampaignDetails {
-    apiRoot: string;
-    apiNonce: string;
     adminUrl: string;
-    pluginUrl: string;
-    campaign: {
-        properties: any;
-        settings: {
-            landingPageUrl: string;
-        };
-    };
+    currency: string;
 }
 
 export type CampaignDetailsTab = {
@@ -19,6 +24,10 @@ export type CampaignDetailsTab = {
     content: FC;
 };
 
-export type CampaignDetailsInputs = {
+export type CampaignInputFields = {
     title: string;
+    status: string;
+    longDescription?: string;
+    goal: number;
+    goalType: string;
 };
