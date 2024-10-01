@@ -125,7 +125,7 @@ class CampaignsRequestControllerTest extends TestCase
             'primaryColor' => $data['primaryColor'],
             'secondaryColor' => $data['secondaryColor'],
             'goal' => (int)$data['goal'],
-            'goalType' => $data['goalType']->getCalue(),
+            'goalType' => $data['goalType']->getValue(),
             'status' => $data['status']->getValue(),
             'startDate' => Temporal::getFormattedDateTime($data['startDate']),
             'endDate' => Temporal::getFormattedDateTime($data['endDate']),
