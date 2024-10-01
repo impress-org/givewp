@@ -113,12 +113,12 @@ class CampaignRequestController
                         ? $statusMap[$value]
                         : CampaignStatus::DRAFT();
 
-                    $campaign->setAttribute('status', $status);
+                    $campaign->status = $status;
 
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
-                        $campaign->setAttribute($key, $value);
+                        $campaign->$key = $value;
                     }
             }
         }
