@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
 use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
@@ -21,22 +22,22 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 /**
  * @unreleased
  *
- * @property int            $id
- * @property CampaignType   $type
- * @property string         $title
- * @property string         $url
- * @property string         $shortDescription
- * @property string         $longDescription
- * @property string         $logo
- * @property string         $image
- * @property string         $primaryColor
- * @property string         $secondaryColor
- * @property int            $goal
- * @property string         $goalType
- * @property CampaignStatus $status
- * @property DateTime       $startDate
- * @property DateTime       $endDate
- * @property DateTime       $createdAt
+ * @property int              $id
+ * @property CampaignType     $type
+ * @property string           $title
+ * @property string           $url
+ * @property string           $shortDescription
+ * @property string           $longDescription
+ * @property string           $logo
+ * @property string           $image
+ * @property string           $primaryColor
+ * @property string           $secondaryColor
+ * @property int              $goal
+ * @property CampaignGoalType $goalType
+ * @property CampaignStatus   $status
+ * @property DateTime         $startDate
+ * @property DateTime         $endDate
+ * @property DateTime         $createdAt
  */
 class Campaign extends Model implements ModelCrud, ModelHasFactory
 {
@@ -54,7 +55,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'primaryColor' => 'string',
         'secondaryColor' => 'string',
         'goal' => 'int',
-        'goalType' => 'string',
+        'goalType' => CampaignGoalType::class,
         'status' => CampaignStatus::class,
         'startDate' => DateTime::class,
         'endDate' => DateTime::class,
