@@ -26,7 +26,7 @@ export default () => {
                     'Your goal progress is measured by the total amount raised based on the goal amount. (e.g. $500 of $1,000 raised)',
                     'give'
                 );
-            case 'donation':
+            case 'donations':
                 return __('The total number of donations made for the campaign', 'give');
             case 'donors':
                 return __('The total number of unique donors who have donated to the campaign', 'give');
@@ -111,7 +111,7 @@ export default () => {
 
                         <select {...register('goalType')}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
-                            <option value="donation">{__('Number of Donations', 'give')}</option>
+                            <option value="donations">{__('Number of Donations', 'give')}</option>
                             <option value="donors">{__('Number of Donors', 'give')}</option>
                         </select>
 
