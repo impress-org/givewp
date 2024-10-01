@@ -18,6 +18,10 @@ declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
 } & Window;
 
+export function getGiveCampaignDetailsWindowData() {
+    return window.GiveCampaignDetails;
+}
+
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);

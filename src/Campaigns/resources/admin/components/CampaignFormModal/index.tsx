@@ -5,7 +5,7 @@ import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes, GoalTypeOption} from './types';
 import {useEffect, useRef, useState} from 'react';
-import UploadMedia from '../UploadMedia';
+import {Currency, Upload} from '../Inputs';
 import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
 
 /**
@@ -85,6 +85,10 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
         </div>
     );
 };
+
+/*console.log(getGiveCampaignDetailsWindowData());
+const {currency} = getGiveCampaignDetailsWindowData();
+console.log(currency);*/
 
 /**
  * Campaign Form Modal component
@@ -228,7 +232,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <span className={styles.description}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </span>
-                        <UploadMedia
+                        <Upload
                             id="givewp-campaigns-upload-cover-image"
                             label={__('Cover', 'give')}
                             actionLabel={__('Select to upload', 'give')}
@@ -305,12 +309,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <span className={styles.description}>
                                 {goalInputAttributes[selectedGoalType].description}
                             </span>
-                            <input
-                                type="number"
-                                {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
-                                aria-invalid={errors.goal ? 'true' : 'false'}
-                                placeholder={goalInputAttributes[selectedGoalType].placeholder}
-                            />
+                            {selectedGoalType === 'amount' ? (
+                                <Currency name="goal" currency={'USD'} />
+                            ) : (
+                                <input
+                                    type="number"
+                                    {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                    aria-invalid={errors.goal ? 'true' : 'false'}
+                                    placeholder={goalInputAttributes[selectedGoalType].placeholder}
+                                />
+                            )}
                             {errors.goal && (
                                 <div className={'givewp-campaigns__form-errors'}>
                                     <p>{errors.goal.message}</p>
