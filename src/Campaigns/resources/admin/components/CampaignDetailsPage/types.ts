@@ -11,11 +11,3 @@ export type CampaignDetailsTab = {
     content: FC;
     fullwidth?: boolean;
 };
-
-export type CampaignInputFields = {
-    title: string;
-    status: string;
-    longDescription?: string;
-    goal: number;
-    goalType: string;
-};
