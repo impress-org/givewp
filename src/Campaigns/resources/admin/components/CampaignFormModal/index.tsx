@@ -86,10 +86,6 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
     );
 };
 
-/*console.log(getGiveCampaignDetailsWindowData());
-const {currency} = getGiveCampaignDetailsWindowData();
-console.log(currency);*/
-
 /**
  * Campaign Form Modal component
  *
