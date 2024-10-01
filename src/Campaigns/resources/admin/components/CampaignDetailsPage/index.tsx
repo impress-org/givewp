@@ -116,33 +116,31 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={styles.flexRow}>
-                                {campaign.status === 'active' && (
-                                    <button
-                                        type="submit"
-                                        disabled={!formState.isDirty}
-                                        className={`button button-secondary ${styles.updateCampaignButton}`}
-                                        onClick={e => {
-                                            setValue('status', 'draft');
-                                        }}
-                                    >
-                                        {isSaving === 'draft' ? (
-                                            <>
-                                                {__('Saving draft', 'give')}
-                                                <Spinner />
-                                            </>
-                                        ) : (
-                                            __('Save as draft', 'give')
-                                        )}
-                                    </button>
-                                )}
+                                <button
+                                    type="submit"
+                                    disabled={!formState.isDirty}
+                                    className={`button button-secondary ${styles.updateCampaignButton}`}
+                                    onClick={e => {
+                                        setValue('status', 'draft');
+                                    }}
+                                >
+                                    {isSaving === 'draft' ? (
+                                        <>
+                                            {__('Saving draft', 'give')}
+                                            <Spinner />
+                                        </>
+                                    ) : (
+                                        campaign.status === 'draft'
+                                            ? __('Save draft', 'give')
+                                            : __('Save as draft', 'give')
+                                    )}
+                                </button>
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}
                                     className={`button button-primary ${styles.updateCampaignButton}`}
                                     onClick={e => {
-                                        if (campaign.status === 'draft') {
-                                            setValue('status', 'active', {shouldDirty: true});
-                                        }
+                                        setValue('status', 'active', {shouldDirty: true});
                                     }}
                                 >
                                     {isSaving === 'active' ? (
