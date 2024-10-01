@@ -19,13 +19,50 @@ export function getGiveCampaignsListTableWindowData() {
 
 const API = new ListTableApi(getGiveCampaignsListTableWindowData());
 
+const campaignStatus = [
+    {
+        value: 'any',
+        text: __('All', 'give'),
+    },
+    {
+        value: 'active',
+        text: __('Active', 'give'),
+    },
+    {
+        value: 'inactive',
+        text: __('Inactive', 'give'),
+    },
+    {
+        value: 'draft',
+        text: __('Draft', 'give'),
+    },
+    {
+        value: 'pending',
+        text: __('Pending', 'give'),
+    },
+    {
+        value: 'processing',
+        text: __('Processing', 'give'),
+    },
+    {
+        value: 'failed',
+        text: __('Failed', 'give'),
+    },
+];
+
 const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
-        inlineSize: '14rem',
-        text: __('Search by keyword', 'give'),
-        ariaLabel: __('search campaigns', 'give'),
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give'),
+    },
+    {
+        name: 'status',
+        type: 'select',
+        text: __('status', 'give'),
+        ariaLabel: __('Filter campaign by status', 'give'),
+        options: campaignStatus,
     },
 ];
 
