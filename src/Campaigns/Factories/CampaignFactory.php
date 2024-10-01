@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Factories;
 
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Models\Factories\ModelFactory;
@@ -25,7 +26,7 @@ class CampaignFactory extends ModelFactory
             'shortDescription' => __('Campaign short description', 'give'),
             'longDescription' => __('Campaign long description', 'give'),
             'goal' => 10000000,
-            'goalType' => 'amount',
+            'goalType' => CampaignGoalType::AMOUNT(),
             'status' => CampaignStatus::ACTIVE(),
             'logo' => '',
             'image' => '',

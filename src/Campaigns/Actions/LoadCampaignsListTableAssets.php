@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
  * @unreleased
@@ -15,12 +16,13 @@ class LoadCampaignsListTableAssets
     public function __invoke()
     {
         $handleName = 'givewp-admin-campaigns-list-table';
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'assets/dist/js/give-admin-campaigns-list-table.asset.php');
 
         wp_register_script(
             $handleName,
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-campaigns-list-table.js',
-            [],
-            GIVE_VERSION,
+            $asset['dependencies'],
+            $asset['version'],
             true
         );
 

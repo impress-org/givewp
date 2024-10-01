@@ -1,5 +1,6 @@
 import {FC} from 'react';
 
+
 export interface Campaign {
     id: number;
     title: string;

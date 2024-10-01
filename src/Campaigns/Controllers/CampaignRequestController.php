@@ -4,6 +4,7 @@ namespace Give\Campaigns\Controllers;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -113,12 +114,12 @@ class CampaignRequestController
                         ? $statusMap[$value]
                         : CampaignStatus::DRAFT();
 
-                    $campaign->setAttribute('status', $status);
+                    $campaign->status = $status;
 
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
-                        $campaign->setAttribute($key, $value);
+                        $campaign->$key = $value;
                     }
             }
         }
@@ -144,11 +145,11 @@ class CampaignRequestController
             'shortDescription' => $request->get_param('shortDescription') ?? '',
             'longDescription' => '',
             'logo' => '',
-            'image' => $request->get_param('shortDescription') ?? '',
+            'image' => $request->get_param('image') ?? '',
             'primaryColor' => '',
             'secondaryColor' => '',
-            'goal' => 1000,
-            'goalType' => 'amount',
+            'goal' => (int)$request->get_param('goal'),
+            'goalType' => new CampaignGoalType($request->get_param('goalType')),
             'status' => CampaignStatus::DRAFT(),
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),

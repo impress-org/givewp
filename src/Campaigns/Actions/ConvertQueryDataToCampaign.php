@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -28,7 +29,7 @@ class ConvertQueryDataToCampaign
             'primaryColor' => $queryObject->primaryColor,
             'secondaryColor' => $queryObject->secondaryColor,
             'goal' => (int)$queryObject->goal,
-            'goalType' => $queryObject->goalType,
+            'goalType' => new CampaignGoalType($queryObject->goalType),
             'startDate' => Temporal::toDateTime($queryObject->startDate),
             'endDate' => Temporal::toDateTime($queryObject->endDate),
             'status' => new CampaignStatus($queryObject->status),

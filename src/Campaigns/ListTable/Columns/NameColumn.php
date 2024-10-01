@@ -8,16 +8,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class TitleColumn extends ModelColumn
+class NameColumn extends ModelColumn
 {
-    protected $sortColumn = 'title';
+    protected $sortColumn = 'name';
 
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'title';
+        return 'name';
     }
 
     /**
@@ -25,7 +25,7 @@ class TitleColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Title', 'give');
+        return __('Name', 'give');
     }
 
     /**
