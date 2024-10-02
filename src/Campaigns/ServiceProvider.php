@@ -115,7 +115,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function setupCampaignForms()
     {
-        Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+        }
+
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class);
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
     }

@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2;
 
+use Give\Campaigns\CampaignsAdminPage;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Helpers\EnqueueScript;
 use WP_Post;
@@ -175,7 +176,7 @@ class DonationFormsAdminPage
 
         ];
 
-        if (isset($_GET['id']) && isset($_GET['page']) && 'give-campaigns' == isset($_GET['page'])) {
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
             $queryParameters['campaignId'] = absint($_GET['id']);
         }
 
