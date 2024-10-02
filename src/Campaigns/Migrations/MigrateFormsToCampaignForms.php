@@ -52,7 +52,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getFormData(): array
     {
-        $query = DB::table('posts', 'forms')
+        $query = DB::table('posts', 'forms')->distinct()
             ->select(
                 ['forms.ID', 'id'],
                 ['forms.post_title', 'title'],
@@ -89,7 +89,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getUpgradedFormData(): array
     {
-        return DB::table('posts', 'forms')
+        return DB::table('posts', 'forms')->distinct()
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
             ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
             ->join(function (JoinQueryBuilder $builder) {
@@ -147,19 +147,12 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function addCampaignFormRelationship($formId, $campaignId, $isDefault)
     {
-        $relationshipExists = DB::table('give_campaign_forms')
-            ->where('form_id', $formId)
-            ->where('campaign_id', $campaignId)
-            ->get();
-
-        if ( ! $relationshipExists) {
-            DB::table('give_campaign_forms')
-                ->insert([
-                    'form_id' => $formId,
-                    'campaign_id' => $campaignId,
-                    'is_default' => $isDefault,
-                ]);
-        }
+        DB::table('give_campaign_forms')
+            ->insert([
+                'form_id' => $formId,
+                'campaign_id' => $campaignId,
+                'is_default' => $isDefault,
+            ]);
     }
 
     /**
