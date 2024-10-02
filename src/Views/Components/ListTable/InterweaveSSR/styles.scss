@@ -78,7 +78,12 @@
 
         &--active {
             background: #CEF2CF;
-            color: #022603;
+            color: #1A0F00;
+        }
+
+        &--inactive {
+            background: #e58074;
+            color: #1A0F00;
         }
     }
     .subscriptionStatus {
