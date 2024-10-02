@@ -152,12 +152,6 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            // Make sure we won't try to add the same form more than once
-            DB::table('give_campaign_forms')
-                ->where('form_id', $donationForm->id)
-                ->where('campaign_id', $campaign->id)
-                ->delete();
-
             // Make sure we'll have only one default form
             if ($isDefault) {
                 DB::table('give_campaign_forms')
@@ -167,12 +161,16 @@ class CampaignRepository
                     ]);
             }
 
-            DB::table('give_campaign_forms')
-                ->insert([
-                    'form_id' => $donationForm->id,
-                    'campaign_id' => $campaign->id,
-                    'is_default' => $isDefault,
-                ]);
+            $table = DB::prefix('give_campaign_forms');
+            DB::query(
+                DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE is_default = %s",
+                    [
+                        $donationForm->id,
+                        $campaign->id,
+                        $isDefault,
+                        $isDefault,
+                    ])
+            );
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
