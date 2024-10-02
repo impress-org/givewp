@@ -143,24 +143,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception
      */
-    public function addForm(DonationForm $donationForm, $updateDefaultDonationForm = false)
-    {
-        if ( ! $this->id) {
-            give(CampaignRepository::class)->insert($this, $donationForm);
-        } else {
-            if ( ! $this->defaultForm() && ! $updateDefaultDonationForm) {
-                $updateDefaultDonationForm = true;
-            }
-
-            give(CampaignRepository::class)->update($this, $donationForm, $updateDefaultDonationForm);
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
     public function delete(): bool
     {
         return give(CampaignRepository::class)->delete($this);

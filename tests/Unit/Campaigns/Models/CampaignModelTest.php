@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Campaigns\Models;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
@@ -54,7 +55,7 @@ final class CampaignModelTest extends TestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
         $newDefaultForm = DonationForm::factory()->create();
-        $campaign->addForm($newDefaultForm, true);
+        give(CampaignRepository::class)->addCampaignForm($campaign, $newDefaultForm, true);
 
         $this->assertEquals($newDefaultForm->id, $campaign->defaultForm()->id);
     }

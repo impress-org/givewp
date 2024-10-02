@@ -6,7 +6,6 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -44,18 +43,11 @@ class CampaignRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(Campaign $campaign, DonationForm $defaultDonationForm = null): void
+    public function insert(Campaign $campaign): void
     {
         $this->validateProperties($campaign);
 
-        if (is_null($defaultDonationForm)) {
-            $defaultDonationForm = DonationForm::factory()->create([
-                'title' => $campaign->title,
-                'status' => DonationFormStatus::DRAFT(),
-            ]);
-        }
-
-        Hooks::doAction('givewp_campaign_creating', $campaign, $defaultDonationForm);
+        Hooks::doAction('givewp_campaign_creating', $campaign);
 
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
@@ -80,17 +72,11 @@ class CampaignRepository
                     'status' => $campaign->status->getValue(),
                     'start_date' => $startDateFormatted,
                     'end_date' => $endDateFormatted,
-                    'date_created' => $dateCreatedFormatted
+                    'date_created' => $dateCreatedFormatted,
                 ]);
 
             $campaignId = DB::last_insert_id();
 
-            DB::table('give_campaign_forms')
-                ->insert([
-                    'form_id' => $defaultDonationForm->id,
-                    'campaign_id' => $campaignId,
-                    'is_default' => true,
-                ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -104,7 +90,7 @@ class CampaignRepository
         $campaign->id = $campaignId;
         $campaign->createdAt = $dateCreated;
 
-        Hooks::doAction('givewp_campaign_created', $campaign, $defaultDonationForm);
+        Hooks::doAction('givewp_campaign_created', $campaign);
     }
 
     /**
@@ -112,18 +98,14 @@ class CampaignRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(
-        Campaign $campaign,
-        DonationForm $donationForm = null,
-        $updateDefaultDonationForm = false
-    ): void
+    public function update(Campaign $campaign): void
     {
         $this->validateProperties($campaign);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
         $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
 
-        Hooks::doAction('givewp_campaign_updating', $campaign, $donationForm, $updateDefaultDonationForm);
+        Hooks::doAction('givewp_campaign_updating', $campaign);
 
         DB::query('START TRANSACTION');
 
@@ -145,30 +127,6 @@ class CampaignRepository
                     'start_date' => $startDateFormatted,
                     'end_date' => $endDateFormatted,
                 ]);
-
-            if ( ! is_null($donationForm)) {
-                // Make sure we won't try to add the same form more than once
-                DB::table('give_campaign_forms')
-                    ->where('form_id', $donationForm->id)
-                    ->where('campaign_id', $campaign->id)
-                    ->delete();
-
-                // Make sure we'll have only one default form
-                if ($updateDefaultDonationForm) {
-                    DB::table('give_campaign_forms')
-                        ->where('campaign_id', $campaign->id)
-                        ->update([
-                            'is_default' => false,
-                        ]);
-                }
-
-                DB::table('give_campaign_forms')
-                    ->insert([
-                        'form_id' => $donationForm->id,
-                        'campaign_id' => $campaign->id,
-                        'is_default' => $updateDefaultDonationForm,
-                    ]);
-            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -179,7 +137,53 @@ class CampaignRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaign_updated', $campaign, $donationForm, $updateDefaultDonationForm);
+        Hooks::doAction('givewp_campaign_updated', $campaign);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function addCampaignForm(Campaign $campaign, DonationForm $donationForm, bool $isDefault = false)
+    {
+        Hooks::doAction('givewp_campaign_form_updating', $campaign, $donationForm, $isDefault);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            // Make sure we won't try to add the same form more than once
+            DB::table('give_campaign_forms')
+                ->where('form_id', $donationForm->id)
+                ->where('campaign_id', $campaign->id)
+                ->delete();
+
+            // Make sure we'll have only one default form
+            if ($isDefault) {
+                DB::table('give_campaign_forms')
+                    ->where('campaign_id', $campaign->id)
+                    ->update([
+                        'is_default' => false,
+                    ]);
+            }
+
+            DB::table('give_campaign_forms')
+                ->insert([
+                    'form_id' => $donationForm->id,
+                    'campaign_id' => $campaign->id,
+                    'is_default' => $isDefault,
+                ]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a campaign form', compact('campaign'));
+
+            throw new $exception('Failed updating a campaign form');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_campaign_form_updated', $campaign, $donationForm, $isDefault);
     }
 
     /**

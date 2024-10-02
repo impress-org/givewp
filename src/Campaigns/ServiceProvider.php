@@ -3,6 +3,7 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -116,5 +117,6 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class);
+        Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
     }
 }
