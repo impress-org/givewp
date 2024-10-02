@@ -147,7 +147,7 @@ class CampaignRepository
      */
     public function addCampaignForm(Campaign $campaign, DonationForm $donationForm, bool $isDefault = false)
     {
-        Hooks::doAction('givewp_campaign_form_updating', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationForm, $isDefault);
 
         DB::query('START TRANSACTION');
 
@@ -174,14 +174,14 @@ class CampaignRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a campaign form', compact('campaign'));
+            Log::error('Failed creating a campaign form relationship', compact('campaign'));
 
-            throw new $exception('Failed updating a campaign form');
+            throw new $exception('Failed creating a campaign form relationship');
         }
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaign_form_updated', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationForm, $isDefault);
     }
 
     /**
