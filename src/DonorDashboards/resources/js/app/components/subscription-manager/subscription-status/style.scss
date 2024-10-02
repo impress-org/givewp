@@ -1,19 +1,23 @@
 .givewp-dashboard-subscription-status {
     position: absolute;
-    // content container padding
     right: 30px;
-    color: #fff;
-    padding: .5rem 0;
-    min-width: 8rem;
-    border-radius: 3px;
+    color: #000;
+    padding: .25rem .75rem;
+    width: fit-content;
+    border-radius: 50px;
+    font-size: 12px;
     font-weight: normal;
     text-align: center;
 
     &--paused {
-        background: #0073aa;
+        background-color: #e6e6e6;
     }
 
     &--active {
-        background: rgb(104, 187, 108);
+        background-color: #cef2cf;
+    }
+
+    &--cancelled {
+        background-color: #d92d0b;
     }
 }
