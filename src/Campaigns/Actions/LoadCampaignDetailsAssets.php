@@ -31,6 +31,8 @@ class LoadCampaignDetailsAssets
             [
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
+                'apiRoot' => esc_url_raw(rest_url('give-api/v2/campaigns')),
+                'apiNonce' => wp_create_nonce('wp_rest'),
             ]
         );
 
