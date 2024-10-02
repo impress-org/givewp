@@ -1,0 +1,63 @@
+/* stylelint-disable selector-class-pattern */
+
+/* stylelint-disable selector-class-pattern */
+
+.givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.5) !important;
+
+    .givewp-modal-dialog {
+        border-radius: 8px;
+
+        .givewp-modal-header {
+            border-radius: 8px 8px 0 0;
+            background-color: #fafafa;
+            padding: 1rem 1.5rem;
+        }
+
+        .givewp-modal-close {
+            right: 1rem;
+        }
+
+        .givewp-modal-content {
+            padding: 1.5rem;
+
+            .give-donor-dashboard-cancel-modal__description {
+                margin: 0 0 1.5rem 0;
+                font-size: 1rem;
+                font-weight: 500;
+                color: #1F2937;
+            }
+
+            .give-donor-dashboard-cancel-modal__buttons {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                width: auto;
+                margin: 0;
+
+                .give-donor-dashboard-button.give-donor-dashboard-button--primary {
+                    flex: 1;
+                    margin: 0;
+                    background-color: #d92d0b;
+                    border-color: #d92d0b;
+                    color: #fff;
+                }
+
+                .give-donor-dashboard-button.give-donor-dashboard-button--variant {
+                    flex: 1;
+                    margin: 0;
+                    border-color: #000;
+                    color: #000 !important;
+
+                    &:hover {
+                        background-color: #fff;
+                        border-color: #000;
+                        color: #000 !important;
+                    }
+                }
+            }
+        }
+    }
+}
