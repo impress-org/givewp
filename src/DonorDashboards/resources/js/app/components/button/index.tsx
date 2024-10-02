@@ -33,8 +33,9 @@ const Button = ({icon, children, onClick, href, type, variant, ...rest}: ButtonP
     }
     return (
         <button
-            className={cx('give-donor-dashboard-button', 'give-donor-dashboard-button--primary', {
-                'give-donor-dashboard-button--variant': variant,
+            className={cx('give-donor-dashboard-button', {
+                ['give-donor-dashboard-button--primary']: !variant,
+                ['give-donor-dashboard-button--variant']: variant,
             })}
             onClick={onClick ? () => onClick() : null}
             type={type}
