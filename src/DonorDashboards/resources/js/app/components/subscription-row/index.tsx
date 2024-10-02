@@ -4,38 +4,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 
 import {useWindowSize} from '../../hooks';
-import {cancelSubscriptionWithAPI} from '../subscription-cancel/utils';
-
-import SubscriptionCancel from '../subscription-cancel';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import DashboardLoadingSpinner from '../dashboard-loading-spinner';
-import PauseDurationDropdown from '../subscription-manager/pause-duration-dropdown';
-import usePauseSubscription, {pauseDuration} from '../subscription-manager/hooks/pause-subscription';
+import SubscriptionCancelModal from '../subscription-cancel-modal';
 
 const SubscriptionRow = ({subscription}) => {
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
-    const [isPauseResumeContent, setIsPauseResumeContent] = useState<boolean>(false);
-    const {handlePause, loading, setLoading} = usePauseSubscription(subscription.id);
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
-
-    const showPausingControls =
-        subscription.payment.status.id === 'active' &&
-        subscription.gateway.can_pause &&
-        !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
-
-    const handleCancel = async () => {
-        setLoading(true);
-        await cancelSubscriptionWithAPI(id);
-        setIsCancelModalOpen(false);
-        setLoading(false);
-    };
-
-    const handleModalClose = () => {
-        setIsCancelModalOpen(false);
-        setIsPauseResumeContent(false);
-    };
 
     return (
         <div className="give-donor-dashboard-table__row">
@@ -82,33 +57,15 @@ const SubscriptionRow = ({subscription}) => {
                         </Link>
                     </div>
                 )}
-                {gateway.can_cancel && (
+                {gateway.can_cancel && !gateway.can_update && (
                     <>
-                        <ModalDialog
-                            wrapperClassName={'give-donor-dashboard-cancel-modal'}
-                            title={
-                                isPauseResumeContent && showPausingControls
-                                    ? __('Pause Subscription', 'give')
-                                    : __('Cancel Subscription', 'give')
-                            }
-                            showHeader={true}
-                            isOpen={isCancelModalOpen}
-                            handleClose={handleModalClose}
-                        >
-                            {isPauseResumeContent && showPausingControls ? (
-                                <PauseDurationDropdown handlePause={handlePause} closeModal={handleModalClose} />
-                            ) : (
-                                <SubscriptionCancel
-                                    showPausingControls={showPausingControls}
-                                    subscription={subscription}
-                                    handlePauseRequest={() => setIsPauseResumeContent(true)}
-                                    closeModal={() => setIsCancelModalOpen(false)}
-                                    handleCancel={handleCancel}
-                                    cancelling={loading}
-                                />
-                            )}
-                        </ModalDialog>
-                        {loading && <DashboardLoadingSpinner />}
+                        {isCancelModalOpen && (
+                            <SubscriptionCancelModal
+                                id={id}
+                                isOpen={isCancelModalOpen}
+                                toggleModal={() => setIsCancelModalOpen(!isCancelModalOpen)}
+                            />
+                        )}
                         <div className="give-donor-dashboard-table__donation-receipt">
                             <a onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
                         </div>
