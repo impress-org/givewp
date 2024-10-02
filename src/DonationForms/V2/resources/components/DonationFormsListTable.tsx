@@ -64,7 +64,6 @@ const donationStatus = [
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
-urlParams.get('id');
 
 const isCampaignDetailsPage =
     urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
