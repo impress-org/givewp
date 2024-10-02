@@ -1,18 +1,19 @@
 import {Fragment, useMemo, useRef, useState} from 'react';
 import FieldRow from '../field-row';
-import {FieldContent} from './field-content';
 import Button from '../button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 import AmountControl from './amount-control';
 import PaymentMethodControl from './payment-method-control';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import {managePausingSubscriptionWithAPI, updateSubscriptionWithAPI} from './utils';
+import {updateSubscriptionWithAPI} from './utils';
 import PauseDurationDropdown from './pause-duration-dropdown';
 import DashboardLoadingSpinner from '../dashboard-loading-spinner';
+import usePauseSubscription from './hooks/pause-subscription';
+import {cancelSubscriptionWithAPI} from '../subscription-cancel-modal/utils';
 
 import './style.scss';
-import usePauseSubscription from './hooks/pause-subscription';
+import SubscriptionCancelModal from '../subscription-cancel-modal';
 
 /**
  * Normalize an amount
@@ -25,7 +26,8 @@ const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(de
 
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isPauseModalOpen, setIsPauseModalOpen] = useState(false);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
     const [amount, setAmount] = useState(() =>
         normalizeAmount(subscription.payment.amount.raw, subscription.payment.currency.numberDecimals)
@@ -33,6 +35,8 @@ const SubscriptionManager = ({id, subscription}) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [updated, setUpdated] = useState(false);
     const {handlePause, handleResume, loading} = usePauseSubscription(id);
+
+    const subscriptionStatus = subscription.payment.status.id;
 
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
@@ -87,11 +91,15 @@ const SubscriptionManager = ({id, subscription}) => {
     };
 
     const toggleModal = () => {
-        setIsOpen(!isOpen);
+        setIsPauseModalOpen(!isPauseModalOpen);
+    };
+
+    const cancelSubscription = async () => {
+        await cancelSubscriptionWithAPI(id);
     };
 
     return (
-        <Fragment>
+        <div className={'give-donor-dashboard__subscription-manager'}>
             <AmountControl
                 currency={subscription.payment.currency}
                 options={options}
@@ -105,71 +113,64 @@ const SubscriptionManager = ({id, subscription}) => {
                 label={__('Payment Method', 'give')}
                 gateway={subscription.gateway}
             />
-            <FieldContent classNames={'give-donor-dashboard__subscription-manager'}>
-                <FieldRow>
-                    <div>
-                        <Button onClick={handleUpdate}>
-                            {updated ? (
-                                <Fragment>
-                                    {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    {__('Update Subscription', 'give')}{' '}
-                                    <FontAwesomeIcon
-                                        className={
-                                            isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : ''
-                                        }
-                                        icon={isUpdating ? 'spinner' : 'save'}
-                                        fixedWidth
-                                    />
-                                </Fragment>
-                            )}
-                        </Button>
-                    </div>
-                </FieldRow>
 
-                {loading && <DashboardLoadingSpinner />}
+            {loading && <DashboardLoadingSpinner />}
 
+            <FieldRow>
                 {showPausingControls && (
-                    <FieldRow>
-                        <div className={'give-donor-dashboard__subscription-manager-pause-content'}>
-                            <p className={'give-donor-dashboard__subscription-manager-resume-header'}>
-                                {__('Subscription Renewal', 'give')}
-                            </p>
-                            <ModalDialog
-                                wrapperClassName={'give-donor-dashboard__subscription-manager-modal'}
-                                title={__('Pause Subscription', 'give')}
-                                showHeader={true}
-                                isOpen={isOpen}
-                                handleClose={toggleModal}
-                            >
-                                <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal} />
-                            </ModalDialog>
-                            {subscription.payment.status.id === 'active' ? (
-                                <div className={'give-donor-dashboard__subscription-manager-pause-container'}>
-                                    <Button variant onClick={toggleModal}>
-                                        {__('Pause', 'give')}
-                                    </Button>
-                                </div>
-                            ) : (
-                                <>
-                                    <Button variant onClick={handleResume}>
-                                        {__('Resume', 'give')}{' '}
-                                    </Button>
-                                    <span className={'give-donor-dashboard__subscription-manager-resume-description'}>
-                                        {__(
-                                            'When you resume, your donations will resume on the next scheduled renewal date.',
-                                            'give'
-                                        )}
-                                    </span>
-                                </>
-                            )}
-                        </div>
-                    </FieldRow>
+                    <>
+                        <ModalDialog
+                            wrapperClassName={'give-donor-dashboard__subscription-manager-modal'}
+                            title={__('Pause Subscription', 'give')}
+                            showHeader={true}
+                            isOpen={isPauseModalOpen}
+                            handleClose={toggleModal}
+                        >
+                            <PauseDurationDropdown handlePause={handlePause} closeModal={toggleModal} />
+                        </ModalDialog>
+                        {subscriptionStatus === 'active' ? (
+                            <Button variant onClick={toggleModal}>
+                                {__('Pause Subscription', 'give')}
+                            </Button>
+                        ) : (
+                            <Button variant onClick={handleResume}>
+                                {__('Resume Subscription', 'give')}
+                            </Button>
+                        )}
+                    </>
                 )}
-            </FieldContent>
-        </Fragment>
+
+                <Button disabled={subscriptionStatus !== 'active'} onClick={handleUpdate}>
+                    {updated ? (
+                        <Fragment>
+                            {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            {__('Update Subscription', 'give')}
+                            <FontAwesomeIcon
+                                className={isUpdating ? 'give-donor-dashboard__subscription-manager-spinner' : ''}
+                                icon={isUpdating ? 'spinner' : 'save'}
+                                fixedWidth
+                            />
+                        </Fragment>
+                    )}
+                </Button>
+            </FieldRow>
+            {isCancelModalOpen && (
+                <SubscriptionCancelModal
+                    isOpen={isCancelModalOpen}
+                    toggleModal={() => setIsCancelModalOpen(!isCancelModalOpen)}
+                    id={id}
+                />
+            )}
+            <button
+                className={'give-donor-dashboard__subscription-manager__cancel'}
+                onClick={() => setIsCancelModalOpen(true)}
+            >
+                {__('Cancel Subscription', 'give')}
+            </button>
+        </div>
     );
 };
 export default SubscriptionManager;

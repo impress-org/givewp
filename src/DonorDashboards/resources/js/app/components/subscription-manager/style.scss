@@ -1,30 +1,37 @@
 /* stylelint-disable selector-class-pattern */
 
 .give-donor-dashboard__subscription-manager {
+    display: flex;
+    flex-direction: column;
+
     &-spinner {
         animation: spin infinite 1s linear;
     }
 
-    .give-donor-dashboard__subscription-manager-pause-container {
-        margin-bottom: 44px;
-        
+    .give-donor-dashboard-button--primary, .give-donor-dashboard-button--variant {
+        max-width: fit-content;
     }
 
-    &-resume-header {
-        margin: 0 0 10px 0;
-        color: #555;
-        font-size: .875rem;
-        font-weight: 500;
+    &__cancel {
+        color: #d92d0b;
+        padding: 0;
+        margin: 2rem 0 1.75rem 0;
+        background: none;
+        font-size: .873rem;
+        font-weight: 600;
+        text-align: right;
+        border: none;
+        outline: none;
+        cursor: pointer;
     }
 
-    &-resume-description {
-        display: block;
-        width: 70%;
-        margin-top: 10px;
-        color: #888;
-        font-size: .875rem;
-        font-weight: normal;
+    .give-donor-dashboard-field-row {
+        display: flex;
+        justify-content: flex-end;
+        margin: 10px 0;
     }
+
+
 }
 
 @keyframes spin {
