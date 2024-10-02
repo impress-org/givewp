@@ -2,6 +2,8 @@ import {__} from '@wordpress/i18n';
 import {useEffect, useState} from "react";
 import CampaignsApi from "../api";
 import {getGiveCampaignDetailsWindowData} from "./index";
+import CampaignRevenueChart from "./campaign-revenue-chart";
+import CampaignGoalProgressWidget from "./campaign-goal-progress-widget";
 
 const {adminUrl, campaign, apiRoot, apiNonce} = getGiveCampaignDetailsWindowData();
 const API = new CampaignsApi({apiNonce, apiRoot});
@@ -13,10 +15,15 @@ const filterOptions = [
     { label: __('Last 7 days'), value: 7, description: __('from the last 7 days') },
     { label: __('Last 30 days'), value: 30, description: __('from the last 30 days') },
     { label: __('Last 90 days'), value: 90, description: __('from the last 90 days') },
-    { label: __('All-time'), value: 0, description: '' }, // Note: description intentionally left empty.
+    { label: __('All-time'), value: 0, description: __('total for all-time') },
 ]
 
-const CampaignStats = ({ campaign }) => {
+const currency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+})
+
+const CampaignStats = ({campaign}) => {
 
     const [dayRange, setDayRange] = useState(null);
     const [stats, setStats] = useState([]);
@@ -39,34 +46,85 @@ const CampaignStats = ({ campaign }) => {
         <>
             <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
 
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: '20px',
-                padding: '1rem',
-            }}>
-                <StatWidget label={__('Amount Raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} />
-                <StatWidget label={__('Donation Count')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
-                <StatWidget label={__('Donor Count')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
-            </div>
+            <Row>
+                <StatWidget label={__('Amount Raised')} values={[5000, 3000]} description={widgetDescription} formatter={currency} />
+                <StatWidget label={__('Donation Count')} values={[200, 300]} description={widgetDescription} />
+                <StatWidget label={__('Donor Count')} values={[100, 100]} description={widgetDescription} />
+            </Row>
+
+            <Row>
+                <RevenueWidget campaign={campaign} />
+                <GoalProgressWidget campaign={campaign} />
+            </Row>
         </>
     )
 }
 
-const StatWidget = ({label, values, description}) => {
+const HeaderText = ({children}) => {
+    return (
+        <div style={{
+            fontSize: '16px',
+            fontWeight: 600,
+            lineHeight: '24px',
+        }}>
+            {children}
+        </div>
+    )
+}
+
+const HeaderSubText = ({children}) => {
+    return (
+        <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            lineHeight: '20px',
+            color: '#4B5563',
+        }}>
+            {children}
+        </div>
+    )
+}
+
+const FooterText = ({children}) => {
+    return (
+        <div style={{
+            fontSize: '12px',
+            fontWeight: 400,
+            lineHeight: '18px',
+            color: '#1F2937',
+        }}>
+            {children}
+        </div>
+    )
+}
+
+const DisplayText = ({children}) => {
+    return (
+        <div style={{
+            fontSize: '36px',
+            fontWeight: 600,
+            lineHeight: '43.57px',
+            color: '#060C1A',
+        }}>
+            {children}
+        </div>
+    )
+}
+
+const StatWidget = ({label, values, description, formatter = null}) => {
     return (
         <div style={{
             flex: 1,
-            padding: '20px 10px 10px',
+            padding: '24px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             backgroundColor: 'white',
-            borderRadius: '5px',
+            borderRadius: '8px',
             gap: '10px',
         }}>
             <header style={{flex: '1'}}>
-                <div>{label}</div>
+                <HeaderText>{label}</HeaderText>
             </header>
             <div style={{
                 flex: '1',
@@ -76,13 +134,15 @@ const StatWidget = ({label, values, description}) => {
                 justifyContent: 'space-between',
                 alignItems: 'baseline'
             }}>
-                <span style={{fontSize: '2em'}}>{values[0]}</span>
+                <DisplayText>
+                    {formatter?.format(values[0]) ?? values[0]}
+                </DisplayText>
                 {!! values[1] && (
                     <PercentChangePill value={values[0]} comparison={values[1]} />
                 )}
             </div>
             <footer style={{flex: '1'}}>
-                <small>{description}</small>
+                <FooterText>{description}</FooterText>
             </footer>
         </div>
     )
@@ -91,8 +151,6 @@ const StatWidget = ({label, values, description}) => {
 const PercentChangePill = ({value, comparison}) => {
 
     const change = Math.round(100 * ((value - comparison) / comparison)) ?? 0
-
-    console.log(value, comparison, change)
 
     const [color, backgroundColor, symbol] = change == 0
         ? ['#060c1a', '#f2f2f2', '⯈']
@@ -114,6 +172,38 @@ const PercentChangePill = ({value, comparison}) => {
 
 }
 
+const RevenueWidget = (props: {campaign}) => {
+    return (
+        <div style={{
+            flex: 2,
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+        }}>
+            <header>
+                <HeaderText>Revenue</HeaderText>
+                <HeaderSubText>{__('Show your revenue over time')}</HeaderSubText>
+            </header>
+            <CampaignRevenueChart campaign={campaign} />
+        </div>
+    );
+}
+
+const GoalProgressWidget = ({campaign}) => {
+    return (
+        <div style={{
+            flex: 1,
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+        }}>
+            <HeaderText>{__('Goal Progress')}</HeaderText>
+            <HeaderSubText>{__('Show your campaign performance')}</HeaderSubText>
+            <CampaignGoalProgressWidget value={450} goal={2000} />
+        </div>
+    )
+}
+
 const DateRangeFilters = ({options, onSelect, selected}) => {
     return (
         <div style={{
@@ -123,12 +213,14 @@ const DateRangeFilters = ({options, onSelect, selected}) => {
             flexDirection: 'row',
             justifyContent: 'end',
             gap: '1rem',
+            borderRadius: '8px',
         }}>
             {options.map((option, index) => (
                 <button
                     key={index}
                     style={{
                         border: 0,
+                        cursor: 'pointer',
                         padding: '0.5rem 1rem',
                         backgroundColor: selected === option.value ? 'white' : 'transparent',
                     }}
@@ -140,5 +232,16 @@ const DateRangeFilters = ({options, onSelect, selected}) => {
         </div>
     )
 }
+
+const Row = ({children}) => (
+    <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '20px',
+        padding: '1rem',
+    }}>
+        {children}
+    </div>
+)
 
 export default CampaignStats;

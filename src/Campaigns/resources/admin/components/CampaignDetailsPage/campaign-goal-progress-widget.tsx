@@ -8,19 +8,7 @@ import 'react-circular-progressbar/dist/styles.css';
 const CampaignGoalProgressWidget = ({ value, goal }) => {
     const percentage: number = Math.abs((value / goal) * 100);
     return (
-        <div style={{
-            backgroundColor: 'white',
-            padding: '20px',
-        }}>
-            <header style={{
-                display: 'flex',
-            }}>
-                <div>
-                    <h2>Goal Progress</h2>
-                    <small>{__('Show your campaign performance')}</small>
-                </div>
-                {/*<button>{__('Edit goal')}</button>*/}
-            </header>
+        <>
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: '2fr 3fr',
@@ -47,7 +35,7 @@ const CampaignGoalProgressWidget = ({ value, goal }) => {
                     <div>{__('Amount raised')}</div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
