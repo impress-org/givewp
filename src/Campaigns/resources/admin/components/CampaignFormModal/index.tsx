@@ -48,7 +48,7 @@ const getGoalTypeIcon = (type: string) => {
     switch (type) {
         case 'amount':
             return <AmountIcon />;
-        case 'donations':
+        case 'donation':
             return <DonationsIcon />;
         case 'donors':
             return <DonorsIcon />;
@@ -142,7 +142,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             description: __('Set the target amount your campaign should raise.', 'give'),
             placeholder: __('Eg. $2,000', 'give'),
         },
-        donations: {
+        donation: {
             label: __('How many donations do you need?', 'give'),
             description: __("Let us know the target number you're aiming for your campaign.", 'give'),
             placeholder: __('Eg. 100 donations', 'give'),
@@ -274,13 +274,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     register={register}
                                 />
                                 <GoalTypeOption
-                                    type={'donations'}
+                                    type={'donation'}
                                     label={__('Number of Donations', 'give')}
                                     description={__(
                                         'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
                                         'give'
                                     )}
-                                    selected={selectedGoalType === 'donations'}
+                                    selected={selectedGoalType === 'donation'}
                                     register={register}
                                 />
                                 <GoalTypeOption
