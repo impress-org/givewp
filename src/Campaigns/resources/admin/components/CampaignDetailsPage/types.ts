@@ -4,12 +4,9 @@ export interface GiveCampaignDetails {
     apiRoot: string;
     apiNonce: string;
     adminUrl: string;
+    currency: string;
     pluginUrl: string;
     campaign: {
-        properties: any;
-        settings: {
-            landingPageUrl: string;
-        };
         goalProgress: number;
     };
 }
@@ -20,6 +17,10 @@ export type CampaignDetailsTab = {
     content: FC;
 };
 
-export type CampaignDetailsInputs = {
+export type CampaignInputFields = {
     title: string;
+    status: string;
+    longDescription?: string;
+    goal: number;
+    goalType: string;
 };

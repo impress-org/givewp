@@ -199,14 +199,115 @@
             margin: 0 0 var(--givewp-spacing-2);
         }
     }
+
+    .sections {
+        .section {
+            display: flex;
+            background-color: #fff;
+            padding: var(--givewp-spacing-4);
+            border-radius: var(--givewp-spacing-2);
+            margin-bottom: var(--givewp-spacing-4);
+            align-content: flex-start;
+            flex-direction: row;
+
+            .leftColumn {
+                flex: 1;
+                padding-right: var(--givewp-spacing-6);
+            }
+
+            .rightColumn {
+                flex: 2;
+            }
+
+            .sectionTitle {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.56;
+                color: #060c1a;
+                padding: var(--givewp-spacing-2) 0;
+            }
+
+            .sectionDescription {
+                font-size: 16px;
+                color: #4b5563;
+            }
+
+            .sectionSubtitle {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.5;
+                color: #1f2937;
+                padding: var(--givewp-spacing-2) 0;
+            }
+
+            .sectionField {
+                margin-bottom: var(--givewp-spacing-6);
+            }
+
+            .sectionFieldDescription {
+                font-size: 14px;
+                color: #4b5563;
+            }
+
+            .errorMsg {
+                font-size: 14px;
+                padding: var(--givewp-spacing-2) 0;
+                color: #ff0000;
+            }
+
+            input,
+            select {
+                font-size: 16px;
+                line-height: 2;
+                display: block;
+                width: 100%;
+                border: 1px solid #9ca0af;
+                border-radius: var(--givewp-spacing-1);
+                padding: var(--givewp-spacing-2);
+                margin: var(--givewp-spacing-2) 0;
+            }
+
+            select {
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    .loadingContainerContent {
+        display: flex;
+        background-color: #fff;
+        padding: var(--givewp-spacing-6);
+        border-radius: var(--givewp-spacing-2);
+        margin-bottom: var(--givewp-spacing-4);
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .loadingContainerContentText {
+        padding: var(--givewp-spacing-4);
+        font-size: 16px;
+    }
 }
 
 :global(#give-admin-campaigns-root) {
     .updateCampaignButton {
-        border-radius: var(--givewp-rounded-2);
+        display: flex;
+        align-content: center;
+        border-radius: var(--givewp-rounded-4);
         font-size: 0.875rem;
-        line-height: 1.43;
+        line-height: 1.5;
         text-align: center;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+        svg {
+            margin: 3px 0 0 8px !important;
+        }
     }
 }

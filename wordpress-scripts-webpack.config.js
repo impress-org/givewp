@@ -59,6 +59,8 @@ module.exports = {
         formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
         formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
         formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
+        campaignEntity: srcPath('Campaigns/resources/entity.ts'),
+        campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
     },
 };

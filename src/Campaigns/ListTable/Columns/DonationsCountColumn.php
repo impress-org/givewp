@@ -23,7 +23,7 @@ class DonationsCountColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Donations Count', 'give');
+        return __('Donations', 'give');
     }
 
     /**

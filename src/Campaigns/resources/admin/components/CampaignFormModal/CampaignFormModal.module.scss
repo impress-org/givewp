@@ -7,5 +7,89 @@
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         text-align: center;
     }
+
+    input,
+    label {
+        font-size: 1rem;
+    }
+
+    .description {
+        font-size: 0.875rem;
+        margin-bottom: 0.4rem;
+    }
 }
+
+.fieldRequired {
+    color: var(--givewp-red-500);
+}
+
+.goalType {
+
+    .goalTypeOption {
+        margin: 0.5rem 0 0.5rem 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+
+        cursor: pointer;
+        border: 1px solid #9CA0AF;
+        border-radius: 1rem;
+        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    }
+
+    .goalTypeOptionIcon {
+
+        svg {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        path {
+            stroke: #9CA0AF;
+        }
+    }
+
+    .goalTypeOptionText {
+
+        label,
+        span {
+            cursor: pointer;
+        }
+
+        span {
+            margin-top: 0.2rem;
+            display: inline-block;
+            line-height: 1rem !important;
+        }
+
+        /* Hide the radio button input */
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+    }
+
+    .goalTypeOptionSelected {
+        background-color: #374151;
+
+        .goalTypeOptionIcon {
+            svg path {
+                stroke: #F9FAFB;
+            }
+        }
+
+        .goalTypeOptionText {
+            label,
+            span {
+                color: #F9FAFB !important;
+            }
+        }
+    }
+}
+
+
 

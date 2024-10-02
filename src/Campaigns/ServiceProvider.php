@@ -36,6 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignPages();
         $this->registerMigrations();
         $this->registerRoutes();
+        $this->registerCampaignEntity();
     }
 
     /**
@@ -43,9 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerRoutes()
     {
-        Hooks::addAction('rest_api_init', Routes\CreateCampaign::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\PublishCampaign::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\UpdateCampaign::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\RegisterCampaignRoutes::class);
         Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignOverviewStats::class, 'registerRoute');
@@ -97,5 +96,13 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
         Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerCampaignEntity()
+    {
+        Hooks::addAction('init', Actions\RegisterCampaignEntity::class);
     }
 }

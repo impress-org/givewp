@@ -8,14 +8,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class DescriptionColumn extends ModelColumn
+class DateColumn extends ModelColumn
 {
+    protected $sortColumn = 'date';
+
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'shortDescription';
+        return 'date';
     }
 
     /**
@@ -23,7 +25,7 @@ class DescriptionColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Short Description', 'give');
+        return __('Date', 'give');
     }
 
     /**
@@ -31,8 +33,10 @@ class DescriptionColumn extends ModelColumn
      *
      * @param Campaign $model
      */
-    public function getCellValue($model): string
+    public function getCellValue($model, $locale = ''): string
     {
-        return wp_strip_all_tags($model->shortDescription, true);
+        $format = _x('m/d/Y \a\t g:ia', 'date format', 'give');
+
+        return $model->createdAt->format($format);
     }
 }
