@@ -1,11 +1,12 @@
 import {StrictMode} from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import EditForm from './components/Onboarding/Components/EditForm';
 import './colors.scss';
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('give-admin-edit-v2form'));
+
+root.render(
     <StrictMode>
         <EditForm />
-    </StrictMode>,
-    document.getElementById('give-admin-edit-v2form')
+    </StrictMode>
 );

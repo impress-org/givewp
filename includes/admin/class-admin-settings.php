@@ -956,6 +956,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									style="<?php echo esc_attr( $value['style'] ); ?>"
 									name="<?php echo esc_attr( $name ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
+									data-placeholder="<?php echo esc_attr__( 'Select Some Options', 'give'); ?>"
 								<?php
 								echo "{$type} {$allow_new_values}";
 								echo implode( ' ', $custom_attributes );
