@@ -42,7 +42,10 @@ const MobileMenu = ({children}) => {
                     className={`give-donor-dashboard-mobile-menu__toggle ${
                         isOpen ? 'give-donor-dashboard-mobile-menu__toggle--toggled' : ''
                     }`}
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setIsOpen(!isOpen);
+                    }}
                 >
                     <FontAwesomeIcon icon="bars" />
                 </div>
