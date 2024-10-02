@@ -4,6 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 
 /**
@@ -17,7 +18,8 @@ class AddCampaignFormFromRequest
     public function __invoke(DonationForm $donationForm)
     {
         if (isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) {
-            $campaign->addForm($donationForm);
+            $isDefault = isset($_GET['isDefault']) && $_GET['isDefault'];
+            give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm, $isDefault);
         }
     }
 }

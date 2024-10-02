@@ -147,7 +147,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function addCampaignFormRelationship($formId, $campaignId, $isDefault)
     {
-        $relationshipExists = (bool)DB::table('give_campaign_forms')
+        $relationshipExists = DB::table('give_campaign_forms')
             ->where('form_id', $formId)
             ->where('campaign_id', $campaignId)
             ->get();
