@@ -163,7 +163,7 @@ class CampaignRepository
 
             $table = DB::prefix('give_campaign_forms');
             DB::query(
-                DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE is_default = %s",
+                DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%d, %d, %d) ON DUPLICATE KEY UPDATE is_default = %d",
                     [
                         $donationForm->id,
                         $campaign->id,
