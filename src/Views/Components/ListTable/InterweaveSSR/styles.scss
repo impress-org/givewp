@@ -52,6 +52,35 @@
             background: #666666;
         }
     }
+
+    .statusBadgeCampaign {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: safe-rem(1.5);
+        padding-block: 0.185rem;
+        padding-inline: 0.6rem;
+        background-color: black;
+        color: #fff;
+        border-radius: safe-rem(1);
+        font-size: safe-rem(0.7);
+        letter-spacing: 0.04rem;
+        transform: translateY(0.075rem);
+        column-gap: safe-rem(1);
+        text-transform: capitalize;
+
+        &--draft {
+            background: #FFDAA6;
+            color: #1A0F00;
+
+        }
+
+        &--active {
+            background: #CEF2CF;
+            color: #022603;
+        }
+    }
     .subscriptionStatus {
         display: flex;
         gap: 10px;
