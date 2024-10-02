@@ -18,8 +18,7 @@ class AddCampaignFormFromRequest
     public function __invoke(DonationForm $donationForm)
     {
         if (isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) {
-            $isDefault = isset($_GET['isDefault']) && $_GET['isDefault'];
-            give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm, $isDefault);
+            give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm);
         }
     }
 }

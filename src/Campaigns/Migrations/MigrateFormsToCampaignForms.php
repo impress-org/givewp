@@ -71,10 +71,10 @@ class MigrateFormsToCampaignForms extends Migration
 
         // Exclude forms already associated with a campaign (ie Peer-to-peer).
         $query->join(function (JoinQueryBuilder $builder) {
-                $builder
-                    ->leftJoin('give_campaigns', 'campaigns')
-                    ->on('campaigns.form_id', 'forms.ID');
-            })
+            $builder
+                ->leftJoin('give_campaigns', 'campaigns')
+                ->on('campaigns.form_id', 'forms.ID');
+        })
             ->whereIsNull('campaigns.id');
 
         // Exclude forms with an `upgraded` status, which are archived.
