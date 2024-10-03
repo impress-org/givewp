@@ -5,20 +5,25 @@ import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import cx from 'classnames';
-import {Campaign, GiveCampaignDetails} from './types';
+import {GiveCampaignDetails} from './types';
+import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 
 import styles from './CampaignDetailsPage.module.scss';
+import {BreadcrumbSeparatorIcon} from './Icons';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
 } & Window;
 
-export default function CampaignsDetailsPage({campaignId}) {
+export function getGiveCampaignDetailsWindowData() {
+    return window.GiveCampaignDetails;
+}
 
+export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
 
@@ -33,11 +38,16 @@ export default function CampaignsDetailsPage({campaignId}) {
         });
     }, []);
 
-    const {record: campaign, hasResolved, save, edit}: {
-        record: Campaign,
-        hasResolved: boolean,
-        save: () => any,
-        edit: (data: Campaign) => void,
+    const {
+        record: campaign,
+        hasResolved,
+        save,
+        edit,
+    }: {
+        record: Campaign;
+        hasResolved: boolean;
+        save: () => any;
+        edit: (data: Campaign) => void;
     } = useEntityRecord('givewp', 'campaign', campaignId);
 
     const methods = useForm<Campaign>({
@@ -80,9 +90,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             <div className={styles.loadingContainer}>
                 <div className={styles.loadingContainerContent}>
                     <GiveSpinner />
-                    <div className={styles.loadingContainerContentText}>
-                        {__('Loading campaign...', 'give')}
-                    </div>
+                    <div className={styles.loadingContainerContentText}>{__('Loading campaign...', 'give')}</div>
                 </div>
             </div>
         );
@@ -94,10 +102,12 @@ export default function CampaignsDetailsPage({campaignId}) {
                 <article className={`interface-interface-skeleton__content ${styles.page}`}>
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
-                            <a href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
+                            <a
+                                href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                            >
                                 {__('Campaigns', 'give')}
                             </a>
-                            {' > '}
+                            <BreadcrumbSeparatorIcon />
                             <span>{campaign.title}</span>
                         </div>
                         <div className={styles.flexContainer}>
@@ -106,9 +116,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 <span
                                     className={cx(
                                         styles.status,
-                                        campaign.status === 'draft'
-                                            ? styles.draftStatus
-                                            : styles.activeStatus,
+                                        campaign.status === 'draft' ? styles.draftStatus : styles.activeStatus
                                     )}
                                 >
                                     {campaign.status}
@@ -120,7 +128,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                     type="submit"
                                     disabled={!formState.isDirty}
                                     className={`button button-secondary ${styles.updateCampaignButton}`}
-                                    onClick={e => {
+                                    onClick={(e) => {
                                         setValue('status', 'draft');
                                     }}
                                 >
@@ -129,17 +137,17 @@ export default function CampaignsDetailsPage({campaignId}) {
                                             {__('Saving draft', 'give')}
                                             <Spinner />
                                         </>
+                                    ) : campaign.status === 'draft' ? (
+                                        __('Save draft', 'give')
                                     ) : (
-                                        campaign.status === 'draft'
-                                            ? __('Save draft', 'give')
-                                            : __('Save as draft', 'give')
+                                        __('Save as draft', 'give')
                                     )}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}
                                     className={`button button-primary ${styles.updateCampaignButton}`}
-                                    onClick={e => {
+                                    onClick={(e) => {
                                         setValue('status', 'active', {shouldDirty: true});
                                     }}
                                 >
@@ -148,10 +156,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                                             {__('Updating campaign', 'give')}
                                             <Spinner />
                                         </>
+                                    ) : campaign.status === 'draft' ? (
+                                        __('Publish campaign', 'give')
                                     ) : (
-                                        campaign.status === 'draft'
-                                            ? __('Publish campaign', 'give')
-                                            : __('Update campaign', 'give')
+                                        __('Update campaign', 'give')
                                     )}
                                 </button>
                             </div>

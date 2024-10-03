@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './style.module.scss';
+import styles from './ListTableHeaders.module.scss';
 
 //@since 2.24.0 used to handle sort direction and column id.
 const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {

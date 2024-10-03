@@ -2,10 +2,11 @@
 
 namespace Give\Campaigns\Repositories;
 
+use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -71,10 +72,11 @@ class CampaignRepository
                     'status' => $campaign->status->getValue(),
                     'start_date' => $startDateFormatted,
                     'end_date' => $endDateFormatted,
-                    'date_created' => $dateCreatedFormatted
+                    'date_created' => $dateCreatedFormatted,
                 ]);
 
             $campaignId = DB::last_insert_id();
+
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -136,6 +138,49 @@ class CampaignRepository
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_campaign_updated', $campaign);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function addCampaignForm(Campaign $campaign, DonationForm $donationForm, bool $isDefault = false)
+    {
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationForm, $isDefault);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            // Make sure we'll have only one default form
+            if ($isDefault) {
+                DB::table('give_campaign_forms')
+                    ->where('campaign_id', $campaign->id)
+                    ->update([
+                        'is_default' => false,
+                    ]);
+            }
+
+            $table = DB::prefix('give_campaign_forms');
+            DB::query(
+                DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%d, %d, %d)",
+                    [
+                        $donationForm->id,
+                        $campaign->id,
+                        $isDefault,
+                    ])
+            );
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed creating a campaign form relationship', compact('campaign'));
+
+            throw new $exception('Failed creating a campaign form relationship');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationForm, $isDefault);
     }
 
     /**

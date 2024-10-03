@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Models;
 
 use DateTime;
+use Exception;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
 use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
@@ -11,7 +12,6 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -65,7 +65,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function form(): DonationForm
+    public function defaultForm(): ?DonationForm
     {
         return $this->forms()
             ->where('campaign_forms.is_default', true)

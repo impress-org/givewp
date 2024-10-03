@@ -13,7 +13,6 @@ const urlParams = new URLSearchParams(window.location.search);
  * @unreleased
  */
 export default () => {
-
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
@@ -48,7 +47,7 @@ export default () => {
     useEffect(() => {
         handleUrlTabParamOnFirstLoad();
 
-        const handlePopState = () => setActiveTab(getTabFromURL())
+        const handlePopState = () => setActiveTab(getTabFromURL());
 
         // Updates state based on URL when user navigates with "Back" or "Forward" buttons
         window.addEventListener('popstate', handlePopState);
@@ -60,13 +59,9 @@ export default () => {
     }, []);
 
     return (
-        <Tabs
-            defaultSelectedKey={activeTab.id}
-            selectedKey={activeTab.id}
-            onSelectionChange={handleTabNavigation}
-        >
+        <Tabs defaultSelectedKey={activeTab.id} selectedKey={activeTab.id} onSelectionChange={handleTabNavigation}>
             <div>
-                <TabList className={styles.tabs}>
+                <TabList className={`${styles.tabs} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                     {Object.values(tabs).map((tab) => (
                         <Tab key={tab.id} id={tab.id}>
                             {tab.title}{' '}
@@ -77,7 +72,7 @@ export default () => {
 
             <div className={cx('wp-header-end', 'hidden')} />
 
-            <div className={styles.pageContent}>
+            <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (
                     <TabPanel key={tab.id} id={tab.id}>
                         <tab.content />
@@ -86,4 +81,4 @@ export default () => {
             </div>
         </Tabs>
     );
-}
+};

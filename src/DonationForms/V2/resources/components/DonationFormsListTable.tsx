@@ -63,6 +63,12 @@ const donationStatus = [
     },
 ];
 
+const urlParams = new URLSearchParams(window.location.search);
+
+const isCampaignDetailsPage =
+    urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
+const campaignId = urlParams.get('id');
+
 const donationFormsFilters: Array<FilterConfig> = [
     {
         name: 'search',
@@ -78,6 +84,21 @@ const donationFormsFilters: Array<FilterConfig> = [
         options: donationStatus,
     },
 ];
+
+if (isCampaignDetailsPage) {
+    donationFormsFilters.push({
+        name: 'campaignId',
+        type: 'select',
+        text: __('Campaign ID', 'give'),
+        ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+        options: [
+            {
+                value: campaignId,
+                text: __('All Campaign Forms', 'give'),
+            },
+        ],
+    });
+}
 
 const columnFilters: Array<ColumnFilterConfig> = [
     {
@@ -256,19 +277,34 @@ export default function DonationFormsListTable() {
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                contentMode={isCampaignDetailsPage}
             >
-                <button
-                    className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                    onClick={showLegacyDonationForms}
-                >
-                    {__('Switch to Legacy View', 'give')}
-                </button>
-                <a
-                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                    className={`button button-primary ${styles.button}`}
-                >
-                    {__('Add Form', 'give')}
-                </a>
+                {isCampaignDetailsPage ? (
+                    <a
+                        href={
+                            'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                            campaignId
+                        }
+                        className={styles.addCampaignFormButton}
+                    >
+                        {__('Add campaign form', 'give')}
+                    </a>
+                ) : (
+                    <>
+                        <button
+                            className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                            onClick={showLegacyDonationForms}
+                        >
+                            {__('Switch to Legacy View', 'give')}
+                        </button>
+                        <a
+                            href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                            className={`button button-primary ${styles.button}`}
+                        >
+                            {__('Add Form', 'give')}
+                        </a>
+                    </>
+                )}
             </ListTablePage>
         </OnboardingContext.Provider>
     );

@@ -32,7 +32,7 @@ class CampaignsAdminPage
      */
     public function renderCampaignsPage()
     {
-        if (isset($_GET['id'])) {
+        if (self::isShowingDetailsPage()) {
             $campaign = Campaign::find(absint($_GET['id']));
 
             if ( ! $campaign) {
@@ -45,5 +45,13 @@ class CampaignsAdminPage
         }
 
         echo '<div id="give-admin-campaigns-root"></div>';
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function isShowingDetailsPage(): bool
+    {
+        return isset($_GET['id']) && isset($_GET['page']) && 'give-campaigns' == isset($_GET['page']);
     }
 }

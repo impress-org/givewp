@@ -19,6 +19,7 @@ const campaignDetailsTabs: CampaignDetailsTab[] = [
         id: 'forms',
         title: __('Forms', 'give'),
         content: () => <FormsTab />,
+        fullwidth: true,
     },
 ];
 
