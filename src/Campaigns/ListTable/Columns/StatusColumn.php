@@ -57,7 +57,7 @@ class StatusColumn extends ModelColumn
         }
 
         return sprintf(
-            '<div class="statusBadgeCampaign statusBadgeCampaign--%1$s"><p>%2$s</p></div>',
+            '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
             $model->status->getValue(),
             $statusLabel
         );

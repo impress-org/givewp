@@ -1,7 +1,7 @@
 @use 'assets/src/css/Safe-Rem/functions' as *;
 
 .interweave {
-    .statusBadge {
+    /*.statusBadge {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -51,6 +51,96 @@
         &--complete {
             background: #666666;
         }
+    }*/
+
+    .statusBadge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: safe-rem(1.375);
+        /*padding-block: 0.185rem;*/
+        padding: 0.125rem 0.75rem 0.125rem 0.75rem;
+        /*background-color: black;
+        color: #fff;*/
+        background-color: #CEF2CF;
+        color: #1A0F00;
+        border-radius: safe-rem(1);
+
+        letter-spacing: 0.04rem;
+        transform: translateY(0.075rem);
+        column-gap: safe-rem(1);
+        text-transform: capitalize;
+
+        p {
+            font-size: safe-rem(0.75);
+            font-weight: 600;
+            line-height: safe-rem(1.125);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        &--completed,
+        &--complete {
+            background: #9df2c8; /*var(--givewp-green-100);*/
+            /*background: #CEF2CF;*/
+        }
+
+        &--active,
+        &--published {
+            /*background: #69b868;*/
+            background: #CEF2CF; /*--givewp-green-100*/
+        }
+
+        &--archived,
+        &--inactive,
+        {
+            background: #dadada; /* --givewp-grey-100*/
+            color: #0e0e0e;
+        }
+
+        &--failing {
+            /* --givewp-yellow-100: #fff0a6; */
+            background: #fff0a6;
+        }
+
+        &--failed,
+        &--revoked,
+        &--abandoned,
+        &--cancelled,
+        &--expired {
+            /*--givewp-red-100: #ffb5a6;*/
+            background: #ffb5a6;
+            /*background: #f1cc50;*/
+        }
+
+        &--draft {
+            background: #FFDAA6; /*--givewp-orange-100: #ffdaa6;*/
+        }
+
+        &--pending,
+        &--processing {
+            /*--givewp-blue-100: #a6d2ff;*/
+            background: #a6d2ff;
+        }
+
+        &--upgraded {
+            /*--givewp-purple-50: #beb6f2;*/
+            background: #beb6f2;
+            color: #03001a;
+        }
+
+        &--refunded {
+            /*--givewp-blue-700: #19661c;*/
+            background: #074a8c;
+            /*--givewp-blue-25: #f2fff3;*/
+            color: #f2f9ff;
+        }
+
+        /*&--complete {
+            background: #666666;
+            color: #fff;
+        }*/
     }
 
     .statusBadgeCampaign {
