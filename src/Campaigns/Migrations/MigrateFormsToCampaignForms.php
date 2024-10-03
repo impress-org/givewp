@@ -89,7 +89,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getUpgradedFormData(): array
     {
-        return DB::table('posts', 'forms')->distinct()
+        return DB::table('posts', 'forms')
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
             ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
             ->join(function (JoinQueryBuilder $builder) {
@@ -98,6 +98,7 @@ class MigrateFormsToCampaignForms extends Migration
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
             ->where('forms.post_type', 'give_forms')
+            ->where('forms.post_status', 'publish')
             ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
             ->getAll();
     }
