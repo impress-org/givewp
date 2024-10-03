@@ -9,6 +9,27 @@ $errorColor: #c91f1f;
     color: $errorColor;
 }
 
+.give-donor-dashboard-amount-inputs {
+    display: flex;
+    flex-direction: column;
+
+
+    .give-donor-dashboard-field-row {
+        display: flex;
+        padding: 0;
+
+        * {
+            flex: unset;
+        }
+
+        div:first-child{
+            flex: 1;
+            display: flex;
+            margin: 0;
+        }
+    }
+}
+
 .give-donor-dashboard-currency-control {
     margin-top: 10px;
 
