@@ -91,6 +91,11 @@
     justify-content: flex-end;
 }
 
+.justifyContentEnd {
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .pageTitle {
     color: #424242;
     margin: 0;
@@ -157,6 +162,8 @@
     transition-duration: 180ms;
     transition-timing-function: ease-in;
     cursor: pointer;
+    width: fit-content;
+    margin-bottom: 1rem;
 
     &:is(a) {
         text-decoration: none;
@@ -322,6 +329,7 @@
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
+    margin-bottom: 1rem;
 }
 
 .container,

@@ -123,7 +123,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 </span>
                             </div>
 
-                            <div className={styles.flexRow}>
+                            <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
                                 <button
                                     type="submit"
                                     disabled={!formState.isDirty}
