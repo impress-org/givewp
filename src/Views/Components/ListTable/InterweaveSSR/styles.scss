@@ -61,12 +61,9 @@
         height: safe-rem(1.375);
         /*padding-block: 0.185rem;*/
         padding: 0.125rem 0.75rem 0.125rem 0.75rem;
-        /*background-color: black;
-        color: #fff;*/
-        background-color: #CEF2CF;
-        color: #1A0F00;
+        background-color: black;
+        color: #fff;
         border-radius: safe-rem(1);
-
         letter-spacing: 0.04rem;
         transform: translateY(0.075rem);
         column-gap: safe-rem(1);
@@ -82,26 +79,27 @@
 
         &--completed,
         &--complete {
-            background: #9df2c8; /*var(--givewp-green-100);*/
-            /*background: #CEF2CF;*/
+            background: var(--givewp-emerald-100);
+            color: var(--givewp-emerald-900);
         }
 
         &--active,
+        &--publish,
         &--published {
-            /*background: #69b868;*/
-            background: #CEF2CF; /*--givewp-green-100*/
+            background: var(--givewp-green-100);
+            color: var(--givewp-green-900);
         }
 
         &--archived,
         &--inactive,
         {
-            background: #dadada; /* --givewp-grey-100*/
-            color: #0e0e0e;
+            background: var(--givewp-grey-100);
+            color: var(--givewp-grey-900);
         }
 
         &--failing {
-            /* --givewp-yellow-100: #fff0a6; */
-            background: #fff0a6;
+            background: var(--givewp-yellow-100);
+            color: var(--givewp-yellow-900);
         }
 
         &--failed,
@@ -110,37 +108,30 @@
         &--cancelled,
         &--expired {
             /*--givewp-red-100: #ffb5a6;*/
-            background: #ffb5a6;
-            /*background: #f1cc50;*/
+            background: var(--givewp-red-100);
+            color: var(--givewp-red-900);
         }
 
         &--draft {
-            background: #FFDAA6; /*--givewp-orange-100: #ffdaa6;*/
+            background: var(--givewp-orange-100);
+            color: var(--givewp-orange-900);
         }
 
         &--pending,
         &--processing {
-            /*--givewp-blue-100: #a6d2ff;*/
-            background: #a6d2ff;
+            background: var(--givewp-blue-100);
+            color: var(--givewp-blue-900);
         }
 
         &--upgraded {
-            /*--givewp-purple-50: #beb6f2;*/
-            background: #beb6f2;
-            color: #03001a;
+            background: var(--givewp-purple-50);
+            color: var(--givewp-purple-900);
         }
 
         &--refunded {
-            /*--givewp-blue-700: #19661c;*/
-            background: #074a8c;
-            /*--givewp-blue-25: #f2fff3;*/
-            color: #f2f9ff;
+            background: var(--givewp-blue-700);
+            color: var(--givewp-blue-25);
         }
-
-        /*&--complete {
-            background: #666666;
-            color: #fff;
-        }*/
     }
 
     .statusBadgeCampaign {
