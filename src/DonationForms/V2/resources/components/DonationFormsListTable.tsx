@@ -39,7 +39,7 @@ const API = new ListTableApi(window.GiveDonationForms);
 const donationStatus = [
     {
         value: 'any',
-        text: __('All', 'give'),
+        text: __('All Status', 'give'),
     },
     {
         value: 'publish',

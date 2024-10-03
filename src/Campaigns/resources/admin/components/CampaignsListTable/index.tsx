@@ -22,7 +22,7 @@ const API = new ListTableApi(getGiveCampaignsListTableWindowData());
 const campaignStatus = [
     {
         value: 'any',
-        text: __('All', 'give'),
+        text: __('All Status', 'give'),
     },
     {
         value: 'active',
@@ -52,17 +52,17 @@ const campaignStatus = [
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
-    {
         name: 'status',
         type: 'select',
         text: __('status', 'give'),
         ariaLabel: __('Filter campaign by status', 'give'),
         options: campaignStatus,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give'),
     },
 ];
 

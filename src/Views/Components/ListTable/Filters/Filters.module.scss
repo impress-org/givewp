@@ -1,8 +1,16 @@
-#bulkActionsForm {
+#select {
+    margin-right: -0.5rem;
+}
+
+#formselect {
+    margin-right: -0.8rem;
+}
+
+#search {
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    column-gap: 0.4rem;
+    /*column-gap: 1rem;*/
 }
