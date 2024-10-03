@@ -47,7 +47,7 @@ const SubscriptionCancelModal = ({isOpen, toggleModal, id}: SubscriptionCancelPr
                     {__('Nevermind', 'give')}
                 </Button>
                 <Button disabled={loading} onClick={handleCancel}>
-                    {!loading ? __('Yes, cancel', 'give') : __('Cancelling...', 'give')}
+                    {__('Yes, cancel', 'give')}
                 </Button>
             </div>
 
