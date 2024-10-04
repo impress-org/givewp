@@ -341,6 +341,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
 function give_donation_form_validate_fields() {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	give_donation_form_validate_name_fields($post_data);
 
 	// Validate Honeypot First.
 	if ( ! empty( $post_data['give-honeypot'] ) ) {
@@ -1643,16 +1644,28 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @unreleased Add additional validations for name title prefix field
  * @since 2.1
  *
  * @return void
  */
 function give_donation_form_validate_name_fields( $post_data ) {
 
-	$is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
-	$is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+	$formId = absint( $post_data['give-form-id'] );
 
-	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
-		give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
-	}
+    if (!give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title'])) {
+          give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
+    }
+
+    if (give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title']) && !in_array($post_data['give_title'], array_values(give_get_name_title_prefixes($formId)))) {
+      give_set_error( 'invalid_name_title', esc_html__( 'The name title prefix field is not valid.', 'give' ) );
+    }
+
+    $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
+    $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+    $is_alpha_title = ( ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
+
+    if (!$is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
+        give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
+    }
 }
