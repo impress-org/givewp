@@ -1657,7 +1657,7 @@ function give_donation_form_validate_name_fields( $post_data ) {
           give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
     }
 
-    if (give_is_name_title_prefix_enabled($formId) && !in_array($post_data['give_title'], array_keys(give_get_name_title_prefixes($formId)))) {
+    if (give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title']) && !in_array($post_data['give_title'], array_keys(give_get_name_title_prefixes($formId)))) {
       give_set_error( 'invalid_name_title', esc_html__( 'The name title prefix field is not valid.', 'give' ) );
     }
 
@@ -1665,7 +1665,7 @@ function give_donation_form_validate_name_fields( $post_data ) {
     $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
     $is_alpha_title = ( ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
-    if (!$is_alpha_title || ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) ) {
+    if ($is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
         give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
     }
 }
