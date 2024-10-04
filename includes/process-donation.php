@@ -1644,7 +1644,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
- * @unreleased Add additional validations for name title prefix field
+ * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
  *
  * @return void
