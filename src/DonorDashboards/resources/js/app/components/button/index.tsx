@@ -1,8 +1,10 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import cx from 'classnames';
+
 import './style.scss';
 
 type ButtonProps = {
+    classnames?: string;
     icon?: any;
     children: React.ReactNode;
     onClick?: () => void;
@@ -12,7 +14,7 @@ type ButtonProps = {
     disabled?: boolean;
 };
 
-const Button = ({icon, children, onClick, href, type, variant, ...rest}: ButtonProps) => {
+const Button = ({icon, children, onClick, href, type, variant,classnames, ...rest}: ButtonProps) => {
     const handleHrefClick = (e) => {
         e.preventDefault();
         window.parent.location = href;
@@ -33,7 +35,7 @@ const Button = ({icon, children, onClick, href, type, variant, ...rest}: ButtonP
     }
     return (
         <button
-            className={cx('give-donor-dashboard-button', {
+            className={cx('give-donor-dashboard-button', classnames, {
                 ['give-donor-dashboard-button--primary']: !variant,
                 ['give-donor-dashboard-button--variant']: variant,
             })}
@@ -41,7 +43,7 @@ const Button = ({icon, children, onClick, href, type, variant, ...rest}: ButtonP
             type={type}
             {...rest}
         >
-            {children}
+            <span>{children}</span>
             {icon && <FontAwesomeIcon icon={icon} />}
         </button>
     );

@@ -30,8 +30,34 @@
         justify-content: flex-end;
         margin: 10px 0;
     }
+}
 
 
+.give-donor-dashboard-button.give-donor-dashboard__subscription-manager-resume.give-donor-dashboard-button--variant {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--give-donor-dashboard-accent-color);
+        z-index: 0;
+        transition: filter 0.3s ease;
+    }
+
+    &:before {
+        filter: brightness(125%);
+        opacity: .15;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+        color: var(--give-donor-dashboard-accent-color);
+    }
 }
 
 @keyframes spin {

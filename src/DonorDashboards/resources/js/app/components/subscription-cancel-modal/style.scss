@@ -37,23 +37,35 @@
                 width: auto;
                 margin: 0;
 
-                .give-donor-dashboard-button.give-donor-dashboard-button--primary {
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button.give-donor-dashboard-button--primary {
                     flex: 1;
                     margin: 0;
                     background-color: #d92d0b;
                     border-color: #d92d0b;
                     color: #fff;
-                }
 
-                .give-donor-dashboard-button.give-donor-dashboard-button--variant {
-                    flex: 1;
-                    margin: 0;
-                    border-color: #000;
-                    color: #000 !important;
+                    &:before {
+                        display: none;
+                    }
 
                     &:hover {
-                        background-color: #fff;
-                        border-color: #000;
+                        background-color: #F2320C;
+                    }
+                }
+
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button.give-donor-dashboard-button--variant {
+                    flex: 1;
+                    margin: 0;
+                    border-color: #9CA0AF;
+                    color: #000 !important;
+
+                    &:before {
+                        display: none;
+                    }
+
+                    &:hover {
+                        background-color: #F9FAFB;
+                        border-color: #9CA0AF;
                         color: #000 !important;
                     }
                 }

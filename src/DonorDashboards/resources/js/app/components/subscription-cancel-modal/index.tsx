@@ -43,10 +43,10 @@ const SubscriptionCancelModal = ({isOpen, toggleModal, id}: SubscriptionCancelPr
                 {__('Are you sure you want to cancel your subscription?', 'give')}
             </p>
             <div className={'give-donor-dashboard-cancel-modal__buttons'}>
-                <Button disabled={loading} onClick={toggleModal} variant>
+                <Button classnames={'give-donor-dashboard-cancel-modal__buttons__button'} disabled={loading} onClick={toggleModal} variant>
                     {__('Nevermind', 'give')}
                 </Button>
-                <Button disabled={loading} onClick={handleCancel}>
+                <Button classnames={'give-donor-dashboard-cancel-modal__buttons__button'} disabled={loading} onClick={handleCancel}>
                     {__('Yes, cancel', 'give')}
                 </Button>
             </div>

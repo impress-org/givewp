@@ -6,6 +6,8 @@ import {__} from '@wordpress/i18n';
 import {useWindowSize} from '../../hooks';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
 
+import "./style.scss";
+
 const SubscriptionRow = ({subscription}) => {
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
 
@@ -67,7 +69,7 @@ const SubscriptionRow = ({subscription}) => {
                             />
                         )}
                         <div className="give-donor-dashboard-table__donation-receipt">
-                            <a onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
+                            <a className={'give-donor-dashboard-table__donation-receipt__cancel'} onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
                         </div>
                     </>
                 )}

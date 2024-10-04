@@ -30,9 +30,36 @@
 
     &.give-donor-dashboard-button--primary {
         color: #fff !important;
-        background: var(--give-donor-dashboard-accent-color);
+        position: relative;
+        background: none;
         box-shadow: none;
         justify-content: center;
+        overflow: hidden;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: var(--give-donor-dashboard-accent-color);
+            z-index: 0;
+            transition: filter 0.3s ease;
+        }
+
+        &:hover:before {
+            filter: brightness(90%); // Darkens the background on hover
+        }
+
+        &.disabled:before {
+            display: none;
+        }
+
+        span {
+            position: relative;
+            z-index: 1;
+        }
     }
 
     &.give-donor-dashboard-button--variant {
@@ -44,10 +71,11 @@
         justify-content: center;
 
         &:hover {
-            background-color: var(--give-donor-dashboard-accent-color);
-            color: #fff !important;
+            filter: brightness(90%);
+        }
+
+        span {
+            color: inherit;
         }
     }
-
-
 }

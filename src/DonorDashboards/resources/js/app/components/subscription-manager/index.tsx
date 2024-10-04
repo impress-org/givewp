@@ -133,14 +133,14 @@ const SubscriptionManager = ({id, subscription}) => {
                                 {__('Pause Subscription', 'give')}
                             </Button>
                         ) : (
-                            <Button variant onClick={handleResume}>
+                            <Button variant classnames={'give-donor-dashboard__subscription-manager-resume'} onClick={handleResume}>
                                 {__('Resume Subscription', 'give')}
                             </Button>
                         )}
                     </>
                 )}
 
-                <Button disabled={subscriptionStatus !== 'active'} onClick={handleUpdate}>
+                <Button disabled={subscriptionStatus !== 'active'} classnames={subscriptionStatus !== 'active' && 'disabled'} onClick={handleUpdate}>
                     {updated ? (
                         <Fragment>
                             {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
