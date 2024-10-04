@@ -1654,7 +1654,7 @@ function give_donation_form_validate_name_fields( $post_data ) {
 	$formId = absint( $post_data['give-form-id'] );
 
     if (!give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title'])) {
-          give_set_error( 'invalid_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
+          give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
     }
 
     if (give_is_name_title_prefix_enabled($formId) && !in_array($post_data['give_title'], array_keys(give_get_name_title_prefixes($formId)))) {
