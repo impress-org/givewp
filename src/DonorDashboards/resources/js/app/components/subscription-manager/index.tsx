@@ -94,10 +94,6 @@ const SubscriptionManager = ({id, subscription}) => {
         setIsPauseModalOpen(!isPauseModalOpen);
     };
 
-    const cancelSubscription = async () => {
-        await cancelSubscriptionWithAPI(id);
-    };
-
     return (
         <div className={'give-donor-dashboard__subscription-manager'}>
             <AmountControl
