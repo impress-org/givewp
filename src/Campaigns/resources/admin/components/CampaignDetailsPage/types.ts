@@ -16,8 +16,6 @@ export interface Campaign {
 export interface GiveCampaignDetails {
     adminUrl: string;
     currency: string;
-    apiRoot: string;
-    apiNonce: string;
 }
 
 export type CampaignDetailsTab = {

@@ -2,14 +2,8 @@ import {__} from '@wordpress/i18n';
 import {useEffect, useState} from "react";
 import RevenueChart from "./RevenueChart";
 import GoalProgressChart from "./GoalProgressChart";
-import CampaignsApi from "../../api";
-import {GiveCampaignDetails} from "../types";
-
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
-
-const API = new CampaignsApi(window.GiveCampaignDetails);
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -40,10 +34,8 @@ const CampaignStats = () => {
     const onDayRangeChange = async (days: number) => {
         setDayRange(days)
 
-        const response = await API.fetchWithArgs(`/${campaignId}/statistics`, {
-            rangeInDays: days,
-        }, 'GET')
-        setStats(response)
+        apiFetch({path: addQueryArgs( '/give-api/v2/campaigns/' + campaignId +'/statistics', {rangeInDays: days} ) } )
+            .then(setStats);
     }
 
     const widgetDescription = filterOptions.find(option => option.value === dayRange)?.description
