@@ -1196,6 +1196,7 @@ function give_register_and_login_new_user( $user_data = [] ) {
 /**
  * Get Donation Form User
  *
+ * @unreleased Use maybeSafeUnserialize() on $post_data
  * @since   1.0
  * @since 2.17.1 Do not run validation check for ajax request expect donation validation ajax request.
  *
@@ -1208,6 +1209,7 @@ function give_get_donation_form_user( $valid_data = [] ) {
     // Initialize user.
     $user                                = false;
     $post_data                           = give_clean($_POST); // WPCS: input var ok, sanitization ok, CSRF ok.
+    $post_data  = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $post_data ));
     $is_validating_donation_form_on_ajax = ! empty($_POST['give_ajax']) ? $post_data['give_ajax'] : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
 
     if ( $is_validating_donation_form_on_ajax ) {
@@ -1315,8 +1317,10 @@ function give_donation_form_validate_cc() {
 /**
  * Get credit card info.
  *
- * @access private
+ * @unreleased Use maybeSafeUnserialize() on $post_data
  * @since  1.0
+ *
+ * @access private
  *
  * @return array
  */
@@ -1324,6 +1328,7 @@ function give_get_donation_cc_info() {
 
 	// Sanitize the values submitted with donation form.
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	$post_data  = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $post_data ));
 
 	$cc_info                   = [];
 	$cc_info['card_name']      = ! empty( $post_data['card_name'] ) ? $post_data['card_name'] : '';
@@ -1643,6 +1648,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @unreleased Add validation for title
  * @since 2.1
  *
  * @return void
@@ -1651,8 +1657,9 @@ function give_donation_form_validate_name_fields( $post_data ) {
 
 	$is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
 	$is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+    $is_alpha_title = ( ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
-	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
+	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name || !$is_alpha_title) ) {
 		give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
 	}
 }

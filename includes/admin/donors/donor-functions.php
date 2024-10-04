@@ -85,18 +85,21 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 /**
  * Connect and Reconnect Donor with User profile.
  *
- * @todo  $address is unnecessary param because we are store address to user.
+ * @unreleased Use maybeSafeUnserialize() on $donor_data
+ * @since      1.8.14
  *
- * @param Give_Donor $donor      Donor Object.
  * @param array      $donor_data Donor Post Variables.
  * @param array      $address    Address Information.
  *
- * @since 1.8.14
+ * @param Give_Donor $donor Donor Object.
  *
  * @return array
+ * @todo       $address is unnecessary param because we are store address to user.
+ *
  */
-function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
-
+function give_connect_user_donor_profile($donor, $donor_data, $address)
+{
+    $donor_data = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep($donor_data));
 	$donor_id = $donor->id;
 
 	/**
