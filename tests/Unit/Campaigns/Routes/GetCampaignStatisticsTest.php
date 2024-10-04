@@ -17,7 +17,7 @@ use WP_REST_Request;
 /**
  * @unreleased
  */
-final class CampaignOverviewStatisticsTest extends TestCase
+final class GetCampaignStatisticsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -56,8 +56,8 @@ final class CampaignOverviewStatisticsTest extends TestCase
         ]);
         give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
-        $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
-        $request->set_param('campaignId', $campaign->id);
+        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request->set_param('id', $campaign->id);
 
         $route = new GetCampaignStatistics;
         $response = $route->handleRequest($request);
@@ -102,8 +102,8 @@ final class CampaignOverviewStatisticsTest extends TestCase
         ]);
         give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
-        $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
-        $request->set_param('campaignId', $campaign->id);
+        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request->set_param('id', $campaign->id);
         $request->set_param('rangeInDays', 30);
 
         $route = new GetCampaignStatistics;
