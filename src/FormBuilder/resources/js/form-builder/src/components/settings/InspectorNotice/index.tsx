@@ -3,7 +3,7 @@ import {close, external} from "@wordpress/icons";
 import './styles.scss'
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 const InspectorNotice = ({title, description, helpText, helpUrl, onDismiss}) => {
 

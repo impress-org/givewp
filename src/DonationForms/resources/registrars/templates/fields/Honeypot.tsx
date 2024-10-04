@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 export default function Honeypot({
                                      Label,
