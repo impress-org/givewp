@@ -22,5 +22,17 @@ export type Campaign = {
         timezone: string;
     };
     createdAt: string;
-    /*updatedAt: string;*/
+    //updatedAt: string;
 };
+
+/*export interface Campaign {
+    id: number;
+    title: string;
+    type: string;
+    status: string;
+    shortDescription: string;
+    longDescription: string;
+    logo: string;
+    image: string;
+    goal: number;
+}*/

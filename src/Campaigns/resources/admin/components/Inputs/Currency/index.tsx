@@ -4,16 +4,13 @@ import {Controller, useFormContext} from 'react-hook-form';
 type Props = {
     name: string;
     currency: string;
+    placeholder?: string;
 };
 
 /**
  * @unreleased
  */
-export default ({
-    name,
-    currency,
-    ...rest
-}: Props) => {
+export default ({name, currency, placeholder, ...rest}: Props) => {
     const {control} = useFormContext();
 
     return (
@@ -26,6 +23,7 @@ export default ({
                         field.onChange(Number(value ?? 0));
                     }}
                     value={field.value}
+                    placeholder={placeholder}
                     allowDecimals={true}
                     allowNegativeValue={false}
                     maxLength={9}
@@ -35,4 +33,4 @@ export default ({
             )}
         />
     );
-}
+};

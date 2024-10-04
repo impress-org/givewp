@@ -1,17 +1,8 @@
-import {__} from '@wordpress/i18n';
-
-import styles from '../CampaignDetailsPage.module.scss';
+import DonationFormsListTable from '../../../../../../DonationForms/V2/resources/components/DonationFormsListTable';
 
 /**
  * @unreleased
  */
 export default () => {
-
-    return (
-        <div>
-            <div>
-                Forms
-            </div>
-        </div>
-    );
-}
+    return <DonationFormsListTable />;
+};

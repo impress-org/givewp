@@ -32,6 +32,7 @@ export interface ListTablePageProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
+    contentMode?: boolean;
 }
 
 export interface FilterConfig {
@@ -48,7 +49,7 @@ export interface FilterConfig {
 
 export interface ColumnFilterConfig {
     column: string;
-    filter: Function
+    filter: Function;
 }
 
 export interface BulkActionsConfig {
@@ -66,6 +67,22 @@ export interface BulkActionsConfig {
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
 
+const ListTablePageWrap = (contentMode = false, children = null) => {
+    return (
+        <>
+            {contentMode ? (
+                <section className={styles.page}>
+                    {children && <div className={styles.flexRow}>{children}</div>}
+                </section>
+            ) : (
+                <article className={styles.page}>
+                    {children && <div className={styles.flexRow}>{children}</div>}
+                </article>
+            )}
+        </>
+    );
+};
+
 export default function ListTablePage({
     title,
     apiSettings,
@@ -80,7 +97,8 @@ export default function ListTablePage({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
-    banner
+    banner,
+    contentMode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -206,30 +224,46 @@ export default function ListTablePage({
     return (
         <>
             <article className={styles.page}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.flexRow}>
-                        <GiveIcon size={'1.875rem'} />
-                        <h1 className={styles.pageTitle}>{title}</h1>
-                        {testModeFilter && testMode && <TestModeBadge />}
-                    </div>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </header>
-                {banner && (
-                    <section role="banner">
-                        {banner()}
+                {contentMode ? (
+                    <section role="search" id={styles.searchContainer}>
+                        <div className={styles.flexRow}>
+                            {filterSettings.map((filter) => (
+                                <Filter
+                                    key={filter.name}
+                                    value={filters[filter.name]}
+                                    filter={filter}
+                                    onChange={handleFilterChange}
+                                    debouncedOnChange={handleDebouncedFilterChange}
+                                />
+                            ))}
+                        </div>
+                        {children && <div className={styles.flexRow}>{children}</div>}
                     </section>
+                ) : (
+                    <>
+                        <header className={styles.pageHeader}>
+                            <div className={styles.flexRow}>
+                                <GiveIcon size={'1.875rem'} />
+                                <h1 className={styles.pageTitle}>{title}</h1>
+                                {testModeFilter && testMode && <TestModeBadge />}
+                            </div>
+                            {children && <div className={styles.flexRow}>{children}</div>}
+                        </header>
+                        {banner && <section role="banner">{banner()}</section>}
+                        <section role="search" id={styles.searchContainer}>
+                            {filterSettings.map((filter) => (
+                                <Filter
+                                    key={filter.name}
+                                    value={filters[filter.name]}
+                                    filter={filter}
+                                    onChange={handleFilterChange}
+                                    debouncedOnChange={handleDebouncedFilterChange}
+                                />
+                            ))}
+                        </section>
+                    </>
                 )}
-                <section role="search" id={styles.searchContainer}>
-                    {filterSettings.map((filter) => (
-                        <Filter
-                            key={filter.name}
-                            value={filters[filter.name]}
-                            filter={filter}
-                            onChange={handleFilterChange}
-                            debouncedOnChange={handleDebouncedFilterChange}
-                        />
-                    ))}
-                </section>
+
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
                     <PageActions PageActionsTop />

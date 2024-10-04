@@ -4,6 +4,7 @@ namespace Give\Campaigns\Controllers;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -148,7 +149,7 @@ class CampaignRequestController
             'primaryColor' => '',
             'secondaryColor' => '',
             'goal' => (int)$request->get_param('goal'),
-            'goalType' => $request->get_param('goalType'),
+            'goalType' => new CampaignGoalType($request->get_param('goalType')),
             'status' => CampaignStatus::DRAFT(),
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),
