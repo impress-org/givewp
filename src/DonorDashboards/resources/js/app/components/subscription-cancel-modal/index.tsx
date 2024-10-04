@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import Button from '../button';
-import {cancelSubscriptionWithAPI} from '../subscription-cancel-modal/utils';
+import {cancelSubscriptionWithAPI} from './utils';
 
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import DashboardLoadingSpinner from '../dashboard-loading-spinner';
