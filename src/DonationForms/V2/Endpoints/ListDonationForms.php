@@ -4,6 +4,7 @@ namespace Give\DonationForms\V2\Endpoints;
 
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -29,6 +30,7 @@ class ListDonationForms extends Endpoint
     protected $listTable;
 
     /**
+     * @unreleased Add campaignId parameter
      * @inheritDoc
      */
     public function registerRoute()
@@ -101,6 +103,10 @@ class ListDonationForms extends Endpoint
                             'model',
                             'columns',
                         ],
+                    ],
+                    'campaignId' => [
+                        'type' => 'integer',
+                        'required' => false,
                     ],
                 ],
             ]
@@ -196,6 +202,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @unreleased Add "campaignId" support
      * @since 2.24.0
      *
      * @param QueryBuilder $query
@@ -226,6 +233,13 @@ class ListDonationForms extends Endpoint
                     }
                 }
             }
+        }
+
+        if ($campaignId = $this->request->get_param('campaignId')) {
+            $query->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'ID');
+            })->where('campaign_forms.campaign_id', $campaignId);
         }
 
         return $query;

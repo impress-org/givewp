@@ -19,7 +19,7 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
     };
 
     return (
-        <form id={styles.bulkActionsForm} onSubmit={showModal}>
+        <div id={styles.bulkActionsForm}>
             <Select value={selectedAction} onChange={changeSelected}>
                 <option value="">{__('Bulk Actions', 'give')}</option>
                 {bulkActions.map((action) => {
@@ -33,7 +33,9 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
                     );
                 })}
             </Select>
-            <button className={pageStyles.addFormButton}>{__('Apply', 'give')}</button>
-        </form>
+            <button onClick={showModal} className={pageStyles.addFormButton}>
+                {__('Apply', 'give')}
+            </button>
+        </div>
     );
 };

@@ -1,4 +1,5 @@
 :global {
+
     :root {
         --give-primary-color: #69b868;
     }
@@ -133,6 +134,50 @@
 
     &:hover {
         background-color: #f6f7f7;
+    }
+}
+
+.addCampaignFormButton {
+    $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
+
+    background-color: #E5E7EB;
+    border: 1px solid #ddd;
+    border-radius: 0.1875rem;
+    box-shadow: $depth;
+    color: #060C1A;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    block-size: 2.5rem;
+    padding-inline: 0.8rem;
+    height: 2.25rem;
+    transition-property: filter, color, outline;
+    transition-duration: 180ms;
+    transition-timing-function: ease-in;
+    cursor: pointer;
+
+    &:is(a) {
+        text-decoration: none;
+    }
+
+    &:is(:hover, :active, :focus) {
+        color: #777;
+    }
+
+    &:hover {
+        filter: contrast(110%);
+    }
+
+    &:active {
+        filter: contrast(90%);
+    }
+
+    &:focus {
+        box-shadow: $depth;
+        outline: 0.125rem solid var(--give-primary-color);
+        outline-offset: 0.25em;
     }
 }
 

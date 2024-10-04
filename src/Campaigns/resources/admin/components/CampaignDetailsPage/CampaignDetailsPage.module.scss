@@ -87,9 +87,9 @@
 }
 
 .breadcrumb {
+    display: flex;
+    line-height: 1rem;
     font-size: 0.7rem;
-
-
     color: #424242;
 
     & > span {
@@ -136,13 +136,25 @@
     }
 }
 
+select[name="campaignId"] {
+    display: none;
+}
+
+.fullWidth {
+
+}
+
 .tabs {
     display: flex;
     gap: 0.25rem;
     background-color: #fff;
-    margin-bottom: var(--givewp-spacing-6);
-    padding: 0 var(--givewp-spacing-6);
+
+    &:not(.fullWidth) {
+        margin-bottom: var(--givewp-spacing-6);
+        padding: 0 var(--givewp-spacing-6);
+    }
 }
+
 
 .tabs [data-reach-tab],
 .tabs [role='tab'] {
@@ -187,7 +199,11 @@
 }
 
 .pageContent {
-    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+    /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
+
+    &:not(.fullWidth) {
+        padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+    }
 
     section {
         margin-bottom: var(--givewp-spacing-14);

@@ -2,11 +2,14 @@
 
 namespace Give\Campaigns;
 
+use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -37,6 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerMigrations();
         $this->registerRoutes();
         $this->registerCampaignEntity();
+        $this->setupCampaignForms();
     }
 
     /**
@@ -104,5 +108,18 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerCampaignEntity()
     {
         Hooks::addAction('init', Actions\RegisterCampaignEntity::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function setupCampaignForms()
+    {
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+        }
+
+        Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class);
+        Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
     }
 }
