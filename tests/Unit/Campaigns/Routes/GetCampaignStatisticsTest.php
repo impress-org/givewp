@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\Campaigns\Routes;
 
 use DateTime;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Routes\CampaignOverviewStatistics;
+use Give\Campaigns\Routes\GetCampaignStatistics;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -17,7 +17,7 @@ use WP_REST_Request;
 /**
  * @unreleased
  */
-final class CampaignOverviewStatisticsTest extends TestCase
+final class GetCampaignStatisticsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -56,10 +56,10 @@ final class CampaignOverviewStatisticsTest extends TestCase
         ]);
         give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
-        $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
-        $request->set_param('campaignId', $campaign->id);
+        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request->set_param('id', $campaign->id);
 
-        $route = new CampaignOverviewStatistics;
+        $route = new GetCampaignStatistics;
         $response = $route->handleRequest($request);
 
         $this->assertEquals(3, $response->data[0]['donorCount']);
@@ -102,11 +102,11 @@ final class CampaignOverviewStatisticsTest extends TestCase
         ]);
         give_update_meta($donation3->id, '_give_completed_date', $donation3->createdAt->format('Y-m-d H:i:s'));
 
-        $request = new WP_REST_Request('GET', '/give-api/v2/campaign-overview-statistics');
-        $request->set_param('campaignId', $campaign->id);
+        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request->set_param('id', $campaign->id);
         $request->set_param('rangeInDays', 30);
 
-        $route = new CampaignOverviewStatistics;
+        $route = new GetCampaignStatistics;
         $response = $route->handleRequest($request);
 
         $this->assertEquals(2, $response->data[0]['donorCount']);

@@ -9,6 +9,7 @@ use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -16,19 +17,16 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class CampaignOverviewStatistics implements RestRoute
+class GetCampaignStatistics implements RestRoute
 {
-    /** @var string */
-    protected $endpoint = 'campaign-overview-statistics';
-
     /**
      * @unreleased
      */
     public function registerRoute()
     {
         register_rest_route(
-            'give-api/v2',
-            $this->endpoint,
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/statistics',
             [
                 [
                     'methods' => WP_REST_Server::READABLE,
@@ -38,18 +36,16 @@ class CampaignOverviewStatistics implements RestRoute
                     },
                 ],
                 'args' => [
-                    'campaignId' => [
+                    'id' => [
                         'type' => 'integer',
                         'required' => true,
                         'sanitize_callback' => 'absint',
-                        'validate_callback' => 'is_numeric',
                     ],
                     'rangeInDays' => [
                         'type' => 'integer',
                         'required' => false,
                         'sanitize_callback' => 'absint',
                         'default' => 0, // Zero to mean "all time".
-                        'validate_callback' => 'is_numeric',
                     ],
                 ],
             ]
@@ -63,7 +59,7 @@ class CampaignOverviewStatistics implements RestRoute
      */
     public function handleRequest($request): WP_REST_Response
     {
-        $campaign = Campaign::find($request->get_param('campaignId'));
+        $campaign = Campaign::find($request->get_param('id'));
 
         $query = new CampaignDonationQuery($campaign);
 
