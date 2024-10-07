@@ -261,6 +261,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unreleased updated honorific field with validation
+     *
      * @since 3.0.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
@@ -293,9 +295,13 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
-                $group->getNodeByName('honorific')
-                    ->label('Title')
-                    ->options(...array_values($block->getAttribute('honorifics')));
+                $options = array_values((array)$block->getAttribute('honorifics'));
+                if (!empty($options)){
+                    $group->getNodeByName('honorific')
+                        ->label(__('Title', 'give'))
+                        ->options(...$options)
+                        ->rules('max:255', 'in:' . implode(',', $options));
+                    }
             } else {
                 $group->remove('honorific');
             }

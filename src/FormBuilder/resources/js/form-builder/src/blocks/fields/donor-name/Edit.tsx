@@ -161,6 +161,7 @@ export default function Edit({
                                 selectable={false}
                                 options={honorificOptions}
                                 setOptions={setOptions}
+                                toggleEnabled={false}
                                 defaultControlsTooltip={__('Title Prefixes', 'give')}
                             />
                         </div>
