@@ -1,7 +1,5 @@
 /* stylelint-disable selector-class-pattern */
 
-/* stylelint-disable selector-class-pattern */
-
 .givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
@@ -37,7 +35,7 @@
                 width: auto;
                 margin: 0;
 
-                &__button.give-donor-dashboard-button.give-donor-dashboard-button.give-donor-dashboard-button--primary {
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button--primary {
                     flex: 1;
                     margin: 0;
                     background-color: #d92d0b;
@@ -53,7 +51,7 @@
                     }
                 }
 
-                &__button.give-donor-dashboard-button.give-donor-dashboard-button.give-donor-dashboard-button--variant {
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button--variant {
                     flex: 1;
                     margin: 0;
                     border-color: #9CA0AF;
