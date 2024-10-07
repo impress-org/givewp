@@ -40,7 +40,8 @@
 
         &--pending,
         &--processing,
-        &--upgraded {
+        &--upgraded,
+        &--paused {
             background: #0878b0;
         }
 

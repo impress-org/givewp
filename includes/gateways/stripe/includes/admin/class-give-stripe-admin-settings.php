@@ -200,6 +200,17 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						'type' => 'checkbox',
 					];
 
+                    $settings['general'][] = [
+                        'name' => esc_html__( 'Stripe Receipt Emails', 'give' ),
+                        'desc' => sprintf(
+                        /* translators: 1. GiveWP Support URL */
+                            __( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>. Checking this option does not disable GiveWP emails.', 'give' ),
+                            admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
+                        ),
+                        'id'   => 'stripe_receipt_emails',
+                        'type' => 'checkbox',
+                    ];
+
 					/**
 					 * This filter hook is used to add fields after Stripe General fields.
 					 *
@@ -208,17 +219,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					 * @return array
 					 */
 					$settings = apply_filters( 'give_stripe_add_after_general_fields', $settings );
-
-					$settings['general'][] = [
-						'name' => esc_html__( 'Stripe Receipt Emails', 'give' ),
-						'desc' => sprintf(
-							/* translators: 1. GiveWP Support URL */
-							__( 'Check this option if you would like donors to receive receipt emails directly from Stripe. By default, donors will receive GiveWP generated <a href="%1$s" target="_blank">receipt emails</a>. Checking this option does not disable GiveWP emails.', 'give' ),
-							admin_url( '/edit.php?post_type=give_forms&page=give-settings&tab=emails' )
-						),
-						'id'   => 'stripe_receipt_emails',
-						'type' => 'checkbox',
-					];
 
 					$settings['general'][] = [
 						'name'  => esc_html__( 'Stripe Gateway Documentation', 'give' ),

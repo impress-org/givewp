@@ -7,6 +7,7 @@ import {__} from '@wordpress/i18n';
 // Internal dependencies
 import TabLink from '../tab-link';
 import LogoutModal from '../logout-modal';
+import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 
 import './style.scss';
 
@@ -18,13 +19,27 @@ const TabMenu = () => {
         return <TabLink slug={tab.slug} label={tab.label} icon={tab.icon} key={index} />;
     });
 
+    const toggleModal = () => {
+        setLogoutModalOpen(!logoutModalOpen);
+    };
+
     return (
         <Fragment>
-            {logoutModalOpen && <LogoutModal onRequestClose={() => setLogoutModalOpen(false)} />}
+            {logoutModalOpen && (
+                <ModalDialog
+                    wrapperClassName={'give-donor-dashboard-logout-modal'}
+                    title={__('Are you sure you want to logout?', 'give')}
+                    showHeader={true}
+                    isOpen={logoutModalOpen}
+                    handleClose={toggleModal}
+                >
+                    <LogoutModal onRequestClose={toggleModal} />
+                </ModalDialog>
+            )}
             <div className="give-donor-dashboard-tab-menu">
                 {tabLinks}
                 <div className="give-donor-dashboard-logout">
-                    <div className="give-donor-dashboard-tab-link" onClick={() => setLogoutModalOpen(true)}>
+                    <div className="give-donor-dashboard-tab-link" onClick={toggleModal}>
                         <FontAwesomeIcon icon="sign-out-alt" /> {__('Logout', 'give')}
                     </div>
                 </div>

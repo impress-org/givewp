@@ -22,6 +22,10 @@ const SelectControl = ({value, options, isLoading, label = null, onChange = null
 
     const selectedOptionValue = options !== null ? options.filter((option) => option.value === value) : null;
     const selectStyles = {
+        menu: (provided) => ({
+            ...provided,
+           zIndex: '9999',
+        }),
         control: (provided) => ({
             ...provided,
             fontSize: '14px',

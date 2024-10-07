@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
 import './style.scss';
+import '../subscription-manager/style.scss';
 
 const DashboardContent = () => {
     const tabsSelector = useSelector((state) => state.tabs);
