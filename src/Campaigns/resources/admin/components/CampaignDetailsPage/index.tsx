@@ -4,7 +4,6 @@ import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import cx from 'classnames';
 import {GiveCampaignDetails} from './types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -14,6 +13,7 @@ import Tabs from './Tabs';
 
 import styles from './CampaignDetailsPage.module.scss';
 import {BreadcrumbSeparatorIcon} from './Icons';
+import {Interweave} from 'interweave';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -96,6 +96,13 @@ export default function CampaignsDetailsPage({campaignId}) {
         );
     }
 
+    const StatusBadge = () => (
+        <Interweave
+            attributes={{className: 'interweave'}}
+            content={`<div class="statusBadge statusBadge--${campaign.status}"><p>${campaign.status}</p></div>`}
+        />
+    );
+
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -113,14 +120,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                         <div className={styles.flexContainer}>
                             <div className={styles.flexRow}>
                                 <h1 className={styles.pageTitle}>{campaign.title}</h1>
-                                <span
-                                    className={cx(
-                                        styles.status,
-                                        campaign.status === 'draft' ? styles.draftStatus : styles.activeStatus
-                                    )}
-                                >
-                                    {campaign.status}
-                                </span>
+                                <StatusBadge />
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
