@@ -18,13 +18,9 @@ $errorColor: #c91f1f;
         display: flex;
         padding: 0;
 
-        * {
-            flex: unset;
-        }
-
-        div:first-child{
-            flex: 1;
+        .give-donor-dashboard-select-control {
             display: flex;
+            min-width: 100%;
             margin: 0;
         }
     }
