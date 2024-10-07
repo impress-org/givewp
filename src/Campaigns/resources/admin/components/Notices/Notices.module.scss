@@ -1,0 +1,15 @@
+.snackbar {
+    position: absolute;
+    color: #fff;
+    background-color: #000;
+    border-radius: 6px;
+
+    .position-left {
+        left: 100px;
+    }
+
+    .position-right {
+        right: 100px;
+    }
+
+}

@@ -1,6 +1,9 @@
 import {__} from '@wordpress/i18n';
-import {dispatch} from '@wordpress/data';
+import {dispatch, register} from '@wordpress/data';
 import {store as coreStore} from '@wordpress/core-data';
+import {store as campaignNotificationsStore} from './store';
+
+register(campaignNotificationsStore);
 
 //@ts-ignore
 dispatch(coreStore).addEntities([

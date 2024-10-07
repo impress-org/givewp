@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
-import {useEffect, useState, useRef} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
+import {dispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -12,10 +13,10 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse} from './Icons';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon} from './Icons';
+import NoticePlaceholder from '../Notices/NoticePlaceholder';
 
 import styles from './CampaignDetailsPage.module.scss';
-import {BreadcrumbSeparatorIcon} from './Icons';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -116,6 +117,13 @@ export default function CampaignsDetailsPage({campaignId}) {
                         confirmationModal: false,
                     });
                     reset(response);
+
+                    //@ts-ignore
+                    dispatch('givewp/campaign-notifications').addSnackbarNotice({
+                        id: `update-${status}`,
+                        content: __('Your campaign is %s', 'give')
+                    })
+
                 })
                 .catch((response: any) => {
                     setShow({
@@ -126,7 +134,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 });
         })();
     };
-    
+
     const getStatus = (status: string) => {
         switch (status) {
             case 'archive':
@@ -245,6 +253,8 @@ export default function CampaignsDetailsPage({campaignId}) {
                         handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
                         handleConfirm={() => updateStatus('archive')}
                     />
+
+                    <NoticePlaceholder type="snackbar" />
                 </article>
             </form>
         </FormProvider>
