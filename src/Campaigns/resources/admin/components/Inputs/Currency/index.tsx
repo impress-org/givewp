@@ -5,12 +5,13 @@ type Props = {
     name: string;
     currency: string;
     placeholder?: string;
+    disabled?: boolean;
 };
 
 /**
  * @unreleased
  */
-export default ({name, currency, placeholder, ...rest}: Props) => {
+export default ({name, currency, placeholder, disabled, ...rest}: Props) => {
     const {control} = useFormContext();
 
     return (
@@ -19,6 +20,7 @@ export default ({name, currency, placeholder, ...rest}: Props) => {
             control={control}
             render={({field}) => (
                 <CurrencyInput
+                    disabled={disabled}
                     onValueChange={(value) => {
                         field.onChange(Number(value ?? 0));
                     }}

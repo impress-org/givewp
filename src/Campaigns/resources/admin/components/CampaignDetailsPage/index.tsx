@@ -11,6 +11,8 @@ import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
+import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
+import {DotsIcons, TrashIcon, ViewIcon} from './Icons';
 
 import styles from './CampaignDetailsPage.module.scss';
 import {BreadcrumbSeparatorIcon} from './Icons';
@@ -26,6 +28,8 @@ export function getGiveCampaignDetailsWindowData() {
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
+    const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
     useEffect(() => {
         apiFetch({
@@ -64,8 +68,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     }, [hasResolved]);
 
-    const onSubmit: SubmitHandler<Campaign> = async (data, e) => {
-        e.preventDefault();
+    const onSubmit: SubmitHandler<Campaign> = async (data) => {
 
         if (formState.isDirty) {
             setIsSaving(data.status);
@@ -162,10 +165,50 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         __('Update campaign', 'give')
                                     )}
                                 </button>
+
+                                <button
+                                    className={`button button-secondary ${styles.campaignButtonDots}`}
+                                    onClick={() => setShowContextMenu(!showContextMenu)}
+                                >
+                                    <DotsIcons />
+                                </button>
+
+                                {!isSaving && showContextMenu && (
+                                    <div className={styles.contextMenu}>
+                                        <a
+                                            href="#"
+                                            aria-label={__('View Campaign', 'give')}
+                                            className={styles.contextMenuItem}
+                                        >
+                                            <ViewIcon /> {__('View Campaign', 'give')}
+                                        </a>
+                                        <a
+                                            href="#"
+                                            className={cx(styles.contextMenuItem, styles.archive)}
+                                            onClick={() => setShowConfirmationModal(true)}
+                                        >
+                                            <TrashIcon /> {__('Archive Campaign', 'give')}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </header>
                     <Tabs />
+                    <ArchiveCampaignDialog
+                        title={__('Archive Campaign', 'give')}
+                        isOpen={showConfirmationModal}
+                        handleClose={() => {
+                            setShowConfirmationModal(false);
+                            setShowContextMenu(false)
+                        }}
+                        handleConfirm={() => {
+                            setValue('status', 'archive', {shouldDirty: true});
+                            handleSubmit(onSubmit)();
+                            setShowConfirmationModal(false);
+                            setShowContextMenu(false);
+                        }}
+                    />
                 </article>
             </form>
         </FormProvider>

@@ -101,6 +101,7 @@ class CampaignRequestController
         }
 
         $statusMap = [
+            'archive' => CampaignStatus::ARCHIVE(),
             'draft' => CampaignStatus::DRAFT(),
             'active' => CampaignStatus::ACTIVE(),
         ];

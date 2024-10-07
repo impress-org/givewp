@@ -73,6 +73,7 @@
 }
 
 .flexRow {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -272,7 +273,8 @@ select[name="campaignId"] {
             }
 
             input,
-            select {
+            select,
+            textarea {
                 font-size: 16px;
                 line-height: 2;
                 display: block;
@@ -326,4 +328,45 @@ select[name="campaignId"] {
             margin: 3px 0 0 8px !important;
         }
     }
+
+
+    .campaignButtonDots {
+        background-color: #d1d5db;
+        border-color: #d1d5db;
+        border-radius: var(--givewp-rounded-4);
+        line-height: 0;
+        padding: var(--givewp-spacing-2);
+    }
+
+    .contextMenu {
+        position: absolute;
+        padding: var(--givewp-spacing-1);
+        top: 50px;
+        width: 203px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px #f3f4f6;
+        background-color: #fff;
+
+        .contextMenuItem {
+            text-decoration: none;
+            gap: 5px;
+            display: flex;
+            align-items: center;
+            padding: var(--givewp-spacing-2);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.43;
+            color: #1f2937;
+
+            &:hover {
+                background-color: #f3f4f6;
+            }
+        }
+
+        .archive {
+            color: #d92d0b;
+        }
+    }
+
 }
