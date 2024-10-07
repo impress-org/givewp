@@ -120,7 +120,7 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         // Temp solution to load "donations" and "revenue" columns on the "Forms" tab
-        if ( ! define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
 
