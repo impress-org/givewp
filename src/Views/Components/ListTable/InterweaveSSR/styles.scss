@@ -59,7 +59,6 @@
         align-items: center;
         width: fit-content;
         height: safe-rem(1.375);
-        /*padding-block: 0.185rem;*/
         padding: 0.125rem 0.75rem 0.125rem 0.75rem;
         background-color: black;
         color: #fff;
@@ -69,6 +68,7 @@
         column-gap: safe-rem(1);
         text-transform: capitalize;
 
+        div,
         p {
             font-size: safe-rem(0.75);
             font-weight: 600;
@@ -107,7 +107,6 @@
         &--abandoned,
         &--cancelled,
         &--expired {
-            /*--givewp-red-100: #ffb5a6;*/
             background: var(--givewp-red-100);
             color: var(--givewp-red-900);
         }

@@ -67,22 +67,6 @@ export interface BulkActionsConfig {
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
 
-const ListTablePageWrap = (contentMode = false, children = null) => {
-    return (
-        <>
-            {contentMode ? (
-                <section className={styles.page}>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </section>
-            ) : (
-                <article className={styles.page}>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </article>
-            )}
-        </>
-    );
-};
-
 export default function ListTablePage({
     title,
     apiSettings,

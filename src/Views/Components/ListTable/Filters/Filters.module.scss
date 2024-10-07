@@ -1,3 +1,12 @@
+.filterContainer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
 #select {
     margin-right: -0.5rem;
 }
@@ -7,10 +16,5 @@
 }
 
 #search {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    /*column-gap: 1rem;*/
+    
 }

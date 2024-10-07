@@ -9,7 +9,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     switch (filter.type) {
         case 'select':
             return (
-                <div id={styles.select}>
+                <div id={styles.select} className={styles.filterContainer}>
                     <Select
                         name={filter.name}
                         aria-label={filter?.ariaLabel}
@@ -27,7 +27,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             );
         case 'formselect':
             return (
-                <div id={styles.formselect}>
+                <div id={styles.formselect} className={styles.filterContainer}>
                     <FormSelect
                         name={filter.name}
                         options={filter.options}
@@ -41,7 +41,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             );
         case 'search':
             return (
-                <div id={styles.search}>
+                <div id={styles.search} className={styles.filterContainer}>
                     <Input
                         type="search"
                         name={filter.name}
