@@ -367,6 +367,10 @@ select[name="campaignId"] {
         .archive {
             color: #d92d0b;
         }
+
+        .draft {
+            font-weight: bold;
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect, useState} from '@wordpress/element';
+import {useEffect, useState, useRef} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
@@ -12,7 +12,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {DotsIcons, TrashIcon, ViewIcon} from './Icons';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse} from './Icons';
 
 import styles from './CampaignDetailsPage.module.scss';
 import {BreadcrumbSeparatorIcon} from './Icons';
@@ -21,6 +21,11 @@ declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
 } & Window;
 
+interface Show {
+    contextMenu?: boolean;
+    confirmationModal?: boolean;
+}
+
 export function getGiveCampaignDetailsWindowData() {
     return window.GiveCampaignDetails;
 }
@@ -28,8 +33,19 @@ export function getGiveCampaignDetailsWindowData() {
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
-    const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
-    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
+    const [show, _setShowValue] = useState<Show>({
+        contextMenu: false,
+        confirmationModal: false
+    });
+
+    const setShow = (data: Show) => {
+        _setShowValue(prevState => {
+            return {
+                ...prevState,
+                ...data,
+            };
+        });
+    };
 
     useEffect(() => {
         apiFetch({
@@ -88,6 +104,29 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
+    const updateStatus = (status: 'archive' | 'draft') => {
+        setValue('status', status);
+        handleSubmit(async (data) => {
+            edit(data);
+
+            save()
+                .then((response: Campaign) => {
+                    setShow({
+                        contextMenu: false,
+                        confirmationModal: false,
+                    });
+                    reset(response);
+                })
+                .catch((response: any) => {
+                    setShow({
+                        contextMenu: false,
+                        confirmationModal: false,
+                    });
+                    console.log(response);
+                });
+        })();
+    };
+
     if (!hasResolved) {
         return (
             <div className={styles.loadingContainer}>
@@ -119,7 +158,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 <span
                                     className={cx(
                                         styles.status,
-                                        campaign.status === 'draft' ? styles.draftStatus : styles.activeStatus
+                                        campaign.status === 'draft' ? styles.draftStatus : styles.activeStatus,
                                     )}
                                 >
                                     {campaign.status}
@@ -127,25 +166,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={styles.flexRow}>
-                                <button
-                                    type="submit"
-                                    disabled={!formState.isDirty}
-                                    className={`button button-secondary ${styles.updateCampaignButton}`}
-                                    onClick={(e) => {
-                                        setValue('status', 'draft');
-                                    }}
-                                >
-                                    {isSaving === 'draft' ? (
-                                        <>
-                                            {__('Saving draft', 'give')}
-                                            <Spinner />
-                                        </>
-                                    ) : campaign.status === 'draft' ? (
-                                        __('Save draft', 'give')
-                                    ) : (
-                                        __('Save as draft', 'give')
-                                    )}
-                                </button>
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}
@@ -168,12 +188,12 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 <button
                                     className={`button button-secondary ${styles.campaignButtonDots}`}
-                                    onClick={() => setShowContextMenu(!showContextMenu)}
+                                    onClick={() => setShow({contextMenu: !show.contextMenu})}
                                 >
                                     <DotsIcons />
                                 </button>
 
-                                {!isSaving && showContextMenu && (
+                                {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
                                         <a
                                             href="#"
@@ -182,13 +202,24 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         >
                                             <ViewIcon /> {__('View Campaign', 'give')}
                                         </a>
-                                        <a
-                                            href="#"
-                                            className={cx(styles.contextMenuItem, styles.archive)}
-                                            onClick={() => setShowConfirmationModal(true)}
-                                        >
-                                            <TrashIcon /> {__('Archive Campaign', 'give')}
-                                        </a>
+                                        {campaign.status === 'archive' ? (
+                                            <a
+                                                href="#"
+                                                className={cx(styles.contextMenuItem, styles.draft)}
+                                                onClick={() => updateStatus('draft')}
+                                            >
+                                                <ArrowReverse /> {__('Move to draft', 'give')}
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href="#"
+                                                className={cx(styles.contextMenuItem, styles.archive)}
+                                                onClick={() => setShow({confirmationModal: true})}
+                                            >
+                                                <TrashIcon /> {__('Archive Campaign', 'give')}
+                                            </a>
+                                        )}
+
                                     </div>
                                 )}
                             </div>
@@ -197,17 +228,9 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <Tabs />
                     <ArchiveCampaignDialog
                         title={__('Archive Campaign', 'give')}
-                        isOpen={showConfirmationModal}
-                        handleClose={() => {
-                            setShowConfirmationModal(false);
-                            setShowContextMenu(false)
-                        }}
-                        handleConfirm={() => {
-                            setValue('status', 'archive', {shouldDirty: true});
-                            handleSubmit(onSubmit)();
-                            setShowConfirmationModal(false);
-                            setShowContextMenu(false);
-                        }}
+                        isOpen={show.confirmationModal}
+                        handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
+                        handleConfirm={() => updateStatus('archive')}
                     />
                 </article>
             </form>

@@ -30,7 +30,9 @@ export default ({
             <>
                 <div>{__('Are you sure you want to archive your campaign? All forms associated with this campaign will be inaccessible to donors.', 'give')}</div>
                 <div>
-                    <button onClick={handleConfirm}>submit</button>
+                    <button onClick={handleConfirm}>
+                        submit
+                    </button>
                 </div>
             </>
         </ModalDialog>
