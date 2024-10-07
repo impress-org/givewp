@@ -117,6 +117,11 @@ class ServiceProvider implements ServiceProviderInterface
     {
         if (CampaignsAdminPage::isShowingDetailsPage()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+
+            // Temp solution to load "donations" and "revenue" columns on the "Forms" tab
+            if ( ! define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+                define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
+            }
         }
 
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class);
