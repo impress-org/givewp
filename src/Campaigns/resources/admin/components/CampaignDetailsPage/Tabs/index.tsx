@@ -73,7 +73,7 @@ export default () => {
 
             <div className={cx('wp-header-end', 'hidden')} />
 
-            <NoticePlaceholder type="snackbar" />
+            <NoticePlaceholder type="notice" />
 
             <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (

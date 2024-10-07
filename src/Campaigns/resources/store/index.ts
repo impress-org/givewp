@@ -60,19 +60,8 @@ export const store = createReduxStore(storeName, {
             return state;
         },
 
-        getNotificationsByType(state, type: 'snackbar' | 'notice') {
-
-            console.log({state})
-            const filtered = state.filter((notification: Notification) => {
-
-                console.log(notification);
-
-                return notification.notificationType === type
-            });
-
-            console.log({filtered})
-
-            return filtered;
+        getNotificationsByType(state: [], type: 'snackbar' | 'notice') {
+            return state.filter((notification: Notification) => notification.notificationType === type);
         },
     },
 
