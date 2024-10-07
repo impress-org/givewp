@@ -129,7 +129,7 @@ const SubscriptionManager = ({id, subscription}) => {
                                 {__('Pause Subscription', 'give')}
                             </Button>
                         ) : (
-                            <Button variant classnames={'give-donor-dashboard__subscription-manager-resume'} onClick={handleResume}>
+                            <Button variant onClick={handleResume}>
                                 {__('Resume Subscription', 'give')}
                             </Button>
                         )}
