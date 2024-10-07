@@ -35,13 +35,13 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        //return $model->goal;
-
-        //$goal = 0; //give_goal_progress_stats(0);
-        $goalPercentage = 0; //('percentage' === $goal['format']) ? str_replace('%', '', $goal['actual']) : max(min($goal['progress'], 100), 0);
-        $goalActual = 0; //$goal['actual'];
-        $goalFormat = ''; //$goal['format'];
-        $campaignGoal = 1000; //$model->goal;
+        // Temp value considering only the default form associated with the campaign
+        $goal = give_goal_progress_stats($model->defaultForm()->id);
+        $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
+            $goal['actual']) : max(min($goal['progress'], 100), 0);
+        $goalActual = $goal['actual'];
+        $goalFormat = $goal['format'];
+        $campaignGoal = $model->goal;
 
         $template = '
             <div

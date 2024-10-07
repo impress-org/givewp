@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
+use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -33,9 +34,8 @@ class DonationsCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        //return (string)$model->query()->count(); //Temp count
-
-        $totalDonations = 0; //$model->totalNumberOfDonations;
+        $query = new CampaignDonationQuery($model);
+        $totalDonations = $query->countDonations();
 
         $label = $totalDonations > 0
             ? sprintf(
