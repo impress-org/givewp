@@ -1,4 +1,6 @@
 import {createReduxStore} from '@wordpress/data';
+import actions from './actions';
+import selectors from './selectors';
 
 export type Notification = {
     id: string;
@@ -9,9 +11,7 @@ export type Notification = {
     content: string;
 }
 
-export const storeName = 'givewp/campaign-notifications';
-
-export const store = createReduxStore(storeName, {
+export const store = createReduxStore('givewp/campaign-notifications', {
     reducer(state = [], action) {
         switch (action.type) {
             case 'ADD_NOTIFICATION':
@@ -24,47 +24,8 @@ export const store = createReduxStore(storeName, {
 
         return state;
     },
-
-    actions: {
-        addSnackbarNotice(notification: Notification) {
-            return {
-                type: 'ADD_NOTIFICATION',
-                notification: {
-                    ...notification,
-                    duration: notification?.duration ?? 3000,
-                    notificationType: 'snackbar',
-                },
-            };
-        },
-
-        addNotice(notification: Notification) {
-            return {
-                type: 'ADD_NOTIFICATION',
-                notification: {
-                    ...notification,
-                    duration: notification?.duration ?? 3000,
-                    notificationType: 'notice',
-                },
-            };
-        },
-
-        dismissNotification(id: string) {
-            return {
-                type: 'DISMISS_NOTIFICATION',
-                id,
-            };
-        },
-    },
-    selectors: {
-        getNotifications(state: []) {
-            return state;
-        },
-
-        getNotificationsByType(state: [], type: 'snackbar' | 'notice') {
-            return state.filter((notification: Notification) => notification.notificationType === type);
-        },
-    },
-
+    actions,
+    selectors,
 });
 
 
