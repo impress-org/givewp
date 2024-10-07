@@ -40,3 +40,10 @@ export const ErrorIcon = () => (
             fill="#D92D0B" />
     </svg>
 )
+
+export const ArrowReverse = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.333 4.083h5.834a3.5 3.5 0 1 1 0 7H2.333m0-7L4.667 1.75M2.333 4.083l2.334 2.334" stroke="#000"
+              strokeWidth="1.167" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+)
