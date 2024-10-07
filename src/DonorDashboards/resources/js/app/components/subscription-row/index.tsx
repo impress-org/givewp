@@ -4,29 +4,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 
 import {useWindowSize} from '../../hooks';
-import {cancelSubscriptionWithAPI} from '../subscription-cancel-modal/utils';
+import SubscriptionCancelModal from '../subscription-cancel-modal';
 
-import SubscriptionCancel from '../subscription-cancel-modal';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import DashboardLoadingSpinner from '../dashboard-loading-spinner';
+import "./style.scss";
 
 const SubscriptionRow = ({subscription}) => {
-    const [cancelModalOpen, setCancelModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
-
-    const toggleModal = () => {
-        setCancelModalOpen(!cancelModalOpen);
-    };
-
-    const handleCancel = async () => {
-        setLoading(true);
-        await cancelSubscriptionWithAPI(id);
-        toggleModal();
-        setLoading(false);
-    };
 
     return (
         <div className="give-donor-dashboard-table__row">
@@ -73,24 +59,17 @@ const SubscriptionRow = ({subscription}) => {
                         </Link>
                     </div>
                 )}
-                {gateway.can_cancel && (
+                {gateway.can_cancel && !gateway.can_update && (
                     <>
-                        <ModalDialog
-                            wrapperClassName={'give-donor-dashboard-cancel-modal'}
-                            title={__('Cancel Subscription', 'give')}
-                            showHeader={true}
-                            isOpen={cancelModalOpen}
-                            handleClose={toggleModal}
-                        >
-                            <SubscriptionCancel
-                                onRequestClose={toggleModal}
-                                handleCancel={handleCancel}
-                                cancelling={loading}
+                        {isCancelModalOpen && (
+                            <SubscriptionCancelModal
+                                id={id}
+                                isOpen={isCancelModalOpen}
+                                toggleModal={() => setIsCancelModalOpen(!isCancelModalOpen)}
                             />
-                        </ModalDialog>
-                        {loading && <DashboardLoadingSpinner />}
+                        )}
                         <div className="give-donor-dashboard-table__donation-receipt">
-                            <a onClick={toggleModal}>{__('Cancel Subscription', 'give')}</a>
+                            <a className={'give-donor-dashboard-table__donation-receipt__cancel'} onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
                         </div>
                     </>
                 )}

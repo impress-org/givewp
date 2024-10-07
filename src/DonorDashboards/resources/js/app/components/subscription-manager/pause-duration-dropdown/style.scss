@@ -1,4 +1,4 @@
-.givewp-modal-wrapper.give-donor-dashboard__subscription-manager-modal {
+.givewp-modal-wrapper.give-donor-dashboard__subscription-manager-modal, .givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     background-color: rgba(0, 0, 0, 0.5) !important;
@@ -48,7 +48,7 @@
                     padding: 0.75rem 1rem;
                     background: none;
                     font-size: 1rem;
-                    font-weight: 600;
+                    font-weight: 500;
                     border-radius: 4px;
                     border: none;
                     outline: none;
@@ -65,13 +65,17 @@
                     margin-top: 3rem;
                     padding: 1rem 2rem;
                     border-radius: 4px;
-                    background: #0073aa;
+                    background: #2271B1;
                     color: #fff;
                     font-size: 1rem;
                     font-weight: 500;
                     border: none;
                     outline: none;
                     cursor: pointer;
+
+                    &:hover {
+                        background-color: #135E96;
+                    }
                 }
             }
         }

@@ -1,7 +1,4 @@
 /* stylelint-disable selector-class-pattern */
-
-/* stylelint-disable selector-class-pattern */
-
 .givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
@@ -21,30 +18,54 @@
         }
 
         .givewp-modal-content {
-            padding: 1.5rem 1.5rem 2rem 1.5rem;
+            padding: 1.5rem;
+
+            .give-donor-dashboard-cancel-modal__description {
+                margin: 0 0 1.5rem 0;
+                font-size: 1rem;
+                font-weight: 500;
+                color: #1F2937;
+            }
 
             .give-donor-dashboard-cancel-modal__buttons {
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
                 gap: 2rem;
+                width: auto;
+                margin: 0;
 
-                .give-donor-dashboard-cancel-modal__cancel {
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button--primary {
                     flex: 1;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    max-width: 240px;
-                    padding: 12px 20px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    border-radius: 3px;
-                    color: var(--give-donor-dashboard-accent-color) !important;
-                    background: var(--givewp-shades-white);
-                    box-shadow: none;
-                    border: 1px solid var(--give-donor-dashboard-accent-color);
                     margin: 0;
-                    cursor: pointer;
+                    background-color: #d92d0b;
+                    border-color: inherit;
+                    color: #fff;
+
+                    &:before {
+                        display: none;
+                    }
+
+                    &:hover {
+                        background-color: #F2320C;
+                    }
+                }
+
+                &__button.give-donor-dashboard-button.give-donor-dashboard-button--variant {
+                    flex: 1;
+                    margin: 0;
+                    border-color: #9CA0AF;
+                    color: #000 !important;
+                    filter: none;
+
+                    &:before {
+                        display: none;
+                    }
+
+                    &:hover {
+                        background-color: #F9FAFB;
+                        border-color: #9CA0AF;
+                        color: #000 !important;
+                    }
                 }
             }
         }
