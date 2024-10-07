@@ -35,7 +35,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const [isSaving, setIsSaving] = useState<null | string>(null);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false
+        confirmationModal: false,
     });
 
     const setShow = (data: Show) => {
@@ -126,6 +126,19 @@ export default function CampaignsDetailsPage({campaignId}) {
                 });
         })();
     };
+    
+    const getStatus = (status: string) => {
+        switch (status) {
+            case 'archive':
+                return __('Archived', 'give');
+            case 'active':
+                return __('Active', 'give');
+            case 'draft':
+                return __('Draft', 'give');
+        }
+
+        return null;
+    };
 
     if (!hasResolved) {
         return (
@@ -158,10 +171,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 <span
                                     className={cx(
                                         styles.status,
-                                        campaign.status === 'draft' ? styles.draftStatus : styles.activeStatus,
+                                        styles[`${campaign.status}Status`],
                                     )}
                                 >
-                                    {campaign.status}
+                                    {getStatus(campaign.status)}
                                 </span>
                             </div>
 

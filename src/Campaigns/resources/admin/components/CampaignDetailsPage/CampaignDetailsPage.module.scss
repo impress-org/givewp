@@ -135,6 +135,11 @@
         background: #CEF2CF;
         color: #022603;
     }
+
+    &.archiveStatus {
+        background: #dadada;
+        color: #0e0e0e;
+    }
 }
 
 select[name="campaignId"] {
