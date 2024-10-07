@@ -8,11 +8,11 @@ import './style.scss';
 const MobileMenu = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const contentRef = useRef(null);
+    const toggleRef = useRef(null);
 
     useEffect(() => {
         const handleClick = (evt) => {
-            if (contentRef.current && !contentRef.current.contains(evt.target)) {
+            if (toggleRef.current && !toggleRef.current.contains(evt.target)) {
                 setIsOpen(false);
             }
         };
@@ -26,7 +26,7 @@ const MobileMenu = ({children}) => {
                 document.removeEventListener('click', handleClick);
             }
         };
-    }, [isOpen, contentRef]);
+    }, [isOpen, toggleRef]);
 
     const location = useLocation();
     const tabsSelector = useSelector((state) => state.tabs);
@@ -39,16 +39,19 @@ const MobileMenu = ({children}) => {
             <div className="give-donor-dashboard-mobile-menu__header">
                 <div className="give-donor-dashboard-mobile-menu__label">{label}</div>
                 <div
+                    ref={toggleRef}
                     className={`give-donor-dashboard-mobile-menu__toggle ${
                         isOpen ? 'give-donor-dashboard-mobile-menu__toggle--toggled' : ''
                     }`}
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => {
+                        setIsOpen(!isOpen);
+                    }}
                 >
                     <FontAwesomeIcon icon="bars" />
                 </div>
             </div>
             {isOpen && (
-                <div className="give-donor-dashboard-mobile-menu__content" ref={contentRef}>
+                <div className="give-donor-dashboard-mobile-menu__content">
                     {children}
                 </div>
             )}
