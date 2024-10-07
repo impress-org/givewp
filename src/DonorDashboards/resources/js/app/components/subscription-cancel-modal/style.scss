@@ -1,5 +1,4 @@
 /* stylelint-disable selector-class-pattern */
-
 .givewp-modal-wrapper.give-donor-dashboard-cancel-modal {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
@@ -56,6 +55,7 @@
                     margin: 0;
                     border-color: #9CA0AF;
                     color: #000 !important;
+                    filter: none;
 
                     &:before {
                         display: none;
