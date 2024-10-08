@@ -47,7 +47,7 @@ class GoalColumn extends ModelColumn
             $goalPercentage = 0;
             $goalActual = 0;
             $goalFormat = '';
-            $campaignGoal = 1000;
+            $campaignGoal = $model->goal;
         }
 
         $template = '

@@ -119,7 +119,14 @@ class ServiceProvider implements ServiceProviderInterface
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
         }
 
-        // Temp solution to load "donations" and "revenue" columns on the "Forms" tab
+        /**
+         * We implemented a feature to load these stats columns using an async approach, so we could prevent a long
+         * page load on websites with lots of forms. However, the campaign details page's current "Forms" tab still
+         * doesn't support it. Still, it's using the same Form List Table that active the async approach by default,
+         * so the line below is necessary to disable it while we still don't have support for async loading on this screen.
+         *
+         * @see https://github.com/impress-org/givewp/pull/7483
+         */
         if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
