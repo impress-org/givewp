@@ -5,7 +5,10 @@ export function addSnackbarNotice(notification: Notification) {
         type: 'ADD_NOTIFICATION',
         notification: {
             ...notification,
-            duration: notification?.duration ?? 3000,
+            autoHide: notification?.autoHide ?? true,
+            isDismissible: notification?.isDismissible ?? true,
+            duration: notification?.duration ?? 5000,
+            type: notification.type ?? 'info',
             notificationType: 'snackbar',
         },
     };
@@ -16,7 +19,10 @@ export function addNotice(notification: Notification) {
         type: 'ADD_NOTIFICATION',
         notification: {
             ...notification,
-            duration: notification?.duration ?? 3000,
+            autoHide: notification?.autoHide ?? false,
+            isDismissible: notification?.isDismissible ?? true,
+            duration: notification?.duration ?? 5000,
+            type: notification.type ?? 'info',
             notificationType: 'notice',
         },
     };
