@@ -1,13 +1,9 @@
-import {Notification} from './index';
+import type {Notification} from '@givewp/campaigns/types';
 
-const selectors = {
-    getNotifications(state: []) {
-        return state;
-    },
-
-    getNotificationsByType(state: [], type: 'snackbar' | 'notice') {
-        return state.filter((notification: Notification) => notification.notificationType === type);
-    },
+export function getNotifications(state: []) {
+    return state;
 }
 
-export default selectors;
+export function getNotificationsByType(state: [], type: 'snackbar' | 'notice') {
+    return state.filter((notification: Notification) => notification.notificationType === type);
+}

@@ -1,34 +1,30 @@
-import {Notification} from './index';
+import type {Notification} from '@givewp/campaigns/types';
 
-const actions = {
-    addSnackbarNotice(notification: Notification) {
-        return {
-            type: 'ADD_NOTIFICATION',
-            notification: {
-                ...notification,
-                duration: notification?.duration ?? 3000,
-                notificationType: 'snackbar',
-            },
-        };
-    },
-
-    addNotice(notification: Notification) {
-        return {
-            type: 'ADD_NOTIFICATION',
-            notification: {
-                ...notification,
-                duration: notification?.duration ?? 3000,
-                notificationType: 'notice',
-            },
-        };
-    },
-
-    dismissNotification(id: string) {
-        return {
-            type: 'DISMISS_NOTIFICATION',
-            id,
-        };
-    },
+export function addSnackbarNotice(notification: Notification) {
+    return {
+        type: 'ADD_NOTIFICATION',
+        notification: {
+            ...notification,
+            duration: notification?.duration ?? 3000,
+            notificationType: 'snackbar',
+        },
+    };
 }
 
-export default actions;
+export function addNotice(notification: Notification) {
+    return {
+        type: 'ADD_NOTIFICATION',
+        notification: {
+            ...notification,
+            duration: notification?.duration ?? 3000,
+            notificationType: 'notice',
+        },
+    };
+}
+
+export function dismissNotification(id: string) {
+    return {
+        type: 'DISMISS_NOTIFICATION',
+        id,
+    };
+}

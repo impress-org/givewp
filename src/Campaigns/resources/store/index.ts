@@ -1,6 +1,6 @@
-import {createReduxStore} from '@wordpress/data';
-import actions from './actions';
-import selectors from './selectors';
+import {createReduxStore, register} from '@wordpress/data';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 export type Notification = {
     id: string;
@@ -28,4 +28,4 @@ export const store = createReduxStore('givewp/campaign-notifications', {
     selectors,
 });
 
-
+register(store);
