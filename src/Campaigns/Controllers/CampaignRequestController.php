@@ -117,6 +117,12 @@ class CampaignRequestController
                     $campaign->status = $status;
 
                     break;
+                case 'goal':
+                    $campaign->goal = (int)$value;
+                    break;
+                case 'goalType':
+                    $campaign->goalType = new CampaignGoalType($value);
+                    break;
                 default:
                     if ($campaign->hasProperty($key)) {
                         $campaign->$key = $value;
