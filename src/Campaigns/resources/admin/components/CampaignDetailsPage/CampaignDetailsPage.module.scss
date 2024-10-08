@@ -86,6 +86,11 @@
     justify-content: flex-end;
 }
 
+.justifyContentEnd {
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .breadcrumb {
     display: flex;
     line-height: 1rem;
@@ -113,29 +118,6 @@
     font-weight: 600;
 }
 
-.status {
-    padding-inline: 0.5rem;
-    padding-block: 0.185rem;
-    border-radius: 1rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: capitalize;
-    letter-spacing: 0.04rem;
-    transform: translateY(0.075rem);
-    color: #ffffff;
-
-    &.draftStatus {
-        background: #FFDAA6;
-        color: #1A0F00;
-
-    }
-
-    &.activeStatus {
-        background: #CEF2CF;
-        color: #022603;
-    }
-}
-
 select[name="campaignId"] {
     display: none;
 }
@@ -148,6 +130,7 @@ select[name="campaignId"] {
     display: flex;
     gap: 0.25rem;
     background-color: #fff;
+    border-bottom: 0.0625rem solid #dbdbdb;
 
     &:not(.fullWidth) {
         margin-bottom: var(--givewp-spacing-6);

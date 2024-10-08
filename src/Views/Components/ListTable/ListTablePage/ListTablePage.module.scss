@@ -1,7 +1,7 @@
 :global {
 
     :root {
-        --give-primary-color: #69b868;
+        --give-primary-color: #86b785;
     }
 
     .post-type-give_forms #wpbody {
@@ -70,7 +70,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    column-gap: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
 
     & > span {
         padding-inline: 0.5rem;
@@ -87,6 +88,11 @@
 }
 
 .flexRow:not(:first-child) {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.justifyContentEnd {
     flex: 1;
     justify-content: flex-end;
 }
@@ -157,6 +163,8 @@
     transition-duration: 180ms;
     transition-timing-function: ease-in;
     cursor: pointer;
+    width: fit-content;
+    margin-bottom: 0.5rem;
 
     &:is(a) {
         text-decoration: none;
@@ -322,6 +330,7 @@
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
+    margin-bottom: 1rem;
 }
 
 .container,

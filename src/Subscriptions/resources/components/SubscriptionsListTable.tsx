@@ -25,18 +25,18 @@ const API = new ListTableApi(window.GiveSubscriptions);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or  ID', 'give'),
-        ariaLabel: __('search donations', 'give'),
-    },
-    {
         name: 'form',
         type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
         options: window.GiveSubscriptions.forms,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or  ID', 'give'),
+        ariaLabel: __('search donations', 'give'),
     },
     {
         name: 'toggle',
