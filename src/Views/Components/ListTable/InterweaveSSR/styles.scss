@@ -1,58 +1,6 @@
 @use 'assets/src/css/Safe-Rem/functions' as *;
 
 .interweave {
-    /*.statusBadge {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: safe-rem(7.5);
-        height: safe-rem(1.875);
-        background-color: var(--give-primary-color);
-        border-radius: safe-rem(0.1875);
-        color: #fff;
-        font-size: safe-rem(0.8125);
-        column-gap: safe-rem(1);
-        text-transform: uppercase;
-
-        &--completed,
-        &--published {
-            background: #69b868;
-        }
-
-        &--failed,
-        &--revoked {
-            background: #d75a4b;
-        }
-
-        &--failing {
-            background: #e5301b;
-        }
-
-        &--abandoned,
-        &--cancelled,
-        &--expired {
-            background: #f4c520;
-        }
-
-        &--draft {
-            background: #f49420;
-        }
-
-        &--pending,
-        &--processing,
-        &--upgraded {
-            background: #0878b0;
-        }
-
-        &--refunded {
-            background: #333333;
-        }
-
-        &--complete {
-            background: #666666;
-        }
-    }*/
-
     .statusBadge {
         display: flex;
         justify-content: center;
@@ -130,40 +78,6 @@
         &--refunded {
             background: var(--givewp-blue-700);
             color: var(--givewp-blue-25);
-        }
-    }
-
-    .statusBadgeCampaign {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: fit-content;
-        height: safe-rem(1.5);
-        padding-block: 0.185rem;
-        padding-inline: 0.6rem;
-        background-color: black;
-        color: #fff;
-        border-radius: safe-rem(1);
-        font-size: safe-rem(0.7);
-        letter-spacing: 0.04rem;
-        transform: translateY(0.075rem);
-        column-gap: safe-rem(1);
-        text-transform: capitalize;
-
-        &--draft {
-            background: #FFDAA6;
-            color: #1A0F00;
-
-        }
-
-        &--active {
-            background: #CEF2CF;
-            color: #1A0F00;
-        }
-
-        &--inactive {
-            background: #e58074;
-            color: #1A0F00;
         }
     }
     .subscriptionStatus {
