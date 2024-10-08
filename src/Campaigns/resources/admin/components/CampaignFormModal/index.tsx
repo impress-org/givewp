@@ -3,10 +3,22 @@ import {__} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
-import {CampaignFormInputs, CampaignModalProps, GoalInputAttributes, GoalTypeOption as GoalTypeOptionType} from './types';
+import {
+    CampaignFormInputs,
+    CampaignModalProps,
+    GoalInputAttributes,
+    GoalTypeOption as GoalTypeOptionType,
+} from './types';
 import {useEffect, useRef, useState} from 'react';
 import {Currency, Upload} from '../Inputs';
-import {AmountIcon, DonationsIcon, DonorsIcon} from './GoalTypeIcons';
+import {
+    AmountFromSubscriptionsIcon,
+    AmountIcon,
+    DonationsIcon,
+    DonorsFromSubscriptionsIcon,
+    DonorsIcon,
+    SubscriptionsIcon,
+} from './GoalTypeIcons';
 
 /**
  * Get the next sharp hour
@@ -48,10 +60,16 @@ const getGoalTypeIcon = (type: string) => {
     switch (type) {
         case 'amount':
             return <AmountIcon />;
-        case 'donation':
+        case 'donations':
             return <DonationsIcon />;
         case 'donors':
             return <DonorsIcon />;
+        case 'amountFromSubscriptions':
+            return <AmountFromSubscriptionsIcon />;
+        case 'subscriptions':
+            return <SubscriptionsIcon />;
+        case 'donorsFromSubscriptions':
+            return <DonorsFromSubscriptionsIcon />;
     }
 };
 
@@ -140,17 +158,41 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         amount: {
             label: __('How much do you want to raise?', 'give'),
             description: __('Set the target amount your campaign should raise.', 'give'),
-            placeholder: __('Eg. $2,000', 'give'),
+            placeholder: __('eg. $2,000', 'give'),
         },
-        donation: {
+        donations: {
             label: __('How many donations do you need?', 'give'),
-            description: __("Let us know the target number you're aiming for your campaign.", 'give'),
-            placeholder: __('Eg. 100 donations', 'give'),
+            description: __('Set the target number of donations your campaign should bring in.', 'give'),
+            placeholder: __('eg. 100 donations', 'give'),
         },
         donors: {
             label: __('How many donors do you need?', 'give'),
-            description: __("Let us know the target number you're aiming for your campaign.", 'give'),
-            placeholder: __('Eg. 100 donors', 'give'),
+            description: __('Set the target number of donors your campaign should bring in.', 'give'),
+            placeholder: __('eg. 100 donors', 'give'),
+        },
+        amountFromSubscriptions: {
+            label: __('How much do you want to raise?', 'give'),
+            description: __(
+                'Set the target recurring amount your campaign should raise. One-time donations do not count.',
+                'give'
+            ),
+            placeholder: __('eg. $2,000', 'give'),
+        },
+        subscriptions: {
+            label: __('How many recurring donations do you need?', 'give'),
+            description: __(
+                'Set the target number of recurring donations your campaign should bring in. One-time donations do not count.',
+                'give'
+            ),
+            placeholder: __('placeholder', 'give'),
+        },
+        donorsFromSubscriptions: {
+            label: __('How many recurring donors do you need?', 'give'),
+            description: __(
+                'Set the target number of recurring donors your campaign should bring in. One-time donations do not count.',
+                'give'
+            ),
+            placeholder: __('eg. 100 subscribers', 'give'),
         },
     };
 
@@ -274,13 +316,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     register={register}
                                 />
                                 <GoalTypeOption
-                                    type={'donation'}
+                                    type={'donations'}
                                     label={__('Number of Donations', 'give')}
                                     description={__(
                                         'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
                                         'give'
                                     )}
-                                    selected={selectedGoalType === 'donation'}
+                                    selected={selectedGoalType === 'donations'}
                                     register={register}
                                 />
                                 <GoalTypeOption
@@ -291,6 +333,36 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                         'give'
                                     )}
                                     selected={selectedGoalType === 'donors'}
+                                    register={register}
+                                />
+                                <GoalTypeOption
+                                    type={'amountFromSubscriptions'}
+                                    label={__('Recurring amount raised', 'give')}
+                                    description={__(
+                                        'Only the first donation amount of a recurring donation is counted toward the goal.',
+                                        'give'
+                                    )}
+                                    selected={selectedGoalType === 'amountFromSubscriptions'}
+                                    register={register}
+                                />
+                                <GoalTypeOption
+                                    type={'subscriptions'}
+                                    label={__('Number of recurring donations', 'give')}
+                                    description={__(
+                                        'Only the first donation of a recurring donation is counted toward the goal.',
+                                        'give'
+                                    )}
+                                    selected={selectedGoalType === 'subscriptions'}
+                                    register={register}
+                                />
+                                <GoalTypeOption
+                                    type={'donorsFromSubscriptions'}
+                                    label={__('Number of recurring donors', 'give')}
+                                    description={__(
+                                        'Only the donors that subscribed to a recurring donation are counted toward the goal.',
+                                        'give'
+                                    )}
+                                    selected={selectedGoalType === 'donorsFromSubscriptions'}
                                     register={register}
                                 />
                             </div>
