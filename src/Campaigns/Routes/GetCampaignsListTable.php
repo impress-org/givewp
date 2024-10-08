@@ -170,7 +170,7 @@ class GetCampaignsListTable implements RestRoute
         }
 
         if ($status && 'any' !== $status) {
-            $query->whereLike('status', $status);
+            $query->where('status', $status);
         }
 
         return $query;
