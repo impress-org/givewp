@@ -1,0 +1,70 @@
+
+.snackbarContainer {
+    position: fixed;
+    z-index: 9999;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    width: 300px;
+    left: 50%;
+    transform: translateY(-50%);
+
+    .snackbar {
+        gap: 20px;
+        display: flex;
+        flex-direction: row;
+        border-radius: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        box-shadow: 0 5px 5px #b6b6b6;
+        align-items: center;
+        justify-content: space-between;
+
+        a {
+            padding: 0;
+            line-height: 0.5;
+            text-decoration: none;
+        }
+    }
+
+}
+
+// Snackbar colors
+.type-error-snackbar {
+    background-color: #dc1e1e;
+    color: #fff;
+}
+
+.type-info-snackbar {
+    background-color: #000;
+    color: #fff;
+}
+
+.type-info {
+    background-color: #2271b1;
+    color: #fff;
+}
+
+
+.noticeContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+
+    .notice {
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+        border-radius: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-3);
+        align-items: center;
+        justify-content: space-between;
+
+        a {
+            padding: 0;
+            line-height: 0.5;
+            text-decoration: none;
+        }
+    }
+}
+
