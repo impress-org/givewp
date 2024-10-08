@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
-import {dispatch} from '@wordpress/data';
+import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -13,8 +13,8 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon} from './Icons';
-import NoticePlaceholder from '../Notices/NoticePlaceholder';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon} from '../Icons';
+import NotificationPlaceholder from '../Notifications';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -38,6 +38,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         contextMenu: false,
         confirmationModal: false,
     });
+
+    const dispatch = useDispatch('givewp/campaign-notifications');
 
     const setShow = (data: Show) => {
         _setShowValue(prevState => {
@@ -96,11 +98,18 @@ export default function CampaignsDetailsPage({campaignId}) {
                 .then((response: Campaign) => {
                     setIsSaving(null);
                     reset(response);
+                    dispatch.addSnackbarNotice({
+                        id: `save-${data.status}`,
+                        content: __('Campaign updated', 'give')
+                    });
                 })
                 .catch((response: any) => {
                     setIsSaving(null);
-                    //todo: add error handling
-                    console.log(response);
+                    dispatch.addSnackbarNotice({
+                        id: `save-error`,
+                        type: 'error',
+                        content: __('Campaign update failed', 'give')
+                    });
                 });
         }
     };
@@ -118,11 +127,15 @@ export default function CampaignsDetailsPage({campaignId}) {
                     });
                     reset(response);
 
-                    //@ts-ignore
-                    dispatch('givewp/campaign-notifications').addSnackbarNotice({
+                    dispatch.addSnackbarNotice({
                         id: `update-${status}`,
-                        content: __('Your campaign is %s', 'give')
-                    })
+                        content: getMessageByStatus(status)
+                    });
+
+                    dispatch.addNotice({
+                        id: `update-${status}-notice`,
+                        content: getMessageByStatus(status)
+                    });
 
                 })
                 .catch((response: any) => {
@@ -130,7 +143,12 @@ export default function CampaignsDetailsPage({campaignId}) {
                         contextMenu: false,
                         confirmationModal: false,
                     });
-                    console.log(response);
+
+                    dispatch.addSnackbarNotice({
+                        id: 'update-error',
+                        type: 'error',
+                        content: __('Something went wrong', 'give')
+                    });
                 });
         })();
     };
@@ -143,6 +161,19 @@ export default function CampaignsDetailsPage({campaignId}) {
                 return __('Active', 'give');
             case 'draft':
                 return __('Draft', 'give');
+        }
+
+        return null;
+    };
+
+    const getMessageByStatus = (status: string) => {
+        switch (status) {
+            case 'archive':
+                return __('Your campaign is archived', 'give');
+            case 'active':
+                return __('Your campaign is active', 'give');
+            case 'draft':
+                return __('Your campaign is saved as draft', 'give');
         }
 
         return null;
@@ -253,10 +284,9 @@ export default function CampaignsDetailsPage({campaignId}) {
                         handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
                         handleConfirm={() => updateStatus('archive')}
                     />
-
-                    <NoticePlaceholder type="snackbar" />
                 </article>
             </form>
+            <NotificationPlaceholder type="snackbar" />
         </FormProvider>
     );
 }
