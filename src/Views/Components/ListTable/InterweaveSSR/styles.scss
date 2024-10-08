@@ -5,51 +5,79 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: safe-rem(7.5);
-        height: safe-rem(1.875);
-        background-color: var(--give-primary-color);
-        border-radius: safe-rem(0.1875);
+        width: fit-content;
+        height: safe-rem(1.375);
+        padding: 0.125rem 0.75rem 0.125rem 0.75rem;
+        background-color: black;
         color: #fff;
-        font-size: safe-rem(0.8125);
+        border-radius: safe-rem(1);
+        letter-spacing: 0.04rem;
+        transform: translateY(0.075rem);
         column-gap: safe-rem(1);
-        text-transform: uppercase;
+        text-transform: capitalize;
 
-        &--completed,
-        &--published {
-            background: #69b868;
+        div,
+        p {
+            font-size: safe-rem(0.75);
+            font-weight: 600;
+            line-height: safe-rem(1.125);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        &--failed,
-        &--revoked {
-            background: #d75a4b;
+        &--completed,
+        &--complete {
+            background: var(--givewp-emerald-100);
+            color: var(--givewp-emerald-900);
+        }
+
+        &--active,
+        &--publish,
+        &--published {
+            background: var(--givewp-green-100);
+            color: var(--givewp-green-900);
+        }
+
+        &--archived,
+        &--inactive,
+        {
+            background: var(--givewp-grey-100);
+            color: var(--givewp-grey-900);
         }
 
         &--failing {
-            background: #e5301b;
+            background: var(--givewp-yellow-100);
+            color: var(--givewp-yellow-900);
         }
 
+        &--failed,
+        &--revoked,
         &--abandoned,
         &--cancelled,
         &--expired {
-            background: #f4c520;
+            background: var(--givewp-red-100);
+            color: var(--givewp-red-900);
         }
 
         &--draft {
-            background: #f49420;
+            background: var(--givewp-orange-100);
+            color: var(--givewp-orange-900);
         }
 
         &--pending,
-        &--processing,
+        &--processing {
+            background: var(--givewp-blue-100);
+            color: var(--givewp-blue-900);
+        }
+
         &--upgraded {
-            background: #0878b0;
+            background: var(--givewp-purple-50);
+            color: var(--givewp-purple-900);
         }
 
         &--refunded {
-            background: #333333;
-        }
-
-        &--complete {
-            background: #666666;
+            background: var(--givewp-blue-700);
+            color: var(--givewp-blue-25);
         }
     }
     .subscriptionStatus {

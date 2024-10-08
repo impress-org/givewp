@@ -44,6 +44,8 @@ class ServiceProvider implements ServiceProviderInterface
         } elseif (SubscriptionsAdminPage::isShowing()) {
             Hooks::addAction('admin_head', SubscriptionsAdminPage::class, 'renderReactSwitch');
         }
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**
