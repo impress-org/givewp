@@ -114,7 +114,7 @@ class MigrateFormsToCampaignForms extends Migration
         $formCreatedAt = $formData->createdAt;
         $formSettings = json_decode($formData->settings);
 
-        $campaignId = DB::table('give_campaigns')
+        DB::table('give_campaigns')
             ->insert([
                 'campaign_type' => 'core',
                 'campaign_title' => $formTitle,
@@ -131,6 +131,8 @@ class MigrateFormsToCampaignForms extends Migration
                 'end_date' => $formSettings->goalEndDate,
                 'date_created' => $formCreatedAt,
             ]);
+
+        $campaignId = DB::last_insert_id();
 
         $this->addCampaignFormRelationship($formId, $campaignId, true);
     }
