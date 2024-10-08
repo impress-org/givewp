@@ -7,7 +7,6 @@ import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
-const urlParams = new URLSearchParams(window.location.search);
 
 /**
  * @unreleased
@@ -16,6 +15,7 @@ export default () => {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
+        const urlParams = new URLSearchParams(window.location.search);
         const tabId = urlParams.get('tab') || activeTab.id;
         return tabs.find((tab) => tab.id === tabId);
     };
@@ -27,6 +27,7 @@ export default () => {
             return;
         }
 
+        const urlParams = new URLSearchParams(window.location.search);
         urlParams.set('tab', newTab.id);
 
         window.history.pushState(null, activeTab.title, `${window.location.pathname}?${urlParams.toString()}`);
@@ -35,6 +36,7 @@ export default () => {
     };
 
     const handleUrlTabParamOnFirstLoad = () => {
+        const urlParams = new URLSearchParams(window.location.search);
         // Add the 'tab' parameter only if it's not in the URL yet
         if (!urlParams.has('tab')) {
             urlParams.set('tab', activeTab.id);
