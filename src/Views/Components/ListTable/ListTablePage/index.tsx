@@ -259,7 +259,6 @@ export default function ListTablePage({
 
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    {/*<PageActions PageActionsTop />*/}
                     {contentMode && children ? <>{children}</> : <br />}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
