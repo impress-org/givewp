@@ -1,10 +1,12 @@
 export type Notification = {
     id: string;
-    notificationType: 'notice' | 'snackbar';
-    type: 'error' | 'warning' | 'info' | 'success';
-    isDismissible?: boolean;
-    duration: number,
     content: string;
+    notificationType?: 'notice' | 'snackbar';
+    type?: 'error' | 'warning' | 'info' | 'success';
+    isDismissible?: boolean;
+    autoHide?: boolean;
+    onDismiss?: () => void;
+    duration?: number,
 }
 
 declare module "@wordpress/data" {
