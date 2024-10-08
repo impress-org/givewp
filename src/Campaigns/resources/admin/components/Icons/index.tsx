@@ -1,9 +1,3 @@
-export const BreadcrumbSeparatorIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 12L10 8L6 4" stroke="#4B5563" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
-
 export const DotsIcons = () => (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fillRule="evenodd" clipRule="evenodd"
@@ -33,6 +27,12 @@ export const TrashIcon = () => (
 );
 
 
+export const BreadcrumbSeparatorIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 12L10 8L6 4" stroke="#4B5563" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
 export const ErrorIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -46,4 +46,13 @@ export const ArrowReverse = () => (
         <path d="M2.333 4.083h5.834a3.5 3.5 0 1 1 0 7H2.333m0-7L4.667 1.75M2.333 4.083l2.334 2.334" stroke="#000"
               strokeWidth="1.167" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+)
+
+
+export const CloseIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 7 7 17M7 7l10 10" stroke="#F9FAFB" strokeWidth="2" strokeLinecap="round"
+              strokeLinejoin="round" />
+    </svg>
+
 )
