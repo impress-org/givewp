@@ -1618,6 +1618,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @unreleased Add additional validation for company name field
  * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
  *
@@ -1629,6 +1630,10 @@ function give_donation_form_validate_name_fields( $post_data ) {
 
     if (!give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title'])) {
           give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
+    }
+
+    if (!give_is_company_field_enabled($formId) && isset($post_data['give_company_name'])) {
+          give_set_error( 'disabled_company', esc_html__( 'The company field is not enabled.', 'give' ) );
     }
 
     if (give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title']) && !in_array($post_data['give_title'], array_values(give_get_name_title_prefixes($formId)))) {
