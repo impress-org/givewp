@@ -20,9 +20,10 @@ class AddHoneyPotFieldToDonationForms
     {
         $formNodes = $form->all();
         $lastSection = $form->count() ? $formNodes[$form->count() - 1] : null;
+        $honeypotFieldName = apply_filters('givewp_donation_forms_honeypot_field_name', 'donationBirthday');
 
-        if ($lastSection) {
-            $field = Honeypot::make('donationBirthday')
+        if ($lastSection && is_null($form->getNodeByName($honeypotFieldName))) {
+            $field = Honeypot::make($honeypotFieldName)
                 ->label('Donation Birthday')
                 ->scope('honeypot')
                 ->showInAdmin(false)
