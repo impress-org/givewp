@@ -418,40 +418,14 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @unreleased updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {
-    $post_data_keys = [
-        'give-form-id',
-        'give-gateway',
-        'card_name',
-        'card_number',
-        'card_cvc',
-        'card_exp_month',
-        'card_exp_year',
-        'card_address',
-        'card_address_2',
-        'card_city',
-        'card_state',
-        'billing_country',
-        'card_zip',
-        'give_email',
-        'give_first',
-        'give_last',
-        'give_user_login',
-        'give_user_pass',
-        'give-form-title',
-        'give_title',
-    ];
-
-    foreach ($post_data as $key => $value) {
-        if ( ! in_array($key, $post_data_keys, true)) {
-            continue;
-        }
-
+    foreach ($post_data as $value) {
         if (is_serialized(stripslashes_deep($value))) {
             return true;
         }
