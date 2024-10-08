@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n'
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import {ErrorIcon} from '../Icons';
+import {ErrorIcon} from '../../Icons';
 
 /**
  * @unreleased
