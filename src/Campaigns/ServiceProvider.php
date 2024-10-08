@@ -120,10 +120,10 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         /**
-         * We implemented a feature to load these stats columns using an async approach, so we could prevent a long
-         * page load on websites with lots of forms. However, the campaign details page's current "Forms" tab still
-         * doesn't support it. Still, it's using the same Form List Table that active the async approach by default,
-         * so the line below is necessary to disable it while we still don't have support for async loading on this screen.
+         * We implemented a feature to load the stats columns ("Goal", "donations" and "revenue") using an async approach,
+         * so we could prevent a long page load on websites with lots of forms. However, the campaign details page's current
+         * "Forms" tab still doesn't support it. Still, it's using the same Form List Table that active the async approach by
+         * default, so the line below is necessary to disable it while we still don't have support for async loading on this screen.
          *
          * @see https://github.com/impress-org/givewp/pull/7483
          */
