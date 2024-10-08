@@ -7,13 +7,13 @@ use Give\Log\Log;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class HoneyPotRule implements ValidationRule
 {
 
     /**
-     * @unreleased
+     * @since 3.16.2
      */
     public static function id(): string
     {
@@ -21,7 +21,7 @@ class HoneyPotRule implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 3.16.2
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -29,7 +29,7 @@ class HoneyPotRule implements ValidationRule
     }
 
     /**
-    * @unreleased
+    * @since 3.16.2
      * @throws SpamDonationException
      */
     public function __invoke($value, Closure $fail, string $key, array $values)

@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.16.1
+Stable tag: 3.16.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,19 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.16.3: October 7th, 2024 =
+* Security: Added additional validation to the donor title field, further protecting the option-based donation form request
+
+= 3.16.2: September 25th, 2024 =
+* Enhancement: Updated the visual builder header description field to use the rich text editor
+* Enhancement: Updated the strings in the form builder onboarding buttons to be translatable (Open source submission by @DAnn2012)
+* Enhancement: Updated strings in give settings to be translatable (Open source submission by @DAnn2012)
+* Security: Added additional prevention for serialized data in the option-based donation form request 
+* Security: Added additional security measures to the legacy donor list table request (CVE-2024-9130) 
+* Fix: Resolved a styling issue with some text fields not respecting error border styling
+* Fix: Resolved a styling issue with the anonymous block for WP 6.6 compatibility
+* Dev: Removed defaultProps in favor of ES6 default parameters for React 19 compatibility
+
 = 3.16.1: September 10th, 2024 =
 * Security: Added additional protection to the option-based donation form request (CVE-2024-8353)
 

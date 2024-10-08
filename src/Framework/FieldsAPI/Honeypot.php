@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class Honeypot extends Field
 {
