@@ -365,6 +365,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_donation_form_schema', function (DonationFormModel $form, int $formId) {
             /**
              * Check if the honeypot field is enabled
+             * @param bool $enabled
              * @param int $formId
              *
              * @since 3.16.2
@@ -372,6 +373,7 @@ class ServiceProvider implements ServiceProviderInterface
             if (apply_filters('givewp_donation_forms_honeypot_enabled', give_is_setting_enabled(give_get_option( 'givewp_donation_forms_honeypot_enabled', 'enabled')), $formId)) {
                 /**
                  * Filter the honeypot field name
+                 * @param string $honeypotFieldName
                  * @param int $formId
                  *
                  * @unreleased
