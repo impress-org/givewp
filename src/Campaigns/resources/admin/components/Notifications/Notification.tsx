@@ -31,7 +31,7 @@ const Notice = ({notification, onDismiss}: {notification: Notification, onDismis
         <div
             className={cx(styles.notice, styles[`type-${notification.type}`])}
         >
-            <div>
+            <div className={styles.notificationContent}>
                 {typeof notification.content === 'function' ? notification.content() : notification.content}
             </div>
             {notification.isDismissible && (

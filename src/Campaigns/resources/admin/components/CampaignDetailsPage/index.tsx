@@ -13,7 +13,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon} from '../Icons';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 
 import styles from './CampaignDetailsPage.module.scss';
@@ -97,8 +97,10 @@ export default function CampaignsDetailsPage({campaignId}) {
             type: 'warning',
             content: () => (
                 <>
-                    {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
-                    {` `}
+                    <TriangleIcon />
+                    <span>
+                        {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+                    </span>
                     <strong>
                         <a href="#" onClick={() => {
                             updateStatus('draft');
@@ -157,7 +159,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                         content: getMessageByStatus(status)
                     });
                 })
-                .catch((response: any) => {
+                .catch(() => {
                     setShow({
                         contextMenu: false,
                         confirmationModal: false,

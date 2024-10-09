@@ -88,3 +88,9 @@
     // Note: other notification types styles are not defined. You can define them below
 }
 
+
+.notificationContent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
