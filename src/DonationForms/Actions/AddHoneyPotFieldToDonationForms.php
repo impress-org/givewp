@@ -16,15 +16,14 @@ class AddHoneyPotFieldToDonationForms
      * @since 3.16.2
      * @throws EmptyNameException
      */
-    public function __invoke(DonationForm $form): void
+    public function __invoke(DonationForm $form, string $honeypotFieldName): void
     {
         $formNodes = $form->all();
         $lastSection = $form->count() ? $formNodes[$form->count() - 1] : null;
-        $honeypotFieldName = apply_filters('givewp_donation_forms_honeypot_field_name', 'donationBirthday');
 
         if ($lastSection && is_null($form->getNodeByName($honeypotFieldName))) {
             $field = Honeypot::make($honeypotFieldName)
-                ->label('Donation Birthday')
+                ->label($this->generateLabelFromFieldName($honeypotFieldName))
                 ->scope('honeypot')
                 ->showInAdmin(false)
                 ->showInReceipt(false)
@@ -32,5 +31,13 @@ class AddHoneyPotFieldToDonationForms
 
             $lastSection->append($field);
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function generateLabelFromFieldName(string $honeypotFieldName): string
+    {
+        return ucwords(trim(implode(" ", preg_split("/(?=[A-Z])/", $honeypotFieldName))));
     }
 }
