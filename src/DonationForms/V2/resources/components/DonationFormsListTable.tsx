@@ -39,7 +39,7 @@ const API = new ListTableApi(window.GiveDonationForms);
 const donationStatus = [
     {
         value: 'any',
-        text: __('All', 'give'),
+        text: __('All Status', 'give'),
     },
     {
         value: 'publish',
@@ -71,17 +71,17 @@ const campaignId = urlParams.get('id');
 
 const donationFormsFilters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
-    {
         name: 'status',
         type: 'select',
         text: __('status', 'give'),
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give'),
     },
 ];
 
@@ -280,15 +280,17 @@ export default function DonationFormsListTable() {
                 contentMode={isCampaignDetailsPage}
             >
                 {isCampaignDetailsPage ? (
-                    <a
-                        href={
-                            'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
-                            campaignId
-                        }
-                        className={styles.addCampaignFormButton}
-                    >
-                        {__('Add campaign form', 'give')}
-                    </a>
+                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                        <a
+                            href={
+                                'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                                campaignId
+                            }
+                            className={styles.addCampaignFormButton}
+                        >
+                            {__('Add campaign form', 'give')}
+                        </a>
+                    </div>
                 ) : (
                     <>
                         <button

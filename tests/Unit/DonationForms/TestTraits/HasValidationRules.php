@@ -5,13 +5,13 @@ namespace Give\Tests\Unit\DonationForms\TestTraits;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 trait HasValidationRules {
     /**
      * Asserts that a given validation rule passes.
      *
-     * @unreleased
+     * @since 3.16.2
      *
      * @param mixed $value
      */
@@ -39,7 +39,7 @@ trait HasValidationRules {
     /**
      * Asserts that a given validation rule fails.
      *
-     * @unreleased
+     * @since 3.16.2
      *
      * @param mixed $value
      */

@@ -5,7 +5,6 @@ import {dispatch, useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import cx from 'classnames';
 import {GiveCampaignDetails} from './types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -17,6 +16,8 @@ import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, T
 import NotificationPlaceholder from '../Notifications';
 
 import styles from './CampaignDetailsPage.module.scss';
+import {BreadcrumbSeparatorIcon} from './Icons';
+import {Interweave} from 'interweave';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -211,6 +212,13 @@ export default function CampaignsDetailsPage({campaignId}) {
         );
     }
 
+    const StatusBadge = () => (
+        <Interweave
+            attributes={{className: 'interweave'}}
+            content={`<div class="statusBadge statusBadge--${campaign.status}"><p>${campaign.status}</p></div>`}
+        />
+    );
+
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -236,9 +244,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 >
                                     {getStatus(campaign.status)}
                                 </span>
+                                <StatusBadge />
                             </div>
 
-                            <div className={styles.flexRow}>
+                            <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}

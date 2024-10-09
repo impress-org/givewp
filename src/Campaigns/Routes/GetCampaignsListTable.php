@@ -6,7 +6,6 @@ use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
@@ -59,6 +58,11 @@ class GetCampaignsListTable implements RestRoute
                         'minimum' => 1,
                     ],
                     'search' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'status' => [
                         'type' => 'string',
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
@@ -154,6 +158,7 @@ class GetCampaignsListTable implements RestRoute
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
+        $status = $this->request->get_param('status');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -162,6 +167,10 @@ class GetCampaignsListTable implements RestRoute
                 $query->whereLike('campaign_title', $search);
                 $query->orWhereLike('short_desc', $search);
             }
+        }
+
+        if ($status && 'any' !== $status) {
+            $query->where('status', $status);
         }
 
         return $query;

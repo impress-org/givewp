@@ -90,7 +90,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
-         * @unreleased
+         * @since 3.16.2
          */
         add_action('wp_ajax_givewp_additional_payment_gateways_hide_notice', static function () {
             add_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', time(), true);

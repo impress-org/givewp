@@ -12,7 +12,7 @@ export function CampaignsRowActions({item, setUpdateErrors, parameters}) {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
-    const donationsCount = parseInt(item?.donationsCount?.match(/^\d+/)[0], 10);
+    //const donationsCount = parseInt(item?.donationsCount?.match(/^\d+/)[0], 10);
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const response = await campaignsApi.fetchWithArgs(endpoint, {ids: [id]}, method);

@@ -67,22 +67,6 @@ export interface BulkActionsConfig {
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
 
-const ListTablePageWrap = (contentMode = false, children = null) => {
-    return (
-        <>
-            {contentMode ? (
-                <section className={styles.page}>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </section>
-            ) : (
-                <article className={styles.page}>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </article>
-            )}
-        </>
-    );
-};
-
 export default function ListTablePage({
     title,
     apiSettings,
@@ -210,7 +194,7 @@ export default function ListTablePage({
                     showModal={openBulkActionModal}
                 />
                 {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {page && setPage && showPagination()}
+                {!PageActionsTop && page && setPage && showPagination()}
             </div>
         );
     };
@@ -225,20 +209,24 @@ export default function ListTablePage({
         <>
             <article className={styles.page}>
                 {contentMode ? (
-                    <section role="search" id={styles.searchContainer}>
-                        <div className={styles.flexRow}>
-                            {filterSettings.map((filter) => (
-                                <Filter
-                                    key={filter.name}
-                                    value={filters[filter.name]}
-                                    filter={filter}
-                                    onChange={handleFilterChange}
-                                    debouncedOnChange={handleDebouncedFilterChange}
-                                />
-                            ))}
-                        </div>
-                        {children && <div className={styles.flexRow}>{children}</div>}
-                    </section>
+                    <>
+                        <section role="search" id={styles.searchContainer}>
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </>
                 ) : (
                     <>
                         <header className={styles.pageHeader}>
@@ -251,22 +239,27 @@ export default function ListTablePage({
                         </header>
                         {banner && <section role="banner">{banner()}</section>}
                         <section role="search" id={styles.searchContainer}>
-                            {filterSettings.map((filter) => (
-                                <Filter
-                                    key={filter.name}
-                                    value={filters[filter.name]}
-                                    filter={filter}
-                                    onChange={handleFilterChange}
-                                    debouncedOnChange={handleDebouncedFilterChange}
-                                />
-                            ))}
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
                         </section>
                     </>
                 )}
 
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions PageActionsTop />
+                    {contentMode && children ? <>{children}</> : <br />}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable

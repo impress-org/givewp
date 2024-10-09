@@ -26,18 +26,18 @@ const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or Donor ID', 'give'),
-        ariaLabel: __('Search donors', 'give'),
-    },
-    {
         name: 'form',
         type: 'formselect',
         text: __('All Donation Forms', 'give'),
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: window.GiveDonors.forms,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or Donor ID', 'give'),
+        ariaLabel: __('Search donors', 'give'),
     },
 ];
 

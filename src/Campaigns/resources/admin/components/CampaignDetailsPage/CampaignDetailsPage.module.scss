@@ -87,6 +87,11 @@
     justify-content: flex-end;
 }
 
+.justifyContentEnd {
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .breadcrumb {
     display: flex;
     line-height: 1rem;
@@ -154,6 +159,7 @@ select[name="campaignId"] {
     display: flex;
     gap: 0.25rem;
     background-color: #fff;
+    border-bottom: 0.0625rem solid #dbdbdb;
 
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);

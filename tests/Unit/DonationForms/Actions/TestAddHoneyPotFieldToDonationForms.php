@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.16.2
  */
 class TestAddHoneyPotFieldToDonationForms extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.2
      * @throws NameCollisionException|EmptyNameException|TypeNotSupported
      */
     public function testShouldAddHoneyPotFieldToDonationForms(): void
