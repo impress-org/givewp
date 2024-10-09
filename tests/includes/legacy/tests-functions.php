@@ -88,7 +88,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	}
 
     /**
-     * @unreleased
+     * @since 3.16.4
      * @dataProvider give_donation_form_has_serialized_fields_data
      */
     public function test_give_donation_form_has_serialized_fields(array $fields, bool $expected): void
@@ -101,7 +101,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
     }
 
     /**
-     * @unreleased
+     * @since 3.16.4
      */
     public function give_donation_form_has_serialized_fields_data(): array
     {
