@@ -203,6 +203,45 @@ select[name="campaignId"] {
     background-color: #66bb6a;
 }
 
+.archiveDialogContent {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: var(--givewp-spacing-3);
+}
+
+.archiveDialogButtons {
+    display: flex;
+    flex-direction: row;
+    padding: var(--givewp-spacing-3);
+    justify-content: space-between;
+    gap: 10px;
+
+    button {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        border: none;
+    }
+
+    .cancelButton {
+        border: 1px solid #9ca0af;
+        background-color: #fff;
+        color: #1f2937;
+    }
+
+    .confirmButton {
+        border: 1px solid #d92d0b;
+        background-color: #d92d0b;
+        color: #fff;
+    }
+}
+
 .pageContent {
     /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
 
