@@ -1,6 +1,6 @@
 export type Notification = {
     id: string;
-    content: string;
+    content: string | JSX.Element | Function;
     notificationType?: 'notice' | 'snackbar';
     type?: 'error' | 'warning' | 'info' | 'success';
     isDismissible?: boolean;
