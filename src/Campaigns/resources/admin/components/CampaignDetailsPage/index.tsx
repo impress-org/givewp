@@ -87,6 +87,22 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     }, [hasResolved]);
 
+    useEffect(() => {
+        if (campaign?.status !== 'archive') {
+            return;
+        }
+
+        dispatch.addNotice({
+            id: `update-archive-notice`,
+            type: 'warning',
+            content: () => (
+                <>
+                    {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+                </>
+            )
+        });
+    }, [campaign?.status]);
+
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
 
         if (formState.isDirty) {
@@ -131,12 +147,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                         id: `update-${status}`,
                         content: getMessageByStatus(status)
                     });
-
-                    dispatch.addNotice({
-                        id: `update-${status}-notice`,
-                        content: getMessageByStatus(status)
-                    });
-
                 })
                 .catch((response: any) => {
                     setShow({
@@ -169,11 +179,11 @@ export default function CampaignsDetailsPage({campaignId}) {
     const getMessageByStatus = (status: string) => {
         switch (status) {
             case 'archive':
-                return __('Your campaign is archived', 'give');
+                return __('Campaign is moved to archive', 'give');
             case 'active':
-                return __('Your campaign is active', 'give');
+                return __('Campaign is now active', 'give');
             case 'draft':
-                return __('Your campaign is saved as draft', 'give');
+                return __('Campaign is saved as draft', 'give');
         }
 
         return null;
