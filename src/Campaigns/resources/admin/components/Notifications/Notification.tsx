@@ -13,7 +13,7 @@ const Snackbar = ({notification, onDismiss}: {notification: Notification, onDism
             className={cx(styles.snackbar, styles[`type-${notification.type}-snackbar`])}
         >
             <div>
-                {notification.content}
+                {typeof notification.content === 'function' ? notification.content() : notification.content}
             </div>
             {notification.isDismissible && (
                 <a href="#" onClick={onDismiss}>
@@ -32,7 +32,7 @@ const Notice = ({notification, onDismiss}: {notification: Notification, onDismis
             className={cx(styles.notice, styles[`type-${notification.type}`])}
         >
             <div>
-                {notification.content}
+                {typeof notification.content === 'function' ? notification.content() : notification.content}
             </div>
             {notification.isDismissible && (
                 <a href="#" onClick={onDismiss}>
