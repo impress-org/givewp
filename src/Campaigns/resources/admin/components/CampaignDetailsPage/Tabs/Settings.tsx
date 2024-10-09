@@ -23,13 +23,25 @@ export default () => {
         switch (type) {
             case 'amount':
                 return __(
-                    'Your goal progress is measured by the total amount raised based on the goal amount. (e.g. $500 of $1,000 raised)',
+                    'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
                     'give'
                 );
             case 'donations':
-                return __('The total number of donations made for the campaign', 'give');
+                return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
             case 'donors':
-                return __('The total number of unique donors who have donated to the campaign', 'give');
+                return __(
+                    'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
+                    'give'
+                );
+            case 'amountFromSubscriptions':
+                return __('Only the first donation amount of a recurring donation is counted toward the goal.', 'give');
+            case 'subscriptions':
+                return __('Only the first donation of a recurring donation is counted toward the goal.', 'give');
+            case 'donorsFromSubscriptions':
+                return __(
+                    'Only the donors that subscribed to a recurring donation are counted toward the goal.',
+                    'give'
+                );
             default:
                 return null;
         }
@@ -111,8 +123,11 @@ export default () => {
 
                         <select {...register('goalType')}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
-                            <option value="donations">{__('Number of Donations', 'give')}</option>
-                            <option value="donors">{__('Number of Donors', 'give')}</option>
+                            <option value="donations">{__('Number of donations', 'give')}</option>
+                            <option value="donors">{__('Number of donors', 'give')}</option>
+                            <option value="amountFromSubscriptions">{__('Recurring amount raised', 'give')}</option>
+                            <option value="subscriptions">{__('Number of recurring donations', 'give')}</option>
+                            <option value="donorsFromSubscriptions">{__('Number of recurring donors', 'give')}</option>
                         </select>
 
                         <div className={styles.sectionFieldDescription}>{goalDescription(goalType)}</div>
@@ -125,7 +140,7 @@ export default () => {
                         {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
                     </div>
 
-                    {goalType === 'amount' ? (
+                    {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
                         <Currency name="goal" currency={window.GiveCampaignDetails.currency} />
                     ) : (
                         <input type="number" {...register('goal', {valueAsNumber: true})} />

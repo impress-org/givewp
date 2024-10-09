@@ -184,7 +184,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 'Set the target number of recurring donations your campaign should bring in. One-time donations do not count.',
                 'give'
             ),
-            placeholder: __('placeholder', 'give'),
+            placeholder: __('eg. 100 subscriptions', 'give'),
         },
         donorsFromSubscriptions: {
             label: __('How many recurring donors do you need?', 'give'),
@@ -317,7 +317,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 />
                                 <GoalTypeOption
                                     type={'donations'}
-                                    label={__('Number of Donations', 'give')}
+                                    label={__('Number of donations', 'give')}
                                     description={__(
                                         'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
                                         'give'
@@ -327,7 +327,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 />
                                 <GoalTypeOption
                                     type={'donors'}
-                                    label={__('Number of Donors', 'give')}
+                                    label={__('Number of donors', 'give')}
                                     description={__(
                                         'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
                                         'give'
@@ -380,7 +380,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 <span className={styles.description}>
                                     {goalInputAttributes[selectedGoalType].description}
                                 </span>
-                                {selectedGoalType === 'amount' ? (
+                                {selectedGoalType === 'amount' || selectedGoalType === 'amountFromSubscriptions' ? (
                                     <Currency
                                         name="goal"
                                         currency={'USD'}

@@ -40,14 +40,13 @@
 
     .goalTypeOptionIcon {
 
+        line-height: 0.875rem;
+        margin-top: 0.175rem;
+
         svg {
             width: 1.5rem;
             height: 1.5rem;
         }
-
-        /*path {
-            stroke: #9CA0AF;
-        }*/
     }
 
     .goalTypeOptionText {
@@ -57,12 +56,12 @@
             cursor: pointer;
         }
 
-        label {
-            /*font-size: 1.142rem;*/
+        > label {
+            font-size: 0.875rem !important;
         }
 
-        span {
-            /*font-size: 0.75rem;*/
+        > span {
+            font-size: 0.75rem !important;
             margin-top: 0.2rem;
             display: none;
             line-height: 1rem !important;
@@ -82,11 +81,6 @@
         background-color: #374151;
 
         .goalTypeOptionIcon {
-
-            /*svg {
-                width: 2.5rem;
-                height: 2.5rem;
-            }*/
 
             svg path:not([fill]) {
                 stroke: #F9FAFB;
