@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
-import {dispatch, useDispatch} from '@wordpress/data';
+import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -14,10 +14,9 @@ import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
+import cx from 'classnames';
 
 import styles from './CampaignDetailsPage.module.scss';
-import {BreadcrumbSeparatorIcon} from './Icons';
-import {Interweave} from 'interweave';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -212,13 +211,6 @@ export default function CampaignsDetailsPage({campaignId}) {
         );
     }
 
-    const StatusBadge = () => (
-        <Interweave
-            attributes={{className: 'interweave'}}
-            content={`<div class="statusBadge statusBadge--${campaign.status}"><p>${campaign.status}</p></div>`}
-        />
-    );
-
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -244,7 +236,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 >
                                     {getStatus(campaign.status)}
                                 </span>
-                                <StatusBadge />
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
