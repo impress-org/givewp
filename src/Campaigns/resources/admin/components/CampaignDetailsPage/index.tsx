@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
-import {useDispatch} from '@wordpress/data';
+import {dispatch, useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -93,11 +93,20 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
 
         dispatch.addNotice({
-            id: `update-archive-notice`,
+            id: 'update-archive-notice',
             type: 'warning',
             content: () => (
                 <>
                     {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+                    {` `}
+                    <strong>
+                        <a href="#" onClick={() => {
+                            updateStatus('draft');
+                            dispatch.dismissNotification('update-archive-notice');
+                        }}>
+                            {__('Move to draft', 'give')}
+                        </a>
+                    </strong>
                 </>
             )
         });
@@ -183,7 +192,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             case 'active':
                 return __('Campaign is now active', 'give');
             case 'draft':
-                return __('Campaign is saved as draft', 'give');
+                return __('Campaign is moved to draft', 'give');
         }
 
         return null;
