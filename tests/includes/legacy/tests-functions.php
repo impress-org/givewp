@@ -91,7 +91,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
      * @unreleased
      * @dataProvider give_donation_form_has_serialized_fields_data
      */
-    public function test_give_donation_form_has_serialized_fields_returns_true($fields, $expected): void
+    public function test_give_donation_form_has_serialized_fields(array $fields, bool $expected): void
     {
         if ($expected) {
             $this->assertTrue(give_donation_form_has_serialized_fields($fields));
@@ -107,9 +107,12 @@ class Tests_Functions extends Give_Unit_Test_Case {
     {
         return [
             [['foo' => serialize('bar')], true],
+            [['foo' => 'bar', 'baz' => '\\' . serialize('backslash-bypass')], true],
+            [['foo' => 'bar', 'baz' => '\\\\' . serialize('double-backslash-bypass')], true],
             [['foo' => 'bar'], false],
             [['foo' => 'bar', 'baz' => serialize('qux')], true],
             [['foo' => 'bar', 'baz' => 'qux'], false],
+            [['foo' => 'bar', 'baz' => 1], false],
         ];
     }
 }

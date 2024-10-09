@@ -426,6 +426,10 @@ function give_donation_form_validate_fields() {
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {
     foreach ($post_data as $value) {
+        if (is_serialized(ltrim($value, '\\'))) {
+          return true;
+        }
+
         if (is_serialized(stripslashes_deep($value))) {
             return true;
         }
