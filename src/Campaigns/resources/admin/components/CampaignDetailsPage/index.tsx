@@ -27,10 +27,6 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-export function getGiveCampaignDetailsWindowData() {
-    return window.GiveCampaignDetails;
-}
-
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
@@ -87,6 +83,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     }, [hasResolved]);
 
+    // Show campaign archived notice
     useEffect(() => {
         if (campaign?.status !== 'archive') {
             return;
@@ -172,32 +169,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                     });
                 });
         })();
-    };
-
-    const getStatus = (status: string) => {
-        switch (status) {
-            case 'archive':
-                return __('Archived', 'give');
-            case 'active':
-                return __('Active', 'give');
-            case 'draft':
-                return __('Draft', 'give');
-        }
-
-        return null;
-    };
-
-    const getMessageByStatus = (status: string) => {
-        switch (status) {
-            case 'archive':
-                return __('Campaign is moved to archive', 'give');
-            case 'active':
-                return __('Campaign is now active', 'give');
-            case 'draft':
-                return __('Campaign is moved to draft', 'give');
-        }
-
-        return null;
     };
 
     if (!hasResolved) {
@@ -311,3 +282,29 @@ export default function CampaignsDetailsPage({campaignId}) {
         </FormProvider>
     );
 }
+
+const getStatus = (status: string) => {
+    switch (status) {
+        case 'archive':
+            return __('Archived', 'give');
+        case 'active':
+            return __('Active', 'give');
+        case 'draft':
+            return __('Draft', 'give');
+    }
+
+    return null;
+};
+
+const getMessageByStatus = (status: string) => {
+    switch (status) {
+        case 'archive':
+            return __('Campaign is moved to archive', 'give');
+        case 'active':
+            return __('Campaign is now active', 'give');
+        case 'draft':
+            return __('Campaign is moved to draft', 'give');
+    }
+
+    return null;
+};
