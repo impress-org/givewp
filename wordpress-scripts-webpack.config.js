@@ -25,6 +25,7 @@ module.exports = {
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
             '@givewp/components': srcPath('Views/Components/'),
+            '@givewp/campaigns': srcPath('Campaigns/resources'),
         },
     },
     entry: {

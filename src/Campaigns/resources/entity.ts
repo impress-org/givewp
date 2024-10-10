@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {dispatch} from '@wordpress/data';
 import {store as coreStore} from '@wordpress/core-data';
+import './store';
 
 //@ts-ignore
 dispatch(coreStore).addEntities([

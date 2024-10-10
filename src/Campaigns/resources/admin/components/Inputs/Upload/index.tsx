@@ -15,9 +15,10 @@ type MediaLibrary = {
     reset: () => void;
     label: string;
     actionLabel?: string;
+    disabled?: boolean;
 };
 
-export default function UploadMedia({id, value, onChange, label, actionLabel, reset}: MediaLibrary) {
+export default function UploadMedia({id, value, onChange, label, actionLabel, reset, disabled}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -57,6 +58,20 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
         event.preventDefault();
         openMediaLibrary(event);
     };
+
+    if (value && disabled) {
+        return (
+            <img
+                className={'givewp-media-library-control__image'}
+                src={value}
+                alt={__('uploaded image', 'give')}
+            />
+        )
+    }
+
+    if (disabled) {
+        return;
+    }
 
     return (
         <div id={id}>
