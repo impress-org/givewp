@@ -125,9 +125,17 @@ export default () => {
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donations">{__('Number of donations', 'give')}</option>
                             <option value="donors">{__('Number of donors', 'give')}</option>
-                            <option value="amountFromSubscriptions">{__('Recurring amount raised', 'give')}</option>
-                            <option value="subscriptions">{__('Number of recurring donations', 'give')}</option>
-                            <option value="donorsFromSubscriptions">{__('Number of recurring donors', 'give')}</option>
+                            {window.GiveCampaignDetails.isRecurringEnabled && (
+                                <option value="amountFromSubscriptions">{__('Recurring amount raised', 'give')}</option>
+                            )}
+                            {window.GiveCampaignDetails.isRecurringEnabled && (
+                                <option value="subscriptions">{__('Number of recurring donations', 'give')}</option>
+                            )}
+                            {window.GiveCampaignDetails.isRecurringEnabled && (
+                                <option value="donorsFromSubscriptions">
+                                    {__('Number of recurring donors', 'give')}
+                                </option>
+                            )}
                         </select>
 
                         <div className={styles.sectionFieldDescription}>{goalDescription(goalType)}</div>
