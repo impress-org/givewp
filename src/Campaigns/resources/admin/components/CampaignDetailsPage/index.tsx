@@ -36,8 +36,10 @@ const StatusBadge = ({status}:{status: string}) => {
     };
 
     return (
-        <div className={`statusBadge statusBadge--${status}`}>
-            <p>${statusMap[status]}</p>
+        <div className="interweave">
+            <div className={`statusBadge statusBadge--${status}`}>
+                <p>{statusMap[status]}</p>
+            </div>
         </div>
     );
 }
