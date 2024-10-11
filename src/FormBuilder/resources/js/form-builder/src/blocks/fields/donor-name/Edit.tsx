@@ -10,8 +10,22 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
 const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
+type Attributes = {
+    showHonorific: boolean;
+    useGlobalSettings: boolean;
+    honorifics: string[];
+    firstNameLabel: string;
+    firstNamePlaceholder: string;
+    lastNameLabel: string;
+    lastNamePlaceholder: string;
+    requireLastName: boolean;
+}
+
 export default function Edit({
-    attributes: {
+    attributes,
+    setAttributes,
+}: BlockEditProps<any>) {
+    const {
         showHonorific,
         useGlobalSettings,
         honorifics,
@@ -20,9 +34,7 @@ export default function Edit({
         lastNameLabel,
         lastNamePlaceholder,
         requireLastName,
-    },
-    setAttributes,
-}: BlockEditProps<any>) {
+    } = attributes as Attributes;
     const [selectedTitle, setSelectedTitle] = useState<string>((Object.values(honorifics)[0] as string) ?? '');
     const [honorificOptions, setHonorificOptions] = useState<OptionProps[]>(
         Object.values(honorifics).map((token: string) => {
@@ -51,17 +63,19 @@ export default function Edit({
     }
 
     useEffect(() => {
-        const options = !!useGlobalSettings ? getFormBuilderWindowData().nameTitlePrefixes : ['Mr', 'Ms', 'Mrs'];
+        if (useGlobalSettings) {
+            const options = !!useGlobalSettings ? getFormBuilderWindowData().nameTitlePrefixes : ['Mr', 'Ms', 'Mrs'];
 
-        setOptions(
-            Object.values(options).map((token: string) => {
-                return {
-                    label: titleLabelTransform(token),
-                    value: titleValueTransform(token),
-                    checked: selectedTitle === token,
-                } as OptionProps;
-            })
-        );
+            setOptions(
+                Object.values(options).map((token: string) => {
+                    return {
+                        label: titleLabelTransform(token),
+                        value: titleValueTransform(token),
+                        checked: selectedTitle === token,
+                    } as OptionProps;
+                })
+            );
+        }
     }, [useGlobalSettings]);
 
     return (
@@ -122,7 +136,7 @@ export default function Edit({
                                     <SelectControl
                                         label={__('Options', 'give')}
                                         onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
-                                        value={useGlobalSettings}
+                                        value={useGlobalSettings ? 'true' : 'false'}
                                         options={[
                                             {label: __('Global', 'give'), value: 'true'},
                                             {label: __('Customize', 'give'), value: 'false'},
