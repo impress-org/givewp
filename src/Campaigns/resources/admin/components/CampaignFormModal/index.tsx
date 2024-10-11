@@ -339,40 +339,38 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     register={register}
                                 />
                                 {isRecurringEnabled && (
-                                    <GoalTypeOption
-                                        type={'amountFromSubscriptions'}
-                                        label={__('Recurring amount raised', 'give')}
-                                        description={__(
-                                            'Only the first donation amount of a recurring donation is counted toward the goal.',
-                                            'give'
-                                        )}
-                                        selected={selectedGoalType === 'amountFromSubscriptions'}
-                                        register={register}
-                                    />
-                                )}
-                                {isRecurringEnabled && (
-                                    <GoalTypeOption
-                                        type={'subscriptions'}
-                                        label={__('Number of recurring donations', 'give')}
-                                        description={__(
-                                            'Only the first donation of a recurring donation is counted toward the goal.',
-                                            'give'
-                                        )}
-                                        selected={selectedGoalType === 'subscriptions'}
-                                        register={register}
-                                    />
-                                )}
-                                {isRecurringEnabled && (
-                                    <GoalTypeOption
-                                        type={'donorsFromSubscriptions'}
-                                        label={__('Number of recurring donors', 'give')}
-                                        description={__(
-                                            'Only the donors that subscribed to a recurring donation are counted toward the goal.',
-                                            'give'
-                                        )}
-                                        selected={selectedGoalType === 'donorsFromSubscriptions'}
-                                        register={register}
-                                    />
+                                    <>
+                                        <GoalTypeOption
+                                            type={'amountFromSubscriptions'}
+                                            label={__('Recurring amount raised', 'give')}
+                                            description={__(
+                                                'Only the first donation amount of a recurring donation is counted toward the goal.',
+                                                'give'
+                                            )}
+                                            selected={selectedGoalType === 'amountFromSubscriptions'}
+                                            register={register}
+                                        />
+                                        <GoalTypeOption
+                                            type={'subscriptions'}
+                                            label={__('Number of recurring donations', 'give')}
+                                            description={__(
+                                                'Only the first donation of a recurring donation is counted toward the goal.',
+                                                'give'
+                                            )}
+                                            selected={selectedGoalType === 'subscriptions'}
+                                            register={register}
+                                        />
+                                        <GoalTypeOption
+                                            type={'donorsFromSubscriptions'}
+                                            label={__('Number of recurring donors', 'give')}
+                                            description={__(
+                                                'Only the donors that subscribed to a recurring donation are counted toward the goal.',
+                                                'give'
+                                            )}
+                                            selected={selectedGoalType === 'donorsFromSubscriptions'}
+                                            register={register}
+                                        />
+                                    </>
                                 )}
                             </div>
                             {errors.goalType && (
