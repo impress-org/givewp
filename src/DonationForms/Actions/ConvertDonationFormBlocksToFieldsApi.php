@@ -295,7 +295,8 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
-                $options = array_values((array)$block->getAttribute('honorifics'));
+                $options = array_filter(array_values((array)$block->getAttribute('honorifics')));
+
                 if (!empty($options)){
                     $group->getNodeByName('honorific')
                         ->label(__('Title', 'give'))
