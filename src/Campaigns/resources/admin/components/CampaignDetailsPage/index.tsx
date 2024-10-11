@@ -15,7 +15,6 @@ import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {Interweave} from 'interweave';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -29,12 +28,19 @@ interface Show {
 }
 
 
-const StatusBadge = ({status}:{status: string}) => (
-    <Interweave
-        attributes={{className: 'interweave'}}
-        content={`<div class="statusBadge statusBadge--${status}"><p>${status}</p></div>`}
-    />
-);
+const StatusBadge = ({status}:{status: string}) => {
+    const statusMap = {
+        active:  __('Active', 'give'),
+        archived:  __('Archived', 'give'),
+        draft:  __('Draft', 'give')
+    };
+
+    return (
+        <div className={`statusBadge statusBadge--${status}`}>
+            <p>${statusMap[status]}</p>
+        </div>
+    );
+}
 
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
