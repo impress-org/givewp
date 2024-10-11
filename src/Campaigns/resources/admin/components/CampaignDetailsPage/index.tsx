@@ -94,7 +94,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     // Show campaign archived notice
     useEffect(() => {
-        if (campaign?.status !== 'archive') {
+        if (campaign?.status !== 'archived') {
             return;
         }
 
@@ -147,7 +147,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = (status: 'archive' | 'draft') => {
+    const updateStatus = (status: 'archived' | 'draft') => {
         setValue('status', status);
         handleSubmit(async (data) => {
             edit(data);
@@ -255,7 +255,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         >
                                             <ViewIcon /> {__('View Campaign', 'give')}
                                         </a>
-                                        {campaign.status === 'archive' ? (
+                                        {campaign.status === 'archived' ? (
                                             <a
                                                 href="#"
                                                 className={cx(styles.contextMenuItem, styles.draft)}
@@ -283,7 +283,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                         title={__('Archive Campaign', 'give')}
                         isOpen={show.confirmationModal}
                         handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
-                        handleConfirm={() => updateStatus('archive')}
+                        handleConfirm={() => updateStatus('archived')}
                     />
                 </article>
             </form>
@@ -292,22 +292,9 @@ export default function CampaignsDetailsPage({campaignId}) {
     );
 }
 
-const getStatus = (status: string) => {
-    switch (status) {
-        case 'archive':
-            return __('Archived', 'give');
-        case 'active':
-            return __('Active', 'give');
-        case 'draft':
-            return __('Draft', 'give');
-    }
-
-    return null;
-};
-
 const getMessageByStatus = (status: string) => {
     switch (status) {
-        case 'archive':
+        case 'archived':
             return __('Campaign is moved to archive', 'give');
         case 'active':
             return __('Campaign is now active', 'give');

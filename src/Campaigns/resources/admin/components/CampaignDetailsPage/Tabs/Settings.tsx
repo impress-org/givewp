@@ -36,7 +36,7 @@ export default () => {
     };
 
     const [goalType, image, status, shortDescription] = watch(['goalType', 'image', 'status', 'shortDescription']);
-    const isDisabled = status === 'archive';
+    const isDisabled = status === 'archived';
 
     return (
         <div className={styles.sections}>

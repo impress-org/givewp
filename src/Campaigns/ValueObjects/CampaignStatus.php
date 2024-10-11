@@ -9,14 +9,14 @@ use Give\Framework\Support\ValueObjects\Enum;
  *
  * Statuses copied from https://github.com/impress-org/give-peer-to-peer/blob/develop/src/P2P/ValueObjects/Status.php
  *
- * @method static CampaignStatus ARCHIVE()
+ * @method static CampaignStatus ARCHIVED()
  * @method static CampaignStatus ACTIVE()
  * @method static CampaignStatus INACTIVE()
  * @method static CampaignStatus DRAFT()
  * @method static CampaignStatus PENDING()
  * @method static CampaignStatus PROCESSING()
  * @method static CampaignStatus FAILED()
- * @method bool isArchive()
+ * @method bool isArchived()
  * @method bool isActive()
  * @method bool isInactive()
  * @method bool isDraft()
@@ -26,7 +26,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  */
 class CampaignStatus extends Enum
 {
-    const ARCHIVE  = 'archive';
+    const ARCHIVED  = 'archived';
     const ACTIVE  = 'active';
     const INACTIVE  = 'inactive';
     const DRAFT = 'draft';
