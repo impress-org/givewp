@@ -78,7 +78,9 @@ export default () => {
                         </div>
 
                         {isDisabled ? (
-                            <textarea disabled={true} rows={10}>{shortDescription.replace(/(<([^>]+)>)/gi, '')}</textarea>
+                            <textarea disabled={true} rows={10}>
+                                {shortDescription.replace(/(<([^>]+)>)/gi, '')}
+                            </textarea>
                         ) : (
                             <Editor name="shortDescription" />
                         )}
@@ -153,7 +155,7 @@ export default () => {
                         {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
                     </div>
 
-                    {goalType === 'amount' ? (
+                    {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
                         <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
                     ) : (
                         <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
