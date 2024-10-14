@@ -206,7 +206,7 @@ class RegisterCampaignRoutes
                     'errorMessage' => esc_html__('Campaign title is required', 'give'),
                 ],
                 'status' => [
-                    'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed'],
+                    'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed', 'archived'],
                     'description' => esc_html__('Campaign status', 'give'),
                 ],
                 'shortDescription' => [

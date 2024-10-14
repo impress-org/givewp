@@ -73,6 +73,7 @@
 }
 
 .flexRow {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -133,7 +134,6 @@ select[name="campaignId"] {
     border-bottom: 0.0625rem solid #dbdbdb;
 
     &:not(.fullWidth) {
-        margin-bottom: var(--givewp-spacing-6);
         padding: 0 var(--givewp-spacing-6);
     }
 }
@@ -181,11 +181,50 @@ select[name="campaignId"] {
     background-color: #66bb6a;
 }
 
+.archiveDialogContent {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: var(--givewp-spacing-3);
+}
+
+.archiveDialogButtons {
+    display: flex;
+    flex-direction: row;
+    padding: var(--givewp-spacing-3);
+    justify-content: space-between;
+    gap: 10px;
+
+    button {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        border: none;
+    }
+
+    .cancelButton {
+        border: 1px solid #9ca0af;
+        background-color: #fff;
+        color: #1f2937;
+    }
+
+    .confirmButton {
+        border: 1px solid #d92d0b;
+        background-color: #d92d0b;
+        color: #fff;
+    }
+}
+
 .pageContent {
     /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
 
     &:not(.fullWidth) {
-        padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+        padding: var(--givewp-spacing-6) var(--givewp-spacing-6);
     }
 
     section {
@@ -255,7 +294,8 @@ select[name="campaignId"] {
             }
 
             input,
-            select {
+            select,
+            textarea {
                 font-size: 16px;
                 line-height: 2;
                 display: block;
@@ -309,4 +349,50 @@ select[name="campaignId"] {
             margin: 3px 0 0 8px !important;
         }
     }
+
+
+    .campaignButtonDots {
+        background-color: #d1d5db;
+        border-color: #d1d5db;
+        border-radius: var(--givewp-rounded-4);
+        line-height: 0;
+        padding: var(--givewp-spacing-2);
+    }
+
+    .contextMenu {
+        position: absolute;
+        z-index: 9999;
+        padding: var(--givewp-spacing-1);
+        top: 50px;
+        width: 203px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px #f3f4f6;
+        background-color: #fff;
+
+        .contextMenuItem {
+            text-decoration: none;
+            gap: 5px;
+            display: flex;
+            align-items: center;
+            padding: var(--givewp-spacing-2);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.43;
+            color: #1f2937;
+
+            &:hover {
+                background-color: #f3f4f6;
+            }
+        }
+
+        .archive {
+            color: #d92d0b;
+        }
+
+        .draft {
+            font-weight: bold;
+        }
+    }
+
 }

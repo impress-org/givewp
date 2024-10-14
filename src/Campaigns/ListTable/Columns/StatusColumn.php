@@ -40,6 +40,9 @@ class StatusColumn extends ModelColumn
             case 'inactive':
                 $statusLabel = __('Inactive', 'give');
                 break;
+            case 'archived':
+                $statusLabel = __('Archived', 'give');
+                break;
             case 'draft':
                 $statusLabel = __('Draft', 'give');
                 break;

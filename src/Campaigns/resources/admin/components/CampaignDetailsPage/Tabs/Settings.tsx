@@ -35,8 +35,8 @@ export default () => {
         }
     };
 
-    const goalType = watch('goalType');
-    const image = watch('image');
+    const [goalType, image, status, shortDescription] = watch(['goalType', 'image', 'status', 'shortDescription']);
+    const isDisabled = status === 'archived';
 
     return (
         <div className={styles.sections}>
@@ -54,7 +54,7 @@ export default () => {
                             {__("Give your campaign a title that tells donors what it's about.", 'give')}
                         </div>
 
-                        <input {...register('title')} />
+                        <input {...register('title')} disabled={isDisabled} />
 
                         {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
                     </div>
@@ -65,7 +65,11 @@ export default () => {
                             {__('Let your donors know the story behind your campaign.', 'give')}
                         </div>
 
-                        <Editor name="shortDescription" />
+                        {isDisabled ? (
+                            <textarea disabled={true} rows={10}>{shortDescription.replace(/(<([^>]+)>)/gi, '')}</textarea>
+                        ) : (
+                            <Editor name="shortDescription" />
+                        )}
 
                         {errors.shortDescription && (
                             <div className={styles.errorMsg}>{`${errors.shortDescription.message}`}</div>
@@ -81,6 +85,7 @@ export default () => {
                         </div>
 
                         <Upload
+                            disabled={isDisabled}
                             id="givewp-campaigns-upload-cover-image"
                             label={__('Cover', 'give')}
                             actionLabel={__('Select to upload', 'give')}
@@ -109,7 +114,7 @@ export default () => {
                             {__('Set the details of your campaign goal here.', 'give')}
                         </div>
 
-                        <select {...register('goalType')}>
+                        <select {...register('goalType')} disabled={isDisabled}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donation">{__('Number of Donations', 'give')}</option>
                             <option value="donors">{__('Number of Donors', 'give')}</option>
@@ -126,9 +131,9 @@ export default () => {
                     </div>
 
                     {goalType === 'amount' ? (
-                        <Currency name="goal" currency={window.GiveCampaignDetails.currency} />
+                        <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
                     ) : (
-                        <input type="number" {...register('goal', {valueAsNumber: true})} />
+                        <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
                     )}
 
                     {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
