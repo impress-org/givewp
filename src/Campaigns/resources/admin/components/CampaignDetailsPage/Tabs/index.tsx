@@ -5,6 +5,7 @@ import {CampaignDetailsTab} from '../types';
 
 import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
+import NotificationsPlaceholder from '../../Notifications';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
 
@@ -73,6 +74,8 @@ export default () => {
             </div>
 
             <div className={cx('wp-header-end', 'hidden')} />
+
+            <NotificationsPlaceholder type="notice" />
 
             <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (

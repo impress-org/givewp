@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useEntityRecord} from '@wordpress/core-data';
+import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -10,22 +11,57 @@ import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
+import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
+import NotificationPlaceholder from '../Notifications';
+import cx from 'classnames';
 
 import styles from './CampaignDetailsPage.module.scss';
-import {BreadcrumbSeparatorIcon} from './Icons';
-import {Interweave} from 'interweave';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
 } & Window;
 
-export function getGiveCampaignDetailsWindowData() {
-    return window.GiveCampaignDetails;
+interface Show {
+    contextMenu?: boolean;
+    confirmationModal?: boolean;
+}
+
+
+const StatusBadge = ({status}:{status: string}) => {
+    const statusMap = {
+        active:  __('Active', 'give'),
+        archived:  __('Archived', 'give'),
+        draft:  __('Draft', 'give')
+    };
+
+    return (
+        <div className="interweave">
+            <div className={`statusBadge statusBadge--${status}`}>
+                <p>{statusMap[status]}</p>
+            </div>
+        </div>
+    );
 }
 
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
+    const [show, _setShowValue] = useState<Show>({
+        contextMenu: false,
+        confirmationModal: false,
+    });
+
+    const dispatch = useDispatch('givewp/campaign-notifications');
+
+    const setShow = (data: Show) => {
+        _setShowValue(prevState => {
+            return {
+                ...prevState,
+                ...data,
+            };
+        });
+    };
 
     useEffect(() => {
         apiFetch({
@@ -64,8 +100,35 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     }, [hasResolved]);
 
-    const onSubmit: SubmitHandler<Campaign> = async (data, e) => {
-        e.preventDefault();
+    // Show campaign archived notice
+    useEffect(() => {
+        if (campaign?.status !== 'archived') {
+            return;
+        }
+
+        dispatch.addNotice({
+            id: 'update-archive-notice',
+            type: 'warning',
+            content: () => (
+                <>
+                    <TriangleIcon />
+                    <span>
+                        {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+                    </span>
+                    <strong>
+                        <a href="#" onClick={() => {
+                            updateStatus('draft');
+                            dispatch.dismissNotification('update-archive-notice');
+                        }}>
+                            {__('Move to draft', 'give')}
+                        </a>
+                    </strong>
+                </>
+            )
+        });
+    }, [campaign?.status]);
+
+    const onSubmit: SubmitHandler<Campaign> = async (data) => {
 
         if (formState.isDirty) {
             setIsSaving(data.status);
@@ -76,13 +139,53 @@ export default function CampaignsDetailsPage({campaignId}) {
                 .then((response: Campaign) => {
                     setIsSaving(null);
                     reset(response);
+                    dispatch.addSnackbarNotice({
+                        id: `save-${data.status}`,
+                        content: __('Campaign updated', 'give')
+                    });
                 })
                 .catch((response: any) => {
                     setIsSaving(null);
-                    //todo: add error handling
-                    console.log(response);
+                    dispatch.addSnackbarNotice({
+                        id: `save-error`,
+                        type: 'error',
+                        content: __('Campaign update failed', 'give')
+                    });
                 });
         }
+    };
+
+    const updateStatus = (status: 'archived' | 'draft') => {
+        setValue('status', status);
+        handleSubmit(async (data) => {
+            edit(data);
+
+            save()
+                .then((response: Campaign) => {
+                    setShow({
+                        contextMenu: false,
+                        confirmationModal: false,
+                    });
+                    reset(response);
+
+                    dispatch.addSnackbarNotice({
+                        id: `update-${status}`,
+                        content: getMessageByStatus(status)
+                    });
+                })
+                .catch(() => {
+                    setShow({
+                        contextMenu: false,
+                        confirmationModal: false,
+                    });
+
+                    dispatch.addSnackbarNotice({
+                        id: 'update-error',
+                        type: 'error',
+                        content: __('Something went wrong', 'give')
+                    });
+                });
+        })();
     };
 
     if (!hasResolved) {
@@ -95,13 +198,6 @@ export default function CampaignsDetailsPage({campaignId}) {
             </div>
         );
     }
-
-    const StatusBadge = () => (
-        <Interweave
-            attributes={{className: 'interweave'}}
-            content={`<div class="statusBadge statusBadge--${campaign.status}"><p>${campaign.status}</p></div>`}
-        />
-    );
 
     return (
         <FormProvider {...methods}>
@@ -120,29 +216,17 @@ export default function CampaignsDetailsPage({campaignId}) {
                         <div className={styles.flexContainer}>
                             <div className={styles.flexRow}>
                                 <h1 className={styles.pageTitle}>{campaign.title}</h1>
-                                <StatusBadge />
+                                <span
+                                    className={cx(
+                                        styles.status,
+                                        styles[`${campaign.status}Status`],
+                                    )}
+                                >
+                                    <StatusBadge status={campaign.status} />
+                                </span>
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                <button
-                                    type="submit"
-                                    disabled={!formState.isDirty}
-                                    className={`button button-secondary ${styles.updateCampaignButton}`}
-                                    onClick={(e) => {
-                                        setValue('status', 'draft');
-                                    }}
-                                >
-                                    {isSaving === 'draft' ? (
-                                        <>
-                                            {__('Saving draft', 'give')}
-                                            <Spinner />
-                                        </>
-                                    ) : campaign.status === 'draft' ? (
-                                        __('Save draft', 'give')
-                                    ) : (
-                                        __('Save as draft', 'give')
-                                    )}
-                                </button>
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}
@@ -162,12 +246,69 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         __('Update campaign', 'give')
                                     )}
                                 </button>
+
+                                <button
+                                    className={`button button-secondary ${styles.campaignButtonDots}`}
+                                    onClick={() => setShow({contextMenu: !show.contextMenu})}
+                                >
+                                    <DotsIcons />
+                                </button>
+
+                                {!isSaving && show.contextMenu && (
+                                    <div className={styles.contextMenu}>
+                                        <a
+                                            href="#"
+                                            aria-label={__('View Campaign', 'give')}
+                                            className={styles.contextMenuItem}
+                                        >
+                                            <ViewIcon /> {__('View Campaign', 'give')}
+                                        </a>
+                                        {campaign.status === 'archived' ? (
+                                            <a
+                                                href="#"
+                                                className={cx(styles.contextMenuItem, styles.draft)}
+                                                onClick={() => updateStatus('draft')}
+                                            >
+                                                <ArrowReverse /> {__('Move to draft', 'give')}
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href="#"
+                                                className={cx(styles.contextMenuItem, styles.archive)}
+                                                onClick={() => setShow({confirmationModal: true})}
+                                            >
+                                                <TrashIcon /> {__('Archive Campaign', 'give')}
+                                            </a>
+                                        )}
+
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </header>
                     <Tabs />
+                    <ArchiveCampaignDialog
+                        title={__('Archive Campaign', 'give')}
+                        isOpen={show.confirmationModal}
+                        handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
+                        handleConfirm={() => updateStatus('archived')}
+                    />
                 </article>
             </form>
+            <NotificationPlaceholder type="snackbar" />
         </FormProvider>
     );
 }
+
+const getMessageByStatus = (status: string) => {
+    switch (status) {
+        case 'archived':
+            return __('Campaign is moved to archive', 'give');
+        case 'active':
+            return __('Campaign is now active', 'give');
+        case 'draft':
+            return __('Campaign is moved to draft', 'give');
+    }
+
+    return null;
+};

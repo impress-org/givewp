@@ -49,6 +49,9 @@
       ],
       "@givewp/form-builder/registrars/*": [
         "./src/FormBuilder/resources/js/registrars/*"
+      ],
+      "@givewp/campaigns/*": [
+        "./src/Campaigns/resources/*"
       ]
     }
   },
