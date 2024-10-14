@@ -48,7 +48,7 @@ const getGoalTypeIcon = (type: string) => {
     switch (type) {
         case 'amount':
             return <AmountIcon />;
-        case 'donation':
+        case 'donations':
             return <DonationsIcon />;
         case 'donors':
             return <DonorsIcon />;
@@ -93,7 +93,6 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
  */
 export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
-    const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<CampaignFormInputs>({
@@ -125,16 +124,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const selectedGoalType = watch('goalType');
     const goal = watch('goal');
 
-    useEffect(() => {
-        switch (step) {
+    const getFormModalTitle = () => {
+        switch(step) {
             case 1:
-                setFormModalTitle(__('Tell us about your fundraising cause', 'give'));
-                break;
+                return __('Tell us about your fundraising cause', 'give');
             case 2:
-                setFormModalTitle(__('Set up your campaign goal', 'give'));
-                break;
+                return __('Set up your campaign goal', 'give');
         }
-    }, [step]);
+
+        return null;
+    }
 
     const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
         amount: {
@@ -142,7 +141,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             description: __('Set the target amount your campaign should raise.', 'give'),
             placeholder: __('Eg. $2,000', 'give'),
         },
-        donation: {
+        donations: {
             label: __('How many donations do you need?', 'give'),
             description: __("Let us know the target number you're aiming for your campaign.", 'give'),
             placeholder: __('Eg. 100 donations', 'give'),
@@ -185,7 +184,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             <FormModal
                 isOpen={isOpen}
                 handleClose={handleClose}
-                title={formModalTitle}
+                title={getFormModalTitle()}
                 handleSubmit={handleSubmit(onSubmit)}
                 errors={[]}
                 className={styles.campaignForm}
@@ -274,13 +273,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                     register={register}
                                 />
                                 <GoalTypeOption
-                                    type={'donation'}
+                                    type={'donations'}
                                     label={__('Number of Donations', 'give')}
                                     description={__(
                                         'Your goal progress is measured by the number of donations. eg. 1 of 5 donations.',
                                         'give'
                                     )}
-                                    selected={selectedGoalType === 'donation'}
+                                    selected={selectedGoalType === 'donations'}
                                     register={register}
                                 />
                                 <GoalTypeOption
