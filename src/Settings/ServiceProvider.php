@@ -4,6 +4,7 @@ namespace Give\Settings;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give\Settings\Security\Actions\RegisterPage;
 use Give\Settings\Security\Actions\RegisterSection;
 use Give\Settings\Security\Actions\RegisterSettings;
 
@@ -34,7 +35,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerSecuritySettings(): void
     {
-        Hooks::addFilter('give_get_sections_general', RegisterSection::class);
-        Hooks::addFilter('give_get_settings_general', RegisterSettings::class);
+        Hooks::addFilter('give-settings_get_settings_pages', RegisterPage::class);
+        Hooks::addFilter('give_get_sections_security', RegisterSection::class);
+        Hooks::addFilter('give_get_settings_security', RegisterSettings::class);
     }
 }

@@ -26,12 +26,12 @@ class RegisterSettings
     {
         return [
             [
-                'id' => 'give_title_settings_advanced_security_1',
+                'id' => 'give_title_settings_security_1',
                 'type' => 'title',
             ],
             $this->getHoneypotSettings(),
             [
-                'id' => 'give_title_settings_advanced_security_1',
+                'id' => 'give_title_settings_security_1',
                 'type' => 'sectionend',
             ],
         ];
