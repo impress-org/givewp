@@ -4,4 +4,6 @@ export interface GiveCampaignsListTable {
     table: {columns: Array<object>};
     adminUrl: string;
     pluginUrl: string;
+    currency: string;
+    isRecurringEnabled: boolean;
 }

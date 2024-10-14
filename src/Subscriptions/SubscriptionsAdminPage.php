@@ -56,6 +56,8 @@ class SubscriptionsAdminPage
             [],
             null
         );
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**

@@ -34,6 +34,8 @@ class LoadCampaignsListTableAssets
                 'adminUrl' => admin_url(),
                 'paymentMode' => give_is_test_mode(),
                 'pluginUrl' => GIVE_PLUGIN_URL,
+                'currency' => give_get_currency(),
+                'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             ]
         );
 
