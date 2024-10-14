@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2;
 
+use Give\Campaigns\CampaignsAdminPage;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Helpers\EnqueueScript;
 use WP_Post;
@@ -163,6 +164,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
+     * @unreleased Add campaignId parameter on campaigns page
      * @since 2.20.0
      * @return array
      */
@@ -171,7 +173,12 @@ class DonationFormsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 30,
+
         ];
+
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            $queryParameters['campaignId'] = absint($_GET['id']);
+        }
 
         $request = WP_REST_Request::from_url(
             add_query_arg(
@@ -265,7 +272,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
     }
 
     /**
