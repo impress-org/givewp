@@ -130,8 +130,8 @@ export default () => {
 
                         <select {...register('goalType')} disabled={isDisabled}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
-                            <option value="donation">{__('Number of Donations', 'give')}</option>
-                            <option value="donors">{__('Number of Donors', 'give')}</option>
+                            <option value="donations">{__('Number of donations', 'give')}</option>
+                            <option value="donors">{__('Number of donors', 'give')}</option>
                             {window.GiveCampaignDetails.isRecurringEnabled && (
                                 <>
                                     <option value="amountFromSubscriptions">
