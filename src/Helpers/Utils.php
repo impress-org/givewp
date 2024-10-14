@@ -123,8 +123,49 @@ class Utils
      */
     public static function maybeSafeUnserialize($data)
     {
-        return is_serialized($data)
-            ? @unserialize(trim($data), ['allowed_classes' => false])
+        return self::isSerialized($data)
+            ? self::safeUnserialize($data)
             : $data;
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function isSerialized($data): bool
+    {
+        /**
+         * The stripslashes_deep() method removes only the first backslash occurrence from
+         * a given string, so we are using the ltrim() method to make sure we are removing
+         * all other occurrences. We need to remove these backslashes from the beginner of
+         * the input because attackers can use them to bypass the is_serialized() check.
+         */
+        $data = ltrim(stripslashes_deep($data), '\\');
+
+        if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * The regular expression attempts to capture the basic structure of a serialized array
+     * or object. This is more robust than the is_serialized() function but still not perfect.
+     *
+     * @unreleased
+     */
+    public static function containsSerializedDataRegex($data): bool
+    {
+        $pattern = '/(a:\d+:\{.*\})|(O:\d+:"[^"]+":\{.*\})/';
+
+        return preg_match($pattern, $data) === 1;
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function safeUnserialize($data)
+    {
+        return @unserialize(trim($data), ['allowed_classes' => false]);
     }
 }
