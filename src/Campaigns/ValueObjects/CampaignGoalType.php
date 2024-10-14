@@ -8,15 +8,15 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @unreleased
  *
  * @method static CampaignType AMOUNT()
- * @method static CampaignType DONATION()
+ * @method static CampaignType DONATIONS()
  * @method static CampaignType DONORS()
  * @method bool isAmount()
- * @method bool isDonation()
+ * @method bool isDonations()
  * @method bool isDonors()
  */
 class CampaignGoalType extends Enum
 {
     const AMOUNT = 'amount';
-    const DONATION = 'donation';
+    const DONATIONS = 'donations';
     const DONORS = 'donors';
 }
