@@ -13,6 +13,7 @@ use Give\Framework\FieldsAPI\Honeypot;
 class AddHoneyPotFieldToDonationForms
 {
     /**
+     * @unreleased added parameter $honeypotFieldName
      * @since 3.16.2
      * @throws EmptyNameException
      */
