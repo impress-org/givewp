@@ -190,6 +190,7 @@ final class Give
     private $container;
 
     /**
+     * @unreleased added Settings service provider
      * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
