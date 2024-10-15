@@ -239,6 +239,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 [Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/give)
+
 == Screenshots ==
 
 1. Creating powerful donation forms is easy with GiveWP. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
@@ -262,6 +266,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.17.0: October 16th, 2024 =
+
 = 3.16.5: October 15th, 2024 =
 * Fix: Resolved a PHP v8+ fatal error on option-based forms when the Tributes add-on was enabled
 * Fix: Resolved an issue with the donor dashboard menu not opening on mobile devices
