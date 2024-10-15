@@ -16,7 +16,16 @@ class OptionBasedFormEditor
      */
     public static function isEnabled(): bool
     {
-        return true;
+        $option = give_get_option('option_based_form_editor', '');
+
+        if (empty($option)) {
+            $option = self::existOptionBasedFormsOnDb();
+            give_update_option('option_based_form_editor', $option ? 'enabled' : 'disabled');
+
+            return $option;
+        }
+
+        return give_is_setting_enabled($option);
     }
 
     /**

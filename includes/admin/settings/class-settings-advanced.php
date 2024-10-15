@@ -9,6 +9,7 @@
  * @since       1.8
  */
 
+use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Onboarding\Setup\Page as SetupPage;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -69,6 +70,18 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'   => 'give_title_data_control_2',
 							'type' => 'title',
 						],
+                        [
+                            'name' => __('Option-Based Form Editor', 'give'),
+                            'desc' => __('If enabled, you\'ll gain access to the legacy settings and can create forms using the Option-Based Editor. Disabling this option will not affect existing forms created with the Option-Based Editor.',
+                                'give'),
+                            'id' => 'option_based_form_editor',
+                            'type' => 'radio_inline',
+                            'default' => (OptionBasedFormEditor::existOptionBasedFormsOnDb()) ? 'enabled' : 'disabled',
+                            'options' => [
+                                'enabled' => __('Enabled', 'give'),
+                                'disabled' => __('Disabled', 'give'),
+                            ],
+                        ],
 						[
 							'name'    => __( 'Default GiveWP Styles', 'give' ),
 							'desc'    => __( 'This controls GiveWP\'s default styles for legacy donation forms and other front end elements. Disabling this option means that you\'ll need to supply your own styles.', 'give' ),
