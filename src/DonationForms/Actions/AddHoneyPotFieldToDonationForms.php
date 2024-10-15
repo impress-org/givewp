@@ -13,17 +13,18 @@ use Give\Framework\FieldsAPI\Honeypot;
 class AddHoneyPotFieldToDonationForms
 {
     /**
+     * @unreleased added parameter $honeypotFieldName
      * @since 3.16.2
      * @throws EmptyNameException
      */
-    public function __invoke(DonationForm $form): void
+    public function __invoke(DonationForm $form, string $honeypotFieldName): void
     {
         $formNodes = $form->all();
         $lastSection = $form->count() ? $formNodes[$form->count() - 1] : null;
 
-        if ($lastSection) {
-            $field = Honeypot::make('donationBirthday')
-                ->label('Donation Birthday')
+        if ($lastSection && is_null($form->getNodeByName($honeypotFieldName))) {
+            $field = Honeypot::make($honeypotFieldName)
+                ->label($this->generateLabelFromFieldName($honeypotFieldName))
                 ->scope('honeypot')
                 ->showInAdmin(false)
                 ->showInReceipt(false)
@@ -31,5 +32,13 @@ class AddHoneyPotFieldToDonationForms
 
             $lastSection->append($field);
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function generateLabelFromFieldName(string $honeypotFieldName): string
+    {
+        return ucwords(trim(implode(" ", preg_split("/(?=[A-Z])/", $honeypotFieldName))));
     }
 }

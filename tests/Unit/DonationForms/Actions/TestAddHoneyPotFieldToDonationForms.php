@@ -20,20 +20,28 @@ class TestAddHoneyPotFieldToDonationForms extends TestCase
     use RefreshDatabase;
 
     /**
+     * @unreleased updated to assert field attributes
      * @since 3.16.2
      * @throws NameCollisionException|EmptyNameException|TypeNotSupported
      */
     public function testShouldAddHoneyPotFieldToDonationForms(): void
     {
+        $fieldName = 'myHoneypotFieldName';
         $formNode = new DonationForm('donation-form');
         $formNode->append(Section::make('section-1'), Section::make('section-2'), Section::make('section-3'));
         $action = new AddHoneyPotFieldToDonationForms();
-        $action($formNode, 1);
-
+        $action($formNode, $fieldName);
 
         /** @var Section $lastSection */
         $lastSection = $formNode->getNodeByName('section-3');
-        $this->assertNotNull($lastSection->getNodeByName('donationBirthday'));
-        $this->assertInstanceOf(Honeypot::class, $lastSection->getNodeByName('donationBirthday'));
+
+        /** @var Honeypot $field */
+        $field = $lastSection->getNodeByName($fieldName);
+        $this->assertNotNull($field);
+        $this->assertInstanceOf(Honeypot::class, $field);
+        $this->assertSame('My Honeypot Field Name', $field->getLabel());
+        $this->assertTrue($field->hasRule('honeypot'));
+        $this->assertFalse($field->shouldShowInAdmin());
+        $this->assertFalse($field->shouldShowInReceipt());
     }
 }
