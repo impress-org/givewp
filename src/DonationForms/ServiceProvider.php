@@ -376,7 +376,7 @@ class ServiceProvider implements ServiceProviderInterface
                  * @param string $honeypotFieldName
                  * @param int $formId
                  *
-                 * @unreleased
+                 * @since 3.17.0
                  */
                 $honeypotFieldName = (string)apply_filters('givewp_donation_forms_honeypot_field_name', 'donationBirthday', $formId);
 

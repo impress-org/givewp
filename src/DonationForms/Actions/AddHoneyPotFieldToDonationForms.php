@@ -13,7 +13,7 @@ use Give\Framework\FieldsAPI\Honeypot;
 class AddHoneyPotFieldToDonationForms
 {
     /**
-     * @unreleased added parameter $honeypotFieldName
+     * @since 3.17.0 added parameter $honeypotFieldName
      * @since 3.16.2
      * @throws EmptyNameException
      */
@@ -35,7 +35,7 @@ class AddHoneyPotFieldToDonationForms
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     private function generateLabelFromFieldName(string $honeypotFieldName): string
     {

@@ -23,7 +23,7 @@ class DonateFormRouteDataTest extends TestCase
 {
 
     /**
-     * @unreleased updated to ignore honeypot field
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedData()
@@ -99,7 +99,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @unreleased updated to ignore honeypot field
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedDataWithSubscriptionData()

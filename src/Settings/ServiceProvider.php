@@ -11,19 +11,19 @@ use Give\Settings\Security\Actions\RegisterSettings;
 /**
  * Class ServiceProvider
  *
- * @unreleased
+ * @since 3.17.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function register()
     {
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function boot()
     {
@@ -31,7 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     private function registerSecuritySettings(): void
     {

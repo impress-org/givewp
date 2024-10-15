@@ -26,7 +26,7 @@ class DonateFormDataTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased updated to ignore honeypot field
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      *
      * @return void

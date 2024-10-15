@@ -11,7 +11,7 @@ use Give\Tests\TestCase;
  *
  * Updated for GiveWP use case.
  *
- * @unreleased
+ * @since 3.17.0
  */
 class TestBaseEnum extends TestCase
 {

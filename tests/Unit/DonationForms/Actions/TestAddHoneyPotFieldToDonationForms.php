@@ -20,7 +20,7 @@ class TestAddHoneyPotFieldToDonationForms extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased updated to assert field attributes
+     * @since 3.17.0 updated to assert field attributes
      * @since 3.16.2
      * @throws NameCollisionException|EmptyNameException|TypeNotSupported
      */

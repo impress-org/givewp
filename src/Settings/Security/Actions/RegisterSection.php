@@ -3,12 +3,12 @@
 namespace Give\Settings\Security\Actions;
 
 /**
- * @unreleased
+ * @since 3.17.0
  */
 class RegisterSection
 {
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function __invoke(array $sections): array
     {

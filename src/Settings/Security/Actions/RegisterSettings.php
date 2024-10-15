@@ -3,12 +3,12 @@
 namespace Give\Settings\Security\Actions;
 
 /**
- * @unreleased
+ * @since 3.17.0
  */
 class RegisterSettings
 {
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function __invoke(array $settings): array
     {
@@ -20,7 +20,7 @@ class RegisterSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     protected function getSettings(): array
     {
@@ -38,7 +38,7 @@ class RegisterSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function getHoneypotSettings(): array
     {

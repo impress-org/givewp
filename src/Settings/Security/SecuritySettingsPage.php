@@ -5,12 +5,12 @@ namespace Give\Settings\Security;
 use Give_Settings_Page;
 
 /**
- * @unreleased
+ * @since 3.17.0
  */
 class SecuritySettingsPage extends Give_Settings_Page {
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function __construct() {
         $this->id    = 'security';

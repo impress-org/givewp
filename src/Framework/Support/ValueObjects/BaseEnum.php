@@ -3,7 +3,7 @@
 namespace Give\Framework\Support\ValueObjects;
 
 /**
- * @unreleased
+ * @since 3.17.0
  *
  * This is a fork of the myclabs/php-enum library 1.8.4 with the Stringable interface removed.
  *

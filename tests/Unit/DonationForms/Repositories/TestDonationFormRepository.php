@@ -252,7 +252,7 @@ final class TestDonationFormRepository extends TestCase
 
 
     /**
-     * @unreleased updated to disable honeypot
+     * @since 3.17.0 updated to disable honeypot
      * @since 3.0.0
      *
      * @return void
