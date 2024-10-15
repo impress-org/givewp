@@ -2,6 +2,10 @@
 
 namespace Give\FeatureFlags\OptionBasedFormEditor;
 
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
+use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
+
 /**
  * @unreleased
  */
@@ -31,9 +35,27 @@ class OptionBasedFormEditor
                         </div>',
             esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
             esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg'),
-            __('Option-Based Form Editor', 'give'),
-            __('This option applies only to the Option-Based Form Editor which uses the traditional settings options for creating and customizing a donation form.',
+            __('Only for Option-Based Form Editor', 'give'),
+            __('Uses the traditional settings options for creating and customizing a donation form.',
                 'give')
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function existOptionBasedFormsOnDb()
+    {
+        return (bool)give(DonationFormsRepository::class)->prepareQuery()
+            ->whereNotExists(function (
+                QueryBuilder $builder
+            ) {
+                global $wpdb;
+                $builder
+                    ->select(['meta_value', 'formBuilderSettings'])
+                    ->from(DB::raw("{$wpdb->prefix}give_formmeta"))
+                    ->where('meta_key', 'formBuilderSettings')
+                    ->whereRaw('AND form_id = ID');
+            })->count();
     }
 }
