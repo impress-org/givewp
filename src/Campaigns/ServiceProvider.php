@@ -7,6 +7,8 @@ use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
+use Give\Campaigns\Migrations\RevenueTable\AddCampaignID;
+use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\DonationForms\V2\DonationFormsAdminPage;
@@ -65,6 +67,8 @@ class ServiceProvider implements ServiceProviderInterface
                 SetCampaignType::class,
                 CreateCampaignFormsTable::class,
                 MigrateFormsToCampaignForms::class,
+                AddCampaignID::class,
+                AssociateDonationsToCampaign::class
             ]
         );
     }
