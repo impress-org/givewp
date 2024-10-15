@@ -383,6 +383,62 @@ div.give-field-description {
     }
 }
 
+.give-setting-tab-body-general,
+.give-setting-tab-body-display,
+.give-settings-advanced-tab {
+    label {
+        display: flex;
+        gap: 1rem;
+        /*justify-content: space-between;*/
+        padding: 1.25rem 1rem;
+        position: relative;
+
+        .give-settings-section-group-helper {
+            --popout-display: none;
+            display: flex;
+
+            &:hover {
+                --popout-display: block;
+            }
+
+            &__popout {
+                background-color: #fff;
+                border: 1px solid #e6e6e6;
+                border-radius: 4px;
+                box-shadow: 0 4px 8px 0 #0000000D;
+                color: #404040;
+                display: var(--popout-display, none);
+                left: 100%;
+                overflow: hidden;
+                position: absolute;
+                top: 0;
+                transform: translateX(10px);
+                z-index: 9999;
+
+                img {
+                    display: block;
+                }
+
+                h5 {
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    line-height: 1.5;
+                    margin: 0;
+                    padding: 1rem 1.5rem 0.5rem;
+                }
+
+                p {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    margin: 0;
+                    padding: 0 1.5rem 1.5rem;
+                }
+            }
+        }
+    }
+}
+
 .give-payment-gateways-settings {
     &.give-settings-section-content {
         .give-settings-section-group-menu {
