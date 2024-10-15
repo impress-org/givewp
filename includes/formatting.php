@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Utils;
+
 if ( ! defined('ABSPATH')) {
     exit;
 }
@@ -739,8 +741,12 @@ function give_get_cache_key($action, $query_args)
  *
  * @return string|array
  */
-function give_clean($var)
+function give_clean($var, $allow_serialized_data = false)
 {
+    if ( ! $allow_serialized_data) {
+        $var = Utils::maybeSafeUnserialize($var);
+    }
+
     if (is_array($var)) {
         return array_map('give_clean', $var);
     }
