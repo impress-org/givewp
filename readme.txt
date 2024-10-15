@@ -263,6 +263,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 3.16.5: October 15th, 2024 =
+* Fix: Resolved a PHP v8+ fatal error on option-based forms when the Tributes add-on was enabled
 * Fix: Resolved an issue with the donor dashboard menu not opening on mobile devices
 
 = 3.16.4: October 10th, 2024 =

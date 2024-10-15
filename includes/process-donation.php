@@ -418,7 +418,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
- * @unreleased Make sure only string parameters are used with the ltrim() method to prevent PHP 8+ fatal errors
+ * @since 3.16.5 Make sure only string parameters are used with the ltrim() method to prevent PHP 8+ fatal errors
  * @since 3.16.4 updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
@@ -1623,7 +1623,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
- * @unreleased Check if "give_title" is set to prevent PHP warnings
+ * @since 3.16.5 Check if "give_title" is set to prevent PHP warnings
  * @since 3.16.4 Add additional validation for company name field
  * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
