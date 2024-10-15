@@ -481,14 +481,19 @@ class Give_Donors_Query {
 
 		// Create query.
 		foreach ( $ordersby as $orderby => $order ) {
+            /**
+             * @since 3.16.2 Prevent SQL Injection by not using the user defined order value directly in the query.
+             */
+            $sanitizedOrder = $order === 'ASC' ? 'ASC' : 'DESC';
+
 			switch ( $table_columns[ $orderby ] ) {
 				case '%d':
 				case '%f':
-					$query[] = "{$this->table_name}.{$orderby}+0 {$order}";
+					$query[] = "{$this->table_name}.{$orderby}+0 {$sanitizedOrder}";
 					break;
 
 				default:
-					$query[] = "{$this->table_name}.{$orderby} {$order}";
+					$query[] = "{$this->table_name}.{$orderby} {$sanitizedOrder}";
 			}
 		}
 

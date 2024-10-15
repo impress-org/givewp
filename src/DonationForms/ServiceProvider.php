@@ -3,6 +3,7 @@
 namespace Give\DonationForms;
 
 use Exception;
+use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
@@ -38,6 +39,8 @@ use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\Framework\FieldsAPI\DonationForm as DonationFormModel;
+use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
@@ -80,6 +83,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerShortcodes();
         $this->registerPostStatus();
         $this->registerAddFormSubmenuLink();
+        $this->registerHoneyPotField();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -350,5 +354,18 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('init', static function () {
             register_post_status(DonationFormStatus::UPGRADED);
         });
+    }
+
+    /**
+     * @since 3.16.2
+     * @throws EmptyNameException
+     */
+    private function registerHoneyPotField(): void
+    {
+        add_action('givewp_donation_form_schema', function (DonationFormModel $form, int $formId) {
+            if (apply_filters('givewp_donation_forms_honeypot_enabled', false, $formId)) {
+                (new AddHoneyPotFieldToDonationForms())($form);
+            }
+        }, 10, 2);
     }
 }
