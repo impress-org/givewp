@@ -19,6 +19,16 @@ import {cleanForSlug} from '@wordpress/url';
 import cn from 'classnames';
 import EmbedFormModal from '@givewp/form-builder/components/EmbedForm';
 
+declare global {
+    interface Window {
+        headerContainer?: {
+            campaignUrl: string;
+        };
+    }
+}
+
+console.log('headerContainer: ', window.headerContainer);
+
 const Logo = () => (
     <div
         style={{
@@ -107,7 +117,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 ],
             });
         }
-    }
+    };
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
@@ -123,7 +133,11 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
             <Header
                 contentLeft={
                     <>
-                        <Logo />
+                        {window.headerContainer ? (
+                            <a href={window.headerContainer.campaignUrl}>{__('Campaign Overview', 'give')}</a>
+                        ) : (
+                            <Logo />
+                        )}
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
                         <TextControl
                             className={'givewp-form-title'}

@@ -269,6 +269,11 @@ class FormSettings implements Arrayable, Jsonable
     public $enableReceiptConfirmationPage;
 
     /**
+     * @var string
+     */
+    public $campaignId;
+
+    /**
      * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
      * @since 3.11.0 Sanitize customCSS property
@@ -382,6 +387,8 @@ class FormSettings implements Arrayable, Jsonable
         $self->currencySwitcherSettings = isset($array['currencySwitcherSettings']) && is_array(
             $array['currencySwitcherSettings']
         ) ? $array['currencySwitcherSettings'] : [];
+
+        $self->campaignId = $array['campaignId'] ?? '';
 
         return $self;
     }

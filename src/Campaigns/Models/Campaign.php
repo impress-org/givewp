@@ -112,6 +112,14 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
 
     /**
      * @unreleased
+     */
+    public static function findByFormId(int $formId): ?Campaign
+    {
+        return give(CampaignRepository::class)->getByFormId($formId);
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exception
      */

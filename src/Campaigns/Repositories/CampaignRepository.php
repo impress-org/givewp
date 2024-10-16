@@ -8,6 +8,7 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -26,6 +27,17 @@ class CampaignRepository
         'title',
         'status',
     ];
+
+    /**
+     * Get Campaign by Form ID
+     */
+    public function getByFormId(int $formId)
+    {
+        return $this->prepareQuery()->join(function (JoinQueryBuilder $builder) {
+            $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                ->on('campaign_forms.campaign_id', 'id');
+        })->where('campaign_forms.form_id', $formId)->get();
+    }
 
     /**
      * Get Campaign by ID

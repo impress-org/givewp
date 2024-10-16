@@ -3,6 +3,7 @@
 namespace Give\FormBuilder\Routes;
 
 
+use Give\Campaigns\Models\Campaign;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\Views\View;
@@ -164,6 +165,16 @@ class RegisterFormBuilderPageRoute
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_additional_payment_gateways_hide_notice'),
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
         ]);
+
+        if ($campaign = Campaign::findByFormId($donationFormId)) {
+            /**
+             * @unreleased
+             */
+            wp_localize_script('@givewp/form-builder/script', 'headerContainer', [
+                'campaignUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id),
+            ]);
+        }
+
 
         View::render('FormBuilder.admin-form-builder');
     }
