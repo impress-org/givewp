@@ -33,7 +33,7 @@ interface SubscriptionModuleInterface
     /**
      * Whether the gateway supports pausing subscriptions.
      *
-     * @unreleased
+     * @since 3.17.0
      */
     public function canPauseSubscription(): bool;
 

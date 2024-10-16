@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.16.5
+Stable tag: 3.17.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -268,7 +268,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = 3.17.0: October 16th, 2024 =
 * New: Added new security tab with option to enable a honeypot field for visual builder forms
+* Fix: Resolved an issue with the donor name prefix block not saving correctly 
 * Dev: Resolved php 8.1 compatability conflict with MyCLabs\Enum\Enum::jsonSerialize()
+* Dev: Added gateway api updates for pausing subscriptions 
 
 = 3.16.5: October 15th, 2024 =
 * Fix: Resolved a PHP v8+ fatal error on option-based forms when the Tributes add-on was enabled

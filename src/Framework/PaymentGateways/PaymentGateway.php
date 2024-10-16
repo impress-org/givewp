@@ -142,7 +142,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.17.0
      */
     public function pauseSubscription(Subscription $subscription, array $data = []): void
     {
@@ -158,7 +158,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.17.0
      */
     public function resumeSubscription(Subscription $subscription): void
     {
@@ -174,7 +174,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 3.17.0
      */
     public function canPauseSubscription(): bool
     {

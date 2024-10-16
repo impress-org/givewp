@@ -261,7 +261,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased updated honorific field with validation, global options, and user defaults
+     * @since 3.17.0 updated honorific field with validation, global options, and user defaults
      *
      * @since 3.0.0
      */

@@ -34,7 +34,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     }
 
     /**
-     * @unreleased
+     * @since 3.17.0
      */
     public function canPauseSubscription(): bool
     {

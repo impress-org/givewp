@@ -186,7 +186,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased add expiration column to update
+     * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6

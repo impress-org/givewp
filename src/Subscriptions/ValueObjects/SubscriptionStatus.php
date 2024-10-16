@@ -5,7 +5,7 @@ namespace Give\Subscriptions\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased Added a new "paused" status
+ * @since 3.17.0 Added a new "paused" status
  * @since 2.19.6
  *
  * @method static SubscriptionStatus PENDING()
@@ -42,7 +42,7 @@ class SubscriptionStatus extends Enum {
     const PAUSED = 'paused';
 
     /**
-     * @unreleased Added a new "paused" status
+     * @since 3.17.0 Added a new "paused" status
      * @since 2.24.0
      *
      * @return array

@@ -3,7 +3,7 @@ import React from 'react';
 import "./style.scss";
 
 /**
- * @unreleased reference givewp/src/DonorDashboards/resources/views/donordashboardloader.php
+ * @since 3.17.0 reference givewp/src/DonorDashboards/resources/views/donordashboardloader.php
  */
 export default function DashboardLoadingSpinner() {
 
