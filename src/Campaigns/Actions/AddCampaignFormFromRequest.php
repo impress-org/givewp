@@ -14,6 +14,8 @@ use WP_Post;
 class AddCampaignFormFromRequest
 {
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     public function optionBasedFormEditor(int $formId, WP_Post $post, bool $update)
@@ -24,6 +26,8 @@ class AddCampaignFormFromRequest
     }
 
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     public function visualFormBuilder(DonationForm $donationForm)
