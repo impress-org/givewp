@@ -186,6 +186,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
@@ -209,6 +210,7 @@ class SubscriptionRepository
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
                 ->update([
+                    'expiration' => Temporal::getFormattedDateTime($subscription->renewsAt),
                     'status' => $subscription->status->getValue(),
                     'profile_id' => $subscription->gatewaySubscriptionId,
                     'customer_id' => $subscription->donorId,
