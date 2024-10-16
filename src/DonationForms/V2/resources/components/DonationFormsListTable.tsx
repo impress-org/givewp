@@ -28,6 +28,7 @@ declare global {
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;
+            campaignUrl: string;
         };
 
         GiveNextGen?: {

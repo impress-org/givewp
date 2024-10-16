@@ -3,6 +3,7 @@
 namespace Give\DonationForms\V2;
 
 use Give\Campaigns\CampaignsAdminPage;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
@@ -147,6 +148,8 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
+            $formId = (int)$_GET['post'];
+            $campaign = Campaign::findByFormId($formId);
             EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
@@ -155,7 +158,8 @@ class DonationFormsAdminPage
                     'supportedGateways' => $this->getSupportedGateways(),
                     'migrationApiRoot' => $this->migrationApiRoot,
                     'apiNonce' => $this->apiNonce,
-                    'isMigrated' => _give_is_form_migrated((int)$_GET['post']),
+                    'isMigrated' => _give_is_form_migrated($formId),
+                    'campaignUrl' => $campaign ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id) : '',
                 ])
                 ->enqueue();
 
