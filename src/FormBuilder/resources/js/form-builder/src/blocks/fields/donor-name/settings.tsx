@@ -23,7 +23,7 @@ const settings: FieldBlock['settings'] = {
         },
         honorifics: {
             type: 'array',
-            default: ['Mr', 'Ms', 'Mrs'],
+            default: [__('Mr.', 'give'), __('Ms.', 'give'), __('Mrs.', 'give')],
         },
         firstNameLabel: {
             type: 'string',
