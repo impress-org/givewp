@@ -261,7 +261,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased updated honorific field with validation
+     * @unreleased updated honorific field with validation, global options, and user defaults
      *
      * @since 3.0.0
      */
@@ -296,6 +296,9 @@ class ConvertDonationFormBlocksToFieldsApi
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $options = array_filter(array_values((array)$block->getAttribute('honorifics')));
+                if ($block->hasAttribute('useGlobalSettings') && $block->getAttribute('useGlobalSettings') === true) {
+                    $options = give_get_option('title_prefixes', give_get_default_title_prefixes());
+                }
 
                 if (!empty($options)){
                     $group->getNodeByName('honorific')
