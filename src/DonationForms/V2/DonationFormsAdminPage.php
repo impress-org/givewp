@@ -4,6 +4,7 @@ namespace Give\DonationForms\V2;
 
 use Give\Campaigns\CampaignsAdminPage;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
 use WP_Post;
 use WP_REST_Request;
@@ -106,6 +107,7 @@ class DonationFormsAdminPage
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
+            'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')

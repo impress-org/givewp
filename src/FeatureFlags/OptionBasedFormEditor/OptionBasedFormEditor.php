@@ -33,6 +33,7 @@ class OptionBasedFormEditor
      */
     public static function helperText(): string
     {
+
         return sprintf(
             '<div class="give-settings-section-group-helper">
                             <img src="%1$s" />
@@ -53,7 +54,7 @@ class OptionBasedFormEditor
     /**
      * @unreleased
      */
-    public static function existOptionBasedFormsOnDb()
+    public static function existOptionBasedFormsOnDb(): bool
     {
         return (bool)give(DonationFormsRepository::class)->prepareQuery()
             ->whereNotExists(function (

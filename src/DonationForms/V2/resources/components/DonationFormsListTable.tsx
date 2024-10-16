@@ -10,6 +10,7 @@ import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
+import AddCampaignFormModal from './AddCampaignFormModal';
 
 declare global {
     interface Window {
@@ -26,6 +27,7 @@ declare global {
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
+            isOptionBasedFormEditorEnabled: boolean;
         };
 
         GiveNextGen?: {
@@ -264,6 +266,20 @@ export default function DonationFormsListTable() {
         showFeatureNoticeDialog: false,
     });
 
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const openModal = () => setOpen(true);
+    const closeModal = () => setOpen(false);
+    /*const closeModal = (response: ResponseProps = {}) => {
+        setOpen(false);
+
+        if (response?.id) {
+            window.location.href =
+                getGiveCampaignsListTableWindowData().adminUrl +
+                'edit.php?post_type=give_forms&page=give-campaigns&id=' +
+                response?.id;
+        }
+    };*/
+
     return (
         <OnboardingContext.Provider value={[state, setState]}>
             <ListTablePage
@@ -281,15 +297,31 @@ export default function DonationFormsListTable() {
             >
                 {isCampaignDetailsPage ? (
                     <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                        <a
-                            href={
-                                'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
-                                campaignId
-                            }
-                            className={styles.addCampaignFormButton}
-                        >
-                            {__('Add campaign form', 'give')}
-                        </a>
+                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled ? (
+                            <>
+                                <button className={styles.addCampaignFormButton} onClick={openModal}>
+                                    {__('Add campaign form', 'give')}
+                                </button>
+                                <AddCampaignFormModal
+                                    isOpen={isOpen}
+                                    handleClose={closeModal}
+                                    title={__('Choose how you want to edit your campaign form', 'give')}
+                                    campaignId={campaignId}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <a
+                                    href={
+                                        'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                                        campaignId
+                                    }
+                                    className={styles.addCampaignFormButton}
+                                >
+                                    {__('Add campaign form', 'give')}
+                                </a>
+                            </>
+                        )}
                     </div>
                 ) : (
                     <>
