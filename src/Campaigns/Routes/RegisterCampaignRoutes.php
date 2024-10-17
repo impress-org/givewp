@@ -220,7 +220,7 @@ class RegisterCampaignRoutes
                     'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
                 'goalType' => [
-                    'enum' => ['amount', 'donation', 'donors'],
+                    'enum' => ['amount', 'donations', 'donors'],
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
             ],
@@ -272,7 +272,7 @@ class RegisterCampaignRoutes
                     'if' => [
                         'properties' => [
                             'goalType' => [
-                                'const' => 'donation',
+                                'const' => 'donations',
                             ],
                         ],
                     ],
