@@ -1,7 +1,9 @@
 .addFormModal {
+
     :global {
         .givewp-modal-dialog {
-            max-width: 35rem;
+            width: 100%;
+            max-width: 60rem;
 
             .givewp-modal-header {
                 font-size: 1.25rem;
@@ -12,93 +14,104 @@
             .givewp-modal-close {
                 translateY: 4.5px;
             }
-        }
 
-        .givewp-campaigns {
-            &__form {
-                label {
-                    color: var(--givewp-grey-700);
-                    font-size: 1rem;
-                    font-weight: 500;
-                    line-height: 1.5;
-                }
+            .givewp-editor-options {
+                display: flex;
 
-                input, textarea {
-                    border-color: var(--givewp-grey-400);
-                    font-size: 1rem;
-                    line-height: 1.5;
-                    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+                justify-content: space-between;
+                gap: 1rem;
 
-                    &::placeholder {
-                        color: var(--givewp-grey-400);
-                    }
+                &__card {
 
-                    &[aria-invalid="true"] {
-                        border-color: var(--givewp-red-500);
-                        outline-color: var(--givewp-red-500);
-                    }
-                }
-
-                span:not(.givewp-field-required) {
-                    color: var(--givewp-grey-400);
-                    font-size: 0.75rem;
-                    line-height: 1.5;
-
-                    strong {
-                        color: var(--givewp-grey-500);
-                        font-weight: 600;
-                    }
-                }
-
-                button[type="submit"].button {
-                    display: block;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    line-height: 1.5;
-                    padding: var(--givewp-spacing-3) var(--givewp-spacing-5);
+                    background-color: #f9fafb;
+                    max-width: 28.25rem;
                     width: 100%;
-                }
-            }
+                    padding: 1.5rem;
+                    border: 1px solid #ddd;
+                    border-radius: 0.5rem;
 
-            &__form-row {
-                display: flex;
-                flex-direction: column;
-                gap: var(--givewp-spacing-1);
-                margin-bottom: var(--givewp-spacing-6);
+                    img {
+                        width: 100%;
+                        max-height: 15rem;
+                        object-fit: cover;
+                        object-position: 0 0;
+                        margin-bottom: 1rem;
+                    }
 
-                &--half {
-                    flex-direction: row;
-                    gap: var(--givewp-spacing-6);
-                }
-            }
+                    span {
+                        width: 112px;
+                        height: 22px;
+                        flex-grow: 0;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 4px;
+                        padding: 2px 12px;
+                        border-radius: 24px;
+                        background-color: var(--givewp-purple-500);
+                        
+                        font-size: 12px;
+                        font-weight: 600;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: 1.5;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: var(--givewp-purple-25);
 
-            &__form-column {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                gap: var(--givewp-spacing-1);
-            }
+                        position: relative;
+                        margin: -3.3rem 0 1.3rem 0.3rem;
+                    }
 
-            &__form-errors {
+                    label {
+                        font-size: 1rem;
+                        font-weight: 500;
+                        color: #060c1a;
+                    }
 
-                padding-left: var(--givewp-spacing-1);
+                    p {
+                        font-size: 0.875rem;
+                        margin-top: 0.4rem;
+                        color: #4b5563;
+                    }
 
-                ul {
-                    list-style: disc;
-                    margin-bottom: var(--givewp-spacing-6);
-                    margin-top: 0;
-                    padding-left: var(--givewp-spacing-4);
-                }
-
-                p,
-                li {
-                    color: var(--givewp-red-500);
-                    font-size: 0.875rem;
-                    font-weight: 500;
-                    line-height: 1.5;
-                    margin: 0;
+                    &:hover {
+                        border-color: var(--givewp-green-500);
+                    }
                 }
             }
         }
+    }
+}
+
+.addFormButton {
+    background-color: #f9fafb;
+    border: solid 1px #d1d5db;
+    border-radius: 0.25rem;
+    color: #060c1a;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    block-size: 2.5rem;
+    padding-inline: 0.8rem;
+    height: 2.25rem;
+    transition-property: filter, color, outline;
+    transition-duration: 180ms;
+    transition-timing-function: ease-in;
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 1.4rem;
+
+    &:is(a) {
+        text-decoration: none;
+    }
+
+    &:is(:hover, :active, :focus) {
+        /*filter: contrast(110%);*/
+        background-color: var(--givewp-green-500);
+        color: white;
     }
 }
