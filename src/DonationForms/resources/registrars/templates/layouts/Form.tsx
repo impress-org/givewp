@@ -2,8 +2,11 @@ import type {FormProps} from '@givewp/forms/propTypes';
 import {__} from '@wordpress/i18n';
 
 export default function Form({children, formProps, formError, isSubmitting}: FormProps) {
-    const {donateButtonCaption} = window.givewp.form.hooks.useDonationFormSettings();
+    const {useDonationFormSettings, useWatch} = window.givewp.form.hooks;
     const FormError = window.givewp.form.templates.layouts.formError;
+
+    const {donateButtonCaption} = useDonationFormSettings();
+    const gatewayId = useWatch({name: 'gatewayId'});
 
     return (
         <form {...formProps}>
@@ -12,9 +15,11 @@ export default function Form({children, formProps, formError, isSubmitting}: For
             <section className="givewp-layouts givewp-layouts-section">
                 {formError && <FormError error={formError} />}
 
-                <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
-                    {isSubmitting ? __('Submitting…', 'give') : donateButtonCaption}
-                </button>
+                {gatewayId !== 'paypal-commerce' && (
+                    <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
+                        {isSubmitting ? __('Submitting…', 'give') : donateButtonCaption}
+                    </button>
+                )}
             </section>
         </form>
     );
