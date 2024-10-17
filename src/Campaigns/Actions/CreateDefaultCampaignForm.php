@@ -8,6 +8,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalType;
 
 /**
  * @unreleased
@@ -25,7 +26,7 @@ class CreateDefaultCampaignForm
             'settings' => FormSettings::fromArray([
                 'enableDonationGoal' => true,
                 'goalAmount' => $campaign->goal,
-                'goalType' => $campaign->goalType->getValue(),
+                'goalType' => GoalType::CAMPAIGN()->getValue(),
                 'designId' => 'classic',
             ]),
         ]);
