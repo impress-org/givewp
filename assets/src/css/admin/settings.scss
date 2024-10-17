@@ -389,6 +389,7 @@ div.give-field-description {
     gap: 0.3rem;
     padding: 0.5rem;
     background-color: #fffaf2;
+    border-radius: 4px;
     border: 1px solid #f29718;
     border-left-width: 4px;
     font-size: 0.875rem;
@@ -417,6 +418,7 @@ div.give-field-description {
         .give-settings-section-group-helper {
             --popout-display: none;
             display: flex;
+            cursor: help;
 
             img {
                 max-width: 18.9px;
