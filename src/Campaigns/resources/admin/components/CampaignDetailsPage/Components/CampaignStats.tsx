@@ -45,9 +45,9 @@ const CampaignStats = () => {
             <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
 
             <Row>
-                <StatWidget label={__('Amount Raised')} values={[5000, 3000]} description={widgetDescription} formatter={currency} />
-                <StatWidget label={__('Donation Count')} values={[200, 300]} description={widgetDescription} />
-                <StatWidget label={__('Donor Count')} values={[100, 100]} description={widgetDescription} />
+                <StatWidget label={__('Amount Raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
+                <StatWidget label={__('Donation Count')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
+                <StatWidget label={__('Donor Count')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
             </Row>
 
             <Row>
