@@ -5,14 +5,17 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @unreleased add campaign goal type
  * @since 3.0.0
  *
+ * @method static GoalType CAMPAIGN()
  * @method static GoalType AMOUNT()
  * @method static GoalType DONATIONS()
  * @method static GoalType DONORS()
  * @method static GoalType SUBSCRIPTIONS()
  * @method static GoalType AMOUNT_FROM_SUBSCRIPTIONS()
  * @method static GoalType DONORS_FROM_SUBSCRIPTIONS()
+ * @method bool isCampaign()
  * @method bool isAmount()
  * @method bool isDonations()
  * @method bool isDonors()
@@ -22,6 +25,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  */
 class GoalType extends Enum
 {
+    const CAMPAIGN = 'campaign';
     const AMOUNT = 'amount';
     const DONATIONS = 'donations';
     const DONORS = 'donors';

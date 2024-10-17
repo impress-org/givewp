@@ -216,14 +216,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                         <div className={styles.flexContainer}>
                             <div className={styles.flexRow}>
                                 <h1 className={styles.pageTitle}>{campaign.title}</h1>
-                                <span
-                                    className={cx(
-                                        styles.status,
-                                        styles[`${campaign.status}Status`],
-                                    )}
-                                >
-                                    <StatusBadge status={campaign.status} />
-                                </span>
+                                <StatusBadge status={campaign.status} />
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
