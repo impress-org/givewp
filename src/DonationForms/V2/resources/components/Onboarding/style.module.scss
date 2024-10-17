@@ -156,12 +156,11 @@
 .actionsContainer {
     display: flex;
     justify-content: space-between;
-    /*background: red;*/
     width: 100%;
     max-width: 60%;
     position: absolute;
     top: 18px;
-    right: 1.4%;
+    right: 1.8%;
 
 
     a {
@@ -175,13 +174,6 @@
    top: 18px;
    left: 50%;
    transform: translate(-50%, 0);
-}*/
-
-/*.manageCampaignBtnContainer {
-    position: absolute;
-    top: 18px;
-    right: -10%;
-    transform: translate(-50%, 0);
 }*/
 
 .formName {
