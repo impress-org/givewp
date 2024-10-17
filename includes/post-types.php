@@ -53,7 +53,7 @@ function give_setup_post_types() {
 	$give_forms_labels = apply_filters(
 		'give_forms_labels',
 		[
-			'name'               => __( 'Campaign Forms', 'give' ),
+			'name'               => __( 'Donation Forms', 'give' ),
 			'singular_name'      => __( 'Form', 'give' ),
 			'add_new'            => __( 'Add Form', 'give' ),
 			'add_new_item'       => __( 'Add New Campaign Form', 'give' ),

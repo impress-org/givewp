@@ -19,7 +19,6 @@ class FeatureFlagsServiceProvider implements ServiceProvider
      */
     public function register()
     {
-        // TODO: Implement register() method.
     }
 
     /**
@@ -27,13 +26,13 @@ class FeatureFlagsServiceProvider implements ServiceProvider
      */
     public function boot()
     {
-        $this->maybeDisableoptionBasedFormEditorSettings();
+        $this->maybeDisableOptionBasedFormEditorSettings();
     }
 
     /**
      * @return void
      */
-    private function maybeDisableoptionBasedFormEditorSettings()
+    private function maybeDisableOptionBasedFormEditorSettings()
     {
         // General Tab
         Hooks::addFilter('give_get_sections_general', General::class, 'maybeDisableSections', 999);
