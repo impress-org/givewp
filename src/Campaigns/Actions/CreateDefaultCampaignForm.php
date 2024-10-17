@@ -23,6 +23,6 @@ class CreateDefaultCampaignForm
             'status' => DonationFormStatus::DRAFT(),
         ]);
 
-        give(CampaignRepository::class)->addCampaignForm($campaign, $defaultCampaignForm, true);
+        give(CampaignRepository::class)->addCampaignForm($campaign, $defaultCampaignForm->id, true);
     }
 }
