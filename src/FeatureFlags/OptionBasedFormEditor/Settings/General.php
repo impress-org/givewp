@@ -10,24 +10,6 @@ class General extends AbstractOptionBasedFormEditorSettings
     /**
      * @unreleased
      */
-    public function getNewDefaultSection(): string
-    {
-        return '';
-    }
-    
-    /**
-     * @unreleased
-     */
-    public function getDisabledSectionIds(): array
-    {
-        return [
-            'access-control',
-        ];
-    }
-
-    /**
-     * @unreleased
-     */
     public function getDisabledOptionIds(): array
     {
         return [
@@ -41,6 +23,16 @@ class General extends AbstractOptionBasedFormEditorSettings
             'decimal_separator',
             'number_decimals',
             'currency_preview',
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDisabledSectionIds(): array
+    {
+        return [
+            'access-control',
         ];
     }
 }

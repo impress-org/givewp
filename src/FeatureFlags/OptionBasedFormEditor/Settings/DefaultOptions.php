@@ -10,11 +10,18 @@ class DefaultOptions extends AbstractOptionBasedFormEditorSettings
     /**
      * @unreleased
      */
-    public function getNewDefaultSection(): string
+    public function getDisabledOptionIds(): array
     {
-        return 'post-types';
+        return [
+            //Post Types Section
+            'form_featured_img',
+            'featured_image_size',
+            'form_sidebar',
+            //Terms and Conditions Section
+            'terms',
+        ];
     }
-    
+
     /**
      * @unreleased
      */
@@ -30,15 +37,8 @@ class DefaultOptions extends AbstractOptionBasedFormEditorSettings
     /**
      * @unreleased
      */
-    public function getDisabledOptionIds(): array
+    public function getNewDefaultSection(): string
     {
-        return [
-            //Post Types Section
-            'form_featured_img',
-            'featured_image_size',
-            'form_sidebar',
-            //Terms and Conditions Section
-            'terms',
-        ];
+        return 'post-types';
     }
 }

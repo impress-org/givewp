@@ -12,17 +12,23 @@ abstract class AbstractOptionBasedFormEditorSettings
     /**
      * @unreleased
      */
-    abstract public function getNewDefaultSection(): string;
-
-    /**
-     * @unreleased
-     */
-    abstract public function getDisabledSectionIds(): array;
-
-    /**
-     * @unreleased
-     */
     abstract public function getDisabledOptionIds(): array;
+
+    /**
+     * @unreleased
+     */
+    public function getDisabledSectionIds(): array
+    {
+        return [];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getNewDefaultSection(): string
+    {
+        return '';
+    }
 
     /**
      * @unreleased

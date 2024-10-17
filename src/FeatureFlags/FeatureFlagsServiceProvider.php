@@ -27,13 +27,13 @@ class FeatureFlagsServiceProvider implements ServiceProvider
      */
     public function boot()
     {
-        $this->optionBasedFormEditor();
+        $this->maybeDisableoptionBasedFormEditorSettings();
     }
 
     /**
      * @return void
      */
-    private function optionBasedFormEditor()
+    private function maybeDisableoptionBasedFormEditorSettings()
     {
         // General Tab
         Hooks::addFilter('give_get_sections_general', General::class, 'maybeDisableSections', 999);

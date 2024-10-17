@@ -10,22 +10,6 @@ class Advanced extends AbstractOptionBasedFormEditorSettings
     /**
      * @unreleased
      */
-    public function getNewDefaultSection(): string
-    {
-        return '';
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getDisabledSectionIds(): array
-    {
-        return [];
-    }
-
-    /**
-     * @unreleased
-     */
     public function getDisabledOptionIds(): array
     {
         return [
