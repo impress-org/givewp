@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
+use WP_Post;
 
 /**
  * @unreleased
@@ -13,12 +14,26 @@ use Give\DonationForms\Models\DonationForm;
 class AddCampaignFormFromRequest
 {
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
-    public function __invoke(DonationForm $donationForm)
+    public function optionBasedFormEditor(int $formId, WP_Post $post, bool $update)
+    {
+        if ( ! $update && isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) {
+            give(CampaignRepository::class)->addCampaignForm($campaign, $formId);
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function visualFormBuilder(DonationForm $donationForm)
     {
         if (isset($_GET['campaignId']) && $campaign = Campaign::find(absint($_GET['campaignId']))) {
-            give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm);
+            give(CampaignRepository::class)->addCampaignForm($campaign, $donationForm->id);
         }
     }
 }

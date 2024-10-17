@@ -5,10 +5,10 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -27,6 +27,17 @@ class CampaignRepository
         'title',
         'status',
     ];
+
+    /**
+     * Get Campaign by Form ID
+     */
+    public function getByFormId(int $formId)
+    {
+        return $this->prepareQuery()->join(function (JoinQueryBuilder $builder) {
+            $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                ->on('campaign_forms.campaign_id', 'id');
+        })->where('campaign_forms.form_id', $formId)->get();
+    }
 
     /**
      * Get Campaign by ID
@@ -145,9 +156,9 @@ class CampaignRepository
      *
      * @throws Exception
      */
-    public function addCampaignForm(Campaign $campaign, DonationForm $donationForm, bool $isDefault = false)
+    public function addCampaignForm(Campaign $campaign, int $donationFormId, bool $isDefault = false)
     {
-        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, $isDefault);
 
         DB::query('START TRANSACTION');
 
@@ -165,7 +176,7 @@ class CampaignRepository
             DB::query(
                 DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%d, %d, %d)",
                     [
-                        $donationForm->id,
+                        $donationFormId,
                         $campaign->id,
                         $isDefault,
                     ])
@@ -180,7 +191,7 @@ class CampaignRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationFormId, $isDefault);
     }
 
     /**

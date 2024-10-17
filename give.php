@@ -54,6 +54,7 @@ use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\DonorDashboards\Tabs\TabsRegister;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
+use Give\FeatureFlags\FeatureFlagsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
@@ -242,6 +243,7 @@ final class Give
         Give\FormTaxonomies\ServiceProvider::class,
         Give\DonationSpam\ServiceProvider::class,
         Give\Campaigns\ServiceProvider::class,
+        FeatureFlagsServiceProvider::class,
     ];
 
     /**

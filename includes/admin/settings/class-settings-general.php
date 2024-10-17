@@ -667,7 +667,7 @@ if (!class_exists('Give_Settings_General')) :
                     <label
                         for="<?php
                         echo esc_attr($field['id']); ?>"><?php
-                        echo esc_html($field['name']); ?></label>
+                        echo wp_kses_post($field['name']); ?></label>
                 </th>
                 <td class="give-forminp">
                     <input id="<?php
