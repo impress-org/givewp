@@ -220,7 +220,14 @@ class RegisterCampaignRoutes
                     'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
                 'goalType' => [
-                    'enum' => ['amount', 'donations', 'donors'],
+                    'enum' => [
+                        'amount',
+                        'donations',
+                        'donors',
+                        'amountFromSubscriptions',
+                        'subscriptions',
+                        'donorsFromSubscriptions',
+                    ],
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
             ],
@@ -251,6 +258,27 @@ class RegisterCampaignRoutes
                     'if' => [
                         'properties' => [
                             'goalType' => [
+                                'const' => 'donations',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Number of donations must be greater than 0', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
                                 'const' => 'donors',
                             ],
                         ],
@@ -272,7 +300,7 @@ class RegisterCampaignRoutes
                     'if' => [
                         'properties' => [
                             'goalType' => [
-                                'const' => 'donations',
+                                'const' => 'amountFromSubscriptions',
                             ],
                         ],
                     ],
@@ -284,7 +312,49 @@ class RegisterCampaignRoutes
                         ],
                         'errorMessage' => [
                             'properties' => [
-                                'goal' => esc_html__('Number of donations must be greater than 0', 'give'),
+                                'goal' => esc_html__('Goal recurring amount must be greater than 0', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
+                                'const' => 'subscriptions',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Number of recurring donations must be greater than 0', 'give'),
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'if' => [
+                        'properties' => [
+                            'goalType' => [
+                                'const' => 'donorsFromSubscriptions',
+                            ],
+                        ],
+                    ],
+                    'then' => [
+                        'properties' => [
+                            'goal' => [
+                                'minimum' => 1,
+                            ],
+                        ],
+                        'errorMessage' => [
+                            'properties' => [
+                                'goal' => esc_html__('Number of recurring donors must be greater than 0', 'give'),
                             ],
                         ],
                     ],

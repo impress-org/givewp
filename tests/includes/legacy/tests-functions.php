@@ -86,4 +86,33 @@ class Tests_Functions extends Give_Unit_Test_Case {
 		// When passing invalid form id, it should return null.
 		$this->assertEquals( give_form_get_default_level( 123 ), null );
 	}
+
+    /**
+     * @since 3.16.4
+     * @dataProvider give_donation_form_has_serialized_fields_data
+     */
+    public function test_give_donation_form_has_serialized_fields(array $fields, bool $expected): void
+    {
+        if ($expected) {
+            $this->assertTrue(give_donation_form_has_serialized_fields($fields));
+        } else {
+            $this->assertFalse(give_donation_form_has_serialized_fields($fields));
+        }
+    }
+
+    /**
+     * @since 3.16.4
+     */
+    public function give_donation_form_has_serialized_fields_data(): array
+    {
+        return [
+            [['foo' => serialize('bar')], true],
+            [['foo' => 'bar', 'baz' => '\\' . serialize('backslash-bypass')], true],
+            [['foo' => 'bar', 'baz' => '\\\\' . serialize('double-backslash-bypass')], true],
+            [['foo' => 'bar'], false],
+            [['foo' => 'bar', 'baz' => serialize('qux')], true],
+            [['foo' => 'bar', 'baz' => 'qux'], false],
+            [['foo' => 'bar', 'baz' => 1], false],
+        ];
+    }
 }

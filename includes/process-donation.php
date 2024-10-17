@@ -418,38 +418,16 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @since 3.16.4 updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {
-    $post_data_keys = [
-        'give-form-id',
-        'give-gateway',
-        'card_name',
-        'card_number',
-        'card_cvc',
-        'card_exp_month',
-        'card_exp_year',
-        'card_address',
-        'card_address_2',
-        'card_city',
-        'card_state',
-        'billing_country',
-        'card_zip',
-        'give_email',
-        'give_first',
-        'give_last',
-        'give_user_login',
-        'give_user_pass',
-        'give-form-title',
-        'give_title',
-    ];
-
-    foreach ($post_data as $key => $value) {
-        if ( ! in_array($key, $post_data_keys, true)) {
-            continue;
+    foreach ($post_data as $value) {
+        if (is_serialized(ltrim($value, '\\'))) {
+          return true;
         }
 
         if (is_serialized(stripslashes_deep($value))) {
@@ -1644,6 +1622,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @since 3.16.4 Add additional validation for company name field
  * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
  *
@@ -1655,6 +1634,10 @@ function give_donation_form_validate_name_fields( $post_data ) {
 
     if (!give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title'])) {
           give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
+    }
+
+    if (!give_is_company_field_enabled($formId) && isset($post_data['give_company_name'])) {
+          give_set_error( 'disabled_company', esc_html__( 'The company field is not enabled.', 'give' ) );
     }
 
     if (give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title']) && !in_array($post_data['give_title'], array_values(give_get_name_title_prefixes($formId)))) {
