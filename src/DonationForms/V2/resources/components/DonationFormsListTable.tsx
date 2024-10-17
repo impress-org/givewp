@@ -270,16 +270,6 @@ export default function DonationFormsListTable() {
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
-    /*const closeModal = (response: ResponseProps = {}) => {
-        setOpen(false);
-
-        if (response?.id) {
-            window.location.href =
-                getGiveCampaignsListTableWindowData().adminUrl +
-                'edit.php?post_type=give_forms&page=give-campaigns&id=' +
-                response?.id;
-        }
-    };*/
 
     return (
         <OnboardingContext.Provider value={[state, setState]}>

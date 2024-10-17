@@ -27,8 +27,6 @@ declare global {
     }
 }
 
-console.log('headerContainer: ', window.headerContainer);
-
 const Logo = () => (
     <div
         style={{

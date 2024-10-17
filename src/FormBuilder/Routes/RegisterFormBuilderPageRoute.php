@@ -166,10 +166,10 @@ class RegisterFormBuilderPageRoute
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
         ]);
 
+        /**
+         * @unreleased
+         */
         if ($campaign = Campaign::findByFormId($donationFormId)) {
-            /**
-             * @unreleased
-             */
             wp_localize_script('@givewp/form-builder/script', 'headerContainer', [
                 'campaignUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id),
             ]);
