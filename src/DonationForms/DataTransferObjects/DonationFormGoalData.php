@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms\DataTransferObjects;
 
+use Give\Campaigns\CampaignDonationQuery;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
@@ -50,6 +52,7 @@ class DonationFormGoalData implements Arrayable
     public $goalEndDate;
 
     /**
+     * @unreleased Campaign is the default goal type
      * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
@@ -57,7 +60,7 @@ class DonationFormGoalData implements Arrayable
         $this->formId = $formId;
         $this->formSettings = $formSettings;
         $this->isEnabled = $formSettings->enableDonationGoal ?? false;
-        $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
+        $this->goalType = $formSettings->goalType ?? GoalType::CAMPAIGN();
         $this->targetAmount = $this->formSettings->goalAmount ?? 0;
         $this->goalProgressType = $this->formSettings->goalProgressType ?? GoalProgressType::ALL_TIME();
         $this->goalStartDate = $this->formSettings->goalStartDate ?? null;
@@ -71,11 +74,7 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        $query = $this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())
-            ? new SubscriptionQuery()
-            : new DonationQuery();
-
-        $query->form($this->formId);
+        $query = $this->getQuery();
 
         if($this->goalProgressType->isCustom()) {
             $query->between($this->goalStartDate, $this->goalEndDate);
@@ -138,5 +137,30 @@ class DonationFormGoalData implements Arrayable
             'label' => $this->getLabel(),
             'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100
         ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return CampaignDonationQuery|DonationQuery|SubscriptionQuery
+     */
+    private function getQuery()
+    {
+        if ($this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())) {
+            $query = new SubscriptionQuery();
+            $query->form($this->formId);
+
+            return $query;
+        }
+
+        if ($this->goalType->isCampaign()) {
+            $campaign = Campaign::findByFormId($this->formId);
+            return new CampaignDonationQuery($campaign);
+        }
+
+        $query = new DonationQuery();
+        $query->form($this->formId);
+
+        return $query;
     }
 }
