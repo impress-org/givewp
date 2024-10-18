@@ -19,34 +19,6 @@ export default () => {
         formState: {errors},
     } = useFormContext();
 
-    const goalDescription = (type: string) => {
-        switch (type) {
-            case 'amount':
-                return __(
-                    'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                    'give'
-                );
-            case 'donations':
-                return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
-            case 'donors':
-                return __(
-                    'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
-                    'give'
-                );
-            case 'amountFromSubscriptions':
-                return __('Only the first donation amount of a recurring donation is counted toward the goal.', 'give');
-            case 'subscriptions':
-                return __('Only the first donation of a recurring donation is counted toward the goal.', 'give');
-            case 'donorsFromSubscriptions':
-                return __(
-                    'Only the donors that subscribed to a recurring donation are counted toward the goal.',
-                    'give'
-                );
-            default:
-                return null;
-        }
-    };
-
     const [goalType, image, status, shortDescription] = watch(['goalType', 'image', 'status', 'shortDescription']);
     const isDisabled = status === 'archived';
 
@@ -166,4 +138,32 @@ export default () => {
             </div>
         </div>
     );
+};
+
+const goalDescription = (type: string) => {
+    switch (type) {
+        case 'amount':
+            return __(
+                'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
+                'give'
+            );
+        case 'donations':
+            return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
+        case 'donors':
+            return __(
+                'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
+                'give'
+            );
+        case 'amountFromSubscriptions':
+            return __('Only the first donation amount of a recurring donation is counted toward the goal.', 'give');
+        case 'subscriptions':
+            return __('Only the first donation of a recurring donation is counted toward the goal.', 'give');
+        case 'donorsFromSubscriptions':
+            return __(
+                'Only the donors that subscribed to a recurring donation are counted toward the goal.',
+                'give'
+            );
+        default:
+            return null;
+    }
 };

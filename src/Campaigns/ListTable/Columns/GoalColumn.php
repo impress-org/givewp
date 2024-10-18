@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
+use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -35,20 +36,7 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        // Temp value considering only the default form associated with the campaign
-        if ($model->defaultForm()) {
-            $goal = give_goal_progress_stats($model->defaultForm()->id);
-            $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
-                $goal['actual']) : max(min($goal['progress'], 100), 0);
-            $goalActual = $goal['actual'];
-            $goalFormat = $goal['format'];
-            $campaignGoal = $model->goal;
-        } else {
-            $goalPercentage = 0;
-            $goalActual = 0;
-            $goalFormat = '';
-            $campaignGoal = $model->goal;
-        }
+        $goalData = new CampaignGoalData($model);
 
         $template = '
             <div
@@ -69,16 +57,16 @@ class GoalColumn extends ModelColumn
         return sprintf(
             $template,
             $model->id,
-            $goalPercentage,
-            $goalActual,
+            $goalData->percentage,
+            $goalData->actualFormatted,
             sprintf(
-                ($goalFormat !== 'percentage' ? ' %s %s' : ''),
+                ' %s %s',
                 __('of', 'give'),
-                $campaignGoal
+                $goalData->goalFormatted
             ),
             sprintf(
                 '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
-                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goalPercentage >= 100 ? 1 : 0),
+                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goalData->percentage >= 100 ? 1 : 0),
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

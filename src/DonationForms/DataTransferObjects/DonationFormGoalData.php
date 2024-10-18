@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms\DataTransferObjects;
 
+use Give\Campaigns\CampaignDonationQuery;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
@@ -50,6 +52,7 @@ class DonationFormGoalData implements Arrayable
     public $goalEndDate;
 
     /**
+     * @unreleased Campaign is the default goal type
      * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
@@ -77,21 +80,15 @@ class DonationFormGoalData implements Arrayable
 
         $query->form($this->formId);
 
-        if($this->goalProgressType->isCustom()) {
-            $query->between($this->goalStartDate, $this->goalEndDate);
-        }
-
         switch ($this->goalType):
             case GoalType::DONORS():
+            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
                 return $query->countDonors();
             case GoalType::DONATIONS():
-                return $query->count();
             case GoalType::SUBSCRIPTIONS():
                 return $query->count();
             case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
                 return $query->sumInitialAmount();
-            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
-                return $query->countDonors();
             case GoalType::AMOUNT():
             default:
                 return $query->sumIntendedAmount();
