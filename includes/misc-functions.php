@@ -9,9 +9,7 @@
  * @since       1.0
  */
 
-use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
-use Give\DonationForms\ValueObjects\GoalType;
 use Give\License\PremiumAddonsListManager;
 
 // Exit if accessed directly.
