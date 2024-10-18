@@ -418,6 +418,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @since 3.16.5 Make sure only string parameters are used with the ltrim() method to prevent PHP 8+ fatal errors
  * @since 3.16.4 updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
@@ -426,7 +427,7 @@ function give_donation_form_validate_fields() {
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {
     foreach ($post_data as $value) {
-        if (is_serialized(ltrim($value, '\\'))) {
+        if (is_string($value) && is_serialized(ltrim($value, '\\'))) {
           return true;
         }
 
@@ -1622,6 +1623,7 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @since 3.16.5 Check if "give_title" is set to prevent PHP warnings
  * @since 3.16.4 Add additional validation for company name field
  * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
@@ -1646,7 +1648,7 @@ function give_donation_form_validate_name_fields( $post_data ) {
 
     $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
     $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
-    $is_alpha_title = ( ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
+    $is_alpha_title = ( isset($post_data['give_title']) && ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
     if (!$is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
         give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );

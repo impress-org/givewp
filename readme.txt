@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.16.4
+Stable tag: 3.17.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 [Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/give)
+
 == Screenshots ==
 
 1. Creating powerful donation forms is easy with GiveWP. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
@@ -262,6 +266,16 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.17.0: October 16th, 2024 =
+* New: Added new security tab with option to enable a honeypot field for visual builder forms
+* Fix: Resolved an issue with the donor name prefix block not saving correctly 
+* Dev: Resolved php 8.1 compatability conflict with MyCLabs\Enum\Enum::jsonSerialize()
+* Dev: Added gateway api updates for pausing subscriptions 
+
+= 3.16.5: October 15th, 2024 =
+* Fix: Resolved a PHP v8+ fatal error on option-based forms when the Tributes add-on was enabled
+* Fix: Resolved an issue with the donor dashboard menu not opening on mobile devices
+
 = 3.16.4: October 10th, 2024 =
 * Security: Added additional protection against serialized data in the option-based donation form request (CVE-2024-9634)
 
