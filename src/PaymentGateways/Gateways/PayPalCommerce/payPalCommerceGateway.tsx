@@ -661,6 +661,10 @@ import {PayPalSubscriber} from './types';
                 throw new Error(sprintf(__('Paypal Donations Error: %s', 'give'), err.message));
             }
         },
+
+        /**
+         * @unreleased Hide submit button when PayPal Commerce is selected.
+         */
         Fields() {
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
