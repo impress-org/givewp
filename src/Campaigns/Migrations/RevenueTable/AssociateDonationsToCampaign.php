@@ -17,7 +17,7 @@ class AssociateDonationsToCampaign extends Migration
      */
     public static function id(): string
     {
-        return 'add_campaign_to_revenue_table';
+        return 'associate_donations_to_campaign';
     }
 
     /**
