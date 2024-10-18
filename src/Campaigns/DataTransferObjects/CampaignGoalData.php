@@ -28,13 +28,31 @@ class CampaignGoalData implements Arrayable
     public $percentage;
 
     /**
+     * @var int
+     */
+    private $goal;
+
+    /**
+     * @var int|string
+     */
+    public $goalFormatted;
+
+    /**
+     * @var int|string
+     */
+    public $actualFormatted;
+
+    /**
      * @unreleased
      */
     public function __construct(Campaign $campaign)
     {
         $this->campaign = $campaign;
         $this->actual = $this->getActual();
+        $this->actualFormatted = $this->getActualFormatted();
         $this->percentage = $this->getPercentage();
+        $this->goal = $campaign->goal;
+        $this->goalFormatted = $this->getGoalFormatted();
     }
 
     /**
@@ -62,7 +80,31 @@ class CampaignGoalData implements Arrayable
      */
     private function getPercentage(): int
     {
-        return round($this->actual / $this->campaign->goal * 100);
+        return round($this->actual / $this->campaign->goal * 100, 2);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getActualFormatted(): string
+    {
+        if ($this->campaign->goalType == GoalType::AMOUNT) {
+            return give_currency_filter(give_format_amount($this->actual));
+        }
+
+        return $this->actual;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getGoalFormatted(): string
+    {
+        if ($this->campaign->goalType == GoalType::AMOUNT) {
+            return give_currency_filter(give_format_amount($this->goal));
+        }
+
+        return $this->goal;
     }
 
     /**
@@ -72,7 +114,10 @@ class CampaignGoalData implements Arrayable
     {
         return [
             'actual' => $this->actual,
+            'actualFormatted' => $this->actualFormatted,
             'percentage' => $this->percentage,
+            'goal' => $this->goal,
+            'goalFormatted' => $this->goalFormatted,
         ];
     }
 }
