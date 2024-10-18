@@ -735,6 +735,7 @@ function give_get_cache_key($action, $query_args)
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
+ * @unreleased Safe unserialize data by default
  * @since  1.8
  *
  * @param string|array $var
@@ -743,12 +744,12 @@ function give_get_cache_key($action, $query_args)
  */
 function give_clean($var, $allow_serialized_data = false)
 {
-    if ( ! $allow_serialized_data) {
-        $var = Utils::maybeSafeUnserialize($var);
-    }
-
     if (is_array($var)) {
         return array_map('give_clean', $var);
+    }
+
+    if ( ! $allow_serialized_data) {
+        $var = Utils::safeUnserialize($var);
     }
 
     return is_scalar($var) ? sanitize_text_field(wp_unslash($var)) : $var;
