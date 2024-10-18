@@ -143,11 +143,6 @@ class FormBuilderViewModel
                 true
             ),
             $this->getGoalTypeOption(
-                GoalType::CAMPAIGN,
-                __('Campaign', 'give'),
-                __('The goal type is inherited from the campaign', 'give')
-            ),
-            $this->getGoalTypeOption(
                 GoalType::DONATIONS,
                 __('Number of Donations', 'give'),
                 __('The total number of donations made for the form', 'give')

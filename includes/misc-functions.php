@@ -1945,14 +1945,6 @@ function give_goal_progress_stats( $form ) {
 
 	$goal_format = give_get_form_goal_format( $form->ID );
 
-    /**
-     * @unreleased
-     * Use campaign goal settings if goal type is set to campaign
-     */
-    if ($goal_format === GoalType::CAMPAIGN()->getValue()) {
-        $goal_format = Campaign::findByFormId($form->ID)->goalType->getValue();
-    }
-
 	/**
 	 * Filter the form.
 	 * @since 1.8.8

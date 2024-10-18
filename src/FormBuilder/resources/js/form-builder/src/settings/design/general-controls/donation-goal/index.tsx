@@ -108,31 +108,29 @@ const DonationGoal = ({dispatch}) => {
                             help={selectedGoalDescription}
                         />
                     </PanelRow>
-                    {selectedGoalType.value !== 'campaign' && (
-                        <PanelRow>
-                            {selectedGoalType.isCurrency ? (
-                                <CurrencyControl
-                                    label={__('Goal Amount', 'give')}
-                                    min={0}
-                                    value={goalAmount}
-                                    onValueChange={(goalAmount) => {
-                                        dispatch(setFormSettings({goalAmount}));
-                                        publishGoal({targetAmount: Number(goalAmount)});
-                                    }}
-                                />
-                            ) : (
-                                <NumberControl
-                                    label={__('Goal Amount', 'give')}
-                                    min={0}
-                                    value={goalAmount}
-                                    onChange={(goalAmount) => {
-                                        dispatch(setFormSettings({goalAmount}));
-                                        publishGoal({targetAmount: Number(goalAmount)});
-                                    }}
-                                />
-                            )}
-                        </PanelRow>
-                    )}
+                    <PanelRow>
+                        {selectedGoalType.isCurrency ? (
+                            <CurrencyControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onValueChange={(goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}));
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
+                            />
+                        ) : (
+                            <NumberControl
+                                label={__('Goal Amount', 'give')}
+                                min={0}
+                                value={goalAmount}
+                                onChange={(goalAmount) => {
+                                    dispatch(setFormSettings({goalAmount}));
+                                    publishGoal({targetAmount: Number(goalAmount)});
+                                }}
+                            />
+                        )}
+                    </PanelRow>
                     <PanelRow>
                         <ToggleControl
                             label={__('Auto-Close Form', 'give')}

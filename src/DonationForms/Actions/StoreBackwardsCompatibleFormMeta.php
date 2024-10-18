@@ -112,8 +112,6 @@ class StoreBackwardsCompatibleFormMeta
                 return 'donation';
             case GoalType::DONORS():
                 return 'donors';
-            case GoalType::CAMPAIGN():
-                return 'campaign';
             default:
                 return 'amount';
         endswitch;

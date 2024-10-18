@@ -26,7 +26,7 @@ class CreateDefaultCampaignForm
             'settings' => FormSettings::fromArray([
                 'enableDonationGoal' => true,
                 'goalAmount' => $campaign->goal,
-                'goalType' => GoalType::CAMPAIGN()->getValue(),
+                'goalType' => $campaign->goalType->getValue(),
                 'designId' => 'classic',
             ]),
         ]);
