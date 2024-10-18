@@ -666,6 +666,21 @@ import {PayPalSubscriber} from './types';
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
 
+            useEffect(() => {
+                const submitButton = document.querySelector<HTMLButtonElement>(
+                    'form#give-next-gen button[type="submit"]'
+                );
+
+                if (submitButton) {
+                    submitButton.style.display = 'none';
+                }
+
+                return () => {
+                    if (submitButton) {
+                        submitButton.style.display = '';
+                    }
+                };
+            }, []);
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>
