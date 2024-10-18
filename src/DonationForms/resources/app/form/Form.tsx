@@ -15,6 +15,7 @@ import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary'
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
+const challenges = window.givewp.form.challenges.getAll();
 
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 
@@ -48,7 +49,8 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                                     setError,
                                     getGateway(values.gatewayId),
                                     donateUrl,
-                                    inlineRedirectRoutes
+                                    inlineRedirectRoutes,
+                                    challenges
                                 )
                             ),
                         }}

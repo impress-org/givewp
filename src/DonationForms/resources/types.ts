@@ -326,3 +326,10 @@ export function isResponseRedirected(response: Response): response is Response {
 export function isDonationTypeSubscription(donationType: string): boolean {
     return donationType === 'subscription';
 }
+
+export interface Challenge {
+    value?: any;
+    id: string;
+    initialize?(): void;
+    execute(setValue: Function): Promise<boolean>;
+}
