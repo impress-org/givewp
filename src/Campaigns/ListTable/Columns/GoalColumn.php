@@ -58,11 +58,11 @@ class GoalColumn extends ModelColumn
             $template,
             $model->id,
             $goalData->percentage,
-            $goalData->actual,
+            $goalData->actualFormatted,
             sprintf(
                 ' %s %s',
                 __('of', 'give'),
-                $model->goal
+                $goalData->goalFormatted
             ),
             sprintf(
                 '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
