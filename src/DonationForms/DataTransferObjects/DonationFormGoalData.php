@@ -60,7 +60,7 @@ class DonationFormGoalData implements Arrayable
         $this->formId = $formId;
         $this->formSettings = $formSettings;
         $this->isEnabled = $formSettings->enableDonationGoal ?? false;
-        $this->goalType = $formSettings->goalType ?? GoalType::CAMPAIGN();
+        $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
         $this->targetAmount = $this->formSettings->goalAmount ?? 0;
         $this->goalProgressType = $this->formSettings->goalProgressType ?? GoalProgressType::ALL_TIME();
         $this->goalStartDate = $this->formSettings->goalStartDate ?? null;
@@ -74,23 +74,21 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        $query = $this->getQuery();
+        $query = $this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())
+            ? new SubscriptionQuery()
+            : new DonationQuery();
 
-        if($this->goalProgressType->isCustom()) {
-            $query->between($this->goalStartDate, $this->goalEndDate);
-        }
+        $query->form($this->formId);
 
         switch ($this->goalType):
             case GoalType::DONORS():
+            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
                 return $query->countDonors();
             case GoalType::DONATIONS():
-                return $query->count();
             case GoalType::SUBSCRIPTIONS():
                 return $query->count();
             case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
                 return $query->sumInitialAmount();
-            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
-                return $query->countDonors();
             case GoalType::AMOUNT():
             default:
                 return $query->sumIntendedAmount();
@@ -137,30 +135,5 @@ class DonationFormGoalData implements Arrayable
             'label' => $this->getLabel(),
             'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100
         ];
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return CampaignDonationQuery|DonationQuery|SubscriptionQuery
-     */
-    private function getQuery()
-    {
-        if ($this->goalType->isOneOf(GoalType::SUBSCRIPTIONS(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS(), GoalType::DONORS_FROM_SUBSCRIPTIONS())) {
-            $query = new SubscriptionQuery();
-            $query->form($this->formId);
-
-            return $query;
-        }
-
-        if ($this->goalType->isCampaign()) {
-            $campaign = Campaign::findByFormId($this->formId);
-            return new CampaignDonationQuery($campaign);
-        }
-
-        $query = new DonationQuery();
-        $query->form($this->formId);
-
-        return $query;
     }
 }
