@@ -2,12 +2,8 @@
 
 namespace Give\DonationForms\DataTransferObjects;
 
-use Give\Campaigns\CampaignDonationQuery;
-use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\DonationQuery;
-use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
-use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\SubscriptionQuery;
 use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
