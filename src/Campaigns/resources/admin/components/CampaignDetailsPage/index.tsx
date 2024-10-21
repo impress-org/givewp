@@ -135,23 +135,25 @@ export default function CampaignsDetailsPage({campaignId}) {
 
             edit(data);
 
-            save()
-                .then((response: Campaign) => {
-                    setIsSaving(null);
-                    reset(response);
-                    dispatch.addSnackbarNotice({
-                        id: `save-${data.status}`,
-                        content: __('Campaign updated', 'give')
-                    });
-                })
-                .catch((response: any) => {
-                    setIsSaving(null);
-                    dispatch.addSnackbarNotice({
-                        id: `save-error`,
-                        type: 'error',
-                        content: __('Campaign update failed', 'give')
-                    });
+            try {
+                const response = await save();
+
+                setIsSaving(null);
+                reset(response);
+
+                dispatch.addSnackbarNotice({
+                    id: `save-${data.status}`,
+                    content: __('Campaign updated', 'give')
                 });
+            } catch(err) {
+                setIsSaving(null);
+
+                dispatch.addSnackbarNotice({
+                    id: `save-error`,
+                    type: 'error',
+                    content: __('Campaign update failed', 'give')
+                });
+            }
         }
     };
 
@@ -160,31 +162,31 @@ export default function CampaignsDetailsPage({campaignId}) {
         handleSubmit(async (data) => {
             edit(data);
 
-            save()
-                .then((response: Campaign) => {
-                    setShow({
-                        contextMenu: false,
-                        confirmationModal: false,
-                    });
-                    reset(response);
+            try {
+                const response: Campaign = await save();
 
-                    dispatch.addSnackbarNotice({
-                        id: `update-${status}`,
-                        content: getMessageByStatus(status)
-                    });
-                })
-                .catch(() => {
-                    setShow({
-                        contextMenu: false,
-                        confirmationModal: false,
-                    });
-
-                    dispatch.addSnackbarNotice({
-                        id: 'update-error',
-                        type: 'error',
-                        content: __('Something went wrong', 'give')
-                    });
+                setShow({
+                    contextMenu: false,
+                    confirmationModal: false,
                 });
+                reset(response);
+
+                dispatch.addSnackbarNotice({
+                    id: `update-${status}`,
+                    content: getMessageByStatus(status)
+                });
+            } catch(err) {
+                setShow({
+                    contextMenu: false,
+                    confirmationModal: false,
+                });
+
+                dispatch.addSnackbarNotice({
+                    id: 'update-error',
+                    type: 'error',
+                    content: __('Something went wrong', 'give')
+                });
+            }
         })();
     };
 
