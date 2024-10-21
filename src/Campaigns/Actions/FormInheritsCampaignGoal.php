@@ -4,6 +4,7 @@ namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\GoalType;
 
 /**
  * @unreleased
@@ -25,7 +26,7 @@ class FormInheritsCampaignGoal
             if ($campaign) {
                 $donationForm->settings->enableDonationGoal = true;
                 $donationForm->settings->goalAmount = $campaign->goal;
-                $donationForm->settings->goalType = $campaign->goalType->getValue();
+                $donationForm->settings->goalType = new GoalType($campaign->goalType->getValue());
             }
         }
     }
