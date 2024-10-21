@@ -30,6 +30,8 @@ class CampaignRepository
 
     /**
      * Get Campaign by ID
+     *
+     * @unreleased
      */
     public function getById(int $id)
     {
@@ -40,6 +42,8 @@ class CampaignRepository
 
     /**
      * Get Campaign by Form ID
+     *
+     * @unreleased
      */
     public function getByFormId(int $id)
     {
