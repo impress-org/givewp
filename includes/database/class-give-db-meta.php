@@ -512,7 +512,7 @@ class Give_DB_Meta extends Give_DB {
 				$id                       = $arguments[1];
 				$meta_key                 = $arguments[2];
 				$meta_value               = $arguments[3];
-				$delete_all               = $arguments[3];
+				$delete_all               = $arguments[4];
 				$this->is_filter_callback = true;
 
 				// Bailout.
@@ -543,7 +543,7 @@ class Give_DB_Meta extends Give_DB {
 			PRIMARY KEY  (meta_id),
 			KEY {$this->meta_type}_id ({$this->meta_type}_id),
 			KEY meta_key (meta_key({$this->min_index_length}))
-			) {$charset_collate};";
+			) {$charset_collate} ENGINE=InnoDB;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
