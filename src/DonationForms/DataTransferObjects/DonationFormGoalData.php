@@ -48,7 +48,6 @@ class DonationFormGoalData implements Arrayable
     public $goalEndDate;
 
     /**
-     * @unreleased Campaign is the default goal type
      * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
