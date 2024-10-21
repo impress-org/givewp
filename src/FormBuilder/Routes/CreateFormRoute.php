@@ -3,7 +3,6 @@
 namespace Give\FormBuilder\Routes;
 
 use Exception;
-use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
@@ -35,7 +34,10 @@ class CreateFormRoute
                 $form = new DonationForm([
                     'title' => __('GiveWP Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
-                    'settings' => FormSettings::fromArray($this->getFormSettings()),
+                    'settings' => FormSettings::fromArray([
+                        'enableDonationGoal' => true,
+                        'goalAmount' => 1000,
+                    ]),
                     'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
                 ]);
 
@@ -47,30 +49,5 @@ class CreateFormRoute
                 exit();
             }
         }
-    }
-
-
-    /**
-     * @unreleased
-     */
-    private function getFormSettings(): array
-    {
-        // Copy campaign goal settings
-        if (isset($_GET['campaignId'])) {
-            $campaign = Campaign::find((int)$_GET['campaignId']);
-
-            if ($campaign) {
-                return [
-                    'enableDonationGoal' => true,
-                    'goalAmount' => $campaign->goal,
-                    'goalType' => $campaign->goalType->getValue(),
-                ];
-            }
-        }
-
-        return [
-            'enableDonationGoal' => true,
-            'goalAmount' => 1000,
-        ];
     }
 }
