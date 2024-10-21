@@ -3,13 +3,14 @@
 namespace Give\FeatureFlags\OptionBasedFormEditor;
 
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
+use Give\FeatureFlags\FeatureFlags;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
  */
-class OptionBasedFormEditor
+class OptionBasedFormEditor implements FeatureFlags
 {
     /**
      * @unreleased
