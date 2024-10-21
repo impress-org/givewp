@@ -8,7 +8,6 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -29,17 +28,21 @@ class CampaignRepository
     ];
 
     /**
+     * @unreleased
+     *
      * Get Campaign by Form ID
      */
     public function getByFormId(int $formId)
     {
-        return $this->prepareQuery()->join(function (JoinQueryBuilder $builder) {
-            $builder->leftJoin('give_campaign_forms', 'campaign_forms')
-                ->on('campaign_forms.campaign_id', 'id');
-        })->where('campaign_forms.form_id', $formId)->get();
+        return $this->prepareQuery()
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
+            ->where('forms.form_id', $formId)
+            ->get();
     }
 
     /**
+     * @unreleased
+     *
      * Get Campaign by ID
      */
     public function getById(int $id)
@@ -246,7 +249,7 @@ class CampaignRepository
     {
         $builder = new ModelQueryBuilder(Campaign::class);
 
-        return $builder->from('give_campaigns')
+        return $builder->from('give_campaigns', 'campaigns')
             ->select(
                 'id',
                 ['campaign_type', 'type'],
@@ -265,6 +268,6 @@ class CampaignRepository
                 ['date_created', 'createdAt']
             )
             // Exclude Peer to Peer campaign type until it is fully supported.
-            ->where('campaign_type', CampaignType::PEER_TO_PEER, '!=');
+            ->where('campaigns.campaign_type', CampaignType::PEER_TO_PEER, '!=');
     }
 }
