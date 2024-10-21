@@ -1,18 +1,17 @@
 <?php
 
-namespace Give\FeatureFlags;
+namespace Give\FeatureFlags\OptionBasedFormEditor;
 
-use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\FeatureFlags\OptionBasedFormEditor\Settings\Advanced as AdvancedSettings;
 use Give\FeatureFlags\OptionBasedFormEditor\Settings\DefaultOptions as DefaultOptionsSettings;
 use Give\FeatureFlags\OptionBasedFormEditor\Settings\General as GeneralSettings;
 use Give\Helpers\Hooks;
-use Give\ServiceProviders\ServiceProvider;
+use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
  * @unreleased
  */
-class FeatureFlagsServiceProvider implements ServiceProvider
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @unreleased

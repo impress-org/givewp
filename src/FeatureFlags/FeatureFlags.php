@@ -7,5 +7,8 @@ namespace Give\FeatureFlags;
  */
 interface FeatureFlags
 {
+    /**
+     * @unreleased
+     */
     public static function isEnabled(): bool;
 }
