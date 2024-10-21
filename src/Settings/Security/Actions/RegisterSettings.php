@@ -38,7 +38,7 @@ class RegisterSettings
     }
 
     /**
-     * @unreleased enable by default
+     * @since 3.17.1 enable by default
      * @since 3.17.0
      */
     public function getHoneypotSettings(): array
