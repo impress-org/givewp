@@ -78,7 +78,7 @@ class CampaignGoalData implements Arrayable
     /**
      * @unreleased
      */
-    private function getPercentage(): int
+    private function getPercentage(): float
     {
         return round($this->actual / $this->campaign->goal * 100, 2);
     }
