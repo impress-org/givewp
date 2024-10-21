@@ -60,10 +60,9 @@ class OptionBasedFormEditor
             ->whereNotExists(function (
                 QueryBuilder $builder
             ) {
-                global $wpdb;
                 $builder
                     ->select(['meta_value', 'formBuilderSettings'])
-                    ->from(DB::raw("{$wpdb->prefix}give_formmeta"))
+                    ->from(DB::raw(DB::prefix('give_formmeta')))
                     ->where('meta_key', 'formBuilderSettings')
                     ->whereRaw('AND form_id = ID');
             })->count();
