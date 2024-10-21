@@ -20,6 +20,11 @@ $currentTestEnvironment = $testEnvironment->current();
 // define for use in WP bootstrap file
 define('WP_TESTS_CONFIG_FILE_PATH', $currentTestEnvironment->config());
 
+// temporary while event tickets is in beta
+if (!defined('GIVE_FEATURE_ENABLE_EVENT_TICKETS')){
+    define('GIVE_FEATURE_ENABLE_EVENT_TICKETS', true);
+}
+
 // load GiveWP
 TestHooks::addFilter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';

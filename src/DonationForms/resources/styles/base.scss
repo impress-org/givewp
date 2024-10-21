@@ -24,8 +24,13 @@
     @import "components/pagination";
     @import "components/billingAddress";
     @import "components/form-errors";
+    @import "components/honeypot";
 }
 
 @layer base-overrides {
     @import "base-overrides";
+}
+
+@layer base-design-settings {
+    @import "design-settings/image";
 }

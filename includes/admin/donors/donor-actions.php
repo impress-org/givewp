@@ -17,11 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
+ * @since 3.7.0 Add support to the "phone" field
+ * @since      1.0
+ *
  * @param array $args The $_POST array being passed.
  *
- * @since 1.0
- *
  * @return array|bool $output Response messages
+ * @throws Exception
  */
 function give_edit_donor( $args ) {
 
@@ -123,6 +125,16 @@ function give_edit_donor( $args ) {
 
 	// Save company name in when admin update donor company name from dashboard.
 	$donor->update_meta( '_give_donor_company', sanitize_text_field( $args['give_donor_company'] ) );
+
+    /**
+     * Fires after using the submitted data to update the donor metadata.
+     *
+     * @param array $args     The sanitized data submitted.
+     * @param int   $donor_id The donor ID.
+     *
+     * @since 3.7.0
+     */
+    do_action('give_admin_donor_details_updating', $args, $donor->id);
 
 	// If First name of donor is empty, then fetch the current first name of donor.
 	if ( empty( $donor_info['first_name'] ) ) {

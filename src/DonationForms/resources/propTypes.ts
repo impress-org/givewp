@@ -51,8 +51,21 @@ export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'>
     dateFormat: string;
 }
 
+export interface IntlTelInputSettings {
+    initialCountry: string;
+    showSelectedDialCode: boolean;
+    strictMode: boolean;
+    i18n: object;
+    cssUrl: string;
+    scriptUrl: string;
+    utilsScriptUrl: string;
+    errorMap: Array<string>;
+    useFullscreenPopup: boolean;
+}
+
 export interface PhoneProps extends FieldHasDescriptionProps {
     phoneFormat: string;
+    intlTelInputSettings: IntlTelInputSettings;
 }
 
 export interface ElementProps extends Element {}
@@ -114,7 +127,7 @@ export interface DonationAmountProps extends GroupProps {
 }
 
 export interface AmountProps extends FieldProps {
-    levels: number[];
+    levels: {label: string; value: number}[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
     fixedAmountValue: number;
@@ -175,9 +188,18 @@ export interface GoalAchievedProps {
 }
 
 export interface HeaderProps {
+    HeaderImage: FC<HeaderImageProps | {}>;
     Title: FC<HeaderTitleProps | {}>;
     Description: FC<HeaderDescriptionProps | {}>;
     Goal: FC<GoalProps | {}>;
+    isMultiStep: boolean;
+}
+
+export interface HeaderImageProps {
+    url: string;
+    alt: string;
+    color: string;
+    opacity: string;
 }
 
 export interface HeaderDescriptionProps {
@@ -205,6 +227,7 @@ export interface DonationReceiptProps {
     donorDetails: ReceiptDetail[];
     donationDetails: ReceiptDetail[];
     subscriptionDetails: ReceiptDetail[];
+    eventTicketsDetails: ReceiptDetail[];
     additionalDetails: ReceiptDetail[];
 }
 

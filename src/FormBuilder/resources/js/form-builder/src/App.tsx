@@ -8,7 +8,6 @@ import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 import {EditorStateProvider} from "@givewp/form-builder/stores/editor-state";
-import scrollIntoView from 'dom-scroll-into-view';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 

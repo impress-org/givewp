@@ -271,6 +271,11 @@
     .details-donation-details .headline::before {
         content: '\f004';
     }
+
+    // Donation Details
+    .details-event-tickets-details .headline::before {
+        content: '\f3ff';
+    }
 }
 
 .receipt-header {

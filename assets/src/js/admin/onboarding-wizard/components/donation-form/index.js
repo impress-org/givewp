@@ -1,9 +1,10 @@
 // Import vendor dependencies
-import { useState, useEffect } from 'react';
-import { __ } from '@wordpress/i18n'
+import {useEffect, useRef, useState} from 'react';
+import {__} from '@wordpress/i18n';
+import IframeResizer from 'iframe-resizer-react';
 
 // Import utilities
-import { getWindowData } from '../../utils';
+import {getWindowData} from '../../utils';
 
 // Import components
 import ConfigurationIcon from '../icons/configuration';
@@ -11,69 +12,53 @@ import ConfigurationIcon from '../icons/configuration';
 // Import styles
 import './style.scss';
 
-const DonationForm = () => {
-	const formPreviewUrl = getWindowData( 'formPreviewUrl' );
-	const [ iframeLoaded, setIframeLoaded ] = useState( false );
-	const [ iframeHeight, setIframeHeight ] = useState( 749 );
+const DonationForm = ({formId}) => {
+    const formPreviewUrl = getWindowData('formPreviewUrl') + `${formId}`;
+    const [isLoading, setLoading] = useState(false);
+    const [previewHTML, setPreviewHTML] = useState(null);
+    const iframeRef = useRef();
 
-	useEffect( () => {
-		window.addEventListener( 'message', receiveMessage, false );
-		return () => {
-			window.removeEventListener( 'message', receiveMessage, false );
-		};
-	}, [] );
+    useEffect(() => {
+        setLoading(true);
+    }, []);
 
-	const receiveMessage = ( event ) => {
-		switch ( event.data.action ) {
-			case 'resize': {
-				setIframeHeight( event.data.payload.height );
-				break;
-			}
-			case 'loaded': {
-				onIframeLoaded();
-				break;
-			}
-			default: {
+    return (
+        <div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
+            {isLoading && (
+                <div className="give-obw-donation-form-preview__loading-message">
+                    <ConfigurationIcon />
+                    <h3>{__('Building Form Preview...', 'give')}</h3>
+                </div>
+            )}
+            <IframeResizer
+                id="donationFormPreview"
+                className="give-obw-donation-form-preview__iframe"
+                forwardRef={iframeRef}
+                srcDoc={previewHTML}
+                checkOrigin={
+                    false
+                } /** The srcDoc property is not a URL and requires that the origin check be disabled. */
+                style={{
+                    display: isLoading ? 'none' : 'inherit',
+                    opacity: isLoading ? 0.5 : 1,
+                }}
+                onInit={(iframe) => {
+                    iframe.iFrameResizer.resize();
+                    setLoading(false);
+                }}
+            />
 
-			}
-		}
-	};
-
-	const iframeStyle = {
-		height: iframeHeight,
-		opacity: iframeLoaded === false ? '0' : '1',
-	};
-	const messageStyle = {
-		height: iframeHeight,
-		opacity: iframeLoaded === false ? '1' : '0',
-	};
-
-	const onIframeLoaded = () => {
-		setIframeLoaded( true );
-		hideInIframe( '#give_error_test_mode' );
-		hideInIframe( '.social-sharing' );
-	};
-
-	const hideInIframe = ( selector ) => {
-		const element = document.getElementById( 'donationFormPreview' ).contentDocument
-			.getElementById( 'iFrameResizer0' ).contentDocument
-			.querySelector( selector );
-		if ( element ) {
-			element.style.display = 'none';
-		}
-	};
-
-	return (
-		<div className="give-obw-donation-form-preview" data-givewp-test="preview-form">
-			<div className="give-obw-donation-form-preview__loading-message" style={ messageStyle }>
-				<ConfigurationIcon />
-				<h3>
-					{ __( 'Building Form Preview...', 'give' ) }
-				</h3>
-			</div>
-			<iframe id="donationFormPreview" className="give-obw-donation-form-preview__iframe" scrolling="no" src={ formPreviewUrl } style={ iframeStyle } />
-		</div>
-	);
+            {/* @note This iFrame is used to load and render the design preview document in the background. */}
+            <iframe
+                onLoad={(event) => {
+                    const target = event.target;
+                    setPreviewHTML(target.contentWindow.document.documentElement.innerHTML);
+                }}
+                src={formPreviewUrl}
+                style={{display: 'none'}}
+            />
+        </div>
+    );
 };
 
 export default DonationForm;

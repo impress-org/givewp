@@ -11,7 +11,8 @@
         border-radius: var(--givewp-rounded-8);
         color: var(--givewp-grey-700);
         background-color: var(--givewp-shades-white);
-        box-shadow: var(--givewp-shadow-sm);
+        box-shadow: var(--givewp-shadow-xs);
+        border: solid 1px var(--givewp-grey-25);
 
         &-header {
             position: relative;
@@ -82,8 +83,9 @@
 
         &-footer-secure {
             display: flex;
-            column-gap: 0.5rem;
+            column-gap: 1rem;
             width: 100%;
+            margin-top: var(--givewp-spacing-4);
             padding: var(--givewp-spacing-4);
             font-size: var(--givewp-font-size-paragraph-md);
             color: var(--givewp-grey-900);
@@ -91,12 +93,17 @@
             justify-content: center;
         }
 
-        &-footer-secure-icon,
-        &-footer-secure-text {
+        &-footer-secure-icon {
             color: var(--givewp-secondary-color);
+            translate: 0 -1px;
+        }
+
+        &-footer-secure-text {
+            font-weight: 500;
         }
     }
 
+    button[type="submit"],
     &__steps-button-next {
         display: flex;
         justify-content: center;
@@ -105,7 +112,16 @@
         color: var(--givewp-grey-5);
         line-height: 1.5;
         font-weight: 600;
+        margin: 0;
 
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
+            &:hover {
+                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
+            }
+        }
+    }
+
+    &__steps-button-next {
         &:after {
             content: "";
             display: inline-block;
@@ -115,12 +131,6 @@
             background-image: var(--givewp-icon-arrow-right);
             background-position: center;
             background-repeat: no-repeat;
-        }
-
-        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black)) {
-            &:hover {
-                background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
-            }
         }
     }
 

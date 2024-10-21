@@ -208,10 +208,12 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     isPressed={showEmbedModal}
                                     onClick={() => setShowEmbedModal(!showEmbedModal)}
                                     label={__('Embed form', 'give')}
+                                    title={__('Embed form', 'give')}
                                 />
                                 {isPublished && (
                                     <Button
                                         label={__('View form', 'give')}
+                                        title={__('View form', 'give')}
                                         href={permalink}
                                         target="_blank"
                                         icon={external}
@@ -230,7 +232,13 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                         : __('Publish', 'give')}
                                 </Button>
                                 {mode !== EditorMode.settings && (
-                                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                                    <Button
+                                        onClick={toggleShowSidebar}
+                                        isPressed={showSidebar}
+                                        icon={drawerRight}
+                                        label={__('Settings', 'give')}
+                                        title={__('Settings', 'give')}
+                                    />
                                 )}
                             </>
                         )}
@@ -249,6 +257,8 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                             }
                                             onToggle();
                                         }}
+                                        label={__('Options', 'give')}
+                                        title={__('Options', 'give')}
                                     />
                                 );
                             }}
@@ -257,6 +267,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                                     <MenuGroup label={__('Support', 'give')}>
                                         {mode !== EditorMode.settings && (
                                             <MenuItem
+                                                className={'givewp-block-editor-tools__tour'}
                                                 onClick={() => {
                                                     // @ts-ignore
                                                     if (!window.tour.isActive()) {

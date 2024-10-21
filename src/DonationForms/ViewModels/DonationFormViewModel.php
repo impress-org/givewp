@@ -6,6 +6,7 @@ use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -123,23 +124,23 @@ class DonationFormViewModel
      */
     private function getTotalCountValue(GoalType $goalType): ?int
     {
-      if ($goalType->isDonors()){
-        return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
-      }
+        if ($goalType->isDonors()) {
+            return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
+        }
 
-      if ($goalType->isDonations() || $goalType->isAmount()){
-        return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
-      }
+        if ($goalType->isDonations() || $goalType->isAmount()) {
+            return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
+        }
 
-      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
-        return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
+        }
 
-      if ($goalType->isDonorsFromSubscriptions()){
-        return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isDonorsFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
+        }
 
-      return 0;
+        return 0;
     }
 
     /**
@@ -147,19 +148,19 @@ class DonationFormViewModel
      */
     private function getCountLabel(GoalType $goalType): ?string
     {
-      if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()){
-        return __('Donors', 'give');
-      }
+        if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()) {
+            return __('Donors', 'give');
+        }
 
-      if ($goalType->isDonations() || $goalType->isAmount()){
-        return __('Donations', 'give');
-      }
+        if ($goalType->isDonations() || $goalType->isAmount()) {
+            return __('Donations', 'give');
+        }
 
-      if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()){
-        return __('Recurring Donations', 'give');
-      }
+        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
+            return __('Recurring Donations', 'give');
+        }
 
-      return __('Counted', 'give');
+        return __('Counted', 'give');
     }
 
     /**
@@ -167,11 +168,11 @@ class DonationFormViewModel
      */
     private function getTotalRevenue(GoalType $goalType)
     {
-      if ($goalType->isAmountFromSubscriptions()){
-        return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
-      }
+        if ($goalType->isAmountFromSubscriptions()) {
+            return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
+        }
 
-      return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
     }
 
     /**
@@ -181,18 +182,23 @@ class DonationFormViewModel
     {
         $goalType = $this->goalType();
 
-        $totalRevenue = $this->getTotalRevenue($goalType);
-        $totalCountValue = $this->getTotalCountValue($goalType);
-        $totalCountLabel = $this->getCountLabel($goalType);
+        $donationQuery = (new DonationQuery)->form($this->donationFormId);
+
+        if($this->formSettings->goalProgressType->isCustom()) {
+            $donationQuery->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
+        }
 
         return [
-            'totalRevenue' => $totalRevenue,
-            'totalCountValue' => $totalCountValue,
-            'totalCountLabel' => $totalCountLabel,
+            'totalRevenue' => $donationQuery->sumIntendedAmount(),
+            'totalCountValue' => $goalType->isDonations() || $goalType->isAmount()
+                ? $donationQuery->count()
+                : $this->getTotalCountValue($goalType),
+            'totalCountLabel' => $this->getCountLabel($goalType),
         ];
     }
 
     /**
+     * @since 3.6.0 added includeHeaderInMultiStep to form design export
      * @since 3.0.0
      */
     public function exports(): array
@@ -227,6 +233,7 @@ class DonationFormViewModel
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
                     'isMultiStep' => $formDesign->isMultiStep(),
+                    'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ] : null,
             ]),
             'previewMode' => $this->previewMode,
@@ -245,6 +252,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
@@ -264,7 +272,7 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo $this->formSettings->customCss; ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
         <?php
         endif; ?>
 
@@ -430,5 +438,25 @@ class DonationFormViewModel
         );
 
         Language::setScriptTranslations($handle);
+    }
+
+    /**
+     * @since 3.4.0
+     */
+    private function updateDesignSettingsClassNames(array &$classNames)
+    {
+        if ($this->formSettings->designSettingsImageUrl) {
+            $classNames[] = 'givewp-design-settings--image';
+            $classNames[] = 'givewp-design-settings--image-style__' . $this->formSettings->designSettingsImageStyle;
+        }
+
+        if ($this->formSettings->designSettingsLogoUrl) {
+            $classNames[] = 'givewp-design-settings--logo';
+            $classNames[] = 'givewp-design-settings--logo-position__' . $this->formSettings->designSettingsLogoPosition;
+        }
+
+        $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
+
+        $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
     }
 }

@@ -1,0 +1,79 @@
+@import "../../../templates/EventTickets/styles.scss";
+
+.givewp-event-tickets-block__placeholder {
+    &--no-events,
+    &--select-event {
+        border: 1px dashed var(--givewp-grey-500);
+        border-radius: 0.3125rem;
+        padding: var(--givewp-spacing-6);
+
+        p {
+            color: var(--givewp-grey-700);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        a {
+            color: var(--givewp-grey-900);
+            font-weight: 600;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    &--select-event {
+        text-align: center;
+
+        .components-base-control {
+            margin-top: var(--givewp-spacing-1);
+
+            .components-select-control {
+                gap: var(--givewp-spacing-3);
+
+                &__input {
+                    border-color: var(--givewp-grey-400);
+                    border-radius: 0.125rem;
+                    color: var(--givewp-grey-500);
+                    font-size: 0.8125rem !important;
+                    height: 2.25rem !important;
+                    padding: var(--givewp-spacing-2);
+                }
+            }
+
+            .components-input-control {
+                &__label {
+                    color: var(--givewp-grey-700);
+                    font-size: 0.875rem !important;
+                    font-weight: 400 !important;
+                    text-align: center;
+                }
+
+                &__container {
+                    margin: 0 auto;
+                    max-width: 15.75rem;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .givewp-event-tickets {
+        border: 1px solid var(--givewp-grey-500);
+        border-radius: 0.3125rem;
+        padding: var(--givewp-spacing-2);
+
+        &__header {
+            padding: 0;
+
+            &::before {
+                display: none;
+            }
+
+            &__date {
+                color: var(--givewp-grey-900);
+            }
+        }
+    }
+}

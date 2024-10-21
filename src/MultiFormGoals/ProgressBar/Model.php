@@ -2,8 +2,12 @@
 
 namespace Give\MultiFormGoals\ProgressBar;
 
-use Give\ValueObjects\Money;
+use Give\DonationForms\DonationQuery;
 
+/**
+ * @since 3.16.0 Add $statusList property
+ * @since      2.9.0
+ */
 class Model
 {
 
@@ -19,9 +23,12 @@ class Model
     protected $forms = [];
     protected $donationRevenueResults;
 
+    protected $statusList = [];
+
     /**
      * Constructs and sets up setting variables for a new Progress Bar model
      *
+     * @since 3.16.0 Add statusList support for $args
      * @since 2.9.0
      **@param array $args Arguments for new Progress Bar, including 'ids'
      */
@@ -33,11 +40,13 @@ class Model
         isset($args['goal']) ? $this->goal = $args['goal'] : $this->goal = '1000';
         isset($args['enddate']) ? $this->enddate = $args['enddate'] : $this->enddate = '';
         isset($args['color']) ? $this->color = $args['color'] : $this->color = '#28c77b';
+        isset($args['statusList']) ? $this->statusList = $args['statusList'] : $this->statusList = ['publish'];
     }
 
     /**
      * Get forms associated with Progress Bar
      *
+     * @since 3.16.0 Use $statusList property
      * @since 3.0.3 Return empty array instead of false
      * @since 2.9.0
      */
@@ -49,7 +58,7 @@ class Model
 
         $query_args = [
             'post_type' => 'give_forms',
-            'post_status' => 'publish',
+            'post_status' => $this->statusList,
             'post__in' => $this->ids,
             'posts_per_page' => -1,
             'fields' => 'ids',
@@ -132,14 +141,12 @@ class Model
     /**
      * Get raw earnings value for Progress Bar
      *
+     * @since 3.12.0 use DonationQuery
      * @since 2.9.0
      */
     public function getTotal(): string
     {
-        $query = new Query($this->getForms());
-        $results = $query->getResults();
-
-        return Money::ofMinor($results->total, give_get_option('currency'))->getAmount();
+        return (new DonationQuery())->forms($this->getForms())->sumIntendedAmount();
     }
 
     /**

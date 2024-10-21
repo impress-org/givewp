@@ -35,8 +35,14 @@ import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
-import FormError from "./layouts/FormError";
+import FormError from './layouts/FormError';
+import HeaderImage from './layouts/HeaderImage';
+import Honeypot from '@givewp/forms/registrars/templates/fields/Honeypot';
 
+/**
+ * @since 3.16.2 added Honeypot
+ * @since 3.0.0
+ */
 const defaultFormTemplates = {
     fields: {
         amount: AmountField,
@@ -55,6 +61,7 @@ const defaultFormTemplates = {
         phone: PhoneField,
         file: FileField,
         url: UrlField,
+        honeypot: Honeypot,
     },
     elements: {
         paragraph: Paragraph,
@@ -78,6 +85,7 @@ const defaultFormTemplates = {
         header: Header,
         headerTitle: HeaderTitle,
         headerDescription: HeaderDescription,
+        headerImage: HeaderImage,
         goal: Goal,
         goalAchieved: GoalAchieved,
         receipt: DonationReceipt,

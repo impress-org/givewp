@@ -9,7 +9,7 @@ class GiftAid extends FormMigrationStep
 {
 
     /**
-     * @unreleased
+     * @since 3.4.0
      *
      * @return void
      */

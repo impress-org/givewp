@@ -29,12 +29,13 @@ class Query
     }
 
     /**
+     * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
      */
     public function getSQL()
     {
         global $wpdb;
-
+        $mode = give_is_test_mode() ? 'test' : 'live';
         $sql = "
             SELECT
                 sum( revenue.amount ) as total,
@@ -42,10 +43,14 @@ class Query
             FROM {$wpdb->posts} as payment
                 JOIN {$wpdb->give_revenue} as revenue
                     ON revenue.donation_id = payment.ID
+                JOIN {$wpdb->paymentmeta} paymentMode
+                    ON payment.ID = paymentMode.donation_id AND paymentMode.meta_key = '_give_payment_mode'
             WHERE
                 payment.post_type = 'give_payment'
                 AND
                 payment.post_status IN ( 'publish', 'give_subscription' )
+                AND
+                paymentMode.meta_value = '{$mode}'
         ";
 
         if ( ! empty($this->formIDs)) {

@@ -292,6 +292,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
                 font-size: 16px;
                 line-height: 16px;
                 background-color: var(--givewp-gray-20);
+                width: 100%;
             }
 
             &:checked + label {
@@ -471,4 +472,10 @@ This creates a consistent separator between the tabs and the rest of the sidebar
             }
         }
     }
+}
+
+/* Ensure that the link editor modal from the ClassicEditor component will be visible. */
+#wp-link-backdrop,
+#wp-link-wrap {
+    z-index: 9999999999 !important;
 }

@@ -8,6 +8,7 @@ use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
+use Give\DonationForms\Rules\PhoneIntlInputRule;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
@@ -21,12 +22,15 @@ use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
+use Give\Framework\FieldsAPI\Phone;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
+use Give\Helpers\IntlTelInput;
 use WP_User;
 
 /**
@@ -43,14 +47,14 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected $currency;
     /**
-     * @var array {blockClientId: {node: Node, block: BlockModel}}
+     * @var array{blockClientId: {node: Node, block: BlockModel}}
      */
     protected $blockNodeRelationships = [];
 
     /**
      * @since 3.0.0
      *
-     * @return array {DonationForm, array {blockClientId: {node: Node, block: BlockModel}}}
+     * @return array{form: DonationForm, array{clientId: string{node: Node, block: BlockModel}}}
      * @throws TypeNotSupported|NameCollisionException
      */
     public function __invoke(BlockCollection $blocks, int $formId): array
@@ -101,7 +105,6 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
      * @since 3.0.0
      *
      * @return Node|null
@@ -112,18 +115,21 @@ class ConvertDonationFormBlocksToFieldsApi
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
-        if ($node instanceof Node) {
-            $node = $this->mapGenericBlockAttributesToNode($block, $node);
-
-            $this->mapBlockToNodeRelationships($block, $node);
-
-            return $node;
+        if (!$node instanceof Node) {
+            return null;
         }
 
-        return null;
+        if ($node instanceof Field) {
+            $node = $this->mapGenericBlockAttributesToField($block, $node);
+        }
+
+         $this->mapBlockToNodeRelationships($block, $node);
+
+        return $node;
     }
 
     /**
+     * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *
      * @return Node|null
@@ -166,6 +172,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
                         return $email;
                     });
+            case 'givewp/donor-phone':
+                return Phone::make('phone')
+                    ->setIntlTelInputSettings(IntlTelInput::getSettings())
+                    ->rules('max:50', (bool)$block->getAttribute('required') ? 'required' : 'optional',
+                        new PhoneIntlInputRule());
+
 
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
@@ -249,6 +261,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.17.0 updated honorific field with validation, global options, and user defaults
+     *
      * @since 3.0.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
@@ -281,9 +295,17 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
-                $group->getNodeByName('honorific')
-                    ->label('Title')
-                    ->options(...array_values($block->getAttribute('honorifics')));
+                $options = array_filter(array_values((array)$block->getAttribute('honorifics')));
+                if ($block->hasAttribute('useGlobalSettings') && $block->getAttribute('useGlobalSettings') === true) {
+                    $options = give_get_option('title_prefixes', give_get_default_title_prefixes());
+                }
+
+                if (!empty($options)){
+                    $group->getNodeByName('honorific')
+                        ->label(__('Title', 'give'))
+                        ->options(...$options)
+                        ->rules('max:255', 'in:' . implode(',', $options));
+                    }
             } else {
                 $group->remove('honorific');
             }
@@ -291,6 +313,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.4.0 updated fields to add optional rules last so they can be dynamically validated.
      * @since 3.0.0
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
@@ -330,16 +353,16 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('city')
                     ->label($block->getAttribute('cityLabel'))
                     ->placeholder($block->getAttribute('cityPlaceholder'))
-                    ->rules('max:255', new BillingAddressCityRule());
+                    ->rules('max:255', new BillingAddressCityRule(), 'optional');
 
                 $group->getNodeByName('state')
                     ->label($block->getAttribute('stateLabel'))
-                    ->rules('max:255', new BillingAddressStateRule());
+                    ->rules('max:255', new BillingAddressStateRule(), 'optional');
 
                 $group->getNodeByName('zip')
                     ->label($block->getAttribute('zipLabel'))
                     ->placeholder($block->getAttribute('zipPlaceholder'))
-                    ->rules('max:255', new BillingAddressZipRule());
+                    ->rules('max:255', new BillingAddressZipRule(), 'optional');
             });
     }
 
@@ -364,36 +387,35 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.4.1 updated to be field specific and prevent overwriting of existing values
      * @since 3.0.0
      */
-    protected function mapGenericBlockAttributesToNode(BlockModel $block, Node $node): Node
+    protected function mapGenericBlockAttributesToField(BlockModel $block, Field $field): Node
     {
-        if ('field' === $node->getNodeType()) {
-            // Label
-            if ($block->hasAttribute('label')) {
-                $node->label($block->getAttribute('label'));
-            }
-
-            // Placeholder
-            if ($block->hasAttribute('placeholder')) {
-                $node->placeholder($block->getAttribute('placeholder'));
-            }
-
-            // Required
-            if ($block->hasAttribute('isRequired')) {
-                $node->required($block->getAttribute('isRequired'));
-            }
-
-            if ($block->hasAttribute('displayInAdmin') && $block->getAttribute('displayInAdmin')) {
-                $node->showInAdmin($block->getAttribute('displayInAdmin'));
-            }
-
-            if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
-                $node->showInReceipt($block->getAttribute('displayInReceipt'));
-            }
+        // Label
+        if ($block->hasAttribute('label') && method_exists($field, 'label')) {
+            $field->label($block->getAttribute('label'));
         }
 
-        return $node;
+        // Placeholder
+        if ($block->hasAttribute('placeholder') && method_exists($field, 'placeholder')) {
+            $field->placeholder($block->getAttribute('placeholder'));
+        }
+
+        // Required
+        if ($block->hasAttribute('isRequired') && method_exists($field, 'required') && !$field->isRequired()) {
+            $field->required($block->getAttribute('isRequired'));
+        }
+
+        if ($block->hasAttribute('displayInAdmin') && $block->getAttribute('displayInAdmin')) {
+            $field->showInAdmin($block->getAttribute('displayInAdmin'));
+        }
+
+        if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
+            $field->showInReceipt($block->getAttribute('displayInReceipt'));
+        }
+
+        return $field;
     }
 
     /**

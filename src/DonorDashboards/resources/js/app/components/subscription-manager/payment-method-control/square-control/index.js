@@ -7,7 +7,7 @@ import './style.scss';
 const cardTokenizeResponse = {};
 let cardBrand = 'unknown';
 
-const SquareControl = ({label, value, forwardedRef, gateway}) => {
+const SquareControl = ({label = null, value, forwardedRef, gateway}) => {
 
     const {applicationID, locationID} = gateway;
 
@@ -76,12 +76,6 @@ SquareControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.object,
     onChange: PropTypes.func,
-};
-
-SquareControl.defaultProps = {
-    label: null,
-    value: null,
-    onChange: null,
 };
 
 export default SquareControl;

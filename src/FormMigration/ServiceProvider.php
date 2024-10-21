@@ -37,6 +37,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormFields\CompanyDonations::class,
                 Steps\DonationGoal::class,
                 Steps\TermsAndConditions::class,
+                Steps\FormTaxonomies::class,
                 Steps\FormGrid::class,
                 Steps\FormFieldManager::class,
                 Steps\OfflineDonations::class,
@@ -45,10 +46,18 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormMeta::class,
                 Steps\PdfSettings::class,
                 Steps\FeeRecovery::class,
+                Steps\ConstantContact::class,
                 Steps\PerFormGateways::class,
                 Steps\Mailchimp::class,
                 Steps\FundsAndDesignations::class,
                 Steps\GiftAid::class,
+                Steps\FormFeaturedImage::class,
+                Steps\FormExcerpt::class,
+                Steps\ConvertKit::class,
+                Steps\ActiveCampaign::class,
+                Steps\DoubleTheDonation::class,
+                Steps\CurrencySwitcher::class,
+                Steps\RazorpayPerFormSettings::class,
             ]);
         });
     }
@@ -65,11 +74,10 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerRoutes()
     {
         add_action('rest_api_init', function () {
-
             // give-api/v2/admin/forms/migrate
             register_rest_route('give-api/v2', 'admin/forms/migrate/(?P<id>\d+)', [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => function (WP_REST_Request $request) {
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => function (WP_REST_Request $request) {
                     return (new MigrationController($request))(
                         DonationFormV2::find($request->get_param('id'))
                     );
@@ -77,19 +85,19 @@ class ServiceProvider implements ServiceProviderInterface
                 'permission_callback' => function () {
                     return current_user_can('manage_options');
                 },
-                'args' => [
+                'args'                => [
                     'id' => [
-                        'type' => 'integer',
+                        'type'              => 'integer',
                         'sanitize_callback' => 'absint',
-                        'description' => __('The ID of the form (v2) to migrate to v3.', 'give'),
+                        'description'       => __('The ID of the form (v2) to migrate to v3.', 'give'),
                     ],
                 ],
             ]);
 
             // give-api/v2/admin/forms/transfer
             register_rest_route('give-api/v2', 'admin/forms/transfer', [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => function (WP_REST_Request $request) {
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => function (WP_REST_Request $request) {
                     return (new TransferController($request))(
                         DonationFormV2::find($request->get_param('formId')),
                         TransferOptions::fromRequest($request)
@@ -98,28 +106,28 @@ class ServiceProvider implements ServiceProviderInterface
                 'permission_callback' => function () {
                     return current_user_can('manage_options');
                 },
-                'args' => [
-                    'formId' => [
-                        'type' => 'integer',
+                'args'                => [
+                    'formId'    => [
+                        'type'              => 'integer',
                         'sanitize_callback' => function ($value) {
                             return intval($value);
                             // return array_map('intval', explode(',', $value));
                         },
-                        'description' => __('The ID of the form (v3) to transfer donations (from v2).', 'give'),
+                        'description'       => __('The ID of the form (v3) to transfer donations (from v2).', 'give'),
                     ],
                     'changeUrl' => [
-                        'type' => 'boolean',
+                        'type'     => 'boolean',
                         'required' => false,
-                        'default' => true
+                        'default'  => true,
                     ],
-                    'delete' => [
-                        'type' => 'boolean',
+                    'delete'    => [
+                        'type'     => 'boolean',
                         'required' => true,
                     ],
-                    'redirect' => [
-                        'type' => 'boolean',
+                    'redirect'  => [
+                        'type'     => 'boolean',
                         'required' => false,
-                        'default' => true
+                        'default'  => true,
                     ],
                 ],
             ]);

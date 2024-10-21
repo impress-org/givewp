@@ -49,6 +49,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0  Capture exceptions when get gateway data.
      * @since 3.0.0 Catch and handle errors from the gateway here
      * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
@@ -68,12 +69,24 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateDonationFormStatus($formData->formId);
 
+        /**
+         * Fires at the start of donation form processing, before any data is processed.
+         *
+         * @since 3.4.0
+         *
+         * @param  FormData  $formData
+         * @param  string  $gatewayId
+         */
+        do_action('give_donation_form_processing_start', $formData, $formData->paymentGateway);
+
         $donor = $this->getOrCreateDonor(
+            $formData->formId,
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
             $formData->donorInfo->firstName,
             $formData->donorInfo->lastName,
-            $formData->donorInfo->honorific
+            $formData->donorInfo->honorific,
+            ''
         );
 
         $donation = $formData->toDonation($donor->id);
@@ -107,6 +120,26 @@ class LegacyPaymentGatewayAdapter
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
             $this->setSession($donation->id);
+
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @since 3.4.0
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('givewp_donation_form_processing_donation_created', $donation, $subscription);
+
+            /**
+             * Fires after a subscription is created during donation form processing.
+             *
+             * @since 3.4.0
+             *
+             * @param  Subscription  $subscription
+             * @param  Donation  $donation
+             */
+            do_action('givewp_donation_form_processing_subscription_created', $subscription, $donation);
 
             try {
                 /**
@@ -148,6 +181,16 @@ class LegacyPaymentGatewayAdapter
             $donation->save();
 
             $this->setSession($donation->id);
+
+            /**
+             * Fires after a donation is created during donation form processing.
+             *
+             * @since 3.4.0
+             *
+             * @param  Donation  $donation
+             * @param  Subscription|null  $subscription
+             */
+            do_action('givewp_donation_form_processing_donation_created', $donation, null);
 
             try {
                 /**
@@ -283,25 +326,46 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
+     * @since 3.9.0 Add support to "phone" property
+     * @since 3.4.0 add $formId and do_action
      * @since 3.2.0 add honorific and use GetOrCreateDonor action
      * @since 2.21.0
      *
      * @throws Exception
      */
     private function getOrCreateDonor(
+        ?int $formId,
         ?int $userId,
         string $donorEmail,
         string $firstName,
         string $lastName,
-        ?string $honorific
+        ?string $honorific,
+        ?string $donorPhone
     ): Donor {
-        return (new GetOrCreateDonor())(
+        $getOrCreateDonorAction = new GetOrCreateDonor();
+
+        $donor = $getOrCreateDonorAction(
             $userId,
             $donorEmail,
             $firstName,
             $lastName,
-            $honorific
+            $honorific,
+            $donorPhone
         );
+
+        if ($getOrCreateDonorAction->donorCreated) {
+            /**
+             * Fires after a donor is created during donation form processing.
+             *
+             * @since 3.4.0
+             *
+             * @param  Donor  $donor
+             * @param  int  $formId
+             */
+            do_action('givewp_donation_form_processing_donor_created', $donor, $formId);
+        }
+
+        return $donor;
     }
 
     /**

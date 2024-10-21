@@ -9,6 +9,7 @@ use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
 use Give\FormBuilder\Actions\UpdateDonorCommentsMeta;
 use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
 use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
+use Give\FormBuilder\Actions\UpdateFormExcerpt;
 use Give\FormBuilder\Actions\UpdateFormGridMeta;
 use Give\FormBuilder\EmailPreview\Routes\RegisterEmailPreviewRoutes;
 use Give\FormBuilder\Routes\CreateFormRoute;
@@ -82,6 +83,17 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('wp_ajax_givewp_transfer_hide_notice', static function () {
             give_update_meta((int)$_GET['formId'], 'givewp-form-builder-transfer-hide-notice', time(), true);
+        });
+
+        add_action('wp_ajax_givewp_goal_hide_notice', static function () {
+            add_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', time(), true);
+        });
+
+        /**
+         * @since 3.16.2
+         */
+        add_action('wp_ajax_givewp_additional_payment_gateways_hide_notice', static function () {
+            add_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', time(), true);
         });
     }
 }

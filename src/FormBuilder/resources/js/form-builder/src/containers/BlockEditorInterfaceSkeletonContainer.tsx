@@ -14,6 +14,7 @@ import {Button} from '@wordpress/components';
 import {listView, plus} from '@wordpress/icons';
 import {useEditorState} from '@givewp/form-builder/stores/editor-state';
 import EditorMode from '@givewp/form-builder/types/editorMode';
+import {__} from "@wordpress/i18n";
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {mode} = useEditorState();
@@ -38,15 +39,16 @@ const DesignEditorSkeleton = () => {
         <InterfaceSkeleton
             header={<HeaderContainer showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} />}
             content={<DesignPreview />}
-            sidebar={!!showSidebar && <DesignSidebar />}
+            sidebar={!!showSidebar && <DesignSidebar toggleShowSidebar={toggleShowSidebar} />}
             notices={<NoticesContainer />}
+            className="givewp-form-builder__design-tab"
         />
     );
-}
+};
 
 const SchemaEditorSkeleton = () => {
     const {state: showSidebar, toggle: toggleShowSidebar} = useToggleState(true);
-    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState('');
+    const [selectedSecondarySidebar, setSelectedSecondarySidebar] = useState<string>('add');
 
     const toggleSelectedSecondarySidebar = (name) =>
         setSelectedSecondarySidebar(name !== selectedSecondarySidebar ? name : false);
@@ -68,6 +70,8 @@ const SchemaEditorSkeleton = () => {
                         isPressed={'add' === selectedSecondarySidebar}
                         icon={plus}
                         variant="primary"
+                        title={__('Toggle block inserter', 'give')}
+                        label={__('Toggle block inserter', 'give')}
                     />
                 </div>
                 <Button
@@ -75,6 +79,8 @@ const SchemaEditorSkeleton = () => {
                     onClick={() => toggleSelectedSecondarySidebar('list')}
                     isPressed={'list' === selectedSecondarySidebar}
                     icon={listView}
+                    title={__('Form Field Overview', 'give')}
+                    label={__('Form Field Overview', 'give')}
                 />
             </>
         );

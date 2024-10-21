@@ -2,14 +2,21 @@
 
 namespace Give\DonationForms\Properties;
 
+use Give\DonationForms\ValueObjects\DesignSettingsImageStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsLogoPosition;
+use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
+use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
+ * @since 3.16.0 Added $enableReceiptConfirmationPage property
+ * @since 3.12.0 Add goalProgressType
  * @since 3.2.0 Remove addSlashesRecursive method
- * @since      3.0.0
+ * @since 3.0.0
  */
 class FormSettings implements Arrayable, Jsonable
 {
@@ -41,6 +48,18 @@ class FormSettings implements Arrayable, Jsonable
      * @var GoalType
      */
     public $goalType;
+    /**
+     * @var GoalProgressType
+     */
+    public $goalProgressType;
+    /**
+     * @var string
+     */
+    public $goalStartDate;
+    /**
+     * @var string
+     */
+    public $goalEndDate;
     /**
      * @var string
      */
@@ -179,6 +198,80 @@ class FormSettings implements Arrayable, Jsonable
     public $pdfSettings;
 
     /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsImageUrl;
+
+    /**
+     * @since 3.11.0
+     * @var string
+     */
+    public $designSettingsImageAlt;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsImageStyle;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsLogoUrl;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsLogoPosition;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsSectionStyle;
+
+    /**
+     * @since 3.4.0
+     * @var string
+     */
+    public $designSettingsTextFieldStyle;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageColor;
+
+    /**
+     * @since 3.6.0
+     * @var string
+     */
+    public $designSettingsImageOpacity;
+
+    /**
+     * @since 3.7.0
+     * @var string
+     */
+    public $formExcerpt;
+
+    /**
+     * @since 3.9.0
+     * @var array
+     */
+    public $currencySwitcherSettings;
+    /**
+     * @since 3.16.0
+     * @var bool
+     */
+    public $enableReceiptConfirmationPage;
+
+    /**
+     * @since 3.16.0 Added $enableReceiptConfirmationPage
+     * @since 3.7.0 Added formExcerpt
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.2.0 Added registrationNotification
      * @since 3.0.0
      */
@@ -198,15 +291,20 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = !empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
+        $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
+        $self->goalProgressType = ! empty($array['goalProgressType']) && GoalProgressType::isValid($array['goalProgressType'])
+            ? new GoalProgressType($array['goalProgressType'])
+            : GoalProgressType::ALL_TIME();
+        $self->goalStartDate = $array['goalStartDate'] ?? '';
+        $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
-        $self->customCss = $array['customCss'] ?? '';
+        $self->customCss = wp_strip_all_tags($array['customCss'] ?? '');
         $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
@@ -220,7 +318,10 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
-        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus(
+
+        $self->enableReceiptConfirmationPage = $array['enableReceiptConfirmationPage'] ?? false;
+
+        $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
             $array['formStatus']
         ) : DonationFormStatus::DRAFT();
 
@@ -252,6 +353,35 @@ class FormSettings implements Arrayable, Jsonable
         $self->pdfSettings = isset($array['pdfSettings']) && is_array(
             $array['pdfSettings']
         ) ? $array['pdfSettings'] : [];
+
+        $self->designSettingsImageUrl = $array['designSettingsImageUrl'] ?? '';
+        $self->designSettingsImageAlt = $array['designSettingsImageAlt'] ?? $self->formTitle;
+        $self->designSettingsImageStyle = ! empty($array['designSettingsImageStyle']) ? new DesignSettingsImageStyle(
+            $array['designSettingsImageStyle']
+        ) : DesignSettingsImageStyle::BACKGROUND();
+
+        $self->designSettingsLogoUrl = $array['designSettingsLogoUrl'] ?? '';
+        $self->designSettingsLogoPosition = ! empty($array['designSettingsLogoPosition']) ? new DesignSettingsLogoPosition(
+            $array['designSettingsLogoPosition']
+        ) : DesignSettingsLogoPosition::LEFT();
+
+        $self->designSettingsSectionStyle = ! empty($array['designSettingsSectionStyle']) ? new DesignSettingsSectionStyle(
+            $array['designSettingsSectionStyle']
+        ) : DesignSettingsSectionStyle::DEFAULT();
+
+        $self->designSettingsTextFieldStyle = ! empty($array['designSettingsTextFieldStyle']) ? new DesignSettingsTextFieldStyle(
+            $array['designSettingsTextFieldStyle']
+        ) : DesignSettingsTextFieldStyle::DEFAULT();
+
+        $self->designSettingsImageColor = $array['designSettingsImageColor'] ?? '';
+
+        $self->designSettingsImageOpacity = $array['designSettingsImageOpacity'] ?? '';
+
+        $self->formExcerpt = $array['formExcerpt'] ?? '';
+
+        $self->currencySwitcherSettings = isset($array['currencySwitcherSettings']) && is_array(
+            $array['currencySwitcherSettings']
+        ) ? $array['currencySwitcherSettings'] : [];
 
         return $self;
     }

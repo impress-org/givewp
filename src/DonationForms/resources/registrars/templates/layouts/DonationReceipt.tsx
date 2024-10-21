@@ -17,6 +17,7 @@ const SecureBadge = () => {
 
 /**
  *
+ * @since 3.4.0 updated to render value using Interweave
  * @since 3.0.0
  */
 const Details = ({id, heading, details}: {id: string; heading: string; details: ReceiptDetail[]}) =>
@@ -27,9 +28,7 @@ const Details = ({id, heading, details}: {id: string; heading: string; details: 
                 {details.map(({label, value}, index) => (
                     <div key={index} className={`details-row details-row--${label.toLowerCase().replace(' ', '-')}`}>
                         <dt className="detail">{label}</dt>
-                        <dd className="value" data-value={value}>
-                            {value}
-                        </dd>
+                        <Interweave className="value" tagName="dd" data-value={value} content={value} />
                     </div>
                 ))}
             </dl>
@@ -46,6 +45,7 @@ export default function DonationReceipt({
     donorDetails,
     donationDetails,
     subscriptionDetails,
+    eventTicketsDetails,
     additionalDetails,
 }: DonationReceiptProps) {
     return (
@@ -65,6 +65,11 @@ export default function DonationReceipt({
                     id="subscription-details"
                     heading={__('Subscription Details', 'give')}
                     details={subscriptionDetails}
+                />
+                <Details
+                    id="event-tickets-details"
+                    heading={__('Event Tickets Details', 'give')}
+                    details={eventTicketsDetails}
                 />
                 <Details
                     id="additional-details"

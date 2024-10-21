@@ -1,0 +1,156 @@
+:global {
+    :root {
+        --give-primary-color: #69b868;
+    }
+
+    .post-type-give_forms #wpbody {
+        box-sizing: border-box;
+
+        & > a {
+            text-decoration: underline;
+        }
+    }
+
+    .post-type-give_forms #wpbody-content {
+        box-sizing: border-box;
+    }
+
+    .post-type-give_forms #wpbody::after {
+        all: revert;
+    }
+
+    .give-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    #wpcontent {
+        padding: 0;
+    }
+}
+
+.page {
+    box-sizing: border-box;
+    color: #333;
+    font-family: Open Sans, system-ui, sans-serif;
+    font-size: 1rem;
+
+    *,
+    ::before,
+    ::after {
+        box-sizing: inherit;
+    }
+}
+
+.pageHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #fff;
+    padding-block: 1em;
+    padding-inline: 1.5em;
+    border-bottom: 0.0625rem solid #dbdbdb;
+
+    & > * {
+        flex-shrink: 0;
+    }
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
+
+    & > span {
+        padding-inline: 0.5rem;
+        padding-block: 0.185rem;
+        background: #f49420;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04rem;
+        transform: translateY(0.075rem);
+        color: #ffffff;
+    }
+}
+
+.flexRow:not(:first-child) {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.pageTitle {
+    color: #424242;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.tabsNav {
+    background: var(--givewp-grey-100);
+    display: flex;
+    margin-bottom: var(--givewp-spacing-6);
+    padding: 0 var(--givewp-spacing-6);
+}
+
+.tabButton {
+    background: none;
+    border: 0;
+    color: var(--givewp-grey-900);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+
+    &:hover {
+        background-color: var(--givewp-grey-50);
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &.activeTab {
+        background-color: var(--givewp-grey-5);
+        box-shadow: inset 0 4px 0 var(--givewp-green-500);
+    }
+}
+
+.pageContent {
+    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+
+    section {
+        margin-bottom: var(--givewp-spacing-14);
+        position: relative;
+
+        h2 {
+            font-size: 1.125rem;
+            line-height: 1.56;
+            margin: 0 0 var(--givewp-spacing-2);
+        }
+    }
+}
+
+:global(#give-admin-event-tickets-root) {
+    .goToEventsListButton {
+        background: none;
+        border-radius: var(--givewp-rounded-2);
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.43;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        text-align: center;
+    }
+}

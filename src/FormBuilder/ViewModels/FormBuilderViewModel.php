@@ -4,6 +4,7 @@ namespace Give\FormBuilder\ViewModels;
 
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -15,11 +16,15 @@ use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
 {
     /**
+     * @since 3.12.0  Add goalProgressOptions key to the returned array
+     * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
+     * @since      3.7.0 Add support to isExcerptEnabled key in the returned array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
@@ -75,7 +80,10 @@ class FormBuilderViewModel
                 'agreementText' => give_get_option('agreement_text'),
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
-            'nameTitlePrefixes' => give_get_option('title_prefixes'),
+            'goalProgressOptions' => $this->getGoalProgressOptions(),
+            'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+            'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
+            'intlTelInputSettings' => IntlTelInput::getSettings(),
         ];
     }
 
@@ -104,6 +112,23 @@ class FormBuilderViewModel
             'isCurrency' => $isCurrency,
         ];
     }
+
+    /**
+     * @since 3.12.0
+     */
+    public function getGoalProgressOption(
+        string $value,
+        string $label,
+        string $description
+    ): array
+    {
+        return [
+            'value' => $value,
+            'label' => $label,
+            'description' => $description
+        ];
+    }
+
 
     /**
      * @since 3.0.0
@@ -151,6 +176,25 @@ class FormBuilderViewModel
         }
 
         return $options;
+    }
+
+    /**
+     * @since 3.12.0
+     */
+    public function getGoalProgressOptions(): array
+    {
+        return [
+            $this->getGoalProgressOption(
+                GoalProgressType::ALL_TIME,
+                __('All time', 'give'),
+                __('Displays the goal progress for a lifetime, starting from when this form was published.', 'give')
+            ),
+            $this->getGoalProgressOption(
+                GoalProgressType::CUSTOM,
+                __('Custom', 'give'),
+                __('Displays the goal progress from the start date to the end date.', 'give')
+            )
+        ];
     }
 
     /**

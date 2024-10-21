@@ -1,0 +1,68 @@
+.givewp-media-library-control {
+    cursor: pointer;
+
+    &__reset {
+        position: relative;
+        display: flex;
+        background: transparent;
+        height: 5rem;
+        width: 100%;
+        padding: 0;
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            svg {
+                visibility: visible;
+                pointer-events: none;
+            }
+        }
+
+    }
+
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        visibility: hidden;
+        z-index: 999;
+    }
+
+    &__image {
+        width: 100%;
+        height: 5rem;
+        object-fit: cover;
+        object-position: center;
+        transition: filter 0.3s ease;
+
+        &:hover {
+            filter: brightness(80%); /* Adjust the brightness percentage for the desired tint */
+        }
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        height: 3rem;
+        width: 100%;
+        border: 1px dotted;
+
+        &--update {
+            margin-top: var(--givewp-spacing-2);
+            border: 1px solid;
+        }
+    }
+
+    .components-button.has-text {
+        justify-content: center;
+    }
+
+    .components-button.is-secondary {
+        box-shadow: none;
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}

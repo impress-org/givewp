@@ -1,8 +1,9 @@
-import ModalPreview from './ModalPreview';
 import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
 
 import '../styles/index.scss';
+import FormModal from '../../common/FormModal';
+import {useState} from '@wordpress/element';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
@@ -30,6 +31,7 @@ export default function DonationFormBlockPreview({
 }: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
@@ -42,7 +44,16 @@ export default function DonationFormBlockPreview({
             {openFormButton}
         </a>
     ) : isModalDisplay ? (
-        <ModalPreview enableIframe={enableIframe} formId={formId} openFormButton={openFormButton} />
+        <FormModal openFormButton={openFormButton} isOpen={isOpen} onChange={() => setIsOpen(!isOpen)}>
+            <IframeResizer
+                src={`/?givewp-route=donation-form-view&form-id=${formId}`}
+                checkOrigin={false}
+                style={{
+                    minWidth: '100%',
+                    pointerEvents: enableIframe,
+                }}
+            />
+        </FormModal>
     ) : (
         <IframeResizer
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}

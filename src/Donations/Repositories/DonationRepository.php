@@ -76,6 +76,14 @@ class DonationRepository
     }
 
     /**
+     * @since 3.16.0
+     */
+    public function getTotalDonationCountByGatewayTransactionId($gatewayTransactionId): int
+    {
+        return $this->queryByGatewayTransactionId($gatewayTransactionId)->count();
+    }
+
+    /**
      * @since 2.21.0
      */
     public function queryByGatewayTransactionId($gatewayTransactionId): ModelQueryBuilder
@@ -316,6 +324,7 @@ class DonationRepository
     }
 
     /**
+     * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
@@ -335,6 +344,7 @@ class DonationRepository
             DonationMetaKeys::FIRST_NAME => $donation->firstName,
             DonationMetaKeys::LAST_NAME => $donation->lastName,
             DonationMetaKeys::EMAIL => $donation->email,
+            DonationMetaKeys::PHONE => $donation->phone,
             DonationMetaKeys::FORM_ID => $donation->formId,
             DonationMetaKeys::FORM_TITLE => $donation->formTitle ?? $this->getFormTitle($donation->formId),
             DonationMetaKeys::MODE => isset($donation->mode) ?

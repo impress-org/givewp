@@ -167,7 +167,7 @@ $give_updates = Give_Updates::get_instance();
 	<tr>
 		<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
-		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html( 'Error: Too long', 'give' ) : esc_html( 'Acceptable', 'give' ); ?></td>
+		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html__( 'Error: Too long', 'give' ) : esc_html__( 'Acceptable', 'give' ); ?></td>
 	</tr>
 	<tr>
 		<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
@@ -200,19 +200,15 @@ $give_updates = Give_Updates::get_instance();
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?></td>
 		<td>
 			<?php
-			$tls_check = false;
-
 			// Get the SSL status.
-			if ( ini_get( 'allow_url_fopen' ) ) {
-				$tls_check = wp_remote_get( 'https://www.howsmyssl.com/a/check' );
-			}
+            $tls_check = wp_remote_get( 'https://www.howsmyssl.com/a/check' );
 
-			if ( ! is_wp_error( $tls_check ) ) {
-				$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ), false );
+            if ( ! is_wp_error( $tls_check ) ) {
+                $tls_check = json_decode( wp_remote_retrieve_body( $tls_check ), false );
 
-				/* translators: %s: SSL connection response */
-				printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
-			}
+                /* translators: %s: SSL connection response */
+                printf( __( 'Connection uses %s', 'give' ), esc_html( $tls_check->tls_version ) );
+            }
 			?>
 		</td>
 	</tr>
@@ -221,9 +217,9 @@ $give_updates = Give_Updates::get_instance();
 		<td class="help"><?php echo Give()->tooltips->render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
 		<td>
 			<?php
-			if ( ! is_wp_error( $tls_check ) ) {
-				esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
-			}
+            if ( ! is_wp_error( $tls_check ) ) {
+                esc_html_e( property_exists( $tls_check, 'rating' ) ? $tls_check->rating : $tls_check->tls_version, 'give' );
+            }
 			?>
 		</td>
 	</tr>

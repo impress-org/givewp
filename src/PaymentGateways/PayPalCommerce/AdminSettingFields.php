@@ -13,6 +13,7 @@ use Give_License;
  * Class AdminSettingFields
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @since 3.16.0 added nonce to disconnect button
  * @since 2.9.0
  */
 class AdminSettingFields
@@ -237,6 +238,7 @@ class AdminSettingFields
     /**
      * Return admin guidance notice to fix PayPal on boarding error.
      *
+     * @since 3.10.0 Updated phone number for contact
      * @since 2.9.6
      *
      * @param bool $completeMessage
@@ -248,7 +250,7 @@ class AdminSettingFields
         if ($this->isCountryInNorthAmerica()) {
             $telephone = sprintf(
                 '<a href="tel:%1$s">%1$s</a>',
-                '1-888-221-1161'
+                '1-888-350-2387'
             );
 
             $message = sprintf(
@@ -471,7 +473,9 @@ class AdminSettingFields
                                 <span class="actions">
                                     <button
                                         class="js-give-paypal-disconnect-paypal-account"
-                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                        data-mode="<?php echo $paypalSetting->mode; ?>"
+                                        data-nonce="<?php echo esc_attr(wp_create_nonce('give_paypal_commerce_disconnect_account')); ?>"
+                                    >
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>

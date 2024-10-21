@@ -3,9 +3,9 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
 /**
@@ -89,6 +89,7 @@ class ScriptLoader
     /**
      * Load admin scripts
      *
+     * @since 3.13.0 Add new "keepWebhooksAfterDisconnect" string
      * @since 2.9.0
      */
     public function loadAdminScripts()
@@ -124,6 +125,10 @@ class ScriptLoader
                         'Are you sure you want to disconnect your PayPal account?',
                         'give'
                     ),
+                    'keepWebhooksAfterDisconnect' => esc_html__("Continue to receive events, including subscription renewals, from the disconnected account? If you have existing recurring donations with this account, you'll want to leave this checked. This is not reversible.",
+                        'give'),
+                    'keepWebhooksAfterDisconnectLearnMore' => esc_html__('Learn why this is critically important.',
+                            'give') . ' &raquo;',
                     'connectSuccessTitle' => esc_html__('You’re connected to PayPal! Here’s what’s next...', 'give'),
                     'pciWarning' => sprintf(
                         __(
@@ -146,7 +151,7 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ],
+                    ]
                 ],
             ]
         );
@@ -291,7 +296,7 @@ EOT;
     /**
      * This function should return form id from page, post content.
      *
-     *
+     * @since 3.4.0 Check if $attributes is a valid array before trying to use it as it were
      * @since 3.2.0
      */
     private function getFormIdFromPostContent(): ?int
@@ -316,7 +321,7 @@ EOT;
             ) {
                 $attributes = shortcode_parse_atts($matches[3]);
 
-                if (array_key_exists('id', $attributes)) {
+                if (is_array($attributes) && array_key_exists('id', $attributes)) {
                     $formId = $attributes['id'];
                 }
             }

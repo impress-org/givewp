@@ -1,31 +1,30 @@
 .givewp-layouts {
-  &-header {
-    padding-bottom: 2rem;
-  }
-
-  &-headerTitle {
-    h2 {
-      color: var(--givewp-grey-900);
-      font-size: var(--givewp-font-size-heading-md);
-      line-height: 1.25;
-      font-weight: bold;
-      margin: 0;
+    &-header {
+        padding-bottom: 2rem;
     }
-  }
 
-  &-headerDescription {
-    display: flex;
-    flex-direction: column;
-    gap: var(--givewp-spacing-4);
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: var(--givewp-grey-700);
-
-    * {
-      font-size: inherit;
-      font-weight: inherit;
-      color: inherit;
-      margin: 0;
+    &-headerTitle {
+        h2 {
+            color: inherit;
+            font-size: var(--givewp-font-size-heading-md);
+            line-height: 1.25;
+            font-weight: bold;
+            margin: 0;
+        }
     }
-  }
+
+    &-headerDescription {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-4);
+        font-size: 1.125rem;
+        font-weight: 500;
+
+        * {
+            font-size: inherit;
+            font-weight: inherit;
+            color: inherit;
+            margin: 0;
+        }
+    }
 }
