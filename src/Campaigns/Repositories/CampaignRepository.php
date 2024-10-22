@@ -44,11 +44,26 @@ class CampaignRepository
      * @unreleased
      *
      * Get Campaign by ID
+     *
+     * @unreleased
      */
     public function getById(int $id)
     {
         return $this->prepareQuery()
             ->where('id', $id)
+            ->get();
+    }
+
+    /**
+     * Get Campaign by Form ID
+     *
+     * @unreleased
+     */
+    public function getByFormId(int $id)
+    {
+        return $this->prepareQuery()
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
+            ->where('forms.form_id', $id)
             ->get();
     }
 

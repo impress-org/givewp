@@ -114,7 +114,6 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
  */
 export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
-    const [formModalTitle, setFormModalTitle] = useState<string>(title);
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<CampaignFormInputs>({
@@ -146,16 +145,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const selectedGoalType = watch('goalType');
     const goal = watch('goal');
 
-    useEffect(() => {
-        switch (step) {
+    const getFormModalTitle = () => {
+        switch(step) {
             case 1:
-                setFormModalTitle(__('Tell us about your fundraising cause', 'give'));
-                break;
+                return __('Tell us about your fundraising cause', 'give');
             case 2:
-                setFormModalTitle(__('Set up your campaign goal', 'give'));
-                break;
+                return __('Set up your campaign goal', 'give');
         }
-    }, [step]);
+
+        return null;
+    }
 
     const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
         amount: {
@@ -230,7 +229,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             <FormModal
                 isOpen={isOpen}
                 handleClose={handleClose}
-                title={formModalTitle}
+                title={getFormModalTitle()}
                 handleSubmit={handleSubmit(onSubmit)}
                 errors={[]}
                 className={styles.campaignForm}

@@ -5,8 +5,12 @@ namespace Give\Campaigns;
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
+use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
+use Give\Campaigns\Migrations\RevenueTable\AddCampaignID;
+use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
+use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\DonationForms\V2\DonationFormsAdminPage;
@@ -65,6 +69,9 @@ class ServiceProvider implements ServiceProviderInterface
                 SetCampaignType::class,
                 CreateCampaignFormsTable::class,
                 MigrateFormsToCampaignForms::class,
+                AddCampaignID::class,
+                AssociateDonationsToCampaign::class,
+                AddIndexes::class
             ]
         );
     }
@@ -86,6 +93,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerActions(): void
     {
         Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
+        Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
     }
 
     /**
