@@ -92,7 +92,7 @@ class UtilsTest extends TestCase
             ['\\\\' . serialize('double-backslash-bypass'), true],
             [
                 // String with serialized data hidden in the middle of the content
-                'baz' => 'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit.',
+                'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit.',
                 true,
             ],
             ['foo', false],
