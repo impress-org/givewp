@@ -242,6 +242,7 @@ final class Give
         Give\FormTaxonomies\ServiceProvider::class,
         Give\DonationSpam\ServiceProvider::class,
         Give\Campaigns\ServiceProvider::class,
+        Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
     ];
 
     /**

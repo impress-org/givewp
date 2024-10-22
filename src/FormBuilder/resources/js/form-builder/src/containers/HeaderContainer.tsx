@@ -19,6 +19,14 @@ import {cleanForSlug} from '@wordpress/url';
 import cn from 'classnames';
 import EmbedFormModal from '@givewp/form-builder/components/EmbedForm';
 
+declare global {
+    interface Window {
+        headerContainer?: {
+            campaignUrl: string;
+        };
+    }
+}
+
 const Logo = () => (
     <div
         style={{
@@ -36,6 +44,22 @@ const Logo = () => (
         >
             <GiveIcon />
         </a>
+    </div>
+);
+
+const BackToCampaignOverview = () => (
+    <div className={'givewp-header-campaign-overview'}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M12.667 7.999H3.333m0 0L8 12.665M3.333 8 8 3.332"
+                stroke="#000"
+                strokeWidth="1.333"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+
+        <a href={window.headerContainer.campaignUrl}>{__('Campaign Overview', 'give')}</a>
     </div>
 );
 
@@ -107,7 +131,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
                 ],
             });
         }
-    }
+    };
 
     const {mode} = useEditorState();
     const dispatchEditorState = useEditorStateDispatch();
@@ -123,7 +147,7 @@ const HeaderContainer = ({SecondarySidebarButtons = null, showSidebar, toggleSho
             <Header
                 contentLeft={
                     <>
-                        <Logo />
+                        {window.headerContainer ? <BackToCampaignOverview /> : <Logo />}
                         {SecondarySidebarButtons && <SecondarySidebarButtons />}
                         <TextControl
                             className={'givewp-form-title'}

@@ -1,0 +1,135 @@
+.addFormModal {
+
+    :global {
+        .givewp-modal-dialog {
+            width: 100%;
+            max-width: 60rem;
+
+            .givewp-modal-header {
+                font-size: 1.25rem;
+                font-weight: 600;
+                line-height: 1.6;
+            }
+
+            .givewp-modal-close {
+                translateY: 4.5px;
+            }
+
+            .givewp-editor-options {
+                display: flex;
+
+                justify-content: space-between;
+                gap: 1rem;
+
+                &__option_recommended {
+                    width: 112px;
+                    height: 22px;
+                    flex-grow: 0;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 2px 12px;
+                    border-radius: 24px;
+                    background-color: var(--givewp-purple-500);
+
+                    font-size: 12px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: var(--givewp-purple-25);
+
+                    position: relative;
+                    margin: -3.3rem 0 1.75rem 0.3rem;
+                }
+
+                &__option_selected_icon {
+                    display: flex;
+                    justify-content: flex-end;
+                    width: 100%;
+
+                    svg {
+                        margin-top: -1.5rem;
+                        margin-right: -1.4rem;
+                        margin-bottom: 0.2rem;
+                        display: none;
+                    }
+                }
+
+                &__option {
+                    background-color: #f9fafb;
+                    max-width: 28.25rem;
+                    width: 100%;
+                    padding: 1.5rem 1.5rem 0 1.5rem;
+                    border: 1px solid #ddd;
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+
+                    /* Hide the radio button input */
+                    input {
+                        position: absolute;
+                        opacity: 0;
+                        cursor: pointer;
+                        height: 0;
+                        width: 0;
+                    }
+
+                    img {
+                        width: 100%;
+                        max-height: 15rem;
+                        object-fit: cover;
+                        object-position: 0 0;
+                        margin-bottom: 1rem;
+                    }
+
+                    label {
+                        font-size: 1rem;
+                        font-weight: 500;
+                        color: #060c1a;
+                    }
+
+                    p {
+                        font-size: 0.875rem;
+                        margin-top: 0.4rem;
+                        color: #4b5563;
+                    }
+
+                    &:hover {
+                        border-color: var(--givewp-green-500);
+                    }
+                }
+
+                &__option_selected {
+                    border: 2px solid var(--givewp-green-500);
+
+                    svg {
+                        display: block;
+                    }
+                }
+            }
+
+            .givewp-editor-actions {
+
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+                width: 100%;
+                margin-top: 2.5rem;
+
+                &__button {
+                    border-radius: 0.5rem;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    line-height: 1.25rem;
+                    padding: 1.1rem;
+                    width: 22.5rem;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

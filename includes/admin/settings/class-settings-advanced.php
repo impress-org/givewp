@@ -9,6 +9,7 @@
  * @since       1.8
  */
 
+use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Onboarding\Setup\Page as SetupPage;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,6 +46,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				);
 				add_action( 'give_save_settings_give_settings', [ $this, 'validate_settngs' ] );
                 add_filter( "give_admin_settings_sanitize_option_donor_default_user_role", [$this, 'sanitize_option_donor_default_user_role']);
+                add_action('give_admin_field_give_option_based_form_editor_notice',
+                    [$this, '_render_give_based_form_editor_notice'], 10, 2);
 			}
 
 			parent::__construct();
@@ -69,6 +72,22 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'   => 'give_title_data_control_2',
 							'type' => 'title',
 						],
+                        [
+                            'name' => __('Option-Based Form Editor', 'give'),
+                            'desc' => __('If enabled, you\'ll gain access to the legacy settings and can create forms using the Option-Based Editor. Disabling this option will not affect existing forms created with the Option-Based Editor.',
+                                'give'),
+                            'id' => 'option_based_form_editor',
+                            'type' => 'radio_inline',
+                            'default' => (OptionBasedFormEditor::existOptionBasedFormsOnDb()) ? 'enabled' : 'disabled',
+                            'options' => [
+                                'enabled' => __('Enabled', 'give'),
+                                'disabled' => __('Disabled', 'give'),
+                            ],
+                        ],
+                        [
+                            'id' => 'option_based_form_editor_notice',
+                            'type' => 'give_option_based_form_editor_notice',
+                        ],
 						[
 							'name'    => __( 'Default GiveWP Styles', 'give' ),
 							'desc'    => __( 'This controls GiveWP\'s default styles for legacy donation forms and other front end elements. Disabling this option means that you\'ll need to supply your own styles.', 'give' ),
@@ -367,6 +386,37 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                 }
             }
             return $value;
+        }
+
+        /**
+         * @unreleased
+         */
+        public function _render_give_based_form_editor_notice($field, $value)
+        {
+            if (OptionBasedFormEditor::isEnabled()) {
+                ?>
+                <tr valign="top" <?php
+                echo ! empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                    <th scope="row" class="titledesc">
+                    </th>
+                    <td class="give-forminp">
+                        <div class="give_option_based_form_editor_notice">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M10.678 1.39a1.667 1.667 0 0 0-1.355 0c-.333.148-.549.409-.7.621-.147.21-.306.483-.48.784l-6.89 11.9c-.174.301-.333.576-.441.809-.11.237-.228.555-.19.918.048.47.295.898.677 1.176.295.214.63.271.89.295.256.023.573.023.922.023H16.89c.349 0 .666 0 .922-.023.26-.024.594-.08.89-.295.382-.278.628-.706.677-1.176.038-.363-.08-.681-.19-.918a10.943 10.943 0 0 0-.442-.81l-6.89-11.9a10.856 10.856 0 0 0-.48-.783c-.15-.212-.367-.473-.7-.621zm.156 6.11a.833.833 0 0 0-1.667 0v3.333a.833.833 0 0 0 1.667 0V7.5zM10 13.333A.833.833 0 0 0 10 15h.009a.833.833 0 0 0 0-1.667H10z"
+                                      fill="#F29718" />
+                            </svg>
+                            <p>
+                                <?php
+                                echo esc_html__('We recommend moving away from Legacy settings and the Option-Based Editor as they are not compatible with newer features and will eventually be removed.',
+                                    'give'); ?>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <?php
+            }
         }
 	}
 

@@ -5,7 +5,6 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -29,6 +28,8 @@ class CampaignRepository
     ];
 
     /**
+     * @unreleased
+     *
      * Get Campaign by ID
      *
      * @unreleased
@@ -41,15 +42,15 @@ class CampaignRepository
     }
 
     /**
-     * Get Campaign by Form ID
-     *
      * @unreleased
+     *
+     * Get Campaign by Form ID
      */
-    public function getByFormId(int $id)
+    public function getByFormId(int $formId)
     {
         return $this->prepareQuery()
             ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
-            ->where('forms.form_id', $id)
+            ->where('forms.form_id', $formId)
             ->get();
     }
 
@@ -160,9 +161,9 @@ class CampaignRepository
      *
      * @throws Exception
      */
-    public function addCampaignForm(Campaign $campaign, DonationForm $donationForm, bool $isDefault = false)
+    public function addCampaignForm(Campaign $campaign, int $donationFormId, bool $isDefault = false)
     {
-        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, $isDefault);
 
         DB::query('START TRANSACTION');
 
@@ -180,7 +181,7 @@ class CampaignRepository
             DB::query(
                 DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%d, %d, %d)",
                     [
-                        $donationForm->id,
+                        $donationFormId,
                         $campaign->id,
                         $isDefault,
                     ])
@@ -195,7 +196,7 @@ class CampaignRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationForm, $isDefault);
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationFormId, $isDefault);
     }
 
     /**

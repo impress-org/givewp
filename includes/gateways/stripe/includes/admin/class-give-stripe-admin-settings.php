@@ -734,7 +734,8 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			<tr valign="top" <?php echo ! empty( $field_options['wrapper_class'] ) ? 'class="' . esc_attr( $field_options['wrapper_class'] ) . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label for="<?php echo esc_html( $field_options['type'] ); ?>">
-						<?php echo esc_attr( $field_options['title'] ); ?>
+                        <?php
+                        echo wp_kses_post($field_options['title']); ?>
 					</label>
 				</th>
 				<td class="give-forminp give-forminp-<?php echo esc_html( $field_options['type'] ); ?>">
