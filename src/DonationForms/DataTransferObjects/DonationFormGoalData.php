@@ -3,9 +3,7 @@
 namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\DonationQuery;
-use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
-use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\SubscriptionQuery;
 use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -77,21 +75,15 @@ class DonationFormGoalData implements Arrayable
 
         $query->form($this->formId);
 
-        if($this->goalProgressType->isCustom()) {
-            $query->between($this->goalStartDate, $this->goalEndDate);
-        }
-
         switch ($this->goalType):
             case GoalType::DONORS():
+            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
                 return $query->countDonors();
             case GoalType::DONATIONS():
-                return $query->count();
             case GoalType::SUBSCRIPTIONS():
                 return $query->count();
             case GoalType::AMOUNT_FROM_SUBSCRIPTIONS():
                 return $query->sumInitialAmount();
-            case GoalType::DONORS_FROM_SUBSCRIPTIONS():
-                return $query->countDonors();
             case GoalType::AMOUNT():
             default:
                 return $query->sumIntendedAmount();

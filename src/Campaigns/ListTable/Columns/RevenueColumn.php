@@ -37,7 +37,7 @@ class RevenueColumn extends ModelColumn
     public function getCellValue($model, $locale = ''): string
     {
         $query = new CampaignDonationQuery($model);
-        $revenue = $query->sumIntendedAmount();
+        $revenue = give_currency_filter(give_format_amount($query->sumIntendedAmount()));
 
         return sprintf(
             '<a class="column-earnings-value" href="%s" aria-label="%s">%s</a>',
