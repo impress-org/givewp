@@ -189,6 +189,6 @@ class Utils
          * @see https://www.php.net/manual/en/function.unserialize.php
          */
 
-        return ! $unserializedData ? $unserializedData : $data;
+        return ! $unserializedData ? $data : $unserializedData;
     }
 }
