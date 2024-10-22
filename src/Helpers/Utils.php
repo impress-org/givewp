@@ -113,25 +113,9 @@ class Utils
     }
 
     /**
-     * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
-     *
-     * @since 3.16.1
-     *
-     * @param string $data Data that might be unserialized.
-     *
-     * @return mixed Unserialized data can be any type.
-     */
-    public static function maybeSafeUnserialize($data)
-    {
-        return self::isSerialized($data)
-            ? self::safeUnserialize($data)
-            : $data;
-    }
-
-    /**
      * @unreleased
      */
-    public static function isSerialized($data): bool
+    public static function removeBackslashes($data)
     {
         /**
          * The stripslashes_deep() method removes only the first backslash occurrence from
@@ -142,11 +126,7 @@ class Utils
         $data = stripslashes_deep($data);
         $data = is_string($data) ? ltrim($data, '\\') : $data;
 
-        if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
-            return true;
-        }
-
-        return false;
+        return $data;
     }
 
     /**
@@ -169,8 +149,24 @@ class Utils
     /**
      * @unreleased
      */
+    public static function isSerialized($data): bool
+    {
+        $data = self::removeBackslashes($data);
+
+        if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @unreleased
+     */
     public static function safeUnserialize($data)
     {
+        $data = self::removeBackslashes($data);
+
         /**
          * We are setting the allowed_classes to false as a default to
          * prevent the injection of objects that can run unwished code.
@@ -189,6 +185,22 @@ class Utils
          * @see https://www.php.net/manual/en/function.unserialize.php
          */
 
-        return ! $unserializedData ? $data : $unserializedData;
+        return ! $unserializedData && ! self::containsSerializedDataRegex($data) ? $data : $unserializedData;
+    }
+
+    /**
+     * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
+     *
+     * @since 3.16.1
+     *
+     * @param string $data Data that might be unserialized.
+     *
+     * @return mixed Unserialized data can be any type.
+     */
+    public static function maybeSafeUnserialize($data)
+    {
+        return self::isSerialized($data)
+            ? self::safeUnserialize($data)
+            : $data;
     }
 }

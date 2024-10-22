@@ -114,7 +114,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
                 [
                     'foo' => 'bar',
                     // String with serialized data hidden in the middle of the content
-                    'baz' => 'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit."',
+                    'baz' => 'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit.',
                 ],
                 true,
             ],
