@@ -167,7 +167,7 @@ class AdminSettingFields
                     </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>"
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.png'; ?>"
                          width="316"
                          height="84"
                          alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
