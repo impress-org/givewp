@@ -269,7 +269,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.17.1: October 22nd, 2024 =
 * Fix: Resolved an issue with PayPal donation buttons where clicking the GiveWP donate button was causing an error.
 * Fix: Resolved an issue where the donation amount level descriptions option was not visible in the form builder.
-* Fix: Resolved an issue with the "Update Subscription" button being always disabled for Stripe in the donor dashboard.  
+* Fix: Resolved an issue with the "Update Subscription" button being always disabled for Stripe in the donor dashboard.
+* Fix: Resolved a styling issue in the donor dashboard with Stripe subscription amount fields.
 
 = 3.17.0: October 16th, 2024 =
 * New: Added new security tab with option to enable a honeypot field for visual builder forms
