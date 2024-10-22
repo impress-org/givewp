@@ -520,7 +520,7 @@ class FormMetaDecorator extends FormModelDecorator
         $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'), 'true');
 
         $isGloballyEnabled = give_is_setting_enabled(
-            give_get_option('give_constant_contact_show_checkout_signup'),
+            give_get_option('givewp_constant_contact_show_checkout_signup'),
             'on'
         );
 
