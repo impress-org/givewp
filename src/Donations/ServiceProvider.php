@@ -53,6 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
             MoveDonationCommentToDonationMetaTable::class,
+            //UnserializeTitlePrefix::class,
         ]);
     }
 
