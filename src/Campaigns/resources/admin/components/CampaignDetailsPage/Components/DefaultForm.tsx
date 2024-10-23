@@ -1,8 +1,9 @@
 import {__} from "@wordpress/i18n";
 import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
+import {CampaignFormOption} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
 
-const DefaultFormWidget = () => {
+const DefaultFormWidget = ({forms}: {forms: CampaignFormOption[]}) => {
     return (
 
     <div style={{
@@ -22,7 +23,9 @@ const DefaultFormWidget = () => {
             height: '48px',
             maxWidth: '100%', // Override `.wp-core-ui select` styles
         }}>
-            <option value="">My First Form</option>
+            {forms.map((form) => (
+                <option key={form.id} value={form.id}>{form.title}</option>
+            ))}
         </select>
     </div>
     )
