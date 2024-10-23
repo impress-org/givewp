@@ -445,6 +445,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donation list for specific query
 	 *
+     * @unreleased fix - filter by only_comments attr
 	 * @since 2.3.0
 	 *
 	 * @param  array $atts
@@ -479,8 +480,8 @@ class Give_Donor_Wall {
 
 		// exclude donations which does not has donor comment.
 		if ( $query_params['only_comments'] ) {
-			$sql   .= " INNER JOIN {$wpdb->give_comments} as gc1 ON (p1.ID = gc1.comment_parent)";
-			$where .= " AND gc1.comment_type='donor_donation'";
+			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m4 ON (p1.ID = m4.{$donation_id_col})";
+            $where .= " AND m4.meta_key='_give_donation_comment'";
 		}
 
 		// exclude anonymous donation form query based on query parameters.
