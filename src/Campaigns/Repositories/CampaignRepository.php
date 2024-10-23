@@ -204,6 +204,38 @@ class CampaignRepository
      *
      * @throws Exception
      */
+    public function updateDefaultCampaignForm(Campaign $campaign, int $donationFormId)
+    {
+        Hooks::doAction('givewp_campaign_default_form_updating', $campaign, $donationFormId);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::query(
+                DB::prepare('UPDATE ' . DB::prefix('give_campaign_forms') . ' SET is_default = IF(form_id = %d, 1, 0) WHERE campaign_id = %d',
+                    [
+                        $donationFormId,
+                        $campaign->id,
+                    ])
+            );
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating the campaign default form', compact('campaign'));
+
+            throw new $exception('Failed updating the campaign default form');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_campaign_default_form_updated', $campaign, $donationFormId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function delete(Campaign $campaign): bool
     {
         DB::query('START TRANSACTION');
