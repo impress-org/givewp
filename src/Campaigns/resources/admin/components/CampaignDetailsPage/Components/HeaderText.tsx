@@ -1,6 +1,7 @@
-const HeaderText = ({
-                        children
-                    }) => {
+/**
+ * @unreleased
+ */
+const HeaderText = ({children}) => {
     return (
         <div style={{
             fontSize: '16px',
