@@ -663,7 +663,7 @@ import {PayPalSubscriber} from './types';
         },
 
         /**
-         * @unreleased Hide submit button when PayPal Commerce is selected.
+         * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
          */
         Fields() {
             const {useWatch} = window.givewp.form.hooks;

@@ -10,7 +10,6 @@ import {updateSubscriptionWithAPI} from './utils';
 import PauseDurationDropdown from './pause-duration-dropdown';
 import DashboardLoadingSpinner from '../dashboard-loading-spinner';
 import usePauseSubscription from './hooks/pause-subscription';
-import {cancelSubscriptionWithAPI} from '../subscription-cancel-modal/utils';
 
 import './style.scss';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
@@ -36,7 +35,7 @@ const SubscriptionManager = ({id, subscription}) => {
     const [updated, setUpdated] = useState(false);
     const {handlePause, handleResume, loading} = usePauseSubscription(id);
 
-    const subscriptionStatus = subscription.payment.status.id;
+    const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
 
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
