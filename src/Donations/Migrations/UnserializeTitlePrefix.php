@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\Migrations;
+namespace Give\Donations\Migrations;
 
 use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
@@ -36,7 +36,7 @@ class UnserializeTitlePrefix extends Migration
 
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
     public static function id()
     {
@@ -44,7 +44,7 @@ class UnserializeTitlePrefix extends Migration
     }
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
     public static function title()
     {
@@ -52,7 +52,7 @@ class UnserializeTitlePrefix extends Migration
     }
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
     public static function timestamp()
     {
