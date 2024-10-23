@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.17.1
+Stable tag: 3.17.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,12 +266,6 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.17.1: October 22nd, 2024 =
-* Fix: Resolved an issue with PayPal donation buttons where clicking the GiveWP donate button was causing an error.
-* Fix: Resolved an issue where the donation amount level descriptions option was not visible in the form builder.
-* Fix: Resolved an issue with the "Update Subscription" button being always disabled for Stripe in the donor dashboard.
-* Fix: Resolved a styling issue in the donor dashboard with Stripe subscription amount fields.
-
 = 3.17.0: October 16th, 2024 =
 * New: Added new security tab with option to enable a honeypot field for visual builder forms
 * Fix: Resolved an issue with the donor name prefix block not saving correctly 

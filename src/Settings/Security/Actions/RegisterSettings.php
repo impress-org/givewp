@@ -38,7 +38,6 @@ class RegisterSettings
     }
 
     /**
-     * @since 3.17.1 enable by default
      * @since 3.17.0
      */
     public function getHoneypotSettings(): array
@@ -51,7 +50,7 @@ class RegisterSettings
             ),
             'id' => 'givewp_donation_forms_honeypot_enabled',
             'type' => 'radio_inline',
-            'default' => 'enabled',
+            'default' => 'disabled',
             'options' => [
                 'enabled' => __('Enabled', 'give'),
                 'disabled' => __('Disabled', 'give'),

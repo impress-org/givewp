@@ -105,6 +105,7 @@ const AmountControl = ({currency, onChange, value, options, min, max}) => {
                         value={selectValue}
                         onChange={setSelectValue}
                     />
+                <div>
                     {selectValue === CUSTOM_AMOUNT && (
                         <div className="give-donor-dashboard-currency-control">
                             <label
@@ -132,6 +133,7 @@ const AmountControl = ({currency, onChange, value, options, min, max}) => {
                             </div>
                         </div>
                     )}
+                </div>
             </FieldRow>
             {validationError && (
                 <FieldRow>

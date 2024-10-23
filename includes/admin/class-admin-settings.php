@@ -68,7 +68,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug
 			 *              then filter will be give-settings_get_settings_pages
 			 *
-			 * @since 3.17.1 cast to array
+			 * @unreleased cast to array
 			 * @since 1.8
 			 *
 			 * @param array $settings Array of settings class object.
