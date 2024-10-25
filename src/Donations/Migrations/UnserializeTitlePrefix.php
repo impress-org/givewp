@@ -16,9 +16,7 @@ class UnserializeTitlePrefix extends Migration
      */
     public function run()
     {
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $sql = DB::prepare("SELECT * FROM $donationMetaTable as fm WHERE fm.meta_key = '_give_donor_billing_title_prefix'");
-        $items = DB::get_results($sql);
+        $items = DB::table('give_donationmeta')->where('meta_key', '_give_donor_billing_title_prefix')->getAll();
 
         foreach ($items as $item) {
             if (Utils::isSerialized($item->meta_value)) {

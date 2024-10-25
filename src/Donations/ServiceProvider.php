@@ -16,6 +16,7 @@ use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
+use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
@@ -53,7 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
             MoveDonationCommentToDonationMetaTable::class,
-            //UnserializeTitlePrefix::class,
+            UnserializeTitlePrefix::class,
         ]);
     }
 
