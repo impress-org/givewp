@@ -56,6 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignStatistics::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetCampaignRevenue::class, 'registerRoute');
     }
 
     /**
@@ -138,7 +139,7 @@ class ServiceProvider implements ServiceProviderInterface
         if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
-        
+
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
