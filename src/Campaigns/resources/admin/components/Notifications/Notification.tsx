@@ -6,7 +6,7 @@ import {CloseIcon} from '../Icons';
 
 import styles from './Notices.module.scss';
 
-const Snackbar = ({notification, onDismiss}: {notification: Notification, onDismiss: () => void}) => {
+const Snackbar = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => {
     return (
 
         <div
@@ -25,7 +25,7 @@ const Snackbar = ({notification, onDismiss}: {notification: Notification, onDism
     );
 };
 
-const Notice = ({notification, onDismiss}: {notification: Notification, onDismiss: () => void}) => {
+const Notice = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => {
     return (
 
         <div
@@ -43,6 +43,10 @@ const Notice = ({notification, onDismiss}: {notification: Notification, onDismis
         </div>
     );
 };
+
+const Custom = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => (
+    typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content
+)
 
 export default ({notification}) => {
 
@@ -63,17 +67,12 @@ export default ({notification}) => {
     };
 
 
-    return notification.notificationType === 'snackbar'
-        ? (
-            <Snackbar
-                notification={notification}
-                onDismiss={onDismiss}
-            />
-        ) : (
-            <Notice
-                notification={notification}
-                onDismiss={onDismiss}
-            />
-        );
-
+    switch (notification.notificationType) {
+        case 'snackbar':
+            return <Snackbar notification={notification} onDismiss={onDismiss} />
+        case 'notice':
+            return <Notice notification={notification} onDismiss={onDismiss} />
+        default:
+            return <Custom notification={notification} onDismiss={onDismiss} />
+    }
 }
