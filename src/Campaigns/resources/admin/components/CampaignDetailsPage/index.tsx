@@ -12,6 +12,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
+import ArchivedCampaignNotice from './Components/ArchivedCampaignNotice';
 import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
@@ -28,11 +29,11 @@ interface Show {
 }
 
 
-const StatusBadge = ({status}:{status: string}) => {
+const StatusBadge = ({status}: { status: string }) => {
     const statusMap = {
-        active:  __('Active', 'give'),
-        archived:  __('Archived', 'give'),
-        draft:  __('Draft', 'give')
+        active: __('Active', 'give'),
+        archived: __('Archived', 'give'),
+        draft: __('Draft', 'give')
     };
 
     return (
@@ -67,7 +68,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/give-api/v2/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+        }).then(({schema}: { schema: JSONSchemaType<any> }) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -110,23 +111,30 @@ export default function CampaignsDetailsPage({campaignId}) {
             id: 'update-archive-notice',
             type: 'warning',
             content: () => (
-                <>
-                    <TriangleIcon />
-                    <span>
-                        {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
-                    </span>
-                    <strong>
-                        <a href="#" onClick={() => {
-                            updateStatus('draft');
-                            dispatch.dismissNotification('update-archive-notice');
-                        }}>
-                            {__('Move to draft', 'give')}
-                        </a>
-                    </strong>
-                </>
+                <ArchivedCampaignNotice
+                    handleClick={() => {
+                        updateStatus('draft');
+                        dispatch.dismissNotification('update-archive-notice');
+                    }}
+                />
             )
         });
     }, [campaign?.status]);
+
+    // Default form notification
+    useEffect(() => {
+        if (window.GiveDonationForms.showUpgradedTooltip) {
+            dispatch.addCustomNotice({
+                id: 'default-form-tooltip',
+                notificationType: 'campaigns-default-form',
+                content: (onDismiss) => (
+                    <div onClick={onDismiss}>
+                        Default form notice
+                    </div>
+                )
+            });
+        }
+    }, []);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
 
@@ -145,7 +153,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     id: `save-${data.status}`,
                     content: __('Campaign updated', 'give')
                 });
-            } catch(err) {
+            } catch (err) {
                 setIsSaving(null);
 
                 dispatch.addSnackbarNotice({
@@ -175,7 +183,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     id: `update-${status}`,
                     content: getMessageByStatus(status)
                 });
-            } catch(err) {
+            } catch (err) {
                 setShow({
                     contextMenu: false,
                     confirmationModal: false,
