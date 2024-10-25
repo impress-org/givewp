@@ -106,6 +106,7 @@ class DonationFormsAdminPage
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'showDefaultFormTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-default-form-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
