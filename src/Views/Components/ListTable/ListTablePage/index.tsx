@@ -99,7 +99,7 @@ export default function ListTablePage({
     const checkboxRefs = useRef([]);
     const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
         sortColumn: 'id',
-        sortDirection: 'desc',
+        sortDirection: '',
     });
     const [testMode, setTestMode] = useState(paymentMode);
 
