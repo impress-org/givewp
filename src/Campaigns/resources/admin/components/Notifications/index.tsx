@@ -2,7 +2,7 @@ import {useSelect} from '@wordpress/data';
 import Notification from './Notification';
 import styles from './Notices.module.scss';
 
-export default ({type}: {type: 'snackbar' | 'notice'}) => {
+export default ({type}: {type: 'snackbar' | 'notice' | string}) => {
     //@ts-ignore
     const notifications = useSelect(select => select('givewp/campaign-notifications').getNotificationsByType(type));
 
