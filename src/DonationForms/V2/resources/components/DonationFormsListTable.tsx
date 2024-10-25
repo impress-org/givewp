@@ -11,6 +11,7 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
+import NotificationPlaceholder from '@givewp/campaigns/admin/components/Notifications';
 
 declare global {
     interface Window {
@@ -28,6 +29,7 @@ declare global {
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;
+            showDefaultFormTooltip: boolean;
             campaignUrl: string;
         };
 
@@ -106,20 +108,32 @@ if (isCampaignDetailsPage) {
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
-        filter: (item) => {
+        filter: (item, column, data) => {
             if (item?.v3form) {
                 return (
-                    <div className={styles.migratedForm}>
-                        <div className={styles.tooltipContainer}>
-                            <CubeIcon />
-                            <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                    <>
+                        <div className={styles.migratedForm}>
+                            <div className={styles.tooltipContainer}>
+                                <CubeIcon />
+                                <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                            </div>
+                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
-                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                    </div>
+                        {window.GiveDonationForms.showDefaultFormTooltip && data?.defaultForm === item.id && (
+                            <NotificationPlaceholder type="campaigns-default-form" />
+                        )}
+                    </>
                 );
             }
 
-            return <Interweave attributes={{className: 'interweave'}} content={item?.title} />;
+            return (
+                <>
+                    <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                    {window.GiveDonationForms.showDefaultFormTooltip && data?.defaultForm === item.id && (
+                        <NotificationPlaceholder type="campaigns-default-form" />
+                    )}
+                </>
+            );
         },
     },
     {
