@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2\Endpoints;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
@@ -28,6 +29,11 @@ class ListDonationForms extends Endpoint
      * @var DonationFormsListTable
      */
     protected $listTable;
+
+    /**
+     * @var int
+     */
+    protected $defaultForm;
 
     /**
      * @unreleased Add campaignId parameter
@@ -124,6 +130,9 @@ class ListDonationForms extends Endpoint
     {
         $this->request = $request;
         $this->listTable = give(DonationFormsListTable::class);
+        $this->defaultForm = $this->request->get_param('campaignId')
+            ? Campaign::find((int)$this->request->get_param('campaignId'))->defaultForm()->id
+            : 0;
 
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
@@ -150,6 +159,7 @@ class ListDonationForms extends Endpoint
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages,
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
+                'defaultForm' => $this->defaultForm
             ]
         );
     }
@@ -165,13 +175,17 @@ class ListDonationForms extends Endpoint
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
-        foreach ($sortColumns as $sortColumn) {
-            $query->orderBy($sortColumn, $sortDirection);
+        if ($this->defaultForm && ! $this->request->get_param('sortDirection')) {
+            $query->orderByRaw('FIELD(ID, %d)', $this->defaultForm);
+        } else {
+            $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+            foreach ($sortColumns as $sortColumn) {
+                $query->orderBy($sortColumn, $sortDirection);
+            }
         }
 
         $query->limit($perPage)
