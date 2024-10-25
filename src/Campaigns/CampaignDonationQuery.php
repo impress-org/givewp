@@ -100,14 +100,17 @@ class CampaignDonationQuery extends QueryBuilder
     public function getDonationsByDay(): array
     {
         $query = clone $this;
+
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
         $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
-        $query->joinDonationMeta('_give_completed_date', 'completed');
         $query->select(
-            'DATE(completed.meta_value) as date',
             'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
         );
+
+        $query->joinDonationMeta('_give_completed_date', 'completed');
+        $query->select('DATE(completed.meta_value) as date');
         $query->groupBy('date');
+
         return $query->getAll();
     }
 
