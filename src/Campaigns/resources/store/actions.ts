@@ -28,6 +28,19 @@ export function addNotice(notification: Notification) {
     };
 }
 
+export function addCustomNotice(notification: Notification) {
+    return {
+        type: 'ADD_NOTIFICATION',
+        notification: {
+            ...notification,
+            autoHide: notification?.autoHide ?? false,
+            isDismissible: notification?.isDismissible ?? true,
+            duration: notification?.duration ?? 5000,
+            notificationType: notification?.notificationType,
+        },
+    };
+}
+
 export function dismissNotification(id: string) {
     return {
         type: 'DISMISS_NOTIFICATION',
