@@ -12,7 +12,8 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import ArchivedCampaignNotice from './Components/ArchivedCampaignNotice';
+import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
+import DefaultFormNotice from './Components/Notices/DefaultFormNotice';
 import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
@@ -110,29 +111,15 @@ export default function CampaignsDetailsPage({campaignId}) {
         dispatch.addNotice({
             id: 'update-archive-notice',
             type: 'warning',
-            content: () => (
-                <ArchivedCampaignNotice
-                    handleClick={() => {
-                        updateStatus('draft');
-                        dispatch.dismissNotification('update-archive-notice');
-                    }}
-                />
-            )
+            onDismiss: () => updateStatus('draft'),
+            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
         });
     }, [campaign?.status]);
 
     // Default form notification
     useEffect(() => {
-        if (window.GiveDonationForms.showUpgradedTooltip) {
-            dispatch.addCustomNotice({
-                id: 'default-form-tooltip',
-                notificationType: 'campaigns-default-form',
-                content: (onDismiss) => (
-                    <div onClick={onDismiss}>
-                        Default form notice
-                    </div>
-                )
-            });
+        if (!window.GiveDonationForms.showDefaultFormTooltip) {
+            return;
         }
     }, []);
 
