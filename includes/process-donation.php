@@ -9,8 +9,10 @@
  * @since       1.0
  */
 
+use Give\Helpers\Utils;
+
 // Exit if accessed directly.
-use Give\Helpers\Utils;if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
