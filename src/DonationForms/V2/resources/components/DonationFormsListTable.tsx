@@ -20,6 +20,7 @@ declare global {
             bannerActionUrl: string;
             tooltipActionUrl: string;
             migrationApiRoot: string;
+            defaultFormActionUrl: string;
             apiRoot: string;
             authors: Array<{id: string | number; name: string}>;
             table: {columns: Array<object>};
@@ -343,6 +344,9 @@ export default function DonationFormsListTable() {
                             {__('Add Form', 'give')}
                         </a>
                     </>
+                )}
+                {window.GiveDonationForms.showDefaultFormTooltip && (
+                    <NotificationPlaceholder type="campaigns-default-form" />
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>
