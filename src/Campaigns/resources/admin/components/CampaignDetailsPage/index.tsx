@@ -121,6 +121,16 @@ export default function CampaignsDetailsPage({campaignId}) {
         if (!window.GiveDonationForms.showDefaultFormTooltip) {
             return;
         }
+
+        dispatch.addCustomNotice({
+            id: 'default-form-tooltip',
+            notificationType: 'campaigns-default-form',
+            onDismiss: async () => await apiFetch({
+                url: window.GiveDonationForms.defaultFormActionUrl,
+                method: 'POST',
+            }),
+            content: (onDismiss: Function) => <DefaultFormNotice handleClick={onDismiss} />
+        });
     }, []);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
