@@ -109,10 +109,10 @@ if (isCampaignDetailsPage) {
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
-        filter: (item, column, data) => {
-            if (item?.v3form) {
-                return (
-                    <>
+        filter: (item) => {
+            return (
+                <>
+                    {item?.v3form ? (
                         <div className={styles.migratedForm}>
                             <div className={styles.tooltipContainer}>
                                 <CubeIcon />
@@ -120,18 +120,8 @@ const columnFilters: Array<ColumnFilterConfig> = [
                             </div>
                             <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
-                        {window.GiveDonationForms.showDefaultFormTooltip && data?.defaultForm === item.id && (
-                            <NotificationPlaceholder type="campaigns-default-form" />
-                        )}
-                    </>
-                );
-            }
-
-            return (
-                <>
-                    <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                    {window.GiveDonationForms.showDefaultFormTooltip && data?.defaultForm === item.id && (
-                        <NotificationPlaceholder type="campaigns-default-form" />
+                    ) : (
+                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                     )}
                 </>
             );
