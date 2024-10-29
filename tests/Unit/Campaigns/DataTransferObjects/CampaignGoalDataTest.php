@@ -26,11 +26,11 @@ final class CampaignGoalDataTest extends TestCase
     {
         $campaign = Campaign::factory()->create(['goal' => 0]);
 
-        $form1 = DonationForm::factory()->create();
+        $form = DonationForm::factory()->create();
         DB::table('give_campaign_forms')
-            ->insert(['form_id' => $form1->id, 'campaign_id' => $campaign->id]);
+            ->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
 
-        Donation::factory()->create(['formId' => $form1->id]);
+        Donation::factory()->create(['formId' => $form->id]);
 
         $goalData = new CampaignGoalData($campaign);
 
