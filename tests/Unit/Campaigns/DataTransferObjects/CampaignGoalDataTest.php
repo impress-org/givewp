@@ -24,15 +24,11 @@ final class CampaignGoalDataTest extends TestCase
      */
     public function testGetPercentageDoesNotDivideByZero()
     {
-        $campaign = Campaign::factory()->create(['goal' => 0]);
-
-        $form = DonationForm::factory()->create();
-        DB::table('give_campaign_forms')
-            ->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
-
-        Donation::factory()->create(['formId' => $form->id]);
-
-        $goalData = new CampaignGoalData($campaign);
+        $goalData = new CampaignGoalData(
+            Campaign::factory()->create([
+                'goal' => 0
+            ])
+        );
 
         $this->assertEquals(0.00, $goalData->percentage);
     }
