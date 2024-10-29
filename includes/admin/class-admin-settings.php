@@ -949,7 +949,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					?>
 					<tr valign="top" <?php echo $wrapper_class; ?>>
 						<th scope="row" class="titledesc">
-							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_attr( self::get_field_title( $value ) ); ?></label>
+                            <label for="<?php
+                            echo esc_attr($value['id']); ?>"><?php
+                                echo wp_kses_post(self::get_field_title($value)); ?></label>
 						</th>
 						<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 							<select

@@ -383,6 +383,90 @@ div.give-field-description {
     }
 }
 
+.give_option_based_form_editor_notice {
+	display: flex;
+	margin: -2rem 0;
+	gap: 0.3rem;
+	padding: 0.5rem;
+	background-color: #fffaf2;
+	border-radius: 4px;
+	border: 1px solid #f29718;
+	border-left-width: 4px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #1a0f00;
+	line-height: 1.25rem;
+	max-width: 60rem;
+	width: 100%;
+
+	svg {
+		margin: 0.4rem 0.3rem;
+		height: 1.25rem;
+		width: 1.25rem;
+	}
+}
+
+.give-setting-tab-body-general,
+.give-setting-tab-body-display,
+.give-settings-advanced-tab {
+	label {
+		display: flex;
+		gap: 0.4rem;
+		padding: 1.25rem 1rem;
+		position: relative;
+
+		.give-settings-section-group-helper {
+			--popout-display: none;
+			display: flex;
+			cursor: help;
+
+			img {
+				max-width: 18.9px;
+			}
+
+			&:hover {
+				--popout-display: block;
+			}
+
+			&__popout {
+				background-color: #fff;
+				border: 1px solid #e6e6e6;
+				border-radius: 4px;
+				box-shadow: 0 4px 8px 0 #0000000D;
+				color: #404040;
+				display: var(--popout-display, none);
+				left: 100%;
+				overflow: hidden;
+				position: absolute;
+				top: 0;
+				transform: translateX(10px);
+				z-index: 9999;
+
+				img {
+					max-width: initial;
+					display: block;
+				}
+
+				h5 {
+					font-size: 0.875rem;
+					font-weight: 700;
+					line-height: 1.5;
+					margin: 0;
+					padding: 1rem 1.5rem 0.5rem;
+				}
+
+				p {
+					font-size: 0.75rem;
+					font-weight: 500;
+					line-height: 1.5;
+					margin: 0;
+					padding: 0 1.5rem 1.5rem;
+				}
+			}
+		}
+	}
+}
+
 .give-payment-gateways-settings {
     &.give-settings-section-content {
         .give-settings-section-group-menu {
@@ -917,7 +1001,6 @@ a.give-delete {
 	}
 
 	img {
-        object-fit: contain;
 		width: 100%;
 	}
 
