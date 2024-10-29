@@ -80,7 +80,10 @@ class CampaignGoalData implements Arrayable
      */
     private function getPercentage(): float
     {
-        return round($this->actual / $this->campaign->goal * 100, 2);
+        $percentage = $this->campaign->goal
+            ? $this->actual / $this->campaign->goal
+            : 0;
+        return round($percentage * 100, 2);
     }
 
     /**
