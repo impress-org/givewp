@@ -473,3 +473,9 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         }
     }
 }
+
+/* Ensure that the link editor modal from the ClassicEditor component will be visible. */
+#wp-link-backdrop,
+#wp-link-wrap {
+    z-index: 9999999999 !important;
+}

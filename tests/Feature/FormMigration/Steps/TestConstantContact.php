@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased Update to use FormMigrationProcessor trait
+ * @since 3.16.0 Update to use FormMigrationProcessor trait
  * @since 3.7.0
  */
 class TestConstantContact extends TestCase
@@ -19,7 +19,7 @@ class TestConstantContact extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.7.0
      */
     public function testFormMigratesUsingGlobalSettingsWhenGloballyEnabled(): void
@@ -48,7 +48,7 @@ class TestConstantContact extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToDisableConstantContactIsMigratedWithoutConstantContactBlock()
     {
@@ -66,7 +66,7 @@ class TestConstantContact extends TestCase
     }
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.7.0
      */
     public function testFormConfiguredToUseCustomizedConstantContactSettingsIsMigrated(): void

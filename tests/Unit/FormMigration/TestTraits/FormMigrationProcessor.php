@@ -8,12 +8,12 @@ use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\StepProcessor;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 trait FormMigrationProcessor
 {
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function migrateForm(V2DonationForm $v2Form, string $stepClassname): DonationForm
     {

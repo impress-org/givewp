@@ -19,7 +19,7 @@ class TestDonationOptions extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationAmountBlockAttributes(): void
@@ -47,7 +47,7 @@ class TestDonationOptions extends TestCase {
     }
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.12.0 Updated test to include donation levels with descriptions
      * @since 3.4.0
      */

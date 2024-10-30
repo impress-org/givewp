@@ -8,10 +8,10 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 /**
  * @since 2.19.6
  *
- * @method static FIRST_NAME()
- * @method static LAST_NAME()
- * @method static ADDITIONAL_EMAILS()
- * @method static PREFIX()
+ * @method static DonorMetaKeys FIRST_NAME()
+ * @method static DonorMetaKeys LAST_NAME()
+ * @method static DonorMetaKeys ADDITIONAL_EMAILS()
+ * @method static DonorMetaKeys PREFIX()
  */
 class DonorMetaKeys extends Enum
 {

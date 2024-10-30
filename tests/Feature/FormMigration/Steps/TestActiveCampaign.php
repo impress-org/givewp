@@ -17,7 +17,7 @@ class TestActiveCampaign extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToUseGlobalActiveCampaignSettingsMigratesUsingGlobalSettingsWhenGloballyEnabled()
     {
@@ -47,7 +47,7 @@ class TestActiveCampaign extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToUseGlobalActiveCampaignSettingsIsMigratedWithoutActiveCampaignBlockWhenNotGloballyEnabled()
     {
@@ -65,7 +65,7 @@ class TestActiveCampaign extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToDisableActiveCampaignIsMigratedWithoutActiveCampaignBlock()
     {
@@ -82,7 +82,7 @@ class TestActiveCampaign extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToUseCustomizedActiveCampaignSettingsIsMigrated()
     {

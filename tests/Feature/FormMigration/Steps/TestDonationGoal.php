@@ -9,7 +9,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use Give\Tests\Unit\FormMigration\TestTraits\FormMigrationProcessor;
 
 /**
- * @unreleased Update to use FormMigrationProcessor trait
+ * @since 3.16.0 Update to use FormMigrationProcessor trait
  * @since 3.4.0
  *
  * @covers \Give\FormMigration\Steps\DonationGoal
@@ -21,7 +21,7 @@ class TestDonationGoal extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.4.0
      */
     public function testProcessShouldUpdateDonationFormDonationGoalSettings(): void

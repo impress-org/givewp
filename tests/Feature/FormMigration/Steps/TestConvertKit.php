@@ -17,7 +17,7 @@ class TestConvertKit extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.11.0
      */
     public function testFormConfiguredToUseGlobalConvertKitSettingsMigratesUsingGlobalSettingsWhenGloballyEnabled()
@@ -48,7 +48,7 @@ class TestConvertKit extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToUseGlobalConvertKitSettingsIsMigratedWithoutConvertKitBlockWhenNotGloballyEnabled()
     {
@@ -66,7 +66,7 @@ class TestConvertKit extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testFormConfiguredToDisableConvertKitIsMigratedWithoutConvertKitBlock()
     {
@@ -83,7 +83,7 @@ class TestConvertKit extends TestCase
     }
 
     /**
-     * @unreleased Update test to use FormMigrationProcessor::migrateForm method
+     * @since 3.16.0 Update test to use FormMigrationProcessor::migrateForm method
      * @since 3.11.0
      */
     public function testFormConfiguredToUseCustomizedConvertKitSettingsIsMigrated()
