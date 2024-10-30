@@ -161,13 +161,13 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param Campaign[] $campaigns
+     * @param Campaign[] $campaignsToMerge
      *
      * @throws Exception
      */
-    public function merge(array $campaigns): bool
+    public function merge(array $campaignsToMerge): bool
     {
-        return give(CampaignRepository::class)->mergeCampaigns($campaigns, $this);
+        return give(CampaignRepository::class)->mergeCampaigns($campaignsToMerge, $this);
     }
 
     /**
