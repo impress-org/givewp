@@ -264,6 +264,60 @@ class CampaignRepository
 
     /**
      * @unreleased
+     *
+     * @param Campaign[] $campaigns
+     *
+     * @throws Exception
+     */
+    public function mergeCampaigns(array $campaigns, Campaign $destinationCampaign): bool
+    {
+        Hooks::doAction('givewp_campaigns_merging', $campaigns, $destinationCampaign);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            foreach ($campaigns as $campaign) {
+                if ($campaign->id === $destinationCampaign->id) {
+                    continue;
+                }
+
+                DB::query(
+                    DB::prepare('UPDATE ' . DB::prefix('give_campaign_forms') . ' SET campaign_id = %d WHERE campaign_id = %d',
+                        [
+                            $destinationCampaign->id,
+                            $campaign->id,
+                        ])
+                );
+
+                DB::query(
+                    DB::prepare('UPDATE ' . DB::prefix('give_revenue') . ' SET campaign_id = %d WHERE campaign_id = %d',
+                        [
+                            $destinationCampaign->id,
+                            $campaign->id,
+                        ])
+                );
+
+                DB::table('give_campaigns')
+                    ->where('id', $campaign->id)
+                    ->delete();
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed merging campaigns', compact('campaign'));
+
+            throw new $exception('Failed merging campaigns');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_campaigns_merged', $campaigns, $destinationCampaign);
+
+        return true;
+    }
+
+    /**
+     * @unreleased
      */
     private function validateProperties(Campaign $campaign): void
     {
