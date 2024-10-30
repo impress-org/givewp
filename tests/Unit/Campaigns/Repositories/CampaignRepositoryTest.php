@@ -8,6 +8,8 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
+use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Tests\TestCase;
@@ -282,8 +284,125 @@ final class CampaignRepositoryTest extends TestCase
         $repository->updateDefaultCampaignForm($campaign, $form2->id);
 
         //Re-fetch
-        $campaign = $campaign::find($campaign->id);
+        $campaign = Campaign::find($campaign->id);
 
         $this->assertEquals($form2->id, $campaign->defaultForm()->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMergeCampaignsShouldReturnTrue()
+    {
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+        /** @var Campaign $destinationCampaign */
+        $destinationCampaign = Campaign::factory()->create();
+
+        $repository = new CampaignRepository();
+        $merged = $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+
+        $this->assertTrue($merged);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMergeCampaignsShouldMigrateFormsToDestinationCampaign()
+    {
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+        /** @var Campaign $destinationCampaign */
+        $destinationCampaign = Campaign::factory()->create();
+
+        $formCampaign1 = $campaign1->defaultForm();
+        $formCampaign2 = $campaign2->defaultForm();
+
+        $repository = new CampaignRepository();
+        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+
+        //Re-fetch
+        $destinationCampaign = Campaign::find($destinationCampaign->id);
+
+        $campaignReturn = $repository->getByFormId($formCampaign1->id);
+        $this->assertEquals($campaignReturn->getAttributes(), $destinationCampaign->getAttributes());
+
+        $campaignReturn = $repository->getByFormId($formCampaign2->id);
+        $this->assertEquals($campaignReturn->getAttributes(), $destinationCampaign->getAttributes());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMergeCampaignsShouldMigrateRevenueToDestinationCampaign()
+    {
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+        /** @var Campaign $destinationCampaign */
+        $destinationCampaign = Campaign::factory()->create();
+
+        /** @var Donation $donationCampaign1 */
+        $donationCampaign1 = Donation::factory()->create(['formId' => $campaign1->defaultForm()->id]);
+        /** @var Donation $donationCampaign2 */
+        $donationCampaign2 = Donation::factory()->create(['formId' => $campaign2->defaultForm()->id]);
+
+        // TODO Remove this updates clauses when the logic to automatically set the campaign_id in the revenue table entries for new donations is implemented
+        DB::query(
+            DB::prepare('UPDATE ' . DB::prefix('give_revenue') . ' SET campaign_id = %d WHERE donation_id = %d',
+                [
+                    $campaign1->id,
+                    $donationCampaign1->id,
+                ])
+        );
+        DB::query(
+            DB::prepare('UPDATE ' . DB::prefix('give_revenue') . ' SET campaign_id = %d WHERE donation_id = %d',
+                [
+                    $campaign2->id,
+                    $donationCampaign2->id,
+                ])
+        );
+
+        $repository = new CampaignRepository();
+        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+
+        $revenueEntry = DB::table('give_revenue')->where('donation_id', $donationCampaign1->id)->get();
+        $this->assertEquals($destinationCampaign->id, $revenueEntry->campaign_id);
+
+        $revenueEntry = DB::table('give_revenue')->where('donation_id', $donationCampaign2->id)->get();
+        $this->assertEquals($destinationCampaign->id, $revenueEntry->campaign_id);
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMergeCampaignsShouldDeleteMergedCampaigns()
+    {
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+        /** @var Campaign $destinationCampaign */
+        $destinationCampaign = Campaign::factory()->create();
+
+        $repository = new CampaignRepository();
+        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);;
+
+        $this->assertNull(Campaign::find($campaign1->id));
+        $this->assertNull(Campaign::find($campaign2->id));
     }
 }
