@@ -304,7 +304,7 @@ final class CampaignRepositoryTest extends TestCase
         $destinationCampaign = Campaign::factory()->create();
 
         $repository = new CampaignRepository();
-        $merged = $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+        $merged = $repository->mergeCampaigns($destinationCampaign, $campaign1, $campaign2);
 
         $this->assertTrue($merged);
     }
@@ -327,7 +327,7 @@ final class CampaignRepositoryTest extends TestCase
         $formCampaign2 = $campaign2->defaultForm();
 
         $repository = new CampaignRepository();
-        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+        $repository->mergeCampaigns($destinationCampaign, $campaign1, $campaign2);
 
         //Re-fetch
         $destinationCampaign = Campaign::find($destinationCampaign->id);
@@ -375,7 +375,7 @@ final class CampaignRepositoryTest extends TestCase
         );
 
         $repository = new CampaignRepository();
-        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);
+        $repository->mergeCampaigns($destinationCampaign, $campaign1, $campaign2);
 
         $revenueEntry = DB::table('give_revenue')->where('donation_id', $donationCampaign1->id)->get();
         $this->assertEquals($destinationCampaign->id, $revenueEntry->campaign_id);
@@ -400,7 +400,7 @@ final class CampaignRepositoryTest extends TestCase
         $destinationCampaign = Campaign::factory()->create();
 
         $repository = new CampaignRepository();
-        $repository->mergeCampaigns([$campaign1, $campaign2], $destinationCampaign);;
+        $repository->mergeCampaigns($destinationCampaign, $campaign1, $campaign2);
 
         $this->assertNull(Campaign::find($campaign1->id));
         $this->assertNull(Campaign::find($campaign2->id));

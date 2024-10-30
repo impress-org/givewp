@@ -265,21 +265,19 @@ class CampaignRepository
     /**
      * @unreleased
      *
-     * @param Campaign[] $campaignsToMerge
-     *
      * @throws Exception
      */
-    public function mergeCampaigns(array $campaignsToMerge, Campaign $destinationCampaign): bool
+    public function mergeCampaigns(Campaign $destinationCampaign, Campaign ...$campaignsToMerge): bool
     {
-        Hooks::doAction('givewp_campaigns_merging', $campaignsToMerge, $destinationCampaign);
-
-        DB::query('START TRANSACTION');
-
         // Make sure the destination campaign ID will not be included into $campaignsToMergeIds
         $campaignsToMergeIds = array_column($campaignsToMerge, 'id');
         if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds)) {
             unset($campaignsToMergeIds[$key]);
         }
+
+        Hooks::doAction('givewp_campaigns_merging', $destinationCampaign, $campaignsToMergeIds);
+
+        DB::query('START TRANSACTION');
 
         // Convert $campaignsToMergeIds to string to use it in the queries
         $campaignsToMergeIdsString = implode(', ', $campaignsToMergeIds);
@@ -316,7 +314,7 @@ class CampaignRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('givewp_campaigns_merged', $campaignsToMerge, $destinationCampaign);
+        Hooks::doAction('givewp_campaigns_merged', $destinationCampaign, $campaignsToMergeIds);
 
         return true;
     }
