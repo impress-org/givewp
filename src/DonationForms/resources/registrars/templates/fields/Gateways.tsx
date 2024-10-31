@@ -8,20 +8,27 @@ import cx from 'classnames';
 /**
  * @since 3.0.0
  */
-function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: boolean}) {
-    return (
-        <em>
-            {currencyNotSupported
-                ? __(
-                      'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
-                      'give'
-                  )
-                : __(
-                      'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-                      'give'
-                  )}
-        </em>
-    );
+function GatewayMissingMessage({donationAmountLimitNotReached, currencyNotSupported}: {donationAmountLimitNotReached?: boolean, currencyNotSupported?: boolean}) {
+    let message = '';
+
+    if (donationAmountLimitNotReached) {
+        message = __(
+            'Donation amount must be greater than zero.',
+            'give'
+        );
+    } else if (currencyNotSupported) {
+        message = __(
+            'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+            'give'
+        );
+    } else {
+        message = __(
+            'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+            'give'
+        );
+    }
+
+    return <em>{message}</em>;
 }
 
 /**
@@ -82,11 +89,17 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
 
+    const donationAmount = useWatch({name: 'amount'});
     const currency = useWatch({name: 'currency'});
     const activeGatewayId = useWatch({name: 'gatewayId'});
 
+    // TODO: make dynamic
+    const minimumDonationAmount = 1;
+
+    const donationAmountLimitNotReached = donationAmount === 0 || donationAmount < minimumDonationAmount;
+
     // filter gateway options if currency switcher settings are present
-    const gatewayOptions = useMemo(() => {
+    const gatewayOptionsWithCurrencySettings = useMemo(() => {
         if (currencySwitcherSettings.length <= 1) {
             return gateways;
         }
@@ -99,6 +112,11 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 
         return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
     }, [currency]);
+
+
+    const gatewayOptions = useMemo(() => {
+        return donationAmountLimitNotReached ? [] : gatewayOptionsWithCurrencySettings;
+    }, [donationAmountLimitNotReached, gatewayOptionsWithCurrencySettings]);
 
     // reset the default /selected gateway based on the gateway options available
     useEffect(() => {
@@ -129,7 +147,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
                     </ul>
                 </>
             ) : (
-                <GatewayMissingMessage currencyNotSupported={currencySwitcherSettings.length > 1} />
+                <GatewayMissingMessage donationAmountLimitNotReached={donationAmountLimitNotReached} currencyNotSupported={gatewayOptionsWithCurrencySettings.length > 1} />
             )}
 
             <ErrorMessage
