@@ -65,7 +65,7 @@ const CampaignStats = () => {
                 <Column flex={1}>
                     <GoalProgressWidget />
 
-                    <DefaultFormWidget forms={window.GiveCampaignDetails.campaignForms} />
+                    <DefaultFormWidget defaultForm={window.GiveCampaignDetails.defaultForm} />
 
                 </Column>
             </Row>

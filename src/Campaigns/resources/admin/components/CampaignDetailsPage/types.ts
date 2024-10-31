@@ -4,7 +4,7 @@ export interface GiveCampaignDetails {
     adminUrl: string;
     currency: string;
     isRecurringEnabled: boolean;
-    campaignForms: CampaignFormOption[];
+    defaultForm: string;
 }
 
 export type CampaignFormOption = {

@@ -32,17 +32,13 @@ class LoadCampaignDetailsAssets
             true
         );
 
+        $defaultForm = $campaign->defaultForm();
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'campaignForms' => array_map(function ($form) {
-                    return [
-                        'id' => $form->id,
-                        'title' => $form->title
-                    ];
-                }, $campaign->forms()->getAll()),
+                'defaultForm' => $defaultForm ? $defaultForm->settings->formTitle : null,
             ]
         );
 
