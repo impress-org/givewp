@@ -101,6 +101,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
     }
 
     /**
+     * @unreleased Add string with serialized data hidden in the middle of the content
      * @since 3.16.4
      */
     public function give_donation_form_has_serialized_fields_data(): array
@@ -109,6 +110,14 @@ class Tests_Functions extends Give_Unit_Test_Case {
             [['foo' => serialize('bar')], true],
             [['foo' => 'bar', 'baz' => '\\' . serialize('backslash-bypass')], true],
             [['foo' => 'bar', 'baz' => '\\\\' . serialize('double-backslash-bypass')], true],
+            [
+                [
+                    'foo' => 'bar',
+                    // String with serialized data hidden in the middle of the content
+                    'baz' => 'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit.',
+                ],
+                true,
+            ],
             [['foo' => 'bar'], false],
             [['foo' => 'bar', 'baz' => serialize('qux')], true],
             [['foo' => 'bar', 'baz' => 'qux'], false],
