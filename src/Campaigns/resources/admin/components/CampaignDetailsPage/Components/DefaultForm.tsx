@@ -19,6 +19,7 @@ const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
         }}>
             <div style={{
                 display: 'flex',
+                gap: '16px',
                 alignItems: 'start',
                 justifyContent: 'space-between',
             }}>
