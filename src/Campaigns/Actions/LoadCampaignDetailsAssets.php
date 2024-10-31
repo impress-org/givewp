@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
@@ -14,6 +15,10 @@ class LoadCampaignDetailsAssets
      */
     public function __invoke()
     {
+        $campaign = Campaign::find(
+            absint($_GET['id'])
+        );
+
         $handleName = 'givewp-admin-campaign-details';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignDetails.asset.php');
 
@@ -27,11 +32,13 @@ class LoadCampaignDetailsAssets
             true
         );
 
+        $defaultForm = $campaign->defaultForm();
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+                'defaultForm' => $defaultForm ? $defaultForm->settings->formTitle : null,
             ]
         );
 

@@ -4,8 +4,16 @@ import RevenueChart from "./RevenueChart";
 import GoalProgressChart from "./GoalProgressChart";
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import HeaderText from './HeaderText';
+import HeaderSubText from './HeaderSubText';
+import DefaultFormWidget from "./DefaultForm";
+import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
+
+declare const window: {
+    GiveCampaignDetails: GiveCampaignDetails;
+} & Window;
 
 const pluck = (array: any[], property: string) => array.map(element => element[property])
 
@@ -51,35 +59,17 @@ const CampaignStats = () => {
             </Row>
 
             <Row>
-                <RevenueWidget />
-                <GoalProgressWidget />
+                <Column flex={2}>
+                    <RevenueWidget />
+                </Column>
+                <Column flex={1}>
+                    <GoalProgressWidget />
+
+                    <DefaultFormWidget defaultForm={window.GiveCampaignDetails.defaultForm} />
+
+                </Column>
             </Row>
         </>
-    )
-}
-
-const HeaderText = ({children}) => {
-    return (
-        <div style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            lineHeight: '24px',
-        }}>
-            {children}
-        </div>
-    )
-}
-
-const HeaderSubText = ({children}) => {
-    return (
-        <div style={{
-            fontSize: '14px',
-            fontWeight: 400,
-            lineHeight: '20px',
-            color: '#4B5563',
-        }}>
-            {children}
-        </div>
     )
 }
 
@@ -236,7 +226,19 @@ const Row = ({children}) => (
         display: 'flex',
         flexDirection: 'row',
         gap: '20px',
-        padding: '1rem',
+        marginBottom: '1rem',
+    }}>
+        {children}
+    </div>
+)
+
+const Column = ({children, flex = 1}) => (
+    <div style={{
+        flex: flex,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        gap: '20px',
     }}>
         {children}
     </div>
