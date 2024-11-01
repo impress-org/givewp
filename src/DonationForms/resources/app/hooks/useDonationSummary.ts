@@ -106,8 +106,9 @@ export default function useDonationSummary() {
 
     const amount = useWatch({ name: 'amount' }) as string;
     const currency = useWatch({ name: 'currency' }) as string;
-    const period = useWatch({name: 'subscriptionPeriod'}) as subscriptionPeriod | undefined;
-    const frequency = useWatch({name: 'subscriptionFrequency'}) as number | undefined;
+    const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'}) as subscriptionPeriod | undefined;
+    const subscriptionFrequency = useWatch({name: 'subscriptionFrequency'}) as number | undefined;
+    const subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
     const donationType = useWatch({name: 'donationType'}) as "single" | "subscription" | undefined;
 
     const donationAmountTotal = getDonationTotal(totals, Number(amount));
@@ -133,8 +134,9 @@ export default function useDonationSummary() {
             subscriptionAmountMinor: dollarsToCents(subscriptionAmount.toString(), currency),
             donationIsOneTime: donationType === 'single',
             donationIsRecurring: donationType === 'subscription',
-            subscriptionPeriod: period,
-            subscriptionFrequency: frequency,
+            subscriptionPeriod,
+            subscriptionFrequency,
+            subscriptionInstallments,
         },
     };
 }
