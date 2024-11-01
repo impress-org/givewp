@@ -9,14 +9,14 @@ import {createInterpolateElement} from '@wordpress/element';
 export default function DonationSummary() {
     const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;
     const { useCurrencyFormatter, useDonationSummary } = window.givewp.form.hooks;
-    const { items, state } = useDonationSummary();
-    const {
+    const { items } = useDonationSummary();
+    const {state: {
         currency,
-        donationAmountBase,
+        donationAmount,
         donationAmountTotal,
         subscriptionPeriod: period,
-        subscriptionFrequency: frequency
-    } = state;
+        subscriptionFrequency: frequency,
+    }} = window.givewp.form.hooks.useDonationSummary();
     const formatter = useCurrencyFormatter(currency);
 
     const givingFrequency = useMemo(() => {
@@ -38,7 +38,7 @@ export default function DonationSummary() {
     const amountItem = {
         id: 'amount',
         label: __('Payment Amount', 'give'),
-        value: formatter.format(donationAmountBase)
+        value: formatter.format(donationAmount)
     };
 
     const frequencyItem = {

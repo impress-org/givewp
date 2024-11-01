@@ -96,7 +96,7 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
  * Although the initial intent for this hook was to be used in the DonationSummary component for visual reasons, it is also recommended to be used in others
  * areas like gateways to get the total donation amount and currency.
  *
- * @unreleased added currency, donationAmountBase, donationAmountTotal
+ * @unreleased added state object
  * @since 3.0.0
  */
 export default function useDonationSummary() {
