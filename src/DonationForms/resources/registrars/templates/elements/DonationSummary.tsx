@@ -6,29 +6,18 @@ import {createInterpolateElement} from '@wordpress/element';
 /**
  * @since 3.0.0
  */
-const getDonationTotal = (totals: any, amount: any) =>
-    Number(
-        Object.values({
-            ...totals,
-            amount: Number(amount),
-        }).reduce((total: number, amount: number) => {
-            return total + amount;
-        }, 0)
-    );
-
-/**
- * @since 3.0.0
- */
 export default function DonationSummary() {
     const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;
-    const {useWatch, useCurrencyFormatter, useDonationSummary} = window.givewp.form.hooks;
-    const {items, totals} = useDonationSummary();
-    const currency = useWatch({name: 'currency'});
+    const { useCurrencyFormatter, useDonationSummary } = window.givewp.form.hooks;
+    const { items, state } = useDonationSummary();
+    const {
+        currency,
+        donationAmountBase,
+        donationAmountTotal,
+        subscriptionPeriod: period,
+        subscriptionFrequency: frequency
+    } = state;
     const formatter = useCurrencyFormatter(currency);
-
-    const amount = useWatch({name: 'amount'});
-    const period = useWatch({name: 'subscriptionPeriod'});
-    const frequency = useWatch({name: 'subscriptionFrequency'});
 
     const givingFrequency = useMemo(() => {
         if (isSubscriptionPeriod(period)) {
@@ -36,7 +25,7 @@ export default function DonationSummary() {
 
             if (frequency > 1) {
                 return createInterpolateElement(__('Every <period />', 'give'), {
-                    period: <span>{`${frequency} ${subscriptionPeriod.label().plural()}`}</span>,
+                    period: <span>{`${frequency} ${subscriptionPeriod.label().plural()}`}</span>
                 });
             }
 
@@ -49,18 +38,18 @@ export default function DonationSummary() {
     const amountItem = {
         id: 'amount',
         label: __('Payment Amount', 'give'),
-        value: formatter.format(Number(amount)),
+        value: formatter.format(donationAmountBase)
     };
 
     const frequencyItem = {
         id: 'frequency',
         label: __('Giving Frequency', 'give'),
-        value: givingFrequency,
+        value: givingFrequency
     };
 
     const donationSummaryItems = [amountItem, frequencyItem, ...Object.values(items)];
 
-    const donationTotal = formatter.format(getDonationTotal(totals, amount));
+    const donationTotal = formatter.format(donationAmountTotal);
 
     return (
         <>
