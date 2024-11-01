@@ -1,5 +1,5 @@
 import {
-    DonationSummaryLineItem,
+    DonationSummaryLineItem, DonationTotals,
     useDonationSummaryContext,
     useDonationSummaryDispatch
 } from '@givewp/forms/app/store/donation-summary';
@@ -10,6 +10,9 @@ import {
     removeItem
 } from '@givewp/forms/app/store/donation-summary/reducer';
 import {useCallback} from '@wordpress/element';
+import type {
+    subscriptionPeriod
+} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 
 /**
  * Zero decimal currencies are currencies that do not have a minor unit.
@@ -51,18 +54,40 @@ const dollarsToCents = (amount: string, currency: string) => {
 };
 
 /**
+ * Donation total calculation
+ *
  * @unreleased
  */
-const getDonationTotal = (totals: any, amount: any) =>
+const getDonationTotal = (totals: DonationTotals, amount: number) =>
     Number(
         Object.values({
             ...totals,
-            amount: Number(amount),
+            amount,
         }).reduce((total: number, amount: number) => {
             return total + amount;
         }, 0)
     );
 
+/**
+ * Subscription total calculation
+ * TODO: figure out which totals will be included in subscriptions
+ *
+ * @unreleased
+ */
+const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
+    let total = 0;
+
+    // Subscriptions currently only support donation amount (TODO: and potentially feeRecovery values)
+    const allowedKeys = ['feeRecovery'];
+
+    for (const [key, value] of Object.entries(totals)) {
+        if (allowedKeys.includes(key)) {
+            total += value;
+        }
+    }
+
+    return Number(total + amount);
+}
 /**
  * The donation summary hook is used to interact with the donation summary context which wraps around our donation form.
  * It provides methods to add and remove items from the summary, as well as to add and remove amounts from the total.
@@ -78,11 +103,15 @@ export default function useDonationSummary() {
     const { items, totals } = useDonationSummaryContext();
     const dispatch = useDonationSummaryDispatch();
     const { useWatch } = window.givewp.form.hooks;
-    const amount = useWatch({ name: 'amount' });
-    const currency = useWatch({ name: 'currency' });
-    const period = useWatch({name: 'subscriptionPeriod'});
-    const frequency = useWatch({name: 'subscriptionFrequency'});
-    const donationType = useWatch({name: 'donationType'});
+
+    const amount = useWatch({ name: 'amount' }) as string;
+    const currency = useWatch({ name: 'currency' }) as string;
+    const period = useWatch({name: 'subscriptionPeriod'}) as subscriptionPeriod | undefined;
+    const frequency = useWatch({name: 'subscriptionFrequency'}) as number | undefined;
+    const donationType = useWatch({name: 'donationType'}) as "single" | "subscription" | undefined;
+
+    const donationAmountTotal = getDonationTotal(totals, Number(amount));
+    const subscriptionAmount = getSubscriptionTotal(totals, Number(amount))
 
     return {
         items,
@@ -96,10 +125,12 @@ export default function useDonationSummary() {
         removeFromTotal: useCallback((itemId: string) => dispatch(removeAmountFromTotal(itemId)), [dispatch]),
         state: {
             currency,
-            donationAmountBase: Number(amount),
-            donationAmountBaseMinor: dollarsToCents(amount, currency),
-            donationAmountTotal: getDonationTotal(totals, amount),
-            donationAmountTotalMinor: dollarsToCents(getDonationTotal(totals, amount).toString(), currency),
+            donationAmount: Number(amount),
+            donationAmountMinor: dollarsToCents(amount, currency),
+            donationAmountTotal,
+            donationAmountTotalMinor: dollarsToCents(donationAmountTotal.toString(), currency),
+            subscriptionAmount,
+            subscriptionAmountMinor: dollarsToCents(subscriptionAmount.toString(), currency),
             donationIsOneTime: donationType === 'single',
             donationIsRecurring: donationType === 'subscription',
             subscriptionPeriod: period,
