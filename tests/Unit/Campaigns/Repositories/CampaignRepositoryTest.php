@@ -405,4 +405,33 @@ final class CampaignRepositoryTest extends TestCase
         $this->assertNull(Campaign::find($campaign1->id));
         $this->assertNull(Campaign::find($campaign2->id));
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMergeCampaignsShouldKeepDefaultFormFromDestinationCampaign()
+    {
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+        /** @var Campaign $destinationCampaign */
+        $destinationCampaign = Campaign::factory()->create();
+
+        $defaultFormBeforeMerge = $destinationCampaign->defaultForm();
+
+        $repository = new CampaignRepository();
+        $repository->mergeCampaigns($destinationCampaign, $campaign1, $campaign2);
+
+        //Re-fetch
+        $destinationCampaign = Campaign::find($destinationCampaign->id);
+
+        $countDefaultForm = $destinationCampaign->forms()
+            ->where('campaign_forms.is_default', true)->count();
+
+        $this->assertEquals(1, $countDefaultForm);
+        $this->assertEquals($defaultFormBeforeMerge->id, $destinationCampaign->defaultForm()->id);
+    }
 }

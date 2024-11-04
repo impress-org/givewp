@@ -283,17 +283,17 @@ class CampaignRepository
             // Convert $campaignsToMergeIds to string to use it in the queries
             $campaignsToMergeIdsString = implode(', ', $campaignsToMergeIds);
 
-            // Migrate forms from campaigns to merge to the destination campaign
+            // Migrate revenue entries from campaigns to merge to the destination campaign
             DB::query(
-                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                DB::prepare("UPDATE " . DB::prefix('give_revenue') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
                     ])
             );
 
-            // Migrate revenue entries from campaigns to merge to the destination campaign
+            // Migrate forms from campaigns to merge to the destination campaign
             DB::query(
-                DB::prepare("UPDATE " . DB::prefix('give_revenue') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET is_default = 0, campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
                     ])
