@@ -28,6 +28,8 @@ class TestMigrationController extends TestCase
     {
         $formV2 = $this->createSimpleDonationForm();
 
+        $this->createCampaignForDonationForm($formV2->id);
+
         $request = $this->getMockRequest(WP_REST_Server::CREATABLE);
 
         $controller = new MigrationController($request);
