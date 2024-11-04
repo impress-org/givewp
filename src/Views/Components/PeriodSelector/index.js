@@ -9,7 +9,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import styles from './style.module.scss';
 
-const PeriodSelector = ({period, setDates}) => {
+const PeriodSelector = ({period = {startDate: null, endDate: null}, setDates = () => {}}) => {
     const [focusedInput, setFocusedInput] = useState(null);
 
     const icon = (
@@ -57,14 +57,6 @@ PeriodSelector.propTypes = {
     period: PropTypes.object.isRequired,
     // SetDates function
     setDates: PropTypes.func.isRequired,
-};
-
-PeriodSelector.defaultProps = {
-    period: {
-        startDate: null,
-        endDate: null,
-    },
-    setDates: () => {},
 };
 
 export default PeriodSelector;

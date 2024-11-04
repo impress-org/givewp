@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 class FormTaxonomyViewModelTest extends TestCase
 {
@@ -16,7 +16,7 @@ class FormTaxonomyViewModelTest extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testIsFormTagsEnabled()
     {
@@ -31,7 +31,7 @@ class FormTaxonomyViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testIsFormCategoriesEnabled()
     {
@@ -46,7 +46,7 @@ class FormTaxonomyViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testGetSelectedFormTags()
     {
@@ -64,7 +64,7 @@ class FormTaxonomyViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     public function testGetSelectedFormCategories()
     {

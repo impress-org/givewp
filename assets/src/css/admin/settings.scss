@@ -917,6 +917,7 @@ a.give-delete {
 	}
 
 	img {
+        object-fit: contain;
 		width: 100%;
 	}
 
@@ -1050,18 +1051,18 @@ a.give-delete {
 }
 // copied from wp built-in .menu-counter
 .givewp-beta-icon {
-    display: inline-block;
-    vertical-align: top;
-    box-sizing: border-box;
-    margin: 1px 0 -1px 2px;
-    padding: 0 5px;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
+    display: flex;
+	justify-content: center;
+	align-items: center;
+    margin: 2px 0 0px 0px;
+    padding: 2px 8px;
+    border-radius: 0.75rem;
     background-color: #F29718;
     color: #fff;
     font-size: 11px;
-    line-height: 1.6;
+	font-weight: 600;
+	font-family: 'Inter' ,sans-serif;
+    line-height: 0.9625rem;
     text-align: center;
     z-index: 26;
 }
@@ -1072,8 +1073,17 @@ a.give-delete {
 
 .give-admin-beta-features-message {
     background-color: #fff;
-    padding: 0.5rem;
+    padding: 1rem;
     border: 1px solid #F29718;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	border-radius: 2px;
+	color: #0E0E0E;
+	font-size: 0.875rem;
+	font-family: 'Inter' ,sans-serif;
+	font-weight: 400;
+	line-height: 1.5rem;
 }
 
 .give-admin-beta-features-feedback-link {

@@ -95,7 +95,7 @@ class FormBuilderResourceController
         $form->save();
 
         /**
-         * @unreleased Add the request as an additional parameter.
+         * @since 3.16.0 Add the request as an additional parameter.
          * @since 3.0.0
          */
         do_action('givewp_form_builder_updated', $form, $request);

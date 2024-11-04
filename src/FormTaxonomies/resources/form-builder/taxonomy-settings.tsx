@@ -6,7 +6,7 @@ import FormCategorySetting from "./form-categories";
 import getWindowData, {isFormCategoriesEnabled, isFormTagsEnabled} from "./windowData";
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 const TaxonomySettings = ({settings, setSettings}) => {
 
@@ -33,7 +33,7 @@ const TaxonomySettings = ({settings, setSettings}) => {
 }
 
 /**
- * @unreleased
+ * @since 3.16.0
  */
 export default function withTaxonomySettingsRoute (routes) {
 
@@ -41,7 +41,7 @@ export default function withTaxonomySettingsRoute (routes) {
     const isFormCategoriesEnabled = getWindowData().formCategoriesEnabled;
 
     /**
-     * @unreleased
+     * @since 3.16.0
      */
     const getDynamicLabel = () => {
         return isFormTagsEnabled && isFormCategoriesEnabled ? __('Tags and Categories', '')

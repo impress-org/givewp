@@ -68,11 +68,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug
 			 *              then filter will be give-settings_get_settings_pages
 			 *
+			 * @since 3.17.1 cast to array
 			 * @since 1.8
 			 *
 			 * @param array $settings Array of settings class object.
 			 */
-			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
+			self::$settings = (array)apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
 
 			return self::$settings;
 		}
@@ -956,6 +957,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									style="<?php echo esc_attr( $value['style'] ); ?>"
 									name="<?php echo esc_attr( $name ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
+									data-placeholder="<?php echo esc_attr__( 'Select Some Options', 'give'); ?>"
 								<?php
 								echo "{$type} {$allow_new_values}";
 								echo implode( ' ', $custom_attributes );
