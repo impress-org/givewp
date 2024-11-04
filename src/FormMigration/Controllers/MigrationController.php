@@ -52,15 +52,10 @@ class MigrationController
             ->finally(function(FormMigrationPayload $payload) {
                 $payload->formV3->save();
 
-                $campaignRepository = give(CampaignRepository::class);
-
                 // Associate upgraded form to a campaign
-                if ($campaign = $campaignRepository->getByFormId($payload->formV2->id)) {
-                    $defaultForm = $campaign->defaultForm();
-                    $isDefaultForm = $defaultForm && $defaultForm->id == $payload->formV2->id;
-
-                    $campaignRepository->addCampaignForm($campaign, $payload->formV3->id, $isDefaultForm);
-                }
+                $campaignRepository = give(CampaignRepository::class);
+                $campaign = $campaignRepository->getByFormId($payload->formV2->id);
+                $campaignRepository->addCampaignForm($campaign, $payload->formV3->id);
 
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
