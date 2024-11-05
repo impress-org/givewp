@@ -1523,8 +1523,10 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $donation = Donation::find($donation_id);
 
         foreach ( $options as $option ) {
-            if (Money::of($option['_give_amount'], $currency )->getMinorAmount() == $donation->amount->getAmount()) {
-                return sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+            if (isset($option['_give_amount'], $option['_give_text'])) {
+                if (Money::of($option['_give_amount'], $currency )->getMinorAmount() == $donation->amount->getAmount()) {
+                    return sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                }
             }
         }
     }
