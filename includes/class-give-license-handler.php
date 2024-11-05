@@ -196,7 +196,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param string $_account_url
 		 * @param int    $_item_id
 		 *
-		 * @unreleased removed unused auto_updater_obj property assignment
+		 * @since 3.17.2 removed unused auto_updater_obj property assignment
 		 * @since  1.0
 		 */
 		public function __construct(

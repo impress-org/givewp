@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.4
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 3.17.1
+Stable tag: 3.17.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,6 +266,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.17.2: November 6th, 2024 =
+* Fix: Resolved an issue with the Donor Wall shortcode and block filtering by only_comments
+* Security: Removed Faker PHP library from production to prevent malicious direct access 
+* Security: Further improved our data sanitization and validation across all of GiveWP to prevent malicious serialized data
+* Dev: Resolved php 8.1 compatibility warnings forGive_Addon_Activation_Banner and Give_License classes
+
 = 3.17.1: October 22nd, 2024 =
 * Fix: Resolved an issue with PayPal donation buttons where clicking the GiveWP donate button was causing an error.
 * Fix: Resolved an issue where the donation amount level descriptions option was not visible in the form builder.

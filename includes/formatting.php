@@ -735,7 +735,7 @@ function give_get_cache_key($action, $query_args)
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
- * @unreleased Safe unserialize data by default
+ * @since 3.17.2 Safe unserialize data by default
  * @since  1.8
  *
  * @param string|array $var
