@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2\Endpoints;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
@@ -141,6 +142,7 @@ class ListDonationForms extends Endpoint
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
                 $item['status_raw'] = $forms[$i]->status->getValue();
+                $item['isDefaultCampaignForm'] = ($campaign = Campaign::findByFormId($item['id'])) && $item['id'] === $campaign->defaultForm()->id;
             }
         }
 

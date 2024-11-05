@@ -6,7 +6,7 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {OnboardingContext} from './Onboarding';
-import {UpgradeModalContent} from "./Migration";
+import {UpgradeModalContent} from './Migration';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -51,11 +51,33 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     };
 
     const confirmUpgradeModal = (event) => {
+        showConfirmModal(__('Upgrade', 'give'), UpgradeModalContent, async (selected) => {
+            const response = await donationFormsApi.fetchWithArgs('/migrate/' + item.id, {}, 'POST');
+            await mutate(parameters);
+            return response;
+        });
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isCampaignDetailsPage =
+        urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
+
+    const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
-            __('Upgrade', 'give'),
-            UpgradeModalContent,
+            __('Make as default', 'give'),
+            (selected) => (
+                <p>
+                    {__('Really make the following campaign form default?', 'give')}
+                    <br />
+                    <Interweave content={item?.title} />
+                </p>
+            ),
             async (selected) => {
-                const response = await donationFormsApi.fetchWithArgs("/migrate/" + item.id, {}, 'POST');
+                const response = await donationFormsApi.fetchWithArgs(
+                    '/updateDefaultCampaignForm/' + item.id,
+                    {},
+                    'POST'
+                );
                 await mutate(parameters);
                 return response;
             }
@@ -99,12 +121,22 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         displayText={__('Duplicate', 'give')}
                         hiddenText={item?.name}
                     />
-                    {!item.v3form && (<RowAction
-                        onClick={confirmUpgradeModal}
-                        actionId={item.id}
-                        displayText={__('Upgrade', 'give')}
-                        hiddenText={item?.name}
-                    />)}
+                    {!item.v3form && (
+                        <RowAction
+                            onClick={confirmUpgradeModal}
+                            actionId={item.id}
+                            displayText={__('Upgrade', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
+                    {isCampaignDetailsPage && !item.isDefaultCampaignForm && (
+                        <RowAction
+                            onClick={confirmDefaultCampaignFormModal}
+                            actionId={item.id}
+                            displayText={__('Make as default', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
                 </>
             )}
         </>
