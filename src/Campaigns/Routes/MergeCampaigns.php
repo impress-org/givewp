@@ -55,14 +55,10 @@ class MergeCampaigns implements RestRoute
      */
     public function handleRequest($request): WP_REST_Response
     {
-        $destinationsCampaign = Campaign::find($request->get_param('id'));
-        $campaignsToMerge = [];
+        $destinationCampaign = Campaign::find($request->get_param('id'));
+        $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
 
-        foreach ($request->get_param('campaignsToMergeIds') as $campaignId) {
-            $campaignsToMerge[] = Campaign::find($campaignId);
-        }
-
-        $campaignsMerged = $destinationsCampaign->merge(...$campaignsToMerge);
+        $campaignsMerged = $destinationCampaign->merge(...$campaignsToMerge);
 
         return new WP_REST_Response($campaignsMerged);
     }
