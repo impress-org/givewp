@@ -35,7 +35,6 @@ class MergeCampaigns implements RestRoute
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
-                        'sanitize_callback' => 'absint',
                     ],
                     'campaignsToMergeIds' => [
                         'type' => 'array',
