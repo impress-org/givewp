@@ -268,9 +268,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = 3.17.2: November 6th, 2024 =
 * Fix: Resolved an issue with the Donor Wall shortcode and block filtering by only_comments
+* Fix: Resolved a WordPress 6.7 styling compatibility issue with the visual form builder
 * Security: Removed Faker PHP library from production to prevent malicious direct access 
 * Security: Further improved our data sanitization and validation across all of GiveWP to prevent malicious serialized data
-* Dev: Resolved php 8.1 compatibility warnings forGive_Addon_Activation_Banner, Give_License, and CurrencySwitcherSetting classes, 
+* Dev: Resolved php 8.1 compatibility warnings for Give_Addon_Activation_Banner, Give_License, and CurrencySwitcherSetting classes, 
 
 = 3.17.1: October 22nd, 2024 =
 * Fix: Resolved an issue with PayPal donation buttons where clicking the GiveWP donate button was causing an error.
