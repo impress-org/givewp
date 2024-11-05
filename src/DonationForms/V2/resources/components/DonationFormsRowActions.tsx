@@ -7,6 +7,8 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {Interweave} from 'interweave';
 import {OnboardingContext} from './Onboarding';
 import {UpgradeModalContent} from './Migration';
+import apiFetch from '@wordpress/api-fetch';
+import {addQueryArgs} from '@wordpress/url';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -61,6 +63,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const urlParams = new URLSearchParams(window.location.search);
     const isCampaignDetailsPage =
         urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
+    const campaignId = urlParams.get('id');
 
     const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
@@ -73,11 +76,12 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                 </p>
             ),
             async (selected) => {
-                const response = await donationFormsApi.fetchWithArgs(
-                    '/updateDefaultCampaignForm/' + item.id,
-                    {},
-                    'POST'
-                );
+                const response = await apiFetch({
+                    path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/updateDefaultForm', {
+                        formId: item.id,
+                    }),
+                    method: 'PUT',
+                });
                 await mutate(parameters);
                 return response;
             }
