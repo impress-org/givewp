@@ -6,6 +6,7 @@ use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignRoute;
+use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
@@ -53,7 +54,7 @@ class MergeCampaigns implements RestRoute
      *
      * @throws Exception
      */
-    public function handleRequest($request): WP_REST_Response
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $destinationCampaign = Campaign::find($request->get_param('id'));
         $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
