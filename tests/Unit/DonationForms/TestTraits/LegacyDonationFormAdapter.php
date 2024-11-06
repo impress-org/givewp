@@ -2,6 +2,9 @@
 
 namespace Give\Tests\Unit\DonationForms\TestTraits;
 
+use Exception;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
@@ -56,6 +59,15 @@ trait LegacyDonationFormAdapter
             'status' => new DonationFormStatus($giveDonateForm->post_status),
             'levels' => $levels
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function createCampaignForDonationForm($formId)
+    {
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $formId);
     }
 
 }
