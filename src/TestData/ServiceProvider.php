@@ -103,7 +103,7 @@ class ServiceProvider implements GiveServiceProvider
      *
      * @see https://getcomposer.org/doc/07-runtime.md#installed-versions
      *
-     * @unreleased
+     * @since 3.17.2
      *
      * @return bool
      */

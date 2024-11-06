@@ -445,7 +445,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get donation list for specific query
 	 *
-     * @unreleased fix - filter by only_comments attr
+     * @since 3.17.2 fix - filter by only_comments attr
 	 * @since 2.3.0
 	 *
 	 * @param  array $atts

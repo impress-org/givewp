@@ -420,7 +420,7 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
- * @unreleased Use Utils::isSerialized() method which add supports to find hidden serialized data in the middle of a string
+ * @since 3.17.2 Use Utils::isSerialized() method which add supports to find hidden serialized data in the middle of a string
  * @since 3.16.5 Make sure only string parameters are used with the ltrim() method to prevent PHP 8+ fatal errors
  * @since 3.16.4 updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep

@@ -6,12 +6,12 @@ use Give\Helpers\Utils;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 3.17.2
  */
 class UtilsTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public function testRemoveBackslashes()
     {
@@ -26,7 +26,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public function testContainsSerializedDataRegex()
     {
@@ -38,7 +38,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      *
      * @dataProvider serializedDataProvider
      */
@@ -52,7 +52,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      *
      * @dataProvider serializedDataProvider
      */
@@ -67,7 +67,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      *
      * @dataProvider serializedDataProvider
      */
@@ -82,7 +82,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public function serializedDataProvider(): array
     {
