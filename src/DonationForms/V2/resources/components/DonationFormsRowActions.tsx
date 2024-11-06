@@ -77,10 +77,10 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
             ),
             async (selected) => {
                 const response = await apiFetch({
-                    path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/updateDefaultForm', {
-                        formId: item.id,
+                    path: addQueryArgs('/give-api/v2/campaigns/' + campaignId, {
+                        defaultFormId: item.id,
                     }),
-                    method: 'PUT',
+                    method: 'PATCH',
                 });
                 await mutate(parameters);
                 return response;
