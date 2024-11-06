@@ -12,6 +12,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm as LegacyDonationForm;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -64,12 +65,22 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
 
     /**
      * @unreleased
+     *
+     * @return DonationForm | LegacyDonationForm
      */
-    public function defaultForm(): ?DonationForm
+    public function defaultForm()
     {
-        return $this->forms()
+        $defaultForm = $this->forms()
             ->where('campaign_forms.is_default', true)
             ->get();
+
+        if (is_null($defaultForm)) {
+            $defaultForm = $this->legacyForms()
+                ->where('campaign_forms.is_default', true)
+                ->get();
+        }
+
+        return $defaultForm;
     }
 
     /**
@@ -81,6 +92,18 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
             ->join(function (JoinQueryBuilder $builder) {
                 $builder->leftJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', 'forms.id');
+            })->where('campaign_forms.campaign_id', $this->id);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function legacyForms(): ModelQueryBuilder
+    {
+        return LegacyDonationForm::query()
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'id');
             })->where('campaign_forms.campaign_id', $this->id);
     }
 
