@@ -184,6 +184,16 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
+     * @throws Exception
+     */
+    public function merge(Campaign ...$campaignsToMerge): bool
+    {
+        return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return ModelQueryBuilder<Campaign>
      */
     public static function query(): ModelQueryBuilder
