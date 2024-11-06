@@ -264,6 +264,63 @@ class CampaignRepository
 
     /**
      * @unreleased
+     *
+     * @throws Exception
+     */
+    public function mergeCampaigns(Campaign $destinationCampaign, Campaign ...$campaignsToMerge): bool
+    {
+        // Make sure the destination campaign ID will not be included into $campaignsToMergeIds
+        $campaignsToMergeIds = array_column($campaignsToMerge, 'id');
+        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds)) {
+            unset($campaignsToMergeIds[$key]);
+        }
+
+        Hooks::doAction('givewp_campaigns_merging', $destinationCampaign, $campaignsToMergeIds);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            // Convert $campaignsToMergeIds to string to use it in the queries
+            $campaignsToMergeIdsString = implode(', ', $campaignsToMergeIds);
+
+            // Migrate revenue entries from campaigns to merge to the destination campaign
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix('give_revenue') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                    ])
+            );
+
+            // Migrate forms from campaigns to merge to the destination campaign
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET is_default = 0, campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                    ])
+            );
+
+            // Delete campaigns to merge now that we already migrated the necessary data to the destination campaign
+            DB::query("DELETE FROM " . DB::prefix('give_campaigns') . " WHERE id IN ($campaignsToMergeIdsString)");
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed merging campaigns into destination campaign', [
+                'campaignsToMergeIds' => $campaignsToMergeIds,
+                'destinationCampaign' => compact('destinationCampaign'),
+            ]);
+
+            throw new $exception('Failed merging campaigns into destination campaign');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_campaigns_merged', $destinationCampaign, $campaignsToMergeIds);
+
+        return true;
+    }
+
+    /**
+     * @unreleased
      */
     private function validateProperties(Campaign $campaign): void
     {
