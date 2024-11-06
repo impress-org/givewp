@@ -41,7 +41,7 @@ export default function CreateCampaignModal() {
 
     return (
         <>
-            <a className={`button button-primary ${styles.createCampaignButton}`} onClick={openModal}>
+            <a style={{borderRadius: '4px'}} className={`button button-primary ${styles.createCampaignButton}`} onClick={openModal}>
                 {__('Create campaign', 'give')}
             </a>
             <CampaignFormModal
