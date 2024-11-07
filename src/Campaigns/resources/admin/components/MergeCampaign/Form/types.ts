@@ -10,5 +10,5 @@ export interface MergeCampaignFormProps {
 
 export type MergeCampaignFormInputs = {
     title: string;
-    destinationCampaign: string;
+    destinationCampaignId: string;
 };

@@ -6,6 +6,7 @@ import {MergeCampaignFormInputs, MergeCampaignFormProps} from './types';
 import {useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
+import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
 
 /**
  * Campaign Form Modal component
@@ -23,15 +24,18 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
     const methods = useForm<MergeCampaignFormInputs>({
         defaultValues: {
-            destinationCampaign: '',
+            destinationCampaignId: '',
         },
     });
 
     const {
         register,
         handleSubmit,
-        formState: {errors, isDirty, isSubmitting},
+        formState: {isDirty, isSubmitting},
+        watch,
     } = methods;
+
+    const destinationCampaignId = watch('destinationCampaignId');
 
     const getFormModalTitle = () => {
         if (4 === step) {
@@ -46,19 +50,18 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
     const onSubmit: SubmitHandler<MergeCampaignFormInputs> = async (inputs, event) => {
         event.preventDefault();
 
-        if (step !== 2 && step !== 4) {
+        if (step !== 2) {
             return;
         }
 
-        const destinationCampaign = inputs.destinationCampaign;
-        const campaignsToMergeIds = campaigns.selected.filter((id) => id != destinationCampaign);
+        const campaignsToMergeIds = campaigns.selected.filter((id) => id != inputs.destinationCampaignId);
 
-        console.log('destinationCampaign: ', destinationCampaign);
+        console.log('destinationCampaignId: ', destinationCampaignId);
         console.log('campaignsToMergeIds: ', campaignsToMergeIds);
 
         try {
             const response = await apiFetch({
-                path: addQueryArgs('/give-api/v2/campaigns/' + destinationCampaign + '/merge', {
+                path: addQueryArgs('/give-api/v2/campaigns/' + destinationCampaignId + '/merge', {
                     campaignsToMergeIds: campaignsToMergeIds,
                 }),
                 method: 'PATCH',
@@ -155,7 +158,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                             <span className={styles.description}>
                                 {__('All selected campaigns will be merged into this campaign.', 'give')}
                             </span>
-                            <select {...register('destinationCampaign', {valueAsNumber: true})} defaultValue="">
+                            <select {...register('destinationCampaignId', {valueAsNumber: true})} defaultValue="">
                                 <option value="" disabled hidden>
                                     {__('Choose from selected campaigns', 'give')}
                                 </option>
@@ -234,6 +237,12 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
                             <button
                                 type="submit"
+                                onClick={() =>
+                                    (window.location.href =
+                                        getGiveCampaignsListTableWindowData().adminUrl +
+                                        'edit.php?post_type=give_forms&page=give-campaigns&id=' +
+                                        destinationCampaignId)
+                                }
                                 className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
                                 aria-disabled={false}
                                 disabled={false}
@@ -280,6 +289,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
                             <button
                                 type="submit"
+                                onClick={() => setStep(2)}
                                 className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
                                 aria-disabled={false}
                                 disabled={false}
