@@ -156,8 +156,21 @@ export default function ListTablePage({
         setSelectedIds(selected);
         setSelectedNames(names);
         if (selected.length) {
-            setModalContent({...bulkActions[actionIndex]});
-            dialog.current.show();
+            if ('merge' === selectedAction) {
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('new', 'merge');
+                urlParams.set('selected', selected.join(','));
+                urlParams.set('names', names.join(','));
+
+                window.history.replaceState(
+                    null,
+                    'New Campaign',
+                    `${window.location.pathname}?${urlParams.toString()}`
+                );
+            } else {
+                setModalContent({...bulkActions[actionIndex]});
+                dialog.current.show();
+            }
         }
     };
 

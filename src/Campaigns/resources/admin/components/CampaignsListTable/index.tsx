@@ -8,6 +8,7 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
+import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -90,6 +91,14 @@ const bulkActions: Array<BulkActionsConfig> = [
             </>
         ),
     },
+    {
+        label: __('Merge', 'give'),
+        value: 'merge',
+        action: async (selected) => {
+            return await new Promise((resolve) => setTimeout(resolve, 0));
+        },
+        confirm: (selected, names) => 'merge',
+    },
 ];
 
 /**
@@ -134,6 +143,7 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal />
+                <MergeCampaignModal />
             </ListTablePage>
         </>
     );
