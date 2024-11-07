@@ -19,7 +19,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
         return <></>;
     }
 
-    const [step, setStep] = useState<number>(4);
+    const [step, setStep] = useState<number>(1);
 
     const methods = useForm<MergeCampaignFormInputs>({
         defaultValues: {
@@ -66,9 +66,44 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
             console.log('Merge campaigns response: ', response);
 
+            // Go to success page
             setStep(3);
+
+            //Reset bulk actions selector
+            const selects = document.querySelectorAll('#give-admin-campaigns-root select');
+            selects.forEach((select) => {
+                const selectElement = select as HTMLSelectElement;
+                selectElement.selectedIndex = 0;
+            });
+
+            // Uncheck all checkboxes
+            const checkboxes = document.querySelectorAll(".giveListTable input[type='checkbox']");
+            checkboxes.forEach((checkbox) => {
+                const input = checkbox as HTMLInputElement;
+                input.checked = false;
+            });
+            // @ts-ignore
+            document.querySelector('.giveListTable #giveListTableSelectAll').checked = false;
+
+            //Remove campaignsToMergeIds from the list table.
+            const adminFormsListViewItems = document.querySelectorAll('tr');
+            if (adminFormsListViewItems.length > 0) {
+                adminFormsListViewItems.forEach((itemElement) => {
+                    const select = itemElement.querySelector('.giveListTableSelect');
+
+                    if (!select) {
+                        return;
+                    }
+
+                    const campaignId = select.getAttribute('data-id');
+                    if (campaignsToMergeIds.includes(campaignId)) {
+                        itemElement.remove();
+                    }
+                });
+            }
             //handleClose(response);
         } catch (error) {
+            // Go to error page
             setStep(4);
             console.error('Error merging campaigns: ', error);
         }
