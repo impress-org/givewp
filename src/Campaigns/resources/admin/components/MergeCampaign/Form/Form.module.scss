@@ -1,4 +1,13 @@
 .campaignForm {
+
+    .intro {
+        font-size: 1rem;
+        color: #4b5563;
+        align-self: stretch;
+        padding: 0 1.25rem 0 0.625rem;
+        margin: unset;
+    }
+
     .submitButton {
         border-radius: 0;
         font-size: 0.875rem;
@@ -8,10 +17,25 @@
         text-align: center;
     }
 
-    select,
-    input,
     label {
         font-size: 1rem;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 1rem;
+        line-height: 2;
+        display: block;
+        width: 100%;
+        border: 1px solid #9ca0af;
+        border-radius: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-2);
+        /*margin: var(--givewp-spacing-2) 0;*/
+    }
+
+    select {
+        max-width: 100%;
     }
 
     .description {
@@ -20,95 +44,35 @@
     }
 
     .notice {
-        width: 100%;
-        margin-top: 1rem;
+
+        /*p {
+            margin: unset;
+        }*/
+
+        display: flex;
+        margin: 1rem 0 -0.2rem 0;
+        gap: 0.3rem;
+        padding: 0 0.5rem 0 0.5rem;
+        background-color: var(--givewp-blue-25);
+        border-radius: 4px;
+        border: 1px solid var(--givewp-blue-400);
+        border-left-width: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1a0f00;
+        /*line-height: 1.25rem;
+        height: 2.75rem;
+        max-width: 60rem;
+        width: 100%;*/
+
+        svg {
+            margin: 0.7rem 0.3rem;
+            height: 1.25rem;
+            width: 1.25rem;
+        }
     }
 }
 
 .fieldRequired {
     color: var(--givewp-red-500);
 }
-
-.goalType {
-
-    .goalTypeOption {
-        margin: 0.5rem 0 0.5rem 0;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 1rem;
-
-        cursor: pointer;
-        border: 1px solid #9CA0AF;
-        border-radius: 1rem;
-        padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-    }
-
-    .goalTypeOptionIcon {
-
-        line-height: 0.875rem;
-        margin-top: 0.175rem;
-
-        svg {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-    }
-
-    .goalTypeOptionText {
-
-        label,
-        span {
-            cursor: pointer;
-        }
-
-        > label {
-            font-size: 0.875rem !important;
-        }
-
-        > span {
-            font-size: 0.75rem !important;
-            margin-top: 0.2rem;
-            display: none;
-            line-height: 1rem !important;
-        }
-
-        /* Hide the radio button input */
-        input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-    }
-
-    .goalTypeOptionSelected {
-        background-color: #374151;
-
-        .goalTypeOptionIcon {
-
-            svg path:not([fill]) {
-                stroke: #F9FAFB;
-            }
-
-            svg path:not([stroke]) {
-                fill: #F9FAFB;
-            }
-        }
-
-        .goalTypeOptionText {
-            label,
-            span {
-                color: #F9FAFB !important;
-            }
-
-            span {
-                display: inline-block;
-            }
-        }
-    }
-}
-
-
-

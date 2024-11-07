@@ -1,8 +1,12 @@
 import {useEffect, useState} from 'react';
 import {__} from '@wordpress/i18n';
-import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
 import MergeCampaignsForm from './../Form';
 
+/**
+ * Remove the "action" query parameter from the current URL
+ *
+ * @unreleased
+ */
 const removeActionParam = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const actionParam = queryParams.get('action');
@@ -37,17 +41,17 @@ const autoOpenModal = () => {
  */
 export default function MergeCampaignModal() {
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
-    const openModal = () => setOpen(true);
+    //const openModal = () => setOpen(true);
     const closeModal = (response: ResponseProps = {}) => {
         removeActionParam();
         setOpen(false);
 
-        if (response?.id) {
+        /*if (response?.id) {
             window.location.href =
                 getGiveCampaignsListTableWindowData().adminUrl +
                 'edit.php?post_type=give_forms&page=give-campaigns&id=' +
                 response?.id;
-        }
+        }*/
     };
 
     useEffect(() => {
@@ -92,17 +96,12 @@ export default function MergeCampaignModal() {
         };
     }, []);
 
-    const apiSettings = getGiveCampaignsListTableWindowData();
-    // Remove the /list-table from the apiRoot. This is a hack to make the API work while we don't refactor other list tables.
-    apiSettings.apiRoot = apiSettings.apiRoot.replace('/list-table', '');
-
     return (
         <>
             <MergeCampaignsForm
                 isOpen={isOpen}
                 handleClose={closeModal}
                 title={__('Merge campaigns', 'give')}
-                apiSettings={apiSettings}
                 campaigns={window.history.state}
             />
         </>
