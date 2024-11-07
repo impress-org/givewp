@@ -9,7 +9,7 @@ import {
     GoalInputAttributes,
     GoalTypeOption as GoalTypeOptionType,
 } from './types';
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {Currency, Upload} from '../Inputs';
 import {
     AmountFromSubscriptionsIcon,
@@ -146,7 +146,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const goal = watch('goal');
 
     const getFormModalTitle = () => {
-        switch(step) {
+        switch (step) {
             case 1:
                 return __('Tell us about your fundraising cause', 'give');
             case 2:
@@ -154,7 +154,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
 
         return null;
-    }
+    };
 
     const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
         amount: {
@@ -395,7 +395,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 ) : (
                                     <input
                                         type="number"
-                                        {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                        {...register('goal', {valueAsNumber: true})}
                                         aria-invalid={errors.goal ? 'true' : 'false'}
                                         placeholder={goalInputAttributes[selectedGoalType].placeholder}
                                     />
