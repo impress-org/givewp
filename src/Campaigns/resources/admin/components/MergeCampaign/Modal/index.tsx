@@ -41,29 +41,12 @@ const autoOpenModal = () => {
  */
 export default function MergeCampaignModal() {
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
-    //const openModal = () => setOpen(true);
-    const closeModal = (response: ResponseProps = {}) => {
+    const closeModal = () => {
         removeActionParam();
         setOpen(false);
-
-        /*if (response?.id) {
-            window.location.href =
-                getGiveCampaignsListTableWindowData().adminUrl +
-                'edit.php?post_type=give_forms&page=give-campaigns&id=' +
-                response?.id;
-        }*/
     };
 
     useEffect(() => {
-        // Function to update URL parameters
-        const handleQueryParamsChange = () => {
-            //const searchParams = new URLSearchParams(window.location.search);
-            //const params = Object.fromEntries(searchParams.entries());
-            //console.log('Updated parameters:', params);
-
-            setOpen(autoOpenModal());
-        };
-
         // Override pushState and replaceState to trigger a custom event
         const originalPushState = window.history.pushState;
         const originalReplaceState = window.history.replaceState;
@@ -79,11 +62,9 @@ export default function MergeCampaignModal() {
         };
 
         // Add listeners for "popstate" and the custom "urlChange" event
+        const handleQueryParamsChange = () => setOpen(autoOpenModal());
         window.addEventListener('popstate', handleQueryParamsChange);
         window.addEventListener('urlChange', handleQueryParamsChange);
-
-        // Call the function once to get the initial parameters
-        //handleQueryParamsChange();
 
         // Remove listeners when the component unmounts
         return () => {
@@ -107,7 +88,3 @@ export default function MergeCampaignModal() {
         </>
     );
 }
-
-type ResponseProps = {
-    id?: string;
-};

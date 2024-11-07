@@ -37,7 +37,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
     const getFormModalTitle = () => {
         if (4 === step) {
-            return 'icon ' + title;
+            return '' + title;
         }
 
         return title;
@@ -170,7 +170,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                             aria-disabled={!isDirty}
                             disabled={!isDirty}
                         >
-                            {isSubmitting ? __('Merging in progress', 'give') : __('Merge', 'give')}
+                            {isSubmitting ? __('Merging in progress...', 'give') : __('Merge', 'give')}
                         </button>
                         {isDirty && (
                             <div className={styles.notice}>
