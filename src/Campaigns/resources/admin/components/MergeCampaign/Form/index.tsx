@@ -14,8 +14,6 @@ import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
  * @unreleased
  */
 export default function MergeCampaignsForm({isOpen, handleClose, title, campaigns}: MergeCampaignFormProps) {
-    console.log('campaigns:', campaigns);
-
     if (!campaigns) {
         return <></>;
     }
@@ -55,9 +53,6 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
         }
 
         const campaignsToMergeIds = campaigns.selected.filter((id) => id != inputs.destinationCampaignId);
-
-        console.log('destinationCampaignId: ', destinationCampaignId);
-        console.log('campaignsToMergeIds: ', campaignsToMergeIds);
 
         try {
             const response = await apiFetch({
@@ -141,7 +136,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                         <button
                             type="submit"
                             onClick={() => setStep(2)}
-                            className={`button button-primary`}
+                            className={`button button-primary ${styles.button}`}
                             aria-disabled={false}
                             disabled={false}
                         >
@@ -171,7 +166,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                         </div>
                         <button
                             type="submit"
-                            className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
+                            className={`button button-primary ${styles.button} ${isSubmitting ? 'disabled' : ''}`}
                             aria-disabled={!isDirty}
                             disabled={!isDirty}
                         >
@@ -231,7 +226,11 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                             className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
                             style={{marginBottom: 0}}
                         >
-                            <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
+                            <button
+                                type="submit"
+                                onClick={() => handleClose()}
+                                className={`button button-secondary ${styles.button} ${styles.previousButton}`}
+                            >
                                 {__('Back to campaign list', 'give')}
                             </button>
 
@@ -243,7 +242,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                                         'edit.php?post_type=give_forms&page=give-campaigns&id=' +
                                         destinationCampaignId)
                                 }
-                                className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
+                                className={`button button-primary ${styles.button}`}
                                 aria-disabled={false}
                                 disabled={false}
                             >
@@ -283,14 +282,18 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                             className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
                             style={{marginBottom: 0}}
                         >
-                            <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
+                            <button
+                                type="submit"
+                                onClick={() => handleClose()}
+                                className={`button button-secondary ${styles.button} ${styles.previousButton}`}
+                            >
                                 {__('Back to campaign list', 'give')}
                             </button>
 
                             <button
                                 type="submit"
                                 onClick={() => setStep(2)}
-                                className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
+                                className={`button button-primary ${styles.button}`}
                                 aria-disabled={false}
                                 disabled={false}
                             >
