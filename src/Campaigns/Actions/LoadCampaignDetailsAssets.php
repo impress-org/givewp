@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
@@ -39,6 +40,12 @@ class LoadCampaignDetailsAssets
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
                 'defaultForm' => $defaultForm ? $defaultForm->settings->formTitle : null,
+                'donationForms' => array_map(function(DonationForm $form) {
+                    return [
+                        'id' => $form->id,
+                        'title' => $form->settings->formTitle,
+                    ];
+                }, $campaign->forms()->getAll()),
             ]
         );
 

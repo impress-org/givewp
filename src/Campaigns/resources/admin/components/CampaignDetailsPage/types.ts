@@ -5,6 +5,7 @@ export interface GiveCampaignDetails {
     currency: string;
     isRecurringEnabled: boolean;
     defaultForm: string;
+    donationForms: { id: number; title: string; }[];
 }
 
 export type CampaignFormOption = {
