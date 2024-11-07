@@ -94,6 +94,7 @@ const bulkActions: Array<BulkActionsConfig> = [
     {
         label: __('Merge', 'give'),
         value: 'merge',
+        type: 'urlAction',
         action: async (selected) => {
             return await new Promise((resolve) => setTimeout(resolve, 0));
         },

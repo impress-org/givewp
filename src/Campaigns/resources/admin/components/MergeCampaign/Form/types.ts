@@ -9,6 +9,10 @@ export interface MergeCampaignFormProps {
     };
     title: string;
     campaign?: Campaign;
+    historyState: {
+        selected: string[];
+        names: string[];
+    };
 }
 
 export type MergeCampaignFormInputs = {

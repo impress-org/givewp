@@ -11,7 +11,15 @@ import {useState} from 'react';
  *
  * @unreleased
  */
-export default function MergeCampaignForm({isOpen, handleClose, apiSettings, title, campaign}: MergeCampaignFormProps) {
+export default function MergeCampaignForm({
+    isOpen,
+    handleClose,
+    apiSettings,
+    title,
+    campaign,
+    historyState,
+}: MergeCampaignFormProps) {
+    console.log('historyState:', historyState);
     const API = new CampaignsApi(apiSettings);
     const [step, setStep] = useState<number>(1);
 

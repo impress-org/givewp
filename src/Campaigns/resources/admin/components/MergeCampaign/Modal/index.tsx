@@ -3,6 +3,16 @@ import {__} from '@wordpress/i18n';
 import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
 import MergeCampaignForm from './../Form';
 
+const removeActionParam = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const actionParam = queryParams.get('action');
+
+    if (actionParam) {
+        queryParams.delete('action');
+        window.history.replaceState(null, '', `${window.location.pathname}?${queryParams.toString()}`);
+    }
+};
+
 /**
  * Auto open modal if the URL has the query parameter id as new
  *
@@ -10,9 +20,14 @@ import MergeCampaignForm from './../Form';
  */
 const autoOpenModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
-    const newParam = queryParams.get('new');
+    const actionParam = queryParams.get('action');
 
-    return newParam === 'merge';
+    if (actionParam && !window.history.state) {
+        removeActionParam();
+        return false;
+    }
+
+    return actionParam === 'merge';
 };
 
 /**
@@ -24,6 +39,7 @@ export default function MergeCampaignModal() {
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
     const openModal = () => setOpen(true);
     const closeModal = (response: ResponseProps = {}) => {
+        removeActionParam();
         setOpen(false);
 
         if (response?.id) {
@@ -34,15 +50,12 @@ export default function MergeCampaignModal() {
         }
     };
 
-    //const [queryParams, setQueryParams] = useState({});
-
     useEffect(() => {
         // Function to update URL parameters
         const handleQueryParamsChange = () => {
-            const searchParams = new URLSearchParams(window.location.search);
-            const params = Object.fromEntries(searchParams.entries());
-            //setQueryParams(params);
-            console.log('Updated parameters:', params);
+            //const searchParams = new URLSearchParams(window.location.search);
+            //const params = Object.fromEntries(searchParams.entries());
+            //console.log('Updated parameters:', params);
 
             setOpen(autoOpenModal());
         };
@@ -90,6 +103,7 @@ export default function MergeCampaignModal() {
                 handleClose={closeModal}
                 title={__('Create your campaign', 'give')}
                 apiSettings={apiSettings}
+                historyState={window.history.state}
             />
         </>
     );
