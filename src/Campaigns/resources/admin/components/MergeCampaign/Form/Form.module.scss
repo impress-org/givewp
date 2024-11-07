@@ -31,7 +31,6 @@
         border: 1px solid #9ca0af;
         border-radius: var(--givewp-spacing-1);
         padding: var(--givewp-spacing-2);
-        /*margin: var(--givewp-spacing-2) 0;*/
     }
 
     select {
@@ -44,11 +43,6 @@
     }
 
     .notice {
-
-        /*p {
-            margin: unset;
-        }*/
-
         display: flex;
         margin: 1rem 0 -0.2rem 0;
         gap: 0.3rem;
@@ -60,10 +54,6 @@
         font-size: 0.875rem;
         font-weight: 500;
         color: #1a0f00;
-        /*line-height: 1.25rem;
-        height: 2.75rem;
-        max-width: 60rem;
-        width: 100%;*/
 
         svg {
             margin: 0.7rem 0.3rem;
