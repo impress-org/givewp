@@ -49,7 +49,7 @@ export default function MergeCampaignsForm({
     console.log('campaignsToMergeIds: ', campaignsToMergeIds);
 
     const getFormModalTitle = () => {
-        if (3 === step) {
+        if (4 === step) {
             return 'icon ' + title;
         }
 
@@ -61,7 +61,7 @@ export default function MergeCampaignsForm({
     const onSubmit: SubmitHandler<MergeCampaignFormInputs> = async (inputs, event) => {
         event.preventDefault();
 
-        if (step !== 2) {
+        if (step !== 2 && step !== 4) {
             return;
         }
 
@@ -79,6 +79,7 @@ export default function MergeCampaignsForm({
             setStep(3);
             //handleClose(response);
         } catch (error) {
+            setStep(4);
             console.error('Error submitting campaign campaign', error);
         }
     };
@@ -158,8 +159,13 @@ export default function MergeCampaignsForm({
                             aria-disabled={!isDirty}
                             disabled={!isDirty}
                         >
-                            {__('Merge', 'give')}
+                            {isSubmitting ? __('Merging in progress', 'give') : __('Merge', 'give')}
                         </button>
+                        {isDirty && (
+                            <div className={styles.notice}>
+                                {__('Once completed, this action is irreversible.', 'give')}
+                            </div>
+                        )}
                     </>
                 )}
                 {step === 3 && (
@@ -179,6 +185,27 @@ export default function MergeCampaignsForm({
                                 disabled={false}
                             >
                                 {__('View destination campaign', 'give')}
+                            </button>
+                        </div>
+                    </>
+                )}
+                {step === 4 && (
+                    <>
+                        <div className="givewp-campaigns__form-row">
+                            <p>Confirmation Page</p>
+                        </div>
+                        <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                            <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
+                                {__('Back to campaign list', 'give')}
+                            </button>
+
+                            <button
+                                type="submit"
+                                className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
+                                aria-disabled={false}
+                                disabled={false}
+                            >
+                                {__('Try again', 'give')}
                             </button>
                         </div>
                     </>
