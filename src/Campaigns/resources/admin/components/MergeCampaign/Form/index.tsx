@@ -5,27 +5,33 @@ import FormModal from '../../FormModal';
 import CampaignsApi from '../../api';
 import {MergeCampaignFormInputs, MergeCampaignFormProps} from './types';
 import {useState} from 'react';
+import apiFetch from '@wordpress/api-fetch';
+import {addQueryArgs} from '@wordpress/url';
 
 /**
  * Campaign Form Modal component
  *
  * @unreleased
  */
-export default function MergeCampaignForm({
+export default function MergeCampaignsForm({
     isOpen,
     handleClose,
     apiSettings,
     title,
-    campaign,
-    historyState,
+    campaigns,
 }: MergeCampaignFormProps) {
-    console.log('historyState:', historyState);
+    console.log('campaigns:', campaigns);
+
+    if (!campaigns) {
+        return <></>;
+    }
+
     const API = new CampaignsApi(apiSettings);
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<MergeCampaignFormInputs>({
         defaultValues: {
-            title: campaign?.title ?? '',
+            destinationCampaign: '',
         },
     });
 
@@ -33,31 +39,24 @@ export default function MergeCampaignForm({
         register,
         handleSubmit,
         formState: {errors, isDirty, isSubmitting},
-        setValue,
         watch,
-        trigger,
     } = methods;
 
-    /*const image = watch('image');
-    const selectedGoalType = watch('goalType');
-    const goal = watch('goal');*/
+    const destinationCampaign = watch('destinationCampaign');
+    const campaignsToMergeIds = campaigns.selected.filter((id) => id != destinationCampaign);
+
+    console.log('destinationCampaign: ', destinationCampaign);
+    console.log('campaignsToMergeIds: ', campaignsToMergeIds);
 
     const getFormModalTitle = () => {
-        switch (step) {
-            case 1:
-                return __('Merge campaigns - Step #1', 'give');
-            case 2:
-                return __('Merge campaigns - Step #2', 'give');
+        if (3 === step) {
+            return 'icon ' + title;
         }
 
-        return null;
+        return title;
     };
 
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
-
-    const validateTitle = async () => {
-        return await trigger('title');
-    };
 
     const onSubmit: SubmitHandler<MergeCampaignFormInputs> = async (inputs, event) => {
         event.preventDefault();
@@ -67,13 +66,27 @@ export default function MergeCampaignForm({
         }
 
         try {
-            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
-            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
+            //const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
+            //const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
-            handleClose(response);
+            const response = await apiFetch({
+                path: addQueryArgs('/give-api/v2/campaigns/' + destinationCampaign + '/merge', {
+                    campaignsToMergeIds: campaignsToMergeIds,
+                }),
+                method: 'PATCH',
+            });
+
+            setStep(3);
+            //handleClose(response);
         } catch (error) {
             console.error('Error submitting campaign campaign', error);
         }
+    };
+
+    const extractTextFromLink = (link) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(link, 'text/html');
+        return doc.querySelector('a')?.textContent || link;
     };
 
     return (
@@ -89,19 +102,50 @@ export default function MergeCampaignForm({
                 {step === 1 && (
                     <>
                         <div className="givewp-campaigns__form-row">
+                            <p>
+                                {__(
+                                    'All selected campaigns will be merged into the destination campaign. This means that forms, donors, donations, and all related data will be added to the destination campaign, and the merged campaigns will cease to exist.',
+                                    'give'
+                                )}
+                            </p>
+                        </div>
+                        <button
+                            type="submit"
+                            onClick={() => setStep(2)}
+                            className={`button button-primary`}
+                            aria-disabled={false}
+                            disabled={false}
+                        >
+                            {__('Proceed', 'give')}
+                        </button>
+                    </>
+                )}
+                {step === 2 && (
+                    <>
+                        <div className="givewp-campaigns__form-row">
                             <label htmlFor="title">
-                                {__("What's the title of your campaign?", 'give')} {requiredAsterisk}
+                                {__('Select your destination campaign', 'give')} {requiredAsterisk}
                             </label>
                             <span className={styles.description}>
-                                {__("Give your campaign a title that tells donors what it's about.", 'give')}
+                                {__('All selected campaigns will be merged into this campaign.', 'give')}
                             </span>
-                            <input
+                            {/*<input
                                 type="text"
-                                {...register('title', {required: __('The campaign must have a title!', 'give')})}
+                                {...register('title', {required: __('Missing destination campaign.', 'give')})}
                                 aria-invalid={errors.title ? 'true' : 'false'}
-                                placeholder={__('Eg. Holiday Food Drive', 'give')}
-                                onBlur={validateTitle}
-                            />
+                                placeholder={__('Choose from selected campaigns', 'give')}
+                                onBlur={validateDestinationCampaign}
+                            />*/}
+                            <select {...register('destinationCampaign', {valueAsNumber: true})} defaultValue="">
+                                <option value="" disabled hidden>
+                                    {__('Choose from selected campaigns', 'give')}
+                                </option>
+                                {campaigns.selected.map((id, index) => (
+                                    <option key={id} value={id}>
+                                        {extractTextFromLink(campaigns.names[index])}
+                                    </option>
+                                ))}
+                            </select>
                             {errors.title && (
                                 <div className={'givewp-campaigns__form-errors'}>
                                     <p>{errors.title.message}</p>
@@ -110,40 +154,22 @@ export default function MergeCampaignForm({
                         </div>
                         <button
                             type="submit"
-                            onClick={async () => (await validateTitle()) && setStep(2)}
-                            className={`button button-primary ${!isDirty ? 'disabled' : ''}`}
+                            className={`button button-primary ${isSubmitting ? 'disabled' : ''}`}
                             aria-disabled={!isDirty}
                             disabled={!isDirty}
                         >
-                            {__('Continue', 'give')}
+                            {__('Merge', 'give')}
                         </button>
                     </>
                 )}
-                {step === 2 && (
+                {step === 3 && (
                     <>
                         <div className="givewp-campaigns__form-row">
-                            <label htmlFor="title">
-                                {__("What's the title of your campaign?", 'give')} {requiredAsterisk}
-                            </label>
-                            <span className={styles.description}>
-                                {__("Give your campaign a title that tells donors what it's about.", 'give')}
-                            </span>
-                            <input
-                                type="text"
-                                {...register('title', {required: __('The campaign must have a title!', 'give')})}
-                                aria-invalid={errors.title ? 'true' : 'false'}
-                                placeholder={__('Eg. Holiday Food Drive', 'give')}
-                                onBlur={validateTitle}
-                            />
-                            {errors.title && (
-                                <div className={'givewp-campaigns__form-errors'}>
-                                    <p>{errors.title.message}</p>
-                                </div>
-                            )}
+                            <p>Confirmation Page</p>
                         </div>
                         <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                            <button type="submit" onClick={() => setStep(1)} className={`button button-secondary`}>
-                                {__('Previous', 'give')}
+                            <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
+                                {__('Back to campaign list', 'give')}
                             </button>
 
                             <button
@@ -152,7 +178,7 @@ export default function MergeCampaignForm({
                                 aria-disabled={false}
                                 disabled={false}
                             >
-                                {__('Continue', 'give')}
+                                {__('View destination campaign', 'give')}
                             </button>
                         </div>
                     </>

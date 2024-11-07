@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
-import MergeCampaignForm from './../Form';
+import MergeCampaignsForm from './../Form';
 
 const removeActionParam = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -98,12 +98,12 @@ export default function MergeCampaignModal() {
 
     return (
         <>
-            <MergeCampaignForm
+            <MergeCampaignsForm
                 isOpen={isOpen}
                 handleClose={closeModal}
-                title={__('Create your campaign', 'give')}
+                title={__('Merge campaigns', 'give')}
                 apiSettings={apiSettings}
-                historyState={window.history.state}
+                campaigns={window.history.state}
             />
         </>
     );

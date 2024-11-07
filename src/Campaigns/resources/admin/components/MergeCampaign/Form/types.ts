@@ -1,5 +1,3 @@
-import {Campaign} from '../../types';
-
 export interface MergeCampaignFormProps {
     isOpen: boolean;
     handleClose: (response?: any) => void;
@@ -8,8 +6,7 @@ export interface MergeCampaignFormProps {
         apiNonce: string;
     };
     title: string;
-    campaign?: Campaign;
-    historyState: {
+    campaigns: {
         selected: string[];
         names: string[];
     };
@@ -17,4 +14,5 @@ export interface MergeCampaignFormProps {
 
 export type MergeCampaignFormInputs = {
     title: string;
+    destinationCampaign: string;
 };
