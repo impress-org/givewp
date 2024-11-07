@@ -19,7 +19,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
         return <></>;
     }
 
-    const [step, setStep] = useState<number>(1);
+    const [step, setStep] = useState<number>(4);
 
     const methods = useForm<MergeCampaignFormInputs>({
         defaultValues: {
@@ -164,9 +164,35 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                 {step === 3 && (
                     <>
                         <div className="givewp-campaigns__form-row">
-                            <p>Confirmation Page</p>
+                            <div className={styles.returnMessage}>
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 40 40"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M20 1.664c-10.126 0-18.334 8.208-18.334 18.333 0 10.126 8.208 18.334 18.333 18.334 10.126 0 18.334-8.208 18.334-18.334 0-10.125-8.208-18.333-18.334-18.333zm8.678 14.512a1.667 1.667 0 0 0-2.357-2.357l-8.822 8.821-3.821-3.821a1.667 1.667 0 0 0-2.357 2.357l5 5c.65.65 1.706.65 2.357 0l10-10z"
+                                        fill="#459948"
+                                    />
+                                </svg>
+
+                                <label htmlFor="title">{__('Campaigns have been successfully merged', 'give')}</label>
+                                <span>
+                                    {__(
+                                        'All donations, donors, and forms from selected campaigns now belong to your destination campaign.',
+                                        'give'
+                                    )}
+                                </span>
+                            </div>
                         </div>
-                        <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                        <div
+                            className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
+                            style={{marginBottom: 0}}
+                        >
                             <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
                                 {__('Back to campaign list', 'give')}
                             </button>
@@ -185,9 +211,34 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                 {step === 4 && (
                     <>
                         <div className="givewp-campaigns__form-row">
-                            <p>Error Page</p>
+                            <div className={styles.returnMessage}>
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 40 40"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M20 1.668c-10.125 0-18.333 8.208-18.333 18.333 0 10.125 8.208 18.334 18.333 18.334 10.125 0 18.333-8.209 18.333-18.334S30.125 1.668 20 1.668zm1.667 11.667a1.667 1.667 0 0 0-3.334 0V20a1.667 1.667 0 1 0 3.334 0v-6.666zM20 25a1.667 1.667 0 1 0 0 3.334h.017a1.667 1.667 0 0 0 0-3.334H20z"
+                                        fill="#D92D0B"
+                                    />
+                                </svg>
+                                <label htmlFor="title">{__("Campaigns couldn't be merged", 'give')}</label>
+                                <span>
+                                    {__(
+                                        'An error occurred during the merging process. Please try again, or contact our support team if the issue persists.',
+                                        'give'
+                                    )}
+                                </span>
+                            </div>
                         </div>
-                        <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
+                        <div
+                            className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
+                            style={{marginBottom: 0}}
+                        >
                             <button type="submit" onClick={() => handleClose()} className={`button button-secondary`}>
                                 {__('Back to campaign list', 'give')}
                             </button>
