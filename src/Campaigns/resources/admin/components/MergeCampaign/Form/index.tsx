@@ -35,14 +35,6 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
     const destinationCampaignId = watch('destinationCampaignId');
 
-    const getFormModalTitle = () => {
-        if (4 === step) {
-            return '' + title;
-        }
-
-        return title;
-    };
-
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
 
     const onSubmit: SubmitHandler<MergeCampaignFormInputs> = async (inputs, event) => {
@@ -118,7 +110,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
             <FormModal
                 isOpen={isOpen}
                 handleClose={handleClose}
-                title={getFormModalTitle()}
+                title={title}
                 handleSubmit={handleSubmit(onSubmit)}
                 errors={[]}
                 className={styles.campaignForm}
