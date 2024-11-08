@@ -12,6 +12,9 @@ declare const window: {
  * @unreleased
  */
 export default () => {
+
+    const {donationForms} = window.GiveCampaignDetails
+
     const {
         register,
         watch,
@@ -138,7 +141,7 @@ export default () => {
             </div>
 
             {/* DEFAULT CAMPAIGN FORM SETTINGS */}
-            { window.GiveCampaignDetails.donationForms.length > 1 && (
+            { donationForms.length > 1 && (
                 <div className={styles.section}>
                     <div className={styles.leftColumn}>
                         <div className={styles.sectionTitle}>{__('Default campaign form', 'give')}</div>
@@ -152,12 +155,7 @@ export default () => {
                                 className={styles.sectionSubtitle}>{__('Select your default campaign form', 'give')}</div>
 
                             <select {...register('defaultFormId', {valueAsNumber: true})} disabled={isDisabled}>
-                                {window.GiveCampaignDetails.donationForms && (
-                                    <>
-                                        {window.GiveCampaignDetails.donationForms.map(({id, title}) =><option key={id}
-                                                                                                               value={id}>{title}</option>)}
-                                    </>
-                                )}
+                                {donationForms.map(({id, title}) => <option key={id} value={id}>{title}</option>)}
                             </select>
 
                             {errors.defaultForm &&

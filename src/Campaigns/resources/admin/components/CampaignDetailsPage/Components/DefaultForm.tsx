@@ -13,7 +13,7 @@ declare const window: {
  */
 const DefaultFormWidget = () => {
 
-    const {watch,} = useFormContext();
+    const {watch} = useFormContext();
 
     const [defaultFormId] = watch(['defaultFormId']);
 
