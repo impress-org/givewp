@@ -11,7 +11,8 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -23,6 +24,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @unreleased
  *
  * @property int              $id
+ * @property int              $defaultFormId
  * @property CampaignType     $type
  * @property string           $title
  * @property string           $url
@@ -46,6 +48,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'defaultFormId' => 'int',
         'type' => CampaignType::class,
         'title' => 'string',
         'shortDescription' => 'string',
@@ -67,9 +70,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     public function defaultForm(): ?DonationForm
     {
-        return $this->forms()
-            ->where('campaign_forms.is_default', true)
-            ->get();
+        return give(DonationFormsRepository::class)->getById($this->defaultFormId);
     }
 
     /**
@@ -79,9 +80,11 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     {
         return DonationForm::query()
             ->join(function (JoinQueryBuilder $builder) {
-                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                $builder
+                    ->leftJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', 'forms.id');
-            })->where('campaign_forms.campaign_id', $this->id);
+            })
+            ->where('campaign_forms.campaign_id', $this->id);
     }
 
     /**
