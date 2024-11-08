@@ -125,8 +125,7 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
-                        $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign, $request->get_param('defaultFormId'));
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {

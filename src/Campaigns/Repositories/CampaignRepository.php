@@ -206,7 +206,7 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::table('give_campaign_forms')
+            DB::table('give_campaigns')
                 ->where('id', $campaign->id)
                 ->update([
                     'form_id' => $donationFormId
