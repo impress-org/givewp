@@ -423,14 +423,23 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <input type="datetime-local" {...register('endDateTime')} />
                         </div>
                     </div>*/}
-                        <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                            <button type="submit" onClick={() => setStep(1)} className={`button button-secondary`}>
+                        <div
+                            className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
+                            style={{marginBottom: 0}}
+                        >
+                            <button
+                                type="submit"
+                                onClick={() => setStep(1)}
+                                className={`button button-secondary ${styles.button} ${styles.previousButton}`}
+                            >
                                 {__('Previous', 'give')}
                             </button>
 
                             <button
                                 type="submit"
-                                className={`button button-primary ${!goal || isSubmitting ? 'disabled' : ''}`}
+                                className={`button button-primary ${styles.button} ${
+                                    !goal || isSubmitting ? 'disabled' : ''
+                                }`}
                                 aria-disabled={!goal || isSubmitting}
                                 disabled={!goal || isSubmitting}
                             >

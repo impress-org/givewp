@@ -5,6 +5,7 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Form\Utils;
 
 /**
  * @unreleased
@@ -34,12 +35,13 @@ class LoadCampaignDetailsAssets
         );
 
         $defaultForm = $campaign->defaultForm();
+        $defaultFormTitle = Utils::isV3Form($defaultForm->id) ? $defaultForm->settings->formTitle : $defaultForm->title;
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'defaultForm' => $defaultForm ? $defaultForm->settings->formTitle : null,
+                'defaultForm' => $defaultFormTitle,
                 'donationForms' => array_map(function(DonationForm $form) {
                     return [
                         'id' => $form->id,
