@@ -5,24 +5,12 @@ import CampaignFormModal from '../CampaignFormModal';
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 
 /**
- * Auto open modal if the URL has the query parameter id as new
- *
- * @unreleased
- */
-const autoOpenModal = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const newParam = queryParams.get('new');
-
-    return newParam === 'campaign';
-};
-
-/**
  * Create Campaign Modal component
  *
  * @unreleased
  */
-export default function CreateCampaignModal() {
-    const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
+export default function CreateCampaignModal({isOpen, setOpen}) {
+
     const openModal = () => setOpen(true);
     const closeModal = (response: ResponseProps = {}) => {
         setOpen(false);
