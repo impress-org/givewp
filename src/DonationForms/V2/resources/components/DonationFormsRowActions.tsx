@@ -75,7 +75,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     <Interweave content={item?.title} />
                 </p>
             ),
-            async (selected) => {
+            async () => {
                 const response = await apiFetch({
                     path: addQueryArgs('/give-api/v2/campaigns/' + campaignId, {
                         defaultFormId: item.id,
