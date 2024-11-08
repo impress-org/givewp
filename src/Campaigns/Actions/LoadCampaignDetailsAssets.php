@@ -33,17 +33,16 @@ class LoadCampaignDetailsAssets
             true
         );
 
-        $defaultForm = $campaign->defaultForm();
         wp_localize_script($handleName, 'GiveCampaignDetails',
             [
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'defaultForm' => $defaultForm ? $defaultForm->settings->formTitle : null,
+                'defaultFormId' => $campaign->defaultForm()->id,
                 'donationForms' => array_map(function(DonationForm $form) {
                     return [
                         'id' => $form->id,
-                        'title' => $form->settings->formTitle,
+                        'title' => $form->hasProperty('settings') ? $form->settings->formTitle : $form->title,
                     ];
                 }, $campaign->forms()->getAll()),
             ]

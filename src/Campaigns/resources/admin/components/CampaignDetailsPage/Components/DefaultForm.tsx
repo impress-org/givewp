@@ -1,12 +1,25 @@
 import {__} from "@wordpress/i18n";
 import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
-import {CampaignFormOption} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
+import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
+import {useFormContext} from "react-hook-form";
+
+declare const window: {
+    GiveCampaignDetails: GiveCampaignDetails;
+} & Window;
 
 /**
  * @unreleased
  */
-const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
+const DefaultFormWidget = () => {
+
+    const {watch,} = useFormContext();
+
+    const [defaultForm] = watch(['defaultForm']);
+
+    const defaultFormTitle = window.GiveCampaignDetails.donationForms
+        .find(form => Number(form.id) === Number(defaultForm))?.title;
+
     return (
         <div style={{
             flex: 1,
@@ -46,7 +59,7 @@ const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
                 padding: '12px 16px',
                 borderRadius: '4px',
             }}>
-                {defaultForm}
+                {defaultFormTitle}
             </div>
         </div>
     )

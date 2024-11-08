@@ -19,7 +19,7 @@ export default () => {
         formState: {errors},
     } = useFormContext();
 
-    const [goalType, image, status, shortDescription] = watch(['goalType', 'image', 'status', 'shortDescription']);
+    const [goalType, image, status, shortDescription, defaultForm] = watch(['goalType', 'image', 'status', 'shortDescription', 'defaultForm']);
     const isDisabled = status === 'archived';
 
     return (
@@ -151,10 +151,10 @@ export default () => {
                             <div
                                 className={styles.sectionSubtitle}>{__('Select your default campaign form', 'give')}</div>
 
-                            <select {...register('defaultForm')} disabled={isDisabled}>
+                            <select {...register('defaultForm', {valueAsNumber: true})} disabled={isDisabled}>
                                 {window.GiveCampaignDetails.donationForms && (
                                     <>
-                                        {window.GiveCampaignDetails.donationForms.map(({id, title}) => <option key={id}
+                                        {window.GiveCampaignDetails.donationForms.map(({id, title}) =><option key={id}
                                                                                                                value={id}>{title}</option>)}
                                     </>
                                 )}

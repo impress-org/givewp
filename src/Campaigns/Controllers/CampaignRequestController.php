@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Controllers;
 
+use Give\Campaigns\DataTransferObjects\CampaignDetailsData;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
@@ -31,7 +32,9 @@ class CampaignRequestController
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            (new CampaignDetailsData($campaign))->toArray()
+        );
     }
 
     /**
@@ -124,6 +127,12 @@ class CampaignRequestController
                 case 'goalType':
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
+                case 'defaultForm':
+                    give(CampaignRepository::class)->updateDefaultCampaignForm(
+                        $campaign,
+                        $request->get_param('defaultForm')
+                    );
+                    break;
                 default:
                     if ($campaign->hasProperty($key)) {
                         $campaign->$key = $value;
@@ -135,7 +144,9 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            (new CampaignDetailsData($campaign))->toArray()
+        );
     }
 
 

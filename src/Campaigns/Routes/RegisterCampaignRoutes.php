@@ -230,6 +230,10 @@ class RegisterCampaignRoutes
                     ],
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
+                'defaultForm' => [
+                    'type' => 'number',
+                    'description' => esc_html__('Default donation form ID', 'give'),
+                ],
             ],
             'required' => ['id', 'title', 'goal', 'goalType'],
             'allOf' => [

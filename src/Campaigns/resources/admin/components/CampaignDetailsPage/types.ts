@@ -4,7 +4,7 @@ export interface GiveCampaignDetails {
     adminUrl: string;
     currency: string;
     isRecurringEnabled: boolean;
-    defaultForm: string;
+    defaultFormId: number;
     donationForms: { id: number; title: string; }[];
 }
 
