@@ -9,14 +9,16 @@ import {createInterpolateElement} from '@wordpress/element';
 export default function DonationSummary() {
     const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;
     const { useCurrencyFormatter, useDonationSummary } = window.givewp.form.hooks;
-    const { items } = useDonationSummary();
-    const {state: {
+    const { items, getTotalSum } = useDonationSummary();
+    const {
         currency,
         donationAmount,
-        donationAmountTotal,
         subscriptionPeriod: period,
-        subscriptionFrequency: frequency,
-    }} = window.givewp.form.hooks.useDonationSummary();
+        subscriptionFrequency: frequency
+    } = window.givewp.form.hooks.useFormData();
+
+    const donationAmountTotal = getTotalSum(donationAmount);
+
     const formatter = useCurrencyFormatter(currency);
 
     const givingFrequency = useMemo(() => {
