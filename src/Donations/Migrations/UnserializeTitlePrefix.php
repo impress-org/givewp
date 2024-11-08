@@ -7,12 +7,12 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Helpers\Utils;
 
 /**
- * @unreleased
+ * @since 3.17.2
  */
 class UnserializeTitlePrefix extends Migration
 {
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public function run()
     {
@@ -34,7 +34,7 @@ class UnserializeTitlePrefix extends Migration
 
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function id()
     {
@@ -42,7 +42,7 @@ class UnserializeTitlePrefix extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function title()
     {
@@ -50,7 +50,7 @@ class UnserializeTitlePrefix extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function timestamp()
     {
