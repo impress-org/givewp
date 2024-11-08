@@ -15,10 +15,10 @@ const DefaultFormWidget = () => {
 
     const {watch,} = useFormContext();
 
-    const [defaultForm] = watch(['defaultForm']);
+    const [defaultFormId] = watch(['defaultFormId']);
 
     const defaultFormTitle = window.GiveCampaignDetails.donationForms
-        .find(form => Number(form.id) === Number(defaultForm))?.title;
+        .find(form => Number(form.id) === Number(defaultFormId))?.title;
 
     return (
         <div style={{

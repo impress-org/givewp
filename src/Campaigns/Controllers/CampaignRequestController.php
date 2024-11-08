@@ -2,14 +2,14 @@
 
 namespace Give\Campaigns\Controllers;
 
-use Give\Campaigns\DataTransferObjects\CampaignDetailsData;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Campaigns\DataTransferObjects\CampaignDetailsData;
+use Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -127,11 +127,9 @@ class CampaignRequestController
                 case 'goalType':
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
-                case 'defaultForm':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm(
-                        $campaign,
-                        $request->get_param('defaultForm')
-                    );
+                case 'defaultFormId':
+                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
+                        $request->get_param('defaultFormId'));
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {

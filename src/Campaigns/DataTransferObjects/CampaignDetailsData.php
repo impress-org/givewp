@@ -31,7 +31,7 @@ class CampaignDetailsData implements Arrayable
         return array_merge(
             $this->campaign->toArray(),
             [
-                'defaultForm' => $this->campaign->defaultForm()->id,
+                'defaultFormId' => $this->campaign->defaultForm()->id,
             ]
         );
     }
