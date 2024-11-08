@@ -5,9 +5,9 @@ namespace Give\Campaigns\ListTable;
 use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
 use Give\Campaigns\ListTable\Columns\GoalColumn;
 use Give\Campaigns\ListTable\Columns\IdColumn;
-use Give\Campaigns\ListTable\Columns\NameColumn;
 use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\ListTable\Columns\StatusColumn;
+use Give\Campaigns\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -34,7 +34,7 @@ class CampaignsListTable extends ListTable
         // TODO We need to decide which columns should be displayed
         return [
             new IdColumn(),
-            new NameColumn(),
+            new TitleColumn(),
             new GoalColumn(),
             new DonationsCountColumn(),
             new RevenueColumn(),
@@ -55,7 +55,7 @@ class CampaignsListTable extends ListTable
     {
         return [
             IdColumn::getId(),
-            NameColumn::getId(),
+            TitleColumn::getId(),
             GoalColumn::getId(),
             DonationsCountColumn::getId(),
             RevenueColumn::getId(),

@@ -9,6 +9,7 @@ import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from "react";
+import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -43,7 +44,7 @@ const campaignStatus = [
     },
     {
         value: 'inactive',
-        text: __('Inactive', 'give'),
+        text: __('Archived', 'give'),
     },
     {
         value: 'draft',
@@ -103,6 +104,25 @@ const bulkActions: Array<BulkActionsConfig> = [
             </>
         ),
     },
+    {
+        label: __('Merge', 'give'),
+        value: 'merge',
+        type: 'urlAction',
+        action: async (selected) => {
+            return await new Promise((resolve) => setTimeout(resolve, 0));
+        },
+        confirm: (selected, names) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('action', 'merge');
+            window.history.replaceState(
+                {selected: selected, names: names},
+                __('Merge Campaings', 'give'),
+                `${window.location.pathname}?${urlParams.toString()}`
+            );
+
+            return null;
+        },
+    },
 ];
 
 export default function CampaignsListTable() {
@@ -148,6 +168,7 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isOpen} setOpen={setOpen} />
+                <MergeCampaignModal />
             </ListTablePage>
         </>
     );

@@ -14,7 +14,7 @@
     }
 
     .description {
-        font-size: 0.875rem;
+        font-size: 14px;
         margin-bottom: 0.4rem;
     }
 }
@@ -34,7 +34,7 @@
 
         cursor: pointer;
         border: 1px solid #9CA0AF;
-        border-radius: 1rem;
+        border-radius: 8px;
         padding: 0.75rem 1.5rem 0.75rem 1.5rem;
     }
 
@@ -104,5 +104,17 @@
     }
 }
 
+.button:is(:global(.button)) {
+    border-radius: var(--givewp-rounded-8)
+}
 
+.previousButton:is(:global(.button)) {
+    background-color: transparent;
+    border: solid 1px #9ca0af;
+    color: #060c1a;
 
+    &:hover {
+        border: solid 1px #9ca0af;
+        color: #060c1a;
+    }
+}
