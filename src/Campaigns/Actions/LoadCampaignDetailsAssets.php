@@ -38,7 +38,7 @@ class LoadCampaignDetailsAssets
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-                'defaultForm' => $defaultForm ? $defaultForm->title : null,
+                'defaultForm' => $defaultForm->title,
             ]
         );
 
