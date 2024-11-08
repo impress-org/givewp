@@ -136,7 +136,7 @@ class ListDonationForms extends Endpoint
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
 
-            $defaultCampaignForm = Campaign::find($this->request->get_param('campaignId'))->defaultForm();
+            $defaultCampaignForm = ($campaignId = $this->request->get_param('campaignId')) ? Campaign::find($campaignId)->defaultForm() : false;
 
             foreach ($items as $i => &$item) {
                 $item['name'] = get_the_title($item['id']);
@@ -144,7 +144,7 @@ class ListDonationForms extends Endpoint
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
                 $item['status_raw'] = $forms[$i]->status->getValue();
-                $item['isDefaultCampaignForm'] = $item['id'] === $defaultCampaignForm->id;
+                $item['isDefaultCampaignForm'] = $defaultCampaignForm && $item['id'] === $defaultCampaignForm->id;
             }
         }
 
