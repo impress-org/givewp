@@ -138,7 +138,7 @@ export default function ListTablePage({
         label,
         confirm,
         action,
-        type: 'normal' | 'warning' | 'danger' | 'urlAction' | null = null
+        type: 'normal' | 'warning' | 'danger' | 'urlAction' | null
     ) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
