@@ -8,11 +8,24 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
+import {useState} from "react";
 import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
 } & Window;
+
+/**
+ * Auto open modal if the URL has the query parameter id as new
+ *
+ * @unreleased
+ */
+const autoOpenModal = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const newParam = queryParams.get('new');
+
+    return newParam === 'campaign';
+};
 
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
@@ -112,35 +125,36 @@ const bulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
-/**
- * Displays a blank slate for the Campaigns table.
- *
- * @unreleased
- */
-const ListTableBlankSlate = () => {
-    const imagePath = `${
-        getGiveCampaignsListTableWindowData().pluginUrl
-    }/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
-    return (
-        <div className={styles.container}>
-            <img src={imagePath} alt={__('No campaign created yet', 'give')} />
-            <h3>{__('No campaign created yet', 'give')}</h3>
-            <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first campaign.', 'give')}</p>
-            <p>
-                <a
-                    href={`${
-                        getGiveCampaignsListTableWindowData().adminUrl
-                    }edit.php?post_type=give_forms&page=give-campaigns&new=campaign`}
-                    className={`button button-primary ${styles.button}`}
-                >
-                    {__('Create campaign', 'give')}
-                </a>
-            </p>
-        </div>
-    );
-};
-
 export default function CampaignsListTable() {
+
+    const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
+
+    /**
+     * Displays a blank slate for the Campaigns table.
+     *
+     * @unreleased
+     */
+    const ListTableBlankSlate = () => {
+        const imagePath = `${
+            getGiveCampaignsListTableWindowData().pluginUrl
+        }/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
+        return (
+            <div className={styles.container}>
+                <img src={imagePath} alt={__('No campaign created yet', 'give')} />
+                <h3>{__('No campaign created yet', 'give')}</h3>
+                <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first campaign.', 'give')}</p>
+                <p>
+                    <a
+                        onClick={() => setOpen(true)}
+                        className={`button button-primary ${styles.button}`}
+                    >
+                        {__('Create campaign', 'give')}
+                    </a>
+                </p>
+            </div>
+        );
+    };
+
     return (
         <>
             <ListTablePage
@@ -153,7 +167,7 @@ export default function CampaignsListTable() {
                 rowActions={CampaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
             >
-                <CreateCampaignModal />
+                <CreateCampaignModal isOpen={isOpen} setOpen={setOpen} />
                 <MergeCampaignModal />
             </ListTablePage>
         </>
