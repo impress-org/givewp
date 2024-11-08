@@ -57,6 +57,13 @@
                     line-height: 1.5;
                     padding: var(--givewp-spacing-3) var(--givewp-spacing-5);
                     width: 100%;
+                    border-radius: 8px;
+
+                    &.button-secondary {
+                        color: #060c1a;
+                        border-color: #9ca0af;
+                        background-color: white;
+                    }
                 }
             }
 

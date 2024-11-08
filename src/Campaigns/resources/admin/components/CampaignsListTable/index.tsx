@@ -31,7 +31,7 @@ const campaignStatus = [
     },
     {
         value: 'inactive',
-        text: __('Inactive', 'give'),
+        text: __('Archived', 'give'),
     },
     {
         value: 'draft',
