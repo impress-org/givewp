@@ -166,16 +166,10 @@ export default function ListTablePage({
         setSelectedIds(selected);
         setSelectedNames(names);
         if (selected.length) {
+            setModalContent({...bulkActions[actionIndex]});
             if ('urlAction' === bulkActions[actionIndex].type) {
-                const urlParams = new URLSearchParams(window.location.search);
-                urlParams.set('action', selectedAction);
-                window.history.replaceState(
-                    {selected: selected, names: names},
-                    bulkActions[actionIndex].label,
-                    `${window.location.pathname}?${urlParams.toString()}`
-                );
+                modalContent?.confirm(selected, names);
             } else {
-                setModalContent({...bulkActions[actionIndex]});
                 dialog.current.show();
             }
         }

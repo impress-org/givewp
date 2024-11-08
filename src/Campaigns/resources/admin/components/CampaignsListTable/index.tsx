@@ -98,7 +98,17 @@ const bulkActions: Array<BulkActionsConfig> = [
         action: async (selected) => {
             return await new Promise((resolve) => setTimeout(resolve, 0));
         },
-        confirm: (selected, names) => 'merge',
+        confirm: (selected, names) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('action', 'merge');
+            window.history.replaceState(
+                {selected: selected, names: names},
+                __('Merge Campaings', 'give'),
+                `${window.location.pathname}?${urlParams.toString()}`
+            );
+
+            return null;
+        },
     },
 ];
 
