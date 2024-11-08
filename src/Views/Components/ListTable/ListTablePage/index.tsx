@@ -61,7 +61,7 @@ export interface BulkActionsConfig {
 
     //optional
     isVisible?: (data, parameters) => Boolean;
-    type?: 'normal' | 'warning' | 'danger';
+    type?: 'normal' | 'warning' | 'danger' | 'urlAction';
 }
 
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
@@ -87,7 +87,12 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
+    const [modalContent, setModalContent] = useState<{
+        confirm;
+        action;
+        label;
+        type?: 'normal' | 'warning' | 'danger' | 'urlAction';
+    }>({
         confirm: (selected) => {},
         action: (selected) => {},
         label: '',
@@ -129,7 +134,12 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
+    const showConfirmActionModal = (
+        label,
+        confirm,
+        action,
+        type: 'normal' | 'warning' | 'danger' | 'urlAction' | null
+    ) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
     };
@@ -157,7 +167,11 @@ export default function ListTablePage({
         setSelectedNames(names);
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
-            dialog.current.show();
+            if ('urlAction' === bulkActions[actionIndex].type) {
+                modalContent?.confirm(selected, names);
+            } else {
+                dialog.current.show();
+            }
         }
     };
 
