@@ -45,7 +45,7 @@ const zeroDecimalCurrencies = [
  *
  * @unreleased
  */
-const dollarsToCents = (amount: string, currency: string) => {
+const amountToMinorUnit = (amount: string, currency: string) => {
     if (zeroDecimalCurrencies.includes(currency)) {
         return Math.round(parseFloat(amount));
     }
@@ -127,11 +127,11 @@ export default function useDonationSummary() {
         state: {
             currency,
             donationAmount: Number(amount),
-            donationAmountMinor: dollarsToCents(amount, currency),
+            donationAmountMinor: amountToMinorUnit(amount, currency),
             donationAmountTotal,
-            donationAmountTotalMinor: dollarsToCents(donationAmountTotal.toString(), currency),
+            donationAmountTotalMinor: amountToMinorUnit(donationAmountTotal.toString(), currency),
             subscriptionAmount,
-            subscriptionAmountMinor: dollarsToCents(subscriptionAmount.toString(), currency),
+            subscriptionAmountMinor: amountToMinorUnit(subscriptionAmount.toString(), currency),
             donationIsOneTime: donationType === 'single',
             donationIsRecurring: donationType === 'subscription',
             subscriptionPeriod,
