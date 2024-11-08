@@ -142,6 +142,21 @@ class CampaignRequestController
         return new WP_REST_Response($campaign->toArray());
     }
 
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function mergeCampaigns(WP_REST_Request $request): WP_REST_Response
+    {
+        $destinationCampaign = Campaign::find($request->get_param('id'));
+        $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
+
+        $campaignsMerged = $destinationCampaign->merge(...$campaignsToMerge);
+
+        return new WP_REST_Response($campaignsMerged);
+    }
+
 
     /**
      * @unreleased
