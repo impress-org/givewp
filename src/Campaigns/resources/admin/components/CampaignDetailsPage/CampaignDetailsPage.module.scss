@@ -185,15 +185,14 @@ select[name="campaignId"] {
     font-size: 16px;
     font-weight: 500;
     line-height: 1.5;
-    padding: var(--givewp-spacing-3);
+    color: #1f2937;
 }
 
 .archiveDialogButtons {
     display: flex;
     flex-direction: row;
-    padding: var(--givewp-spacing-3);
     justify-content: space-between;
-    gap: 10px;
+    gap: var(--givewp-spacing-2);
 
     button {
         cursor: pointer;
@@ -201,7 +200,8 @@ select[name="campaignId"] {
         flex: 1;
         justify-content: center;
         border-radius: 4px;
-        font-size: 0.875rem;
+        font-size: 1rem;
+        font-weight: 500;
         line-height: 1.5;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
         border: none;
@@ -213,10 +213,19 @@ select[name="campaignId"] {
         color: #1f2937;
     }
 
+    .cancelButton:hover {
+       background-color: #F3F4F6;
+    }
+
     .confirmButton {
         border: 1px solid #d92d0b;
         background-color: #d92d0b;
         color: #fff;
+    }
+
+    .confirmButton:hover {
+        border: 1px solid #F2320C;
+        background-color: #F2320C;
     }
 }
 

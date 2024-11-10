@@ -15,9 +15,11 @@
 
     .givewp-modal-dialog {
         position: relative;
-        font-family: 'Open Sans', sans-serif;
-        max-width: 32rem;
-        width: 100%;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        width: 35rem;
+        display: flex;
+        flex-direction: column;
         border-radius: var(--givewp-rounded-4);
         background-color: #fff;
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
@@ -27,10 +29,12 @@
         .givewp-modal-header {
             display: flex;
             align-self: stretch;
-            font-size: 1rem;
-            font-weight: 700;
+            justify-content: flex-start;
+            font-size: 1.25rem;
+            line-height: 2rem;
+            font-weight: 600;
             align-items: center;
-            padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
             background-color: #fff;
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
@@ -39,7 +43,7 @@
         }
 
         .givewp-modal-icon-header {
-            margin-right: 10px;
+            margin-right: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -58,12 +62,12 @@
             position: absolute;
             cursor: pointer;
             z-index: 999;
-            fill: var(--givewp-grey-500);
+            fill: #4B5563;
         }
 
         .givewp-modal-close {
-            top: var(--givewp-spacing-4);
-            right: var(--givewp-spacing-5);
+            top: var(--givewp-spacing-5);
+            right: var(--givewp-spacing-6);
         }
 
         .givewp-modal-close-headless {
@@ -85,6 +89,9 @@
         .givewp-modal-content {
             font-size: 0.875rem;
             padding: var(--givewp-spacing-6);
+            display: flex;
+            flex-direction: column;
+            gap: var(--givewp-spacing-6);
         }
     }
 }
