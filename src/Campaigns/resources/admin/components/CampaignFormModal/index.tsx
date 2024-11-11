@@ -9,7 +9,7 @@ import {
     GoalInputAttributes,
     GoalTypeOption as GoalTypeOptionType,
 } from './types';
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {Currency, Upload} from '../Inputs';
 import {
     AmountFromSubscriptionsIcon,
@@ -146,7 +146,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
     const goal = watch('goal');
 
     const getFormModalTitle = () => {
-        switch(step) {
+        switch (step) {
             case 1:
                 return __('Tell us about your fundraising cause', 'give');
             case 2:
@@ -154,7 +154,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
 
         return null;
-    }
+    };
 
     const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
         amount: {
@@ -240,9 +240,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <label htmlFor="title">
                                 {__("What's the title of your campaign?", 'give')} {requiredAsterisk}
                             </label>
-                            <span className={styles.description}>
+                            <div className={styles.description}>
                                 {__("Give your campaign a title that tells donors what it's about.", 'give')}
-                            </span>
+                            </div>
                             <input
                                 type="text"
                                 {...register('title', {required: __('The campaign must have a title!', 'give')})}
@@ -258,9 +258,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </div>
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
-                            <span className={styles.description}>
+                            <div className={styles.description}>
                                 {__('Let your donors know the story behind your campaign.', 'give')}
-                            </span>
+                            </div>
                             <textarea
                                 {...register('shortDescription')}
                                 rows={4}
@@ -272,9 +272,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </div>
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="image">{__('Add a cover image or video for your campaign.', 'give')}</label>
-                            <span className={styles.description}>
+                            <div className={styles.description}>
                                 {__('Upload an image or video to represent and inspire your campaign.', 'give')}
-                            </span>
+                            </div>
                             <Upload
                                 id="givewp-campaigns-upload-cover-image"
                                 label={__('Cover', 'give')}
@@ -395,7 +395,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 ) : (
                                     <input
                                         type="number"
-                                        {...register('goal', {required: __('The campaign must have a goal!', 'give')})}
+                                        {...register('goal', {valueAsNumber: true})}
                                         aria-invalid={errors.goal ? 'true' : 'false'}
                                         placeholder={goalInputAttributes[selectedGoalType].placeholder}
                                     />
@@ -423,14 +423,23 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <input type="datetime-local" {...register('endDateTime')} />
                         </div>
                     </div>*/}
-                        <div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                            <button type="submit" onClick={() => setStep(1)} className={`button button-secondary`}>
+                        <div
+                            className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
+                            style={{marginBottom: 0}}
+                        >
+                            <button
+                                type="submit"
+                                onClick={() => setStep(1)}
+                                className={`button button-secondary ${styles.button} ${styles.previousButton}`}
+                            >
                                 {__('Previous', 'give')}
                             </button>
 
                             <button
                                 type="submit"
-                                className={`button button-primary ${!goal || isSubmitting ? 'disabled' : ''}`}
+                                className={`button button-primary ${styles.button} ${
+                                    !goal || isSubmitting ? 'disabled' : ''
+                                }`}
                                 aria-disabled={!goal || isSubmitting}
                                 disabled={!goal || isSubmitting}
                             >
