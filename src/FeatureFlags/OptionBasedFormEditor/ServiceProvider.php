@@ -47,9 +47,6 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         // Default Options Tab
-        Hooks::addFilter('give_default_setting_tab_section_display', DefaultOptionsSettings::class,
-            'maybeSetNewDefaultSection',
-            999);
         Hooks::addFilter('give_get_sections_display', DefaultOptionsSettings::class, 'maybeDisableSections', 999);
         Hooks::addFilter('give_get_settings_display', DefaultOptionsSettings::class, 'maybeDisableOptions', 999);
 

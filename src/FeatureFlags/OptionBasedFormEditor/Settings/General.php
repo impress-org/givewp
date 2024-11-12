@@ -14,8 +14,7 @@ class General extends AbstractOptionBasedFormEditorSettings
     {
         return [
             //General Section
-            'success_page',
-            'failure_page',
+            'override_legacy_donation_management_pages',
             // Currency Section
             'auto_format_currency',
             'currency_position',
@@ -23,6 +22,7 @@ class General extends AbstractOptionBasedFormEditorSettings
             'decimal_separator',
             'number_decimals',
             'currency_preview',
+
         ];
     }
 
