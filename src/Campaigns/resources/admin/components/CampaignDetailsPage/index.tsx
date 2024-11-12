@@ -13,8 +13,7 @@ import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
-import DefaultFormNotice from './Components/Notices/DefaultFormNotice';
-import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
+import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 
@@ -115,23 +114,6 @@ export default function CampaignsDetailsPage({campaignId}) {
             content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
         });
     }, [campaign?.status]);
-
-    // Default form notification
-    useEffect(() => {
-        if (!window.GiveDonationForms.showDefaultFormTooltip) {
-            return;
-        }
-
-        dispatch.addCustomNotice({
-            id: 'default-form-tooltip',
-            notificationType: 'campaigns-default-form',
-            onDismiss: async () => await apiFetch({
-                url: window.GiveDonationForms.defaultFormActionUrl,
-                method: 'POST',
-            }),
-            content: (onDismiss: Function) => <DefaultFormNotice handleClick={onDismiss} />
-        });
-    }, []);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
 

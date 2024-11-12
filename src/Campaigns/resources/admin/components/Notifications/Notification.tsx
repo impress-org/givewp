@@ -44,10 +44,6 @@ const Notice = ({notification, onDismiss}: { notification: Notification, onDismi
     );
 };
 
-const Custom = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => (
-    typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content
-)
-
 export default ({notification}) => {
 
     useEffect(() => {
@@ -73,6 +69,6 @@ export default ({notification}) => {
         case 'notice':
             return <Notice notification={notification} onDismiss={onDismiss} />
         default:
-            return <Custom notification={notification} onDismiss={onDismiss} />
+            return null;
     }
 }

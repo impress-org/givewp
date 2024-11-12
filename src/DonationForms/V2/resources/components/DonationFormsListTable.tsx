@@ -11,7 +11,9 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import NotificationPlaceholder from '@givewp/campaigns/admin/components/Notifications';
+import DefaultFormNotice
+    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
+import apiFetch from "@wordpress/api-fetch";
 
 declare global {
     interface Window {
@@ -22,8 +24,8 @@ declare global {
             migrationApiRoot: string;
             defaultFormActionUrl: string;
             apiRoot: string;
-            authors: Array<{id: string | number; name: string}>;
-            table: {columns: Array<object>};
+            authors: Array<{ id: string | number; name: string }>;
+            table: { columns: Array<object> };
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
@@ -270,7 +272,22 @@ const ListTableBlankSlate = (
 export default function DonationFormsListTable() {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
+        showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
     });
+
+    const handleDefaultFormTooltipDismiss = () => {
+        apiFetch({
+            url: window.GiveDonationForms.defaultFormActionUrl,
+            method: 'POST',
+        }).then(() => {
+            setState((prevState) => {
+                return {
+                    ...prevState,
+                    showDefaultFormTooltip: false
+                }
+            });
+        })
+    }
 
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
@@ -335,8 +352,8 @@ export default function DonationFormsListTable() {
                         </a>
                     </>
                 )}
-                {window.GiveDonationForms.showDefaultFormTooltip && (
-                    <NotificationPlaceholder type="campaigns-default-form" />
+                {state.showDefaultFormTooltip && (
+                    <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
                 )}
             </ListTablePage>
         </OnboardingContext.Provider>
