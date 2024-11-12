@@ -5,7 +5,6 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
-import {OnboardingContext} from './Onboarding';
 import {UpgradeModalContent} from './Migration';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
@@ -15,7 +14,6 @@ const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
-    const [OnboardingState, setOnboardingState] = useContext(OnboardingContext);
     const trashEnabled = Boolean(data?.trash);
     const deleteEndpoint = trashEnabled && !item.status.includes('trash') ? '/trash' : '/delete';
 
