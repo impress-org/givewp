@@ -193,6 +193,7 @@ select[name="campaignId"] {
     flex-direction: row;
     justify-content: space-between;
     gap: var(--givewp-spacing-2);
+    margin-top: var(--givewp-spacing-6);
 
     button {
         cursor: pointer;
@@ -211,21 +212,21 @@ select[name="campaignId"] {
         border: 1px solid #9ca0af;
         background-color: #fff;
         color: #1f2937;
-    }
 
-    .cancelButton:hover {
-       background-color: #F3F4F6;
+        &:hover {
+            background-color: #F3F4F6;
+        }
     }
 
     .confirmButton {
         border: 1px solid #d92d0b;
         background-color: #d92d0b;
         color: #fff;
-    }
 
-    .confirmButton:hover {
-        border: 1px solid #F2320C;
-        background-color: #F2320C;
+        &:hover {
+            border: 1px solid #F2320C;
+            background-color: #F2320C;
+        }
     }
 }
 
