@@ -28,6 +28,7 @@ const CustomAmount = (
                     locale: navigator.language,
                     currency,
                 }}
+                disableAbbreviations
                 className="givewp-fields-amount__input givewp-fields-amount__input-custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
