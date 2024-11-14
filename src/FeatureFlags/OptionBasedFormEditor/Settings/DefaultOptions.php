@@ -26,22 +26,4 @@ class DefaultOptions extends AbstractOptionBasedFormEditorSettings
             'terms',
         ];
     }
-
-    /**
-     * @unreleased
-     */
-    public function getDisabledSectionIds(): array
-    {
-        return [
-            'form-field-manager',
-        ];
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getNewDefaultSection(): string
-    {
-        return 'post-types';
-    }
 }
