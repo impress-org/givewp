@@ -34,7 +34,6 @@ class ServiceProvider implements ServiceProviderInterface
     private function maybeDisableOptionBasedFormEditorSettings()
     {
         // General Tab
-        //Hooks::addFilter('give_get_sections_general', GeneralSettings::class, 'maybeDisableSections', 999);
         Hooks::addFilter('give_get_settings_general', GeneralSettings::class, 'maybeDisableOptions', 999);
 
         // Payment Gateways Tab
@@ -47,11 +46,9 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         // Default Options Tab
-        //Hooks::addFilter('give_get_sections_display', DefaultOptionsSettings::class, 'maybeDisableSections', 999);
         Hooks::addFilter('give_get_settings_display', DefaultOptionsSettings::class, 'maybeDisableOptions', 999);
 
         // Advance Tab
-        //Hooks::addFilter('give_get_sections_advanced', AdvancedSettings::class, 'maybeDisableSections', 999);
         Hooks::addFilter('give_get_settings_advanced', AdvancedSettings::class, 'maybeDisableOptions', 999);
     }
 }
