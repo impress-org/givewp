@@ -73,8 +73,7 @@ const donationStatus = [
 
 const urlParams = new URLSearchParams(window.location.search);
 
-const isCampaignDetailsPage =
-    urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
+const isCampaignDetailsPage = urlParams.get('id') && 'give-campaigns' === urlParams.get('page');
 const campaignId = urlParams.get('id');
 
 const donationFormsFilters: Array<FilterConfig> = [
@@ -352,7 +351,7 @@ export default function DonationFormsListTable() {
                         </a>
                     </>
                 )}
-                {state.showDefaultFormTooltip && (
+                {state.showDefaultFormTooltip && isCampaignDetailsPage && (
                     <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
                 )}
             </ListTablePage>
