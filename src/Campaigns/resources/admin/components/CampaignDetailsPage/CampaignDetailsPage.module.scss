@@ -335,11 +335,12 @@ select[name="campaignId"] {
             width: 1rem;
             height: 1rem;
             top: 4px;
+            left: 4px;
         }
 
         span:is(:global(.components-form-toggle.is-checked .components-form-toggle__thumb)) {
 
-            left: 8px;
+            left: 12px;
         }
 
         span:is(:global(.components-form-toggle.is-checked .components-form-toggle__track)) {
