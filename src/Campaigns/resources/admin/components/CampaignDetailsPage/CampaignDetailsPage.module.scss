@@ -223,6 +223,8 @@ select[name="campaignId"] {
 .pageContent {
     /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
 
+    font-family: Inter, sans-serif;
+
     &:not(.fullWidth) {
         padding: var(--givewp-spacing-6) var(--givewp-spacing-6);
     }
@@ -312,6 +314,57 @@ select[name="campaignId"] {
         }
     }
 
+    .toggle {
+        margin: 1rem 0;
+
+        /*.components-form-toggle.is-checked .components-form-toggle__track {
+            background-color: var(--wp-admin-theme-color);
+        }*/
+
+        /*span:first-child {;
+            margin: 1rem;
+        }*/
+
+        span:is(:global(.components-form-toggle .components-form-toggle__track)) {
+            width: 48px;
+            height: 24px;
+            border-radius: 133.3px;
+        }
+
+        span:is(:global(.components-form-toggle .components-form-toggle__thumb)) {
+            width: 1rem;
+            height: 1rem;
+            top: 4px;
+        }
+
+        span:is(:global(.components-form-toggle.is-checked .components-form-toggle__thumb)) {
+
+            left: 8px;
+        }
+
+        span:is(:global(.components-form-toggle.is-checked .components-form-toggle__track)) {
+            background-color: #007cba;
+        }
+
+        label {
+            font-family: Inter, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #1f2937;
+            padding: var(--givewp-spacing-2) 0;
+            margin-left: 0.5rem;
+        }
+
+        p {
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+            color: #4b5563;
+            margin-top: -0.1rem;
+            margin-left: 1.5rem;
+        }
+    }
+
     .warningNotice {
         display: flex;
         margin: 1rem 0 -0.2rem 0;
@@ -356,6 +409,8 @@ select[name="campaignId"] {
 }
 
 :global(#give-admin-campaigns-root) {
+
+
     .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;

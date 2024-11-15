@@ -4,7 +4,6 @@ import {Currency, Editor, Upload} from '../../Inputs';
 import {GiveCampaignDetails} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
-
 import campaignPage from './images/campaign-page.svg';
 
 declare const window: {
@@ -45,16 +44,22 @@ export default () => {
                 </div>
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
-                        <img src={campaignPage} alt={__('Enable campaign page for your campaign.', 'give')} />
-                        <ToggleControl
-                            label={__('Enable campaign page for your campaign.', 'give')}
-                            help={__('This will create a default campaign page for your campaign.', 'give')}
-                            name="enableCampaignPage"
-                            checked={enableCampaignPage}
-                            onChange={(value) => {
-                                setValue('enableCampaignPage', value, {shouldDirty: true});
-                            }}
+                        <img
+                            style={{marginTop: '1rem'}}
+                            src={campaignPage}
+                            alt={__('Enable campaign page for your campaign.', 'give')}
                         />
+                        <div className={styles.toggle}>
+                            <ToggleControl
+                                label={__('Enable campaign page for your campaign.', 'give')}
+                                help={__('This will create a default campaign page for your campaign.', 'give')}
+                                name="enableCampaignPage"
+                                checked={enableCampaignPage}
+                                onChange={(value) => {
+                                    setValue('enableCampaignPage', value, {shouldDirty: true});
+                                }}
+                            />
+                        </div>
                         {!enableCampaignPage && (
                             <div className={styles.warningNotice}>
                                 <svg
