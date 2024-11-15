@@ -44,7 +44,7 @@
 .page {
     box-sizing: border-box;
     color: #333;
-    font-family: Open Sans, system-ui, sans-serif;
+    font-family: Inter, system-ui, sans-serif;
     font-size: 1rem;
 
     *,
@@ -223,8 +223,6 @@ select[name="campaignId"] {
 .pageContent {
     /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
 
-    font-family: Inter, sans-serif;
-
     &:not(.fullWidth) {
         padding: var(--givewp-spacing-6) var(--givewp-spacing-6);
     }
@@ -348,7 +346,7 @@ select[name="campaignId"] {
         }
 
         label {
-            font-family: Inter, sans-serif;
+            font-family: Inter, system-ui, sans-serif;
             font-size: 16px;
             font-weight: 500;
             line-height: 1.5;
@@ -358,7 +356,7 @@ select[name="campaignId"] {
         }
 
         p {
-            font-family: Inter, sans-serif;
+            font-family: Inter, system-ui, sans-serif;
             font-size: 14px;
             color: #4b5563;
             margin-top: -0.1rem;
