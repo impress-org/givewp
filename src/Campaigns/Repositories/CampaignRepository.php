@@ -76,6 +76,7 @@ class CampaignRepository
             DB::table('give_campaigns')
                 ->insert([
                     'campaign_type' => $campaign->type->getValue(),
+                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
                     'long_desc' => $campaign->longDescription,
@@ -130,6 +131,7 @@ class CampaignRepository
                 ->where('id', $campaign->id)
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
+                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
                     'long_desc' => $campaign->longDescription,
@@ -344,6 +346,7 @@ class CampaignRepository
             ->select(
                 'id',
                 ['campaign_type', 'type'],
+                ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],
                 ['long_desc', 'longDescription'],

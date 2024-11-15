@@ -21,6 +21,7 @@ class ConvertQueryDataToCampaign
         return new Campaign([
             'id' => (int)$queryObject->id,
             'type' => new CampaignType($queryObject->type),
+            'enableCampaignPage' => (bool)$queryObject->enableCampaignPage,
             'title' => $queryObject->title,
             'shortDescription' => $queryObject->shortDescription,
             'longDescription' => $queryObject->longDescription,
