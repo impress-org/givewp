@@ -137,14 +137,14 @@ class FormEntry implements Objects
      *
      * @var string|null
      */
-        public $formUrl;
+    public $formUrl;
 
     /**
      * Minimum donation amount.
      *
      * @var float|null
      */
-        public $formMinimum;
+    public $formMinimum;
 
     /**
      * Maximum donation amount.
