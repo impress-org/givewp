@@ -6,14 +6,12 @@ use Exception;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
 use Give\Tests\TestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  */
 class TestModelFactory extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * @unreleased
