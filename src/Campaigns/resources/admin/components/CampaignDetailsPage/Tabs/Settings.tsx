@@ -52,7 +52,30 @@ export default () => {
                                 setValue('enableCampaignPage', value, {shouldDirty: true});
                             }}
                         />
-
+                        {!enableCampaignPage && (
+                            <div className={styles.warningNotice}>
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.009a.833.833 0 0 0 0-1.667h-.008zm.834 4.167a.833.833 0 1 0-1.667 0v3.333a.833.833 0 1 0 1.667 0V9.999z"
+                                        fill="#F29718"
+                                    />
+                                </svg>
+                                <p>
+                                    {__(
+                                        'This will affect the campaign blocks associated with this campaign. Ensure that no campaign blocks are being used on any page.',
+                                        'give'
+                                    )}
+                                </p>
+                            </div>
+                        )}
                         {errors.enableCampaignPage && (
                             <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
                         )}
