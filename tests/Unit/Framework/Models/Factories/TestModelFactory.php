@@ -15,12 +15,18 @@ class TestModelFactory extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @unreleased
+     */
     public function setUp()
     {
         parent::setUp();
         MockModel::resetAutoIncrementId();
     }
 
+    /**
+     * @unreleased
+     */
     public function testDefinitionAsAttributes()
     {
         $factory = new class(MockModel::class) extends ModelFactory {
@@ -36,6 +42,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(123, $object->id);
     }
 
+    /**
+     * @unreleased
+     */
     public function testPassedAttributesOverrideDefinition()
     {
         $factory = new class(MockModel::class) extends ModelFactory {
@@ -53,6 +62,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(456, $object->id);
     }
 
+    /**
+     * @unreleased
+     */
     public function testResolvesCallableDefinitions()
     {
         $factory = new class(MockModel::class) extends ModelFactory {
@@ -70,6 +82,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(123, $object->id);
     }
 
+    /**
+     * @unreleased
+     */
     public function testDoesNotResolveCallableWhenPassedAttribute()
     {
         $factory = new class(MockModel::class) extends ModelFactory {
@@ -89,6 +104,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(123, $object->id);
     }
 
+    /**
+     * @unreleased
+     */
     public function testMakeResolvesDependencyDefinition()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
@@ -114,6 +132,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(789, $object->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testMakeResolvesDependencyDefinitionWithCount()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
@@ -142,6 +163,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(2, $instances[1]->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testMakeDoesNotResolveDependencyWhenPassedAttribute()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
@@ -174,6 +198,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(789, $object->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testCreateResolvesDependencyDefinition()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
@@ -199,6 +226,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(1, $object->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testCreateResolvesDependencyDefinitionWithCount()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
@@ -226,6 +256,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(2, $instances[1]->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testCreateDoesNotResolveDependencyWhenPassedAttribute()
     {
         $factory = new class(MockModelWithDependency::class) extends ModelFactory {
