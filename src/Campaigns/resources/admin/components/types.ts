@@ -23,6 +23,7 @@ export type Campaign = {
     };
     createdAt: string;
     //updatedAt: string;
+    enableCampaignPage: boolean;
 };
 
 /*export interface Campaign {

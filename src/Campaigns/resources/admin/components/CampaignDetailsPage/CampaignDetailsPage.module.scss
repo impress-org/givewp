@@ -336,6 +336,7 @@ select[name="campaignId"] {
 }
 
 :global(#give-admin-campaigns-root) {
+    .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;
         align-content: center;
@@ -348,6 +349,12 @@ select[name="campaignId"] {
         svg {
             margin: 3px 0 0 8px !important;
         }
+    }
+
+    .editCampaignPageButton {
+        color: #060c1a;
+        background-color: #d1d5db;
+        border-color: #d1d5db;
     }
 
 
@@ -394,5 +401,4 @@ select[name="campaignId"] {
             font-weight: bold;
         }
     }
-
 }
