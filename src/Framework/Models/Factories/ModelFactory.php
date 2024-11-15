@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Models\Factories;
 
+use Closure;
 use Exception;
 use Give\Vendors\Faker\Generator;
 use Give\Framework\Database\DB;
@@ -64,6 +65,18 @@ abstract class ModelFactory
     }
 
     /**
+     * @unreleased
+     */
+    public function makeAndResolveTo($property): Closure
+    {
+        return function() use ($property) {
+            return is_array($results = $this->make())
+                ? array_column($results, $property)
+                : $results->$property;
+        };
+    }
+
+    /**
      * @since 2.20.0
      *
      * @param  array  $attributes
@@ -86,6 +99,18 @@ abstract class ModelFactory
     }
 
     /**
+     * @unreleased
+     */
+    public function createAndResolveTo($property)
+    {
+        return function() use ($property) {
+            return is_array($results = $this->create())
+                ? array_column($results, $property)
+                : $results->$property;
+        };
+    }
+
+    /**
      * Creates an instance of the model from the attributes and definition.
      *
      * @since 2.23.0
@@ -94,7 +119,9 @@ abstract class ModelFactory
      */
     protected function makeInstance(array $attributes)
     {
-        return new $this->model(array_merge($this->definition(), $attributes));
+        return new $this->model(array_map(function($attribute) {
+            return is_callable($attribute) ? $attribute() : $attribute;
+        }, array_merge($this->definition(), $attributes)));
     }
 
     /**
