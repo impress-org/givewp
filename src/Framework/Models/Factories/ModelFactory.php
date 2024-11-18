@@ -121,7 +121,7 @@ abstract class ModelFactory
     protected function makeInstance(array $attributes)
     {
         return new $this->model(array_map(function($attribute) {
-            return is_callable($attribute) ? $attribute() : $attribute;
+            return $attribute instanceof Closure ? $attribute() : $attribute;
         }, array_merge($this->definition(), $attributes)));
     }
 

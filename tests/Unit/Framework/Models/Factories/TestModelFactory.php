@@ -288,6 +288,25 @@ class TestModelFactory extends TestCase
 
         $this->assertEquals(789, $object->nestedId);
     }
+
+    public function testDoesNotResolveInvokableClasses()
+    {
+        $factory = new class(MockModelWithInvokableProperty::class) extends ModelFactory {
+            public function definition(): array {
+                return [
+                    'invokable' => new class extends MockInvokableClass {
+                        public function __invoke() {
+                            throw new \Exception('Invokable classes should not be resolved by factories.');
+                        }
+                    },
+                ];
+            }
+        };
+
+        $object = $factory->make();
+
+        $this->assertInstanceOf(MockInvokableClass::class, $object->invokable);
+    }
 }
 
 /**
@@ -327,3 +346,14 @@ class MockModelWithDependency extends MockModel
     ];
 }
 
+abstract class MockInvokableClass
+{
+    abstract public function __invoke();
+}
+
+class MockModelWithInvokableProperty extends MockModel
+{
+    protected $properties = [
+        'invokable' => MockInvokableClass::class,
+    ];
+}
