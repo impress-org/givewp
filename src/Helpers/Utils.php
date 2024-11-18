@@ -113,7 +113,7 @@ class Utils
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function removeBackslashes($data)
     {
@@ -133,7 +133,7 @@ class Utils
      * The regular expression attempts to capture the basic structure of a serialized array
      * or object. This is more robust than the is_serialized() function but still not perfect.
      *
-     * @unreleased
+     * @since 3.17.2
      */
     public static function containsSerializedDataRegex($data): bool
     {
@@ -147,7 +147,7 @@ class Utils
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function isSerialized($data): bool
     {
@@ -161,7 +161,7 @@ class Utils
     }
 
     /**
-     * @unreleased
+     * @since 3.17.2
      */
     public static function safeUnserialize($data)
     {

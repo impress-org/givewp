@@ -16,12 +16,12 @@ global $give_addons;
 /**
  * Class Give_Addon_Activation_Banner
  *
- * @unreleased added $user_id property to class
+ * @since 3.17.2 added $user_id property to class
  * @since  2.1.0 Added pleasing interface when multiple add-ons are activated.
  */
 class Give_Addon_Activation_Banner {
     /**
-     * @unreleased
+     * @since 3.17.2
      * @var int
      */
     protected $user_id;
