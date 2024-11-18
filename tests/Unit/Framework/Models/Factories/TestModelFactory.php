@@ -289,6 +289,9 @@ class TestModelFactory extends TestCase
         $this->assertEquals(789, $object->nestedId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testDoesNotResolveInvokableClasses()
     {
         $factory = new class(MockModelWithInvokableProperty::class) extends ModelFactory {
@@ -346,11 +349,19 @@ class MockModelWithDependency extends MockModel
     ];
 }
 
+/**
+ * @unreleased
+ */
 abstract class MockInvokableClass
 {
     abstract public function __invoke();
 }
 
+/**
+ * @unreleased
+ *
+ * @property MockInvokableClass $invokable
+ */
 class MockModelWithInvokableProperty extends MockModel
 {
     protected $properties = [
