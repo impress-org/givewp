@@ -385,7 +385,7 @@ div.give-field-description {
 
 .give_option_based_form_editor_notice {
 	display: flex;
-	margin: -2rem 0;
+    margin: -2rem 0 0.5rem 0;
 	gap: 0.3rem;
 	padding: 0.5rem;
 	background-color: #fffaf2;
@@ -410,12 +410,11 @@ div.give-field-description {
 .give-setting-tab-body-display,
 .give-settings-advanced-tab {
 	label {
-		display: flex;
-		gap: 0.4rem;
-		padding: 1.25rem 1rem;
-		position: relative;
+        display: flex;
+        position: relative;
 
 		.give-settings-section-group-helper {
+            padding-left: 0.2rem;
 			--popout-display: none;
 			display: flex;
 			cursor: help;
