@@ -113,7 +113,7 @@ abstract class ModelFactory
     /**
      * Creates an instance of the model from the attributes and definition.
      *
-     * @unreleased Add support for resolving callables.
+     * @unreleased Add support for resolving Closures.
      * @since 2.23.0
      *
      * @return M
