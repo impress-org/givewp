@@ -101,7 +101,7 @@ abstract class ModelFactory
     /**
      * @unreleased
      */
-    public function createAndResolveTo($property)
+    public function createAndResolveTo($property): Closure
     {
         return function() use ($property) {
             return is_array($results = $this->create())
