@@ -4,7 +4,7 @@ import {Currency, Editor, Upload} from '../../Inputs';
 import {GiveCampaignDetails} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
-import campaignPage from './images/campaign-page.svg';
+import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
 
 declare const window: {
@@ -47,7 +47,7 @@ export default () => {
                     <div className={styles.sectionField}>
                         <img
                             style={{marginTop: '1rem'}}
-                            src={campaignPage}
+                            src={campaignPageImage}
                             alt={__('Enable campaign page for your campaign.', 'give')}
                         />
                         <div className={styles.toggle}>
