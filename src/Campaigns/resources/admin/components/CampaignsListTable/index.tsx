@@ -8,7 +8,7 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
-import {useState} from "react";
+import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
@@ -107,16 +107,13 @@ const bulkActions: Array<BulkActionsConfig> = [
     {
         label: __('Merge', 'give'),
         value: 'merge',
-        type: 'urlAction',
-        action: async (selected) => {
-            return await new Promise((resolve) => setTimeout(resolve, 0));
-        },
+        type: 'custom',
         confirm: (selected, names) => {
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('action', 'merge');
             window.history.replaceState(
                 {selected: selected, names: names},
-                __('Merge Campaings', 'give'),
+                __('Merge Campaigns', 'give'),
                 `${window.location.pathname}?${urlParams.toString()}`
             );
 
@@ -126,7 +123,6 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 export default function CampaignsListTable() {
-
     const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
 
     /**
@@ -142,12 +138,11 @@ export default function CampaignsListTable() {
             <div className={styles.container}>
                 <img src={imagePath} alt={__('No campaign created yet', 'give')} />
                 <h3>{__('No campaign created yet', 'give')}</h3>
-                <p className={styles.helpMessage}>{__('Don’t worry, let’s help you setup your first campaign.', 'give')}</p>
+                <p className={styles.helpMessage}>
+                    {__('Don’t worry, let’s help you setup your first campaign.', 'give')}
+                </p>
                 <p>
-                    <a
-                        onClick={() => setOpen(true)}
-                        className={`button button-primary ${styles.button}`}
-                    >
+                    <a onClick={() => setOpen(true)} className={`button button-primary ${styles.button}`}>
                         {__('Create campaign', 'give')}
                     </a>
                 </p>

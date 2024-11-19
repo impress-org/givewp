@@ -47,7 +47,8 @@ class LoadCampaignDetailsAssets
         wp_enqueue_style(
             $handleName,
             GIVE_PLUGIN_URL . 'build/campaignDetails.css',
-            [],
+            /** @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-components/#usage */
+            ['wp-components'],
             $scriptAsset['version']
         );
     }
