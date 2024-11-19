@@ -1525,7 +1525,8 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         foreach ( $options as $option ) {
             if (isset($option['_give_amount'], $option['_give_text'])) {
                 if (Money::of($option['_give_amount'], $currency )->getMinorAmount() == $donation->amount->getAmount()) {
-                    return sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                    return apply_filters( 'give_get_donation_form_title', $form_title, $donation_id );
                 }
             }
         }
