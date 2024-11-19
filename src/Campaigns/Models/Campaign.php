@@ -25,6 +25,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  *
  * @property int              $id
  * @property CampaignType     $type
+ * @property bool $enableCampaignPage
  * @property string           $title
  * @property string           $url
  * @property string           $shortDescription
@@ -48,6 +49,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     protected $properties = [
         'id' => 'int',
         'type' => CampaignType::class,
+        'enableCampaignPage' => ['bool', true],
         'title' => 'string',
         'shortDescription' => 'string',
         'longDescription' => 'string',

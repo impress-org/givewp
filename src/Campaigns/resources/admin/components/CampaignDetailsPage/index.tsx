@@ -12,7 +12,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {DotsIcons, TrashIcon, ViewIcon, ArrowReverse, BreadcrumbSeparatorIcon, TriangleIcon} from '../Icons';
+import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, TriangleIcon, ViewIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 
@@ -27,12 +27,11 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-
-const StatusBadge = ({status}:{status: string}) => {
+const StatusBadge = ({status}: {status: string}) => {
     const statusMap = {
-        active:  __('Active', 'give'),
-        archived:  __('Archived', 'give'),
-        draft:  __('Draft', 'give')
+        active: __('Active', 'give'),
+        archived: __('Archived', 'give'),
+        draft: __('Draft', 'give'),
     };
 
     return (
@@ -42,7 +41,7 @@ const StatusBadge = ({status}:{status: string}) => {
             </div>
         </div>
     );
-}
+};
 
 export default function CampaignsDetailsPage({campaignId}) {
     const [resolver, setResolver] = useState({});
@@ -55,7 +54,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const dispatch = useDispatch('givewp/campaign-notifications');
 
     const setShow = (data: Show) => {
-        _setShowValue(prevState => {
+        _setShowValue((prevState) => {
             return {
                 ...prevState,
                 ...data,
@@ -91,7 +90,9 @@ export default function CampaignsDetailsPage({campaignId}) {
         ...resolver,
     });
 
-    const {formState, handleSubmit, reset, setValue} = methods;
+    const {formState, handleSubmit, reset, setValue, watch} = methods;
+
+    const [enableCampaignPage] = watch(['enableCampaignPage']);
 
     // Set default values when campaign is loaded
     useEffect(() => {
@@ -113,23 +114,28 @@ export default function CampaignsDetailsPage({campaignId}) {
                 <>
                     <TriangleIcon />
                     <span>
-                        {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+                        {__(
+                            "Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.",
+                            'give'
+                        )}
                     </span>
                     <strong>
-                        <a href="#" onClick={() => {
-                            updateStatus('draft');
-                            dispatch.dismissNotification('update-archive-notice');
-                        }}>
+                        <a
+                            href="#"
+                            onClick={() => {
+                                updateStatus('draft');
+                                dispatch.dismissNotification('update-archive-notice');
+                            }}
+                        >
                             {__('Move to draft', 'give')}
                         </a>
                     </strong>
                 </>
-            )
+            ),
         });
     }, [campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
-
         if (formState.isDirty) {
             setIsSaving(data.status);
 
@@ -143,15 +149,15 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                 dispatch.addSnackbarNotice({
                     id: `save-${data.status}`,
-                    content: __('Campaign updated', 'give')
+                    content: __('Campaign updated', 'give'),
                 });
-            } catch(err) {
+            } catch (err) {
                 setIsSaving(null);
 
                 dispatch.addSnackbarNotice({
                     id: `save-error`,
                     type: 'error',
-                    content: __('Campaign update failed', 'give')
+                    content: __('Campaign update failed', 'give'),
                 });
             }
         }
@@ -173,9 +179,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                 dispatch.addSnackbarNotice({
                     id: `update-${status}`,
-                    content: getMessageByStatus(status)
+                    content: getMessageByStatus(status),
                 });
-            } catch(err) {
+            } catch (err) {
                 setShow({
                     contextMenu: false,
                     confirmationModal: false,
@@ -184,7 +190,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 dispatch.addSnackbarNotice({
                     id: 'update-error',
                     type: 'error',
-                    content: __('Something went wrong', 'give')
+                    content: __('Something went wrong', 'give'),
                 });
             }
         })();
@@ -222,6 +228,16 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                                {enableCampaignPage && (
+                                    <a
+                                        className={`button button-secondary ${styles.editCampaignPageButton}`}
+                                        href={`${window.GiveCampaignDetails.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {__('Edit campaign page', 'give')}
+                                    </a>
+                                )}
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}
@@ -251,13 +267,15 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        <a
-                                            href="#"
-                                            aria-label={__('View Campaign', 'give')}
-                                            className={styles.contextMenuItem}
-                                        >
-                                            <ViewIcon /> {__('View Campaign', 'give')}
-                                        </a>
+                                        {enableCampaignPage && (
+                                            <a
+                                                href="#"
+                                                aria-label={__('View Campaign', 'give')}
+                                                className={styles.contextMenuItem}
+                                            >
+                                                <ViewIcon /> {__('View Campaign', 'give')}
+                                            </a>
+                                        )}
                                         {campaign.status === 'archived' ? (
                                             <a
                                                 href="#"
@@ -275,7 +293,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                                                 <TrashIcon /> {__('Archive Campaign', 'give')}
                                             </a>
                                         )}
-
                                     </div>
                                 )}
                             </div>
