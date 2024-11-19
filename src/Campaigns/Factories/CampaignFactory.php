@@ -22,6 +22,7 @@ class CampaignFactory extends ModelFactory
 
         return [
             'type' => CampaignType::CORE(),
+            'enableCampaignPage' => true,
             'title' => __('GiveWP Campaign', 'give'),
             'shortDescription' => __('Campaign short description', 'give'),
             'longDescription' => __('Campaign long description', 'give'),
