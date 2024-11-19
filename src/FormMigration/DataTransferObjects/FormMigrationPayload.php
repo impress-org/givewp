@@ -2,6 +2,7 @@
 
 namespace Give\FormMigration\DataTransferObjects;
 
+use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\Properties\FormSettings;
@@ -28,7 +29,9 @@ class FormMigrationPayload
         $formV3 = DonationForm::create([
             'title' => $formV2->title,
             'status' => DonationFormStatus::DRAFT(),
-            'settings' => FormSettings::fromArray([]),
+            'settings' => FormSettings::fromArray([
+                'designId' => ClassicFormDesign::id(),
+            ]),
             'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
         ]);
 
