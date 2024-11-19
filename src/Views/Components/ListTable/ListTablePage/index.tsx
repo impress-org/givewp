@@ -52,7 +52,7 @@ export interface ColumnFilterConfig {
     filter: Function;
 }
 
-export interface BulkActionsConfigBase {
+interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
@@ -64,13 +64,13 @@ export interface BulkActionsConfigBase {
 }
 
 // Makes the "action" property required for the standard types
-export interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
     type: 'normal' | 'warning' | 'danger';
     action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
 }
 
 // Makes the "action" property required for the undefined type
-export interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
     type?: undefined;
     action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
 }
