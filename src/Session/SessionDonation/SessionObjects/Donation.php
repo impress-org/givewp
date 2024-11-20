@@ -74,6 +74,30 @@ class Donation implements Objects
     public $paymentGateway;
 
     /**
+     * Donation-related objects.
+     *
+     * @unreleased
+     * @var FormEntry
+     */
+    public $formEntry;
+
+    /**
+     * Donor information.
+     *
+     * @unreleased
+     * @var DonorInfo
+     */
+    public $donorInfo;
+
+    /**
+     * Card information.
+     *
+     * @unreleased
+     * @var CardInfo
+     */
+    public $cardInfo;
+
+    /**
      * Array of properties and their cast type.
      *
      * @var ValueObjects[]

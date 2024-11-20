@@ -13,6 +13,11 @@ class DefaultOptions extends AbstractOptionBasedFormEditorSettings
     public function getDisabledOptionIds(): array
     {
         return [
+            // Form Fields Section
+            'company_field',
+            'last_name_field_required',
+            'anonymous_donation',
+            'donor_comment',
             //Post Types Section
             'form_featured_img',
             'featured_image_size',
@@ -20,25 +25,5 @@ class DefaultOptions extends AbstractOptionBasedFormEditorSettings
             //Terms and Conditions Section
             'terms',
         ];
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getDisabledSectionIds(): array
-    {
-        return [
-            'display-settings',
-            'taxonomies',
-            'form-field-manager',
-        ];
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getNewDefaultSection(): string
-    {
-        return 'post-types';
     }
 }
