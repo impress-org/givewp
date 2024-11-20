@@ -182,13 +182,11 @@ class ListDonationForms extends Endpoint
         $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
-        if ($this->defaultForm && ! $this->request->get_param('sortDirection')) {
-            $query->orderByRaw('FIELD(ID, %d)', $this->defaultForm);
-        } else {
-            $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
-            foreach ($sortColumns as $sortColumn) {
-                $query->orderBy($sortColumn, $sortDirection);
-            }
+        $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);
+
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+        foreach ($sortColumns as $sortColumn) {
+            $query->orderBy($sortColumn, $sortDirection);
         }
 
         $query->limit($perPage)

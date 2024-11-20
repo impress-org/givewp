@@ -59,7 +59,7 @@ trait OrderByStatement
             ', ',
             array_map(function ($order) {
                 if ($order instanceof RawSQL) {
-                    return DB::prepare('%s', $order->sql);
+                    return DB::prepare('%1s', $order->sql);
                 }
                 return DB::prepare('%1s %2s', $order->column, $order->direction);
             }, $this->orderBys)
