@@ -97,7 +97,7 @@ class FormEntry implements Objects
     /**
      * Donation-related session objects.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var FormEntry
      */
     public $formEntry;
@@ -105,7 +105,7 @@ class FormEntry implements Objects
     /**
      * Donor information.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var DonorInfo
      */
     public $donorInfo;
@@ -113,7 +113,7 @@ class FormEntry implements Objects
     /**
      * Card information.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var CardInfo
      */
     public $cardInfo;
