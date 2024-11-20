@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Controllers;
 
 use Exception;
+use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
@@ -31,7 +32,11 @@ class CampaignRequestController
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            array_merge($campaign->toArray(), [
+                'goalProgress' => (new CampaignDonationQuery($campaign))->sumIntendedAmount(),
+            ])
+        );
     }
 
     /**

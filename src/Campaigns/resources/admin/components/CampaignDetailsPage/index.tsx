@@ -17,6 +17,7 @@ import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 
 import styles from './CampaignDetailsPage.module.scss';
+import useCampaign from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaign";
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -74,16 +75,11 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, []);
 
     const {
-        record: campaign,
+        campaign,
         hasResolved,
         save,
         edit,
-    }: {
-        record: Campaign;
-        hasResolved: boolean;
-        save: () => any;
-        edit: (data: Campaign) => void;
-    } = useEntityRecord('givewp', 'campaign', campaignId);
+    } = useCampaign();
 
     const methods = useForm<Campaign>({
         mode: 'onChange',

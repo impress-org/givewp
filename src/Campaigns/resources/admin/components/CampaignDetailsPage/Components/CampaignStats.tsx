@@ -8,6 +8,7 @@ import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
 import DefaultFormWidget from "./DefaultForm";
 import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
+import useCampaign from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaign";
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -178,6 +179,9 @@ const RevenueWidget = () => {
 }
 
 const GoalProgressWidget = () => {
+
+    const {campaign} = useCampaign();
+
     return (
         <div style={{
             flex: 1,
@@ -187,7 +191,7 @@ const GoalProgressWidget = () => {
         }}>
             <HeaderText>{__('Goal Progress')}</HeaderText>
             <HeaderSubText>{__('Show your campaign performance')}</HeaderSubText>
-            <GoalProgressChart value={450} goal={2000} />
+            <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
         </div>
     )
 }
