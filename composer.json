@@ -10,8 +10,6 @@
         "stripe/stripe-php": "^7.97.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "kjohnson/format-object-list": "^0.1.0",
-        "fakerphp/faker": "^1.9",
-        "myclabs/php-enum": "^1.6",
         "symfony/http-foundation": "^v3.4.47",
         "moneyphp/money": "v3.3.1",
         "stellarwp/field-conditions": "^1.1",
@@ -22,6 +20,7 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.9",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "phpcompatibility/php-compatibility": "^9.3",
@@ -80,7 +79,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.2.24"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -94,7 +93,6 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
-                "fakerphp/faker",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
