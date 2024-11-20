@@ -4,6 +4,9 @@ import {Campaign} from "@givewp/campaigns/admin/components/types";
 const urlParams = new URLSearchParams(window.location.search);
 const campaignId = urlParams.get('id');
 
+/**
+ * @unreleased
+ */
 export default () => {
     const {
         record: campaign,
