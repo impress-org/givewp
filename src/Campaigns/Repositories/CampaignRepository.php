@@ -50,7 +50,7 @@ class CampaignRepository
     {
         return $this->prepareQuery()
             ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
-            ->where('forms.form_id', $formId)
+            ->where('campaigns.form_id', $formId)
             ->get();
     }
 
