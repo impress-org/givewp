@@ -8,16 +8,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @unreleased
  */
-class NameColumn extends ModelColumn
+class TitleColumn extends ModelColumn
 {
-    protected $sortColumn = 'name';
+    protected $sortColumn = 'title';
 
     /**
      * @unreleased
      */
     public static function getId(): string
     {
-        return 'name';
+        return 'title';
     }
 
     /**

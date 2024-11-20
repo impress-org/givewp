@@ -316,12 +316,14 @@ export default function DonationFormsListTable() {
                     </div>
                 ) : (
                     <>
-                        <button
-                            className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                            onClick={showLegacyDonationForms}
-                        >
-                            {__('Switch to Legacy View', 'give')}
-                        </button>
+                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
+                            <button
+                                className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                                onClick={showLegacyDonationForms}
+                            >
+                                {__('Switch to Legacy View', 'give')}
+                            </button>
+                        )}
                         <a
                             href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
                             className={`button button-primary ${styles.button}`}

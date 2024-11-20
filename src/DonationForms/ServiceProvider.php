@@ -363,8 +363,24 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerHoneyPotField(): void
     {
         add_action('givewp_donation_form_schema', function (DonationFormModel $form, int $formId) {
-            if (apply_filters('givewp_donation_forms_honeypot_enabled', false, $formId)) {
-                (new AddHoneyPotFieldToDonationForms())($form);
+            /**
+             * Check if the honeypot field is enabled
+             * @param bool $enabled
+             * @param int $formId
+             *
+             * @since 3.16.2
+             */
+            if (apply_filters('givewp_donation_forms_honeypot_enabled', give_is_setting_enabled(give_get_option( 'givewp_donation_forms_honeypot_enabled', 'enabled')), $formId)) {
+                /**
+                 * Filter the honeypot field name
+                 * @param string $honeypotFieldName
+                 * @param int $formId
+                 *
+                 * @since 3.17.0
+                 */
+                $honeypotFieldName = (string)apply_filters('givewp_donation_forms_honeypot_field_name', 'donationBirthday', $formId);
+
+                (new AddHoneyPotFieldToDonationForms())($form, $honeypotFieldName);
             }
         }, 10, 2);
     }

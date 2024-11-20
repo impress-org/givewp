@@ -46,13 +46,6 @@
     //overflow: hidden; // The Inspector Popout needs to be visible.
     overflow-y: scroll;
 
-    // WP 6.6+ - hide the Blocks, Patterns, Media tabs
-    &.givewp-next-gen-sidebar-secondary {
-        .block-editor-inserter__tablist-and-close-button {
-                display: none;
-            }
-    }
-
     &.givewp-next-gen-sidebar-primary {
         .block-editor-block-inspector {
             > h2 {
@@ -315,3 +308,30 @@
 .iti {
     width: 100%;
 }
+
+/**
+ * WordPress 6.6 compatibility
+ */
+.givewp-next-gen-sidebar-secondary {
+    // Hide the Blocks, Patterns, Media tabs
+    .block-editor-inserter__tablist-and-close-button {
+        display: none;
+    }
+}
+
+
+/**
+ * WordPress 6.7 compatibility
+ */
+.givewp-next-gen-sidebar-secondary {
+    // Hide the Blocks, Patterns, Media tabs (css name change)
+    .block-editor-tabbed-sidebar__tablist-and-close-button {
+        display: none;
+    }
+
+    // WP adds a fixed width to the tabbed sidebar, we need to override it
+    .block-editor-inserter__main-area .block-editor-tabbed-sidebar {
+        width: 100%;
+    }
+}
+

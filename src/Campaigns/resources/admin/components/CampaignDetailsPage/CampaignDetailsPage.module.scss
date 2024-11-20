@@ -44,7 +44,7 @@
 .page {
     box-sizing: border-box;
     color: #333;
-    font-family: Open Sans, system-ui, sans-serif;
+    font-family: Inter, system-ui, sans-serif;
     font-size: 1rem;
 
     *,
@@ -311,6 +311,74 @@ select[name="campaignId"] {
             }
         }
     }
+
+    .toggle {
+        margin: 1rem 0;
+
+        span:is(:global(.components-form-toggle .components-form-toggle__track)) {
+            width: 48px;
+            height: 24px;
+            border-radius: 133.3px;
+        }
+
+        span:is(:global(.components-form-toggle .components-form-toggle__thumb)) {
+            width: 1rem;
+            height: 1rem;
+            top: 4px;
+            left: 4px;
+        }
+
+        span:is(:global(.components-form-toggle.is-checked .components-form-toggle__thumb)) {
+
+            left: 12px;
+        }
+
+        span:is(:global(.components-form-toggle.is-checked .components-form-toggle__track)) {
+            background-color: #007cba;
+        }
+
+        span:is(:global(.components-form-toggle .components-form-toggle__input:focus+.components-form-toggle__track)) {
+            box-shadow: 0 0 0 var(--wp-admin-border-width-focus) #fff, 0 0 0 calc(var(--wp-admin-border-width-focus) * 2) #007cba;
+        }
+
+        label {
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #1f2937;
+            padding: var(--givewp-spacing-2) 0;
+            margin-left: 0.5rem;
+        }
+
+        p {
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 14px;
+            color: #4b5563;
+            margin-top: -0.1rem;
+            margin-left: 1.5rem;
+        }
+    }
+
+    .warningNotice {
+        display: flex;
+        margin: 1rem 0 -0.2rem 0;
+        gap: 0.3rem;
+        padding: 0 0.5rem 0 0.5rem;
+        background-color: #fffaf2;
+        border-radius: 4px;
+        border: 1px solid var(--givewp-orange-400);
+        border-left-width: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1a0f00;
+
+        svg {
+            margin: 0.8rem 0.3rem;
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+    }
 }
 
 .loadingContainer {
@@ -336,6 +404,9 @@ select[name="campaignId"] {
 }
 
 :global(#give-admin-campaigns-root) {
+
+
+    .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;
         align-content: center;
@@ -348,6 +419,12 @@ select[name="campaignId"] {
         svg {
             margin: 3px 0 0 8px !important;
         }
+    }
+
+    .editCampaignPageButton {
+        color: #060c1a;
+        background-color: #d1d5db;
+        border-color: #d1d5db;
     }
 
 
@@ -394,5 +471,4 @@ select[name="campaignId"] {
             font-weight: bold;
         }
     }
-
 }

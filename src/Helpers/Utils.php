@@ -113,6 +113,82 @@ class Utils
     }
 
     /**
+     * @since 3.17.2
+     */
+    public static function removeBackslashes($data)
+    {
+        /**
+         * The stripslashes_deep() method removes only the first backslash occurrence from
+         * a given string, so we are using the ltrim() method to make sure we are removing
+         * all other occurrences. We need to remove these backslashes from the beginner of
+         * the input because attackers can use them to bypass the is_serialized() check.
+         */
+        $data = stripslashes_deep($data);
+        $data = is_string($data) ? ltrim($data, '\\') : $data;
+
+        return $data;
+    }
+
+    /**
+     * The regular expression attempts to capture the basic structure of a serialized array
+     * or object. This is more robust than the is_serialized() function but still not perfect.
+     *
+     * @since 3.17.2
+     */
+    public static function containsSerializedDataRegex($data): bool
+    {
+        if ( ! is_string($data)) {
+            return false;
+        }
+
+        $pattern = '/(a:\d+:\{.*\})|(O:\d+:"[^"]+":\{.*\})/';
+
+        return preg_match($pattern, $data) === 1;
+    }
+
+    /**
+     * @since 3.17.2
+     */
+    public static function isSerialized($data): bool
+    {
+        $data = self::removeBackslashes($data);
+
+        if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @since 3.17.2
+     */
+    public static function safeUnserialize($data)
+    {
+        $data = self::removeBackslashes($data);
+
+        /**
+         * We are setting the allowed_classes to false as a default to
+         * prevent the injection of objects that can run unwished code.
+         *
+         * From PHP docs:
+         * allowed_classes - Either an array of class names which should be accepted, false to accept no classes, or
+         * true to accept all classes. If this option is defined and unserialize() encounters an object of a class
+         * that isn't to be accepted, then the object will be instantiated as __PHP_Incomplete_Class instead. Omitting
+         * this option is the same as defining it as true: PHP will attempt to instantiate objects of any class.
+         */
+        $unserializedData = @unserialize(trim($data), ['allowed_classes' => false]);
+
+        /*
+         * In case the passed string is not unserializeable, false is returned.
+         *
+         * @see https://www.php.net/manual/en/function.unserialize.php
+         */
+
+        return ! $unserializedData && ! self::containsSerializedDataRegex($data) ? $data : $unserializedData;
+    }
+
+    /**
      * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
      *
      * @since 3.16.1
@@ -123,8 +199,8 @@ class Utils
      */
     public static function maybeSafeUnserialize($data)
     {
-        return is_serialized($data)
-            ? @unserialize(trim($data), ['allowed_classes' => false])
+        return self::isSerialized($data)
+            ? self::safeUnserialize($data)
             : $data;
     }
 }
