@@ -269,6 +269,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.18.0: November 20th, 2024 =
 * New: Added support to our form migration process for our upcoming Constant Contact add-on 3.0.0 version 
 * New: The donor wall now shows the donor's uploaded image avatar when available
+* New: Added a global setting to enable or disable the Option-Based Form Editor and settings.
 * Fix: Resolved an issue with multi-step form designs growing extra space outside the form
 * Fix: Resolved an issue where some people were not able to connect to PayPal
 * Fix: Resolved an issue that was preventing the form migration process from completing
