@@ -1,7 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Chart from "react-apexcharts";
+import apiFetch from "@wordpress/api-fetch";
+import {addQueryArgs} from "@wordpress/url";
+
+const campaignId = new URLSearchParams(window.location.search).get('id');
 
 const RevenueChart = () => {
+
+    const [max, setMax] = useState(0);
+    const [categories, setCategories] = useState([]);
+    const [series, setSeries] = useState([{name: "Revenue", data: []}]);
+
+    useEffect(() => {
+        apiFetch({path: addQueryArgs( '/give-api/v2/campaigns/' + campaignId +'/revenue' ) } )
+            .then((data: {date: string, amount: number}[]) => {
+
+                setMax(Math.max(...data.map(item => item.amount)) * 1.1)
+
+                setCategories(data.map(item => item.date))
+
+                setSeries([{
+                    name: "Revenue",
+                    data: data.map(item => item.amount)
+                }])
+            });
+    }, [])
 
     const options = {
         chart: {
@@ -11,10 +34,11 @@ const RevenueChart = () => {
             },
         },
         xaxis: {
-            categories: ['Aug 06', 'Aug 07', 'Aug 08', 'Aug 09']
+            categories,
+            type: 'datetime' as "datetime" | "category" | "numeric",
         },
         yaxis: {
-            max: 200,
+            max,
         },
         stroke: {
             color: ['#60a1e2'],
@@ -50,13 +74,6 @@ const RevenueChart = () => {
             }
         }
     };
-
-    const series = [
-        {
-            name: "Revenue",
-            data: [0, 100, 50, 150]
-        }
-    ];
 
     return (
         <>
