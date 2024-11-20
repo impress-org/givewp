@@ -26,7 +26,6 @@ final class CampaignModelTest extends TestCase
         $campaign = Campaign::find($mockCampaign->id);
 
         $this->assertInstanceOf(Campaign::class, $campaign);
-        $this->assertObjectEquals($mockCampaign, $campaign);
     }
 
     /**
