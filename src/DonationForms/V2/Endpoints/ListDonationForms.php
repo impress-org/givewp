@@ -184,7 +184,7 @@ class ListDonationForms extends Endpoint
 
         $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);
 
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'asc';
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
