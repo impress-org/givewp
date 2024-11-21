@@ -333,6 +333,7 @@ class DonationRepository
     {
         $meta = [
             DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
+            DonationMetaKeys::CAMPAIGN_ID => $donation->campaign->id,
             DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
                 $donation->amount->formatToDecimal(),
                 ['currency' => $donation->amount->getCurrency()]

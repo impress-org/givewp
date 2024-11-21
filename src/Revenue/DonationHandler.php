@@ -17,6 +17,7 @@ class DonationHandler
     /**
      * Handle new donation.
      *
+     * @unreleased - set campaign id
      * @since 2.9.0
      *
      * @param int $donationId
@@ -24,33 +25,18 @@ class DonationHandler
      */
     public function handle($donationId)
     {
-        /* @var Revenue $revenue */
-        $revenue = give(Revenue::class);
-
-        $revenue->insert($this->getData($donationId));
-    }
-
-    /**
-     * Get revenue data.
-     *
-     * @since 2.9.0
-     *
-     * @param int $donationId
-     *
-     * @return array
-     */
-    public function getData($donationId)
-    {
-        /* @var Revenue $revenue */
         $amount = give_donation_amount($donationId);
         $currency = give_get_option('currency');
-        $money = Money::of($amount, $currency);
         $formId = give_get_payment_form_id($donationId);
+        $campaign = give()->campaigns->getByFormId($formId);
 
-        return [
+        $data = [
             'donation_id' => $donationId,
-            'form_id' => $formId,
-            'amount' => $money->getMinorAmount(),
+            'form_id' =>  $formId,
+            'amount' => Money::of($amount, $currency)->getMinorAmount(),
+            'campaign_id' => $campaign ? $campaign->id : 0,
         ];
+
+        give(Revenue::class)->insert($data);
     }
 }
