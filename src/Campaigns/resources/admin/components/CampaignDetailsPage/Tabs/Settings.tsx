@@ -15,6 +15,9 @@ declare const window: {
  * @unreleased
  */
 export default () => {
+
+    const {donationForms} = window.GiveCampaignDetails
+
     const {
         register,
         watch,
@@ -190,6 +193,32 @@ export default () => {
                     {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                 </div>
             </div>
+
+            {/* DEFAULT CAMPAIGN FORM SETTINGS */}
+            { donationForms.length > 1 && (
+                <div className={styles.section}>
+                    <div className={styles.leftColumn}>
+                        <div className={styles.sectionTitle}>{__('Default campaign form', 'give')}</div>
+                        <div className={styles.sectionDescription}>
+                            {__('Your campaign page and blocks will collect donations through this form by default. You can change the default form at any time.', 'give')}
+                        </div>
+                    </div>
+                    <div className={styles.rightColumn}>
+                        <div className={styles.sectionField}>
+                            <div
+                                className={styles.sectionSubtitle}>{__('Select your default campaign form', 'give')}</div>
+
+                            <select {...register('defaultFormId', {valueAsNumber: true})} disabled={isDisabled}>
+                                {donationForms.map(({id, title}) => <option key={id} value={id}>{title}</option>)}
+                            </select>
+
+                            {errors.defaultForm &&
+                                <div className={styles.errorMsg}>{`${errors.defaultForm.message}`}</div>}
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

@@ -2,13 +2,14 @@
 
 namespace Give\Campaigns\Controllers;
 
-use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Campaigns\DataTransferObjects\CampaignDetailsData;
+use Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -31,7 +32,9 @@ class CampaignRequestController
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            (new CampaignDetailsData($campaign))->toArray()
+        );
     }
 
     /**
@@ -139,7 +142,9 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            (new CampaignDetailsData($campaign))->toArray()
+        );
     }
 
 

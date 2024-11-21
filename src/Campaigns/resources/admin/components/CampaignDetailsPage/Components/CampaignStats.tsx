@@ -7,13 +7,8 @@ import { addQueryArgs } from '@wordpress/url';
 import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
 import DefaultFormWidget from "./DefaultForm";
-import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
-
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
 
 const pluck = (array: any[], property: string) => array.map(element => element[property])
 
@@ -65,7 +60,7 @@ const CampaignStats = () => {
                 <Column flex={1}>
                     <GoalProgressWidget />
 
-                    <DefaultFormWidget defaultForm={window.GiveCampaignDetails.defaultForm} />
+                    <DefaultFormWidget />
 
                 </Column>
             </Row>
