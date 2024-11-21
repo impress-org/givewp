@@ -5,6 +5,8 @@ namespace Give\Session\SessionDonation\SessionObjects;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Helpers\ArrayDataSet;
 use Give\Session\Objects;
+use Give\ValueObjects\CardInfo;
+use Give\ValueObjects\DonorInfo;
 
 /**
  * Class FormEntry
@@ -91,6 +93,101 @@ class FormEntry implements Objects
      * @var string
      */
     public $paymentGateway;
+
+    /**
+     * Donation-related session objects.
+     *
+     * @unreleased
+     * @var FormEntry
+     */
+    public $formEntry;
+
+    /**
+     * Donor information.
+     *
+     * @unreleased
+     * @var DonorInfo
+     */
+    public $donorInfo;
+
+    /**
+     * Card information.
+     *
+     * @unreleased
+     * @var CardInfo
+     */
+    public $cardInfo;
+
+    /**
+     * Honeypot value to detect spam submissions.
+     *
+     * @var string|null
+     */
+    public $honeypot;
+
+    /**
+     * Form ID prefix.
+     *
+     * @var string|null
+     */
+    public $formIdPrefix;
+
+    /**
+     * Form URL.
+     *
+     * @var string|null
+     */
+    public $formUrl;
+
+    /**
+     * Minimum donation amount.
+     *
+     * @var float|null
+     */
+    public $formMinimum;
+
+    /**
+     * Maximum donation amount.
+     *
+     * @var float|null
+     */
+    public $formMaximum;
+
+    /**
+     * Form hash.
+     *
+     * @var string|null
+     */
+    public $formHash;
+
+    /**
+     * Payment mode.
+     *
+     * @var string|null
+     */
+    public $paymentMode;
+
+    /**
+     * Stripe Payment Method.
+     *
+     * @var string|null
+     */
+    public $stripePaymentMethod;
+    /*
+
+    /**
+     * Constant Contact signup status.
+     *
+     * @var bool|null
+     */
+    public $constantContactSignup;
+
+    /**
+     * Action property.
+     *
+     * @var string|null
+     */
+    public $action;
 
     /**
      * Take array and return object.

@@ -32,7 +32,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		// Plugin Root File
 		$path = str_replace( 'tests/unit-tests/', '', plugin_dir_path( $filePath ) );
-		$this->assertSame( GIVE_PLUGIN_FILE, $path . 'give.php' );
+        $this->assertSame(GIVE_PLUGIN_FILE, untrailingslashit($path) . DIRECTORY_SEPARATOR . 'give.php');
 	}
 
 	/**
