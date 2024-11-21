@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
 import { CurrencyInputOnChangeValues } from "react-currency-input-field/dist/components/CurrencyInputProps";
+import {useEffect, useState} from "react";
+import useCurrencySeparator from "@givewp/forms/registrars/templates/fields/Amount/useCurrencySeparators";
 
 /**
  * @since 3.0.0
@@ -21,6 +23,8 @@ type CustomAmountProps = {
 const CustomAmount = (
     {defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps
 ) => {
+    const {groupSeparator, decimalSeparator} = useCurrencySeparator();
+
     return (
         <div className={classNames('givewp-fields-amount__input-container', {invalid: fieldError})}>
             <CurrencyInput
@@ -29,6 +33,8 @@ const CustomAmount = (
                     currency,
                 }}
                 disableAbbreviations
+                decimalSeparator={decimalSeparator}
+                groupSeparator={groupSeparator}
                 className="givewp-fields-amount__input givewp-fields-amount__input-custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
@@ -37,7 +43,7 @@ const CustomAmount = (
                 defaultValue={defaultValue}
                 value={value}
                 decimalsLimit={2}
-                onValueChange={(value) => onValueChange(value !== undefined ? value : '')}
+                onValueChange={(value) => {onValueChange(value !== undefined ? value : '')}}
             />
         </div>
     );
