@@ -222,6 +222,7 @@ class RegisterCampaignRoutes
                 'goalProgress' => [
                     'type' => 'number',
                     'readonly' => true,
+                    'description' => esc_html__('Campaign goal progress', 'give'),
                 ],
                 'goalType' => [
                     'enum' => [
