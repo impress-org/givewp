@@ -8,7 +8,7 @@ import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
 import DefaultFormWidget from "./DefaultForm";
 import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-import useCampaign from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaign";
+import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -180,7 +180,7 @@ const RevenueWidget = () => {
 
 const GoalProgressWidget = () => {
 
-    const {campaign} = useCampaign();
+    const {campaign} = useCampaignEntityRecord();
 
     return (
         <div style={{
