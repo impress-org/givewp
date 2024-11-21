@@ -13,6 +13,7 @@ import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, TriangleIcon, ViewIcon} from '../Icons';
+import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 
@@ -110,28 +111,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         dispatch.addNotice({
             id: 'update-archive-notice',
             type: 'warning',
-            content: () => (
-                <>
-                    <TriangleIcon />
-                    <span>
-                        {__(
-                            "Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.",
-                            'give'
-                        )}
-                    </span>
-                    <strong>
-                        <a
-                            href="#"
-                            onClick={() => {
-                                updateStatus('draft');
-                                dispatch.dismissNotification('update-archive-notice');
-                            }}
-                        >
-                            {__('Move to draft', 'give')}
-                        </a>
-                    </strong>
-                </>
-            ),
+            onDismiss: () => updateStatus('draft'),
+            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
         });
     }, [campaign?.status]);
 
