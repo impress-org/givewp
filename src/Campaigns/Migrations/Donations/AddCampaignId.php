@@ -75,6 +75,8 @@ class AddCampaignId extends Migration
                                 'meta_key' => DonationMetaKeys::CAMPAIGN_ID,
                                 'meta_value' => $campaignId,
                             ]);
+
+                        break;
                     }
                 }
             }
