@@ -34,7 +34,7 @@ class CampaignRequestController
 
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
-                'goalProgress' => (new CampaignDonationQuery($campaign))->sumIntendedAmount(),
+                'goalProgress' => $campaign->goalProgress(),
             ])
         );
     }
