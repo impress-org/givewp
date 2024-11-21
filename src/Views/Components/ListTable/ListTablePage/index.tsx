@@ -52,17 +52,38 @@ export interface ColumnFilterConfig {
     filter: Function;
 }
 
-export interface BulkActionsConfig {
+interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
     confirm: (selected: Array<string | number>, names?: Array<string>) => JSX.Element | JSX.Element[] | string;
 
     //optional
-    isVisible?: (data, parameters) => Boolean;
-    type?: 'normal' | 'warning' | 'danger' | 'urlAction';
+    isVisible?: (data: any, parameters: any) => boolean;
+    type?: 'normal' | 'warning' | 'danger' | 'custom';
 }
+
+// Makes the "action" property required for the standard types
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+    type: 'normal' | 'warning' | 'danger';
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property required for the undefined type
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+    type?: undefined;
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property forbidden for the custom type
+export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
+    type: 'custom';
+}
+
+export type BulkActionsConfig =
+    | BulkActionsConfigWithAction
+    | BulkActionsConfigWithoutType
+    | BulkActionsConfigWithoutAction;
 
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
@@ -89,9 +110,9 @@ export default function ListTablePage({
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [modalContent, setModalContent] = useState<{
         confirm;
-        action;
+        action?;
         label;
-        type?: 'normal' | 'warning' | 'danger' | 'urlAction';
+        type?: 'normal' | 'warning' | 'danger' | 'custom';
     }>({
         confirm: (selected) => {},
         action: (selected) => {},
@@ -138,7 +159,7 @@ export default function ListTablePage({
         label,
         confirm,
         action,
-        type: 'normal' | 'warning' | 'danger' | 'urlAction' | null
+        type: 'normal' | 'warning' | 'danger' | 'custom' | null
     ) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
@@ -167,7 +188,7 @@ export default function ListTablePage({
         setSelectedNames(names);
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
-            if ('urlAction' === bulkActions[actionIndex].type) {
+            if ('custom' === bulkActions[actionIndex].type) {
                 modalContent?.confirm(selected, names);
             } else {
                 dialog.current.show();

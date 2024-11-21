@@ -4,7 +4,9 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionResumable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
@@ -29,6 +31,14 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     public function setGateway(PaymentGateway $gateway)
     {
         $this->gateway = $gateway;
+    }
+
+    /**
+     * @since 3.17.0
+     */
+    public function canPauseSubscription(): bool
+    {
+        return $this instanceof SubscriptionPausable;
     }
 
     /**

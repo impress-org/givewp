@@ -3,6 +3,9 @@ import {useFormContext} from 'react-hook-form';
 import {Currency, Editor, Upload} from '../../Inputs';
 import {GiveCampaignDetails} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
+import {ToggleControl} from '@wordpress/components';
+import campaignPageImage from './images/campaign-page.svg';
+import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -19,11 +22,62 @@ export default () => {
         formState: {errors},
     } = useFormContext();
 
-    const [goalType, image, status, shortDescription] = watch(['goalType', 'image', 'status', 'shortDescription']);
+    const [goalType, image, status, shortDescription, enableCampaignPage] = watch([
+        'goalType',
+        'image',
+        'status',
+        'shortDescription',
+        'enableCampaignPage',
+    ]);
     const isDisabled = status === 'archived';
 
     return (
         <div className={styles.sections}>
+            <div className={styles.section}>
+                <div className={styles.leftColumn}>
+                    <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>
+                    <div className={styles.sectionDescription}>
+                        {__(
+                            'Set up a landing page for your campaign. The default campaign page has the campaign details, the campaign form, and donor wall.',
+                            'give'
+                        )}
+                    </div>
+                </div>
+                <div className={styles.rightColumn}>
+                    <div className={styles.sectionField}>
+                        <img
+                            style={{marginTop: '1rem'}}
+                            src={campaignPageImage}
+                            alt={__('Enable campaign page for your campaign.', 'give')}
+                        />
+                        <div className={styles.toggle}>
+                            <ToggleControl
+                                label={__('Enable campaign page for your campaign.', 'give')}
+                                help={__('This will create a default campaign page for your campaign.', 'give')}
+                                name="enableCampaignPage"
+                                checked={enableCampaignPage}
+                                onChange={(value) => {
+                                    setValue('enableCampaignPage', value, {shouldDirty: true});
+                                }}
+                            />
+                        </div>
+                        {!enableCampaignPage && (
+                            <div className={styles.warningNotice}>
+                                <WarningIcon />
+                                <p>
+                                    {__(
+                                        'This will affect the campaign blocks associated with this campaign. Ensure that no campaign blocks are being used on any page.',
+                                        'give'
+                                    )}
+                                </p>
+                            </div>
+                        )}
+                        {errors.enableCampaignPage && (
+                            <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
+                        )}
+                    </div>
+                </div>
+            </div>
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Details', 'give')}</div>
@@ -159,10 +213,7 @@ const goalDescription = (type: string) => {
         case 'subscriptions':
             return __('Only the first donation of a recurring donation is counted toward the goal.', 'give');
         case 'donorsFromSubscriptions':
-            return __(
-                'Only the donors that subscribed to a recurring donation are counted toward the goal.',
-                'give'
-            );
+            return __('Only the donors that subscribed to a recurring donation are counted toward the goal.', 'give');
         default:
             return null;
     }

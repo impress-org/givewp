@@ -631,10 +631,10 @@ if (! class_exists('Give_Settings_Gateways')) :
                                     <?php
                                     echo $gateway; ?>
                                 </div>
-                                <?php
+                            <?php
                             endforeach; ?>
                         </div>
-                        <?php
+                    <?php
                     endif; ?>
                     <button class="give-payment-gateway-settings-dialog__content-button"><?php
                         esc_html_e('Got it', 'give'); ?></button>

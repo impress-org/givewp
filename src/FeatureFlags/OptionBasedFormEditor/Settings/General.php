@@ -13,9 +13,8 @@ class General extends AbstractOptionBasedFormEditorSettings
     public function getDisabledOptionIds(): array
     {
         return [
-            //General Section
-            'success_page',
-            'failure_page',
+            // General Section
+            'override_legacy_donation_management_pages',
             // Currency Section
             'auto_format_currency',
             'currency_position',
@@ -23,16 +22,9 @@ class General extends AbstractOptionBasedFormEditorSettings
             'decimal_separator',
             'number_decimals',
             'currency_preview',
-        ];
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getDisabledSectionIds(): array
-    {
-        return [
-            'access-control',
+            // Access-control
+            'session_lifetime',
+            'limit_display_donations',
         ];
     }
 }

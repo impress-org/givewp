@@ -252,6 +252,7 @@ final class TestDonationFormRepository extends TestCase
 
 
     /**
+     * @since 3.17.0 updated to disable honeypot
      * @since 3.0.0
      *
      * @return void
@@ -285,6 +286,8 @@ final class TestDonationFormRepository extends TestCase
         $formId = 1;
 
         $blocks = BlockCollection::make([$block]);
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
 
         /** @var Form $formSchema */
         $formSchema = $this->repository->getFormSchemaFromBlocks($formId, $blocks);

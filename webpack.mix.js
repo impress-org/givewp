@@ -87,6 +87,7 @@ mix.webpackConfig({
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
             '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
             '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
+            '@givewp/campaigns':  path.resolve(__dirname, 'src/Campaigns/resources'),
         },
     },
     plugins: [

@@ -105,14 +105,6 @@ class BlockRenderController
     protected function loadEmbedScript()
     {
         (new EnqueueScript(
-            'givewp-donation-form-embed',
-            'build/donationFormEmbed.js',
-            GIVE_PLUGIN_DIR,
-            GIVE_PLUGIN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
-
-        (new EnqueueScript(
             'givewp-donation-form-embed-app',
             'build/donationFormBlockApp.js',
             GIVE_PLUGIN_DIR,
