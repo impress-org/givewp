@@ -333,7 +333,6 @@ class DonationRepository
     {
         $meta = [
             DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
-            DonationMetaKeys::CAMPAIGN_ID => $donation->campaign->id,
             DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
                 $donation->amount->formatToDecimal(),
                 ['currency' => $donation->amount->getCurrency()]
@@ -359,6 +358,10 @@ class DonationRepository
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
             DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];
+
+        if ($campaign = $donation->campaign) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
+        }
 
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
