@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Migrations\RevenueTable;
 
+use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
@@ -41,9 +42,7 @@ class AddCampaignID extends Migration
      */
     public function run()
     {
-        global $wpdb;
-
-        $table = $wpdb->give_revenue;
+        $table = DB::prefix('give_revenue');
 
         $sql = "
             ALTER TABLE $table
@@ -51,7 +50,7 @@ class AddCampaignID extends Migration
         ";
 
         try {
-            $wpdb->query($sql);
+            DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception);
         }
