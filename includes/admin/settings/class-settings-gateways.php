@@ -412,7 +412,7 @@ if (! class_exists('Give_Settings_Gateways')) :
             ];
 
             /**
-             * @unreleased
+             * @since 3.18.0
              */
             $groups = apply_filters('give_settings_payment_gateways_menu_groups', $groups);
 

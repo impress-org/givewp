@@ -76,7 +76,7 @@ class Donation implements Objects
     /**
      * Donation-related objects.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var FormEntry
      */
     public $formEntry;
@@ -84,7 +84,7 @@ class Donation implements Objects
     /**
      * Donor information.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var DonorInfo
      */
     public $donorInfo;
@@ -92,7 +92,7 @@ class Donation implements Objects
     /**
      * Card information.
      *
-     * @unreleased
+     * @since 3.18.0
      * @var CardInfo
      */
     public $cardInfo;

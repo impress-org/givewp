@@ -8,12 +8,12 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 3.18.0
  */
 class OptionBasedFormEditor implements FeatureFlags
 {
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public static function isEnabled(): bool
     {
@@ -30,7 +30,7 @@ class OptionBasedFormEditor implements FeatureFlags
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public static function helperText(): string
     {
@@ -53,7 +53,7 @@ class OptionBasedFormEditor implements FeatureFlags
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public static function existOptionBasedFormsOnDb(): bool
     {

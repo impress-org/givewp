@@ -9,19 +9,19 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 3.18.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public function register()
     {
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public function boot()
     {

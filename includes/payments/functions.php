@@ -1491,7 +1491,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
- * @unreleased check if donation form is V3 form
+ * @since 3.18.0 check if donation form is V3 form
  * @since 1.5
  *
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
