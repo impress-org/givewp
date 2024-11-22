@@ -50,7 +50,7 @@ class AddCampaignID extends Migration
         ";
 
         try {
-            DB::delta($sql);
+            DB::query($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception);
         }
