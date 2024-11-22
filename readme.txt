@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 6.4
-Tested up to: 6.6
+Requires at least: 6.5
+Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.17.2
+Stable tag: 3.18.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -167,7 +167,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 6.4 or greater
+* WordPress 6.5 or greater
 * PHP version 7.2 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
@@ -266,6 +266,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.18.0: November 20th, 2024 =
+* New: Added support to our form migration process for our upcoming Constant Contact add-on 3.0.0 version 
+* New: The donor wall now shows the donor's uploaded image avatar when available
+* New: Added a global setting to enable or disable the Option-Based Form Editor and settings.
+* Fix: Resolved an issue with multi-step form designs growing extra space outside the form
+* Fix: Resolved an issue where some people were not able to connect to PayPal
+* Fix: Resolved an issue that was preventing the form migration process from completing
+* Fix: Resolved an issue with the donation confirmation email sending the wrong donation description for visual form builder forms
+* Dev: Addressed PHP 8.2 depreciation warnings in the Donation Session Object
+
 = 3.17.2: November 6th, 2024 =
 * Fix: Resolved an issue with the Donor Wall shortcode and block filtering by only_comments
 * Fix: Resolved a WordPress 6.7 styling compatibility issue with the visual form builder
