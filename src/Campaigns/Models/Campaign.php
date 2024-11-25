@@ -85,7 +85,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
                     ->leftJoin('give_campaign_forms', 'campaign_forms')
-                    ->on('campaign_forms.form_id', 'forms.id');
+                    ->on('campaign_forms.form_id', 'id');
             })
             ->where('campaign_forms.campaign_id', $this->id);
     }
