@@ -3,12 +3,12 @@
 namespace Give\FeatureFlags;
 
 /**
- * @unreleased
+ * @since 3.18.0
  */
 interface FeatureFlags
 {
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public static function isEnabled(): bool;
 }

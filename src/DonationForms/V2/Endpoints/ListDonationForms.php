@@ -31,6 +31,11 @@ class ListDonationForms extends Endpoint
     protected $listTable;
 
     /**
+     * @var int
+     */
+    protected $defaultForm;
+
+    /**
      * @unreleased Add campaignId parameter
      * @inheritDoc
      */
@@ -125,6 +130,9 @@ class ListDonationForms extends Endpoint
     {
         $this->request = $request;
         $this->listTable = give(DonationFormsListTable::class);
+        $this->defaultForm = $this->request->get_param('campaignId')
+            ? Campaign::find((int)$this->request->get_param('campaignId'))->defaultForm()->id
+            : 0;
 
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
@@ -154,6 +162,7 @@ class ListDonationForms extends Endpoint
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages,
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
+                'defaultForm' => $this->defaultForm
             ]
         );
     }
@@ -169,11 +178,13 @@ class ListDonationForms extends Endpoint
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
+        $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);
+
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }

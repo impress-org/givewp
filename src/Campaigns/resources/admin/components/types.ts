@@ -10,6 +10,7 @@ export type Campaign = {
     secondaryColor: string;
     goalType: string;
     goal: number;
+    goalProgress: number;
     status: string;
     startDateTime: {
         date: string;

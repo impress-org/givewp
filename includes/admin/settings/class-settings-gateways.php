@@ -412,7 +412,7 @@ if (! class_exists('Give_Settings_Gateways')) :
             ];
 
             /**
-             * @unreleased
+             * @since 3.18.0
              */
             $groups = apply_filters('give_settings_payment_gateways_menu_groups', $groups);
 
@@ -631,10 +631,10 @@ if (! class_exists('Give_Settings_Gateways')) :
                                     <?php
                                     echo $gateway; ?>
                                 </div>
-                                <?php
+                            <?php
                             endforeach; ?>
                         </div>
-                        <?php
+                    <?php
                     endif; ?>
                     <button class="give-payment-gateway-settings-dialog__content-button"><?php
                         esc_html_e('Got it', 'give'); ?></button>

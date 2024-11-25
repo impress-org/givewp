@@ -258,6 +258,11 @@ class RegisterCampaignRoutes
                     'description' => esc_html__('Campaign goal', 'give'),
                     'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
+                'goalProgress' => [
+                    'type' => 'number',
+                    'readonly' => true,
+                    'description' => esc_html__('Campaign goal progress', 'give'),
+                ],
                 'goalType' => [
                     'enum' => [
                         'amount',

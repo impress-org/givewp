@@ -73,6 +73,7 @@ function DonationFormBlockApp({
             id={embedId}
             src={dataSrc}
             checkOrigin={false}
+            heightCalculationMethod={'taggedElement'}
             style={{
                 width: '1px',
                 minWidth: '100%',

@@ -384,87 +384,86 @@ div.give-field-description {
 }
 
 .give_option_based_form_editor_notice {
-    display: flex;
-    margin: -2rem 0;
-    gap: 0.3rem;
-    padding: 0.5rem;
-    background-color: #fffaf2;
-    border-radius: 4px;
-    border: 1px solid #f29718;
-    border-left-width: 4px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #1a0f00;
-    line-height: 1.25rem;
-    max-width: 60rem;
-    width: 100%;
+	display: flex;
+    margin: -2rem 0 0.5rem 0;
+	gap: 0.3rem;
+	padding: 0.5rem;
+	background-color: #fffaf2;
+	border-radius: 4px;
+	border: 1px solid #f29718;
+	border-left-width: 4px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #1a0f00;
+	line-height: 1.25rem;
+	max-width: 60rem;
+	width: 100%;
 
-    svg {
-        margin: 0.4rem 0.3rem;
-        height: 1.25rem;
-        width: 1.25rem;
-    }
+	svg {
+		margin: 0.4rem 0.3rem;
+		height: 1.25rem;
+		width: 1.25rem;
+	}
 }
 
 .give-setting-tab-body-general,
 .give-setting-tab-body-display,
 .give-settings-advanced-tab {
-    label {
+	label {
         display: flex;
-        gap: 0.4rem;
-        padding: 1.25rem 1rem;
         position: relative;
 
-        .give-settings-section-group-helper {
-            --popout-display: none;
-            display: flex;
-            cursor: help;
+		.give-settings-section-group-helper {
+            padding-left: 0.2rem;
+			--popout-display: none;
+			display: flex;
+			cursor: help;
 
-            img {
-                max-width: 18.9px;
-            }
+			img {
+				max-width: 18.9px;
+			}
 
-            &:hover {
-                --popout-display: block;
-            }
+			&:hover {
+				--popout-display: block;
+			}
 
-            &__popout {
-                background-color: #fff;
-                border: 1px solid #e6e6e6;
-                border-radius: 4px;
-                box-shadow: 0 4px 8px 0 #0000000D;
-                color: #404040;
-                display: var(--popout-display, none);
-                left: 100%;
-                overflow: hidden;
-                position: absolute;
-                top: 0;
-                transform: translateX(10px);
-                z-index: 9999;
+			&__popout {
+				background-color: #fff;
+				border: 1px solid #e6e6e6;
+				border-radius: 4px;
+				box-shadow: 0 4px 8px 0 #0000000D;
+				color: #404040;
+				display: var(--popout-display, none);
+				left: 100%;
+				overflow: hidden;
+				position: absolute;
+				top: 0;
+				transform: translateX(10px);
+				z-index: 9999;
 
-                img {
-                    max-width: initial;
-                    display: block;
-                }
+				img {
+					max-width: initial;
+					display: block;
+				}
 
-                h5 {
-                    font-size: 0.875rem;
-                    font-weight: 700;
-                    line-height: 1.5;
-                    margin: 0;
-                    padding: 1rem 1.5rem 0.5rem;
-                }
+				h5 {
+					font-size: 0.875rem;
+					font-weight: 700;
+					line-height: 1.5;
+					margin: 0;
+					padding: 1rem 1.5rem 0.5rem;
+				}
 
-                p {
-                    font-size: 0.75rem;
-                    font-weight: 500;
-                    line-height: 1.5;
-                    margin: 0;
-                    padding: 0 1.5rem 1.5rem;
-                }
-            }
-        }
-    }
+				p {
+					font-size: 0.75rem;
+					font-weight: 500;
+					line-height: 1.5;
+					margin: 0;
+					padding: 0 1.5rem 1.5rem;
+				}
+			}
+		}
+	}
 }
 
 .give-payment-gateways-settings {
@@ -1134,18 +1133,18 @@ a.give-delete {
 }
 // copied from wp built-in .menu-counter
 .givewp-beta-icon {
-    display: inline-block;
-    vertical-align: top;
-    box-sizing: border-box;
-    margin: 1px 0 -1px 2px;
-    padding: 0 5px;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
+    display: flex;
+	justify-content: center;
+	align-items: center;
+    margin: 2px 0 0px 0px;
+    padding: 2px 8px;
+    border-radius: 0.75rem;
     background-color: #F29718;
     color: #fff;
     font-size: 11px;
-    line-height: 1.6;
+	font-weight: 600;
+	font-family: 'Inter' ,sans-serif;
+    line-height: 0.9625rem;
     text-align: center;
     z-index: 26;
 }
@@ -1156,8 +1155,17 @@ a.give-delete {
 
 .give-admin-beta-features-message {
     background-color: #fff;
-    padding: 0.5rem;
+    padding: 1rem;
     border: 1px solid #F29718;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	border-radius: 2px;
+	color: #0E0E0E;
+	font-size: 0.875rem;
+	font-family: 'Inter' ,sans-serif;
+	font-weight: 400;
+	line-height: 1.5rem;
 }
 
 .give-admin-beta-features-feedback-link {

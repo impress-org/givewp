@@ -15,7 +15,10 @@ export const store = createReduxStore('givewp/campaign-notifications', {
     reducer(state = [], action) {
         switch (action.type) {
             case 'ADD_NOTIFICATION':
-                state.push(action.notification);
+                const notificationExist = state.filter((notification: { id: string }) => notification.id === action.notification.id);
+                if (!notificationExist.length) {
+                    state.push(action.notification);
+                }
                 return state;
 
             case 'DISMISS_NOTIFICATION':
