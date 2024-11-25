@@ -25,8 +25,13 @@ const PaymentMethodControl = (props) => {
         case 'paypalpro': {
             return <CardControl {...props} />;
         }
+        case 'blink': {
+            // Donor Dashboard currently loads its own version of React so we need to pass it to the component
+            const Element = wp.hooks.applyFilters('give_donor_dashboard_blink_payment_method_control', null, props);
+            return Element && <Element {...props} React={React} />;
+        }
         default: {
-            return wp.hooks.applyFilters('give_donor_dashboard_payment_method_control', null, props, React);
+            return null;
         }
     }
 };
