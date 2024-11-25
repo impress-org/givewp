@@ -37,6 +37,11 @@ const SubscriptionManager = ({id, subscription}) => {
 
     const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
 
+    const showAmountControls = wp.hooks.applyFilters(
+        'give_donor_dashboard_subscription_manager_show_amount_controls',
+        true,
+        subscription
+    );
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
 
@@ -95,14 +100,16 @@ const SubscriptionManager = ({id, subscription}) => {
 
     return (
         <div className={'give-donor-dashboard__subscription-manager'}>
-            <AmountControl
-                currency={subscription.payment.currency}
-                options={options}
-                max={max}
-                min={min}
-                value={amount}
-                onChange={setAmount}
-            />
+            {showAmountControls && (
+                <AmountControl
+                    currency={subscription.payment.currency}
+                    options={options}
+                    max={max}
+                    min={min}
+                    value={amount}
+                    onChange={setAmount}
+                />
+            )}
             <PaymentMethodControl
                 forwardedRef={gatewayRef}
                 label={__('Payment Method', 'give')}
@@ -135,7 +142,11 @@ const SubscriptionManager = ({id, subscription}) => {
                     </>
                 )}
 
-                <Button disabled={subscriptionStatus !== 'active'} classnames={subscriptionStatus !== 'active' && 'disabled'} onClick={handleUpdate}>
+                <Button
+                    disabled={subscriptionStatus !== 'active'}
+                    classnames={subscriptionStatus !== 'active' && 'disabled'}
+                    onClick={handleUpdate}
+                >
                     {updated ? (
                         <Fragment>
                             {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />

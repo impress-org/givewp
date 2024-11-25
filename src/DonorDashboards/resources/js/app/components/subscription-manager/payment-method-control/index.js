@@ -1,3 +1,5 @@
+import React from 'react';
+
 import AuthorizeControl from './authorize-control';
 import SquareControl from './square-control';
 import StripeControl from './stripe-control';
@@ -24,7 +26,7 @@ const PaymentMethodControl = (props) => {
             return <CardControl {...props} />;
         }
         default: {
-            return null;
+            return wp.hooks.applyFilters('give_donor_dashboard_payment_method_control', null, props, React);
         }
     }
 };
