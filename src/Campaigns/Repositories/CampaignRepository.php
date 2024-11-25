@@ -44,13 +44,13 @@ class CampaignRepository
     /**
      * @unreleased
      *
-     * Get Campaign by Form ID
+     * Get Campaign by Form ID using a lookup table
      */
     public function getByFormId(int $formId)
     {
         return $this->prepareQuery()
-            ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
-            ->where('campaigns.form_id', $formId)
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'campaignForms.campaign_id', 'campaignForms')
+            ->where('campaignForms.form_id', $formId)
             ->get();
     }
 
@@ -338,7 +338,7 @@ class CampaignRepository
         return $builder->from('give_campaigns', 'campaigns')
             ->select(
                 'id',
-                ['form_id', 'defaultFormId'],
+                ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
                 ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
