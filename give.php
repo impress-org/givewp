@@ -268,6 +268,7 @@ final class Give
     /**
      * Init Give when WordPress Initializes.
      *
+     * @unreleased Move the loading of the `give` textdomain to the `init` action hook.
      * @since 1.8.9
      */
     public function init()
@@ -278,9 +279,6 @@ final class Give
          * @since 1.8.9
          */
         do_action('before_give_init');
-
-        // Set up localization.
-        $this->load_textdomain();
 
         $this->bindClasses();
 
@@ -379,6 +377,7 @@ final class Give
     /**
      * Bootstraps the Give Plugin
      *
+     * @unreleased Load the `give` textdomain on the `init` action hook.
      * @since 2.8.0
      */
     public function boot()
@@ -391,6 +390,9 @@ final class Give
         add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
 
         add_action('plugins_loaded', [$this, 'init'], 0);
+
+        // Set up localization.
+        add_action('init', [$this, 'load_textdomain']);
 
         register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
