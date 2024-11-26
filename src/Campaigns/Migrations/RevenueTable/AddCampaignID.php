@@ -46,7 +46,7 @@ class AddCampaignID extends Migration
 
         $sql = "
             ALTER TABLE $table
-            ADD COLUMN campaign_id INT UNSIGNED NOT NULL DEFAULT '0'
+            ADD COLUMN campaign_id INT UNSIGNED NULL
         ";
 
         try {
