@@ -161,11 +161,9 @@ final class CRUDTest extends TestCase
 
         $posts = DB::table('posts')
             ->where('post_type', 'crud_test')
-            ->getAll();
+            ->count();
 
-        $this->assertNotNull($posts);
-
-        $this->assertCount(2, count($posts));
+        $this->assertCount(2, $posts);
     }
 
 }
