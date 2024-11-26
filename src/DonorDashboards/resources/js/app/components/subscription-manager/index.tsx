@@ -40,11 +40,7 @@ const SubscriptionManager = ({id, subscription}) => {
 
     const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
 
-    const showAmountControls = wp.hooks.applyFilters(
-        'give_donor_dashboard_subscription_manager_show_amount_controls',
-        true,
-        subscription
-    );
+    const showAmountControls = subscription.gateway.can_update;
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
 
