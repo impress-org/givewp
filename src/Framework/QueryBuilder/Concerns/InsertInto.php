@@ -20,7 +20,7 @@ trait InsertInto
 
         foreach ($data as $row) {
             $sql .= DB::prepare(
-                sprintf('(%s),', implode(',', $format ?? $this->getFormat($row))),
+                sprintf('(%s),', implode(',', $format ?? $this->getInsertIntoRowValuesFormat($row))),
                 $row
             );
         }
@@ -29,7 +29,7 @@ trait InsertInto
     }
 
     /**
-     * Get value format used by DB::prepare()
+     * Get values format used by DB::prepare()
      *
      * @unreleased
      *
@@ -37,7 +37,7 @@ trait InsertInto
      *
      * @return array
      */
-    private function getFormat(array $data): array
+    private function getInsertIntoRowValuesFormat(array $data): array
     {
         return array_map(function ($value) {
             if (is_int($value)) {
