@@ -177,7 +177,7 @@ class App
             null
         );
 
-        do_action('give_donor_dashboard_enqueued_assets');
+        do_action('give_donor_dashboard_enqueue_assets');
     }
 
     /**
