@@ -29,6 +29,24 @@ trait CRUD
         );
     }
 
+
+    /**
+     * Insert many rows at once
+     *
+     * @unreleased
+     *
+     * @return false|int
+     *
+     */
+    public function insertMany()
+    {
+        if ($this->insertMany) {
+            return DB::query($this->getSQL());
+        }
+
+        return false;
+    }
+
     /**
      * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
