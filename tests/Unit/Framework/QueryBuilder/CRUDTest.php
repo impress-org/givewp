@@ -157,7 +157,7 @@ final class CRUDTest extends TestCase
             ->where('post_type', 'crud_test')
             ->count();
 
-        $this->assertCount(2, $posts);
+        $this->assertEquals(2, $posts);
     }
 
 }
