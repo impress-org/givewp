@@ -151,13 +151,7 @@ final class CRUDTest extends TestCase
         ];
 
 
-        $QB = DB::table('posts');
-
-        foreach($testData as $data) {
-            $QB->set($data);
-        }
-
-        $QB->insertMany();
+        DB::table('posts')->insert($testData);
 
         $posts = DB::table('posts')
             ->where('post_type', 'crud_test')

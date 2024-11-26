@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @unreleased
  */
-final class InsertManyTest extends TestCase
+final class InsertIntoTest extends TestCase
 {
     /**
      * @unreleased
@@ -27,11 +27,7 @@ final class InsertManyTest extends TestCase
             ]
         ];
 
-        $QB = DB::table('posts');
-
-        foreach($testData as $data) {
-            $QB->set($data);
-        }
+        $QB = DB::table('posts')->insert($testData);
 
         $this->assertContains(
             "INSERT INTO '" . DB::prefix('posts') . "' (post_title, post_type, post_content) VALUES ('Query Builder CRUD test 1','crud_test','Hello World 1!'),('Query Builder CRUD test 2','crud_test','Hello World 2!')",
