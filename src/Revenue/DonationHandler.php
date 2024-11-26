@@ -34,7 +34,7 @@ class DonationHandler
             'donation_id' => $donationId,
             'form_id' =>  $formId,
             'amount' => Money::of($amount, $currency)->getMinorAmount(),
-            'campaign_id' => $campaign ? $campaign->id : 0,
+            'campaign_id' => $campaign ? $campaign->id : null,
         ];
 
         give(Revenue::class)->insert($data);
