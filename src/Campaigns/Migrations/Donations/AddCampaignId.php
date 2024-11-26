@@ -46,7 +46,6 @@ class AddCampaignId extends Migration
         $relationships = [];
 
         try {
-
             $data = DB::table('give_campaign_forms')
                 ->select('campaign_id', 'form_id')
                 ->getAll();
@@ -66,26 +65,28 @@ class AddCampaignId extends Migration
                 ->where('post_type', 'give_payment')
                 ->getAll();
 
-            $donationMeta = DB::table('give_donationmeta');
+            $donationMeta = [];
 
-            foreach($donations as $donation) {
+            foreach ($donations as $donation) {
                 foreach ($relationships as $campaignId => $formIds) {
                     if (in_array($donation->formId, $formIds)) {
-                            $donationMeta->set([
-                                'donation_id' => $donation->ID,
-                                'meta_key' => DonationMetaKeys::CAMPAIGN_ID,
-                                'meta_value' => $campaignId,
-                            ]);
+                        $donationMeta[] = [
+                            'donation_id' => $donation->ID,
+                            'meta_key' => DonationMetaKeys::CAMPAIGN_ID,
+                            'meta_value' => $campaignId,
+                        ];
 
                         break;
                     }
                 }
             }
 
-            $donationMeta->insertMany();
+            DB::table('give_donationmeta')
+                ->insert($donationMeta, ['%d', '%s', '%d']);
 
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table",
+                0, $exception);
         }
     }
 }

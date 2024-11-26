@@ -22,29 +22,17 @@ trait CRUD
      */
     public function insert($data, $format = null)
     {
+        if (array_is_list($data)) {
+            return DB::query(
+                $this->getInsertIntoSQL($data, $format)
+            );
+        }
+
         return DB::insert(
             $this->getTable(),
             $data,
             $format
         );
-    }
-
-
-    /**
-     * Insert many rows at once
-     *
-     * @unreleased
-     *
-     * @return false|int
-     *
-     */
-    public function insertMany()
-    {
-        if ($this->insertMany) {
-            return DB::query($this->getSQL());
-        }
-
-        return false;
     }
 
     /**

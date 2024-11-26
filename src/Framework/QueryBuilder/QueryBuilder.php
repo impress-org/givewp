@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Concerns\CRUD;
 use Give\Framework\QueryBuilder\Concerns\FromClause;
 use Give\Framework\QueryBuilder\Concerns\GroupByStatement;
 use Give\Framework\QueryBuilder\Concerns\HavingClause;
-use Give\Framework\QueryBuilder\Concerns\InsertMany;
+use Give\Framework\QueryBuilder\Concerns\InsertInto;
 use Give\Framework\QueryBuilder\Concerns\JoinClause;
 use Give\Framework\QueryBuilder\Concerns\LimitStatement;
 use Give\Framework\QueryBuilder\Concerns\MetaQuery;
@@ -37,17 +37,13 @@ class QueryBuilder
     use TablePrefix;
     use UnionOperator;
     use WhereClause;
-    use InsertMany;
+    use InsertInto;
 
     /**
      * @return string
      */
     public function getSQL()
     {
-        if ($this->insertMany) {
-            return $this->getInsertManySQL();
-        }
-
         $sql = array_merge(
             $this->getSelectSQL(),
             $this->getFromSQL(),
