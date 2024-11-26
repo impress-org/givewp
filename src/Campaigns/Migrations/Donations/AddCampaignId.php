@@ -81,12 +81,12 @@ class AddCampaignId extends Migration
                 }
             }
 
-            DB::table('give_donationmeta')
-                ->insert($donationMeta, ['%d', '%s', '%d']);
-
+            if ( ! empty($donationMeta)) {
+                DB::table('give_donationmeta')
+                    ->insert($donationMeta, ['%d', '%s', '%d']);
+            }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table",
-                0, $exception);
+            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table", 0, $exception);
         }
     }
 }
