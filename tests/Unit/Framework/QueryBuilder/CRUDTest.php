@@ -139,12 +139,12 @@ final class CRUDTest extends TestCase
     {
         $testData = [
             [
-                'post_title' => 'Query Builder CRUD test',
+                'post_title' => 'Query Builder CRUD test 1',
                 'post_type' => 'crud_test',
                 'post_content' => 'Hello World!',
             ],
             [
-                'post_title' => 'Query Builder CRUD test',
+                'post_title' => 'Query Builder CRUD test 2',
                 'post_type' => 'crud_test',
                 'post_content' => 'Hello World!',
             ]
