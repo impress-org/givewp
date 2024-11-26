@@ -29,8 +29,8 @@ final class InsertIntoTest extends TestCase
 
         $sql = DB::table('posts')->getInsertIntoSQL($testData, null);
 
-        $this->assertContains(
-            "INSERT INTO '" . DB::prefix('posts') . "' (post_title, post_type, post_content) VALUES ('Query Builder CRUD test 1','crud_test','Hello World 1!'),('Query Builder CRUD test 2','crud_test','Hello World 2!')",
+        $this->assertEquals(
+            "INSERT INTO " . DB::prefix('posts') . " (post_title, post_type, post_content) VALUES ('Query Builder CRUD test 1','crud_test','Hello World 1!'),('Query Builder CRUD test 2','crud_test','Hello World 2!')",
             $sql
         );
     }
