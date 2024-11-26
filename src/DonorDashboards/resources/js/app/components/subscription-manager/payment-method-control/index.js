@@ -7,6 +7,9 @@ import CardControl from './card-control';
 
 import './style.scss';
 
+/**
+ * @unreleased Add controller for Blink payment method.
+ */
 const PaymentMethodControl = (props) => {
     switch (props.gateway.id) {
         case 'stripe':

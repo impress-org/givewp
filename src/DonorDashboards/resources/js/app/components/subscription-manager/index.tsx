@@ -23,6 +23,9 @@ import SubscriptionCancelModal from '../subscription-cancel-modal';
  */
 const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
 
+/**
+ * @unreleased Add support for hiding amount controls via filter
+ */
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
     const [isPauseModalOpen, setIsPauseModalOpen] = useState(false);
