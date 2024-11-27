@@ -14,6 +14,8 @@ const SubscriptionRow = ({subscription}) => {
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
 
+    const canUpdateSubscription = gateway.can_update || gateway.can_update_payment_method;
+
     return (
         <div className="give-donor-dashboard-table__row">
             <div className="give-donor-dashboard-table__column">
@@ -52,14 +54,14 @@ const SubscriptionRow = ({subscription}) => {
                         {__('View Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
                     </Link>
                 </div>
-                {(gateway.can_update || gateway.can_update_payment_method) && (
+                {canUpdateSubscription && (
                     <div className="give-donor-dashboard-table__donation-receipt">
                         <Link to={`/recurring-donations/manage/${id}`}>
                             {__('Manage Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
                         </Link>
                     </div>
                 )}
-                {gateway.can_cancel && !(gateway.can_update || gateway.can_update_payment_method) && (
+                {gateway.can_cancel && !canUpdateSubscription && (
                     <>
                         {isCancelModalOpen && (
                             <SubscriptionCancelModal
