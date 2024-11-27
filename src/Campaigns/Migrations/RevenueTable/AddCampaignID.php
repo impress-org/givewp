@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Migrations\RevenueTable;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
@@ -43,16 +42,10 @@ class AddCampaignID extends Migration
     public function run()
     {
         $table = DB::prefix('give_revenue');
+        $columnAdded = maybe_add_column($table, 'campaign_id', "ALTER TABLE $table ADD COLUMN campaign_id INT UNSIGNED NULL");
 
-        $sql = "
-            ALTER TABLE $table
-            ADD COLUMN campaign_id INT UNSIGNED NULL
-        ";
-
-        try {
-            DB::query($sql);
-        } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while updating the $table table", 0, $exception);
+        if ( ! $columnAdded) {
+            throw new DatabaseMigrationException("An error occurred while updating the $table table");
         }
     }
 }
