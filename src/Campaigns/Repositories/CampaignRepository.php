@@ -288,7 +288,7 @@ class CampaignRepository
 
             // Migrate forms from campaigns to merge to the destination campaign
             DB::query(
-                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
                     ])
