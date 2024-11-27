@@ -41,6 +41,7 @@ const SubscriptionManager = ({id, subscription}) => {
     const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
 
     const showAmountControls = subscription.gateway.can_update;
+    const showPaymentMethodControls = subscription.gateway.can_update_payment_method;
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
 
@@ -109,11 +110,13 @@ const SubscriptionManager = ({id, subscription}) => {
                     onChange={setAmount}
                 />
             )}
-            <PaymentMethodControl
-                forwardedRef={gatewayRef}
-                label={__('Payment Method', 'give')}
-                gateway={subscription.gateway}
-            />
+            {showPaymentMethodControls && (
+                <PaymentMethodControl
+                    forwardedRef={gatewayRef}
+                    label={__('Payment Method', 'give')}
+                    gateway={subscription.gateway}
+                />
+            )}
 
             {loading && <DashboardLoadingSpinner />}
 
