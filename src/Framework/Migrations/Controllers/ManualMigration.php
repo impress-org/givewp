@@ -36,16 +36,17 @@ class ManualMigration
     }
 
     /**
+     * @unreleased sanitize params
      * @since 2.9.2
      */
     public function __invoke()
     {
         if ( ! empty($_GET['give-run-migration'])) {
-            $migrationToRun = $_GET['give-run-migration'];
+            $migrationToRun = give_clean($_GET['give-run-migration']);
         }
 
         if ( ! empty($_GET['give-clear-update'])) {
-            $migrationToClear = $_GET['give-clear-update'];
+            $migrationToClear = give_clean($_GET['give-clear-update']);
         }
 
         $hasMigration = isset($migrationToRun) || isset($migrationToClear);
