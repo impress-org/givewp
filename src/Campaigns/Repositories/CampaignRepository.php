@@ -215,6 +215,8 @@ class CampaignRepository
                 ->update([
                     'form_id' => $donationFormId
                 ]);
+
+            $campaign->defaultFormId = $donationFormId;
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
