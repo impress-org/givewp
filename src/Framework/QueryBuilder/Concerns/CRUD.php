@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
+use Give\Vendors\StellarWP\Arrays\Arr;
 
 /**
  * @since 2.19.0
@@ -23,7 +24,7 @@ trait CRUD
      */
     public function insert($data, $format = null)
     {
-        if (array_is_list($data)) {
+        if (Arr::is_list($data)) {
             return DB::query(
                 $this->getInsertIntoSQL($data, $format)
             );
