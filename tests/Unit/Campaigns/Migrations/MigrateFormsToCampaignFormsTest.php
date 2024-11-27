@@ -98,9 +98,9 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
         $migration = new MigrateFormsToCampaignForms();
         $migration->run();
-        
+
         $campaign = Campaign::findByFormId($form2->id);
 
-        $this->assertNotEquals($form2->id, $campaign->defaultFormId);
+        $this->assertNotEquals($form1->id, $campaign->defaultFormId);
     }
 }
