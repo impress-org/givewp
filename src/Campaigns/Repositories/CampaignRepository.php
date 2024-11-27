@@ -176,6 +176,8 @@ class CampaignRepository
                     ->update([
                         'form_id' => $donationFormId,
                     ]);
+
+                $campaign->defaultFormId = $donationFormId;
             }
 
             DB::table('give_campaign_forms')
