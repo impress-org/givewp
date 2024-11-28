@@ -10,7 +10,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Helpers\Form\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -698,7 +697,7 @@ class Give_Donate_Form {
 
 		$ret    = 0;
 
-		if ( give_is_setting_enabled( $option )) {
+		if ( give_is_setting_enabled( $option ) ) {
 			$ret = 1;
 		}
 
