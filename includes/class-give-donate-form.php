@@ -698,7 +698,7 @@ class Give_Donate_Form {
 
 		$ret    = 0;
 
-		if ( give_is_setting_enabled( $option ) || Utils::isV3Form($this->ID)) {
+		if ( give_is_setting_enabled( $option )) {
 			$ret = 1;
 		}
 
