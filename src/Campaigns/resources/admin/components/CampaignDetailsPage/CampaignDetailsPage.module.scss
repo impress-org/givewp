@@ -180,6 +180,22 @@ select[name="campaignId"] {
     font-weight: 600;
 }
 
+// set width for each tab to maintain size on hover.
+.tabs [data-reach-tab]:first-child,
+.tabs [role='tab']:first-child {
+    width: 104px;
+}
+
+.tabs [data-reach-tab]:nth-child(2),
+.tabs [role='tab']:nth-child(2) {
+    width: 95px;
+}
+
+.tabs [data-reach-tab]:last-child,
+.tabs [role='tab']:last-child {
+    width: 79px;
+}
+
 .tabs [data-reach-tab][aria-selected='true']::after,
 .tabs [role='tab'][aria-selected='true']::after {
     background-color: #66bb6a;
