@@ -151,6 +151,7 @@ select[name="campaignId"] {
     line-height: 1.5rem;
     text-align: center;
     cursor: pointer;
+    box-sizing: border-box
 }
 
 @media screen and (min-width: 48rem) {
@@ -166,7 +167,8 @@ select[name="campaignId"] {
     display: block;
     position: absolute;
     top: calc(100% - 0.1875em);
-    width: calc(100% - 2em);
+    left: 0;
+    right: 0;
     height: 0.1875em;
     background-color: transparent;
     transition: background-color 100ms ease-in-out;
