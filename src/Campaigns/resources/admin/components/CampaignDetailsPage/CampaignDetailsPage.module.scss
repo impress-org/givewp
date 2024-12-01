@@ -143,7 +143,7 @@ select[name="campaignId"] {
 .tabs [role='tab'] {
     position: relative;
     appearance: none;
-    padding: 1em;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border: 0;
     background-color: transparent;
     color: inherit;
