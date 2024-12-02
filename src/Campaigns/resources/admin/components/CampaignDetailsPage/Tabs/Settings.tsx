@@ -33,6 +33,7 @@ export default () => {
 
     return (
         <div className={styles.sections}>
+            {/* Campaign Page */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>
@@ -43,6 +44,7 @@ export default () => {
                         )}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <img
@@ -61,6 +63,7 @@ export default () => {
                                 }}
                             />
                         </div>
+
                         {!enableCampaignPage && (
                             <div className={styles.warningNotice}>
                                 <WarningIcon />
@@ -72,12 +75,15 @@ export default () => {
                                 </p>
                             </div>
                         )}
+
                         {errors.enableCampaignPage && (
                             <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Campaign Details */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Details', 'give')}</div>
@@ -85,13 +91,13 @@ export default () => {
                         {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>{__("What's the title of your campaign?", 'give')}</div>
                         <div className={styles.sectionFieldDescription}>
                             {__("Give your campaign a title that tells donors what it's about.", 'give')}
                         </div>
-
                         <input {...register('title')} disabled={isDisabled} />
 
                         {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
@@ -123,7 +129,6 @@ export default () => {
                         <div className={styles.sectionFieldDescription}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </div>
-
                         <Upload
                             disabled={isDisabled}
                             id="givewp-campaigns-upload-cover-image"
@@ -141,6 +146,7 @@ export default () => {
                 </div>
             </div>
 
+            {/* Campaign Goal */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Goal', 'give')}</div>
@@ -148,12 +154,12 @@ export default () => {
                         {__('How would you like to set your goal?', 'give')}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
-                    <div className={styles.sectionField}>
+                    <div className={styles.sectionInvertedField}>
                         <div className={styles.sectionSubtitle}>
                             {__('Set the details of your campaign goal here.', 'give')}
                         </div>
-
                         <select {...register('goalType')} disabled={isDisabled}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donations">{__('Number of donations', 'give')}</option>
