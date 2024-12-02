@@ -285,22 +285,34 @@ select[name="campaignId"] {
                 font-weight: 500;
                 line-height: 1.5;
                 color: #1f2937;
-                padding: var(--givewp-spacing-2) 0;
             }
 
             .sectionField {
-                margin-bottom: var(--givewp-spacing-6);
+                display: flex;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
+                margin-bottom: var(--givewp-spacing-10);
+
+                input,
+                textarea,
+                select,
+                .fieldComponent {
+                    margin-top: var(--givewp-spacing-1);
+                }
             }
 
             .sectionFieldDescription {
                 font-size: 14px;
-                color: #4b5563;
             }
-
+            
             .errorMsg {
                 font-size: 14px;
                 padding: var(--givewp-spacing-2) 0;
                 color: #ff0000;
+            }
+
+            select {
+                max-width: 100%;
             }
 
             input,
@@ -313,11 +325,6 @@ select[name="campaignId"] {
                 border: 1px solid #9ca0af;
                 border-radius: var(--givewp-spacing-1);
                 padding: var(--givewp-spacing-2);
-                margin: var(--givewp-spacing-2) 0;
-            }
-
-            select {
-                max-width: 100%;
             }
         }
     }
