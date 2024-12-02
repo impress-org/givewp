@@ -136,6 +136,10 @@ select[name="campaignId"] {
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);
     }
+
+    &.fullWidth {
+        padding-left: var(--givewp-spacing-6);
+    }
 }
 
 
