@@ -114,7 +114,9 @@ export default () => {
                                 {shortDescription.replace(/(<([^>]+)>)/gi, '')}
                             </textarea>
                         ) : (
-                            <Editor name="shortDescription" />
+                            <div className={styles.fieldComponent}>
+                                <Editor name="shortDescription" />
+                            </div>
                         )}
 
                         {errors.shortDescription && (
@@ -129,17 +131,19 @@ export default () => {
                         <div className={styles.sectionFieldDescription}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </div>
-                        <Upload
-                            disabled={isDisabled}
-                            id="givewp-campaigns-upload-cover-image"
-                            label={__('Cover', 'give')}
-                            actionLabel={__('Select to upload', 'give')}
-                            value={image}
-                            onChange={(coverImageUrl, coverImageAlt) => {
-                                setValue('image', coverImageUrl, {shouldDirty: true});
-                            }}
-                            reset={() => setValue('image', '', {shouldDirty: true})}
-                        />
+                        <div className={styles.fieldComponent}>
+                            <Upload
+                                disabled={isDisabled}
+                                id="givewp-campaigns-upload-cover-image"
+                                label={__('Cover', 'give')}
+                                actionLabel={__('Select to upload', 'give')}
+                                value={image}
+                                onChange={(coverImageUrl, coverImageAlt) => {
+                                    setValue('image', coverImageUrl, {shouldDirty: true});
+                                }}
+                                reset={() => setValue('image', '', {shouldDirty: true})}
+                            />
+                        </div>
 
                         {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
                     </div>
@@ -156,7 +160,7 @@ export default () => {
                 </div>
 
                 <div className={styles.rightColumn}>
-                    <div className={styles.sectionInvertedField}>
+                    <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
                             {__('Set the details of your campaign goal here.', 'give')}
                         </div>
@@ -182,18 +186,20 @@ export default () => {
                         {errors.goalType && <div className={styles.errorMsg}>{`${errors.goalType.message}`}</div>}
                     </div>
 
-                    <div className={styles.sectionSubtitle}>{__('How much do you want to raise?', 'give')}</div>
-                    <div className={styles.sectionFieldDescription}>
-                        {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>{__('How much do you want to raise?', 'give')}</div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
+                        </div>
+
+                        {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
+                            <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
+                        ) : (
+                            <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
+                        )}
+
+                        {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                     </div>
-
-                    {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
-                        <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
-                    ) : (
-                        <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
-                    )}
-
-                    {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                 </div>
             </div>
         </div>
