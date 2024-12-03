@@ -179,6 +179,10 @@ select[name="campaignId"] {
 }
 
 .tabs [role='tab']:hover,
+.tabs [data-reach-tab]:hover {
+    font-weight: 500;
+}
+
 .tabs [data-reach-tab][aria-selected='true'],
 .tabs [role='tab'][aria-selected='true'] {
     font-weight: 600;
