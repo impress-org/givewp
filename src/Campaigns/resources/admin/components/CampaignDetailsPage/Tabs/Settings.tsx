@@ -49,7 +49,6 @@ export default () => {
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <img
-                            style={{marginTop: '1rem'}}
                             src={campaignPageImage}
                             alt={__('Enable campaign page for your campaign.', 'give')}
                         />
