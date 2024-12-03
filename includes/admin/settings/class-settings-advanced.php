@@ -419,7 +419,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         }
 
         /**
-         * @unreleased
+         * @since 3.18.0
          */
         public function _render_give_based_form_editor_notice($field, $value)
         {

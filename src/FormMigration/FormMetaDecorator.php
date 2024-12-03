@@ -520,7 +520,7 @@ class FormMetaDecorator extends FormModelDecorator
         $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'), 'true');
 
         $isGloballyEnabled = give_is_setting_enabled(
-            give_get_option('give_constant_contact_show_checkout_signup'),
+            give_get_option('givewp_constant_contact_show_checkout_signup'),
             'on'
         );
 
@@ -532,7 +532,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactLabel(): string
     {
-        $defaultMeta = give_get_option('give_constant_contact_label', __('Subscribe to our newsletter?'));
+        $defaultMeta = give_get_option('givewp_constant_contact_label', __('Subscribe to our newsletter?'));
 
         return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
     }
@@ -544,7 +544,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $defaultMeta = give_is_setting_enabled(
             give_get_option(
-                'give_constant_contact_checked_default',
+                'givewp_constant_contact_checked_default',
                 true
             ),
             'on'
@@ -558,7 +558,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactSelectedLists(): array
     {
-        $defaultMeta = give_get_option('give_constant_contact_list', []);
+        $defaultMeta = give_get_option('givewp_constant_contact_list', []);
 
         return (array)$this->getMeta('_give_constant_contact', $defaultMeta);
     }

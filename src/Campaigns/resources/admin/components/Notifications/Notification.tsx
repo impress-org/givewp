@@ -6,14 +6,14 @@ import {CloseIcon} from '../Icons';
 
 import styles from './Notices.module.scss';
 
-const Snackbar = ({notification, onDismiss}: {notification: Notification, onDismiss: () => void}) => {
+const Snackbar = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => {
     return (
 
         <div
             className={cx(styles.snackbar, styles[`type-${notification.type}-snackbar`])}
         >
             <div>
-                {typeof notification.content === 'function' ? notification.content() : notification.content}
+                {typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content}
             </div>
             {notification.isDismissible && (
                 <a href="#" onClick={onDismiss}>
@@ -25,14 +25,14 @@ const Snackbar = ({notification, onDismiss}: {notification: Notification, onDism
     );
 };
 
-const Notice = ({notification, onDismiss}: {notification: Notification, onDismiss: () => void}) => {
+const Notice = ({notification, onDismiss}: { notification: Notification, onDismiss: () => void }) => {
     return (
 
         <div
             className={cx(styles.notice, styles[`type-${notification.type}`])}
         >
             <div className={styles.notificationContent}>
-                {typeof notification.content === 'function' ? notification.content() : notification.content}
+                {typeof notification.content === 'function' ? notification.content(onDismiss, notification) : notification.content}
             </div>
             {notification.isDismissible && (
                 <a href="#" onClick={onDismiss}>
@@ -63,17 +63,12 @@ export default ({notification}) => {
     };
 
 
-    return notification.notificationType === 'snackbar'
-        ? (
-            <Snackbar
-                notification={notification}
-                onDismiss={onDismiss}
-            />
-        ) : (
-            <Notice
-                notification={notification}
-                onDismiss={onDismiss}
-            />
-        );
-
+    switch (notification.notificationType) {
+        case 'snackbar':
+            return <Snackbar notification={notification} onDismiss={onDismiss} />
+        case 'notice':
+            return <Notice notification={notification} onDismiss={onDismiss} />
+        default:
+            return null;
+    }
 }

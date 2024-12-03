@@ -40,11 +40,17 @@ class DonationFormsAdminPage
      */
     protected $migrationApiRoot;
 
+    /**
+     * @var string
+     */
+    protected $defaultFormActionUrl;
+
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
         $this->bannerActionUrl = admin_url('admin-ajax.php?action=givewp_show_onboarding_banner');
         $this->tooltipActionUrl = admin_url('admin-ajax.php?action=givewp_show_upgraded_tooltip');
+        $this->defaultFormActionUrl = admin_url('admin-ajax.php?action=givewp_show_default_form_tooltip');
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
@@ -99,6 +105,7 @@ class DonationFormsAdminPage
             'apiRoot' => $this->apiRoot,
             'bannerActionUrl' => $this->bannerActionUrl,
             'tooltipActionUrl' => $this->tooltipActionUrl,
+            'defaultFormActionUrl' => $this->defaultFormActionUrl,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
@@ -106,6 +113,7 @@ class DonationFormsAdminPage
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'showDefaultFormTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-default-form-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),

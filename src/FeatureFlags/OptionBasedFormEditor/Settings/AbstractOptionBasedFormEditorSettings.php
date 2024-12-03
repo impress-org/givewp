@@ -5,17 +5,17 @@ namespace Give\FeatureFlags\OptionBasedFormEditor\Settings;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 
 /**
- * @unreleased
+ * @since 3.18.0
  */
 abstract class AbstractOptionBasedFormEditorSettings
 {
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     abstract public function getDisabledOptionIds(): array;
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public function getDisabledSectionIds(): array
     {
@@ -23,7 +23,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public function getNewDefaultSection(): string
     {
@@ -31,7 +31,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     final public function maybeDisableSections(array $sections): array
     {
@@ -49,7 +49,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     final public function maybeDisableOptions(array $options): array
     {
@@ -69,7 +69,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     final public function maybeSetNewDefaultSection($currentSection)
     {
@@ -83,7 +83,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     private function isOptionDisabled($option): bool
     {
@@ -91,7 +91,7 @@ abstract class AbstractOptionBasedFormEditorSettings
     }
 
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     private function isCurrentSectionDisabled(): bool
     {

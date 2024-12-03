@@ -3,12 +3,12 @@
 namespace Give\FeatureFlags\OptionBasedFormEditor\Settings;
 
 /**
- * @unreleased
+ * @since 3.18.0
  */
 class DefaultOptions extends AbstractOptionBasedFormEditorSettings
 {
     /**
-     * @unreleased
+     * @since 3.18.0
      */
     public function getDisabledOptionIds(): array
     {
