@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
-import {useEntityRecord} from '@wordpress/core-data';
 import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
@@ -12,7 +11,7 @@ import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
 import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, TriangleIcon, ViewIcon} from '../Icons';
+import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
@@ -83,7 +82,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     } = useCampaignEntityRecord();
 
     const methods = useForm<Campaign>({
-        mode: 'onChange',
+        mode: 'onBlur',
         ...resolver,
     });
 
