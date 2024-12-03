@@ -150,7 +150,7 @@ select[name="campaignId"] {
     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border: 0;
     background-color: transparent;
-    color: inherit;
+    color: var(--givewp-neutral-700, inherit);
     font-size: 0.8rem;
     line-height: 1.5rem;
     text-align: center;
@@ -181,11 +181,13 @@ select[name="campaignId"] {
 .tabs [role='tab']:hover,
 .tabs [data-reach-tab]:hover {
     font-weight: 500;
+    color: var(--givewp-neutral-900, inherit);
 }
 
 .tabs [data-reach-tab][aria-selected='true'],
 .tabs [role='tab'][aria-selected='true'] {
     font-weight: 600;
+    color: var(--givewp-neutral-900, inherit);
 }
 
 // set width for each tab to maintain size on hover.
