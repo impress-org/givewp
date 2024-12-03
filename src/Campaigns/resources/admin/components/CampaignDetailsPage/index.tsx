@@ -256,7 +256,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                                             <a
                                                 href="#"
                                                 className={cx(styles.contextMenuItem, styles.draft)}
-                                                onClick={() => updateStatus('draft')}
+                                                onClick={() => {
+                                                    updateStatus('draft');
+                                                    dispatch.dismissNotification('update-archive-notice');
+                                                }}
                                             >
                                                 <ArrowReverse /> {__('Move to draft', 'give')}
                                             </a>
