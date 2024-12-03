@@ -129,8 +129,9 @@ class App
     /**
      * Enqueue assets for front-end donor dashboards
      *
+     * @unreleased Add action to allow enqueueing additional assets.
+     * @since      2.11.0 Set script translations.
      * @since 2.10.0
-     * @since 2.11.0 Set script translations.
      *
      * @return void
      */
@@ -175,6 +176,8 @@ class App
             [],
             null
         );
+
+        do_action('give_donor_dashboard_enqueue_assets');
     }
 
     /**
