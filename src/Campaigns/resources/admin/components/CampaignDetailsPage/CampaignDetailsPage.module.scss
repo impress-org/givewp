@@ -294,10 +294,21 @@ select[name="campaignId"] {
                 input,
                 textarea,
                 select,
-                .fieldComponent {
+                .editor,
+                .upload{
                     margin-top: var(--givewp-spacing-1);
                     color: var(--givewp-neutral-900,  #060c1a);
                     font-weight: 500;
+                }
+
+                .upload > div > div {
+                        & > button:not(svg + button) {
+                        min-height: 160px;
+
+                        & > img {
+                            height: 100%;
+                        }
+                    }
                 }
             }
 

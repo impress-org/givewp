@@ -115,7 +115,7 @@ export default () => {
                                 {shortDescription.replace(/(<([^>]+)>)/gi, '')}
                             </textarea>
                         ) : (
-                            <div className={styles.fieldComponent}>
+                            <div className={styles.editor}>
                                 <Editor name="shortDescription" />
                             </div>
                         )}
@@ -132,7 +132,7 @@ export default () => {
                         <div className={styles.sectionFieldDescription}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </div>
-                        <div className={styles.fieldComponent}>
+                        <div className={styles.upload}>
                             <Upload
                                 disabled={isDisabled}
                                 id="givewp-campaigns-upload-cover-image"
