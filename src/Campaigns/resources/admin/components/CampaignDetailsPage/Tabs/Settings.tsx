@@ -33,6 +33,7 @@ export default () => {
 
     return (
         <div className={styles.sections}>
+
             {/* Campaign Page */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
