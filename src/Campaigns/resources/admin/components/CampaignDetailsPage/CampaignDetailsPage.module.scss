@@ -467,13 +467,16 @@ select[name="campaignId"] {
         border-color: #d1d5db;
     }
 
-
     .campaignButtonDots {
-        background-color: #d1d5db;
+        background-color: #e5e7eb;
         border-color: #d1d5db;
         border-radius: var(--givewp-rounded-4);
         line-height: 0;
         padding: var(--givewp-spacing-2);
+    }
+
+    .campaignButtonDotsActive {
+        background-color: #d1d5db;
     }
 
     .contextMenu {
