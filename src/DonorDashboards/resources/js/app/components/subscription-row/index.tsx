@@ -6,13 +6,15 @@ import {__} from '@wordpress/i18n';
 import {useWindowSize} from '../../hooks';
 import SubscriptionCancelModal from '../subscription-cancel-modal';
 
-import "./style.scss";
+import './style.scss';
 
 const SubscriptionRow = ({subscription}) => {
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
+
+    const gatewayCanUpdateSubscription = gateway.can_update || gateway.can_update_payment_method;
 
     return (
         <div className="give-donor-dashboard-table__row">
@@ -52,14 +54,14 @@ const SubscriptionRow = ({subscription}) => {
                         {__('View Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
                     </Link>
                 </div>
-                {gateway.can_update && (
+                {gatewayCanUpdateSubscription && (
                     <div className="give-donor-dashboard-table__donation-receipt">
                         <Link to={`/recurring-donations/manage/${id}`}>
                             {__('Manage Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
                         </Link>
                     </div>
                 )}
-                {gateway.can_cancel && !gateway.can_update && (
+                {gateway.can_cancel && !gatewayCanUpdateSubscription && (
                     <>
                         {isCancelModalOpen && (
                             <SubscriptionCancelModal
@@ -69,7 +71,12 @@ const SubscriptionRow = ({subscription}) => {
                             />
                         )}
                         <div className="give-donor-dashboard-table__donation-receipt">
-                            <a className={'give-donor-dashboard-table__donation-receipt__cancel'} onClick={() => setIsCancelModalOpen(true)}>{__('Cancel Subscription', 'give')}</a>
+                            <a
+                                className={'give-donor-dashboard-table__donation-receipt__cancel'}
+                                onClick={() => setIsCancelModalOpen(true)}
+                            >
+                                {__('Cancel Subscription', 'give')}
+                            </a>
                         </div>
                     </>
                 )}
