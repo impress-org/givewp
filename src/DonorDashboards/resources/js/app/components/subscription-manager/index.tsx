@@ -23,6 +23,9 @@ import SubscriptionCancelModal from '../subscription-cancel-modal';
  */
 const normalizeAmount = (float, decimals) => Number.parseFloat(float).toFixed(decimals);
 
+/**
+ * @unreleased Add support for hiding amount controls via filter
+ */
 const SubscriptionManager = ({id, subscription}) => {
     const gatewayRef = useRef();
     const [isPauseModalOpen, setIsPauseModalOpen] = useState(false);
@@ -37,6 +40,8 @@ const SubscriptionManager = ({id, subscription}) => {
 
     const subscriptionStatus = subscription.payment.status?.id || subscription.payment.status.label.toLowerCase();
 
+    const showAmountControls = subscription.gateway.can_update;
+    const showPaymentMethodControls = subscription.gateway.can_update_payment_method ?? showAmountControls;
     const showPausingControls =
         subscription.gateway.can_pause && !['Quarterly', 'Yearly'].includes(subscription.payment.frequency);
 
@@ -95,19 +100,23 @@ const SubscriptionManager = ({id, subscription}) => {
 
     return (
         <div className={'give-donor-dashboard__subscription-manager'}>
-            <AmountControl
-                currency={subscription.payment.currency}
-                options={options}
-                max={max}
-                min={min}
-                value={amount}
-                onChange={setAmount}
-            />
-            <PaymentMethodControl
-                forwardedRef={gatewayRef}
-                label={__('Payment Method', 'give')}
-                gateway={subscription.gateway}
-            />
+            {showAmountControls && (
+                <AmountControl
+                    currency={subscription.payment.currency}
+                    options={options}
+                    max={max}
+                    min={min}
+                    value={amount}
+                    onChange={setAmount}
+                />
+            )}
+            {showPaymentMethodControls && (
+                <PaymentMethodControl
+                    forwardedRef={gatewayRef}
+                    label={__('Payment Method', 'give')}
+                    gateway={subscription.gateway}
+                />
+            )}
 
             {loading && <DashboardLoadingSpinner />}
 
@@ -135,7 +144,11 @@ const SubscriptionManager = ({id, subscription}) => {
                     </>
                 )}
 
-                <Button disabled={subscriptionStatus !== 'active'} classnames={subscriptionStatus !== 'active' && 'disabled'} onClick={handleUpdate}>
+                <Button
+                    disabled={subscriptionStatus !== 'active'}
+                    classnames={subscriptionStatus !== 'active' && 'disabled'}
+                    onClick={handleUpdate}
+                >
                     {updated ? (
                         <Fragment>
                             {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
