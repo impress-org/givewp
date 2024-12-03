@@ -353,6 +353,8 @@ select[name="campaignId"] {
     }
 
     .toggle {
+        margin-top: var(--givewp-spacing-4);
+        
         & > div {
             margin-bottom: 0;
         }
