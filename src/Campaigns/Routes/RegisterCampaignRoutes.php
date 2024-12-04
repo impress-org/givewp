@@ -260,7 +260,6 @@ class RegisterCampaignRoutes
                 ],
                 'goalProgress' => [
                     'type' => 'number',
-                    'readonly' => true,
                     'description' => esc_html__('Campaign goal progress', 'give'),
                 ],
                 'goalType' => [
@@ -298,6 +297,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -319,6 +319,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -340,6 +341,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -361,6 +363,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -382,6 +385,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -403,6 +407,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
