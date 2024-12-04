@@ -44,13 +44,13 @@ class CampaignRepository
     /**
      * @unreleased
      *
-     * Get Campaign by Form ID
+     * Get Campaign by Form ID using a lookup table
      */
     public function getByFormId(int $formId)
     {
         return $this->prepareQuery()
-            ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
-            ->where('forms.form_id', $formId)
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'campaignForms.campaign_id', 'campaignForms')
+            ->where('campaignForms.form_id', $formId)
             ->get();
     }
 
@@ -170,24 +170,21 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            // Make sure we'll have only one default form
             if ($isDefault) {
-                DB::table('give_campaign_forms')
-                    ->where('campaign_id', $campaign->id)
+                DB::table('give_campaigns')
+                    ->where('id', $campaign->id)
                     ->update([
-                        'is_default' => false,
+                        'form_id' => $donationFormId,
                     ]);
+
+                $campaign->defaultFormId = $donationFormId;
             }
 
-            $table = DB::prefix('give_campaign_forms');
-            DB::query(
-                DB::prepare("INSERT INTO {$table} (form_id, campaign_id, is_default ) VALUES (%d, %d, %d)",
-                    [
-                        $donationFormId,
-                        $campaign->id,
-                        $isDefault,
-                    ])
-            );
+            DB::table('give_campaign_forms')
+                ->insert([
+                    'form_id' => $donationFormId,
+                    'campaign_id' => $campaign->id,
+                ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -213,13 +210,13 @@ class CampaignRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::query(
-                DB::prepare('UPDATE ' . DB::prefix('give_campaign_forms') . ' SET is_default = IF(form_id = %d, 1, 0) WHERE campaign_id = %d',
-                    [
-                        $donationFormId,
-                        $campaign->id,
-                    ])
-            );
+            DB::table('give_campaigns')
+                ->where('id', $campaign->id)
+                ->update([
+                    'form_id' => $donationFormId
+                ]);
+
+            $campaign->defaultFormId = $donationFormId;
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -295,7 +292,7 @@ class CampaignRepository
 
             // Migrate forms from campaigns to merge to the destination campaign
             DB::query(
-                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET is_default = 0, campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
+                DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
                     ])
@@ -345,6 +342,7 @@ class CampaignRepository
         return $builder->from('give_campaigns', 'campaigns')
             ->select(
                 'id',
+                ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
                 ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],

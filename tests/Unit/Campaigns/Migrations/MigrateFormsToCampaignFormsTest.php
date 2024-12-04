@@ -80,9 +80,9 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $migration = new MigrateFormsToCampaignForms();
         $migration->run();
 
-        $relationship = DB::table('give_campaign_forms')->where('form_id', $form->id)->get();
+        $campaign = Campaign::findByFormId($form->id);
 
-        $this->assertEquals(1, $relationship->is_default);
+        $this->assertEquals($form->id, $campaign->defaultFormId);
     }
 
     /**
@@ -99,8 +99,8 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $migration = new MigrateFormsToCampaignForms();
         $migration->run();
 
-        $relationship = DB::table('give_campaign_forms')->where('form_id', $form1->id)->get();
+        $campaign = Campaign::findByFormId($form2->id);
 
-        $this->assertEquals(0, $relationship->is_default);
+        $this->assertNotEquals($form1->id, $campaign->defaultFormId);
     }
 }
