@@ -6,8 +6,6 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
-import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
