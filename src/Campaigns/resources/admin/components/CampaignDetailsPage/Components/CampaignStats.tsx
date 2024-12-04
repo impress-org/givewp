@@ -35,6 +35,7 @@ const CampaignStats = () => {
 
     const [dayRange, setDayRange] = useState(null);
     const [stats, setStats] = useState([]);
+    const {campaign} = useCampaignEntityRecord();
 
     useEffect(() => {
         onDayRangeChange(0)
@@ -65,9 +66,7 @@ const CampaignStats = () => {
                 </Column>
                 <Column flex={1}>
                     <GoalProgressWidget />
-
-                    <DefaultFormWidget defaultForm={window.GiveCampaignDetails.defaultForm} />
-
+                    <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
                 </Column>
             </Row>
         </>

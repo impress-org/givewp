@@ -14,6 +14,7 @@ import AddCampaignFormModal from './AddCampaignFormModal';
 import DefaultFormNotice
     from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
 import apiFetch from "@wordpress/api-fetch";
+import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
 
 declare global {
     interface Window {
@@ -274,6 +275,8 @@ export default function DonationFormsListTable() {
         showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
     });
 
+    const entity = useCampaignEntityRecord();
+
     const handleDefaultFormTooltipDismiss = () => {
         apiFetch({
             url: window.GiveDonationForms.defaultFormActionUrl,
@@ -298,7 +301,9 @@ export default function DonationFormsListTable() {
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
-                rowActions={DonationFormsRowActions}
+                rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
+                    return DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity})
+                }}
                 bulkActions={donationFormsBulkActions}
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}
