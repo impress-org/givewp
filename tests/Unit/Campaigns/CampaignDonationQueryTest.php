@@ -27,19 +27,20 @@ final class CampaignDonationQueryTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::factory()->create();
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
 
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
 
         $query = new CampaignDonationQuery($campaign);
 
@@ -53,19 +54,20 @@ final class CampaignDonationQueryTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::factory()->create();
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
 
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
 
         $query = new CampaignDonationQuery($campaign);
 
@@ -79,19 +81,20 @@ final class CampaignDonationQueryTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::factory()->create();
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
-        Donation::factory()->create([
-            'formId' => $form->id,
-            'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
-        ]);
 
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+        
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
 
         $query = new CampaignDonationQuery($campaign);
 

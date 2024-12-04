@@ -56,6 +56,6 @@ final class CampaignModelTest extends TestCase
         $newDefaultForm = DonationForm::factory()->create();
         give(CampaignRepository::class)->addCampaignForm($campaign, $newDefaultForm->id, true);
 
-        $this->assertEquals($newDefaultForm->id, $campaign->defaultForm()->id);
+        $this->assertEquals($newDefaultForm->id, $campaign->defaultFormId);
     }
 }

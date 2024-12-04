@@ -35,6 +35,7 @@ class RegisterCampaignRoutes
         $this->registerGetCampaign();
         $this->registerUpdateCampaign();
         $this->registerGetCampaigns();
+        $this->registerMergeCampaigns();
         $this->registerCreateCampaign();
     }
 
@@ -125,6 +126,44 @@ class RegisterCampaignRoutes
                 ],
                 'args' => rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::EDITABLE),
                 'schema' => [$this, 'getSchema'],
+            ]
+        );
+    }
+
+
+    /**
+     * Update Campaign route
+     *
+     * @unreleased
+     */
+    public function registerMergeCampaigns()
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/merge',
+            [
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->mergeCampaigns($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                    'campaignsToMergeIds' => [
+                        'type' => 'array',
+                        'required' => true,
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                    ],
+                ],
             ]
         );
     }
