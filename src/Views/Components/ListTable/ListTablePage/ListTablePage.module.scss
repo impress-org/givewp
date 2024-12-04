@@ -146,7 +146,7 @@
 .addCampaignFormButton {
     $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
 
-    background-color: #E5E7EB;
+    background-color: var(--givewp-neutral-100);
     border: 1px solid #ddd;
     border-radius: 0.1875rem;
     box-shadow: $depth;
@@ -171,11 +171,7 @@
     }
 
     &:is(:hover, :active, :focus) {
-        color: #777;
-    }
-
-    &:hover {
-        filter: contrast(110%);
+        background-color: var(--givewp-neutral-200);
     }
 
     &:active {
