@@ -59,7 +59,6 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const urlParams = new URLSearchParams(window.location.search);
     const isCampaignDetailsPage =
         urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
-    const campaignId = urlParams.get('id');
 
     const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
