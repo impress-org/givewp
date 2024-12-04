@@ -6,13 +6,15 @@ use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
+use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
-use Give\Campaigns\Migrations\RevenueTable\AddCampaignID;
+use Give\Campaigns\Migrations\RevenueTable\AddCampaignID as RevenueTableAddCampaignID;
 use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -29,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(): void
     {
+        give()->singleton('campaigns', CampaignRepository::class);
         $this->registerTableNames();
     }
 
@@ -70,9 +73,10 @@ class ServiceProvider implements ServiceProviderInterface
                 SetCampaignType::class,
                 CreateCampaignFormsTable::class,
                 MigrateFormsToCampaignForms::class,
-                AddCampaignID::class,
+                RevenueTableAddCampaignID::class,
                 AssociateDonationsToCampaign::class,
-                AddIndexes::class
+                AddIndexes::class,
+                DonationsAddCampaignId::class
             ]
         );
     }

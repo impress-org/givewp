@@ -42,6 +42,7 @@
  * - The GiveWP Team
  */
 
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Container\Container;
 use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
@@ -132,6 +133,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read DonationFormsRepository $donationForms
+ * @property-read CampaignRepository $campaigns
  * @property-read Profile $donorDashboard
  * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta

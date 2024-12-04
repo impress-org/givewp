@@ -359,6 +359,10 @@ class DonationRepository
             DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];
 
+        if ($campaign = $donation->campaign) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
+        }
+
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
         }

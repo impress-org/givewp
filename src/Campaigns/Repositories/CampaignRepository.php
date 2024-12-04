@@ -48,10 +48,21 @@ class CampaignRepository
      */
     public function getByFormId(int $formId)
     {
+        return $this->queryByFormId($formId)->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param int $formId
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function queryByFormId(int $formId): ModelQueryBuilder
+    {
         return $this->prepareQuery()
-            ->leftJoin('give_campaign_forms', 'campaigns.id', 'campaignForms.campaign_id', 'campaignForms')
-            ->where('campaignForms.form_id', $formId)
-            ->get();
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'forms.campaign_id', 'forms')
+            ->where('forms.form_id', $formId);
     }
 
     /**

@@ -29,12 +29,8 @@ class CampaignDonationQuery extends QueryBuilder
         $this->where('paymentMode.meta_value', give_is_test_mode() ? 'test' : 'live');
 
         // Include only forms associated with the Campaign.
-        $this->joinDonationMeta(DonationMetaKeys::FORM_ID, 'formId');
-        $this->join(function (JoinQueryBuilder $builder) {
-            $builder->leftJoin('give_campaign_forms', 'campaign_forms')
-                    ->on('campaign_forms.form_id', 'formId.meta_value');
-        });
-        $this->where('campaign_forms.campaign_id', $campaign->id);
+        $this->joinDonationMeta(DonationMetaKeys::CAMPAIGN_ID, 'campaignId');
+        $this->where('campaignId.meta_value', $campaign->id);
     }
 
     /**
