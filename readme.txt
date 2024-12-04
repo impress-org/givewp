@@ -266,7 +266,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 3.19.0: December 6th, 2024 =
+= 3.19.0: December 5th, 2024 =
 * New: Added support to the donor dashboard for managing recurring donations from our Blink Payment Gateway add-on
 * Fix: Resolved a compatability issue with loading translations on WordPress 6.7
 * Security: Added sanitization to the manual migrations parameters  
