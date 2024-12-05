@@ -167,7 +167,7 @@ class AdminSettingFields
                     </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>"
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.png'; ?>"
                          width="316"
                          height="84"
                          alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
@@ -432,9 +432,7 @@ class AdminSettingFields
                                         <?php esc_html_e('Click to get started!', 'give'); ?>
                                     </span>
                                     <?php // We are using one PayPal button to handle both sandbox and live mode connection.?>
-                                    <a class="give-hidden" target="PPFrame"
-                                       data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
-                                       data-paypal-button="true">
+                                    <a class="give-hidden" target="PPFrame" data-paypal-button="true">
                                         <?php esc_html_e('Sign up for PayPal', 'give'); ?>
                                     </a>
                                 <?php endif; ?>

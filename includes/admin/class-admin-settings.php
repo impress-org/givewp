@@ -68,11 +68,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			 * For example: if you register a setting page with give-settings menu slug
 			 *              then filter will be give-settings_get_settings_pages
 			 *
+			 * @since 3.17.1 cast to array
 			 * @since 1.8
 			 *
 			 * @param array $settings Array of settings class object.
 			 */
-			self::$settings = apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
+			self::$settings = (array)apply_filters( self::$setting_filter_prefix . '_get_settings_pages', [] );
 
 			return self::$settings;
 		}
@@ -948,7 +949,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					?>
 					<tr valign="top" <?php echo $wrapper_class; ?>>
 						<th scope="row" class="titledesc">
-							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_attr( self::get_field_title( $value ) ); ?></label>
+                            <label for="<?php
+                            echo esc_attr($value['id']); ?>"><?php
+                                echo wp_kses_post(self::get_field_title($value)); ?></label>
 						</th>
 						<td class="give-forminp give-forminp-<?php echo esc_attr( $value['type'] ); ?>">
 							<select
