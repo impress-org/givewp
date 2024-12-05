@@ -13,6 +13,7 @@
 use Give\Donations\Models\Donation;
 use Give\Helpers\Form\Utils;
 use Give\ValueObjects\Money;
+use Give\DonationForms\Models\DonationForm;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -1671,6 +1672,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
+ * @unreleased Show "Custom" choice in select field if v3 form has donation levels.
  * @since 1.6
  * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
@@ -1693,11 +1695,23 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 	$variable_prices        = $form->get_prices();
 	$variable_price_options = [];
 
-	// Check if multi donation form support custom donation or not.
+    $v3Form = DonationForm::find($args['id']);
+    $v3FormDonationLevels = false;
+
+    if ($v3Form) {
+        $amountBlock = $v3Form->blocks->findByName('givewp/donation-amount');
+
+        if ($amountBlock) {
+            $v3FormDonationLevels = $amountBlock->getAttribute('priceOption') === 'multi';
+        }
+    }
+
+    // Check if multi donation form support custom donation or not.
 	// Check if donation amount is a custom or not.
 	if (
 		$form->is_custom_price_mode() ||
-		'custom' === $args['selected']
+		'custom' === $args['selected'] ||
+        $v3FormDonationLevels
 	) {
 		$variable_price_options['custom'] = _x( 'Custom', 'custom donation dropdown item', 'give' );
 	}

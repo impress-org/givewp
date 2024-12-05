@@ -10,6 +10,7 @@
  */
 
 // Exit if accessed directly.
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -693,6 +694,7 @@ class Give_Donate_Form {
 	public function is_custom_price_mode() {
 
 		$option = give_get_meta( $this->ID, '_give_custom_amount', true );
+
 		$ret    = 0;
 
 		if ( give_is_setting_enabled( $option ) ) {
