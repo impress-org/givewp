@@ -14,7 +14,6 @@ import AddCampaignFormModal from './AddCampaignFormModal';
 import DefaultFormNotice
     from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
 import apiFetch from "@wordpress/api-fetch";
-import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
 
 declare global {
     interface Window {
@@ -269,13 +268,11 @@ const ListTableBlankSlate = (
     />
 );
 
-export default function DonationFormsListTable() {
+export default function DonationFormsListTable({entity}) {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
         showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
     });
-
-    const entity = useCampaignEntityRecord();
 
     const handleDefaultFormTooltipDismiss = () => {
         apiFetch({

@@ -8,7 +8,7 @@ import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
 import DefaultFormWidget from "./DefaultForm";
 import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
+import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 

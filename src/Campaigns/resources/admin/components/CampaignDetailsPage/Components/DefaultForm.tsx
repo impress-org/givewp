@@ -1,7 +1,6 @@
 import {__} from "@wordpress/i18n";
 import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
-import {CampaignFormOption} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
 
 /**
  * @unreleased
