@@ -35,6 +35,7 @@ class RegisterCampaignRoutes
         $this->registerGetCampaign();
         $this->registerUpdateCampaign();
         $this->registerGetCampaigns();
+        $this->registerMergeCampaigns();
         $this->registerCreateCampaign();
     }
 
@@ -131,6 +132,44 @@ class RegisterCampaignRoutes
 
 
     /**
+     * Update Campaign route
+     *
+     * @unreleased
+     */
+    public function registerMergeCampaigns()
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/merge',
+            [
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->mergeCampaigns($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                    'campaignsToMergeIds' => [
+                        'type' => 'array',
+                        'required' => true,
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+
+    /**
      * Create Campaign route
      *
      * @unreleased
@@ -221,7 +260,6 @@ class RegisterCampaignRoutes
                 ],
                 'goalProgress' => [
                     'type' => 'number',
-                    'readonly' => true,
                     'description' => esc_html__('Campaign goal progress', 'give'),
                 ],
                 'goalType' => [
@@ -259,6 +297,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -280,6 +319,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -301,6 +341,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -322,6 +363,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -343,6 +385,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [
@@ -364,6 +407,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
+                                'type' => 'number'
                             ],
                         ],
                         'errorMessage' => [

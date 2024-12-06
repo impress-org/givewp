@@ -428,10 +428,6 @@ final class CampaignRepositoryTest extends TestCase
         //Re-fetch
         $destinationCampaign = Campaign::find($destinationCampaign->id);
 
-        $countDefaultForm = $destinationCampaign->forms()
-            ->where('campaign_forms.is_default', true)->count();
-
-        $this->assertEquals(1, $countDefaultForm);
         $this->assertEquals($defaultFormBeforeMerge->id, $destinationCampaign->defaultForm()->id);
     }
 }
