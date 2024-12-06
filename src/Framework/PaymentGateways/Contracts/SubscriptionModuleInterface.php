@@ -31,6 +31,13 @@ interface SubscriptionModuleInterface
     public function cancelSubscription(Subscription $subscription);
 
     /**
+     * Whether the gateway supports pausing subscriptions.
+     *
+     * @since 3.17.0
+     */
+    public function canPauseSubscription(): bool;
+
+    /**
      * Returns whether the gateway supports syncing subscriptions.
      *
      * @since 2.20.0

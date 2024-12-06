@@ -10,6 +10,10 @@
  */
 
 // Exit if accessed directly.
+use Give\Donations\Models\Donation;
+use Give\Helpers\Form\Utils;
+use Give\ValueObjects\Money;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -1487,6 +1491,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
+ * @since 3.18.0 check if donation form is V3 form
  * @since 1.5
  *
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
@@ -1508,9 +1513,27 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$form_id     = give_get_payment_form_id( $donation_id );
+	$form_id = give_get_payment_form_id( $donation_id );
+    $form_title = give_get_meta( $donation_id, '_give_payment_form_title', true );
+
+    // Check if the donation form is V3 form
+    if (Utils::isV3Form($form_id)) {
+        $currency = give_get_option('currency');
+        $options = give()->form_meta->get_meta($form_id, '_give_donation_levels', true) ?? [];
+        $donation = Donation::find($donation_id);
+
+        foreach ( $options as $option ) {
+            if (isset($option['_give_amount'], $option['_give_text'])) {
+                if (Money::of($option['_give_amount'], $currency )->getMinorAmount() == $donation->amount->getAmount()) {
+                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                    return apply_filters( 'give_get_donation_form_title', $form_title, $donation_id );
+                }
+            }
+        }
+    }
+
 	$price_id    = give_get_meta( $donation_id, '_give_payment_price_id', true );
-	$form_title  = give_get_meta( $donation_id, '_give_payment_form_title', true );
+
 	$only_level  = $args['only_level'];
 	$separator   = $args['separator'];
 	$level_label = '';

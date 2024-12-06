@@ -9,7 +9,7 @@ class EnqueueOfflineFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
-     * @unreleased On the "offlineEnabled" option check if the offline gateway is enabled  for v3 forms instead of v2 forms
+     * @since 3.16.2 On the "offlineEnabled" option check if the offline gateway is enabled  for v3 forms instead of v2 forms
      *
      * @return void
      */

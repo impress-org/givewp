@@ -6,8 +6,8 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 3.16.0
- * Requires at least: 6.4
+ * Version: 3.19.0
+ * Requires at least: 6.5
  * Requires PHP: 7.2
  * Text Domain: give
  * Domain Path: /languages
@@ -190,6 +190,7 @@ final class Give
     private $container;
 
     /**
+     * @since 3.17.0 added Settings service provider
      * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
@@ -241,6 +242,8 @@ final class Give
         Give\BetaFeatures\ServiceProvider::class,
         Give\FormTaxonomies\ServiceProvider::class,
         Give\DonationSpam\ServiceProvider::class,
+        Give\Settings\ServiceProvider::class,
+        Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
     ];
 
     /**
@@ -265,6 +268,7 @@ final class Give
     /**
      * Init Give when WordPress Initializes.
      *
+     * @since 3.19.0 Move the loading of the `give` textdomain to the `init` action hook.
      * @since 1.8.9
      */
     public function init()
@@ -275,9 +279,6 @@ final class Give
          * @since 1.8.9
          */
         do_action('before_give_init');
-
-        // Set up localization.
-        $this->load_textdomain();
 
         $this->bindClasses();
 
@@ -376,6 +377,7 @@ final class Give
     /**
      * Bootstraps the Give Plugin
      *
+     * @since 3.19.0 Load the `give` textdomain on the `init` action hook.
      * @since 2.8.0
      */
     public function boot()
@@ -388,6 +390,9 @@ final class Give
         add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
 
         add_action('plugins_loaded', [$this, 'init'], 0);
+
+        // Set up localization.
+        add_action('init', [$this, 'load_textdomain']);
 
         register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
@@ -406,7 +411,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.16.0');
+            define('GIVE_VERSION', '3.19.0');
         }
 
         // Plugin Root File.

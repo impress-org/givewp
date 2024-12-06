@@ -29,8 +29,8 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->labels->name );
 		$this->assertEquals( 'Form', $wp_post_types['give_forms']->labels->singular_name );
 		$this->assertEquals( 'Add Form', $wp_post_types['give_forms']->labels->add_new );
-		$this->assertEquals( 'Add New Donation Form', $wp_post_types['give_forms']->labels->add_new_item );
-		$this->assertEquals( 'Edit Donation Form', $wp_post_types['give_forms']->labels->edit_item );
+        $this->assertEquals('Add New Donation Form', $wp_post_types['give_forms']->labels->add_new_item);
+        $this->assertEquals('Edit Donation Form', $wp_post_types['give_forms']->labels->edit_item);
 		$this->assertEquals( 'New Form', $wp_post_types['give_forms']->labels->new_item );
 		$this->assertEquals( 'All Forms', $wp_post_types['give_forms']->labels->all_items );
 		$this->assertEquals( 'View Form', $wp_post_types['give_forms']->labels->view_item );

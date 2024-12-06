@@ -410,50 +410,59 @@ if (! class_exists('Give_Settings_Gateways')) :
                     ],
                 ],
             ];
+
+            /**
+             * @since 3.18.0
+             */
+            $groups = apply_filters('give_settings_payment_gateways_menu_groups', $groups);
+
             $defaultGroup = current(array_keys($groups));
 
             ob_start();
 
             echo '<h4>' . __('Enabled Gateways', 'give') . '</h4>';
             echo '<div class="give-settings-section-content give-payment-gateways-settings">';
-            echo '<div class="give-settings-section-group-menu">';
-            echo '<ul>';
-            foreach ($groups as $slug => $group) {
-                $current_group = !empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
-                $active_class = ($slug === $current_group) ? 'active' : '';
 
-                if ($group['helper']) {
-                    $helper = sprintf(
-                        '<div class="give-settings-section-group-helper">
-                            <img src="%1$s" />
-                            <div class="give-settings-section-group-helper__popout">
-                                <img src="%2$s" />
-                                <h5>%3$s</h5>
-                                <p>%4$s</p>
-                            </div>
-                        </div>',
-                        esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
-                        esc_url($group['helper']['image']),
+            if (count($groups) > 1) {
+                echo '<div class="give-settings-section-group-menu">';
+                echo '<ul>';
+                foreach ($groups as $slug => $group) {
+                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                    $active_class = ($slug === $current_group) ? 'active' : '';
+
+                    if ($group['helper']) {
+                        $helper = sprintf(
+                            '<div class="give-settings-section-group-helper">
+                                <img src="%1$s" />
+                                <div class="give-settings-section-group-helper__popout">
+                                    <img src="%2$s" />
+                                    <h5>%3$s</h5>
+                                    <p>%4$s</p>
+                                </div>
+                            </div>',
+                            esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
+                            esc_url($group['helper']['image']),
+                            esc_html($group['label']),
+                            esc_html($group['helper']['text'])
+                        );
+                    }
+
+                    echo sprintf(
+                        '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s %5$s</a></li>',
+                        esc_html($active_class),
+                        esc_url(
+                            admin_url(
+                                "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}"
+                            )
+                        ),
+                        esc_html($slug),
                         esc_html($group['label']),
-                        esc_html($group['helper']['text'])
+                        $helper ?? ''
                     );
                 }
-
-                echo sprintf(
-                    '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s %5$s</a></li>',
-                    esc_html($active_class),
-                    esc_url(
-                        admin_url(
-                            "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}"
-                        )
-                    ),
-                    esc_html($slug),
-                    esc_html($group['label']),
-                    $helper ?? ''
-                );
+                echo '</ul>';
+                echo '</div>';
             }
-            echo '</ul>';
-            echo '</div>';
 
             echo '<div class="give-settings-section-group-content">';
             foreach ($groups as $slug => $group) :
@@ -622,10 +631,10 @@ if (! class_exists('Give_Settings_Gateways')) :
                                     <?php
                                     echo $gateway; ?>
                                 </div>
-                                <?php
+                            <?php
                             endforeach; ?>
                         </div>
-                        <?php
+                    <?php
                     endif; ?>
                     <button class="give-payment-gateway-settings-dialog__content-button"><?php
                         esc_html_e('Got it', 'give'); ?></button>

@@ -9,11 +9,11 @@ use Give\Framework\Support\ValueObjects\Enum;
  *
  * @since 2.19.6
  *
- * @method static HAS_ONE();
- * @method static HAS_MANY();
- * @method static MANY_TO_MANY();
- * @method static BELONGS_TO();
- * @method static BELONGS_TO_MANY();
+ * @method static Relationship HAS_ONE();
+ * @method static Relationship HAS_MANY();
+ * @method static Relationship MANY_TO_MANY();
+ * @method static Relationship BELONGS_TO();
+ * @method static Relationship BELONGS_TO_MANY();
  */
 class Relationship extends Enum
 {
