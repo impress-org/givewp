@@ -13,7 +13,7 @@ const generateRequestErrors = (values: Record<string, any>, errors: object[], se
             setError(field, {message: Array.isArray(value) ? value[0] : value}, {shouldFocus: canFocus});
 
             if (!canFocus) {
-                // In custom fields that aren't inputs by default or hidden inputs, we need to use this workaround because the "shouldFocus" option will not work on these cases.
+                // In fields that aren't inputs by default or are hidden inputs, we need to use this workaround because the "shouldFocus" option will not work in these cases.
                 if (!fieldElement) {
                     const fieldElementContainer = document.querySelector('.givewp-fields-' + String(field)); //E.g: <div class="givewp-fields-giftAid">content...</div>
                     fieldElementContainer.scrollIntoView({behavior: 'smooth'});
