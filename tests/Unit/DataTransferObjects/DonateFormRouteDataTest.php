@@ -140,14 +140,13 @@ class DonateFormRouteDataTest extends TestCase
                       "attributes": {
                         "label": "Donation Amount",
                         "levels": [
-                          "10",
-                          "25",
-                          "50",
-                          "100",
-                          "250",
-                          "500"
+                          {"value": "10"},
+                          {"value": "25"},
+                          {"value": "50"},
+                          {"value": "100", "checked": true},
+                          {"value": "250"},
+                          {"value": "500"}
                         ],
-                        "defaultLevel": "100",
                         "priceOption": "multi",
                         "setPrice": "100",
                         "customAmount": "true",

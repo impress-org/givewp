@@ -51,8 +51,8 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 	give_get_template(
 		'shortcode-login',
 		array(
-			'give_login_redirect'  => esc_url($login_redirect),
-			'give_logout_redirect' => esc_url($logout_redirect),
+			'give_login_redirect'  => $login_redirect,
+			'give_logout_redirect' => $logout_redirect,
 		)
 	);
 

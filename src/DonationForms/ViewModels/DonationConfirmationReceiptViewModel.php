@@ -84,6 +84,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
@@ -111,7 +112,7 @@ class DonationConfirmationReceiptViewModel
 
         <?php
         if ($customCss): ?>
-            <style><?= $customCss ?></style>
+            <style><?php echo wp_strip_all_tags($customCss); ?></style>
         <?php
         endif; ?>
 

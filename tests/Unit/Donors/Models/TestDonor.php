@@ -78,4 +78,32 @@ class TestDonor extends TestCase
 
         $this->assertCount(2, $donor->subscriptions);
     }
+
+    /**
+     * @since 3.7.0
+     *
+     * @throws Exception
+     */
+    public function testCreateShouldDonorWithPhone()
+    {
+        $donor = new Donor(Donor::factory()->definition());
+
+        $this->assertNotEmpty($donor->phone);
+    }
+
+    /**
+     * @since 3.7.0
+     *
+     * @throws Exception
+     */
+    public function testCreateShouldUpdateDonorWithEmptyPhone()
+    {
+        $donor = new Donor(Donor::factory()->definition());
+        $donor->phone = '';
+        $donor->save();
+
+        $donor = Donor::find($donor->id);
+
+        $this->assertEmpty($donor->phone);
+    }
 }

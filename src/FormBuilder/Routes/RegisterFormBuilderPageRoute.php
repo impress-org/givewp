@@ -152,6 +152,11 @@ class RegisterFormBuilderPageRoute
                 ),
         ]);
 
+        wp_localize_script('@givewp/form-builder/script', 'goalNotificationData', [
+            'actionUrl' => admin_url('admin-ajax.php?action=givewp_goal_hide_notice'),
+            'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', true),
+        ]);
+
         View::render('FormBuilder.admin-form-builder');
     }
 
@@ -165,7 +170,7 @@ class RegisterFormBuilderPageRoute
     public function loadGutenbergScripts()
     {
         wp_enqueue_editor();
-        
+
         // Gutenberg scripts
         wp_enqueue_script('wp-block-library');
         wp_enqueue_script('wp-format-library');

@@ -27,6 +27,11 @@ function give_get_donation_form( $args = [] ) {
 	global $post;
 	static $count = 1;
 
+    /**
+     * @since 3.11.0 sanitize $args
+     */
+    $args = give_clean($args);
+
 	$args = wp_parse_args( $args, give_get_default_form_shortcode_args() );
 
 	// Backward compatibility for `form_id` function param.

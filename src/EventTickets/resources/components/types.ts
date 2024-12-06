@@ -4,8 +4,9 @@ export type Event = {
     id: number;
     name: string;
     title: string;
-    startDateTime: Date;
     description: string;
+    startDateTime: Date;
+    endDateTime: Date;
     ticketTypes: TicketType[];
 };
 

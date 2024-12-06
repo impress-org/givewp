@@ -71,6 +71,7 @@ class Reports
                 'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
             ]
         );
+        wp_set_script_translations( 'give-admin-reports-widget-js', 'give' );
     }
 
     public function get_all_time_start()

@@ -154,12 +154,12 @@ class ValidationRouteDataTest extends TestCase
                       "attributes": {
                         "label": "Donation Amount",
                         "levels": [
-                          "10",
-                          "25",
-                          "50",
-                          "100",
-                          "250",
-                          "500"
+                          {"value": "10"},
+                          {"value": "25"},
+                          {"value": "50"},
+                          {"value": "100"},
+                          {"value": "250"},
+                          {"value": "500"}
                         ],
                         "priceOption": "multi",
                         "setPrice": "100",

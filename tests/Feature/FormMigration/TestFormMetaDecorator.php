@@ -265,4 +265,53 @@ class TestFormMetaDecorator extends TestCase {
 
         return $this->_make_attachment($upload);
     }
+
+
+    /**
+     * @since 3.8.0
+     */
+    public function testIsDoubleTheDonationEnabledShouldReturnTrue(): void
+    {
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'dtd_enable_disable' => 'enabled',
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertTrue($formMetaDecorator->getDoubleTheDonationStatus() === 'enabled');
+    }
+
+    /**
+     * @since 3.8.0
+     */
+    public function testIsDoubleTheDonationDisabledShouldReturnTrue(): void
+    {
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'dtd_enable_disable' => 'disabled',
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertTrue($formMetaDecorator->getDoubleTheDonationStatus() === 'disabled');
+    }
+
+    /**
+     * @since 3.8.0
+     */
+    public function testIsDoubleTheDonationLabelSetShouldReturnTrue(): void
+    {
+        $formV2 = $this->createSimpleDonationForm([
+            'meta' => [
+                'give_dtd_label' => 'DTD Label',
+            ],
+        ]);
+
+        $formMetaDecorator = new FormMetaDecorator($formV2);
+
+        $this->assertTrue($formMetaDecorator->getDoubleTheDonationLabel() === 'DTD Label');
+    }
 }

@@ -10,21 +10,39 @@ import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared
 import Notice from './notice';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
+import cx from 'classnames';
 
-const DonationLevels = ({levels, defaultLevel}: {levels: DonationAmountAttributes['levels']; defaultLevel: DonationAmountAttributes['defaultLevel']}) => (
-    <LevelGrid>
+const DonationLevels = ({
+    levels,
+    descriptionsEnabled,
+}: {
+    levels: DonationAmountAttributes['levels'];
+    descriptionsEnabled: DonationAmountAttributes['descriptionsEnabled'];
+}) => (
+    <LevelGrid descriptionsEnabled={descriptionsEnabled}>
         {levels.map((level, index) => {
-            const levelAmount = formatCurrencyAmount(level.toString());
+            const levelAmount = formatCurrencyAmount(level?.value?.toString());
 
             return (
-                <LevelButton selected={level === defaultLevel} key={index}>
-                    {levelAmount}
+                <LevelButton selected={level.checked} key={index} descriptionsEnabled={descriptionsEnabled}>
+                    <span
+                        className={cx({
+                            'give-donation-block__level__amount': descriptionsEnabled,
+                        })}
+                    >
+                        {levelAmount}
+                    </span>
+
+                    {descriptionsEnabled && (
+                        <span className={'give-donation-block__level__label'}>
+                            {level.label ? level.label : __('Description goes here', 'give')}
+                        </span>
+                    )}
                 </LevelButton>
             );
         })}
     </LevelGrid>
 );
-
 const CustomAmount = ({amount}: {amount: DonationAmountAttributes['setPrice']}) => (
     <CurrencyControl value={amount} label={__('Custom amount', 'give')} hideLabelFromVision />
 );
@@ -57,7 +75,6 @@ const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -67,6 +84,7 @@ const Edit = ({attributes, setAttributes}) => {
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
         recurringEnableOneTimeDonations,
+        descriptionsEnabled,
     } = attributes as DonationAmountAttributes;
 
     const {gateways} = getFormBuilderWindowData();
@@ -102,7 +120,12 @@ const Edit = ({attributes, setAttributes}) => {
                     />
                 )}
 
-                {isMultiLevel && <DonationLevels levels={levels} defaultLevel={defaultLevel} />}
+                {isMultiLevel && (
+                    <DonationLevels
+                        levels={levels}
+                        descriptionsEnabled={descriptionsEnabled}
+                    />
+                )}
 
                 {customAmount && <CustomAmount amount={setPrice} />}
 

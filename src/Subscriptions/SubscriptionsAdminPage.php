@@ -106,7 +106,7 @@ class SubscriptionsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>'
                 );
             });
         </script>

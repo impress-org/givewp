@@ -12,7 +12,7 @@ import './styles.scss';
 type MediaLibrary = {
     id: string;
     value: string;
-    onChange: (url: string) => void;
+    onChange: (url: string, alt: string) => void;
     reset: () => void;
     label: string;
     help?: string;
@@ -44,7 +44,7 @@ export default function MediaLibrary({id, value, onChange, label, help, actionLa
             // Get media attachment details from the frame state
             var attachment = frame.state().get('selection').first().toJSON();
 
-            onChange(attachment.url);
+            onChange(attachment.url, attachment.alt);
         });
 
         // Finally, open the modal on click
