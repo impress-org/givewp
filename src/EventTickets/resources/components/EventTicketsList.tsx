@@ -1,9 +1,9 @@
+import {_x} from '@wordpress/i18n';
 import EventTicketsListItem from './EventTicketsListItem';
 import {EventTicketsListProps} from './types';
 
 export default function EventTicketsList({
     ticketTypes,
-    ticketsLabel,
     currency,
     currencyRate,
     selectedTickets = [],
@@ -15,7 +15,9 @@ export default function EventTicketsList({
 
     return (
         <div className={'givewp-event-tickets__tickets'}>
-            <h4>{ticketsLabel}</h4>
+            <h4>
+                {_x('Select tickets', 'Title above the list of ticket types in the Event Tickets template', 'give')}
+            </h4>
             {ticketTypes.map((ticketType) => {
                 return (
                     <EventTicketsListItem

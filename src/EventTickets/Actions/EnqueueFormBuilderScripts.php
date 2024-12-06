@@ -31,17 +31,6 @@ class EnqueueFormBuilderScripts
                 'events' => $this->getEvents(),
                 'createEventUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets&new=event'),
                 'listEventsUrl' => admin_url('edit.php?post_type=give_forms&page=give-event-tickets'),
-                'ticketsLabel' => apply_filters(
-                    'givewp_event_tickets_block/tickets_label',
-                    __('Select Tickets', 'give')
-                ),
-                'soldOutMessage' => apply_filters(
-                    'givewp_event_tickets_block/sold_out_message',
-                    __(
-                        'Thank you for supporting our cause. Our fundraising event tickets are officially sold out. You can still contribute by making a donation.',
-                        'give'
-                    )
-                ),
             ]
         );
 

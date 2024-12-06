@@ -99,5 +99,4 @@ class EventTickets extends Field
         $this->ticketTypes = $ticketTypes;
         return $this;
     }
-
 }
