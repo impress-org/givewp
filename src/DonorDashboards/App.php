@@ -129,7 +129,7 @@ class App
     /**
      * Enqueue assets for front-end donor dashboards
      *
-     * @unreleased Add action to allow enqueueing additional assets.
+     * @since 3.19.0 Add action to allow enqueueing additional assets.
      * @since      2.11.0 Set script translations.
      * @since 2.10.0
      *
