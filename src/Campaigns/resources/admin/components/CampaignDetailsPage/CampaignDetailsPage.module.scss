@@ -463,8 +463,13 @@ select[name="campaignId"] {
 
     .editCampaignPageButton {
         color: #060c1a;
-        background-color: #d1d5db;
-        border-color: #d1d5db;
+        background-color: var(--givewp-neutral-100, #e5e7eb);
+        border-color: var(--givewp-neutral-100, #e5e7eb);
+
+        &:hover {
+            background-color: var(--givewp-neutral-200, #d1d5db);
+            border-color: var(--givewp-neutral-200, #d1d5db);
+        }
     }
 
     .campaignButtonDots {
