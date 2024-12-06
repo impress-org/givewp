@@ -130,6 +130,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
+     * @unreleased fix parsing email with special characters
      * @since 2.32.0 Remove second argument from updateSellerAccessToken function.
      * @since 2.25.0 Handle exception.
      * @since 2.9.0
@@ -138,7 +139,7 @@ class onBoardingRedirectHandler
      */
     private function savePayPalMerchantDetails()
     {
-        $paypalGetData = wp_parse_args($_SERVER['QUERY_STRING']);
+        $paypalGetData = wp_parse_args(str_replace("+", rawurlencode("+"), $_SERVER['QUERY_STRING']));
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
         $tokenInfo = $this->settings->getAccessToken();
 
