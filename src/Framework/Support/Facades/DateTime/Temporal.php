@@ -14,6 +14,9 @@ use Give\Framework\Support\Facades\Facade;
  * @method static string getFormattedDateTime(DateTimeInterface $dateTime)
  * @method static string getCurrentFormattedDateForDatabase()
  * @method static DateTimeInterface withoutMicroseconds(DateTimeInterface $dateTime)
+ * @method static DateTimeInterface withStartOfDay(DateTimeInterface $dateTime)
+ * @method static DateTimeInterface withEndOfDay(DateTimeInterface $dateTime)
+ * @method static DateTimeInterface immutableOrClone(DateTimeInterface $dateTime)
  */
 class Temporal extends Facade
 {
