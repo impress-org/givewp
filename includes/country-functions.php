@@ -2108,8 +2108,12 @@ function give_get_indonesian_states_list() {
 /**
  * Get Indian States
  *
- * @since 1.0
+ * @link https://en.wikipedia.org/wiki/ISO_3166-2:IN
+ * @link https://www.iso.org/obp/ui/#iso:code:3166:IN
+ *
+ * @unreleased Changed subdivision code for Odisha (OD)
  * @since 2.11.0 Renamed Indian state of Orissa to Odisha (#5826)
+ * @since 1.0
  *
  * @return array $states A list of states
  */
@@ -2135,7 +2139,7 @@ function give_get_indian_states_list() {
 		'ML' => 'Meghalaya',
 		'MZ' => 'Mizoram',
 		'NL' => 'Nagaland',
-		'OR' => 'Odisha',
+		'OD' => 'Odisha',
 		'PB' => 'Punjab',
 		'RJ' => 'Rajasthan',
 		'SK' => 'Sikkim',
