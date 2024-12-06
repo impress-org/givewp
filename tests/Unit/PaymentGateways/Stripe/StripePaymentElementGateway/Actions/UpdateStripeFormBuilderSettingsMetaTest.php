@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\PaymentGateways\Stripe\StripePaymentElementGateway\Act
 
 use Closure;
 use Exception;
-use Give\Vendors\Faker\Factory;
+use Faker\Factory;
 use Give\DonationForms\Models\DonationForm;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;

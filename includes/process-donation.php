@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Helpers\Utils;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -341,6 +343,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
 function give_donation_form_validate_fields() {
 
 	$post_data = give_clean( $_POST ); // WPCS: input var ok, sanitization ok, CSRF ok.
+	give_donation_form_validate_name_fields($post_data);
 
 	// Validate Honeypot First.
 	if ( ! empty( $post_data['give-honeypot'] ) ) {
@@ -417,45 +420,18 @@ function give_donation_form_validate_fields() {
 /**
  * Detect serialized fields.
  *
+ * @since 3.17.2 Use Utils::isSerialized() method which add supports to find hidden serialized data in the middle of a string
+ * @since 3.16.5 Make sure only string parameters are used with the ltrim() method to prevent PHP 8+ fatal errors
+ * @since 3.16.4 updated to check all values for serialized fields
  * @since 3.16.2 added additional check for stripslashes_deep
  * @since 3.14.2 add give-form-title, give_title
  * @since 3.5.0
  */
 function give_donation_form_has_serialized_fields(array $post_data): bool
 {
-    $post_data_keys = [
-        'give-form-id',
-        'give-gateway',
-        'card_name',
-        'card_number',
-        'card_cvc',
-        'card_exp_month',
-        'card_exp_year',
-        'card_address',
-        'card_address_2',
-        'card_city',
-        'card_state',
-        'billing_country',
-        'card_zip',
-        'give_email',
-        'give_first',
-        'give_last',
-        'give_user_login',
-        'give_user_pass',
-        'give-form-title',
-        'give_title',
-    ];
+    foreach ($post_data as $value) {
 
-    foreach ($post_data as $key => $value) {
-        if ( ! in_array($key, $post_data_keys, true)) {
-            continue;
-        }
-
-        if (is_serialized(stripslashes_deep($value))) {
-            return true;
-        }
-
-        if (is_serialized($value)) {
+        if (Utils::isSerialized($value)) {
             return true;
         }
     }
@@ -1643,16 +1619,34 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
+ * @since 3.16.5 Check if "give_title" is set to prevent PHP warnings
+ * @since 3.16.4 Add additional validation for company name field
+ * @since 3.16.3 Add additional validations for name title prefix field
  * @since 2.1
  *
  * @return void
  */
 function give_donation_form_validate_name_fields( $post_data ) {
 
-	$is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
-	$is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+	$formId = absint( $post_data['give-form-id'] );
 
-	if ( ! $is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name ) ) {
-		give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
-	}
+    if (!give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title'])) {
+          give_set_error( 'disabled_name_title', esc_html__( 'The name title prefix field is not enabled.', 'give' ) );
+    }
+
+    if (!give_is_company_field_enabled($formId) && isset($post_data['give_company_name'])) {
+          give_set_error( 'disabled_company', esc_html__( 'The company field is not enabled.', 'give' ) );
+    }
+
+    if (give_is_name_title_prefix_enabled($formId) && isset($post_data['give_title']) && !in_array($post_data['give_title'], array_values(give_get_name_title_prefixes($formId)))) {
+      give_set_error( 'invalid_name_title', esc_html__( 'The name title prefix field is not valid.', 'give' ) );
+    }
+
+    $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
+    $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+    $is_alpha_title = ( isset($post_data['give_title']) && ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
+
+    if (!$is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
+        give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
+    }
 }

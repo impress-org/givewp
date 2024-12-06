@@ -42,6 +42,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 id={embedId}
                 src={dataSrcUrl}
                 checkOrigin={false}
+                heightCalculationMethod={'taggedElement'}
                 style={{
                     minWidth: '100%',
                     border: 'none',

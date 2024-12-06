@@ -29,6 +29,11 @@ If you would like to submit a pull request, please follow the steps below:
  *  When committing, reference your issue (if present) and include a note about the fix
 * Push the changes to your fork and [submit a pull request](https://help.github.com/articles/creating-a-pull-request) to the 'master' branch of the GiveWP repository
 
+## Security Considerations
+
+* When integrating with payment gateways make sure that all data relevent to the gateway is going directly to the gateway an nowhere else, especially credit card data
+* Under no circumstances should the payment method details (i.e. credit card deatails) be stored on the server
+
 ## Code Documentation
 
 * We ensure that every GiveWP function is documented well and follows the standards set by phpDoc

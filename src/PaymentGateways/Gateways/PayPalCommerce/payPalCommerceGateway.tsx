@@ -661,11 +661,30 @@ import {PayPalSubscriber} from './types';
                 throw new Error(sprintf(__('Paypal Donations Error: %s', 'give'), err.message));
             }
         },
+
+        /**
+         * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
+         */
         Fields() {
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
 
+            useEffect(() => {
+                const submitButton = document.querySelector<HTMLButtonElement>(
+                    'form#give-next-gen button[type="submit"]'
+                );
+
+                if (submitButton) {
+                    submitButton.style.display = 'none';
+                }
+
+                return () => {
+                    if (submitButton) {
+                        submitButton.style.display = '';
+                    }
+                };
+            }, []);
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>
