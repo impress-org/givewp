@@ -164,7 +164,7 @@ class Model
     /**
      * Get formatted number of donations
      *
-     * @since 2.9.0
+     * @unreleased
      */
     public function getFormattedDonationCount(): string
     {
