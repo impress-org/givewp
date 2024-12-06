@@ -316,34 +316,6 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
         return children;
     };
 
-    /**
-     * @since 3.12.2
-     */
-    const getRequiredValidationMessage = () => {
-        return __('This is a required field', 'give');
-    };
-
-    /**
-     * @since 3.12.2
-     */
-    const isCityRequired = () => {
-        return Boolean(document.querySelector('.givewp-fields-text-city .givewp-field-required'));
-    };
-
-    /**
-     * @since 3.12.2
-     */
-    const isStateRequired = () => {
-        return Boolean(document.querySelector('.givewp-fields-select-state .givewp-field-required'));
-    };
-
-    /**
-     * @since 3.12.2
-     */
-    const isZipRequired = () => {
-        return Boolean(document.querySelector('.givewp-fields-text-zip .givewp-field-required'));
-    };
-
     const SmartButtonsContainer = () => {
         const {useWatch, useFormState} = window.givewp.form.hooks;
         const donationType = useWatch({name: 'donationType'});
@@ -397,7 +369,22 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     return actions.reject();
                 }
 
-                // Validate the form values in the server side before proceeding.
+                /**
+                 * Validate the form values in the server side before proceeding - this is important to prevent problems with some blocks.
+                 *
+                 * Ideally, the client-side validations should be enough. However, in some cases, these validations are reached
+                 * later when the donation is already created on the PayPal side. This way, we need the request below to check
+                 * it earlier and prevent the donation creation on the PayPal side if the required fields are missing.
+                 *
+                 * Know cases:
+                 *
+                 * #1 - Billing Address Block: depending on the selected country, the city, state, and zip fields
+                 * can be required or not and there are custom validation rules on the server side that check it.
+                 *
+                 * #2 - Gift Aid Block: when users opt-in to the gift aid checkbox, it will display some
+                 * required fields that should be filled, but as this block is not a group and even so has
+                 * "children" fields, the validation rules for it live only on the server.
+                 */
                 const isServerValidationSuccessful = await handleValidationRequest(
                     payPalDonationsSettings.validateUrl,
                     getValues(),
@@ -407,45 +394,6 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
 
                 if (!isServerValidationSuccessful) {
                     return actions.reject();
-                }
-
-                /**
-                 * Depending on the selected country, the city, state, and zip fields can be required or not and there are custom
-                 * validation rules on the server side that check that. However, in this case, these validations are reached later
-                 * when the donation is already created on the PayPal side. This way, we need the conditions below to check it earlier
-                 * and prevent the donation creation on the PayPal side if the required billing address fields are missing.
-                 */
-                if (country) {
-                    if (city.length === 0 && isCityRequired()) {
-                        setError(
-                            'city',
-                            {
-                                type: 'custom',
-                                message: getRequiredValidationMessage(),
-                            },
-                            {shouldFocus: true}
-                        );
-                        return actions.reject();
-                    }
-
-                    if (state.length === 0 && isStateRequired()) {
-                        setError(
-                            'state',
-                            {
-                                type: 'custom',
-                                message: getRequiredValidationMessage(),
-                            },
-                            {shouldFocus: true}
-                        );
-                        // As the state is a hidden field we need to use this workaround because the "shouldFocus" option does not work in hidden fields.
-                        document.querySelector('.givewp-fields-select-state').scrollIntoView({behavior: 'smooth'});
-                        return actions.reject();
-                    }
-
-                    if (postalCode.length === 0 && isZipRequired()) {
-                        setError('zip', {type: 'custom', message: getRequiredValidationMessage()}, {shouldFocus: true});
-                        return actions.reject();
-                    }
                 }
 
                 orderCreated = true;
