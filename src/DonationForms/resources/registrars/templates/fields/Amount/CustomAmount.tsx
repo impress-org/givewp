@@ -15,7 +15,7 @@ type CustomAmountProps = {
     onValueChange?: (value: string, name?: string, values?: CurrencyInputOnChangeValues) => void;
 };
 
-const formatter = new Intl.NumberFormat();
+const formatter = new Intl.NumberFormat(navigator.language);
 const groupSeparator = formatter.format(1000).replace(/[0-9]/g, '');
 const decimalSeparator = formatter.format(1.1).replace(/[0-9]/g, '');
 
@@ -35,7 +35,13 @@ const CustomAmount = (
                 }}
                 disableAbbreviations
                 decimalSeparator={decimalSeparator}
-                groupSeparator={groupSeparator}
+                groupSeparator={
+                    /**
+                     * Replace non-breaking space to avoid conflict with the suffix separator.
+                     * @link https://github.com/cchanxzy/react-currency-input-field/issues/266
+                     */
+                    groupSeparator.replace(/\u00A0/g, ' ')
+                }
                 className="givewp-fields-amount__input givewp-fields-amount__input-custom"
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
