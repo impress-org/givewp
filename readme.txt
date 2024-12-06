@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.18.0
+Stable tag: 3.19.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,6 +266,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.19.0: December 5th, 2024 =
+* New: Added support to the donor dashboard for managing recurring donations from our Blink Payment Gateway add-on
+* Fix: Resolved a compatability issue with loading translations on WordPress 6.7
+* Security: Added sanitization to the manual migrations parameters  
+
+
 = 3.18.0: November 20th, 2024 =
 * New: Added support to our form migration process for our upcoming Constant Contact add-on 3.0.0 version 
 * New: The donor wall now shows the donor's uploaded image avatar when available
