@@ -9,7 +9,6 @@ use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
-use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 
 /**
