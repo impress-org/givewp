@@ -101,7 +101,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
     }
 
     /**
-     * @unreleased Add string with serialized data hidden in the middle of the content
+     * @since 3.17.2 Add string with serialized data hidden in the middle of the content
      * @since 3.16.4
      */
     public function give_donation_form_has_serialized_fields_data(): array

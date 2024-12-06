@@ -26,10 +26,10 @@ class TestConstantContact extends TestCase
     {
         // Arrange
         $options = [
-            'give_constant_contact_show_checkout_signup' => 'on',
-            'give_constant_contact_label' => 'Subscribe to our newsletter?',
-            'give_constant_contact_checked_default' => 'on',
-            'give_constant_contact_list' => ['1928414891'],
+            'givewp_constant_contact_show_checkout_signup' => 'on',
+            'givewp_constant_contact_label' => 'Subscribe to our newsletter?',
+            'givewp_constant_contact_checked_default' => 'on',
+            'givewp_constant_contact_list' => ['1928414891'],
         ];
         foreach ($options as $key => $value) {
             give_update_option($key, $value);
@@ -43,8 +43,8 @@ class TestConstantContact extends TestCase
         // Assert
         $block = $v3Form->blocks->findByName('givewp/constantcontact');
         $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
-        $this->assertSame($options['give_constant_contact_label'], $block->getAttribute('label'));
-        $this->assertSame($options['give_constant_contact_list'], $block->getAttribute('selectedEmailLists'));
+        $this->assertSame($options['givewp_constant_contact_label'], $block->getAttribute('label'));
+        $this->assertSame($options['givewp_constant_contact_list'], $block->getAttribute('selectedEmailLists'));
     }
 
     /**
@@ -53,7 +53,7 @@ class TestConstantContact extends TestCase
     public function testFormConfiguredToDisableConstantContactIsMigratedWithoutConstantContactBlock()
     {
         // Arrange
-        give_update_option('give_constant_contact_show_checkout_signup', 'on');
+        give_update_option('givewp_constant_contact_show_checkout_signup', 'on');
         $meta = ['_give_constant_contact_disable' => 'true'];
         $v2Form = $this->createSimpleDonationForm(['meta' => $meta]);
 

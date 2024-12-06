@@ -3,7 +3,7 @@
 namespace Give\Framework\Models\Factories;
 
 use Exception;
-use Give\Vendors\Faker\Generator;
+use Faker\Generator;
 use Give\Framework\Database\DB;
 
 /**
