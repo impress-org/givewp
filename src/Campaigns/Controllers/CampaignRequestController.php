@@ -35,6 +35,7 @@ class CampaignRequestController
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
                 'goalProgress' => $campaign->goalProgress(),
+                'defaultFormTitle' => $campaign->defaultForm()->title
             ])
         );
     }
@@ -143,7 +144,11 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            array_merge($campaign->toArray(), [
+                'defaultFormTitle' => $campaign->defaultForm()->title
+            ])
+        );
     }
 
     /**

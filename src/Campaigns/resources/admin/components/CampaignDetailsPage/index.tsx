@@ -15,9 +15,9 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
+import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
-import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -79,7 +79,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         hasResolved,
         save,
         edit,
-    } = useCampaignEntityRecord();
+    } = useCampaignEntityRecord(campaignId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
