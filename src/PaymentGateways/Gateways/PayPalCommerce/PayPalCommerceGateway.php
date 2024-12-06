@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 
+use Exception;
+use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
@@ -51,7 +53,9 @@ class PayPalCommerceGateway extends PayPalCommerce
     }
 
     /**
-     * @throws \Exception
+     * @unreleased Add validate URL
+     *
+     * @throws Exception
      */
     public function formSettings(int $formId): array
     {
@@ -60,6 +64,7 @@ class PayPalCommerceGateway extends PayPalCommerce
             'donationFormId' => $formId,
             'donationFormNonce' => wp_create_nonce("give_donation_form_nonce_{$formId}"),
             'sdkOptions' => $this->getPayPalSDKOptions($formId),
+            'validateUrl' => (new GenerateDonationFormValidationRouteUrl())(),
         ];
     }
 
@@ -67,7 +72,7 @@ class PayPalCommerceGateway extends PayPalCommerce
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
      * @since 3.0.0
-     * @throws \Exception
+     * @throws Exception
      */
     private function getPayPalSDKOptions(int $formId): array
     {

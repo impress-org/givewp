@@ -12,6 +12,7 @@ import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
 import {PayPalSubscriber} from './types';
+import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 
 (() => {
     /**
@@ -384,15 +385,27 @@ import {PayPalSubscriber} from './types';
                     return actions.reject();
                 }
 
-                // Validate the form values before proceeding.
-                const result = await trigger();
-                if (result === false) {
+                // Validate the form values in the client side before proceeding.
+                const isClientValidationSuccessful = await trigger();
+                if (!isClientValidationSuccessful) {
                     // Set focus on first invalid field.
                     for (const fieldName in getValues()) {
                         if (getFieldState(fieldName).invalid) {
                             setFocus(fieldName);
                         }
                     }
+                    return actions.reject();
+                }
+
+                // Validate the form values in the server side before proceeding.
+                const isServerValidationSuccessful = await handleValidationRequest(
+                    payPalDonationsSettings.validateUrl,
+                    getValues(),
+                    setError,
+                    gateway
+                );
+
+                if (!isServerValidationSuccessful) {
                     return actions.reject();
                 }
 
