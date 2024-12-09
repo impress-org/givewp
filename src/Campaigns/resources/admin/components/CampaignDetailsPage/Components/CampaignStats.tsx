@@ -8,7 +8,7 @@ import HeaderText from './HeaderText';
 import HeaderSubText from './HeaderSubText';
 import DefaultFormWidget from "./DefaultForm";
 import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-import useCampaignEntityRecord from "@givewp/campaigns/admin/components/CampaignDetailsPage/useCampaignEntityRecord";
+import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -35,6 +35,7 @@ const CampaignStats = () => {
 
     const [dayRange, setDayRange] = useState(null);
     const [stats, setStats] = useState([]);
+    const {campaign} = useCampaignEntityRecord();
 
     useEffect(() => {
         onDayRangeChange(0)
@@ -65,9 +66,7 @@ const CampaignStats = () => {
                 </Column>
                 <Column flex={1}>
                     <GoalProgressWidget />
-
-                    <DefaultFormWidget defaultForm={window.GiveCampaignDetails.defaultForm} />
-
+                    <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
                 </Column>
             </Row>
         </>

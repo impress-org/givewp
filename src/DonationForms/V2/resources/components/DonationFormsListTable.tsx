@@ -268,7 +268,7 @@ const ListTableBlankSlate = (
     />
 );
 
-export default function DonationFormsListTable() {
+export default function DonationFormsListTable({entity}) {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
         showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
@@ -298,7 +298,9 @@ export default function DonationFormsListTable() {
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
-                rowActions={DonationFormsRowActions}
+                rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
+                    return DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity})
+                }}
                 bulkActions={donationFormsBulkActions}
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}

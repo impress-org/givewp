@@ -25,6 +25,8 @@ export type Campaign = {
     createdAt: string;
     //updatedAt: string;
     enableCampaignPage: boolean;
+    defaultFormId: number;
+    defaultFormTitle: string;
 };
 
 /*export interface Campaign {
