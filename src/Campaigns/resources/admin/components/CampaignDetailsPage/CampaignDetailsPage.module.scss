@@ -136,6 +136,10 @@ select[name="campaignId"] {
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);
     }
+
+    &.fullWidth {
+        padding-left: var(--givewp-spacing-6);
+    }
 }
 
 
@@ -143,12 +147,15 @@ select[name="campaignId"] {
 .tabs [role='tab'] {
     position: relative;
     appearance: none;
-    padding: 1em;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border: 0;
     background-color: transparent;
-    color: inherit;
+    color: var(--givewp-neutral-700);
     font-size: 0.8rem;
+    line-height: 1.5rem;
+    text-align: center;
     cursor: pointer;
+    box-sizing: border-box
 }
 
 @media screen and (min-width: 48rem) {
@@ -164,16 +171,40 @@ select[name="campaignId"] {
     display: block;
     position: absolute;
     top: calc(100% - 0.1875em);
-    width: calc(100% - 2em);
+    left: 0;
+    right: 0;
     height: 0.1875em;
     background-color: transparent;
     transition: background-color 100ms ease-in-out;
 }
 
 .tabs [role='tab']:hover,
+.tabs [data-reach-tab]:hover {
+    font-weight: 500;
+    color: var(--givewp-neutral-900);
+    background-color: var(--givewp-neutral-50);
+}
+
 .tabs [data-reach-tab][aria-selected='true'],
 .tabs [role='tab'][aria-selected='true'] {
     font-weight: 600;
+    color: var(--givewp-neutral-900);
+}
+
+// set width for each tab to maintain size on hover.
+.tabs [data-reach-tab]:first-child,
+.tabs [role='tab']:first-child {
+    width: 104px;
+}
+
+.tabs [data-reach-tab]:nth-child(2),
+.tabs [role='tab']:nth-child(2) {
+    width: 95px;
+}
+
+.tabs [data-reach-tab]:last-child,
+.tabs [role='tab']:last-child {
+    width: 79px;
 }
 
 .tabs [data-reach-tab][aria-selected='true']::after,
@@ -433,17 +464,25 @@ select[name="campaignId"] {
 
     .editCampaignPageButton {
         color: #060c1a;
-        background-color: #d1d5db;
-        border-color: #d1d5db;
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
+
+        &:hover {
+            background-color: var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
+        }
     }
 
-
     .campaignButtonDots {
-        background-color: #d1d5db;
+        background-color: #e5e7eb;
         border-color: #d1d5db;
         border-radius: var(--givewp-rounded-4);
         line-height: 0;
         padding: var(--givewp-spacing-2);
+    }
+
+    .campaignButtonDotsActive {
+        background-color: #d1d5db;
     }
 
     .contextMenu {
