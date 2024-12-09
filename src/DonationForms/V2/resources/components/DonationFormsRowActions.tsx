@@ -8,6 +8,7 @@ import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
+import {createInterpolateElement} from "@wordpress/element";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -63,16 +64,18 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
     const campaignId = urlParams.get('id');
 
+
+    const defaultCampaignModalContent = createInterpolateElement(
+        __('This will set <title_link/> as the default form for this campaign. Do you want to proceed?', 'give'),
+        {
+            title_link: <Interweave content={item?.title} />,
+        }
+    );
+
     const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
             __('Make as default', 'give'),
-            (selected) => (
-                <p>
-                    {__('Really make the following campaign form default?', 'give')}
-                    <br />
-                    <Interweave content={item?.title} />
-                </p>
-            ),
+            (selected) => (<p>{defaultCampaignModalContent}</p>),
             async () => {
                 const response = await apiFetch({
                     path: addQueryArgs('/give-api/v2/campaigns/' + campaignId, {
