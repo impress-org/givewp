@@ -157,6 +157,14 @@ class RegisterFormBuilderPageRoute
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', true),
         ]);
 
+        /**
+         * @since 3.16.2
+         */
+        wp_localize_script('@givewp/form-builder/script', 'additionalPaymentGatewaysNotificationData', [
+            'actionUrl' => admin_url('admin-ajax.php?action=givewp_additional_payment_gateways_hide_notice'),
+            'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
+        ]);
+
         View::render('FormBuilder.admin-form-builder');
     }
 

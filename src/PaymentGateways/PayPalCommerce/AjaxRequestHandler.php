@@ -184,13 +184,16 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
-     * @unreleased Add new $keepWebhooks option
+     * @since 3.16.0 added security nonce check
+     * @since 3.13.0 Add new $keepWebhooks option
      * @since 2.30.0 Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */
     public function removePayPalAccount()
     {
+        check_ajax_referer( 'give_paypal_commerce_disconnect_account');
+
         if (! current_user_can('manage_give_settings')) {
             wp_send_json_error(['error' => esc_html__('You are not allowed to perform this action.', 'give')]);
         }

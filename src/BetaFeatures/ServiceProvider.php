@@ -40,7 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('give_admin_field_beta_features', function(){
-            echo sprintf('<div class="give-admin-beta-features-message"><p><span class="givewp-beta-icon">BETA</span> %s</p></div>', __('Beta features are a way to get early access to new features. These features are functional but will be updated frequently. Updates may include changes to the feature settings, admin screens, design and database.', 'give'));
+            echo sprintf('<div class="give-admin-beta-features-message"><span class="givewp-beta-icon">BETA</span> %s </div>', __('Beta features are a way to get early access to new features. These features are functional but will be updated frequently. Updates may include changes to the feature settings, admin screens, design and database.', 'give'));
         });
 
         add_action('give_admin_field_beta_features_feedback_link', function () {

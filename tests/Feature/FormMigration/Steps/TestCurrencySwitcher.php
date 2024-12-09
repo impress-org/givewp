@@ -17,7 +17,7 @@ class TestCurrencySwitcher extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testFormWithoutCurrencySwitcherSettingsMigratesUsingGlobalSettings(): void
     {
@@ -35,7 +35,7 @@ class TestCurrencySwitcher extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testFormConfiguredToUseGlobalCurrencySwitcherSettingsIsMigrated(): void
     {
@@ -56,7 +56,7 @@ class TestCurrencySwitcher extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testFormConfiguredToDisableCurrencySwitcherIsMigrated(): void
     {
@@ -77,7 +77,7 @@ class TestCurrencySwitcher extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     public function testFormConfiguredToUseLocalCurrencySwitcherIsMigrated(): void
     {
@@ -111,7 +111,7 @@ class TestCurrencySwitcher extends TestCase
      * Sets up and returns a v2 donation form configured with the
      * given attributes being set to the Currency Switcher settings.
      *
-     * @unreleased
+     * @since 3.13.0
      *
      * @throws Exception
      */
@@ -127,7 +127,7 @@ class TestCurrencySwitcher extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.13.0
      */
     private function migrateForm(V2DonationForm $form): DonationForm
     {

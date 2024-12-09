@@ -4,7 +4,7 @@ import Placement from '@givewp/form-builder/components/onboarding/steps/types/pl
 const schemaSteps = [
     {
         id: 'schema-canvas',
-        attachTo: {element: '#form-blocks-canvas', on: 'right-start' as Placement},
+        attachTo: {element: '.interface-interface-skeleton__content', on: 'right-start' as Placement},
         title: __('Canvas', 'give'),
         text: __('Add, reorder, and edit blocks and sections here to make up your form.', 'give'),
     },

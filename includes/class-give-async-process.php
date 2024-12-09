@@ -8,7 +8,7 @@ use Give\Framework\WordPressLibraries\WPAsyncRequest;
  * updates in the background.
  *
  * @class    Give_Async_Request
- * @unrleased replace WP_Async_Request with namespaced version WPAsyncRequest.
+ * @since 3.1.2 replace WP_Async_Request with namespaced version WPAsyncRequest.
  * @version  2.0.0
  * @package  Give/Classes
  * @category Class

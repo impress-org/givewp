@@ -2,8 +2,9 @@
 
 namespace Give\TestData;
 
-use Give\Vendors\Faker\Factory as FakerFactory;
-use Give\Vendors\Faker\Generator as FakerGenerator;
+use Composer\InstalledVersions;
+use Faker\Factory as FakerFactory;
+use Faker\Generator as FakerGenerator;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\ServiceProviders\ServiceProvider as GiveServiceProvider;
 use Give\TestData\Commands\DonationSeedCommand;
@@ -25,6 +26,10 @@ class ServiceProvider implements GiveServiceProvider
      */
     public function register()
     {
+        if ( ! $this->isFakerInstalled()) {
+            return;
+        }
+
         // Instead of passing around an instance, bind a singleton to the container.
         give()->singleton(
             FakerGenerator::class,
@@ -39,6 +44,10 @@ class ServiceProvider implements GiveServiceProvider
      */
     public function boot()
     {
+        if ( ! $this->isFakerInstalled()) {
+            return;
+        }
+
         // Add CLI commands
         if (defined('WP_CLI') && WP_CLI) {
             $this->addCommands();
@@ -87,5 +96,19 @@ class ServiceProvider implements GiveServiceProvider
         WP_CLI::add_command('give test-demonstration-page', give()->make(PageSeedCommand::class));
         WP_CLI::add_command('give test-donation-form', give()->make(FormSeedCommand::class));
         WP_CLI::add_command('give test-logs', give()->make(LogsSeedCommand::class));
+    }
+
+    /**
+     * Helper function used to check if Faker library is installed
+     *
+     * @see https://getcomposer.org/doc/07-runtime.md#installed-versions
+     *
+     * @since 3.17.2
+     *
+     * @return bool
+     */
+    private function isFakerInstalled(): bool
+    {
+        return InstalledVersions::isInstalled('fakerphp/faker');
     }
 }

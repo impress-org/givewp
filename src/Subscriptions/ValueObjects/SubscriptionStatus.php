@@ -5,6 +5,7 @@ namespace Give\Subscriptions\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @since 3.17.0 Added a new "paused" status
  * @since 2.19.6
  *
  * @method static SubscriptionStatus PENDING()
@@ -16,6 +17,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static SubscriptionStatus FAILING()
  * @method static SubscriptionStatus CANCELLED()
  * @method static SubscriptionStatus SUSPENDED()
+ * @method static SubscriptionStatus PAUSED()
  * @method bool isPending()
  * @method bool isActive()
  * @method bool isExpired()
@@ -25,6 +27,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isFailing()
  * @method bool isCancelled()
  * @method bool isSuspended()
+ * @method bool isPaused()
  */
 class SubscriptionStatus extends Enum {
     const PENDING = 'pending';
@@ -36,8 +39,10 @@ class SubscriptionStatus extends Enum {
     const CANCELLED = 'cancelled';
     const ABANDONED = 'abandoned';
     const SUSPENDED = 'suspended';
+    const PAUSED = 'paused';
 
     /**
+     * @since 3.17.0 Added a new "paused" status
      * @since 2.24.0
      *
      * @return array
@@ -54,6 +59,7 @@ class SubscriptionStatus extends Enum {
             self::CANCELLED => __( 'Cancelled', 'give' ),
             self::ABANDONED => __( 'Abandoned', 'give' ),
             self::SUSPENDED => __( 'Suspended', 'give' ),
+            self::PAUSED => __('Paused', 'give'),
         ];
     }
 

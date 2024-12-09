@@ -2,6 +2,17 @@
     .components-checkbox-control__label {
         font-size: 1rem;
         font-weight: 500;
+        line-height: 24px;
+        color: var(--givewp-gray-100);
+    }
+
+    .components-base-control__help {
+        font-size: 0.875rem;
+        margin: 0.25rem 0 0 calc(var(--checkbox-input-size, 20px) + 12px);;
         color: var(--givewp-grey-700);
+
+        .components-checkbox-control__help {
+            margin-inline-start: 0;
+        }
     }
 }

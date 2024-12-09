@@ -9,8 +9,27 @@ $errorColor: #c91f1f;
     color: $errorColor;
 }
 
+.give-donor-dashboard-amount-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .give-donor-dashboard-field-row {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0;
+
+        .give-donor-dashboard-select-control {
+            display: flex;
+            width: 100%;
+            margin: 0;
+        }
+    }
+}
+
 .give-donor-dashboard-currency-control {
-    margin-top: 10px;
+    margin-bottom: 2px;
 
     .give-donor-dashboard-currency-control__label {
         font-family: Montserrat, Arial, Helvetica, sans-serif;
@@ -30,10 +49,10 @@ $errorColor: #c91f1f;
         outline: 0 !important;
         min-width: 190px;
         width: 100%;
-        margin-top: 8px;
+        margin-top: 6px;
         border: 1px solid #b8b8b8;
         overflow: hidden;
-        padding: 0;
+        padding: 1px;
         box-shadow: 0 0 0 0 var(--give-donor-dashboard-accent-color);
         transition: box-shadow 0.1s ease;
 

@@ -27,6 +27,16 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
+     * @since 3.14.0
+     * @param  string  $id
+     * @return bool
+     */
+    public function validatePostType(string $id)
+    {
+        return get_post_type($id) === 'give_forms';
+    }
+
+    /**
      * Check user permissions
      * @return bool|WP_Error
      */

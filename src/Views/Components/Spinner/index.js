@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from './style.module.scss';
 
-const Spinner = ({size, ...rest}) => {
+const Spinner = ({size = 'small', ...rest}) => {
     const spinnerClasses = classNames({
         [styles.spinner]: true,
         [styles.large]: size === 'large',
@@ -22,10 +22,6 @@ const Spinner = ({size, ...rest}) => {
 Spinner.propTypes = {
     // Spinner size [small, medium, large ]
     size: PropTypes.string,
-};
-
-Spinner.defaultProps = {
-    size: 'small',
 };
 
 export default Spinner;
