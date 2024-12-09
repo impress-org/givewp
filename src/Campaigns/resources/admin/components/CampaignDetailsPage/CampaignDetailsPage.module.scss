@@ -182,6 +182,7 @@ select[name="campaignId"] {
 .tabs [data-reach-tab]:hover {
     font-weight: 500;
     color: var(--givewp-neutral-900, inherit);
+    background-color: var(--givewp-neutral-50);
 }
 
 .tabs [data-reach-tab][aria-selected='true'],
