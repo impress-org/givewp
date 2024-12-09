@@ -36,7 +36,7 @@ class ManualMigration
     }
 
     /**
-     * @unreleased sanitize params
+     * @since 3.19.0 sanitize params
      * @since 2.9.2
      */
     public function __invoke()
