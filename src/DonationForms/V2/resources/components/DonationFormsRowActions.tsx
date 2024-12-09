@@ -6,12 +6,10 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
-import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
-export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
+export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity}) {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const trashEnabled = Boolean(data?.trash);
@@ -61,7 +59,6 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const urlParams = new URLSearchParams(window.location.search);
     const isCampaignDetailsPage =
         urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
-    const campaignId = urlParams.get('id');
 
     const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
@@ -74,12 +71,12 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                 </p>
             ),
             async () => {
-                const response = await apiFetch({
-                    path: addQueryArgs('/give-api/v2/campaigns/' + campaignId, {
-                        defaultFormId: item.id,
-                    }),
-                    method: 'PATCH',
-                });
+                await entity.edit({
+                    defaultFormId: item.id
+                })
+
+                const response = await entity.save();
+
                 await mutate(parameters);
                 return response;
             }
