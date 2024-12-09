@@ -10,6 +10,10 @@ import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
+import AddCampaignFormModal from './AddCampaignFormModal';
+import DefaultFormNotice
+    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
+import apiFetch from "@wordpress/api-fetch";
 
 declare global {
     interface Window {
@@ -18,15 +22,18 @@ declare global {
             bannerActionUrl: string;
             tooltipActionUrl: string;
             migrationApiRoot: string;
+            defaultFormActionUrl: string;
             apiRoot: string;
-            authors: Array<{id: string | number; name: string}>;
-            table: {columns: Array<object>};
+            authors: Array<{ id: string | number; name: string }>;
+            table: { columns: Array<object> };
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;
+            showDefaultFormTooltip: boolean;
+            campaignUrl: string;
         };
 
         GiveNextGen?: {
@@ -40,7 +47,7 @@ const API = new ListTableApi(window.GiveDonationForms);
 const donationStatus = [
     {
         value: 'any',
-        text: __('All', 'give'),
+        text: __('All Status', 'give'),
     },
     {
         value: 'publish',
@@ -64,13 +71,12 @@ const donationStatus = [
     },
 ];
 
+const urlParams = new URLSearchParams(window.location.search);
+
+const isCampaignDetailsPage = urlParams.get('id') && 'give-campaigns' === urlParams.get('page');
+const campaignId = urlParams.get('id');
+
 const donationFormsFilters: Array<FilterConfig> = [
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give'),
-    },
     {
         name: 'status',
         type: 'select',
@@ -78,25 +84,48 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
+    {
+        name: 'search',
+        type: 'search',
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give'),
+    },
 ];
+
+if (isCampaignDetailsPage) {
+    donationFormsFilters.push({
+        name: 'campaignId',
+        type: 'select',
+        text: __('Campaign ID', 'give'),
+        ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+        options: [
+            {
+                value: campaignId,
+                text: __('All Campaign Forms', 'give'),
+            },
+        ],
+    });
+}
 
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
         filter: (item) => {
-            if (item?.v3form) {
-                return (
-                    <div className={styles.migratedForm}>
-                        <div className={styles.tooltipContainer}>
-                            <CubeIcon />
-                            <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+            return (
+                <>
+                    {item?.v3form ? (
+                        <div className={styles.migratedForm}>
+                            <div className={styles.tooltipContainer}>
+                                <CubeIcon />
+                                <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                            </div>
+                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
+                    ) : (
                         <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                    </div>
-                );
-            }
-
-            return <Interweave attributes={{className: 'interweave'}} content={item?.title} />;
+                    )}
+                </>
+            );
         },
     },
     {
@@ -239,10 +268,29 @@ const ListTableBlankSlate = (
     />
 );
 
-export default function DonationFormsListTable() {
+export default function DonationFormsListTable({entity}) {
     const [state, setState] = useState<OnboardingStateProps>({
         showFeatureNoticeDialog: false,
+        showDefaultFormTooltip: window.GiveDonationForms.showDefaultFormTooltip,
     });
+
+    const handleDefaultFormTooltipDismiss = () => {
+        apiFetch({
+            url: window.GiveDonationForms.defaultFormActionUrl,
+            method: 'POST',
+        }).then(() => {
+            setState((prevState) => {
+                return {
+                    ...prevState,
+                    showDefaultFormTooltip: false
+                }
+            });
+        })
+    }
+
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const openModal = () => setOpen(true);
+    const closeModal = () => setOpen(false);
 
     return (
         <OnboardingContext.Provider value={[state, setState]}>
@@ -250,28 +298,66 @@ export default function DonationFormsListTable() {
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
-                rowActions={DonationFormsRowActions}
+                rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
+                    return DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity})
+                }}
                 bulkActions={donationFormsBulkActions}
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}
                 listTableBlankSlate={ListTableBlankSlate}
                 columnFilters={columnFilters}
                 banner={Onboarding}
+                contentMode={isCampaignDetailsPage}
             >
-                {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
-                    <button
-                        className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                        onClick={showLegacyDonationForms}
-                    >
-                        {__('Switch to Legacy View', 'give')}
-                    </button>
+                {isCampaignDetailsPage ? (
+                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled ? (
+                            <>
+                                <button className={styles.addCampaignFormButton} onClick={openModal}>
+                                    {__('Add campaign form', 'give')}
+                                </button>
+                                <AddCampaignFormModal
+                                    isOpen={isOpen}
+                                    handleClose={closeModal}
+                                    title={__('Choose how you want to edit your campaign form', 'give')}
+                                    campaignId={campaignId}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <a
+                                    href={
+                                        'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
+                                        campaignId
+                                    }
+                                    className={styles.addCampaignFormButton}
+                                >
+                                    {__('Add campaign form', 'give')}
+                                </a>
+                            </>
+                        )}
+                    </div>
+                ) : (
+                    <>
+                        {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
+                            <button
+                                className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                                onClick={showLegacyDonationForms}
+                            >
+                                {__('Switch to Legacy View', 'give')}
+                            </button>
+                        )}
+                        <a
+                            href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                            className={`button button-primary ${styles.button}`}
+                        >
+                            {__('Add Form', 'give')}
+                        </a>
+                    </>
                 )}
-                <a
-                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                    className={`button button-primary ${styles.button}`}
-                >
-                    {__('Add Form', 'give')}
-                </a>
+                {state.showDefaultFormTooltip && isCampaignDetailsPage && (
+                    <DefaultFormNotice handleClick={handleDefaultFormTooltipDismiss} />
+                )}
             </ListTablePage>
         </OnboardingContext.Provider>
     );
