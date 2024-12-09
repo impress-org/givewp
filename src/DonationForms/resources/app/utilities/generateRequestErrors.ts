@@ -16,7 +16,7 @@ const generateRequestErrors = (values: Record<string, any>, errors: object[], se
                 // In fields that aren't inputs by default or are hidden inputs, we need to use this workaround because the "shouldFocus" option will not work in these cases.
                 if (!fieldElement) {
                     const fieldElementContainer = document.querySelector('.givewp-fields-' + String(field)); //E.g: <div class="givewp-fields-giftAid">content...</div>
-                    fieldElementContainer && fieldElementContainer.scrollIntoView({behavior: 'smooth'});
+                    fieldElementContainer?.scrollIntoView({behavior: 'smooth'});
                 } else {
                     fieldElement.parentElement.scrollIntoView({behavior: 'smooth'}); // E.g: <input type="hidden" name="state">
                 }
