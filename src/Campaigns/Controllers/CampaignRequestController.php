@@ -35,6 +35,7 @@ class CampaignRequestController
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
                 'goalProgress' => $campaign->goalProgress(),
+                'defaultFormTitle' => $campaign->defaultForm()->title
             ])
         );
     }
@@ -130,8 +131,7 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
-                        $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign, $request->get_param('defaultFormId'));
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
@@ -144,7 +144,26 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response($campaign->toArray());
+        return new WP_REST_Response(
+            array_merge($campaign->toArray(), [
+                'defaultFormTitle' => $campaign->defaultForm()->title
+            ])
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function mergeCampaigns(WP_REST_Request $request): WP_REST_Response
+    {
+        $destinationCampaign = Campaign::find($request->get_param('id'));
+        $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
+
+        $campaignsMerged = $destinationCampaign->merge(...$campaignsToMerge);
+
+        return new WP_REST_Response($campaignsMerged);
     }
 
 
