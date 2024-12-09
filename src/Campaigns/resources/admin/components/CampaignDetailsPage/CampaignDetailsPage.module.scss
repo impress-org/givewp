@@ -150,7 +150,7 @@ select[name="campaignId"] {
     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border: 0;
     background-color: transparent;
-    color: var(--givewp-neutral-700, inherit);
+    color: var(--givewp-neutral-700);
     font-size: 0.8rem;
     line-height: 1.5rem;
     text-align: center;
@@ -181,14 +181,14 @@ select[name="campaignId"] {
 .tabs [role='tab']:hover,
 .tabs [data-reach-tab]:hover {
     font-weight: 500;
-    color: var(--givewp-neutral-900, inherit);
+    color: var(--givewp-neutral-900);
     background-color: var(--givewp-neutral-50);
 }
 
 .tabs [data-reach-tab][aria-selected='true'],
 .tabs [role='tab'][aria-selected='true'] {
     font-weight: 600;
-    color: var(--givewp-neutral-900, inherit);
+    color: var(--givewp-neutral-900);
 }
 
 // set width for each tab to maintain size on hover.
@@ -464,12 +464,12 @@ select[name="campaignId"] {
 
     .editCampaignPageButton {
         color: #060c1a;
-        background-color: var(--givewp-neutral-100, #e5e7eb);
-        border-color: var(--givewp-neutral-100, #e5e7eb);
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
 
         &:hover {
-            background-color: var(--givewp-neutral-200, #d1d5db);
-            border-color: var(--givewp-neutral-200, #d1d5db);
+            background-color: var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
         }
     }
 
