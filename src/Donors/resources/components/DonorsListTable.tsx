@@ -54,7 +54,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -62,12 +62,10 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                         </li>
                     ))}
                 </ul>
-                <div>
+                <label htmlFor="giveDonorsTableDeleteDonations">
                     <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
-                    <label htmlFor="giveDonorsTableDeleteDonations">
-                        {__('Delete all associated donations and records', 'give')}
-                    </label>
-                </div>
+                    {__('Delete all associated donations and records', 'give')}
+                </label>
             </>
         ),
     },
