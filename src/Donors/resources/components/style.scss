@@ -49,3 +49,12 @@
     }
 }
 
+label[for="giveDonorsTableDeleteDonations"] {
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+
+    input {
+        margin: 0;
+    }
+}
