@@ -367,7 +367,7 @@ class Give_Subscriptions_DB extends Give_DB
                     KEY customer (customer_id),
                     KEY transaction (transaction_id),
                     INDEX customer_and_status ( customer_id, status)
-                    ) CHARACTER SET utf8 COLLATE utf8_general_ci;';
+                    ) CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB;';
 
             dbDelta($sql);
 
