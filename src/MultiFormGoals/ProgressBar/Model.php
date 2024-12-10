@@ -162,6 +162,23 @@ class Model
     }
 
     /**
+     * Get formatted number of donations
+     *
+     * @unreleased
+     */
+    public function getFormattedDonationCount(): string
+    {
+        return give_format_amount(
+                $this->getDonationCount(),
+                [
+                    'sanitize' => false,
+                    'decimal' => false,
+                    'currency' => false,
+                ]
+        );
+    }
+
+    /**
      * Get formatted total remaining (ex: $75)
      *
      * @since 2.9.0
