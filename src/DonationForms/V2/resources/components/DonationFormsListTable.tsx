@@ -11,9 +11,8 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import DefaultFormNotice
-    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
-import apiFetch from "@wordpress/api-fetch";
+import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
+import apiFetch from '@wordpress/api-fetch';
 
 declare global {
     interface Window {
@@ -24,8 +23,8 @@ declare global {
             migrationApiRoot: string;
             defaultFormActionUrl: string;
             apiRoot: string;
-            authors: Array<{ id: string | number; name: string }>;
-            table: { columns: Array<object> };
+            authors: Array<{id: string | number; name: string}>;
+            table: {columns: Array<object>};
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
@@ -164,7 +163,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
     {
-        label: __('Edit', 'give'),
+        label: __('Edit Forms', 'give'),
         value: 'edit',
         action: async (selected) => {
             const authorSelect = document.getElementById('giveDonationFormsTableSetAuthor') as HTMLSelectElement;
@@ -183,7 +182,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>Donation forms to be edited:</p>
+                <p>{__('Donation forms to be edited:', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -235,14 +234,14 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         ),
     },
     {
-        label: __('Move to Trash', 'give'),
+        label: __('Trash Forms', 'give'),
         value: 'trash',
         type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
         action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
             <div>
-                <p>{__('Really trash the following donation forms?', 'give')}</p>
+                <p>{__('Are you sure you want to trash the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -282,11 +281,11 @@ export default function DonationFormsListTable() {
             setState((prevState) => {
                 return {
                     ...prevState,
-                    showDefaultFormTooltip: false
-                }
+                    showDefaultFormTooltip: false,
+                };
             });
-        })
-    }
+        });
+    };
 
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
