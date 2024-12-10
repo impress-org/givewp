@@ -92,6 +92,23 @@
     justify-content: flex-end;
 }
 
+ul[role='document'] + .flexRow,
+ul[role='document'] + .flexRow + .flexRow {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--givewp-spacing-2);
+
+    select {
+        min-width: 100%;
+    }
+}
+
+
+ul[role='document'] + .flexRow {
+    margin: var(--givewp-spacing-6) 0;
+}
+
 .justifyContentEnd {
     flex: 1;
     justify-content: flex-end;
@@ -329,6 +346,7 @@
     margin-bottom: 1rem;
 }
 
+
 .container,
 .overlay {
     position: fixed;
@@ -361,13 +379,23 @@
 }
 
 .overlay {
-    background-color: rgba(43, 46, 56, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 #modalTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 1.25rem;
-    font-weight: 700;
-    padding-inline: 1rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--givewp-neutral-900);
+    margin: 0;
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    border-radius: 4px;
+    border-bottom: solid 1px var(--givewp-neutral-200);
 }
 
 .dialog {
@@ -376,19 +404,10 @@
     position: relative;
     background: #fff;
     border: 1px solid #c3c4c7;
-    border-block-start-color: var(--give-primary-color);
-    border-block-start-width: 0.25rem;
+    border-radius: 6px;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
-    max-width: 50vw;
-    min-width: 20rem;
+    width: 35rem;
 
-    &.warning {
-        border-block-start-color: #dba617;
-    }
-
-    &.danger {
-        border-block-start-color: #d63638;
-    }
 
     & ul {
         max-height: 40vh;
@@ -407,24 +426,49 @@
         border-top: 1px solid rgba(196, 196, 196);
         padding-top: 0.75rem;
     }
+
+
+    &.warning {
+    }
+
+    &.danger {
+        #confirm {
+            background-color: var(--givewp-red-500);
+            border: 1px solid var(--givewp-red-500);
+        }
+    }
+}
+
+.modalContent {
+    padding: var(--givewp-spacing-6);
+    border-radius: 0 0 6px 6px;
+
+    p {
+        margin-top: 0;
+        font-size: 1rem;
+    }
 }
 
 .modalContent > * {
-    padding-inline: 1rem;
-    margin-block: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--givewp-neutral-500);
 }
 
 .gutter {
-    border-top: 1px solid #dfdfdf;
-    background: rgba(245 245 245);
-    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    column-gap: 1em;
+    justify-content: space-evenly;
+    gap: var(--givewp-spacing-6);
+    width: 100%;
+    border-radius: 0 0 6px 6px;
     box-sizing: border-box !important;
-    padding-block: 1em;
-    padding-inline: 2rem;
+    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-4);
     overflow: hidden;
 }
 
@@ -432,20 +476,19 @@ $button-blue: rgba(8 120 176);
 
 #cancel,
 #confirm {
-    border-radius: 3px;
-    padding-inline: 0.75em;
-    padding-block: 0.5em;
+    flex: 1;
+    border-radius: 4px;
+    padding-inline: 1rem;
+    padding-block: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
     transition: all 0.15s;
-    box-shadow: 0px 2px 0px #dddddd;
     cursor: pointer;
-
-    &:hover,
-    &:focus {
-        border-color: black;
-        background: white;
-        color: $button-blue;
-        box-shadow: none;
-    }
 
     &:active {
         border-color: rgba(170 170 170);
@@ -454,16 +497,17 @@ $button-blue: rgba(8 120 176);
 }
 
 #cancel {
-    border: 1px solid $button-blue;
-    color: $button-blue;
-    background: rgba(247 247 247);
+    background-color: inherit;
+    border: solid 1px var(--givewp-neutral-300);
+    color: var(--givewp-neutral-900);
 }
 
 #confirm {
-    border: 1px solid $button-blue;
     background: $button-blue;
-    color: white;
+    border: 1px solid $button-blue;
+    color: var(--givewp-shades-white);
 }
+
 
 @media (prefers-reduced-motion: reduce) {
     .container {
