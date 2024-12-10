@@ -13,6 +13,7 @@ import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
 
 export interface ListTablePageProps {
     //required
@@ -323,7 +324,12 @@ export default function ListTablePage({
             <A11yDialog
                 id="giveListTableModal"
                 dialogRef={(instance) => (dialog.current = instance)}
-                title={modalContent.label}
+                title={
+                    <>
+                        {modalContent?.type === 'danger' && <DeleteIcon />}
+                        {modalContent?.label}
+                    </>
+                }
                 titleId={styles.modalTitle}
                 classNames={{
                     container: styles.container,
