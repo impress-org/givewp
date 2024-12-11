@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Campaigns\Migrations;
 
+use Exception;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
@@ -19,6 +20,8 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function testCreatesParentCampaignForDonationForm()
     {
@@ -35,6 +38,8 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function testExistingPeerToPeerCampaignFormsAreNotMigrated()
     {
@@ -54,24 +59,35 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
-    public function testUpgradedFormsAreNotMigrated()
+    public function testUpgradedFormsAreMigrated()
     {
-        $form = DonationForm::factory()->create([
+        $upgradedForm = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
         ]);
+
+        $newForm = DonationForm::factory()->create([
+            'status' => DonationFormStatus::PUBLISHED(),
+        ]);
+
+        Give()->form_meta->update_meta($newForm->id, 'migratedFormId', $upgradedForm->id);
+
 
         $migration = new MigrateFormsToCampaignForms();
         $migration->run();
 
-        $relationship = DB::table('give_campaign_forms')->where('form_id', $form->id)->get();
+        $relationship = DB::table('give_campaign_forms')->where('form_id', $upgradedForm->id)->get();
 
-        $this->assertNull($relationship);
-        $this->assertEquals(0, DB::table('give_campaigns')->count());
+        $this->assertNotNull($relationship);
+        $this->assertEquals(2, DB::table('give_campaigns')->count());
     }
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function testMigratedFormsAreDefault()
     {
@@ -87,6 +103,8 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function testUpgradedFormsAreNotDefault()
     {

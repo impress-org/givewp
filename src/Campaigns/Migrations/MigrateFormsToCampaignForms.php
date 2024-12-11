@@ -206,7 +206,8 @@ class MigrateFormsToCampaignForms extends Migration
     protected function getV2FormSettings(int $formId): stdClass
     {
         $template = give_get_meta($formId, '_give_form_template', true);
-        $templateSettings = give_get_meta($formId, "_give_{$template}_form_template_settings", true) ?? [];
+        $templateSettings = give_get_meta($formId, "_give_{$template}_form_template_settings", true);
+        $templateSettings = is_array($templateSettings) ? $templateSettings : [];
 
         return (object)[
             'formExcerpt' => get_the_excerpt($formId),
