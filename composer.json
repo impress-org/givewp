@@ -44,17 +44,23 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
+        "fix-strauss-permissions": [
+            "find vendor -type d -exec chmod 0755 {} \\;"
+        ],
         "strauss": [
             "bin/strauss-installar.sh",
             "vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php bin/strauss.phar"
+            "@php bin/strauss.phar",
+            "@composer dump-autoload"
         ],
         "post-install-cmd": [
             "@strauss",
-            "@php -r \"file_exists('tests/wp-tests-config.php') || copy('tests/wp-tests-config.dist.php', 'tests/wp-tests-config.php');\""
+            "@php -r \"file_exists('tests/wp-tests-config.php') || copy('tests/wp-tests-config.dist.php', 'tests/wp-tests-config.php');\"",
+            "@fix-strauss-permissions"
         ],
         "post-update-cmd": [
-            "@strauss"
+            "@strauss",
+            "@fix-strauss-permissions"
         ],
         "bundle": [
             "@copy-fonts",
