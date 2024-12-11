@@ -122,9 +122,9 @@ class MigrateFormsToCampaignForms extends Migration
         $isV3Form = Utils::isV3Form($formId);
 
         /**
-         * The V2 forms with upgraded status should be skipped because their correspondent V3 version already was migrated at this point.
+         * The upgraded V2 forms should be skipped for now because their corresponding V3 version will be used to create the campaign - it will be added later as a non-default form.
          */
-        if ( ! $isV3Form && 'upgraded' == $formStatus) {
+        if ( ! $isV3Form && _give_is_form_migrated($formId)) {
             return;
         }
 
@@ -135,7 +135,7 @@ class MigrateFormsToCampaignForms extends Migration
                 'form_id' => $formId,
                 'campaign_type' => 'core',
                 'campaign_title' => $formTitle,
-                'status' => $this->mapFormToCampaignStatus($formData->status),
+                'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
                 'long_desc' => $formSettings->description,
                 'campaign_logo' => $formSettings->designSettingsLogoUrl,
