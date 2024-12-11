@@ -32,6 +32,7 @@ export interface ListTablePageProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
+    contentMode?: boolean;
 }
 
 export interface FilterConfig {
@@ -48,20 +49,41 @@ export interface FilterConfig {
 
 export interface ColumnFilterConfig {
     column: string;
-    filter: Function
+    filter: Function;
 }
 
-export interface BulkActionsConfig {
+interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
     confirm: (selected: Array<string | number>, names?: Array<string>) => JSX.Element | JSX.Element[] | string;
 
     //optional
-    isVisible?: (data, parameters) => Boolean;
-    type?: 'normal' | 'warning' | 'danger';
+    isVisible?: (data: any, parameters: any) => boolean;
+    type?: 'normal' | 'warning' | 'danger' | 'custom';
 }
+
+// Makes the "action" property required for the standard types
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+    type: 'normal' | 'warning' | 'danger';
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property required for the undefined type
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+    type?: undefined;
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property forbidden for the custom type
+export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
+    type: 'custom';
+}
+
+export type BulkActionsConfig =
+    | BulkActionsConfigWithAction
+    | BulkActionsConfigWithoutType
+    | BulkActionsConfigWithoutAction;
 
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
@@ -80,12 +102,18 @@ export default function ListTablePage({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
-    banner
+    banner,
+    contentMode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
+    const [modalContent, setModalContent] = useState<{
+        confirm;
+        action?;
+        label;
+        type?: 'normal' | 'warning' | 'danger' | 'custom';
+    }>({
         confirm: (selected) => {},
         action: (selected) => {},
         label: '',
@@ -127,7 +155,12 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
+    const showConfirmActionModal = (
+        label,
+        confirm,
+        action,
+        type: 'normal' | 'warning' | 'danger' | 'custom' | null
+    ) => {
         setModalContent({confirm, action, label, type});
         dialog.current.show();
     };
@@ -155,7 +188,11 @@ export default function ListTablePage({
         setSelectedNames(names);
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
-            dialog.current.show();
+            if ('custom' === bulkActions[actionIndex].type) {
+                modalContent?.confirm(selected, names);
+            } else {
+                dialog.current.show();
+            }
         }
     };
 
@@ -192,7 +229,7 @@ export default function ListTablePage({
                     showModal={openBulkActionModal}
                 />
                 {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {page && setPage && showPagination()}
+                {!PageActionsTop && page && setPage && showPagination()}
             </div>
         );
     };
@@ -206,33 +243,58 @@ export default function ListTablePage({
     return (
         <>
             <article className={styles.page}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.flexRow}>
-                        <GiveIcon size={'1.875rem'} />
-                        <h1 className={styles.pageTitle}>{title}</h1>
-                        {testModeFilter && testMode && <TestModeBadge />}
-                    </div>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </header>
-                {banner && (
-                    <section role="banner">
-                        {banner()}
-                    </section>
+                {contentMode ? (
+                    <>
+                        <section role="search" id={styles.searchContainer}>
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </>
+                ) : (
+                    <>
+                        <header className={styles.pageHeader}>
+                            <div className={styles.flexRow}>
+                                <GiveIcon size={'1.875rem'} />
+                                <h1 className={styles.pageTitle}>{title}</h1>
+                                {testModeFilter && testMode && <TestModeBadge />}
+                            </div>
+                            {children && <div className={styles.flexRow}>{children}</div>}
+                        </header>
+                        {banner && <section role="banner">{banner()}</section>}
+                        <section role="search" id={styles.searchContainer}>
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </>
                 )}
-                <section role="search" id={styles.searchContainer}>
-                    {filterSettings.map((filter) => (
-                        <Filter
-                            key={filter.name}
-                            value={filters[filter.name]}
-                            filter={filter}
-                            onChange={handleFilterChange}
-                            debouncedOnChange={handleDebouncedFilterChange}
-                        />
-                    ))}
-                </section>
+
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions PageActionsTop />
+                    {contentMode && children ? <>{children}</> : <br />}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
