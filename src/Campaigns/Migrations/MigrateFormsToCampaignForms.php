@@ -151,7 +151,7 @@ class MigrateFormsToCampaignForms extends Migration
 
         $campaignId = DB::last_insert_id();
 
-        $this->addCampaignFormRelationship($formId, $campaignId, true);
+        $this->addCampaignFormRelationship($formId, $campaignId);
     }
 
     /**
@@ -165,13 +165,12 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    protected function addCampaignFormRelationship($formId, $campaignId, $isDefault = false)
+    protected function addCampaignFormRelationship($formId, $campaignId)
     {
         DB::table('give_campaign_forms')
             ->insert([
                 'form_id' => $formId,
                 'campaign_id' => $campaignId,
-                'is_default' => $isDefault,
             ]);
     }
 
