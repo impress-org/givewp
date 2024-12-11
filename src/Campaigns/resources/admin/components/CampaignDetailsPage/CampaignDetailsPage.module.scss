@@ -55,9 +55,9 @@
 }
 
 .pageHeader {
-    background-color: #fff;
-    padding-block: 1em;
-    padding-inline: 1.5em;
+    background-color: var(--givewp-shades-white);
+    padding-block: 1rem;
+    padding-inline: 1.5rem;
 }
 
 .flexContainer {
@@ -66,6 +66,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    margin-top: var(--givewp-spacing-2);
 
     & > * {
         flex-shrink: 0;
@@ -77,7 +78,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    column-gap: 1rem;
+    column-gap: var(--givewp-spacing-2);
     margin-top: auto;
 }
 
@@ -93,17 +94,20 @@
 
 .breadcrumb {
     display: flex;
-    line-height: 1rem;
-    font-size: 0.7rem;
-    color: #424242;
+    align-items: center;
+    gap: 0.25rem;
+    line-height: 1.125rem;
+    font-size: 0.75rem;
 
     & > span {
         font-weight: bold;
+        color: var(--givewp-neutral-900);
     }
 
     & > a {
         text-decoration: none;
-        color: #696969;
+        color: var(--givewp-neutral-500);
+        font-weight: 400;
     }
 
     & > a:hover {
@@ -112,18 +116,15 @@
 }
 
 .pageTitle {
-    color: #424242;
+    color: var(--givewp-neutral-900);
     margin: 0;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    line-height: 2.25rem;
 }
 
 select[name="campaignId"] {
     display: none;
-}
-
-.fullWidth {
-
 }
 
 .tabs {
@@ -135,18 +136,25 @@ select[name="campaignId"] {
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);
     }
+
+    &.fullWidth {
+        padding-left: var(--givewp-spacing-6);
+    }
 }
 
 .tabs [data-reach-tab],
 .tabs [role='tab'] {
     position: relative;
     appearance: none;
-    padding: 1em;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border: 0;
     background-color: transparent;
-    color: inherit;
+    color: var(--givewp-neutral-700);
     font-size: 0.8rem;
+    line-height: 1.5rem;
+    text-align: center;
     cursor: pointer;
+    box-sizing: border-box
 }
 
 @media screen and (min-width: 48rem) {
@@ -162,16 +170,40 @@ select[name="campaignId"] {
     display: block;
     position: absolute;
     top: calc(100% - 0.1875em);
-    width: calc(100% - 2em);
-    height: 0.1875em;
+    left: 0;
+    right: 0;
+    height: 0.1875rem;
     background-color: transparent;
     transition: background-color 100ms ease-in-out;
 }
 
 .tabs [role='tab']:hover,
+.tabs [data-reach-tab]:hover {
+    font-weight: 500;
+    color: var(--givewp-neutral-900);
+    background-color: var(--givewp-neutral-50);
+}
+
 .tabs [data-reach-tab][aria-selected='true'],
 .tabs [role='tab'][aria-selected='true'] {
     font-weight: 600;
+    color: var(--givewp-neutral-900);
+}
+
+// set width for each tab to maintain size on hover.
+.tabs [data-reach-tab]:first-child,
+.tabs [role='tab']:first-child {
+    width: 106px;
+}
+
+.tabs [data-reach-tab]:nth-child(2),
+.tabs [role='tab']:nth-child(2) {
+    width: 95px;
+}
+
+.tabs [data-reach-tab]:last-child,
+.tabs [role='tab']:last-child {
+    width: 79px;
 }
 
 .tabs [data-reach-tab][aria-selected='true']::after,
@@ -280,7 +312,7 @@ select[name="campaignId"] {
             }
 
             .sectionSubtitle {
-                font-size: 16px;
+                font-size: 1rem;
                 font-weight: 500;
                 line-height: 1.5;
                 color: var(--givewp-neutral-700,  #1f2937);
@@ -341,7 +373,7 @@ select[name="campaignId"] {
             input,
             select,
             textarea {
-                font-size: 16px;
+                font-size: 1rem;
                 line-height: 2;
                 display: block;
                 width: 100%;
@@ -373,7 +405,6 @@ select[name="campaignId"] {
         }
 
         span:is(:global(.components-form-toggle.is-checked .components-form-toggle__thumb)) {
-
             left: 12px;
         }
 
@@ -387,7 +418,7 @@ select[name="campaignId"] {
 
         label {
             font-family: Inter, system-ui, sans-serif;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             line-height: 1.5;
             color: #1f2937;
@@ -397,7 +428,7 @@ select[name="campaignId"] {
 
         p {
             font-family: Inter, system-ui, sans-serif;
-            font-size: 14px;
+            font-size: .875rem;
             color: #4b5563;
             margin-top: -0.1rem;
             margin-left: 1.5rem;
@@ -443,7 +474,7 @@ select[name="campaignId"] {
 
     .loadingContainerContentText {
         padding: var(--givewp-spacing-4);
-        font-size: 16px;
+        font-size: 1rem;
     }
 }
 
@@ -467,40 +498,58 @@ select[name="campaignId"] {
 
     .editCampaignPageButton {
         color: #060c1a;
-        background-color: #d1d5db;
-        border-color: #d1d5db;
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
+
+        &:hover {
+            background-color: var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
+        }
     }
 
-
     .campaignButtonDots {
-        background-color: #d1d5db;
-        border-color: #d1d5db;
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
         border-radius: var(--givewp-rounded-4);
         line-height: 0;
         padding: var(--givewp-spacing-2);
+
+        &:hover, &:active, &:focus {
+            background-color:var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
+        }
+    }
+
+    .campaignButtonDotsActive {
+        background-color: var(--givewp-neutral-200);
+        border-color: var(--givewp-neutral-200);
     }
 
     .contextMenu {
         position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
         z-index: 9999;
         padding: var(--givewp-spacing-1);
         top: 50px;
         width: 203px;
         border-radius: 4px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        border: solid 1px #f3f4f6;
-        background-color: #fff;
+        border: solid 1px var(--givewp-neutral-50);
+        background-color: var(--givewp-shades-white);
 
         .contextMenuItem {
             text-decoration: none;
-            gap: 5px;
+            gap: 4px;
             display: flex;
             align-items: center;
             padding: var(--givewp-spacing-2);
-            font-size: 14px;
+            font-size: .875rem;
             font-weight: 500;
             line-height: 1.43;
-            color: #1f2937;
+            color: var(--givewp-neutral-700);
+
 
             &:hover {
                 background-color: #f3f4f6;
