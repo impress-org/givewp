@@ -480,7 +480,7 @@ select[name="campaignId"] {
         line-height: 0;
         padding: var(--givewp-spacing-2);
 
-        &:hover {
+        &:hover, &:active, &:focus {
             background-color:var(--givewp-neutral-200);
             border-color: var(--givewp-neutral-200);
         }
