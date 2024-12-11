@@ -56,8 +56,8 @@
 
 .pageHeader {
     background-color: var(--givewp-shades-white);
-    padding-block: 1em;
-    padding-inline: 1.5em;
+    padding-block: 1rem;
+    padding-inline: 1.5rem;
 }
 
 .flexContainer {
@@ -174,7 +174,7 @@ select[name="campaignId"] {
     top: calc(100% - 0.1875em);
     left: 0;
     right: 0;
-    height: 0.1875em;
+    height: 0.1875rem;
     background-color: transparent;
     transition: background-color 100ms ease-in-out;
 }
@@ -313,7 +313,7 @@ select[name="campaignId"] {
             }
 
             .sectionSubtitle {
-                font-size: 16px;
+                font-size: 1rem;
                 font-weight: 500;
                 line-height: 1.5;
                 color: #1f2937;
@@ -338,7 +338,7 @@ select[name="campaignId"] {
             input,
             select,
             textarea {
-                font-size: 16px;
+                font-size: 1rem;
                 line-height: 2;
                 display: block;
                 width: 100%;
@@ -371,7 +371,6 @@ select[name="campaignId"] {
         }
 
         span:is(:global(.components-form-toggle.is-checked .components-form-toggle__thumb)) {
-
             left: 12px;
         }
 
@@ -385,7 +384,7 @@ select[name="campaignId"] {
 
         label {
             font-family: Inter, system-ui, sans-serif;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             line-height: 1.5;
             color: #1f2937;
@@ -395,7 +394,7 @@ select[name="campaignId"] {
 
         p {
             font-family: Inter, system-ui, sans-serif;
-            font-size: 14px;
+            font-size: .875rem;
             color: #4b5563;
             margin-top: -0.1rem;
             margin-left: 1.5rem;
@@ -441,7 +440,7 @@ select[name="campaignId"] {
 
     .loadingContainerContentText {
         padding: var(--givewp-spacing-4);
-        font-size: 16px;
+        font-size: 1rem;
     }
 }
 
@@ -494,25 +493,29 @@ select[name="campaignId"] {
 
     .contextMenu {
         position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
         z-index: 9999;
         padding: var(--givewp-spacing-1);
         top: 50px;
         width: 203px;
         border-radius: 4px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        border: solid 1px #f3f4f6;
-        background-color: #fff;
+        border: solid 1px var(--givewp-neutral-50);
+        background-color: var(--givewp-shades-white);
 
         .contextMenuItem {
             text-decoration: none;
-            gap: 5px;
+            gap: 4px;
             display: flex;
             align-items: center;
             padding: var(--givewp-spacing-2);
-            font-size: 14px;
+            font-size: .875rem;
             font-weight: 500;
             line-height: 1.43;
-            color: #1f2937;
+            color: var(--givewp-neutral-700);
+
 
             &:hover {
                 background-color: #f3f4f6;
