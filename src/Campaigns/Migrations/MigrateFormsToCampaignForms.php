@@ -114,21 +114,18 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public function createCampaignForForm($formData): void
     {
+        /**
+         * Skip upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form through the addUpgradedFormToCampaign() method.
+         */
+        if ($this->isV2MigratedForm($formData->id)) {
+            return;
+        }
+
         $formId = $formData->id;
         $formStatus = $formData->status;
         $formTitle = $formData->title;
         $formCreatedAt = $formData->createdAt;
-
-        $isV3Form = Utils::isV3Form($formId);
-
-        /**
-         * Exclude upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form trough the addUpgradedFormToCampaign() method.
-         */
-        if ( ! $isV3Form && _give_is_form_migrated($formId)) {
-            return;
-        }
-
-        $formSettings = $isV3Form ? json_decode($formData->settings) : $this->getV2FormSettings($formId);
+        $formSettings = Utils::isV3Form($formId) ? json_decode($formData->settings) : $this->getV2FormSettings($formId);
 
         DB::table('give_campaigns')
             ->insert([
@@ -306,5 +303,28 @@ class MigrateFormsToCampaignForms extends Migration
             default:
                 return $onlyRecurringEnabled ? 'amountFromSubscriptions' : 'amount';
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isV2MigratedForm(int $formId): bool
+    {
+        global $wpdb;
+
+        $isMigratedForm = (bool)DB::get_var(
+            DB::prepare(
+                "
+                    SELECT `form_id`
+                    FROM `{$wpdb->prefix}give_formmeta`
+                    JOIN `{$wpdb->posts}`
+                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
+                    WHERE `meta_key` = 'migratedFormId'
+                      AND `meta_value` = %d",
+                $formId
+            )
+        );
+
+        return ! Utils::isV3Form($formId) && $isMigratedForm;
     }
 }
