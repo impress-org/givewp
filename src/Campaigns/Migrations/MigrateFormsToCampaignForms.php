@@ -69,7 +69,6 @@ class MigrateFormsToCampaignForms extends Migration
                     ->leftJoin('give_formmeta', 'formmeta')
                     ->on('formmeta.form_id', 'forms.ID')->joinRaw("AND formmeta.meta_key = 'formBuilderSettings'");
             });
-        //->where('formmeta.meta_key', 'formBuilderSettings');
 
         // Exclude forms already associated with a campaign (ie Peer-to-peer).
         $query->join(function (JoinQueryBuilder $builder) {
@@ -79,12 +78,14 @@ class MigrateFormsToCampaignForms extends Migration
         })
             ->whereIsNull('campaigns.id');
 
+        /**
+         * Exclude forms with an `upgraded` status, which are WP revisions.
+         *
+         * @see https://wordpress.org/documentation/article/post-status/#auto-draft
+         */
         $query->where('forms.post_status', 'auto-draft', '!=');
 
         $query->orderBy('forms.ID');
-
-        // Exclude forms with an `upgraded` status, which are archived.
-        //$query->where('forms.post_status', 'upgraded', '!=');
 
         return $query->getAll();
     }
@@ -104,7 +105,6 @@ class MigrateFormsToCampaignForms extends Migration
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
             ->where('forms.post_type', 'give_forms')
-            //->where('forms.post_status', 'publish')
             ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
             ->getAll();
     }
@@ -122,7 +122,7 @@ class MigrateFormsToCampaignForms extends Migration
         $isV3Form = Utils::isV3Form($formId);
 
         /**
-         * The upgraded V2 forms should be skipped for now because their corresponding V3 version will be used to create the campaign - it will be added later as a non-default form.
+         * Exclude upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form trough the addUpgradedFormToCampaign() method.
          */
         if ( ! $isV3Form && _give_is_form_migrated($formId)) {
             return;
@@ -185,7 +185,7 @@ class MigrateFormsToCampaignForms extends Migration
                 return 'pending';
 
             case 'draft':
-            case 'upgraded':
+            case 'upgraded': // Some V3 forms can have the 'upgraded' status after being migrated from a V2 form
                 return 'draft';
 
             case 'trash':
@@ -208,7 +208,7 @@ class MigrateFormsToCampaignForms extends Migration
         $template = give_get_meta($formId, '_give_form_template', true);
         $templateSettings = give_get_meta($formId, "_give_{$template}_form_template_settings", true) ?? [];
 
-        $formSettings = (object)[
+        return (object)[
             'formExcerpt' => get_the_excerpt($formId),
             'description' => $this->getV2FormDescription($templateSettings),
             'designSettingsLogoUrl' => '',
@@ -220,8 +220,6 @@ class MigrateFormsToCampaignForms extends Migration
             'goalStartDate' => '',
             'goalEndDate' => '',
         ];
-
-        return $formSettings;
     }
 
     /**
@@ -284,7 +282,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    public function getV2FormGoalAmount(int $formId)
+    protected function getV2FormGoalAmount(int $formId)
     {
         return give_get_form_goal($formId);
     }
@@ -292,7 +290,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    public function getV2FormGoalType(int $formId): string
+    protected function getV2FormGoalType(int $formId): string
     {
         $onlyRecurringEnabled = filter_var(give_get_meta($formId, '_give_recurring_goal_format', true),
             FILTER_VALIDATE_BOOLEAN);
