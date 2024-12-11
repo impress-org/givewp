@@ -479,6 +479,10 @@ select[name="campaignId"] {
         border-radius: var(--givewp-rounded-4);
         line-height: 0;
         padding: var(--givewp-spacing-2);
+
+        &:hover {
+            background-color: #d1d5db;
+        }
     }
 
     .campaignButtonDotsActive {
