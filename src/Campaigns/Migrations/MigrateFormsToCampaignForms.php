@@ -41,7 +41,7 @@ class MigrateFormsToCampaignForms extends Migration
         DB::transaction(function() {
             try {
                 array_map([$this, 'createCampaignForForm'], $this->getFormData());
-                //array_map([$this, 'addUpgradedFormToCampaign'], $this->getUpgradedFormData());
+                array_map([$this, 'addUpgradedFormToCampaign'], $this->getUpgradedFormData());
             } catch (DatabaseQueryException $exception) {
                 DB::rollback();
                 throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
@@ -81,7 +81,7 @@ class MigrateFormsToCampaignForms extends Migration
 
         $query->where('forms.post_status', 'auto-draft', '!=');
 
-        $query->orderBy('forms.ID', 'DESC');
+        $query->orderBy('forms.ID');
 
         // Exclude forms with an `upgraded` status, which are archived.
         //$query->where('forms.post_status', 'upgraded', '!=');
@@ -104,7 +104,7 @@ class MigrateFormsToCampaignForms extends Migration
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
             ->where('forms.post_type', 'give_forms')
-            ->where('forms.post_status', 'publish')
+            //->where('forms.post_status', 'publish')
             ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
             ->getAll();
     }
@@ -151,7 +151,7 @@ class MigrateFormsToCampaignForms extends Migration
 
         $campaignId = DB::last_insert_id();
 
-        $this->addCampaignFormRelationship($formId, $campaignId);
+        $this->addCampaignFormRelationship($formId, $campaignId, true);
     }
 
     /**
@@ -165,12 +165,13 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    protected function addCampaignFormRelationship($formId, $campaignId)
+    protected function addCampaignFormRelationship($formId, $campaignId, $isDefault = false)
     {
         DB::table('give_campaign_forms')
             ->insert([
                 'form_id' => $formId,
                 'campaign_id' => $campaignId,
+                'is_default' => $isDefault,
             ]);
     }
 
@@ -206,8 +207,29 @@ class MigrateFormsToCampaignForms extends Migration
     protected function getV2FormSettings(int $formId): stdClass
     {
         $template = give_get_meta($formId, '_give_form_template', true);
-        $templateSettings = give_get_meta($formId, "_give_{$template}_form_template_settings", true);
+        $templateSettings = give_get_meta($formId, "_give_{$template}_form_template_settings", true) ?? [];
 
+        $formSettings = (object)[
+            'formExcerpt' => get_the_excerpt($formId),
+            'description' => $this->getV2FormDescription($templateSettings),
+            'designSettingsLogoUrl' => '',
+            'designSettingsImageUrl' => $this->getV2FormFeaturedImage($templateSettings, $formId),
+            'primaryColor' => $this->getV2FormPrimaryColor($templateSettings),
+            'secondaryColor' => '',
+            'goalAmount' => $this->getV2FormGoalAmount($formId),
+            'goalType' => $this->getV2FormGoalType($formId),
+            'goalStartDate' => '',
+            'goalEndDate' => '',
+        ];
+
+        return $formSettings;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getV2FormFeaturedImage(array $templateSettings, int $formId): string
+    {
         if ( ! empty($templateSettings['introduction']['image'])) {
             // Sequoia Template (Multi-Step)
             $featuredImage = $templateSettings['introduction']['image'];
@@ -218,22 +240,73 @@ class MigrateFormsToCampaignForms extends Migration
             // Legacy Template or Sequoia Template without the ['introduction']['image'] setting
             $featuredImage = get_the_post_thumbnail_url($formId, 'full');
         } else {
-            $featuredImage = null;
+            $featuredImage = '';
         }
 
-        $formSettings = (object)[
-            'formExcerpt' => get_the_excerpt($formId),
-            'description' => '',
-            'designSettingsLogoUrl' => '',
-            'designSettingsImageUrl' => $featuredImage,
-            'primaryColor' => '',
-            'secondaryColor' => '',
-            'goalAmount' => '',
-            'goalType' => '',
-            'goalStartDate' => '',
-            'goalEndDate' => '',
-        ];
+        return $featuredImage;
+    }
 
-        return $formSettings;
+    /**
+     * @unreleased
+     */
+    protected function getV2FormDescription(array $templateSettings): string
+    {
+        if ( ! empty($templateSettings['introduction']['description'])) {
+            // Sequoia Template (Multi-Step)
+            $description = $templateSettings['introduction']['description'];
+        } elseif ( ! empty($templateSettings['visual_appearance']['description'])) {
+            // Classic Template
+            $description = $templateSettings['visual_appearance']['description'];
+        } else {
+            $description = '';
+        }
+
+        return $description;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getV2FormPrimaryColor(array $templateSettings): string
+    {
+        if ( ! empty($templateSettings['introduction']['primary_color'])) {
+            // Sequoia Template (Multi-Step)
+            $primaryColor = $templateSettings['introduction']['primary_color'];
+        } elseif ( ! empty($templateSettings['visual_appearance']['primary_color'])) {
+            // Classic Template
+            $primaryColor = $templateSettings['visual_appearance']['primary_color'];
+        } else {
+            $primaryColor = '';
+        }
+
+        return $primaryColor;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getV2FormGoalAmount(int $formId)
+    {
+        return give_get_form_goal($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getV2FormGoalType(int $formId): string
+    {
+        $onlyRecurringEnabled = filter_var(give_get_meta($formId, '_give_recurring_goal_format', true),
+            FILTER_VALIDATE_BOOLEAN);
+
+        switch (give_get_form_goal_format($formId)) {
+            case 'donors':
+                return $onlyRecurringEnabled ? 'donorsFromSubscriptions' : 'donors';
+            case 'donation':
+                return $onlyRecurringEnabled ? 'subscriptions' : 'donations';
+            case 'amount':
+            case 'percentage':
+            default:
+                return $onlyRecurringEnabled ? 'amountFromSubscriptions' : 'amount';
+        }
     }
 }
