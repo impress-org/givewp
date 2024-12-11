@@ -55,7 +55,7 @@
 }
 
 .pageHeader {
-    background-color: #fff;
+    background-color: var(--givewp-shades-white);
     padding-block: 1em;
     padding-inline: 1.5em;
 }
@@ -94,17 +94,20 @@
 
 .breadcrumb {
     display: flex;
-    line-height: 1rem;
-    font-size: 0.7rem;
-    color: #424242;
+    align-items: center;
+    gap: 0.25rem;
+    line-height: 1.125rem;
+    font-size: 0.75rem;
 
     & > span {
         font-weight: bold;
+        color: var(--givewp-neutral-900);
     }
 
     & > a {
         text-decoration: none;
-        color: #696969;
+        color: var(--givewp-neutral-500);
+        font-weight: 400;
     }
 
     & > a:hover {
@@ -474,19 +477,21 @@ select[name="campaignId"] {
     }
 
     .campaignButtonDots {
-        background-color: #e5e7eb;
-        border-color: #d1d5db;
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
         border-radius: var(--givewp-rounded-4);
         line-height: 0;
         padding: var(--givewp-spacing-2);
 
         &:hover {
-            background-color: #d1d5db;
+            background-color:var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
         }
     }
 
     .campaignButtonDotsActive {
-        background-color: #d1d5db;
+        background-color: var(--givewp-neutral-200);
+        border-color: var(--givewp-neutral-200);
     }
 
     .contextMenu {
