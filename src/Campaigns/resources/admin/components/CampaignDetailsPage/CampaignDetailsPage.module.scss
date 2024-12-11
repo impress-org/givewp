@@ -116,18 +116,15 @@
 }
 
 .pageTitle {
-    color: #424242;
+    color: var(--givewp-neutral-900);
     margin: 0;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    line-height: 2.25rem;
 }
 
 select[name="campaignId"] {
     display: none;
-}
-
-.fullWidth {
-
 }
 
 .tabs {
