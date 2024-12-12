@@ -47,6 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerMigrations();
         $this->registerRoutes();
         $this->registerCampaignEntity();
+        $this->registerCampaignBlocks();
         $this->setupCampaignForms();
     }
 
@@ -147,5 +148,13 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerCampaignBlocks()
+    {
+        Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
     }
 }
