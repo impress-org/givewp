@@ -155,6 +155,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerCampaignBlocks()
     {
+        Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
     }
 }
