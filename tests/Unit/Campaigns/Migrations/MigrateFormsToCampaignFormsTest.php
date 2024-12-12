@@ -82,6 +82,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $campaign = Campaign::findByFormId($upgradedForm->id);
 
         $this->assertNotNull($relationship);
+        $this->assertNotNull($campaign);
         $this->assertEquals(0, DB::table('give_campaigns')->where('form_id', $upgradedForm->id)->count());
         $this->assertEquals(1, DB::table('give_campaigns')->where('form_id', $newForm->id)->count());
         $this->assertEquals(2, DB::table('give_campaign_forms')->where('campaign_id', $campaign->id)->count());
