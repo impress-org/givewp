@@ -62,7 +62,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testUpgradedFormsAreMigrated()
+    public function testUpgradedFormsAreNotMigrated()
     {
         $upgradedForm = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
@@ -79,9 +79,12 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $migration->run();
 
         $relationship = DB::table('give_campaign_forms')->where('form_id', $upgradedForm->id)->get();
+        $campaign = Campaign::findByFormId($upgradedForm->id);
 
         $this->assertNotNull($relationship);
-        $this->assertEquals(2, DB::table('give_campaigns')->count());
+        $this->assertEquals(0, DB::table('give_campaigns')->where('form_id', $upgradedForm->id)->count());
+        $this->assertEquals(1, DB::table('give_campaigns')->where('form_id', $newForm->id)->count());
+        $this->assertEquals(2, DB::table('give_campaign_forms')->where('campaign_id', $campaign->id)->count());
     }
 
     /**
