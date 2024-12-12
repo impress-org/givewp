@@ -7,7 +7,6 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
-use Give\Helpers\Form\Utils;
 use stdClass;
 
 /**
@@ -40,8 +39,8 @@ class MigrateFormsToCampaignForms extends Migration
     {
         DB::transaction(function() {
             try {
-                array_map([$this, 'createCampaignForForm'], $this->getFormData());
-                array_map([$this, 'addUpgradedFormToCampaign'], $this->getUpgradedFormData());
+                array_map([$this, 'createCampaignForForm'], $this->getAllFormsData());
+                array_map([$this, 'addUpgradedV2FormToCampaign'], $this->getUpgradedV2FormsData());
             } catch (DatabaseQueryException $exception) {
                 DB::rollback();
                 throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
@@ -52,7 +51,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @unreleased
      */
-    protected function getFormData(): array
+    protected function getAllFormsData(): array
     {
         $query = DB::table('posts', 'forms')->distinct()
             ->select(
@@ -85,6 +84,15 @@ class MigrateFormsToCampaignForms extends Migration
          */
         $query->where('forms.post_status', 'auto-draft', '!=');
 
+        /**
+         * Excluded upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form through the addUpgradedV2FormToCampaign() method.
+         */
+        $upgradedFormsIds = $this->getUpgradedV2FormsIds();
+        if (count($upgradedFormsIds) > 0) {
+            $query->whereNotIn('forms.ID', $upgradedFormsIds);
+        }
+
+        // Ensure campaigns will be displayed in the same order on the list table
         $query->orderBy('forms.ID');
 
         return $query->getAll();
@@ -92,9 +100,20 @@ class MigrateFormsToCampaignForms extends Migration
 
     /**
      * @unreleased
+     */
+    protected function getUpgradedV2FormsIds(): array
+    {
+        $upgradedFormsIds = DB::table('give_formmeta')->select('meta_value')->where('meta_key',
+            'migratedFormId')->getAll('ARRAY_A');
+
+        return is_array($upgradedFormsIds) ? array_column($upgradedFormsIds, 'meta_value') : [];
+    }
+
+    /**
+     * @unreleased
      * @return array [{formId, campaignId, migratedFormId}]
      */
-    protected function getUpgradedFormData(): array
+    protected function getUpgradedV2FormsData(): array
     {
         return DB::table('posts', 'forms')
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
@@ -114,18 +133,12 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public function createCampaignForForm($formData): void
     {
-        /**
-         * Skip upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form through the addUpgradedFormToCampaign() method.
-         */
-        if ($this->isV2MigratedForm($formData->id)) {
-            return;
-        }
-
         $formId = $formData->id;
         $formStatus = $formData->status;
         $formTitle = $formData->title;
         $formCreatedAt = $formData->createdAt;
-        $formSettings = Utils::isV3Form($formId) ? json_decode($formData->settings) : $this->getV2FormSettings($formId);
+        $isV3Form = ! is_null($formData->settings);
+        $formSettings = $isV3Form ? json_decode($formData->settings) : $this->getV2FormSettings($formId);
 
         DB::table('give_campaigns')
             ->insert([
@@ -154,7 +167,7 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @param $data
      */
-    protected function addUpgradedFormToCampaign($data): void
+    protected function addUpgradedV2FormToCampaign($data): void
     {
         $this->addCampaignFormRelationship($data->migratedFormId, $data->campaignId);
     }
@@ -303,28 +316,5 @@ class MigrateFormsToCampaignForms extends Migration
             default:
                 return $onlyRecurringEnabled ? 'amountFromSubscriptions' : 'amount';
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    private function isV2MigratedForm(int $formId): bool
-    {
-        global $wpdb;
-
-        $isMigratedForm = (bool)DB::get_var(
-            DB::prepare(
-                "
-                    SELECT `form_id`
-                    FROM `{$wpdb->prefix}give_formmeta`
-                    JOIN `{$wpdb->posts}`
-                        ON `{$wpdb->posts}`.`ID` = `{$wpdb->prefix}give_formmeta`.`form_id`
-                    WHERE `meta_key` = 'migratedFormId'
-                      AND `meta_value` = %d",
-                $formId
-            )
-        );
-
-        return ! Utils::isV3Form($formId) && $isMigratedForm;
     }
 }
