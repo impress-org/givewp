@@ -47,7 +47,8 @@
         "strauss": [
             "bin/strauss-installar.sh",
             "vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php bin/strauss.phar"
+            "@php bin/strauss.phar",
+            "@composer dump-autoload"
         ],
         "post-install-cmd": [
             "@strauss",
