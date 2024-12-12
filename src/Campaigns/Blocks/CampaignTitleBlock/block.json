@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "givewp/campaign-title-block",
+    "version": "1.0.0",
+    "title": "Campaign Title",
+    "category": "give",
+    "icon": "heading",
+    "description": "Displays the title of the campaign.",
+    "supports": {
+        "html": false
+    },
+    "attributes": {
+        "campaignId": {
+            "type": "integer"
+        },
+        "headingLevel": {
+            "type": "number",
+            "default": 1
+        }
+    },
+    "textdomain": "give",
+    "editorScript": "file:./../../../../build/Campaigns/Blocks/campaignTitleBlock.js",
+    "editorStyle": "file:./../../../../build/Campaigns/Blocks/campaignTitleBlock.css",
+    "render": "file:./render.php"
+}
