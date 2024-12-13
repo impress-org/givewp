@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Framework\Permissions;
 
 abstract class UserPermission implements Contracts\UserPermissionsInterface
@@ -27,7 +28,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * @unreleased
      */
-    protected function getCapability( string $cap): string
+    protected function getCapability(string $cap): string
     {
         $caps = $this->getCapabilities($this::getType());
 

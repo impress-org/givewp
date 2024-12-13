@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Framework\Permissions;
 
-use Give\Framework\Permissions\Facades\UserPermissions;
+use Give\Framework\Permissions\DonationFormPermissions;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -15,79 +15,97 @@ final class TestDonationFormsPermissions extends TestCase
 
     /**
      * @unreleased
-     * @dataProvider canProvider
+     * @dataProvider canTrueProvider
      */
-    public function testCan($role, $capability, $shouldPass): void
+    public function testCanShouldBeTrue(string $role, string $capability): void
     {
         $user = self::factory()->user->create_and_get();
-        $user->add_role($role);
+        $user->set_role($role);
 
         wp_set_current_user($user->ID);
 
-        if ($shouldPass) {
-            $this->assertTrue(
-                UserPermissions::donationForms()->can($capability)
-            );
-        } else {
-            $this->assertFalse(
-                UserPermissions::donationForms()->can($capability)
-            );
-        }
+        $this->assertTrue(
+            (new DonationFormPermissions())->can($capability)
+        );
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider canFalseProvider
+     */
+    public function testCanShouldBeFalse(string $role, string $capability): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertFalse(
+            (new DonationFormPermissions())->can($capability)
+        );
     }
 
 
-       /**
+    /**
      * @unreleased
      *
      * @return array<int, array<mixed, bool>>
      */
-    public function canProvider(): array
+    public function canTrueProvider(): array
     {
         return [
             // true
-            ['give_worker', 'create', true],
-            ['give_worker', 'read', true],
-            ['give_worker', 'update', true],
-            ['give_worker', 'edit', true],
+            ['give_worker', 'create'],
+            ['give_worker', 'read'],
+            ['give_worker', 'update'],
+            ['give_worker', 'edit'],
 
-            ['give_manager', 'create', true],
-            ['give_manager', 'read', true],
-            ['give_manager', 'update', true],
-            ['give_manager', 'edit', true],
-            ['give_manager', 'delete', true],
+            ['give_manager', 'create'],
+            ['give_manager', 'read'],
+            ['give_manager', 'update'],
+            ['give_manager', 'edit'],
+            ['give_manager', 'delete'],
 
-            ['give_accountant', 'create', true],
-            ['give_accountant', 'read', true],
-            ['give_accountant', 'update', true],
-            ['give_accountant', 'edit', true],
-            ['give_accountant', 'read_private_give_forms', true],
+            ['give_accountant', 'create'],
+            ['give_accountant', 'read'],
+            ['give_accountant', 'update'],
+            ['give_accountant', 'edit'],
+            ['give_accountant', 'read_private_give_forms'],
 
-            ['administrator', 'create', true],
-            ['administrator', 'read', true],
-            ['administrator', 'update', true],
-            ['administrator', 'edit', true],
-            ['administrator', 'delete', true],
+            ['administrator', 'create'],
+            ['administrator', 'read'],
+            ['administrator', 'update'],
+            ['administrator', 'edit'],
+            ['administrator', 'delete'],
+        ];
+    }
 
+    /**
+     * @unreleased
+     */
+    public function canFalseProvider(): array
+    {
+        return [
             // false
-            ['give_accountant', 'delete', false],
+            ['give_accountant', 'delete'],
 
-            ['give_donor', 'create', false],
-            ['give_donor', 'read', false],
-            ['give_donor', 'update', false],
-            ['give_donor', 'edit', false],
-            ['give_donor', 'delete', false],
+            ['give_donor', 'create'],
+            ['give_donor', 'read'],
+            ['give_donor', 'update'],
+            ['give_donor', 'edit'],
+            ['give_donor', 'delete'],
 
-            ['give_subscriber', 'create', false],
-            ['give_subscriber', 'read', false],
-            ['give_subscriber', 'update', false],
-            ['give_subscriber', 'edit', false],
-            ['give_subscriber', 'delete', false],
+            ['give_subscriber', 'create'],
+            ['give_subscriber', 'read'],
+            ['give_subscriber', 'update'],
+            ['give_subscriber', 'edit'],
+            ['give_subscriber', 'delete'],
 
-            ['subscriber', 'create', false],
-            ['subscriber', 'read', false],
-            ['subscriber', 'update', false],
-            ['subscriber', 'edit', false],
-            ['subscriber', 'delete', false],
+            ['subscriber', 'create'],
+            ['subscriber', 'read'],
+            ['subscriber', 'update'],
+            ['subscriber', 'edit'],
+            ['subscriber', 'delete'],
         ];
     }
 }
