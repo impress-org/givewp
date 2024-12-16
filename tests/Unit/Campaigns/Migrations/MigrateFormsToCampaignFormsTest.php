@@ -41,6 +41,31 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
+    public function testCreatesParentCampaignForOptionBasedDonationForm()
+    {
+        $formId = $this->factory()->post->create(
+            [
+                'post_title' => 'Test Form',
+                'post_type' => 'give_forms',
+                'post_status' => 'publish',
+            ]
+        );
+
+        $migration = new MigrateFormsToCampaignForms();
+
+        $migration->run();
+
+        $relationship = DB::table('give_campaign_forms')->where('form_id', $formId)->get();
+
+        $this->assertNotNull(Campaign::find($relationship->campaign_id));
+        $this->assertEquals($formId, $relationship->form_id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testExistingPeerToPeerCampaignFormsAreNotMigrated()
     {
         $form = DonationForm::factory()->create();
