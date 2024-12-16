@@ -287,7 +287,7 @@ select[name="campaignId"] {
             display: flex;
             align-content: flex-start;
             flex-direction: row;
-            background-color: #fff;
+            background-color: var(--givewp-shades-white);
             padding: var(--givewp-spacing-9) var(--givewp-spacing-6);
             border-radius: var(--givewp-spacing-2);
 
@@ -304,21 +304,22 @@ select[name="campaignId"] {
                 font-size: 18px;
                 font-weight: 600;
                 line-height: 1.56;
-                color: var(--givewp-neutral-900,  #060c1a);
+                color: var(--givewp-neutral-900);
                 padding: 0;
                 margin-bottom: var(--givewp-spacing-2);
             }
 
             .sectionDescription {
                 font-size: 16px;
-                color: var(--givewp-neutral-500,  #4b5563);
+                line-height: 1.5;
+                color: var(--givewp-neutral-500);
             }
 
             .sectionSubtitle {
                 font-size: 1rem;
                 font-weight: 500;
                 line-height: 1.5;
-                color: var(--givewp-neutral-700,  #1f2937);
+                color: var(--givewp-neutral-700);
             }
 
             .sectionField {
@@ -335,7 +336,7 @@ select[name="campaignId"] {
                 .editor,
                 .upload{
                     margin-top: var(--givewp-spacing-1);
-                    color: var(--givewp-neutral-900,  #060c1a);
+                    color: var(--givewp-neutral-900);
                     font-weight: 500;
                 }
 
@@ -354,13 +355,10 @@ select[name="campaignId"] {
                margin: 0;
             }
 
-            .components-base-control.components-toggle-control {
-               border: 2px solid red;
-            }
-
             .sectionFieldDescription {
                 font-size: 14px;
-                color: var(--givewp-neutral-500,  #4b5563);
+                line-height: 1.43;
+                color: var(--givewp-neutral-500);
             }
 
             .errorMsg {
@@ -388,7 +386,7 @@ select[name="campaignId"] {
     }
 
     .toggle {
-        margin-top: var(--givewp-spacing-4);
+        margin-top: var(--givewp-spacing-3);
 
         & > div {
             margin-bottom: 0;
