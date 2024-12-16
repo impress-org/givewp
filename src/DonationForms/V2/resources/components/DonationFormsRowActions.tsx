@@ -6,6 +6,8 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
+import {createInterpolateElement} from '@wordpress/element';
+
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -34,7 +36,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
 
     const confirmTrashForm = (selected) => (
         <p>
-            {__('Really trash the following form?', 'give')}
+            {__('Are you sure you want to trash the following donation form? ', 'give')}
             <br />
             <Interweave content={item?.title} />
         </p>
@@ -60,16 +62,17 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const isCampaignDetailsPage =
         urlParams.get('id') && urlParams.get('page') && 'give-campaigns' === urlParams.get('page');
 
+    const defaultCampaignModalContent = createInterpolateElement(
+        __('This will set <title_link/> as the default form for this campaign. Do you want to proceed?', 'give'),
+        {
+            title_link: <Interweave content={item?.title} />,
+        }
+    );
+
     const confirmDefaultCampaignFormModal = (event) => {
         showConfirmModal(
             __('Make as default', 'give'),
-            (selected) => (
-                <p>
-                    {__('Really make the following campaign form default?', 'give')}
-                    <br />
-                    <Interweave content={item?.title} />
-                </p>
-            ),
+            (selected) => <p>{defaultCampaignModalContent}</p>,
             async () => {
                 await entity.edit({
                     defaultFormId: item.id
