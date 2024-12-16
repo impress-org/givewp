@@ -7,6 +7,7 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use stdClass;
 
 /**
@@ -87,26 +88,17 @@ class MigrateFormsToCampaignForms extends Migration
         /**
          * Excluded upgraded V2 forms as their corresponding V3 version will be used to create the campaign - later the V2 form will be added to the proper campaign as a non-default form through the addUpgradedV2FormToCampaign() method.
          */
-        $upgradedFormsIds = $this->getUpgradedV2FormsIds();
-        if (count($upgradedFormsIds) > 0) {
-            $query->whereNotIn('forms.ID', $upgradedFormsIds);
-        }
+        $query->whereNotIn('forms.ID', function (QueryBuilder $builder) {
+            $builder
+                ->select('meta_value')
+                ->from('give_formmeta')
+                ->where('meta_key', 'migratedFormId');
+        });
 
         // Ensure campaigns will be displayed in the same order on the list table
         $query->orderBy('forms.ID');
 
         return $query->getAll();
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function getUpgradedV2FormsIds(): array
-    {
-        $upgradedFormsIds = DB::table('give_formmeta')->select('meta_value')->where('meta_key',
-            'migratedFormId')->getAll('ARRAY_A');
-
-        return is_array($upgradedFormsIds) ? array_column($upgradedFormsIds, 'meta_value') : [];
     }
 
     /**
