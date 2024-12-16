@@ -82,7 +82,8 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
 
                 await mutate(parameters);
                 return response;
-            }
+            },
+            __('Yes proceed','give')
         );
     };
 

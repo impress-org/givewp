@@ -86,7 +86,7 @@ export type BulkActionsConfig =
     | BulkActionsConfigWithoutType
     | BulkActionsConfigWithoutAction;
 
-export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
+export const ShowConfirmModalContext = createContext((label, confirm, action, type = null,  confirmButtonText = __('Confirm', 'give')) => {});
 export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
@@ -113,11 +113,13 @@ export default function ListTablePage({
         confirm;
         action?;
         label;
+        confirmButtonText?: string;
         type?: 'normal' | 'warning' | 'danger' | 'custom';
     }>({
         confirm: (selected) => {},
         action: (selected) => {},
         label: '',
+        confirmButtonText: '',
     });
     const [selectedAction, setSelectedAction] = useState<string>('');
     const [selectedIds, setSelectedIds] = useState([]);
@@ -160,9 +162,10 @@ export default function ListTablePage({
         label,
         confirm,
         action,
-        type: 'normal' | 'warning' | 'danger' | 'custom' | null
+        type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
+        confirmButtonText?: string,
     ) => {
-        setModalContent({confirm, action, label, type});
+        setModalContent({label, confirm, action, type, confirmButtonText});
         dialog.current.show();
     };
 
@@ -354,7 +357,7 @@ export default function ListTablePage({
                             await mutate();
                         }}
                     >
-                        {__('Confirm', 'give')}
+                        {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
                     </button>
                 </div>
             </A11yDialog>
