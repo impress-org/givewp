@@ -53,7 +53,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     }
 
     /**
-     * @unreleased Add validate URL
+     * @since 3.19.1 Add validate URL
      *
      * @throws Exception
      */
