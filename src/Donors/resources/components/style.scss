@@ -50,11 +50,11 @@
 }
 
 label[for="giveDonorsTableDeleteDonations"] {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--givewp-spacing-2);
+}
 
-    input {
-        margin: 0;
-    }
+#giveDonorsTableDeleteDonations {
+    margin: 0 var(--givewp-spacing-2) 0 0;
 }
