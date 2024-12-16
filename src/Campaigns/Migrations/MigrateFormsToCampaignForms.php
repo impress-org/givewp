@@ -78,7 +78,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->whereIsNull('campaigns.id');
 
         /**
-         * Exclude forms with an `upgraded` status, which are WP revisions.
+         * Exclude forms with an "auto-draft" status, which are WP revisions.
          *
          * @see https://wordpress.org/documentation/article/post-status/#auto-draft
          */
