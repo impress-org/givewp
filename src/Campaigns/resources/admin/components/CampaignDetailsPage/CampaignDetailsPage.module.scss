@@ -279,14 +279,17 @@ select[name="campaignId"] {
     }
 
     .sections {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
         .section {
             display: flex;
+            align-content: flex-start;
+            flex-direction: row;
             background-color: #fff;
             padding: var(--givewp-spacing-9) var(--givewp-spacing-6);
             border-radius: var(--givewp-spacing-2);
-            margin-bottom: var(--givewp-spacing-4);
-            align-content: flex-start;
-            flex-direction: row;
 
             .leftColumn {
                 flex: 1;
@@ -386,7 +389,7 @@ select[name="campaignId"] {
 
     .toggle {
         margin-top: var(--givewp-spacing-4);
-        
+
         & > div {
             margin-bottom: 0;
         }
