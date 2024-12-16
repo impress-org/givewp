@@ -98,12 +98,12 @@ ul[role='document'] + .flexRow + .flexRow {
     justify-content: flex-start;
     align-items: flex-start;
     gap: var(--givewp-spacing-2);
+    margin-bottom: var(--givewp-spacing-4);
 
     select {
         min-width: 100%;
     }
 }
-
 
 ul[role='document'] + .flexRow {
     margin: var(--givewp-spacing-6) 0;
@@ -410,7 +410,11 @@ ul[role='document'] + .flexRow {
 
 
     & ul {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
         max-height: 40vh;
+        margin: 0;
         overflow-y: auto;
         overscroll-behavior-y: contain;
     }
@@ -419,14 +423,8 @@ ul[role='document'] + .flexRow {
         font-weight: 600;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        margin-bottom: 0;
     }
-
-    & li + li {
-        border-top: 1px solid rgba(196, 196, 196);
-        padding-top: 0.75rem;
-    }
-
 
     &.warning {
     }
@@ -444,7 +442,7 @@ ul[role='document'] + .flexRow {
     border-radius: 0 0 6px 6px;
 
     p {
-        margin-top: 0;
+        margin: 0 0 var(--givewp-spacing-3);
         font-size: 1rem;
     }
 }
@@ -476,10 +474,9 @@ $button-blue: rgba(8 120 176);
 
 #cancel,
 #confirm {
-    flex: 1;
+    flex-grow: 1;
     border-radius: 4px;
-    padding-inline: 1rem;
-    padding-block: 1rem;
+    padding: 16px 32px;
     font-size: 1rem;
     font-weight: 500;
     font-stretch: normal;
