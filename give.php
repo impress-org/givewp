@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 3.18.0
+ * Version: 3.19.0
  * Requires at least: 6.5
  * Requires PHP: 7.2
  * Text Domain: give
@@ -42,6 +42,7 @@
  * - The GiveWP Team
  */
 
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Container\Container;
 use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
@@ -132,6 +133,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read DonationFormsRepository $donationForms
+ * @property-read CampaignRepository $campaigns
  * @property-read Profile $donorDashboard
  * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
@@ -269,7 +271,7 @@ final class Give
     /**
      * Init Give when WordPress Initializes.
      *
-     * @unreleased Move the loading of the `give` textdomain to the `init` action hook.
+     * @since 3.19.0 Move the loading of the `give` textdomain to the `init` action hook.
      * @since 1.8.9
      */
     public function init()
@@ -378,7 +380,7 @@ final class Give
     /**
      * Bootstraps the Give Plugin
      *
-     * @unreleased Load the `give` textdomain on the `init` action hook.
+     * @since 3.19.0 Load the `give` textdomain on the `init` action hook.
      * @since 2.8.0
      */
     public function boot()
@@ -412,7 +414,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.18.0');
+            define('GIVE_VERSION', '3.19.0');
         }
 
         // Plugin Root File.

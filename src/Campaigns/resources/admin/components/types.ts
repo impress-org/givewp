@@ -25,7 +25,16 @@ export type Campaign = {
     createdAt: string;
     //updatedAt: string;
     enableCampaignPage: boolean;
+    defaultFormId: number;
+    defaultFormTitle: string;
 };
+
+export type CampaignEntity = {
+    campaign: Campaign;
+    hasResolved: boolean;
+    edit: (data: Campaign) => void
+    save: () => any
+}
 
 /*export interface Campaign {
     id: number;
