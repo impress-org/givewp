@@ -267,7 +267,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 3.19.2: December 17th, 2024 =
-* Fix: Resolved an issue with the custom donation amount field and certain languages like Swedish that was resulting in additional zero values being added
+* Fix: Resolved an issue with the custom donation amount field where using certain languages like Swedish were resulting in additional zero values being added
 
 = 3.19.1: December 17th, 2024 =
 * Fix: Resolved an issue with PayPal where some fields were not being validated properly before processing the donation
