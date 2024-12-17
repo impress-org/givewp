@@ -24,6 +24,14 @@ div.media-modal.wp-core-ui {
 .givewp-media-library-control {
     cursor: pointer;
 
+    & > button:not(svg + button) {
+        min-height: 160px;
+
+        & > img {
+            height: 100%;
+        }
+    }
+
     &__reset {
         position: relative;
         display: flex;

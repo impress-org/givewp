@@ -340,6 +340,10 @@ select[name="campaignId"] {
                     font-weight: 500;
                 }
 
+                input, select {
+                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+                }
+
                 input:focus, select:focus {
                     border-color: rgb(34, 113, 177);
                     outline: none;
