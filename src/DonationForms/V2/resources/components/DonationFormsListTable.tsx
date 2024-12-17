@@ -236,7 +236,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         ),
     },
     {
-        label: __('Move to Trash', 'give'),
+        label: __('Trash', 'give'),
         value: 'trash',
         type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
