@@ -388,6 +388,10 @@ select[name="campaignId"] {
     .toggle {
         margin-top: var(--givewp-spacing-3);
 
+        span:is(:global(.components-form-toggle)) {
+            height: 24px;
+        }
+
         & > div {
             margin-bottom: 0;
         }
