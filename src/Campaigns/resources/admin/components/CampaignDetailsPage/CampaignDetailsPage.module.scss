@@ -340,14 +340,10 @@ select[name="campaignId"] {
                     font-weight: 500;
                 }
 
-                .upload > div > div {
-                        & > button:not(svg + button) {
-                        min-height: 160px;
-
-                        & > img {
-                            height: 100%;
-                        }
-                    }
+                input:focus, select:focus {
+                    border-color: rgb(34, 113, 177);
+                    outline: none;
+                    box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
                 }
             }
 
