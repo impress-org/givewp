@@ -1,0 +1,102 @@
+.dateRangeFilter {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-bottom: var(--givewp-spacing-2);
+    background-color: var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-8);
+}
+
+.dateRangeFilter button {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: var(--givewp-neutral-900);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    border: 0;
+    cursor: pointer;
+}
+
+.dateRangeFilter .selectedDateRange {
+    background-color: var(--givewp-shades-white);
+}
+
+.statWidget {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-6);
+    background-color: var(--givewp-shades-white);
+    color: var(--givewp-neutral-700);
+    font-weight: 600;
+    border-radius: var(--givewp-rounded-8);
+}
+
+.statWidget header, .statWidget footer {
+    flex: 1;
+}
+
+.statWidget footer{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--givewp-neutral-700);
+}
+
+.statWidgetAmount {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.statWidgetDisplay {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 43.57px;
+    color: var(--givewp-neutral-900);
+}
+
+.revenueWidget {
+    flex: 2;
+    background-color: var(--givewp-shades-white);
+    padding: 20px;
+    border-radius: var(--givewp-rounded-8);
+}
+
+.percentChangePill {
+    padding: 0.5rem;
+    font-size: .8rem;
+    border-radius: var(--givewp-rounded-16);
+}
+
+.progressWidget {
+    flex: 1;
+    background-color: var(--givewp-shades-white);
+    padding: 20px;
+    border-radius: var(--givewp-rounded-8);
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--givewp-spacing-6);
+}
+
+.column:first-child {
+    flex: 2;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--givewp-spacing-4);
+}
