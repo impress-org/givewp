@@ -269,7 +269,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.19.1: December 17th, 2024 =
 * Fix: Resolved an issue with PayPal where some fields were not being validated properly before processing the donation
 * Fix: Resolved an issue with PayPal and emails with a plus sign trying to connect to GiveWP 
-* Enhancement: Updated the format of the donation count in the multi form goal progress stats 
+* Fix: Updated the format of the donation count in the multi form goal progress stats 
 * Change: Updated subdivision ISO code for Odisha, India to OD (Open source submission by @sorensd) 
 
 = 3.19.0: December 5th, 2024 =
