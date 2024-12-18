@@ -423,7 +423,12 @@ ul[role='document'] + .flexRow {
         font-weight: 600;
         display: flex;
         align-items: center;
-        margin-bottom: 0;
+        gap: var(--givewp-spacing-2);
+
+        span {
+            display: flex;
+            gap: var(--givewp-spacing-2);
+        }
     }
 
     &.warning {
