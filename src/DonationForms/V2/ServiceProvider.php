@@ -49,12 +49,17 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('submitpost_box', DonationFormsAdminPage::class, 'renderMigrationGuideBox');
         Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadMigrationScripts');
 
-        add_action('wp_ajax_givewp_show_onboarding_banner', static function () {
-            add_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', time(), true);
-        });
+        // Dismiss notices
+        $noticeActions = [
+            'givewp_show_onboarding_banner' => 'show-onboarding-banner',
+            'givewp_show_upgraded_tooltip' => 'show-upgraded-tooltip',
+            'givewp_show_default_form_tooltip' => 'show-default-form-tooltip',
+        ];
 
-        add_action('wp_ajax_givewp_show_upgraded_tooltip', static function () {
-            add_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', time(), true);
-        });
+        foreach ($noticeActions as $action => $metaKey) {
+            add_action("wp_ajax_{$action}", static function () use ($metaKey) {
+                add_user_meta(get_current_user_id(), "givewp-{$metaKey}", time(), true);
+            });
+        }
     }
 }

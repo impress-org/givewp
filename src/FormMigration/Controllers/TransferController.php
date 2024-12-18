@@ -2,6 +2,7 @@
 
 namespace Give\FormMigration\Controllers;
 
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\FormMigration\Actions\GetMigratedFormId;
@@ -34,6 +35,15 @@ class TransferController
             $v3FormId = (new GetMigratedFormId)($formV2->id);
             TransferFormUrl::from($formV2->id)->to($v3FormId);
             TransferDonations::from($formV2->id)->to($v3FormId);
+
+            // Promote upgraded form to default form
+            $campaignRepository = give(CampaignRepository::class);
+            $campaign = $campaignRepository->getByFormId($formV2->id);
+            $defaultForm = $campaign->defaultForm();
+
+            if ($defaultForm->id === $formV2->id) {
+                $campaignRepository->updateDefaultCampaignForm($campaign, $v3FormId);
+            }
 
             if($options->shouldDelete()) {
                 wp_trash_post($formV2->id);

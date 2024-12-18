@@ -17,7 +17,8 @@
         "symfony/polyfill-ctype": "^1.19",
         "symfony/polyfill-mbstring": "^1.19",
         "woocommerce/action-scheduler": "^3.6",
-        "ext-json": "*"
+        "ext-json": "*",
+        "stellarwp/arrays": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -93,6 +94,7 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
+                "stellarwp/arrays",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",

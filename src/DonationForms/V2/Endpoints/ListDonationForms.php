@@ -2,8 +2,10 @@
 
 namespace Give\DonationForms\V2\Endpoints;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -29,6 +31,12 @@ class ListDonationForms extends Endpoint
     protected $listTable;
 
     /**
+     * @var int
+     */
+    protected $defaultForm;
+
+    /**
+     * @unreleased Add campaignId parameter
      * @inheritDoc
      */
     public function registerRoute()
@@ -102,6 +110,10 @@ class ListDonationForms extends Endpoint
                             'columns',
                         ],
                     ],
+                    'campaignId' => [
+                        'type' => 'integer',
+                        'required' => false,
+                    ],
                 ],
             ]
         );
@@ -118,6 +130,9 @@ class ListDonationForms extends Endpoint
     {
         $this->request = $request;
         $this->listTable = give(DonationFormsListTable::class);
+        $this->defaultForm = $this->request->get_param('campaignId')
+            ? Campaign::find((int)$this->request->get_param('campaignId'))->defaultForm()->id
+            : 0;
 
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
@@ -129,12 +144,15 @@ class ListDonationForms extends Endpoint
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
 
+            $defaultCampaignForm = ($campaignId = $this->request->get_param('campaignId')) ? Campaign::find($campaignId)->defaultForm() : false;
+
             foreach ($items as $i => &$item) {
                 $item['name'] = get_the_title($item['id']);
                 $item['edit'] = get_edit_post_link($item['id'], 'edit');
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
                 $item['status_raw'] = $forms[$i]->status->getValue();
+                $item['isDefaultCampaignForm'] = $defaultCampaignForm && $item['id'] === $defaultCampaignForm->id;
             }
         }
 
@@ -144,6 +162,7 @@ class ListDonationForms extends Endpoint
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages,
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
+                'defaultForm' => $this->defaultForm
             ]
         );
     }
@@ -159,11 +178,13 @@ class ListDonationForms extends Endpoint
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
+        $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);
+
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
@@ -196,6 +217,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @unreleased Add "campaignId" support
      * @since 2.24.0
      *
      * @param QueryBuilder $query
@@ -226,6 +248,13 @@ class ListDonationForms extends Endpoint
                     }
                 }
             }
+        }
+
+        if ($campaignId = $this->request->get_param('campaignId')) {
+            $query->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'ID');
+            })->where('campaign_forms.campaign_id', $campaignId);
         }
 
         return $query;
