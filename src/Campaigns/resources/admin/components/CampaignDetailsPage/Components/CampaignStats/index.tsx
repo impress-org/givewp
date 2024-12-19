@@ -58,13 +58,13 @@ const CampaignStats = () => {
             <Row>
                 <Column>
                     <Row>
-                        <StatWidget label={__('Amount Raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
-                        <StatWidget label={__('Donation Count')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
+                        <StatWidget label={__('Amount raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
+                        <StatWidget label={__('Number of donations')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
                     </Row>
                     <RevenueWidget />
                 </Column>
                 <Column>
-                    <StatWidget label={__('Donor Count')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
+                    <StatWidget label={__('Number of donors')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
                     <GoalProgressWidget />
                     <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
                 </Column>
@@ -131,12 +131,13 @@ const PercentChangePill = ({value, comparison}) => {
 
 }
 
+
 const RevenueWidget = () => {
     return (
         <div className={styles.revenueWidget}>
             <header>
-                <HeaderText>Revenue</HeaderText>
-                <HeaderSubText>{__('Show your revenue over time')}</HeaderSubText>
+                <HeaderText>{__('Revenue', 'give')}</HeaderText>
+                <HeaderSubText>{__('Show your revenue over time', 'give')}</HeaderSubText>
             </header>
             <RevenueChart />
         </div>
@@ -149,8 +150,8 @@ const GoalProgressWidget = () => {
 
     return (
         <div className={styles.progressWidget}>
-            <HeaderText>{__('Goal Progress')}</HeaderText>
-            <HeaderSubText>{__('Show your campaign performance')}</HeaderSubText>
+            <HeaderText>{__('Goal progress', 'give')}</HeaderText>
+            <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
             <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
         </div>
     )
