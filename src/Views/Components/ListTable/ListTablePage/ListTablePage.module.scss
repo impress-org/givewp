@@ -396,7 +396,7 @@ ul[role='document'] + .flexRow {
     padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
     border-radius: 4px;
     border-bottom: solid 1px var(--givewp-neutral-200);
-}
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);}
 
 .dialog {
     margin: auto;
