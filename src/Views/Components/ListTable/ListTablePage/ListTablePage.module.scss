@@ -405,10 +405,9 @@ ul[role='document'] + .flexRow {
     margin: auto;
     z-index: 2;
     position: relative;
-    background: #fff;
-    border: 1px solid #c3c4c7;
+    background: var(--givewp-shades-white);
     border-radius: var(--givewp-rounded-8);
-    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
     width: 35rem;
 
 
