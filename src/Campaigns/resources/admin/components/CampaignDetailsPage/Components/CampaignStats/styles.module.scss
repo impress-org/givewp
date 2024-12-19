@@ -1,9 +1,8 @@
 .dateRangeFilter {
-    padding: 1rem;
+    padding: var(--givewp-spacing-2);
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    gap: 1rem;
     margin-bottom: var(--givewp-spacing-2);
     background-color: var(--givewp-neutral-50);
     border-radius: var(--givewp-rounded-8);
@@ -18,10 +17,26 @@
     line-height: 1.43;
     border: 0;
     cursor: pointer;
+
+    &:hover {
+        background-color: var(--givewp-neutral-100);
+    }
+
+    &:first-child {
+        border-radius: var(--givewp-rounded-4) 0 0 var(--givewp-rounded-4);
+    }
+
+    &:last-child {
+       border-radius: 0 var(--givewp-rounded-4) var(--givewp-rounded-4) 0;
+    }
 }
 
 .dateRangeFilter .selectedDateRange {
     background-color: var(--givewp-shades-white);
+
+    &:hover {
+        background-color: var(--givewp-shades-white);
+    }
 }
 
 .statWidget {
