@@ -431,9 +431,6 @@ ul[role='document'] + .flexRow {
         }
     }
 
-    &.warning {
-    }
-
     &.danger {
         #confirm {
             background-color: var(--givewp-red-500);
@@ -479,8 +476,8 @@ $button-blue: rgba(8 120 176);
 #cancel,
 #confirm {
     flex-grow: 1;
-    border-radius: 4px;
-    padding: 16px 32px;
+    border-radius: var(--givewp-rounded-4);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
     font-size: 1rem;
     font-weight: 500;
     font-stretch: normal;
