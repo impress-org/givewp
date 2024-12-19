@@ -184,7 +184,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>Donation forms to be edited:</p>
+                <p>{__('  Below are the donation forms to be edited.', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -236,14 +236,14 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         ),
     },
     {
-        label: __('Move to Trash', 'give'),
+        label: __('Trash', 'give'),
         value: 'trash',
         type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
         action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
             <div>
-                <p>{__('Really trash the following donation forms?', 'give')}</p>
+                <p>{__('Are you sure you want to trash the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
