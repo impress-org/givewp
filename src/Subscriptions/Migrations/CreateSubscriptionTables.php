@@ -47,7 +47,7 @@ class CreateSubscriptionTables extends Migration
                     KEY `customer` (`customer_id`),
                     KEY `transaction` (`transaction_id`),
                     KEY `customer_and_status` (`customer_id`,`status`)
-                ) $charset_collate;
+                ) $charset_collate ENGINE=InnoDB;
             "
             );
 
@@ -61,7 +61,7 @@ class CreateSubscriptionTables extends Migration
                     PRIMARY KEY (`meta_id`),
                     KEY `subscription_id` (`subscription_id`),
                     KEY `meta_key` (`meta_key`(191))
-                ) $charset_collate;
+                ) $charset_collate ENGINE=InnoDB;
             "
             );
         } catch (DatabaseQueryException $exception) {

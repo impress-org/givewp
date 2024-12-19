@@ -48,7 +48,7 @@ class CreateEventTicketsTable extends Migration {
 			created_at DATETIME NOT NULL,
 			updated_at DATETIME NOT NULL,
 			PRIMARY KEY  (id)
-		) $charset";
+		) $charset ENGINE=InnoDB;";
 
         try {
             DB::delta( $sql );
