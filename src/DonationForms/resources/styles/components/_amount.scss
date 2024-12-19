@@ -88,6 +88,7 @@ $borderColor: #9A9A9A;
 
         &:focus-within {
             border-color: var(--givewp-primary-color);
+            outline: 1px solid var(--givewp-primary-color);
         }
     }
 
@@ -134,6 +135,7 @@ $borderColor: #9A9A9A;
             flex: 1;
             gap: var(--givewp-spacing-4);
             min-width: calc((100% - var(--givewp-spacing-2)) / 2);
+            outline: none;
 
             @media screen and (min-width: variables.$givewp-breakpoint-sm) {
                 min-width: calc((100% - var(--givewp-spacing-2) * 2) / 3);
@@ -143,9 +145,13 @@ $borderColor: #9A9A9A;
                 flex-basis: 100%;
                 padding-bottom: var(--givewp-spacing-2);
             }
-        ;
 
             .givewp-fields-amount__level {
+                &:focus {
+                    border-color: var(--givewp-primary-color);
+                    outline: 1px solid var(--givewp-primary-color);
+                }
+
                 &--description {
                     flex-basis: 110px;
 
@@ -264,11 +270,12 @@ $borderColor: #9A9A9A;
         }
 
         input[type="radio"] {
-            display: none;
+            position: absolute;
+            z-index: -999;
 
             &:focus {
-                box-shadow: none;
-                outline: none;
+                border-color: var(--givewp-primary-color);
+                outline: 1px solid var(--givewp-primary-color);
             }
         }
     }
