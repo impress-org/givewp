@@ -72,6 +72,8 @@ const GoalProgressChart = ({ value, goal }) => {
                         fontSize: '14px',
                         fontWeight: 400,
                         lineHeight: '20px',
+                        marginBottom: '4px',
+                        color: '1F2937',
                     }}>
                         {__('Goal')}
                     </div>
@@ -79,12 +81,14 @@ const GoalProgressChart = ({ value, goal }) => {
                         color: '#2D802F',
                         fontSize: '18px',
                         fontWeight: 600,
-                        lineHeight: '20px',
+                        marginBottom: '2px',
+                        lineHeight: '28px',
                     }}>{currency.format(goal)}</div>
                     <div style={{
                         fontSize: '12px',
                         fontWeight: 400,
                         lineHeight: '18px',
+                        color: '#4b5563',
                     }}>{__('Amount raised')}</div>
                 </div>
             </div>
