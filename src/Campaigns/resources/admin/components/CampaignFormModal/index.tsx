@@ -240,9 +240,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <label htmlFor="title">
                                 {__("What's the title of your campaign?", 'give')} {requiredAsterisk}
                             </label>
-                            <div className={styles.description}>
-                                {__("Give your campaign a title that tells donors what it's about.", 'give')}
-                            </div>
+                            <span>{__("Give your campaign a title that tells donors what it's about.", 'give')}</span>
                             <input
                                 type="text"
                                 {...register('title', {required: __('The campaign must have a title!', 'give')})}
@@ -258,9 +256,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </div>
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
-                            <div className={styles.description}>
-                                {__('Let your donors know the story behind your campaign.', 'give')}
-                            </div>
+                            <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
                             <textarea
                                 {...register('shortDescription')}
                                 rows={4}
@@ -272,9 +268,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </div>
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="image">{__('Add a cover image or video for your campaign.', 'give')}</label>
-                            <div className={styles.description}>
+                            <span>
                                 {__('Upload an image or video to represent and inspire your campaign.', 'give')}
-                            </div>
+                            </span>
                             <Upload
                                 id="givewp-campaigns-upload-cover-image"
                                 label={__('Cover', 'give')}
@@ -303,9 +299,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <label htmlFor="goalType">
                                 {__('How would you like to set your goal?', 'give')} {requiredAsterisk}
                             </label>
-                            <span className={styles.description}>
-                                {__('Set the goal your fundraising efforts will work toward.', 'give')}
-                            </span>
+                            <span>{__('Set the goal your fundraising efforts will work toward.', 'give')}</span>
                             <div className={styles.goalType}>
                                 <GoalTypeOption
                                     type={'amount'}
@@ -383,9 +377,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 <label htmlFor="title">
                                     {goalInputAttributes[selectedGoalType].label} {requiredAsterisk}
                                 </label>
-                                <span className={styles.description}>
-                                    {goalInputAttributes[selectedGoalType].description}
-                                </span>
+                                <span>{goalInputAttributes[selectedGoalType].description}</span>
                                 {selectedGoalType === 'amount' || selectedGoalType === 'amountFromSubscriptions' ? (
                                     <Currency
                                         name="goal"
