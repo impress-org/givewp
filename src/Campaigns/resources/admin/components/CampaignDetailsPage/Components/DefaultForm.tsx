@@ -13,7 +13,7 @@ const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
             flexDirection: 'column',
             gap: '24px',
             backgroundColor: 'white',
-            padding: '16px 12px 24px 24px',
+            padding: '16px 24px 24px 24px',
             borderRadius: '8px',
         }}>
             <div style={{
