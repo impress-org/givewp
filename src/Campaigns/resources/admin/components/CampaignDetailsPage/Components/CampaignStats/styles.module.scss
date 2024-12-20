@@ -50,6 +50,7 @@
     color: var(--givewp-neutral-700);
     font-weight: 600;
     border-radius: var(--givewp-rounded-8);
+    grid-column: span 1;
 }
 
 .statWidget header, .statWidget footer {
@@ -83,6 +84,7 @@
     background-color: var(--givewp-shades-white);
     padding: 20px;
     border-radius: var(--givewp-rounded-8);
+    grid-column: span 2;
 }
 
 .percentChangePill {
@@ -98,20 +100,31 @@
     border-radius: var(--givewp-rounded-8);
 }
 
-.column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+.mainGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--givewp-spacing-6);
+    column-gap: var(--givewp-spacing-4);
+}
+
+.nestedGrid {
+    grid-column: span 1;
+    display: grid;
     gap: var(--givewp-spacing-6);
 }
 
-.column:first-child {
-    flex: 2;
-}
+@media (max-width: 768px) {
+    .mainGrid {
+      grid-template-columns: 1fr;
+      gap: var(--givewp-spacing-3);
+    }
+  
+    .revenueWidget {
+      grid-column: span 1;
+    }
 
-.row {
-    display: flex;
-    flex-direction: row;
-    gap: var(--givewp-spacing-4);
+    .nestGrid {
+        grid-template-columns: 1fr;
+        gap: var(--givewp-spacing-3);
+    }
 }

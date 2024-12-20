@@ -55,20 +55,16 @@ const CampaignStats = () => {
     return (
         <>
             <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
-            <Row>
-                <Column>
-                    <Row>
-                        <StatWidget label={__('Amount raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
-                        <StatWidget label={__('Number of donations')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
-                    </Row>
-                    <RevenueWidget />
-                </Column>
-                <Column>
+            <div className={styles.mainGrid}>
+                    <StatWidget label={__('Amount raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
+                    <StatWidget label={__('Number of donations')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
                     <StatWidget label={__('Number of donors')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
+                    <RevenueWidget />
+                <div className={styles.nestedGrid}>
                     <GoalProgressWidget />
                     <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
-                </Column>
-            </Row>
+                </div>
+            </div>
         </>
     )
 }
@@ -173,17 +169,5 @@ const DateRangeFilters = ({options, onSelect, selected}) => {
     )
 }
 
-
-const Row = ({children}) => (
-    <div className={styles.row}>
-        {children}
-    </div>
-)
-
-const Column = ({children}) => (
-    <div className={styles.column}>
-        {children}
-    </div>
-)
 
 export default CampaignStats;
