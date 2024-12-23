@@ -92,6 +92,26 @@
     justify-content: flex-end;
 }
 
+ul[role='document'] + .flexRow,
+ul[role='document'] + .flexRow + .flexRow {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--givewp-spacing-2);
+    margin-bottom: var(--givewp-spacing-4);
+
+    select {
+        min-width: 100%;
+        height: 48px;
+        padding: 0 var(--givewp-spacing-4);
+        font-size: 1rem;
+    }
+}
+
+ul[role='document'] + .flexRow {
+    margin: var(--givewp-spacing-6) 0;
+}
+
 .justifyContentEnd {
     flex: 1;
     justify-content: flex-end;
@@ -146,7 +166,7 @@
 .addCampaignFormButton {
     $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
 
-    background-color: #E5E7EB;
+    background-color: var(--givewp-neutral-100);
     border: 1px solid #ddd;
     border-radius: 0.1875rem;
     box-shadow: $depth;
@@ -171,11 +191,7 @@
     }
 
     &:is(:hover, :active, :focus) {
-        color: #777;
-    }
-
-    &:hover {
-        filter: contrast(110%);
+        background-color: var(--givewp-neutral-200);
     }
 
     &:active {
@@ -333,6 +349,7 @@
     margin-bottom: 1rem;
 }
 
+
 .container,
 .overlay {
     position: fixed;
@@ -365,91 +382,116 @@
 }
 
 .overlay {
-    background-color: rgba(43, 46, 56, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 #modalTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 1.25rem;
-    font-weight: 700;
-    padding-inline: 1rem;
-}
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--givewp-neutral-900);
+    margin: 0;
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    border-top-left-radius: var(--givewp-rounded-8);
+    border-top-right-radius: var(--givewp-rounded-8);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);}
 
 .dialog {
     margin: auto;
     z-index: 2;
     position: relative;
-    background: #fff;
-    border: 1px solid #c3c4c7;
-    border-block-start-color: var(--give-primary-color);
-    border-block-start-width: 0.25rem;
-    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
-    max-width: 50vw;
-    min-width: 20rem;
+    background: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-8);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+    width: 35rem;
 
-    &.warning {
-        border-block-start-color: #dba617;
-    }
-
-    &.danger {
-        border-block-start-color: #d63638;
-    }
 
     & ul {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
         max-height: 40vh;
+        margin: 0;
         overflow-y: auto;
         overscroll-behavior-y: contain;
     }
 
     & li {
-        font-weight: 600;
+        font-weight: 500;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: var(--givewp-spacing-2);
+
+        span {
+            display: flex;
+            gap: var(--givewp-spacing-2);
+        }
     }
 
-    & li + li {
-        border-top: 1px solid rgba(196, 196, 196);
-        padding-top: 0.75rem;
+    &.danger {
+        #confirm {
+            background-color: var(--givewp-red-500);
+            border: 1px solid var(--givewp-red-500);
+
+            &:hover {
+                background-color: var(--givewp-red-400);
+            }
+        }
+    }
+}
+
+.modalContent {
+    padding: var(--givewp-spacing-6);
+    border-radius: 0 0 6px 6px;
+
+    p {
+        margin: 0 0 var(--givewp-spacing-3);
+        font-size: 1rem;
     }
 }
 
 .modalContent > * {
-    padding-inline: 1rem;
-    margin-block: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--givewp-neutral-700);
 }
 
 .gutter {
-    border-top: 1px solid #dfdfdf;
-    background: rgba(245 245 245);
-    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    column-gap: 1em;
+    justify-content: space-evenly;
+    gap: var(--givewp-spacing-6);
+    width: 100%;
+    border-bottom-left-radius: var(--givewp-rounded-8);
+    border-bottom-right-radius: var(--givewp-rounded-8);
     box-sizing: border-box !important;
-    padding-block: 1em;
-    padding-inline: 2rem;
+    padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
     overflow: hidden;
 }
 
-$button-blue: rgba(8 120 176);
-
 #cancel,
 #confirm {
-    border-radius: 3px;
-    padding-inline: 0.75em;
-    padding-block: 0.5em;
+    flex-grow: 1;
+    border-radius: var(--givewp-rounded-8);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
     transition: all 0.15s;
-    box-shadow: 0px 2px 0px #dddddd;
     cursor: pointer;
-
-    &:hover,
-    &:focus {
-        border-color: black;
-        background: white;
-        color: $button-blue;
-        box-shadow: none;
-    }
 
     &:active {
         border-color: rgba(170 170 170);
@@ -458,16 +500,26 @@ $button-blue: rgba(8 120 176);
 }
 
 #cancel {
-    border: 1px solid $button-blue;
-    color: $button-blue;
-    background: rgba(247 247 247);
+    background-color: inherit;
+    border: solid 1px var(--givewp-neutral-300);
+    color: var(--givewp-neutral-900);
+
+
+    &:hover {
+        background-color: var(--givewp-neutral-50);
+    }
 }
 
 #confirm {
-    border: 1px solid $button-blue;
-    background: $button-blue;
-    color: white;
+    background: #2271b1;
+    border: 1px solid #2271b1;
+    color: var(--givewp-shades-white);
+
+    &:hover {
+        background-color: #135e96;
+    }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
     .container {

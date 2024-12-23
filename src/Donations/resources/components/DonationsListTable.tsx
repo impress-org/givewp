@@ -64,7 +64,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donations?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
