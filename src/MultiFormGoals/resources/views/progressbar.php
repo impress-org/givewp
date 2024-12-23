@@ -3,7 +3,7 @@
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
  *
- * @unreleased Format the donation count
+ * @since 3.19.1 Format the donation count
  *
  * @var Give\MultiFormGoals\ProgressBar\Model $this
  */
