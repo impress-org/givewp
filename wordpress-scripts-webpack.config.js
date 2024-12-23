@@ -1,6 +1,7 @@
 /**
  * External Dependencies
  */
+const fs = require('fs');
 const path = require('path');
 
 /**
@@ -63,6 +64,7 @@ module.exports = {
         campaignEntity: srcPath('Campaigns/resources/entity.ts'),
         campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
+        ...getDynamicEntries(srcPath('Campaigns/Blocks'), 'Campaigns/Blocks/'),
     },
 };
 
@@ -74,4 +76,23 @@ module.exports = {
  */
 function srcPath(relativePath) {
     return path.resolve(process.cwd(), 'src', relativePath);
+}
+
+function getDynamicEntries(basePath, destinationPath = '') {
+    const entries = {};
+    const directories = fs.readdirSync(basePath, {withFileTypes: true});
+
+    directories.forEach((dir) => {
+        if (dir.isDirectory()) {
+            const blockPath = path.join(basePath, dir.name);
+            const indexPath = path.join(blockPath, 'index.ts');
+            const entryKey = dir.name.charAt(0).toLowerCase() + dir.name.slice(1);
+
+            if (fs.existsSync(indexPath)) {
+                entries[`${destinationPath}${entryKey}`] = indexPath;
+            }
+        }
+    });
+
+    return entries;
 }
