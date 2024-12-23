@@ -5,9 +5,10 @@ import './colors.scss';
 
 const root = document.getElementById('give-admin-donation-forms-root');
 
-createRoot(root).render(
-    <StrictMode>
-        <DonationFormsListTable />
-    </StrictMode>
-);
-
+if (!!root) {
+    createRoot(root).render(
+        <StrictMode>
+            <DonationFormsListTable />
+        </StrictMode>
+    );
+}

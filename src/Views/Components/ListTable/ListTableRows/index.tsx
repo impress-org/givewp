@@ -75,7 +75,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     return (
                         <TableCell key={column.id} heading={columns[0].id === column.id}>
                             {columnFilter.length > 0 ? (
-                                columnFilter[0].filter(item, column)
+                                columnFilter[0].filter(item, column, data)
                             ) : (
                                 <InterweaveSSR column={column} item={item} />
                             )}
