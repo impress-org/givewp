@@ -82,7 +82,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @unreleased Test all types of serialized data
+     * @since 3.19.3 Test all types of serialized data
      * @since 3.17.2
      */
     public function serializedDataProvider(): array
