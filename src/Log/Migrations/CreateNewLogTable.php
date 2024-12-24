@@ -57,7 +57,7 @@ class CreateNewLogTable extends Migration
 			KEY log_type (log_type),
 			KEY category (category),
 			KEY source (source)
-		) {$charset}";
+		) {$charset} ENGINE=InnoDB;";
 
         try {
             DB::delta($sql);
