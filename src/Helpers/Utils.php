@@ -130,9 +130,9 @@ class Utils
     }
 
     /**
-     * The regular expression attempts to capture the basic structure of a serialized array
-     * or object. This is more robust than the is_serialized() function but still not perfect.
+     * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
+     * @unreleased Support all types of serialized data instead of only objects and arrays
      * @since 3.17.2
      */
     public static function containsSerializedDataRegex($data): bool
@@ -141,7 +141,15 @@ class Utils
             return false;
         }
 
-        $pattern = '/(a:\d+:\{.*\})|(O:\d+:"[^"]+":\{.*\})/';
+        $pattern = '/
+        (a:\d+:\{.*\}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
+        (O:\d+:"[^"]+":\{.*\}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
+        (s:\d+:"[^"]*";) |       # Matches strings (e.g: s:5:"hello";)
+        (i:\d+;) |               # Matches integers (e.g: i:42;)
+        (b:[01];) |              # Matches booleans (e.g: b:1; or b:0;)
+        (d:\d+(\.\d+)?;) |       # Matches floats (e.g: d:3.14;)
+        (N;)                     # Matches NULL (e.g: N;)
+        /x';
 
         return preg_match($pattern, $data) === 1;
     }

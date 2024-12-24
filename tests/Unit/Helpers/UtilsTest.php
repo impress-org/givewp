@@ -82,6 +82,7 @@ class UtilsTest extends TestCase
     }
 
     /**
+     * @unreleased Test all types of serialized data
      * @since 3.17.2
      */
     public function serializedDataProvider(): array
@@ -90,15 +91,18 @@ class UtilsTest extends TestCase
             [serialize('bar'), true],
             ['\\' . serialize('backslash-bypass'), true],
             ['\\\\' . serialize('double-backslash-bypass'), true],
-            [
-                // String with serialized data hidden in the middle of the content
-                'Lorem ipsum dolor sit amet, {a:2:{i:0;s:5:\"hello\";i:1;s:5:\"world\";}} consectetur adipiscing elit.',
-                true,
-            ],
             ['foo', false],
             [serialize('qux'), true],
             ['bar', false],
             ['foo bar', false],
+            // Strings with serialized data hidden in the middle of the content
+            ['Lorem ipsum a:2:{i:0;s:5:"hello";i:1;i:42;} dolor sit amet', true], // array
+            ['Lorem ipsum O:8:"stdClass":1:{s:4:"name";s:5:"James";} dolor sit amet', true], // object
+            ['Lorem ipsum s:5:"hello"; dolor sit amet', true], // string
+            ['Lorem ipsum i:42; dolor sit amet', true], // integer
+            ['Lorem ipsum b:1; dolor sit amet', true], // boolean
+            ['Lorem ipsum d:3.14; dolor sit amet', true], // float
+            ['Lorem ipsum N; dolor sit amet', true], // NULL
         ];
     }
 }
