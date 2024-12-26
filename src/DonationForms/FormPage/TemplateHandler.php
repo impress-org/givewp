@@ -27,11 +27,12 @@ class TemplateHandler
     }
 
     /**
+     * @unreleased Check if is a single page
      * @since 3.0.0
      */
     public function handle($template)
     {
-        return $this->isNextGenForm()
+        return is_single() && $this->isNextGenForm()
             ? $this->formPageTemplatePath
             : $template;
     }
