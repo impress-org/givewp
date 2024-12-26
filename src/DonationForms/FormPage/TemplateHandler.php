@@ -27,12 +27,16 @@ class TemplateHandler
     }
 
     /**
-     * @unreleased Check if is a single page
+     * @unreleased Add earlier return for archive pages
      * @since 3.0.0
      */
     public function handle($template)
     {
-        return is_single() && $this->isNextGenForm()
+        if (is_archive()) {
+            return $template;
+        }
+
+        return $this->isNextGenForm()
             ? $this->formPageTemplatePath
             : $template;
     }
