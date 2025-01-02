@@ -99,25 +99,22 @@ class WebhookEvents
      * @unreleased
      *
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
-     * @param string $status       ActionScheduler_Store::STATUS_COMPLETE, ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_FAILED, ActionScheduler_Store::STATUS_CANCELED
      *
      * @return array
      */
-    public function getAll(string $returnFormat = OBJECT, string $status = ''): array
+    public function getAll(string $returnFormat = OBJECT): array
     {
-        return AsBackgroundJobs::getActionsByGroup($this->getGroup(), $status);
+        return AsBackgroundJobs::getActionsByGroup($this->getGroup());
     }
 
     /**
      * @unreleased
      *
-     * @param string $status ActionScheduler_Store::STATUS_COMPLETE, ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_FAILED, ActionScheduler_Store::STATUS_CANCELED
-     *
      * @return int Total deleted webhook events.
      */
-    public function deleteAll(string $status = ''): int
+    public function deleteAll(): int
     {
-        return AsBackgroundJobs::deleteActionsByGroup($this->getGroup(), $status);
+        return AsBackgroundJobs::deleteActionsByGroup($this->getGroup());
     }
 
     /**
