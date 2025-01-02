@@ -20,7 +20,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function __construct(PaymentGateway $gateway)
+    public function setGateway(PaymentGateway $gateway)
     {
         $this->gateway = $gateway;
     }
@@ -36,7 +36,7 @@ class WebhookEvents
         string $message = '',
         $skipRecurringDonations = false
     ): int {
-        $hook = "givewp_{$this->gateway::id()}_webhook_event_donation_{$status->getValue()}";
+        $hook = "givewp_{$this->gateway::id()}_webhook_event_donation_status_{$status->getValue()}";
         $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
         $group = $this->getGroup();
 
@@ -54,7 +54,7 @@ class WebhookEvents
         string $message = '',
         bool $initialDonationShouldBeCompleted = false
     ): int {
-        $hook = "givewp_{$this->gateway::id()}_webhook_event_subscription_{$status->getValue()}";
+        $hook = "givewp_{$this->gateway::id()}_webhook_event_subscription_status_{$status->getValue()}";
         $args = [$gatewaySubscriptionId, $message, $initialDonationShouldBeCompleted];
         $group = $this->getGroup();
 
@@ -125,6 +125,6 @@ class WebhookEvents
      */
     private function getGroup(): string
     {
-        return 'give-' . $this->gateway::id();
+        return 'givewp-payment-gateway-' . $this->gateway::id();
     }
 }

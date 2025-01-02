@@ -7,6 +7,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
+use Give\Framework\PaymentGateways\Webhooks\WebhookEvents;
 
 /**
  * @since 2.18.0
@@ -114,6 +115,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      * Register Gateway with Service Container as Singleton
      * with option of adding Subscription Module through filter "give_gateway_{$gatewayId}_subscription_module"
      *
+     * @unreleased Add the webhookEvents parameter to the gateway class
      * @since 2.18.0
      *
      * @return void
@@ -123,7 +125,8 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         give()->singleton($gatewayClass, function (Container $container) use ($gatewayClass, $gatewayId) {
             $subscriptionModule = apply_filters("givewp_gateway_{$gatewayId}_subscription_module", null);
 
-            return new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
+            return new $gatewayClass(new WebhookEvents(),
+                $subscriptionModule ? $container->make($subscriptionModule) : null);
         });
     }
 }

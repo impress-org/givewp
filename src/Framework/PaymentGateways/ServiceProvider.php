@@ -12,8 +12,17 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationPreapproval;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationProcessing;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationRefunded;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationRevoked;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionActive;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCancelled;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCompleted;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionExpired;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionFailing;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionFirstDonationCompleted;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionRenewalDonationCreated;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionSuspended;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @unreleased
@@ -36,6 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
         $registeredPaymentGatewayIds = give()->gateways->getPaymentGateways();
         foreach ($registeredPaymentGatewayIds as $gatewayId) {
             $this->registerDonationEventHandlers($gatewayId);
+            $this->registerSubscriptionEventHandlers($gatewayId);
         }
     }
 
@@ -87,7 +97,85 @@ class ServiceProvider implements ServiceProviderInterface
     ) {
         Hooks::addAction(
             sprintf(
-                'givewp_%s_webhook_event_donation_%s',
+                'givewp_%s_webhook_event_donation_status_%s',
+                $gatewayId,
+                $status->getValue()
+            ),
+            $eventHandlerClass
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerSubscriptionEventHandlers(string $gatewayId)
+    {
+        $this->addSubscriptionFirstDonationEventHandler($gatewayId);
+        $this->addSubscriptionRenewalDonationEventHandler($gatewayId);
+
+        foreach (SubscriptionStatus::values() as $status) {
+            switch ($status) {
+                case $status->isActive():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionActive::class);
+                    break;
+                case $status->isCancelled():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionCancelled::class);
+                    break;
+                case $status->isCompleted():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionCompleted::class);
+                    break;
+                case $status->isExpired():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionExpired::class);
+                    break;
+                case $status->isFailing():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionFailing::class);
+                    break;
+                case $status->isSuspended():
+                    $this->addSubscriptionStatusEventHandler($gatewayId, $status, SubscriptionSuspended::class);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function addSubscriptionFirstDonationEventHandler(string $gatewayId)
+    {
+        Hooks::addAction(
+            sprintf(
+                'givewp_%s_webhook_event_subscription_first_donation',
+                $gatewayId
+            ),
+            SubscriptionFirstDonationCompleted::class
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function addSubscriptionRenewalDonationEventHandler(string $gatewayId)
+    {
+        Hooks::addAction(
+            sprintf(
+                'givewp_%s_webhook_event_subscription_renewal_donation',
+                $gatewayId
+            ),
+            SubscriptionRenewalDonationCreated::class
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function addSubscriptionStatusEventHandler(
+        string $gatewayId,
+        SubscriptionStatus $status,
+        string $eventHandlerClass
+    ) {
+        Hooks::addAction(
+            sprintf(
+                'givewp_%s_webhook_event_subscription_status_%s',
                 $gatewayId,
                 $status->getValue()
             ),

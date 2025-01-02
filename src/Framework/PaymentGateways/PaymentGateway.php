@@ -50,20 +50,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $webhookEvents;
 
     /**
-     * @unreleased Set the webhookEvents property
+     * @unreleased Add the webhookEvents parameter
+     *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
      * @param  SubscriptionModule|null  $subscriptionModule
      */
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    public function __construct(WebhookEvents $webhookEvents, SubscriptionModule $subscriptionModule = null)
     {
+        $webhookEvents->setGateway($this);
+        $this->webhookEvents = $webhookEvents;
+
         if ($subscriptionModule !== null) {
             $subscriptionModule->setGateway($this);
         }
 
         $this->subscriptionModule = $subscriptionModule;
-        $this->webhookEvents = new WebhookEvents($this);
     }
 
     /**
