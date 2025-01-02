@@ -65,7 +65,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
-        $this->webhookEvents = new WebhookEvents();
+        $this->webhookEvents = new WebhookEvents($this);
     }
 
     /**

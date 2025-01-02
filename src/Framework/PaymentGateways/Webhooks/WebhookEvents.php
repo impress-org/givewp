@@ -20,7 +20,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function setGateway(PaymentGateway $gateway)
+    public function __construct(PaymentGateway $gateway)
     {
         $this->gateway = $gateway;
     }
