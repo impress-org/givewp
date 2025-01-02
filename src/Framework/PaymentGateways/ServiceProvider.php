@@ -29,13 +29,18 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->registerWebhookEventHandlers();
+    }
+
+    private function registerWebhookEventHandlers()
+    {
         add_action('give_init', function () {
             $registeredPaymentGatewayIds = give()->gateways->getPaymentGateways();
             foreach ($registeredPaymentGatewayIds as $gatewayId) {
-                $this->registerDonationStatusEventHandlers($gatewayId);
-                $this->registerSubscriptionStatusEventHandlers($gatewayId);
-                $this->registerSubscriptionFirstDonationEventHandler($gatewayId);
-                $this->registerSubscriptionRenewalDonationEventHandler($gatewayId);
+                $this->addDonationStatusEventHandlers($gatewayId);
+                $this->addSubscriptionStatusEventHandlers($gatewayId);
+                $this->addSubscriptionFirstDonationEventHandler($gatewayId);
+                $this->addSubscriptionRenewalDonationEventHandler($gatewayId);
             }
         }, 999);
     }
@@ -43,7 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerDonationStatusEventHandlers(string $gatewayId)
+    private function addDonationStatusEventHandlers(string $gatewayId)
     {
         foreach (DonationStatus::values() as $status) {
             if ($eventHandlerClass = (new GetEventHandlerClassByDonationStatus())($status)) {
@@ -62,7 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerSubscriptionStatusEventHandlers(string $gatewayId)
+    private function addSubscriptionStatusEventHandlers(string $gatewayId)
     {
         foreach (SubscriptionStatus::values() as $status) {
             if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {
@@ -81,7 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerSubscriptionFirstDonationEventHandler(string $gatewayId)
+    private function addSubscriptionFirstDonationEventHandler(string $gatewayId)
     {
         Hooks::addAction(
             sprintf(
@@ -95,7 +100,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerSubscriptionRenewalDonationEventHandler(string $gatewayId)
+    private function addSubscriptionRenewalDonationEventHandler(string $gatewayId)
     {
         Hooks::addAction(
             sprintf(
