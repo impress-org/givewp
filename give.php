@@ -244,6 +244,7 @@ final class Give
         Give\DonationSpam\ServiceProvider::class,
         Give\Settings\ServiceProvider::class,
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
+        Give\Framework\PaymentGateways\ServiceProvider::class,
     ];
 
     /**

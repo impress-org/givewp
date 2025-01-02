@@ -42,11 +42,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        $registeredPaymentGatewayIds = give()->gateways->getPaymentGateways();
-        foreach ($registeredPaymentGatewayIds as $gatewayId) {
-            $this->registerDonationEventHandlers($gatewayId);
-            $this->registerSubscriptionEventHandlers($gatewayId);
-        }
+        add_action('give_init', function () {
+            $registeredPaymentGatewayIds = give()->gateways->getPaymentGateways();
+            foreach ($registeredPaymentGatewayIds as $gatewayId) {
+                $this->registerDonationEventHandlers($gatewayId);
+                $this->registerSubscriptionEventHandlers($gatewayId);
+            }
+        }, 999);
     }
 
     /**
