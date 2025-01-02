@@ -53,11 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
         foreach (DonationStatus::values() as $status) {
             if ($eventHandlerClass = (new GetEventHandlerClassByDonationStatus())($status)) {
                 Hooks::addAction(
-                    sprintf(
-                        'givewp_%s_webhook_event_donation_status_%s',
-                        $gatewayId,
-                        $status->getValue()
-                    ),
+                    sprintf('givewp_%s_webhook_event_donation_status_%s', $gatewayId, $status->getValue()),
                     $eventHandlerClass
                 );
             }
@@ -72,11 +68,7 @@ class ServiceProvider implements ServiceProviderInterface
         foreach (SubscriptionStatus::values() as $status) {
             if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {
                 Hooks::addAction(
-                    sprintf(
-                        'givewp_%s_webhook_event_subscription_status_%s',
-                        $gatewayId,
-                        $status->getValue()
-                    ),
+                    sprintf('givewp_%s_webhook_event_subscription_status_%s', $gatewayId, $status->getValue()),
                     $eventHandlerClass
                 );
             }
@@ -89,10 +81,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function addSubscriptionFirstDonationEventHandler(string $gatewayId)
     {
         Hooks::addAction(
-            sprintf(
-                'givewp_%s_webhook_event_subscription_first_donation',
-                $gatewayId
-            ),
+            sprintf('givewp_%s_webhook_event_subscription_first_donation', $gatewayId),
             SubscriptionFirstDonationCompleted::class
         );
     }
@@ -103,10 +92,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function addSubscriptionRenewalDonationEventHandler(string $gatewayId)
     {
         Hooks::addAction(
-            sprintf(
-                'givewp_%s_webhook_event_subscription_renewal_donation',
-                $gatewayId
-            ),
+            sprintf('givewp_%s_webhook_event_subscription_renewal_donation', $gatewayId),
             SubscriptionRenewalDonationCreated::class
         );
     }
