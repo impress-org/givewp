@@ -7,6 +7,8 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCancelled;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCompleted;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionExpired;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionFailing;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionPaused;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionPending;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionSuspended;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -31,6 +33,10 @@ class GetEventHandlerClassBySubscriptionStatus
                 return SubscriptionExpired::class;
             case $status->isFailing():
                 return SubscriptionFailing::class;
+            case $status->isPaused():
+                return SubscriptionPaused::class;
+            case $status->isPending():
+                return SubscriptionPending::class;
             case $status->isSuspended():
                 return SubscriptionSuspended::class;
             default:

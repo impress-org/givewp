@@ -41,6 +41,7 @@ class UpdateSubscriptionStatus
 
 
     /**
+     * @unreleased Add support for PAUSED and PENDING statuses
      * @since 3.6.0
      */
     protected function getMessageFromStatus(SubscriptionStatus $status): string
@@ -62,6 +63,12 @@ class UpdateSubscriptionStatus
                 break;
             case ($status->isFailing()):
                 $message = __('Subscription Failing.', 'give');
+                break;
+            case ($status->isPaused()):
+                $message = __('Subscription Paused.', 'give');
+                break;
+            case ($status->isPending()):
+                $message = __('Subscription Pending.', 'give');
                 break;
             case ($status->isSuspended()):
                 $message = __('Subscription Suspended.', 'give');

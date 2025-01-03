@@ -8,6 +8,8 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCancelled;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionCompleted;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionExpired;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionFailing;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionPaused;
+use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionPending;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionSuspended;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
@@ -39,6 +41,12 @@ class GetEventHandlerClassBySubscriptionStatusTest extends TestCase
                         break;
                     case $status->isFailing():
                         $this->assertEquals(SubscriptionFailing::class, $eventHandlerClass);
+                        break;
+                    case $status->isPaused():
+                        $this->assertEquals(SubscriptionPaused::class, $eventHandlerClass);
+                        break;
+                    case $status->isPending():
+                        $this->assertEquals(SubscriptionPending::class, $eventHandlerClass);
                         break;
                     case $status->isSuspended():
                         $this->assertEquals(SubscriptionSuspended::class, $eventHandlerClass);
