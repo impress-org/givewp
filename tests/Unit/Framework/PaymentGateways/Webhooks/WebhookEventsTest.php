@@ -5,6 +5,7 @@ namespace Unit\Framework\PaymentGateways\Webhooks;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\GetEventHandlerClassByDonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\GetEventHandlerClassBySubscriptionStatus;
+use Give\Framework\PaymentGateways\Webhooks\WebhookEvents;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
@@ -23,15 +24,15 @@ class WebhookEventsTest extends TestCase
     public function testSetDonationStatus()
     {
         foreach (DonationStatus::values() as $status) {
-            // Ignore status that don't have event handler classes
+            // Ignore deprecated status that don't have event handler classes
             if ( ! (new GetEventHandlerClassByDonationStatus())($status)) {
                 continue;
             }
 
-            TestGateway::webhookEvents()->deleteAll();
-            TestGateway::webhookEvents()->setDonationStatus($status, '123456');
-
-            $events = TestGateway::webhookEvents()->getAll();
+            $webhookEvents = new WebhookEvents(give(TestGateway::class));
+            $webhookEvents->deleteAll();
+            $webhookEvents->setDonationStatus($status, '123456');
+            $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
@@ -47,15 +48,15 @@ class WebhookEventsTest extends TestCase
     public function testSetSubscriptionStatus()
     {
         foreach (SubscriptionStatus::values() as $status) {
-            // Ignore status that don't have event handler classes
+            // Ignore deprecated status that don't have event handler classes
             if ( ! (new GetEventHandlerClassBySubscriptionStatus())($status)) {
                 continue;
             }
 
-            TestGateway::webhookEvents()->deleteAll();
-            TestGateway::webhookEvents()->setSubscriptionStatus($status, '123456');
-
-            $events = TestGateway::webhookEvents()->getAll();
+            $webhookEvents = new WebhookEvents(give(TestGateway::class));
+            $webhookEvents->deleteAll();
+            $webhookEvents->setSubscriptionStatus($status, '123456');
+            $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
@@ -70,10 +71,10 @@ class WebhookEventsTest extends TestCase
      */
     public function testSetSubscriptionFirstDonation()
     {
-        TestGateway::webhookEvents()->deleteAll();
-        TestGateway::webhookEvents()->setSubscriptionFirstDonation('123456');
-
-        $events = TestGateway::webhookEvents()->getAll();
+        $webhookEvents = new WebhookEvents(give(TestGateway::class));
+        $webhookEvents->deleteAll();
+        $webhookEvents->setSubscriptionFirstDonation('123456');
+        $events = $webhookEvents->getAll();
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -87,10 +88,10 @@ class WebhookEventsTest extends TestCase
      */
     public function testSetSubscriptionRenewalDonation()
     {
-        TestGateway::webhookEvents()->deleteAll();
-        TestGateway::webhookEvents()->setSubscriptionRenewalDonation('abc', '123456');
-
-        $events = TestGateway::webhookEvents()->getAll();
+        $webhookEvents = new WebhookEvents(give(TestGateway::class));
+        $webhookEvents->deleteAll();
+        $webhookEvents->setSubscriptionRenewalDonation('abc', '123456');
+        $events = $webhookEvents->getAll();
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
