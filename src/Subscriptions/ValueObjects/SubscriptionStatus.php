@@ -12,8 +12,8 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static SubscriptionStatus ACTIVE()
  * @method static SubscriptionStatus EXPIRED()
  * @method static SubscriptionStatus COMPLETED()
- * @method static SubscriptionStatus REFUNDED()
- * @method static SubscriptionStatus ABANDONED()
+ * @method static SubscriptionStatus REFUNDED() @deprecated Do not use this. Use SubscriptionStatus::CANCELLED() or SubscriptionStatus::SUSPENDED() instead.
+ * @method static SubscriptionStatus ABANDONED() @deprecated Do not use this. Use SubscriptionStatus::CANCELLED() instead.
  * @method static SubscriptionStatus FAILING()
  * @method static SubscriptionStatus CANCELLED()
  * @method static SubscriptionStatus SUSPENDED()
@@ -22,8 +22,8 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isActive()
  * @method bool isExpired()
  * @method bool isCompleted()
- * @method bool isRefunded()
- * @method bool isAbandoned()
+ * @method bool isRefunded() @deprecated Do not use this. Instead, use the CANCELLED or SUSPENDED statuses.
+ * @method bool isAbandoned() @deprecated Do not use this. Instead, use the CANCELLED status.
  * @method bool isFailing()
  * @method bool isCancelled()
  * @method bool isSuspended()
@@ -34,12 +34,20 @@ class SubscriptionStatus extends Enum {
     const ACTIVE = 'active';
     const EXPIRED = 'expired';
     const COMPLETED = 'completed';
-    const REFUNDED = 'refunded';
     const FAILING = 'failing';
     const CANCELLED = 'cancelled';
-    const ABANDONED = 'abandoned';
     const SUSPENDED = 'suspended';
     const PAUSED = 'paused';
+
+    /**
+     * @deprecated Do not use this. Use SubscriptionStatus::CANCELLED or SubscriptionStatus::SUSPENDED instead.
+     */
+    const REFUNDED = 'refunded';
+
+    /**
+     * @deprecated Do not use this. Use SubscriptionStatus::CANCELLED instead.
+     */
+    const ABANDONED = 'abandoned';
 
     /**
      * @since 3.17.0 Added a new "paused" status

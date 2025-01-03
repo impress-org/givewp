@@ -14,6 +14,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactio
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
+use Give\Framework\PaymentGateways\Webhooks\WebhookEvents;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
@@ -43,6 +44,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $subscriptionModule;
 
     /**
+     * @unreleased
+     *
+     * @var WebhookEvents $webhookEvents
+     */
+    public $webhookEvents;
+
+    /**
+     * @unreleased Add the webhookEvents property
+     *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
@@ -55,6 +65,17 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+        $this->webhookEvents = new WebhookEvents($this::id());
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function webhookEvents(): WebhookEvents
+    {
+        $instance = new static();
+
+        return $instance->webhookEvents;
     }
 
     /**
