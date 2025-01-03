@@ -29,14 +29,15 @@ class WebhookEventsTest extends TestCase
                 continue;
             }
 
-            $webhookEvents = new WebhookEvents(give(TestGateway::class));
+            $gatewayId = TestGateway::id();
+            $webhookEvents = new WebhookEvents($gatewayId);
             $webhookEvents->deleteAll();
             $webhookEvents->setDonationStatus($status, '123456');
             $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
-                sprintf('givewp_%s_webhook_event_donation_status_%s', TestGateway::id(), $status->getValue()),
+                sprintf('givewp_%s_webhook_event_donation_status_%s', $gatewayId, $status->getValue()),
                 current($events)->get_hook()
             );
         }
@@ -53,14 +54,15 @@ class WebhookEventsTest extends TestCase
                 continue;
             }
 
-            $webhookEvents = new WebhookEvents(give(TestGateway::class));
+            $gatewayId = TestGateway::id();
+            $webhookEvents = new WebhookEvents($gatewayId);
             $webhookEvents->deleteAll();
             $webhookEvents->setSubscriptionStatus($status, '123456');
             $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
-                sprintf('givewp_%s_webhook_event_subscription_status_%s', TestGateway::id(), $status->getValue()),
+                sprintf('givewp_%s_webhook_event_subscription_status_%s', $gatewayId, $status->getValue()),
                 current($events)->get_hook()
             );
         }
@@ -71,14 +73,15 @@ class WebhookEventsTest extends TestCase
      */
     public function testSetSubscriptionFirstDonation()
     {
-        $webhookEvents = new WebhookEvents(give(TestGateway::class));
+        $gatewayId = TestGateway::id();
+        $webhookEvents = new WebhookEvents($gatewayId);
         $webhookEvents->deleteAll();
         $webhookEvents->setSubscriptionFirstDonation('123456');
         $events = $webhookEvents->getAll();
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
-            sprintf('givewp_%s_webhook_event_subscription_first_donation', TestGateway::id()),
+            sprintf('givewp_%s_webhook_event_subscription_first_donation', $gatewayId),
             current($events)->get_hook()
         );
     }
@@ -88,14 +91,15 @@ class WebhookEventsTest extends TestCase
      */
     public function testSetSubscriptionRenewalDonation()
     {
-        $webhookEvents = new WebhookEvents(give(TestGateway::class));
+        $gatewayId = TestGateway::id();
+        $webhookEvents = new WebhookEvents($gatewayId);
         $webhookEvents->deleteAll();
         $webhookEvents->setSubscriptionRenewalDonation('abc', '123456');
         $events = $webhookEvents->getAll();
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
-            sprintf('givewp_%s_webhook_event_subscription_renewal_donation', TestGateway::id()),
+            sprintf('givewp_%s_webhook_event_subscription_renewal_donation', $gatewayId),
             current($events)->get_hook()
         );
     }

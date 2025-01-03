@@ -3,7 +3,6 @@
 namespace Give\Framework\PaymentGateways\Webhooks;
 
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -13,16 +12,16 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class WebhookEvents
 {
     /**
-     * @var PaymentGateway
+     * @var string
      */
-    protected $gateway;
+    protected $gatewayId;
 
     /**
      * @unreleased
      */
-    public function __construct(PaymentGateway $gateway)
+    public function __construct(string $gatewayId)
     {
-        $this->gateway = $gateway;
+        $this->gatewayId = $gatewayId;
     }
 
     /**
@@ -36,7 +35,7 @@ class WebhookEvents
         string $message = '',
         $skipRecurringDonations = false
     ): int {
-        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gateway::id(), $status->getValue());
+        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
         $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
         $group = $this->getGroup();
 
@@ -54,7 +53,7 @@ class WebhookEvents
         string $message = '',
         bool $initialDonationShouldBeCompleted = false
     ): int {
-        $hook = sprintf('givewp_%s_webhook_event_subscription_status_%s', $this->gateway::id(), $status->getValue());
+        $hook = sprintf('givewp_%s_webhook_event_subscription_status_%s', $this->gatewayId, $status->getValue());
         $args = [$gatewaySubscriptionId, $message, $initialDonationShouldBeCompleted];
         $group = $this->getGroup();
 
@@ -71,7 +70,7 @@ class WebhookEvents
         string $message = '',
         bool $setSubscriptionActive = true
     ): int {
-        $hook = sprintf('givewp_%s_webhook_event_subscription_first_donation', $this->gateway::id());
+        $hook = sprintf('givewp_%s_webhook_event_subscription_first_donation', $this->gatewayId);
         $args = [$gatewayTransactionId, $message, $setSubscriptionActive];
         $group = $this->getGroup();
 
@@ -88,7 +87,7 @@ class WebhookEvents
         string $gatewayTransactionId,
         string $message = ''
     ): int {
-        $hook = sprintf('givewp_%s_webhook_event_subscription_renewal_donation', $this->gateway::id());
+        $hook = sprintf('givewp_%s_webhook_event_subscription_renewal_donation', $this->gatewayId);
         $args = [$gatewaySubscriptionId, $gatewayTransactionId, $message];
         $group = $this->getGroup();
 
@@ -104,7 +103,7 @@ class WebhookEvents
      */
     public function getAll(string $returnFormat = OBJECT): array
     {
-        return AsBackgroundJobs::getActionsByGroup($this->getGroup());
+        return AsBackgroundJobs::getActionsByGroup($this->getGroup(), $returnFormat);
     }
 
     /**
@@ -122,6 +121,6 @@ class WebhookEvents
      */
     private function getGroup(): string
     {
-        return 'givewp-payment-gateway-' . $this->gateway::id();
+        return 'givewp-payment-gateway-' . $this->gatewayId;
     }
 }
