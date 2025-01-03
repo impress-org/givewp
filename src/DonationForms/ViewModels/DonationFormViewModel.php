@@ -278,7 +278,7 @@ class DonationFormViewModel
         endif; ?>
 
         <?php
-        $classNames = [ 'givewp-donation-form', "givewp-donation-form-design--{$this->designId()}" ];
+        $classNames = ['givewp-donation-form', "givewp-donation-form-design--{$this->designId()}"];
 
         if ($this->previewMode) {
             $classNames[] = 'givewp-donation-form--preview';
