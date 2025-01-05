@@ -142,9 +142,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
                             <label htmlFor="title">
                                 {__('Select your destination campaign', 'give')} {requiredAsterisk}
                             </label>
-                            <span className={styles.description}>
-                                {__('All selected campaigns will be merged into this campaign.', 'give')}
-                            </span>
+                            <span>{__('All selected campaigns will be merged into this campaign.', 'give')}</span>
                             <select {...register('destinationCampaignId', {valueAsNumber: true})} defaultValue="">
                                 <option value="" disabled hidden>
                                     {__('Choose from selected campaigns', 'give')}

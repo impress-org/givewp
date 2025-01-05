@@ -54,8 +54,9 @@ class MigrationController
 
                 // Associate upgraded form to a campaign
                 $campaignRepository = give(CampaignRepository::class);
-                $campaign = $campaignRepository->getByFormId($payload->formV2->id);
-                $campaignRepository->addCampaignForm($campaign, $payload->formV3->id);
+                if ($campaign = $campaignRepository->getByFormId($payload->formV2->id)) {
+                    $campaignRepository->addCampaignForm($campaign, $payload->formV3->id);
+                }
 
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
