@@ -2,6 +2,8 @@ import {__} from '@wordpress/i18n';
 import Chart from "react-apexcharts";
 import React from "react";
 
+import styles from "./styles.module.scss"
+
 const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -10,22 +12,8 @@ const currency = new Intl.NumberFormat('en-US', {
 const GoalProgressChart = ({ value, goal }) => {
     const percentage: number = Math.abs((value / goal) * 100);
     return (
-        <>
-            <div style={{
-                display: 'flex',
-                gap: '20px',
-                alignItems: 'center',
-            }}>
-                <div style={{
-                    /**
-                     * The size of the chart is relative to the container.
-                     * To get close to the design,
-                     *  the size is balances at flex 3/2
-                     *  and the margins use negative values to control padding
-                     */
-                    flex: 3,
-                    margin: '0 -50px',
-                }}>
+            <div className={styles.goalProgressChart}>
+                <div className={styles.chartContainer}>
                     <Chart
                         options={{
                             chart: {
@@ -67,32 +55,12 @@ const GoalProgressChart = ({ value, goal }) => {
                         type="radialBar"
                     />
                 </div>
-                <div style={{ flex: 2 }}>
-                    <div style={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '20px',
-                        marginBottom: '4px',
-                        color: '1F2937',
-                    }}>
-                        {__('Goal')}
-                    </div>
-                    <div style={{
-                        color: '#2D802F',
-                        fontSize: '18px',
-                        fontWeight: 600,
-                        marginBottom: '2px',
-                        lineHeight: '28px',
-                    }}>{currency.format(goal)}</div>
-                    <div style={{
-                        fontSize: '12px',
-                        fontWeight: 400,
-                        lineHeight: '18px',
-                        color: '#4b5563',
-                    }}>{__('Amount raised')}</div>
+                <div className={styles.goalDetails}>
+                    <div className={styles.goal}>{__('Goal')}</div>
+                    <div className={styles.amount}>{currency.format(goal)}</div>
+                    <div className={styles.goalType}>{__('Amount raised')}</div>
                 </div>
             </div>
-        </>
     )
 }
 
