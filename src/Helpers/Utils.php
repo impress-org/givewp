@@ -130,6 +130,45 @@ class Utils
     }
 
     /**
+     * @unreleased
+     */
+    public static function recursiveUrlDecode($data)
+    {
+        $decoded = urldecode($data);
+
+        return $decoded === $data ? $data : self::recursiveUrlDecode($decoded);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function recursiveBase64Decode($data)
+    {
+        $decodedData = base64_decode($data);
+        if ($decodedData !== false && base64_encode($decodedData) === $data) {
+            // If the decoded string is a valid Base64 string, decode again
+            return self::recursiveBase64Decode($decodedData);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function recursiveHexDecode($data)
+    {
+        $decodedData = hex2bin($data);
+        if ($decodedData !== false && bin2hex($decodedData) === $data) {
+            // If the decoded string is a valid Hex string, decode again
+            return self::recursiveHexDecode($decodedData);
+        }
+
+        return $data;
+    }
+
+
+    /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
      * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
@@ -140,6 +179,12 @@ class Utils
         if ( ! is_string($data)) {
             return false;
         }
+
+        $data = self::recursiveUrlDecode($data);
+        $data = self::recursiveBase64Decode($data);
+        $data = self::recursiveHexDecode($data);
+
+        $data = preg_replace('/[^a-zA-Z0-9:{};"\'\.\[\]\(\),]/', '', $data);
 
         $pattern = '/
         (a:\d+:\{.*\}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
