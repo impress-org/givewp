@@ -265,7 +265,7 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
  * Add support to get all payment meta.
  * Note: only use for internal purpose
  *
- * @unreleased change $donor_data['address'] to array instead of false
+ * @since 3.19.0 change $donor_data['address'] to array instead of false
  * @since 2.0
  *
  * @param $check
