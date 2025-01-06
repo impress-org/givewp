@@ -21,11 +21,11 @@ declare const window: {
 const pluck = (array: any[], property: string) => array.map(element => element[property])
 
 const filterOptions = [
-    { label: __('Today'), value: 1, description: __('from today') },
-    { label: __('Last 7 days'), value: 7, description: __('from the last 7 days') },
-    { label: __('Last 30 days'), value: 30, description: __('from the last 30 days') },
-    { label: __('Last 90 days'), value: 90, description: __('from the last 90 days') },
-    { label: __('All-time'), value: 0, description: __('total for all-time') },
+    { label: __('Today', 'give'), value: 1, description: __('from today', 'give') },
+    { label: __('Last 7 days', 'give'), value: 7, description: __('from the last 7 days', 'give') },
+    { label: __('Last 30 days', 'give'), value: 30, description: __('from the last 30 days', 'give') },
+    { label: __('Last 90 days', 'give'), value: 90, description: __('from the last 90 days', 'give') },
+    { label: __('All-time', 'give'), value: 0, description: __('total for all-time', 'give') },
 ]
 
 const currency = new Intl.NumberFormat('en-US', {
@@ -56,9 +56,9 @@ const CampaignStats = () => {
         <>
             <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
             <div className={styles.mainGrid}>
-                    <StatWidget label={__('Amount raised')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
-                    <StatWidget label={__('Number of donations')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
-                    <StatWidget label={__('Number of donors')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
+                    <StatWidget label={__('Amount raised', 'give')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
+                    <StatWidget label={__('Number of donations', 'give')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
+                    <StatWidget label={__('Number of donors', 'give')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
                     <RevenueWidget />
                 <div className={styles.nestedGrid}>
                     <GoalProgressWidget />

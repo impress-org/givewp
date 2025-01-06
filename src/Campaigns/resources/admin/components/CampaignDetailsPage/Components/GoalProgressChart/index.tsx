@@ -56,9 +56,9 @@ const GoalProgressChart = ({ value, goal }) => {
                     />
                 </div>
                 <div className={styles.goalDetails}>
-                    <div className={styles.goal}>{__('Goal')}</div>
+                    <div className={styles.goal}>{__('Goal', 'give')}</div>
                     <div className={styles.amount}>{currency.format(goal)}</div>
-                    <div className={styles.goalType}>{__('Amount raised')}</div>
+                    <div className={styles.goalType}>{__('Amount raised', 'give')}</div>
                 </div>
             </div>
     )
