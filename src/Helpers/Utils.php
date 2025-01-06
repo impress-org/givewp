@@ -167,10 +167,23 @@ class Utils
         return $data;
     }
 
+    /**
+     * @unreleased
+     */
+    public static function decodeString(string $data): string
+    {
+        $data = self::recursiveBase64Decode($data);
+        $data = self::recursiveHexDecode($data);
+        $data = self::recursiveUrlDecode($data);
+
+        return $data;
+    }
+
 
     /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
+     * @unreleased Decode the string and remove any character not allowed in a serialized string
      * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
      * @since 3.17.2
      */
@@ -180,10 +193,12 @@ class Utils
             return false;
         }
 
-        $data = self::recursiveUrlDecode($data);
-        $data = self::recursiveBase64Decode($data);
-        $data = self::recursiveHexDecode($data);
+        $data = self::decodeString($data);
 
+        /**
+         * This regular expression removes any special character that is not:
+         * a Letter (a-zA-Z), number (0-9), or any of the characters {}, :, ;, ", ', ., [, ], (, ), ,
+         */
         $data = preg_replace('/[^a-zA-Z0-9:{};"\'\.\[\]\(\),]/', '', $data);
 
         $pattern = '/
