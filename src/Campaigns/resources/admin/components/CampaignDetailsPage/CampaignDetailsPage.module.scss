@@ -11,7 +11,8 @@
     .post-type-give_forms #wpbody {
         box-sizing: border-box;
         background-color: #f9fafb;
-        
+        min-height: calc(100vh - 32px);
+
         & > a {
             text-decoration: underline;
         }
