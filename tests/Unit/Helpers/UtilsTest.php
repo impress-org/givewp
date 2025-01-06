@@ -159,7 +159,7 @@ class UtilsTest extends TestCase
             ],
             // Real-world samples using multiple obfuscation techniques together
             [
-                // O😼:5:"TCPDF":2:{s😼:12:" * imagekeys";a😼:1:{i😼:0;s😼:34:"/tmp/../var/www/html/wp-config.php";}s😼:10:" * file_id";s😼:32:"202cb962ac59075b964b07152d234b70";}
+                // Double URL-encoded for O😼:5:"TCPDF":2:{s😼:12:" * imagekeys";a😼:1:{i😼:0;s😼:34:"/tmp/../var/www/html/wp-config.php";}s😼:10:" * file_id";s😼:32:"202cb962ac59075b964b07152d234b70";}
                 'O%25F0%259F%2598%25BC:5:%22TCPDF%22:2:{s%25F0%259F%2598%25BC:12:%22%00*%00imagekeys%22;a%25F0%259F%2598%25BC:1:{i%25F0%259F%2598%25BC:0;s%25F0%259F%2598%25BC:34:%22/tmp/../var/www/html/wp-config.php%22;}s%25F0%259F%2598%25BC:10:%22%00*%00file_id%22;s%25F0%259F%2598%25BC:32:%22202cb962ac59075b964b07152d234b70%22;}',
                 true,
             ],
