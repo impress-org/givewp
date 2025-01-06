@@ -131,7 +131,7 @@ const PercentChangePill = ({value, comparison}) => {
 const RevenueWidget = () => {
     return (
         <div className={styles.revenueWidget}>
-            <header>
+            <header className={styles.headerSpacing}>
                 <HeaderText>{__('Revenue', 'give')}</HeaderText>
                 <HeaderSubText>{__('Show your revenue over time', 'give')}</HeaderSubText>
             </header>
@@ -146,8 +146,10 @@ const GoalProgressWidget = () => {
 
     return (
         <div className={styles.progressWidget}>
-            <HeaderText>{__('Goal progress', 'give')}</HeaderText>
-            <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
+            <header className={styles.headerSpacing}>
+                <HeaderText>{__('Goal progress', 'give')}</HeaderText>
+                <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
+            </header>
             <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
         </div>
     )

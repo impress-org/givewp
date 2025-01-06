@@ -101,6 +101,12 @@
     border-radius: var(--givewp-rounded-8);
 }
 
+.headerSpacing {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
 .mainGrid{
     display: grid;
     grid-template-columns: repeat(3, 1fr);

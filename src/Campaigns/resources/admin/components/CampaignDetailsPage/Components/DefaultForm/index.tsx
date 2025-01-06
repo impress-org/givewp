@@ -11,7 +11,7 @@ const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
     return (
         <div className={styles.defaultForm}>
             <div className={styles.description}>
-                <div>
+                <div className={styles.headerSpacing}>
                     <HeaderText>{__('Default campaign form', 'give')}</HeaderText>
                     <HeaderSubText>{__('Your campaign page and blocks will collect donations through this form by default.', 'give')}</HeaderSubText>
                 </div>

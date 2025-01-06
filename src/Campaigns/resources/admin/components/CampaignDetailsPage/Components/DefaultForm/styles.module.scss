@@ -15,20 +15,32 @@
     justify-content: space-between;
 }
 
+.headerSpacing {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
 .edit {
     font-size: 0.875rem;
     color: var(--givewp-neutral-900);
     font-weight: 500;
     background-color: var(--givewp-neutral-100);
     padding: .5rem 1rem;
-    border-radius: var(--givewp-rounded-8);
+    border-radius: var(--givewp-rounded-4);
     text-decoration: none;
+
+    &:hover {
+        background-color: var(--givewp-neutral-200);
+        color: var(--givewp-neutral-900);
+    }
 }
 
 .formName {
     font-weight: 500;
     background-color: var(--givewp-neutral-25);
     padding: 0.75rem 1rem;
-    border-radius: var(--givewp-rounded-8);
+    border-radius: var(--givewp-rounded-4);
+    border: solid 1px var(--givewp-neutral-100);
     cursor: default;
 }
