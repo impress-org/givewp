@@ -1,0 +1,34 @@
+.defaultForm {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: var(--givewp-shades-white);
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    border-radius: var(--givewp-rounded-8);
+}
+
+.description {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.edit {
+    font-size: 0.875rem;
+    color: var(--givewp-neutral-900);
+    font-weight: 500;
+    background-color: var(--givewp-neutral-100);
+    padding: .5rem 1rem;
+    border-radius: var(--givewp-rounded-8);
+    text-decoration: none;
+}
+
+.formName {
+    font-weight: 500;
+    background-color: var(--givewp-neutral-25);
+    padding: 0.75rem 1rem;
+    border-radius: var(--givewp-rounded-8);
+    cursor: default;
+}
