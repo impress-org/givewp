@@ -82,6 +82,7 @@ class UtilsTest extends TestCase
     }
 
     /**
+     * @unreleased Test encoded strings and strings with special characters
      * @since 3.19.3 Test all types of serialized data
      * @since 3.17.2
      */
@@ -89,8 +90,6 @@ class UtilsTest extends TestCase
     {
         return [
             [serialize('bar'), true],
-            ['\\' . serialize('backslash-bypass'), true],
-            ['\\\\' . serialize('double-backslash-bypass'), true],
             ['foo', false],
             [serialize('qux'), true],
             ['bar', false],
@@ -103,6 +102,50 @@ class UtilsTest extends TestCase
             ['Lorem ipsum b:1; dolor sit amet', true], // boolean
             ['Lorem ipsum d:3.14; dolor sit amet', true], // float
             ['Lorem ipsum N; dolor sit amet', true], // NULL
+            // Strings with special characters (e.g: emojis, spaces, control characters) that are not part of a predefined set of safe characters for serialized data structures (used to try to bypass the validations)
+            [
+                // emojis bypass sample
+                'O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}',
+                true,
+            ],
+            [
+                // spaces bypass sample
+                'O :8:"stdClass":1:{s :4:"name";s :5:"James";}',
+                true,
+            ],
+            // Bypass with simple methods
+            [
+                // backslash
+                '\\' . serialize('backslash-bypass'),
+                true,
+            ],
+            [
+                // double-backslash
+                '\\\\' . serialize('double-backslash-bypass'),
+                true,
+            ],
+            // Bypass with encoding string method - URL-encoded
+            [
+                // Single encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
+                'O%3A8%3A%22stdClass%22%3A1%3A%7Bs%3A4%3A%22name%22%3Bs%3A5%3A%22James%22%3B%7D',
+                true,
+            ],
+            [
+                // Double encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
+                'O%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%253A4%253A%2522name%2522%253Bs%253A5%253A%2522James%2522%253B%257D',
+                true,
+            ],
+            // Samples using multiple obfuscation techniques together
+            [
+                // Single URL-encoded for O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}
+                'O%F0%9F%98%BC%3A8%3A%22stdClass%22%3A1%3A%7Bs%F0%9F%98%BC%3A4%3A%22name%22%3Bs%F0%9F%98%BC%3A5%3A%22James%22%3B%7D',
+                true,
+            ],
+            [
+                // Double URL-encoded for O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}
+                'O%25F0%259F%2598%25BC%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%25F0%259F%2598%25BC%253A4%253A%2522name%2522%253Bs%25F0%259F%2598%25BC%253A5%253A%2522James%2522%253B%257D',
+                true,
+            ],
         ];
     }
 }
