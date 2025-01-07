@@ -130,9 +130,11 @@ class Utils
     }
 
     /**
+     * Decode strings recursively to prevent double (or more) encoded strings
+     *
      * @unreleased
      */
-    public static function recursiveUrlDecode($data)
+    public static function recursiveUrlDecode(string $data): string
     {
         $decoded = urldecode($data);
 
