@@ -135,10 +135,15 @@ class UtilsTest extends TestCase
                 'O%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%253A4%253A%2522name%2522%253Bs%253A5%253A%2522James%2522%253B%257D',
                 true,
             ],
-            // Sample using multiple obfuscation techniques together
+            // Samples using multiple obfuscation techniques together
             [
-                // Double URL-encoded for O😼:5:"CLASS":2:{s😼:12:" * imagekeys";a😼:1:{i😼:0;s😼:31:"/server/path/file-to-delete.php";}s😼:10:" * file_id";s😼:32:"202cb962ac59075b964b07152d234b70";}
-                'O%25F0%259F%2598%25BC%253A5%253A%2522CLASS%2522%253A2%253A%257Bs%25F0%259F%2598%25BC%253A12%253A%2522%2B%252A%2Bimagekeys%2522%253Ba%25F0%259F%2598%25BC%253A1%253A%257Bi%25F0%259F%2598%25BC%253A0%253Bs%25F0%259F%2598%25BC%253A31%253A%2522%252Fserver%252Fpath%252Ffile-to-delete.php%2522%253B%257Ds%25F0%259F%2598%25BC%253A10%253A%2522%2B%252A%2Bfile_id%2522%253Bs%25F0%259F%2598%25BC%253A32%253A%2522202cb962ac59075b964b07152d234b70%2522%253B%257D',
+                // Single URL-encoded for O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}
+                'O%F0%9F%98%BC%3A8%3A%22stdClass%22%3A1%3A%7Bs%F0%9F%98%BC%3A4%3A%22name%22%3Bs%F0%9F%98%BC%3A5%3A%22James%22%3B%7D',
+                true,
+            ],
+            [
+                // Double URL-encoded for O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}
+                'O%25F0%259F%2598%25BC%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%25F0%259F%2598%25BC%253A4%253A%2522name%2522%253Bs%25F0%259F%2598%25BC%253A5%253A%2522James%2522%253B%257D',
                 true,
             ],
         ];
