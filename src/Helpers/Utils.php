@@ -158,11 +158,11 @@ class Utils
          * This regular expression removes any special character that is not:
          * a Letter (a-zA-Z), number (0-9), or any of the characters {}, :, ;, ", ', ., [, ], (, ), ,
          */
-        $data = preg_replace('/[^a-zA-Z0-9:{};"\'\.\[\]\(\),]/', '', $data);
+        $data = preg_replace('/[^a-zA-Z0-9:{};"\'.\[\](),]/', '', $data);
 
         $pattern = '/
-        (a:\d+:\{.*\}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
-        (O:\d+:"[^"]+":\{.*\}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
+        (a:\d+:\{.*}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
+        (O:\d+:"[^"]+":\{.*}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
         (s:\d+:"[^"]*";) |       # Matches strings (e.g: s:5:"hello";)
         (i:\d+;) |               # Matches integers (e.g: i:42;)
         (b:[01];) |              # Matches booleans (e.g: b:1; or b:0;)
