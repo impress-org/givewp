@@ -140,47 +140,6 @@ class Utils
     }
 
     /**
-     * @unreleased
-     */
-    public static function recursiveBase64Decode($data)
-    {
-        $decodedData = base64_decode($data);
-        if ($decodedData !== false && base64_encode($decodedData) === $data) {
-            // If the decoded string is a valid Base64 string, decode again
-            return self::recursiveBase64Decode($decodedData);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @unreleased
-     */
-    public static function recursiveHexDecode($data)
-    {
-        $decodedData = hex2bin($data);
-        if ($decodedData !== false && bin2hex($decodedData) === $data) {
-            // If the decoded string is a valid Hex string, decode again
-            return self::recursiveHexDecode($decodedData);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @unreleased
-     */
-    public static function decodeString(string $data): string
-    {
-        $data = self::recursiveBase64Decode($data);
-        $data = self::recursiveHexDecode($data);
-        $data = self::recursiveUrlDecode($data);
-
-        return $data;
-    }
-
-
-    /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
      * @unreleased Decode the string and remove any character not allowed in a serialized string
@@ -193,7 +152,7 @@ class Utils
             return false;
         }
 
-        $data = self::decodeString($data);
+        $data = self::recursiveUrlDecode($data);
 
         /**
          * This regular expression removes any special character that is not:

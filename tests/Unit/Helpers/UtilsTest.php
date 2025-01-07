@@ -113,7 +113,7 @@ class UtilsTest extends TestCase
                 'O :8:"stdClass":1:{s :4:"name";s :5:"James";}',
                 true,
             ],
-            // BYPASS WITH SIMPLE METHODS
+            // Bypass with simple methods
             [
                 // backslash
                 '\\' . serialize('backslash-bypass'),
@@ -124,7 +124,7 @@ class UtilsTest extends TestCase
                 '\\\\' . serialize('double-backslash-bypass'),
                 true,
             ],
-            // BYPASS WITH ENCODING STRING METHOD #1 - URL-encoded
+            // Bypass with encoding string method - URL-encoded
             [
                 // Single encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
                 'O%3A8%3A%22stdClass%22%3A1%3A%7Bs%3A4%3A%22name%22%3Bs%3A5%3A%22James%22%3B%7D',
@@ -133,28 +133,6 @@ class UtilsTest extends TestCase
             [
                 // Double encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
                 'O%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%253A4%253A%2522name%2522%253Bs%253A5%253A%2522James%2522%253B%257D',
-                true,
-            ],
-            // BYPASS WITH ENCODING STRING METHOD #2 - Base64
-            [
-                // Single encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
-                'Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJuYW1lIjtzOjU6IkphbWVzIjt9',
-                true,
-            ],
-            [
-                // Double encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
-                'VHp6MDpPOmp6I3N0ZENsYXNzIjoxOntzOjQ6Im5hbWUiO3M6NToiSmFtZXMiO31z',
-                true,
-            ],
-            // BYPASS WITH ENCODING STRING METHOD #3 - Hex-encoded
-            [
-                // Single encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
-                '4f3a383a22737464436c617373223a313a7b733a343a226e616d65223b733a353a224a616d6573223b7d',
-                true,
-            ],
-            [
-                // Double encode for O:8:"stdClass":1:{s:4:"name";s:5:"James";}
-                '346633613833613a323237333634343336643661373332223a313a376233343a313a3763363a373233333634353a343a66337a343a323233643634663a373236333a666537333a393a6666372e7a3a313b',
                 true,
             ],
             // Real-world samples using multiple obfuscation techniques together
