@@ -135,10 +135,10 @@ class UtilsTest extends TestCase
                 'O%253A8%253A%2522stdClass%2522%253A1%253A%257Bs%253A4%253A%2522name%2522%253Bs%253A5%253A%2522James%2522%253B%257D',
                 true,
             ],
-            // Real-world samples using multiple obfuscation techniques together
+            // Sample using multiple obfuscation techniques together
             [
-                // Double URL-encoded for O😼:5:"TCPDF":2:{s😼:12:" * imagekeys";a😼:1:{i😼:0;s😼:34:"/tmp/../var/www/html/wp-config.php";}s😼:10:" * file_id";s😼:32:"202cb962ac59075b964b07152d234b70";}
-                'O%25F0%259F%2598%25BC:5:%22TCPDF%22:2:{s%25F0%259F%2598%25BC:12:%22%00*%00imagekeys%22;a%25F0%259F%2598%25BC:1:{i%25F0%259F%2598%25BC:0;s%25F0%259F%2598%25BC:34:%22/tmp/../var/www/html/wp-config.php%22;}s%25F0%259F%2598%25BC:10:%22%00*%00file_id%22;s%25F0%259F%2598%25BC:32:%22202cb962ac59075b964b07152d234b70%22;}',
+                // Double URL-encoded for O😼:5:"CLASS":2:{s😼:12:" * imagekeys";a😼:1:{i😼:0;s😼:31:"/server/path/file-to-delete.php";}s😼:10:" * file_id";s😼:32:"202cb962ac59075b964b07152d234b70";}
+                'O%25F0%259F%2598%25BC%253A5%253A%2522CLASS%2522%253A2%253A%257Bs%25F0%259F%2598%25BC%253A12%253A%2522%2B%252A%2Bimagekeys%2522%253Ba%25F0%259F%2598%25BC%253A1%253A%257Bi%25F0%259F%2598%25BC%253A0%253Bs%25F0%259F%2598%25BC%253A31%253A%2522%252Fserver%252Fpath%252Ffile-to-delete.php%2522%253B%257Ds%25F0%259F%2598%25BC%253A10%253A%2522%2B%252A%2Bfile_id%2522%253Bs%25F0%259F%2598%25BC%253A32%253A%2522202cb962ac59075b964b07152d234b70%2522%253B%257D',
                 true,
             ],
         ];
