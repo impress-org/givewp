@@ -129,7 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased add max rule to company field
+     * @since 3.19.4 add max rule to company field
      * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *

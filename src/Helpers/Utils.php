@@ -132,7 +132,7 @@ class Utils
     /**
      * Decode strings recursively to prevent double (or more) encoded strings
      *
-     * @unreleased
+     * @since 3.19.4
      */
     public static function recursiveUrlDecode(string $data): string
     {
@@ -144,7 +144,7 @@ class Utils
     /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
-     * @unreleased Decode the string and remove any character not allowed in a serialized string
+     * @since 3.19.4 Decode the string and remove any character not allowed in a serialized string
      * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
      * @since 3.17.2
      */
