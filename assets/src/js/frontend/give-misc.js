@@ -22,8 +22,40 @@ jQuery(
 				midClick: true,
 				removalDelay: 300,
 				mainClass: 'modal-fade-slide give-modal',
+                callbacks: {
+                    open: function () {
+                        const modalId = this.currItem.inlineElement[0].id;
+                        sessionStorage.setItem('currentGridModal', modalId);
+                    },
+                }
 			}
 		);
+
+        // Donation grid shortcode - reopen current grid modal for donations completed with gateway redirect.
+        $(doc).ready(function () {
+            function reopenOnGatewayRedirect()
+            {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                const isGatewayRedirect = urlParams.has('givewp-event') &&
+                    urlParams.get('givewp-event') === 'donation-completed' &&
+                    urlParams.has('givewp-receipt-id');
+
+                if (isGatewayRedirect) {
+                    document.querySelectorAll('.js-give-grid-modal-launcher').forEach(function (formGridModalLauncher) {
+                        const gridModal = formGridModalLauncher.nextElementSibling.id;
+                        const currentModal = sessionStorage.getItem('currentGridModal');
+
+                        if (gridModal === currentModal) {
+                            formGridModalLauncher.click();
+                        }
+                    });
+                }
+                sessionStorage.clear();
+            }
+            reopenOnGatewayRedirect();
+        });
+
 		// Compatible for X theme and Cornerstone plugin.
 		if ( typeof window.csGlobal !== 'undefined' ) {
 			window.jQuery( function( $ ) {
