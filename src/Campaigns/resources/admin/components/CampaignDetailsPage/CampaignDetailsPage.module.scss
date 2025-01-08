@@ -84,7 +84,6 @@
     margin-top: auto;
 }
 
-
 .flexRow:not(:first-child) {
     flex: 1;
     justify-content: flex-end;
@@ -144,7 +143,6 @@ select[name="campaignId"] {
         padding-left: var(--givewp-spacing-6);
     }
 }
-
 
 .tabs [data-reach-tab],
 .tabs [role='tab'] {
@@ -283,18 +281,31 @@ select[name="campaignId"] {
     }
 
     .sections {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
         .section {
             display: flex;
-            background-color: #fff;
-            padding: var(--givewp-spacing-4);
-            border-radius: var(--givewp-spacing-2);
-            margin-bottom: var(--givewp-spacing-4);
             align-content: flex-start;
             flex-direction: row;
+            flex-wrap: wrap;
+            background-color: var(--givewp-shades-white);
+            padding: var(--givewp-spacing-9) var(--givewp-spacing-6);
+            border-radius: var(--givewp-spacing-2);
+
+            @media (max-width: 1100px) {
+                flex-direction: column;
+            }
 
             .leftColumn {
                 flex: 1;
                 padding-right: var(--givewp-spacing-6);
+
+                @media (max-width: 1100px) {
+                    width: 100%;
+                    margin-bottom: var(--givewp-spacing-4);
+                }
             }
 
             .rightColumn {
@@ -305,36 +316,71 @@ select[name="campaignId"] {
                 font-size: 18px;
                 font-weight: 600;
                 line-height: 1.56;
-                color: #060c1a;
-                padding: var(--givewp-spacing-2) 0;
+                color: var(--givewp-neutral-900);
+                padding: 0;
+                margin-bottom: var(--givewp-spacing-1);
             }
 
             .sectionDescription {
                 font-size: 16px;
-                color: #4b5563;
+                line-height: 1.5;
+                color: var(--givewp-neutral-500);
             }
 
             .sectionSubtitle {
                 font-size: 1rem;
                 font-weight: 500;
                 line-height: 1.5;
-                color: #1f2937;
-                padding: var(--givewp-spacing-2) 0;
+                color: var(--givewp-neutral-700);
             }
 
             .sectionField {
-                margin-bottom: var(--givewp-spacing-6);
+                position: relative;
+
+                display: flex;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
+                margin-bottom: var(--givewp-spacing-10);
+
+                input,
+                textarea,
+                select,
+                .editor,
+                .upload{
+                    margin-top: var(--givewp-spacing-1);
+                    color: var(--givewp-neutral-900);
+                    font-weight: 500;
+                }
+
+                input, select {
+                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+                }
+
+                input:focus, select:focus {
+                    border-color: rgb(34, 113, 177);
+                    outline: none;
+                    box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                }
+            }
+
+            .sectionField:last-child {
+               margin: 0;
             }
 
             .sectionFieldDescription {
                 font-size: 14px;
-                color: #4b5563;
+                line-height: 1.43;
+                color: var(--givewp-neutral-500);
             }
 
             .errorMsg {
                 font-size: 14px;
                 padding: var(--givewp-spacing-2) 0;
                 color: #ff0000;
+            }
+
+            select {
+                max-width: 100%;
             }
 
             input,
@@ -347,17 +393,20 @@ select[name="campaignId"] {
                 border: 1px solid #9ca0af;
                 border-radius: var(--givewp-spacing-1);
                 padding: var(--givewp-spacing-2);
-                margin: var(--givewp-spacing-2) 0;
-            }
-
-            select {
-                max-width: 100%;
             }
         }
     }
 
     .toggle {
-        margin: 1rem 0;
+        margin-top: var(--givewp-spacing-3);
+
+        span:is(:global(.components-form-toggle)) {
+            height: 24px;
+        }
+
+        & > div {
+            margin-bottom: 0;
+        }
 
         span:is(:global(.components-form-toggle .components-form-toggle__track)) {
             width: 48px;
@@ -405,8 +454,8 @@ select[name="campaignId"] {
 
     .warningNotice {
         display: flex;
-        margin: 1rem 0 -0.2rem 0;
         gap: 0.3rem;
+        margin-top: var(--givewp-spacing-2);
         padding: 0 0.5rem 0 0.5rem;
         background-color: #fffaf2;
         border-radius: 4px;

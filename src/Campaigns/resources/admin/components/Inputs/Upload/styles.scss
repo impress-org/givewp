@@ -24,6 +24,14 @@ div.media-modal.wp-core-ui {
 .givewp-media-library-control {
     cursor: pointer;
 
+    & > button:not(svg + button) {
+        min-height: 160px;
+
+        & > img {
+            height: 100%;
+        }
+    }
+
     &__reset {
         position: relative;
         display: flex;
@@ -88,6 +96,7 @@ div.media-modal.wp-core-ui {
         align-items: center;
         gap: 0.5rem;
         cursor: pointer;
+        border-radius: 4px;
 
         button {
             margin-top: var(--givewp-spacing-2);
@@ -95,14 +104,21 @@ div.media-modal.wp-core-ui {
         }
 
         &--remove {
-            border: 1px solid #F2320C;
-            color: #F2320C;
+            border: 1px solid var(--givewp-red-400);
+            color: var(--givewp-red-400);
 
+            &:hover {
+                background-color: var(--givewp-red-25);
+            }
         }
 
         &--update {
-            border: 1px solid #9CA0AF;
-            color: #060C1A;
+            border: 1px solid var(--givewp-neutral-300);
+            color: var(--givewp-neutral-900);
+
+            &:hover {
+                background-color: var(--givewp-neutral-50);
+            }
         }
     }
 

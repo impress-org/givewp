@@ -33,6 +33,8 @@ export default () => {
 
     return (
         <div className={styles.sections}>
+
+            {/* Campaign Page */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>
@@ -43,10 +45,10 @@ export default () => {
                         )}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <img
-                            style={{marginTop: '1rem'}}
                             src={campaignPageImage}
                             alt={__('Enable campaign page for your campaign.', 'give')}
                         />
@@ -61,6 +63,7 @@ export default () => {
                                 }}
                             />
                         </div>
+
                         {!enableCampaignPage && (
                             <div className={styles.warningNotice}>
                                 <WarningIcon />
@@ -72,12 +75,15 @@ export default () => {
                                 </p>
                             </div>
                         )}
+
                         {errors.enableCampaignPage && (
                             <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Campaign Details */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Details', 'give')}</div>
@@ -85,13 +91,13 @@ export default () => {
                         {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>{__("What's the title of your campaign?", 'give')}</div>
                         <div className={styles.sectionFieldDescription}>
                             {__("Give your campaign a title that tells donors what it's about.", 'give')}
                         </div>
-
                         <input {...register('title')} disabled={isDisabled} />
 
                         {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
@@ -108,7 +114,9 @@ export default () => {
                                 {shortDescription.replace(/(<([^>]+)>)/gi, '')}
                             </textarea>
                         ) : (
-                            <Editor name="shortDescription" />
+                            <div className={styles.editor}>
+                                <Editor name="shortDescription" />
+                            </div>
                         )}
 
                         {errors.shortDescription && (
@@ -123,24 +131,26 @@ export default () => {
                         <div className={styles.sectionFieldDescription}>
                             {__('Upload an image or video to represent and inspire your campaign.', 'give')}
                         </div>
-
-                        <Upload
-                            disabled={isDisabled}
-                            id="givewp-campaigns-upload-cover-image"
-                            label={__('Cover', 'give')}
-                            actionLabel={__('Select to upload', 'give')}
-                            value={image}
-                            onChange={(coverImageUrl, coverImageAlt) => {
-                                setValue('image', coverImageUrl, {shouldDirty: true});
-                            }}
-                            reset={() => setValue('image', '', {shouldDirty: true})}
-                        />
+                        <div className={styles.upload}>
+                            <Upload
+                                disabled={isDisabled}
+                                id="givewp-campaigns-upload-cover-image"
+                                label={__('Cover', 'give')}
+                                actionLabel={__('Select to upload', 'give')}
+                                value={image}
+                                onChange={(coverImageUrl, coverImageAlt) => {
+                                    setValue('image', coverImageUrl, {shouldDirty: true});
+                                }}
+                                reset={() => setValue('image', '', {shouldDirty: true})}
+                            />
+                        </div>
 
                         {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
                     </div>
                 </div>
             </div>
 
+            {/* Campaign Goal */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Goal', 'give')}</div>
@@ -148,12 +158,12 @@ export default () => {
                         {__('How would you like to set your goal?', 'give')}
                     </div>
                 </div>
+
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
                             {__('Set the details of your campaign goal here.', 'give')}
                         </div>
-
                         <select {...register('goalType')} disabled={isDisabled}>
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donations">{__('Number of donations', 'give')}</option>
@@ -176,18 +186,20 @@ export default () => {
                         {errors.goalType && <div className={styles.errorMsg}>{`${errors.goalType.message}`}</div>}
                     </div>
 
-                    <div className={styles.sectionSubtitle}>{__('How much do you want to raise?', 'give')}</div>
-                    <div className={styles.sectionFieldDescription}>
-                        {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>{__('How much do you want to raise?', 'give')}</div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
+                        </div>
+
+                        {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
+                            <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
+                        ) : (
+                            <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
+                        )}
+
+                        {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                     </div>
-
-                    {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
-                        <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
-                    ) : (
-                        <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
-                    )}
-
-                    {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                 </div>
             </div>
         </div>
