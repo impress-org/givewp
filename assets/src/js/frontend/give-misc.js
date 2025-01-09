@@ -31,7 +31,8 @@ jQuery(
 			}
 		);
 
-        // Donation grid shortcode - reopen current grid modal for donations completed with gateway redirect.
+        // Donation grid shortcode:
+        // Offline gateways like Stripe refresh the page, and we need to programmatically reopen the modal for the confirmation page.
         $(doc).ready(function () {
             function reopenOnGatewayRedirect()
             {
