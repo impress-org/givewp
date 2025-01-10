@@ -177,6 +177,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Replace update_meta with DB::update
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
