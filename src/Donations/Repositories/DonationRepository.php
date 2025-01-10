@@ -270,7 +270,10 @@ class DonationRepository
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
+                DB::table('give_donationmeta')
+                    ->where('donation_id', $donation->id)
+                    ->where('meta_key', $metaKey)
+                    ->update(['meta_value' => $metaValue]);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

@@ -216,7 +216,10 @@ class DonorRepository
                 ->update($args);
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                give()->donor_meta->update_meta($donor->id, $metaKey, $metaValue);
+                DB::table('give_donormeta')
+                    ->where('donor_id', $donor->id)
+                    ->where('meta_key', $metaKey)
+                    ->update(['meta_value' => $metaValue]);
             }
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
