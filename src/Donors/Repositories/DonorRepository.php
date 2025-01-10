@@ -217,10 +217,7 @@ class DonorRepository
                 ->update($args);
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                DB::table('give_donormeta')
-                    ->where('donor_id', $donor->id)
-                    ->where('meta_key', $metaKey)
-                    ->update(['meta_value' => $metaValue]);
+                $this->upsertMeta($donor->id, $metaKey, $metaValue);
             }
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
@@ -519,5 +516,31 @@ class DonorRepository
     public function getDonorsCount(): int
     {
         return DB::table('give_donors')->count();
+    }
+
+     /**
+     * @unreleased
+     */
+    private function upsertMeta(int $donorId, string $metaKey, $metaValue): void
+    {
+        $queryBuilder = DB::table("give_donormeta");
+
+        $query = $queryBuilder
+            ->where("donor_id", $donorId)
+            ->where("meta_key", $metaKey)
+            ->get();
+
+        if (!$query) {
+            $queryBuilder->insert([
+                "donor_id" => $donorId,
+                "meta_key" => $metaKey,
+                "meta_value" => $metaValue
+            ]);
+        } else {
+            $queryBuilder
+                ->where("donor_id", $donorId)
+                ->where("meta_key", $metaKey)
+                ->update(["meta_value" => $metaValue]);
+        }
     }
 }

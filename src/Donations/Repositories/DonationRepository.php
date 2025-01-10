@@ -204,12 +204,7 @@ class DonationRepository
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
             foreach ($donationMeta as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->insert([
-                        'donation_id' => $donationId,
-                        'meta_key' => $metaKey,
-                        'meta_value' => $metaValue,
-                    ]);
+                $this->upsertMeta($donationId, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -271,10 +266,7 @@ class DonationRepository
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->update(['meta_value' => $metaValue]);
+                $this->upsertMeta($donation->id, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -429,11 +421,11 @@ class DonationRepository
             }
         }
 
-        if ( $donation->subscriptionId && $donation->type->isSingle()) {
+        if ($donation->subscriptionId && $donation->type->isSingle()) {
             throw new InvalidArgumentException('Subscription ID can only be set for recurring donations.');
         }
 
-        if ( !$donation->subscriptionId && ( $donation->type->isRenewal() || $donation->type->isSubscription() ) ) {
+        if (!$donation->subscriptionId && ($donation->type->isRenewal() || $donation->type->isSubscription())) {
             throw new InvalidArgumentException('Subscription ID is required for recurring donations.');
         }
 
@@ -451,8 +443,9 @@ class DonationRepository
      *
      * @since 2.23.0
      */
-    private function getPersistedDonationStatus(Donation $donation): DonationStatus {
-        if ( $donation->status->isComplete() && $donation->type->isRenewal() ) {
+    private function getPersistedDonationStatus(Donation $donation): DonationStatus
+    {
+        if ($donation->status->isComplete() && $donation->type->isRenewal()) {
             return DonationStatus::RENEWAL();
         }
 
@@ -477,7 +470,9 @@ class DonationRepository
      */
     private function deriveLegacyDonationParentId(Donation $donation): int
     {
-        return $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0;
+        return $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId(
+            $donation->subscriptionId
+        ) : 0;
     }
 
     /**
@@ -561,7 +556,8 @@ class DonationRepository
      *
      * @return Donation|null
      */
-    public function getFirstDonation() {
+    public function getFirstDonation()
+    {
         return $this->prepareQuery()
             ->limit(1)
             ->orderBy('post_date', 'ASC')
@@ -574,10 +570,37 @@ class DonationRepository
      *
      * @return Donation|null
      */
-    public function getLatestDonation() {
+    public function getLatestDonation()
+    {
         return $this->prepareQuery()
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function upsertMeta(int $donationId, string $metaKey, $metaValue): void
+    {
+        $queryBuilder = DB::table("give_donationmeta");
+
+        $query = $queryBuilder
+            ->where("donation_id", $donationId)
+            ->where("meta_key", $metaKey)
+            ->get();
+
+        if (!$query) {
+            $queryBuilder->insert([
+                "donation_id" => $donationId,
+                "meta_key" => $metaKey,
+                "meta_value" => $metaValue
+            ]);
+        } else {
+            $queryBuilder
+                ->where("donation_id", $donationId)
+                ->where("meta_key", $metaKey)
+                ->update(["meta_value" => $metaValue]);
+        }
     }
 }
