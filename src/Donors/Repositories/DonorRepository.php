@@ -521,7 +521,7 @@ class DonorRepository
      /**
      * @unreleased
      */
-    private function upsertMeta(int $donorId, string $metaKey, $metaValue): void
+    public function upsertMeta(int $donorId, string $metaKey, $metaValue): void
     {
         $queryBuilder = DB::table("give_donormeta");
 
