@@ -1,4 +1,10 @@
-import {BlockControls, HeadingLevelDropdown, InspectorControls, useBlockProps} from '@wordpress/block-editor';
+import {
+    AlignmentControl,
+    BlockControls,
+    HeadingLevelDropdown,
+    InspectorControls,
+    useBlockProps,
+} from '@wordpress/block-editor';
 import {BaseControl, Icon, PanelBody, TextareaControl} from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
@@ -55,6 +61,12 @@ export default function Edit({attributes, setAttributes}) {
                 <HeadingLevelDropdown
                     value={attributes.headingLevel}
                     onChange={(newLevel: string) => setAttributes({headingLevel: newLevel})}
+                />
+                <AlignmentControl
+                    value={attributes.textAlign}
+                    onChange={(nextAlign) => {
+                        setAttributes({textAlign: nextAlign});
+                    }}
                 />
             </BlockControls>
         </div>
