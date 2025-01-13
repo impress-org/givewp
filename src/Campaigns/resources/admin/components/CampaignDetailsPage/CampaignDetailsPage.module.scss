@@ -10,6 +10,8 @@
 
     .post-type-give_forms #wpbody {
         box-sizing: border-box;
+        background-color: #f9fafb;
+        min-height: calc(100vh - 32px);
 
         & > a {
             text-decoration: underline;
@@ -264,7 +266,7 @@ select[name="campaignId"] {
     /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
 
     &:not(.fullWidth) {
-        padding: var(--givewp-spacing-6) var(--givewp-spacing-6);
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
     }
 
     section {
@@ -502,6 +504,7 @@ select[name="campaignId"] {
         align-content: center;
         border-radius: var(--givewp-rounded-4);
         font-size: 0.875rem;
+        font-weight: 500;
         line-height: 1.5;
         text-align: center;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
