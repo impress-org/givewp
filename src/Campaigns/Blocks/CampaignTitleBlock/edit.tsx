@@ -20,6 +20,7 @@ export default function Edit({attributes, setAttributes}) {
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
 
     const adminBaseUrl = useSelect(
+        // @ts-ignore
         (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
         []
     );
