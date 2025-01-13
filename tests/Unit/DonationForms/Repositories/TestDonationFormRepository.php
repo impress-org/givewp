@@ -252,6 +252,7 @@ final class TestDonationFormRepository extends TestCase
 
 
     /**
+     * @since 3.17.0 updated to disable honeypot
      * @since 3.0.0
      *
      * @return void
@@ -285,6 +286,8 @@ final class TestDonationFormRepository extends TestCase
         $formId = 1;
 
         $blocks = BlockCollection::make([$block]);
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
 
         /** @var Form $formSchema */
         $formSchema = $this->repository->getFormSchemaFromBlocks($formId, $blocks);
@@ -375,5 +378,35 @@ final class TestDonationFormRepository extends TestCase
         $amount = $subscription1->amount->add($subscription2->amount);
 
         $this->assertEquals($amount->formatToDecimal(), $this->repository->getTotalInitialAmountFromSubscriptions($form->id));
+    }
+
+    /**
+     * @since 3.12.1
+     *
+     * @throws Exception
+     */
+    public function testShouldNotReturnDonationFormWithoutSettingsMetaKey()
+    {
+        $donationForm = $this->modelFactory->create();
+
+        give()->form_meta->delete_meta($donationForm->id, 'formBuilderSettings');
+        $donationFormFromDatabase = $this->repository->getById($donationForm->id);
+
+        $this->assertNull($donationFormFromDatabase);
+    }
+
+    /**
+     * @since 3.12.1
+     *
+     * @throws Exception
+     */
+    public function testShouldNotReturnDonationFormWithoutFieldsMetaKey()
+    {
+        $donationForm = $this->modelFactory->create();
+
+        give()->form_meta->delete_meta($donationForm->id, 'formBuilderFields');
+        $donationFormFromDatabase = $this->repository->getById($donationForm->id);
+
+        $this->assertNull($donationFormFromDatabase);
     }
 }

@@ -10,8 +10,6 @@
         "stripe/stripe-php": "^7.97.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "kjohnson/format-object-list": "^0.1.0",
-        "fakerphp/faker": "^1.9",
-        "myclabs/php-enum": "^1.6",
         "symfony/http-foundation": "^v3.4.47",
         "moneyphp/money": "v3.3.1",
         "stellarwp/field-conditions": "^1.1",
@@ -22,6 +20,7 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.9",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "phpcompatibility/php-compatibility": "^9.3",
@@ -46,9 +45,10 @@
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
-            "test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.14.0/strauss.phar",
+            "bin/strauss-installar.sh",
             "vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php bin/strauss.phar"
+            "@php bin/strauss.phar",
+            "@composer dump-autoload"
         ],
         "post-install-cmd": [
             "@strauss",
@@ -80,7 +80,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.2.24"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -94,7 +94,6 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
-                "fakerphp/faker",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
@@ -104,6 +103,9 @@
             "exclude_from_copy": {
                 "packages": [
                     "symfony/deprecation-contracts"
+                ],
+                "file_patterns": [
+                    "/Tests/"
                 ]
             },
             "delete_vendor_packages": true,

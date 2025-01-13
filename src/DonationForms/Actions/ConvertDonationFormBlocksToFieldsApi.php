@@ -129,6 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.19.4 add max rule to company field
      * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *
@@ -192,7 +193,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return DonationSummary::make('donation-summary');
 
             case "givewp/company":
-                return Text::make('company');
+                return Text::make('company')->rules('max:255');
 
             case "givewp/text":
                 return Text::make(
@@ -261,6 +262,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.17.0 updated honorific field with validation, global options, and user defaults
+     *
      * @since 3.0.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
@@ -293,9 +296,17 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
-                $group->getNodeByName('honorific')
-                    ->label('Title')
-                    ->options(...array_values($block->getAttribute('honorifics')));
+                $options = array_filter(array_values((array)$block->getAttribute('honorifics')));
+                if ($block->hasAttribute('useGlobalSettings') && $block->getAttribute('useGlobalSettings') === true) {
+                    $options = give_get_option('title_prefixes', give_get_default_title_prefixes());
+                }
+
+                if (!empty($options)){
+                    $group->getNodeByName('honorific')
+                        ->label(__('Title', 'give'))
+                        ->options(...$options)
+                        ->rules('max:255', 'in:' . implode(',', $options));
+                    }
             } else {
                 $group->remove('honorific');
             }

@@ -38,6 +38,8 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
+     * @since 3.16.0 Add filter to change the cell value content
+     * @since 3.14.0 Use the "getDonationCount()" method from progress bar model to ensure the correct donation count will be used
      * @since 2.24.0
      *
      * @inheritDoc
@@ -60,10 +62,10 @@ class DonationCountColumn extends ModelColumn
             ) : __('No donations', 'give');
 
         return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
+            '<a class="column-donations-count-value" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
             __('Visit donations page', 'give'),
-            $label
+            apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this)
         );
     }
 }

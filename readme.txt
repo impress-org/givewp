@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 6.3
-Tested up to: 6.5
+Requires at least: 6.5
+Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.12.0
+Stable tag: 3.19.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -167,7 +167,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 6.3 or greater
+* WordPress 6.5 or greater
 * PHP version 7.2 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
@@ -239,6 +239,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 [Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/give)
+
 == Screenshots ==
 
 1. Creating powerful donation forms is easy with GiveWP. Simply install the plugin, create a new donation form, set the desired giving options, and publish!
@@ -262,6 +266,147 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.19.4: January 7th, 2025 =
+* Security: Added additional sanitization to the donation form request to prevent malicious encoded data
+* Security: Added additional validation to the company field
+
+= 3.19.3: December 24th, 2024 =
+* Security: Added additional sanitization to the donation form request to prevent malicious serialized data (CVE-2024-12877)
+
+= 3.19.2: December 17th, 2024 =
+* Fix: Resolved an issue with the custom donation amount field where using certain languages like Swedish were resulting in additional zero values being added
+
+= 3.19.1: December 17th, 2024 =
+* Fix: Resolved an issue with PayPal where some fields were not being validated properly before processing the donation
+* Fix: Resolved an issue with PayPal and emails with a plus sign trying to connect to GiveWP 
+* Fix: Updated the format of the donation count in the multi form goal progress stats 
+* Change: Updated subdivision ISO code for Odisha, India to OD (Open source submission by @sorensd) 
+
+= 3.19.0: December 5th, 2024 =
+* New: Added support to the donor dashboard for managing recurring donations from our Blink Payment Gateway add-on
+* Fix: Resolved a compatability issue with loading translations on WordPress 6.7
+* Security: Added sanitization to the manual migrations parameters  
+
+
+= 3.18.0: November 20th, 2024 =
+* New: Added support to our form migration process for our upcoming Constant Contact add-on 3.0.0 version 
+* New: The donor wall now shows the donor's uploaded image avatar when available
+* New: Added a global setting to enable or disable the Option-Based Form Editor and settings.
+* Fix: Resolved an issue with multi-step form designs growing extra space outside the form
+* Fix: Resolved an issue where some people were not able to connect to PayPal
+* Fix: Resolved an issue that was preventing the form migration process from completing
+* Fix: Resolved an issue with the donation confirmation email sending the wrong donation description for visual form builder forms
+* Dev: Addressed PHP 8.2 depreciation warnings in the Donation Session Object
+
+= 3.17.2: November 6th, 2024 =
+* Fix: Resolved an issue with the Donor Wall shortcode and block filtering by only_comments
+* Fix: Resolved a WordPress 6.7 styling compatibility issue with the visual form builder
+* Fix: Resolved an issue where Stripe Payment Element was causing an error when donation amount is zero
+* Security: Removed Faker PHP library from production to prevent malicious direct access 
+* Security: Further improved our data sanitization and validation across all of GiveWP to prevent malicious serialized data
+* Dev: Resolved php 8.1 compatibility warnings for Give_Addon_Activation_Banner, Give_License, and CurrencySwitcherSetting classes 
+
+= 3.17.1: October 22nd, 2024 =
+* Fix: Resolved an issue with PayPal donation buttons where clicking the GiveWP donate button was causing an error.
+* Fix: Resolved an issue where the donation amount level descriptions option was not visible in the form builder.
+* Fix: Resolved an issue with the "Update Subscription" button being always disabled for Stripe in the donor dashboard.
+* Fix: Resolved a styling issue in the donor dashboard with Stripe subscription amount fields.
+
+= 3.17.0: October 16th, 2024 =
+* New: Added new security tab with option to enable a honeypot field for visual builder forms
+* Fix: Resolved an issue with the donor name prefix block not saving correctly 
+* Dev: Resolved php 8.1 compatability conflict with MyCLabs\Enum\Enum::jsonSerialize()
+* Dev: Added gateway api updates for pausing subscriptions 
+
+= 3.16.5: October 15th, 2024 =
+* Fix: Resolved a PHP v8+ fatal error on option-based forms when the Tributes add-on was enabled
+* Fix: Resolved an issue with the donor dashboard menu not opening on mobile devices
+
+= 3.16.4: October 10th, 2024 =
+* Security: Added additional protection against serialized data in the option-based donation form request (CVE-2024-9634)
+
+= 3.16.3: October 7th, 2024 =
+* Security: Added additional validation to the donor title field, further protecting the option-based donation form request
+
+= 3.16.2: September 25th, 2024 =
+* Enhancement: Updated the visual builder header description field to use the rich text editor
+* Enhancement: Updated the strings in the form builder onboarding buttons to be translatable (Open source submission by @DAnn2012)
+* Enhancement: Updated strings in give settings to be translatable (Open source submission by @DAnn2012)
+* Security: Added additional prevention for serialized data in the option-based donation form request 
+* Security: Added additional security measures to the legacy donor list table request (CVE-2024-9130) 
+* Fix: Resolved a styling issue with some text fields not respecting error border styling
+* Fix: Resolved a styling issue with the anonymous block for WP 6.6 compatibility
+* Dev: Removed defaultProps in favor of ES6 default parameters for React 19 compatibility
+
+= 3.16.1: September 10th, 2024 =
+* Security: Added additional protection to the option-based donation form request (CVE-2024-8353)
+
+= 3.16.0: Aug 28th, 2024 =
+* New: Added support for form taxonomy tags and categories in the visual form builder settings
+* New: Added a setting to the visual form builder to enable redirecting to an individual donation confirmation page 
+* Enhancement: Multi-step form designs now scroll to the top of the form on step change
+* Enhancement: Added individual form migration links to the donation form list table 
+* Enhancement: Updated various strings throughout GiveWP to be translatable (Open-source contribution by @DAnn2012)
+* Security: Resolved security issues related to file paths and permissions (CVE-2024-6551)
+* Security: Resolved security issue related to the PayPal disconnect button  
+* Fix: Added prevention of subscription renewals with gateway transaction IDs already used previously
+* Fix: Resolved an issue where the donation form list table and form grid not loading properly on sites with a large number of forms and donations
+* Fix: Resolved an issue with the form grid not showing header images and link previews
+* Fix: Resolved an issue with the subscription payment failed email not saving the supported gateways information
+
+= 3.15.1: Aug 22nd, 2024 =
+* Fix: Resolved an issue with the Akismet integration preventing form submissions when settings are not yet configured
+
+= 3.15.0: Aug 14th, 2024 =
+* New: Added Akismet integration support to forms using the visual form builder
+* New: Updated the onboarding wizard to create a new form with the visual form builder
+* Changed: Updated the "Add Form" buttons to use the visual form builder by default
+* Fix: Resolved an issue with Give Subscribers accessing their donor dashboard history
+
+= 3.14.2: Aug 7th, 2024 =
+* Security: Added additional security measures to the option-based donation form and the donor dashboard (CVE-2024-37099) 
+
+= 3.14.1: July 24th, 2024 =
+* Fix: Resolved an error with the give_totals shortcode when using multiple form IDs
+
+= 3.14.0: July 17th, 2024 =
+* Enhancement: Updated the visual donation form builder with various UI design improvements
+* Enhancement: Updated the form builder design tab preview to be more responsive
+* Enhancement: Improved the design of single active gateways on forms
+* Enhancement: Improved the login block design
+* Enhancement: Improved the Terms & Conditions block UI
+* Enhancement: Improved the donate button hover state & secure donation tag
+* Enhancement: Improved the donor title prefix setting styles
+* Enhancement: Improved the checkbox style for form builder Build & Design screens
+* Enhancement: Improved the Consent block by removing "Link Text" option when "Show terms in form" display type is selected
+* Enhancement: Improved the File Upload field interactivity to limit the button scope
+* Fix: Resolved an issue with the drag and drop block placement in the form builder
+* Fix: Resolved an issue where the Give Goal and Multi-Form Goal blocks and shortcodes were displaying the wrong donation amount
+* Fix: Resolved an issue when exporting donations that use Razorpay gateway
+* Fix: Resolved an issue in the form builder where recurring donations descriptions were not always matching frequency selection
+* Fix: Resolved an issue with custom donor columns in csv exports and revive filter give_export_donors_get_default_columns
+* Security: Resolved various security issues related to user permissions 
+
+= 3.13.0: June 26th, 2024 =
+* New: Added option to PayPal settings to keep webhooks when disconnecting account
+* Enhancement: Updated donor comment block active state border color to be the primary color
+* Enhancement: Updated form builder global settings links to open in new tabs
+* Fix: Resolved an issue with some validation errors using Stripe Payment Element Gateway not displaying information correctly
+* Fix: Resolved an issue with Stripe accounts using API keys and the Stripe Payment Element Gateway
+
+= 3.12.3: June 19th, 2024 =
+* Fix: Resolved an issue where PayPal was not processing donations due to missing billing address fields
+
+= 3.12.2: June 11th, 2024 =
+* Fix: Resolved an issue where only the donation amount was sent to PayPal, ignoring event ticket values for one-time donations.
+* Fix: Resolved an issue where donations were processed on PayPal but not recorded in GiveWP due to missing city, state, and zip fields.
+
+= 3.12.1: June 5th, 2024 =
+* Fix: Resolved an issue where the Donor Phone field was not included in the donor export
+* Fix: Resolved an issue where the Billing Address field was not saved in Stripe
+* Security: Added additional escaping to Stripe onboarding
+* Dev: Added a new filter `givewp_log_source_view` to allow customization of the log source column
+
 = 3.12.0: May 15th, 2024 =
 * New: Updated the donation amount block with options for donation amount level description in the visual form builder
 * New: Updated form goal settings with options for start and end dates in the visual form builder

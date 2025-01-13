@@ -520,7 +520,7 @@ class FormMetaDecorator extends FormModelDecorator
         $isFormDisabled = give_is_setting_enabled($this->getMeta('_give_constant_contact_disable'), 'true');
 
         $isGloballyEnabled = give_is_setting_enabled(
-            give_get_option('give_constant_contact_show_checkout_signup'),
+            give_get_option('givewp_constant_contact_show_checkout_signup'),
             'on'
         );
 
@@ -532,7 +532,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactLabel(): string
     {
-        $defaultMeta = give_get_option('give_constant_contact_label', __('Subscribe to our newsletter?'));
+        $defaultMeta = give_get_option('givewp_constant_contact_label', __('Subscribe to our newsletter?'));
 
         return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
     }
@@ -544,7 +544,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         $defaultMeta = give_is_setting_enabled(
             give_get_option(
-                'give_constant_contact_checked_default',
+                'givewp_constant_contact_checked_default',
                 true
             ),
             'on'
@@ -558,7 +558,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactSelectedLists(): array
     {
-        $defaultMeta = give_get_option('give_constant_contact_list', []);
+        $defaultMeta = give_get_option('givewp_constant_contact_list', []);
 
         return (array)$this->getMeta('_give_constant_contact', $defaultMeta);
     }
@@ -881,7 +881,7 @@ class FormMetaDecorator extends FormModelDecorator
         $isGloballyEnabled = $this->getMeta('_give_convertkit_override_option') === 'default' &&
                              give_is_setting_enabled(give_get_option('give_convertkit_show_subscribe_checkbox'));
 
-        return $isFormEnabled ? $isGloballyEnabled : $isFormDisabled;
+        return ! ($isFormDisabled || ( ! $isGloballyEnabled && ! $isFormEnabled));
     }
 
     /**
@@ -981,5 +981,53 @@ class FormMetaDecorator extends FormModelDecorator
 
         return ! empty($this->getMeta('give_activecampaign_tags')) ?
             $this->getMeta('give_activecampaign_tags') : $defaultMeta;
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherStatus(): string
+    {
+        return $this->getMeta('cs_status', 'global');
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherMessage(): string
+    {
+        return $this->getMeta(
+            'cs_message',
+            sprintf(
+                __('The current exchange rate is 1.00 %1$s equals %2$s %3$s.', 'give-currency-switcher'),
+                '{base_currency}',
+                '{new_currency_rate}',
+                '{new_currency}'
+            )
+        );
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherDefaultCurrency(): string
+    {
+        return $this->getMeta('give_cs_default_currency', '');
+    }
+
+    /**
+     * @since 3.13.0
+     */
+    public function getCurrencySwitcherSupportedCurrencies(): array
+    {
+        return (array)$this->getMeta('cs_supported_currency', []);
+    }
+
+    /**
+     * @since 3.14.0
+     */
+    public function isRazorpayPerFormSettingsEnabled(): bool
+    {
+        return give_is_setting_enabled($this->getMeta('razorpay_per_form_account_options'));
     }
 }

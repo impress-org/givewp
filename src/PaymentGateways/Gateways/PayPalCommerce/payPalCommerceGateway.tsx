@@ -12,6 +12,7 @@ import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
 import {PayPalSubscriber} from './types';
+import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 
 (() => {
     /**
@@ -49,6 +50,26 @@ import {PayPalSubscriber} from './types';
     let orderCreated = false;
 
     let currency;
+
+    let eventTickets;
+
+    /**
+     * @since 3.12.2
+     */
+    const getEventTicketsTotalAmount = (
+        eventTickets: Array<{
+            ticketId: number;
+            quantity: number;
+            amount: number;
+        }>
+    ) => {
+        const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
+        if (totalAmount > 0) {
+            return totalAmount / 100;
+        } else {
+            return 0;
+        }
+    };
 
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
@@ -122,7 +143,15 @@ import {PayPalSubscriber} from './types';
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        formData.append('give-amount', getAmount());
+        const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
+        const isSubscription = subscriptionPeriod ? subscriptionPeriod !== 'one-time' : false;
+        if (!isSubscription) {
+            formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
+        } else {
+            formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
+        }
+
+        formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));
 
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
@@ -276,11 +305,13 @@ import {PayPalSubscriber} from './types';
 
         currency = useWatch({name: 'currency'});
 
+        eventTickets = useWatch({name: 'event-tickets'});
+
         useEffect(() => {
             if (orderCreated) {
                 updateOrderAmount = true;
             }
-        }, [amount]);
+        }, [amount, eventTickets]);
 
         return children;
     };
@@ -326,15 +357,42 @@ import {PayPalSubscriber} from './types';
                     return actions.reject();
                 }
 
-                // Validate the form values before proceeding.
-                const result = await trigger();
-                if (result === false) {
+                // Validate the form values in the client side before proceeding.
+                const isClientValidationSuccessful = await trigger();
+                if (!isClientValidationSuccessful) {
                     // Set focus on first invalid field.
                     for (const fieldName in getValues()) {
                         if (getFieldState(fieldName).invalid) {
                             setFocus(fieldName);
                         }
                     }
+                    return actions.reject();
+                }
+
+                /**
+                 * Validate the form values in the server side before proceeding - this is important to prevent problems with some blocks.
+                 *
+                 * Ideally, the client-side validations should be enough. However, in some cases, these validations are reached
+                 * later when the donation is already created on the PayPal side. This way, we need the request below to check
+                 * it earlier and prevent the donation creation on the PayPal side if the required fields are missing.
+                 *
+                 * Know cases:
+                 *
+                 * #1 - Billing Address Block: depending on the selected country, the city, state, and zip fields
+                 * can be required or not and there are custom validation rules on the server side that check it.
+                 *
+                 * #2 - Gift Aid Block: when users opt-in to the gift aid checkbox, it will display some
+                 * required fields that should be filled, but as this block is not a group and even so has
+                 * "children" fields, the validation rules for it live only on the server.
+                 */
+                const isServerValidationSuccessful = await handleValidationRequest(
+                    payPalDonationsSettings.validateUrl,
+                    getValues(),
+                    setError,
+                    gateway
+                );
+
+                if (!isServerValidationSuccessful) {
                     return actions.reject();
                 }
 
@@ -564,11 +622,30 @@ import {PayPalSubscriber} from './types';
                 throw new Error(sprintf(__('Paypal Donations Error: %s', 'give'), err.message));
             }
         },
+
+        /**
+         * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
+         */
         Fields() {
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
 
+            useEffect(() => {
+                const submitButton = document.querySelector<HTMLButtonElement>(
+                    'form#give-next-gen button[type="submit"]'
+                );
+
+                if (submitButton) {
+                    submitButton.style.display = 'none';
+                }
+
+                return () => {
+                    if (submitButton) {
+                        submitButton.style.display = '';
+                    }
+                };
+            }, []);
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>

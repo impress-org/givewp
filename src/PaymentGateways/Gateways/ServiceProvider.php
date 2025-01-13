@@ -49,8 +49,8 @@ class ServiceProvider implements ServiceProviderInterface
             $this->registerGateways();
         } catch (Exception $e) {
             Log::error('Error Registering Gateways', [
-                    'message' => $e->getMessage()
-                ]);
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -77,8 +77,8 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootOfflineDonations();
     }
 
-      /**
-       * @since 3.0.0
+    /**
+     * @since 3.0.0
      */
     private function addStripeWebhookListeners()
     {

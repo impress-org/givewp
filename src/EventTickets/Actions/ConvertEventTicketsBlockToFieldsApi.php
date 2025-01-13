@@ -15,13 +15,14 @@ class ConvertEventTicketsBlockToFieldsApi
 {
     /**
      * @unreleased Set event end date and time.
+     * @since 3.12.2 Remove event ID from field name
      * @since 3.6.0
      *
      * @throws EmptyNameException
      */
     public function __invoke(BlockModel $block, int $formId)
     {
-        return EventTickets::make($block->getShortName() . '-' . $block->getAttribute('eventId'))
+        return EventTickets::make($block->getShortName())
             ->tap(function (EventTickets $eventTicketsField) use ($block, $formId) {
                 $eventId = $block->getAttribute('eventId');
                 $event = give(EventRepository::class)->getById($eventId);

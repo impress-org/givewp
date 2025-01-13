@@ -62,10 +62,11 @@ class Page
      * Register Onboarding Wizard as an admin page route
      *
      * @since 2.8.0
+     * @since 3.14.0 change capability to manage_give_settings
      **/
     public function add_page()
     {
-        add_submenu_page('', '', '', 'manage_options', $this->slug);
+        add_submenu_page('', '', '', 'manage_give_settings', $this->slug);
     }
 
     /**
@@ -74,10 +75,11 @@ class Page
      * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
      *
      * @since 2.8.0
+     * @since 3.14.0 add user capability check
      **/
     public function setup_wizard()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
             return;
         } else {
             $this->render_page();
@@ -124,6 +126,7 @@ class Page
         wp_enqueue_style('givewp-admin-fonts');
 
         $formID = $this->formRepository->getDefaultFormID();
+        $formPreviewUrl = home_url('/?givewp-route=donation-form-view&form-id=');
         $featureGoal = get_post_meta($formID, '_give_goal_option', true);
         $featureComments = get_post_meta($formID, '_give_donor_comment', true);
         $featureTerms = get_post_meta($formID, '_give_terms_option', true);
@@ -140,7 +143,7 @@ class Page
             'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ?
                 admin_url('edit.php?post_type=give_forms&page=give-setup') :
                 DonationFormsAdminPage::getUrl(),
-            'formPreviewUrl' => admin_url('?page=give-form-preview'),
+            'formPreviewUrl' => $formPreviewUrl,
             'localeCurrency' => $this->localeCollection->pluck('currency_code'),
             'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
             'currencySelected' => $currency,

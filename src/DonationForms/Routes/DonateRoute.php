@@ -3,10 +3,13 @@
 namespace Give\DonationForms\Routes;
 
 
+use Exception;
 use Give\DonationForms\Controllers\DonateController;
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
@@ -53,6 +56,17 @@ class DonateRoute
 
         try {
             $data = $formData->validated();
+
+            /**
+             * Allow for additional validation of the donation form data.
+             * The donation flow can be interrupted by throwing an Exception.
+             *
+             * @since 3.15.0
+             *
+             * @param DonateControllerData $data
+             */
+            do_action('givewp_donate_form_data_validated', $data);
+
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
@@ -62,7 +76,9 @@ class DonateRoute
             $type = DonationFormErrorTypes::GATEWAY;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
-        } catch (\Exception $exception) {
+        } catch (DonationFormForbidden $exception) {
+            wp_die($exception->getMessage(), 403);
+        } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));

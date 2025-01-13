@@ -12,6 +12,7 @@ use WP_REST_Server;
 
 /**
  * @since 3.6.0
+ * @since 3.14.0 add permission callback check
  */
 class UpdateEventTicketType implements RestRoute
 {
@@ -34,7 +35,7 @@ class UpdateEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('edit_give_forms');
+                        return current_user_can('edit_posts');
                     },
                 ],
                 'args' => [

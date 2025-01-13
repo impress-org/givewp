@@ -265,6 +265,7 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
  * Add support to get all payment meta.
  * Note: only use for internal purpose
  *
+ * @since 3.19.0 change $donor_data['address'] to array instead of false
  * @since 2.0
  *
  * @param $check
@@ -362,7 +363,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		// User ID.
 		$donor_data['id'] = $donation->user_id;
 
-		$donor_data['address'] = false;
+		$donor_data['address'] = [];
 
 		// Address1.
 		$address1 = ! empty( $payment_meta['_give_donor_billing_address1'] ) ? $payment_meta['_give_donor_billing_address1'] : '';

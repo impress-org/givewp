@@ -9,7 +9,6 @@ import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 
 declare global {
@@ -20,14 +19,14 @@ declare global {
             tooltipActionUrl: string;
             migrationApiRoot: string;
             apiRoot: string;
-            authors: Array<{ id: string | number; name: string }>;
-            table: { columns: Array<object> };
+            authors: Array<{id: string | number; name: string}>;
+            table: {columns: Array<object>};
             pluginUrl: string;
-            showBanner: boolean;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
+            isOptionBasedFormEditorEnabled: boolean;
         };
 
         GiveNextGen?: {
@@ -84,15 +83,13 @@ const donationFormsFilters: Array<FilterConfig> = [
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
-        filter: item => {
+        filter: (item) => {
             if (item?.v3form) {
                 return (
                     <div className={styles.migratedForm}>
                         <div className={styles.tooltipContainer}>
                             <CubeIcon />
-                            <div className={styles.tooltip}>
-                                {__('Uses the Visual Form Builder', 'give')}
-                            </div>
+                            <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
                         </div>
                         <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                     </div>
@@ -110,13 +107,18 @@ const columnFilters: Array<ColumnFilterConfig> = [
                     <div className={styles.upgradedForm}>
                         <div className={styles.tooltipContainer}>
                             <div className={styles.tooltip}>
-                                {__('The name of this form is already associated with an upgraded form. You can safely delete this form', 'give')}.
+                                {__(
+                                    'The name of this form is already associated with an upgraded form. You can safely delete this form',
+                                    'give'
+                                )}
+                                .
                                 <div
                                     className={styles.link}
                                     onClick={(e) => {
                                         e.currentTarget.parentElement.remove();
                                         fetch(window.GiveDonationForms.tooltipActionUrl, {method: 'POST'});
-                                    }}>
+                                    }}
+                                >
                                     {__('Got it', 'give')}
                                 </div>
                             </div>
@@ -128,7 +130,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
 
             return <InterweaveSSR column={column} item={item} />;
         },
-    }
+    },
 ];
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
@@ -238,11 +240,9 @@ const ListTableBlankSlate = (
 );
 
 export default function DonationFormsListTable() {
-
     const [state, setState] = useState<OnboardingStateProps>({
-        showBanner: Boolean(window.GiveDonationForms.showBanner),
-        showFeatureNoticeDialog: false
-    })
+        showFeatureNoticeDialog: false,
+    });
 
     return (
         <OnboardingContext.Provider value={[state, setState]}>
@@ -258,20 +258,20 @@ export default function DonationFormsListTable() {
                 columnFilters={columnFilters}
                 banner={Onboarding}
             >
-                <div className={styles.tryNewFormBuilderBtnContainer}>
-                    <FormBuilderButton
-                        onClick={() => setState(prev => ({
-                            ...prev,
-                            showFeatureNoticeDialog: true
-                        }))}
-                    />
-                </div>
-                <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
+                {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
+                    <button
+                        className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                        onClick={showLegacyDonationForms}
+                    >
+                        {__('Switch to Legacy View', 'give')}
+                    </button>
+                )}
+                <a
+                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                    className={`button button-primary ${styles.button}`}
+                >
                     {__('Add Form', 'give')}
                 </a>
-                <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
-                    {__('Switch to Legacy View')}
-                </button>
             </ListTablePage>
         </OnboardingContext.Provider>
     );
