@@ -166,6 +166,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased Replace update_meta with DB::update
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
@@ -204,7 +205,12 @@ class DonationRepository
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
             foreach ($donationMeta as $metaKey => $metaValue) {
-                $this->upsertMeta($donationId, $metaKey, $metaValue);
+                DB::table('give_donationmeta')
+                    ->insert([
+                        'donation_id' => $donationId,
+                        'meta_key' => $metaKey,
+                        'meta_value' => $metaValue,
+                    ]);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
