@@ -43,7 +43,7 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
         /** @var EventTickets $field */
         $field = $action($block, $donationForm->id);
 
-        $this->assertEquals('event-tickets-1', $field->getName());
+        $this->assertEquals('event-tickets', $field->getName());
         $this->assertEquals('eventTickets', $field->getType());
         $this->assertEquals('field', $field->getNodeType());
 
