@@ -34,7 +34,10 @@ jQuery(
 
                 const completedFormEmbedId = urlParams.get('givewp-embed-id');
 
-                const isGatewayRedirect = urlParams.has('givewp-embed-id') && urlParams.has('givewp-receipt-id');
+                const isGatewayRedirect = urlParams.has('givewp-embed-id') &&
+                    urlParams.get('givewp-event') === 'donation-completed' &&
+                    urlParams.get('givewp-listener') === 'show-donation-confirmation-receipt' &&
+                    urlParams.has('givewp-receipt-id');
 
                 if (isGatewayRedirect) {
                     document.querySelectorAll('.js-give-grid-modal-launcher').forEach(function (formGridModalLauncher) {
