@@ -131,4 +131,37 @@ class TestDonorMetaRepository extends TestCase
         $meta = $repository->get($donor->id, 'test_key');
         $this->assertEquals('Test Value', $meta);
     }
+
+    /**
+     * @unreleased
+     */
+    public function testExistsShouldReturnTrue(): void
+    {
+        $donor = Donor::factory()->create();
+        $repository = new DonorMetaRepository();
+
+        DB::table('give_donormeta')
+            ->insert([
+                'donor_id' => $donor->id,
+                'meta_key' => 'test_key',
+                'meta_value' => 'Test Value',
+            ]);
+
+        $exists = $repository->exists($donor->id, 'test_key');
+
+        $this->assertTrue($exists);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testExistsShouldReturnFalse(): void
+    {
+        $donor = Donor::factory()->create();
+        $repository = new DonorMetaRepository();
+
+        $exists = $repository->exists($donor->id, 'test_key');
+
+        $this->assertFalse($exists);
+    }
 }

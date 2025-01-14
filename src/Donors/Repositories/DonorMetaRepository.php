@@ -45,7 +45,7 @@ class DonorMetaRepository
             $metaValue = json_encode($metaValue);
         }
 
-        $exists = $this->get($donorId, $metaKey);
+        $exists = $this->exists($donorId, $metaKey);
 
         $queryBuilder = $this->prepareQuery();
 
@@ -61,6 +61,19 @@ class DonorMetaRepository
                 ->where("meta_key", $metaKey)
                 ->update(["meta_value" => $metaValue]);
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function exists(int $donorId, string $metaKey): bool
+    {
+        $query = $this->prepareQuery()
+            ->where("donor_id", $donorId)
+            ->where("meta_key", $metaKey)
+            ->get();
+
+        return !is_null($query);
     }
 
     /**
