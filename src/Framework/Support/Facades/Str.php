@@ -2,8 +2,6 @@
 
 namespace Give\Framework\Support\Facades;
 
-use JsonException;
-
 use function sanitize_title;
 
 class Str
