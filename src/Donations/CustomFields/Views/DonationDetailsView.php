@@ -77,6 +77,7 @@ class DonationDetailsView
     }
 
     /**
+     * @unreleased replace get_meta with donors meta repository
      * @since 3.0.0
      *
      * @param  Field  $field
@@ -85,7 +86,7 @@ class DonationDetailsView
      */
     protected function getFieldValue(Field $field)
     {
-        $metaValue = give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
+        $metaValue = give()->donations->meta->get($this->donation->id, $field->getName());
 
         if (empty($metaValue)) {
             return '';

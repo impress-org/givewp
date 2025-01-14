@@ -85,13 +85,14 @@ class DonorDetailsView
     }
 
     /**
+     * @unreleased replace get_meta with donors meta repository
      * @since 3.0.0
      *
      * @return mixed
      */
     protected function getFieldValue(Field $field)
     {
-        $metaValue = give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
+        $metaValue = give()->donors->meta->get($this->donor->id, $field->getName());
 
         if (empty($metaValue)) {
             return '';
