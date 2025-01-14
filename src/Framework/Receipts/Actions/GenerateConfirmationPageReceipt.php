@@ -33,6 +33,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased replace get_meta with meta repositories
      * @since 3.4.0 updated to check for metaKey first and then fallback to name
      * @since 3.3.0 updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
@@ -70,17 +71,16 @@ class GenerateConfirmationPageReceipt
                     continue;
                 }
 
-                $value = give()->donor_meta->get_meta(
+                $value = give()->donors->meta->get(
                     $donation->donor->id,
-                    $field->getMetaKey() ?? $field->getName(),
-                    true
+                    $field->getMetaKey() ?? $field->getName()
                 );
             } elseif ($field->getScope()->isDonation()) {
                 if (!metadata_exists('donation', $donation->id, $field->getMetaKey() ?? $field->getName())) {
                     continue;
                 }
 
-                $value = give()->payment_meta->get_meta($donation->id, $field->getMetaKey() ?? $field->getName(), true);
+                $value = give()->donations->meta->get($donation->id, $field->getMetaKey() ?? $field->getName());
             } else {
                 $value = null;
             }

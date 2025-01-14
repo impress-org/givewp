@@ -27,14 +27,30 @@ class TestDonorMetaRepository extends TestCase
         $donor = Donor::factory()->create();
         $repository = new DonorMetaRepository();
         $repository->upsert($donor->id, 'test_key', 'test_value');
+        $repository->upsert($donor->id, 'test_key_array', ['Test Value']);
+        $repository->upsert($donor->id, 'test_key_int', 1);
 
-        $meta = DB::table('give_donormeta')
+        $meta1 = DB::table('give_donormeta')
             ->where('donor_id', $donor->id)
             ->where('meta_key', 'test_key')
             ->get()
             ->meta_value;
 
-        $this->assertEquals('test_value', $meta);
+        $meta2 = DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where('meta_key', 'test_key_array')
+            ->get()
+            ->meta_value;
+
+        $meta3 = DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where('meta_key', 'test_key_int')
+            ->get()
+            ->meta_value;
+
+        $this->assertEquals('test_value', $meta1);
+        $this->assertEquals(['Test Value'], json_decode($meta2, true));
+        $this->assertEquals(1, $meta3);
     }
 
     /**
@@ -84,4 +100,35 @@ class TestDonorMetaRepository extends TestCase
         $this->assertEquals('Test Value Two', $meta);
     }
 
+    /**
+     * @unreleased
+     */
+    public function testGetShouldReturnNullIfMetaDoesNotExist(): void
+    {
+        $donor = Donor::factory()->create();
+        $repository = new DonorMetaRepository();
+
+        $meta = $repository->get($donor->id, 'test_key');
+
+        $this->assertNull($meta);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetShouldReturnMetaValueIfExists(): void
+    {
+        $donor = Donor::factory()->create();
+        $repository = new DonorMetaRepository();
+
+        DB::table('give_donormeta')
+            ->insert([
+                'donor_id' => $donor->id,
+                'meta_key' => 'test_key',
+                'meta_value' => 'Test Value',
+            ]);
+
+        $meta = $repository->get($donor->id, 'test_key');
+        $this->assertEquals('Test Value', $meta);
+    }
 }

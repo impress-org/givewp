@@ -79,19 +79,21 @@ class StoreCustomFields
     }
 
     /**
+     * @unreleased replace update_meta with meta repository
      * @since 3.0.0
      */
     protected function storeAsDonorMeta(int $donorId, string $metaKey, $value): void
     {
-        give()->donor_meta->update_meta($donorId, $metaKey, $value);
+        give()->donors->meta->upsert($donorId, $metaKey, $value);
     }
 
     /**
+     * @unreleased replace update_meta with meta repository
      * @since 3.0.0
      */
     protected function storeAsDonationMeta(int $donationId, string $metaKey, $value): void
     {
-        give()->payment_meta->update_meta($donationId, $metaKey, $value);
+        give()->donations->meta->upsert($donationId, $metaKey, $value);
     }
 
     /**

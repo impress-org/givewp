@@ -45,17 +45,31 @@ class TestDonationMetaRepository extends TestCase
     {
         $donation = Donation::factory()->create();
         $repository = new DonationMetaRepository();
-        $repository->upsert($donation->id, 'test_key', 'test_value');
+        $repository->upsert($donation->id, 'test_key_string', 'Test Value');
+        $repository->upsert($donation->id, 'test_key_array', ['Test Value']);
+        $repository->upsert($donation->id, 'test_key_int', 1);
 
-        $meta = DB::table('give_donationmeta')
+        $meta1 = DB::table('give_donationmeta')
             ->where('donation_id', $donation->id)
-            ->where('meta_key', 'test_key')
+            ->where('meta_key', 'test_key_string')
             ->get()
             ->meta_value;
 
-        $this->assertEquals('test_value', $meta);
+        $meta2 = DB::table('give_donationmeta')
+            ->where('donation_id', $donation->id)
+            ->where('meta_key', 'test_key_array')
+            ->get()
+            ->meta_value;
 
+        $meta3 = DB::table('give_donationmeta')
+            ->where('donation_id', $donation->id)
+            ->where('meta_key', 'test_key_int')
+            ->get()
+            ->meta_value;
 
+        $this->assertEquals('Test Value', $meta1);
+        $this->assertEquals(['Test Value'], json_decode($meta2, false));
+        $this->assertEquals(1, $meta3);
     }
 
     /**
@@ -83,5 +97,40 @@ class TestDonationMetaRepository extends TestCase
             ->meta_value;
 
         $this->assertEquals('Test Value Two', $meta);
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testGetShouldReturnNullIfMetaDoesNotExist(): void
+    {
+        $donation = Donation::factory()->create();
+        $repository = new DonationMetaRepository();
+
+        $meta = $repository->get($donation->id, 'test_key');
+
+        $this->assertNull($meta);
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testGetShouldReturnMetaValueIfExists(): void
+    {
+        $donation = Donation::factory()->create();
+        $repository = new DonationMetaRepository();
+
+        DB::table('give_donationmeta')
+            ->insert([
+                'donation_id' => $donation->id,
+                'meta_key' => 'test_key',
+                'meta_value' => 'Test Value',
+            ]);
+
+        $meta = $repository->get($donation->id, 'test_key');
+
+        $this->assertEquals('Test Value', $meta);
     }
 }

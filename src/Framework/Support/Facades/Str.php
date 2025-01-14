@@ -2,6 +2,8 @@
 
 namespace Give\Framework\Support\Facades;
 
+use JsonException;
+
 use function sanitize_title;
 
 class Str
@@ -815,5 +817,26 @@ class Str
         static::$snakeCache = [];
         static::$camelCache = [];
         static::$studlyCache = [];
+    }
+
+    /**
+     * @unreleased
+     *
+     * Determine if a given value is valid JSON.
+     *
+     * @param  mixed  $value
+     * @return bool
+     */
+    public static function isJson($value): bool
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        if (function_exists('json_validate')) {
+            return json_validate($value);
+        }
+
+        return !is_null(json_decode($value, true));
     }
 }
