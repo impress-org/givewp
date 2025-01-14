@@ -10,10 +10,12 @@ use Give_DB_Donors;
  * This proxy determines which donors repository to call donors->method() from.
  * In the case of naming conflicts, we will manually check SHARED_METHOD against their arguments.
  *
+ * @unreleased added $meta property
  * @since 2.19.6
  *
  * @mixin DonorRepository
  * @mixin Give_DB_Donors
+ * @mixin DonorMetaRepository
  *
  * @throws InvalidArgumentException
  */
@@ -30,17 +32,23 @@ class DonorRepositoryProxy
      * @var DonorRepository
      */
     private $donorRepository;
+    /**
+     * @var DonorMetaRepository
+     */
+    public $meta;
 
     /**
      * The Give_DB_Donors class extends Give_DB which has & assigns public properties that we need to
      * dynamically assign to this proxy class or else they won't be accessible.
      *
+     * @unreleased added $meta property
      * @since 2.19.6
      */
-    public function __construct(Give_DB_Donors $legacyDonorRepository, DonorRepository $donorRepository)
+    public function __construct(Give_DB_Donors $legacyDonorRepository, DonorRepository $donorRepository, DonorMetaRepository $meta)
     {
         $this->legacyDonorRepository = $legacyDonorRepository;
         $this->donorRepository = $donorRepository;
+        $this->meta = $meta;
 
         $properties = get_object_vars($legacyDonorRepository);
 

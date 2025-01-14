@@ -21,7 +21,6 @@ use Give\Log\Log;
  */
 class DonorRepository
 {
-
     /**
      * @var DonorMetaRepository
      */
