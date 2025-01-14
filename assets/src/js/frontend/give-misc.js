@@ -22,12 +22,6 @@ jQuery(
 				midClick: true,
 				removalDelay: 300,
 				mainClass: 'modal-fade-slide give-modal',
-                callbacks: {
-                    open: function () {
-                        const modalId = this.currItem.inlineElement[0].id;
-                        sessionStorage.setItem('currentGridModal', modalId);
-                    },
-                }
 			}
 		);
 
@@ -38,21 +32,19 @@ jQuery(
             {
                 const urlParams = new URLSearchParams(window.location.search);
 
-                const isGatewayRedirect = urlParams.has('givewp-event') &&
-                    urlParams.get('givewp-event') === 'donation-completed' &&
-                    urlParams.has('givewp-receipt-id');
+                const completedFormEmbedId = urlParams.get('givewp-embed-id');
+
+                const isGatewayRedirect = urlParams.has('givewp-embed-id') && urlParams.has('givewp-receipt-id');
 
                 if (isGatewayRedirect) {
                     document.querySelectorAll('.js-give-grid-modal-launcher').forEach(function (formGridModalLauncher) {
-                        const gridModal = formGridModalLauncher.nextElementSibling.id;
-                        const currentModal = sessionStorage.getItem('currentGridModal');
+                        const modalFormEmbedId = formGridModalLauncher.nextElementSibling.firstElementChild.dataset.givewpEmbedId;
 
-                        if (gridModal === currentModal) {
+                        if (modalFormEmbedId === completedFormEmbedId) {
                             formGridModalLauncher.click();
                         }
                     });
                 }
-                sessionStorage.clear();
             }
             reopenOnGatewayRedirect();
         });
