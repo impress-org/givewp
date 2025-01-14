@@ -18,6 +18,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
+ * @unreleased added $meta property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  */
@@ -29,11 +30,18 @@ class DonationRepository
     public $notes;
 
     /**
+     * @var DonationMetaRepository
+     */
+    public $meta;
+
+    /**
+     * @unreleased added $meta property
      * @since 2.21.0
      */
     public function __construct()
     {
         $this->notes = give(DonationNotesRepository::class);
+        $this->meta = give(DonationMetaRepository::class);
     }
 
     /**
@@ -271,7 +279,7 @@ class DonationRepository
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                $this->upsertMeta($donation->id, $metaKey, $metaValue);
+                $this->meta->upsert($donation->id, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -581,31 +589,5 @@ class DonationRepository
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
-    }
-
-    /**
-     * @unreleased
-     */
-    public function upsertMeta(int $donationId, string $metaKey, $metaValue): void
-    {
-        $queryBuilder = DB::table("give_donationmeta");
-
-        $query = $queryBuilder
-            ->where("donation_id", $donationId)
-            ->where("meta_key", $metaKey)
-            ->get();
-
-        if (!$query) {
-            $queryBuilder->insert([
-                "donation_id" => $donationId,
-                "meta_key" => $metaKey,
-                "meta_value" => $metaValue
-            ]);
-        } else {
-            $queryBuilder
-                ->where("donation_id", $donationId)
-                ->where("meta_key", $metaKey)
-                ->update(["meta_value" => $metaValue]);
-        }
     }
 }
