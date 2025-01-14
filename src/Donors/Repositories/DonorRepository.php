@@ -16,10 +16,16 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
+ * @unreleased added $meta property
  * @since 2.19.6
  */
 class DonorRepository
 {
+
+    /**
+     * @var DonorMetaRepository
+     */
+    public $meta;
 
     /**
      * @var string[]
@@ -30,6 +36,14 @@ class DonorRepository
         'lastName',
         'email',
     ];
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->meta = give(DonorMetaRepository::class);
+    }
 
     /**
      * Query Donor By ID
@@ -217,7 +231,7 @@ class DonorRepository
                 ->update($args);
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                $this->upsertMeta($donor->id, $metaKey, $metaValue);
+                $this->meta->upsert($donor->id, $metaKey, $metaValue);
             }
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
@@ -516,31 +530,5 @@ class DonorRepository
     public function getDonorsCount(): int
     {
         return DB::table('give_donors')->count();
-    }
-
-     /**
-     * @unreleased
-     */
-    public function upsertMeta(int $donorId, string $metaKey, $metaValue): void
-    {
-        $queryBuilder = DB::table("give_donormeta");
-
-        $query = $queryBuilder
-            ->where("donor_id", $donorId)
-            ->where("meta_key", $metaKey)
-            ->get();
-
-        if (!$query) {
-            $queryBuilder->insert([
-                "donor_id" => $donorId,
-                "meta_key" => $metaKey,
-                "meta_value" => $metaValue
-            ]);
-        } else {
-            $queryBuilder
-                ->where("donor_id", $donorId)
-                ->where("meta_key", $metaKey)
-                ->update(["meta_value" => $metaValue]);
-        }
     }
 }
