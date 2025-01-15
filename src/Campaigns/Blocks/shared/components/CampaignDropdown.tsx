@@ -30,7 +30,7 @@ export default function CampaignDropdown({campaignId, setAttributes, placement =
             value={campaignId || ''}
             options={options}
             disabled={options.length === 1}
-            onChange={(newValue) => setAttributes({campaignId: newValue ? parseInt(newValue) : null})}
+            onChange={(newValue: string) => setAttributes({campaignId: newValue ? parseInt(newValue) : null})}
         />
     );
 

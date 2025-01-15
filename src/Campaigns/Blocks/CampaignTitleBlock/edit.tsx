@@ -5,6 +5,7 @@ import {
     InspectorControls,
     useBlockProps,
 } from '@wordpress/block-editor';
+import {BlockEditProps} from '@wordpress/blocks';
 import {BaseControl, Icon, PanelBody, TextareaControl} from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
@@ -15,7 +16,14 @@ import {external} from '@wordpress/icons';
 
 import './editor.scss';
 
-export default function Edit({attributes, setAttributes}) {
+export default function Edit({
+    attributes,
+    setAttributes,
+}: BlockEditProps<{
+    campaignId: number;
+    headingLevel: string;
+    textAlign: string;
+}>) {
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
 
@@ -66,9 +74,7 @@ export default function Edit({attributes, setAttributes}) {
                 />
                 <AlignmentControl
                     value={attributes.textAlign}
-                    onChange={(nextAlign) => {
-                        setAttributes({textAlign: nextAlign});
-                    }}
+                    onChange={(nextAlign: string) => setAttributes({textAlign: nextAlign})}
                 />
             </BlockControls>
         </div>
