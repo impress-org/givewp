@@ -1,7 +1,6 @@
 import {PanelBody, SelectControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import useCampaigns from '../hooks/useCampaigns';
-import {Campaign} from '@givewp/campaigns/admin/components/types';
 import {__} from '@wordpress/i18n';
 
 export default function CampaignDropdown({campaignId, setAttributes, placement = 'sidebar'}) {
