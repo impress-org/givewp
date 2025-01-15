@@ -2,8 +2,14 @@
 
 namespace Give\Campaigns\Actions;
 
+/**
+ * @unreleased
+ */
 class RegisterCampaignIdRestField
 {
+    /**
+     * @unreleased
+     */
     public function __invoke()
     {
         register_rest_field(

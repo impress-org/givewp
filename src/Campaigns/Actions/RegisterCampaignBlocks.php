@@ -4,8 +4,14 @@ namespace Give\Campaigns\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
+/**
+ * @unreleased
+ */
 class RegisterCampaignBlocks
 {
+    /**
+     * @unreleased
+     */
     public function __invoke()
     {
         $blocks = glob(dirname(__DIR__) . '/Blocks/*', GLOB_ONLYDIR);
@@ -17,6 +23,9 @@ class RegisterCampaignBlocks
         $this->enqueueBlocksAssets();
     }
 
+    /**
+     * @unreleased
+     */
     private function enqueueBlocksAssets()
     {
         $handleName = 'givewp-campaign-blocks';
