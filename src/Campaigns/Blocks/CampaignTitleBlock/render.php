@@ -3,7 +3,7 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
-if (empty($attributes) || !isset($attributes['campaignId'])) {
+if ( ! isset($attributes['campaignId'])) {
     return;
 }
 
