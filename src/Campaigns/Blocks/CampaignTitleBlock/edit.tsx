@@ -36,7 +36,7 @@ export default function Edit({attributes, setAttributes}) {
             {hasResolved && campaign && (
                 <InspectorControls>
                     <PanelBody title="Settings" initialOpen={true}>
-                        <BaseControl label="Title">
+                        <BaseControl label="Title" id="givewp-campaign-title-block__title-field">
                             <TextareaControl
                                 value={campaign.title}
                                 readOnly={true}
@@ -47,6 +47,7 @@ export default function Edit({attributes, setAttributes}) {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="givewp-campaign-title-block__edit-campaign-link"
+                                        aria-label={__('Edit campaign settings in a new tab', 'give')}
                                     >
                                         {__('Edit campaign title', 'give')}
                                         <Icon icon={external} />
