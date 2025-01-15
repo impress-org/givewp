@@ -16,9 +16,7 @@ class RegisterCampaignBlocks
     {
         $blocks = glob(dirname(__DIR__) . '/Blocks/*', GLOB_ONLYDIR);
 
-        foreach ($blocks as $block) {
-            register_block_type(dirname(__DIR__) . '/Blocks/' . basename($block));
-        }
+        array_map('register_block_type', $blocks);
 
         $this->enqueueBlocksAssets();
     }
