@@ -5,6 +5,7 @@ namespace Give\DonationForms\AsyncData\Actions;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 
 /**
  * @since 3.16.0
@@ -12,6 +13,7 @@ use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
 class GetAsyncFormDataForListView
 {
     /**
+     * @unreleased Check if form goal is enabled
      * @since 3.16.0
      */
     public function __invoke()
@@ -43,7 +45,7 @@ class GetAsyncFormDataForListView
 
         $amountRaised = 0;
         $percentComplete = 0;
-        if ($this->isAsyncProgressBar()) {
+        if ($this->isAsyncProgressBar() && $this->isFormGoalEnabled($formId)) {
             $goalStats = give_goal_progress_stats($formId);
             $amountRaised = $goalStats['actual'];
             $percentComplete = ('percentage' === $goalStats['format']) ? str_replace('%', '',
@@ -95,5 +97,14 @@ class GetAsyncFormDataForListView
     private function isAsyncRevenue(): bool
     {
         return AdminFormListViewOptions::isRevenueColumnAsync();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isFormGoalEnabled(int $formId): bool
+    {
+        return give_is_setting_enabled(Give()->form_meta->get_meta($formId,
+            DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase(), true));
     }
 }
