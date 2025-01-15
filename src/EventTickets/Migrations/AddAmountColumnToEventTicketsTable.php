@@ -50,7 +50,7 @@ class AddAmountColumnToEventTicketsTable extends Migration {
                 ADD COLUMN amount INT UNSIGNED NOT NULL AFTER donation_id";
 
         try {
-            $wpdb->query($sql);
+            maybe_add_column($eventTicketsTable, 'amount', $sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException( "An error occurred while adding the amount column to the $eventTicketsTable table", 0, $exception );
         }
