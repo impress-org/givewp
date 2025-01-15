@@ -38,7 +38,9 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                         </p>
                     </>
                 ) : (
-                    <span>{__('Sold out', 'give')}</span>
+                    <span className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}>
+                        {__('Sold out', 'give')}
+                    </span>
                 )}
             </div>
         </div>
