@@ -63,6 +63,7 @@ module.exports = {
         campaignEntity: srcPath('Campaigns/resources/entity.ts'),
         campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
+        campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     },
 };
 
