@@ -276,7 +276,7 @@ final class TestDonationRepository extends TestCase
     public function testInsertShouldSafelyStoreMetaValues(): void
     {
         $name = (object)['first' => 'Jon', 'last' => 'Doe'];
-        
+
         $serializedFirstName = serialize($name);
 
         $donation = new Donation(array_merge(Donation::factory()->definition(), [
@@ -288,7 +288,12 @@ final class TestDonationRepository extends TestCase
         $repository->insert($donation);
 
         $metaValue = give()->payment_meta->get_meta($donation->id, DonationMetaKeys::FIRST_NAME, true);
+        $metaQuery = DB::table('give_donationmeta')
+            ->where('donation_id', $donation->id)
+            ->where('meta_key', DonationMetaKeys::FIRST_NAME)
+            ->get();
 
         $this->assertSame($serializedFirstName, $metaValue);
+        $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
     }
 }
