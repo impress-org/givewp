@@ -5,6 +5,7 @@ namespace Give\Tests\Unit\Donors\Repositories;
 use Exception;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
@@ -210,5 +211,33 @@ class TestDonorRepository extends TestCase
 
         $this->assertNull($donorQuery);
         $this->assertEmpty($donorMetaQuery);
+    }
+
+    /**
+     * @unreleased
+     * @throws \Give\Framework\Exceptions\Primitives\Exception|Exception
+     */
+    public function testInsertShouldSafelyStoreMetaValues(): void
+    {
+        $name = (object)['first' => 'Jon', 'last' => 'Doe'];
+
+        $serializedFirstName = serialize($name);
+
+        $donor = new Donor(array_merge(Donor::factory()->definition(), [
+            'firstName' => $serializedFirstName,
+        ]));
+
+        $repository = new DonorRepository();
+
+        $repository->insert($donor);
+
+        $metaValue = give()->donor_meta->get_meta($donor->id, DonorMetaKeys::FIRST_NAME, true);
+        $metaQuery = DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where('meta_key', DonorMetaKeys::FIRST_NAME)
+            ->get();
+
+        $this->assertSame($serializedFirstName, $metaValue);
+        $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
     }
 }
