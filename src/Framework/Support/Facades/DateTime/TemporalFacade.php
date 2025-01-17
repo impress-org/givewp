@@ -5,6 +5,8 @@ namespace Give\Framework\Support\Facades\DateTime;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
+use Exception;
 
 /**
  * @since 2.19.6
@@ -75,5 +77,21 @@ class TemporalFacade
         );
 
         return $newDateTime;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDateTimestamp(string $date, string $timezone = ''): int
+    {
+        try {
+            $timezone = empty($timezone) ? wp_timezone_string() : $timezone;
+            $timezone = new DateTimeZone($timezone);
+            $date = new DateTime($date, $timezone);
+
+            return $date->getTimestamp();
+        } catch (Exception $e) {
+            return 0;
+        }
     }
 }
