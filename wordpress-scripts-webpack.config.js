@@ -25,6 +25,7 @@ module.exports = {
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
             '@givewp/components': srcPath('Views/Components/'),
+            '@givewp/campaigns': srcPath('Campaigns/resources'),
         },
     },
     entry: {
@@ -59,7 +60,10 @@ module.exports = {
         formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
         formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
         formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
+        campaignEntity: srcPath('Campaigns/resources/entity.ts'),
+        campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
+        campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     },
 };
 

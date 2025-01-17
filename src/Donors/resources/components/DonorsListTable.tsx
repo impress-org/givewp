@@ -26,18 +26,18 @@ const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or Donor ID', 'give'),
-        ariaLabel: __('Search donors', 'give'),
-    },
-    {
         name: 'form',
         type: 'formselect',
         text: __('All Donation Forms', 'give'),
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: window.GiveDonors.forms,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or Donor ID', 'give'),
+        ariaLabel: __('Search donors', 'give'),
     },
 ];
 
@@ -54,7 +54,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -62,12 +62,11 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                         </li>
                     ))}
                 </ul>
-                <div>
+                <br></br>
+                <label htmlFor="giveDonorsTableDeleteDonations">
                     <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
-                    <label htmlFor="giveDonorsTableDeleteDonations">
-                        {__('Delete all associated donations and records', 'give')}
-                    </label>
-                </div>
+                    {__('Delete all associated donations and records', 'give')}
+                </label>
             </>
         ),
     },
