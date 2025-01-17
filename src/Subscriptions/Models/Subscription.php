@@ -173,6 +173,36 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function createRenewal(array $attributes = []): Donation
+    {
+        return give()->subscriptions->createRenewal($this, $attributes);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function shouldCreateRenewal(): bool
+    {
+        $billTimes = $this->installments;
+        $totalPayments = count($this->donations);
+
+        return $this->status->isActive() && (0 === $billTimes || $totalPayments < $billTimes);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function shouldEndSubscription(): bool
+    {
+        return $this->installments !== 0 && (count(
+                    $this->donations
+                ) >= $this->installments);
+    }
+
+    /**
      * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
