@@ -186,7 +186,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function shouldCreateRenewal(): bool
     {
-        return $this->status->isActive() && ($this->isIndefinite() || $this->totalDonations() < $this->installments);
+        if (!$this->status->isActive()) {
+            return false;
+        }
+
+        return $this->isIndefinite() || $this->totalDonations() < $this->installments;
     }
 
     /**
