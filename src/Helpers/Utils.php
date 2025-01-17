@@ -82,7 +82,7 @@ class Utils
      */
     public static function removeDonationAction($url)
     {
-        return esc_url_raw(add_query_arg(['giveDonationAction' => false], $url));
+        return esc_url_raw( add_query_arg(['giveDonationAction' => false], $url) );
     }
 
     /**
@@ -105,7 +105,7 @@ class Utils
      */
     public static function isPluginActive($plugin)
     {
-        if (! function_exists('is_plugin_active')) {
+        if ( ! function_exists('is_plugin_active')) {
             include_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
@@ -130,8 +130,6 @@ class Utils
     }
 
     /**
-     * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
-     *
      * Decode strings recursively to prevent double (or more) encoded strings
      *
      * @since 3.19.4
@@ -152,7 +150,7 @@ class Utils
      */
     public static function containsSerializedDataRegex($data): bool
     {
-        if (! is_string($data)) {
+        if ( ! is_string($data)) {
             return false;
         }
 
