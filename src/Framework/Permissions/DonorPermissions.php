@@ -12,6 +12,6 @@ class DonorPermissions extends UserPermission
      */
     public static function getType(): string
     {
-        return 'give_payment';
+        return 'give_donor';
     }
 }
