@@ -97,6 +97,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
@@ -142,22 +143,12 @@ class DonorRepository
             $donorId = DB::last_insert_id();
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                DB::table('give_donormeta')
-                    ->insert([
-                        'donor_id' => $donorId,
-                        'meta_key' => $metaKey,
-                        'meta_value' => $metaValue,
-                    ]);
+                give()->donor_meta->add_meta($donorId, $metaKey, $metaValue);
             }
 
             if (isset($donor->additionalEmails)) {
                 foreach ($donor->additionalEmails as $additionalEmail) {
-                    DB::table('give_donormeta')
-                        ->insert([
-                            'donor_id' => $donorId,
-                            'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
-                            'meta_value' => $additionalEmail,
-                        ]);
+                    give()->donor_meta->add_meta($donorId, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
                 }
             }
         } catch (Exception $exception) {
@@ -411,6 +402,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
+     * @unreleased store meta using native WP functions
      * @since 2.19.6
      *
      * @return void
@@ -426,13 +418,7 @@ class DonorRepository
         }
 
         foreach ($donor->additionalEmails as $additionalEmail) {
-            DB::table('give_donormeta')
-                ->where('donor_id', $donor->id)
-                ->insert([
-                    'donor_id' => $donor->id,
-                    'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
-                    'meta_value' => $additionalEmail,
-                ]);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
         }
     }
 
