@@ -90,6 +90,7 @@ trait StripePaymentElementRepository
     }
 
     /**
+     * @unreleased removed statement_descriptor. As of 01/02/2024, Stripe no longer supports the `statement_descriptor` parameter on the PaymentIntent API for PaymentIntents in which one of the supported `payment_method_types` is `card`.
      * @since 3.0.0
      *
      * @throws InvalidPropertyName
@@ -114,9 +115,6 @@ trait StripePaymentElementRepository
                 $donation->amount->getAmount()
             );
         }
-
-        // Add statement descriptor
-        $intentArgs['statement_descriptor'] = give_stripe_get_statement_descriptor();
 
         // Send Stripe Receipt emails when enabled.
         if (give_is_setting_enabled(give_get_option('stripe_receipt_emails'))) {

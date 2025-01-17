@@ -2,7 +2,14 @@
 
 namespace Give\Donations\Properties;
 
-final class BillingAddress
+use Give\Framework\Support\Contracts\Arrayable;
+use JsonSerializable;
+
+/**
+ * @unreleased added JsonSerializable an Arrayable
+ * @since 2.19.6
+ */
+final class BillingAddress implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -48,5 +55,29 @@ final class BillingAddress
         $self->zip = $array['zip'];
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return [
+            'country' => $this->country,
+            'address1' => $this->address1,
+            'address2' => $this->address2,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip' => $this->zip,
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }
