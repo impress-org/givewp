@@ -14,6 +14,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @unreleased Set event end date and time.
      * @since 3.12.2 Remove event ID from field name
      * @since 3.6.0
      *
@@ -32,6 +33,7 @@ class ConvertEventTicketsBlockToFieldsApi
                 $eventTicketsField
                     ->title($event->title)
                     ->startDateTime($event->startDateTime->format('Y-m-d H:i:s'))
+                    ->endDateTime($event->endDateTime->format('Y-m-d H:i:s'))
                     ->description($event->description)
                     ->ticketTypes($ticketTypes);
 
