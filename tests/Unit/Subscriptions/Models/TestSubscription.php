@@ -155,6 +155,17 @@ class TestSubscription extends TestCase
     }
 
     /**
+     * @throws Exception
+     */
+    public function testGetTotalDonationsShouldReturnTotalDonations(): void
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        Subscription::factory()->createRenewal($subscription, 2);
+
+        $this->assertEquals(3, $subscription->totalDonations());
+    }
+
+    /**
      * @return void
      * @throws Exception
      */

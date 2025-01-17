@@ -186,10 +186,15 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function shouldCreateRenewal(): bool
     {
-        $billTimes = $this->installments;
-        $totalPayments = count($this->donations);
+        return $this->status->isActive() && ($this->isIndefinite() || $this->totalDonations() < $this->installments);
+    }
 
-        return $this->status->isActive() && (0 === $billTimes || $totalPayments < $billTimes);
+    /**
+     * @unreleased
+     */
+    public function totalDonations(): int
+    {
+        return $this->donations()->count();
     }
 
     /**
@@ -197,9 +202,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function shouldEndSubscription(): bool
     {
-        return $this->installments !== 0 && (count(
-                    $this->donations
-                ) >= $this->installments);
+        return !$this->isIndefinite() && ($this->totalDonations() >= $this->installments);
     }
 
     /**
