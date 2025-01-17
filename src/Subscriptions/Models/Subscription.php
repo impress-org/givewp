@@ -206,7 +206,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function shouldEndSubscription(): bool
     {
-        return !$this->isIndefinite() && ($this->totalDonations() >= $this->installments);
+        if ($this->isIndefinite()) {
+            return false;
+        }
+
+        return $this->totalDonations() >= $this->installments;
     }
 
     /**
