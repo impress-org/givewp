@@ -6,12 +6,37 @@ import {createInterpolateElement, useEffect, useMemo} from '@wordpress/element';
 import cx from 'classnames';
 
 /**
+ * @unreleased
+ */
+function EmptyMessage({ message }: { message: string }) {
+    return (
+        <div className="givewp-fields-gateways__gateway--empty">
+            <p>
+                <b>{__('Payment options are not available:', 'give')}</b>
+            </p>
+
+            <p>
+                <em>{message}</em>
+            </p>
+
+        </div>
+    );
+}
+
+/**
+ * @unreleased updated message to account for minimum donation amount
  * @since 3.0.0
  */
-function GatewayMissingMessage({donationAmountLimitNotReached, currencyNotSupported}: {donationAmountLimitNotReached?: boolean, currencyNotSupported?: boolean}) {
-    let message = '';
+function GatewayMissingMessage({ donationAmountMinimumNotReached, currencyNotSupported }: {
+    donationAmountMinimumNotReached?: boolean,
+    currencyNotSupported?: boolean
+}) {
+    let message = __(
+        'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+        'give'
+    );
 
-    if (donationAmountLimitNotReached) {
+    if (donationAmountMinimumNotReached) {
         message = __(
             'Donation amount must be greater than zero.',
             'give'
@@ -21,20 +46,15 @@ function GatewayMissingMessage({donationAmountLimitNotReached, currencyNotSuppor
             'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
             'give'
         );
-    } else {
-        message = __(
-            'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-            'give'
-        );
     }
 
-    return <em>{message}</em>;
+    return <EmptyMessage message={message} />;
 }
 
 /**
  * @since 3.0.0
  */
-function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
+function GatewayFieldsErrorFallback({ error, resetErrorBoundary }) {
     return (
         <div role="alert">
             <p>
@@ -43,7 +63,7 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
                     'give'
                 )}
             </p>
-            <pre style={{padding: '0.5rem'}}>{error.message}</pre>
+            <pre style={{ padding: '0.5rem' }}>{error.message}</pre>
             <button type="button" onClick={resetErrorBoundary}>
                 {__('Reload form', 'give')}
             </button>
@@ -64,7 +84,8 @@ const TestModeNotice = () => {
                     d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM12 7C11.4477 7 11 7.44772 11 8C11 8.55228 11.4477 9 12 9H12.01C12.5623 9 13.01 8.55228 13.01 8C13.01 7.44772 12.5623 7 12.01 7H12ZM13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V12Z"
                     fill="#F29718"
                 />
-            </svg>{' '}
+            </svg>
+            {' '}
             <p>
                 {createInterpolateElement(
                     __(
@@ -72,7 +93,7 @@ const TestModeNotice = () => {
                         'give'
                     ),
                     {
-                        strong: <strong />,
+                        strong: <strong />
                     }
                 )}
             </p>
@@ -83,20 +104,17 @@ const TestModeNotice = () => {
 /**
  * @since 3.0.0
  */
-export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
-    const {useFormState, useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
-    const {errors} = useFormState();
-    const {setValue} = useFormContext();
-    const {currencySwitcherSettings} = useDonationFormSettings();
+export default function Gateways({ isTestMode, defaultValue, inputProps, gateways }: GatewayFieldProps) {
+    const { useFormState, useWatch, useFormContext, useDonationFormSettings } = window.givewp.form.hooks;
+    const { errors } = useFormState();
+    const { setValue } = useFormContext();
+    const { currencySwitcherSettings } = useDonationFormSettings();
 
-    const donationAmount = useWatch({name: 'amount'});
-    const currency = useWatch({name: 'currency'});
-    const activeGatewayId = useWatch({name: 'gatewayId'});
+    const donationAmount = useWatch({ name: 'amount' });
+    const currency = useWatch({ name: 'currency' });
+    const activeGatewayId = useWatch({ name: 'gatewayId' });
 
-    // TODO: make dynamic
-    const minimumDonationAmount = 1;
-
-    const donationAmountLimitNotReached = donationAmount === 0 || donationAmount < minimumDonationAmount;
+    const donationAmountMinimumNotReached = donationAmount === 0;
 
     // filter gateway options if currency switcher settings are present
     const gatewayOptionsWithCurrencySettings = useMemo(() => {
@@ -104,19 +122,19 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
             return gateways;
         }
 
-        const currencySwitcherSetting = currencySwitcherSettings.find(({id}) => id === currency);
+        const currencySwitcherSetting = currencySwitcherSettings.find(({ id }) => id === currency);
 
         if (!currencySwitcherSetting) {
             return [];
         }
 
-        return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
+        return gateways.filter(({ id }) => currencySwitcherSetting.gateways.includes(id));
     }, [currency]);
 
 
     const gatewayOptions = useMemo(() => {
-        return donationAmountLimitNotReached ? [] : gatewayOptionsWithCurrencySettings;
-    }, [donationAmountLimitNotReached, gatewayOptionsWithCurrencySettings]);
+        return donationAmountMinimumNotReached ? [] : gatewayOptionsWithCurrencySettings;
+    }, [donationAmountMinimumNotReached, gatewayOptionsWithCurrencySettings]);
 
     // reset the default /selected gateway based on the gateway options available
     useEffect(() => {
@@ -134,7 +152,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
             {gatewayOptions.length > 0 ? (
                 <>
                     {isTestMode && <TestModeNotice />}
-                    <ul className="givewp-fields-gateways__list" style={{listStyleType: 'none', padding: 0}}>
+                    <ul className="givewp-fields-gateways__list" style={{ listStyleType: 'none', padding: 0 }}>
                         {gatewayOptions.map((gateway, index) => (
                             <GatewayOption
                                 gateway={gateway}
@@ -147,13 +165,14 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
                     </ul>
                 </>
             ) : (
-                <GatewayMissingMessage donationAmountLimitNotReached={donationAmountLimitNotReached} currencyNotSupported={gatewayOptionsWithCurrencySettings.length > 1} />
+                <GatewayMissingMessage donationAmountMinimumNotReached={donationAmountMinimumNotReached}
+                                       currencyNotSupported={gatewayOptionsWithCurrencySettings.length > 1} />
             )}
 
             <ErrorMessage
                 errors={errors}
                 name={'gatewayId'}
-                render={({message}) => <span className="give-next-gen__error-message">{message}</span>}
+                render={({ message }) => <span className="give-next-gen__error-message">{message}</span>}
             />
         </>
     );
@@ -162,11 +181,11 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 /**
  * @since 3.0.0
  */
-function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayOptionProps) {
+function GatewayOption({ gateway, defaultChecked, inputProps, isActive }: GatewayOptionProps) {
     const gatewayClass = `givewp-fields-gateways__gateway--${gateway.id}`;
     const className = cx('givewp-fields-gateways__gateway', {
         [gatewayClass]: true,
-        'givewp-fields-gateways__gateway--active': isActive,
+        'givewp-fields-gateways__gateway--active': isActive
     });
 
     let fontAwesomeClass = 'fa-solid fa-gear';
