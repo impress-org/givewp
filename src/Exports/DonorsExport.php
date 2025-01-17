@@ -129,9 +129,7 @@ class DonorsExport extends Give_Batch_Export
         }
 
         return $this->filterExportData(
-            array_map(function ($row) {
-                return array_intersect_key($row, $this->csv_cols());
-            }, $donorQuery->getAll(ARRAY_A))
+            $this->spreadExportDataOnExpectedColumns($donorQuery->getAll(ARRAY_A))
         );
     }
 
@@ -154,19 +152,6 @@ class DonorsExport extends Give_Batch_Export
          * @param array $exportData
          */
         return apply_filters("give_export_get_data_{$this->export_type}", $exportData);
-    }
-
-    /**
-     * @since 3.14.0
-     */
-    protected function filterColumnData(array $defaultColumns): array
-    {
-        /**
-         * @since 3.14.0
-         *
-         * @param array $defaultColumns
-         */
-        return apply_filters('give_export_donors_get_default_columns', $defaultColumns );
     }
 
     /**
@@ -195,11 +180,17 @@ class DonorsExport extends Give_Batch_Export
             ],
         ];
 
-        $defaultColumns = $this->flattenAddressColumn(
+        /**
+         * @unreleased
+         * @since 3.14.0
+         *
+         * @param array $defaultColumns
+         */
+        $defaultColumns = apply_filters('give_export_donors_get_default_columns', $defaultColumns );
+
+        return $this->flattenAddressColumn(
             array_intersect_key($defaultColumns, $this->postedData['give_export_columns'])
         );
-
-        return $this->filterColumnData($defaultColumns);
     }
 
     /**
@@ -221,5 +212,28 @@ class DonorsExport extends Give_Batch_Export
         }
 
         return $columnarData;
+    }
+
+    /**
+     * Spread Export Data on Expected (CSV) Columns
+     *
+     * This ensures that all columns exist in the CSV export, even if they are empty.
+     *
+     * @unreleased
+     *
+     * @param array $exportData
+     *
+     * @return array
+     */
+    protected function spreadExportDataOnExpectedColumns(array $exportData): array
+    {
+        /**
+         * Fill an array of CSV columns to merge with the export data.
+         */
+        $columnKeysArray = array_fill_keys(array_keys($this->csv_cols()), '');
+
+        return array_map(function ($row) use ($columnKeysArray) {
+            return array_merge($columnKeysArray, $row);
+        }, $exportData);
     }
 }
