@@ -7,6 +7,7 @@
  * Author: GiveWP
  * Author URI: https://givewp.com/
  * Version: 3.19.3
+ * Version: 3.19.4
  * Requires at least: 6.5
  * Requires PHP: 7.2
  * Text Domain: give
@@ -411,7 +412,11 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
+<<<<<<< HEAD
             define('GIVE_VERSION', '3.19.3');
+=======
+            define('GIVE_VERSION', '3.19.4');
+>>>>>>> develop
         }
 
         // Plugin Root File.

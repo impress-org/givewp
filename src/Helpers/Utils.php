@@ -82,7 +82,7 @@ class Utils
      */
     public static function removeDonationAction($url)
     {
-        return esc_url_raw( add_query_arg(['giveDonationAction' => false], $url) );
+        return esc_url_raw(add_query_arg(['giveDonationAction' => false], $url));
     }
 
     /**
@@ -105,7 +105,7 @@ class Utils
      */
     public static function isPluginActive($plugin)
     {
-        if ( ! function_exists('is_plugin_active')) {
+        if (! function_exists('is_plugin_active')) {
             include_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
@@ -132,18 +132,41 @@ class Utils
     /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
+     * Decode strings recursively to prevent double (or more) encoded strings
+     *
+     * @since 3.19.4
+     */
+    public static function recursiveUrlDecode(string $data): string
+    {
+        $decoded = urldecode($data);
+
+        return $decoded === $data ? $data : self::recursiveUrlDecode($decoded);
+    }
+
+    /**
+     * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
+     *
+     * @since 3.19.4 Decode the string and remove any character not allowed in a serialized string
      * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
      * @since 3.17.2
      */
     public static function containsSerializedDataRegex($data): bool
     {
-        if ( ! is_string($data)) {
+        if (! is_string($data)) {
             return false;
         }
 
+        $data = self::recursiveUrlDecode($data);
+
+        /**
+         * This regular expression removes any special character that is not:
+         * a Letter (a-zA-Z), number (0-9), or any of the characters {}, :, ;, ", ', ., [, ], (, ), ,
+         */
+        $data = preg_replace('/[^a-zA-Z0-9:{};"\'.\[\](),]/', '', $data);
+
         $pattern = '/
-        (a:\d+:\{.*\}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
-        (O:\d+:"[^"]+":\{.*\}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
+        (a:\d+:\{.*}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
+        (O:\d+:"[^"]+":\{.*}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
         (s:\d+:"[^"]*";) |       # Matches strings (e.g: s:5:"hello";)
         (i:\d+;) |               # Matches integers (e.g: i:42;)
         (b:[01];) |              # Matches booleans (e.g: b:1; or b:0;)

@@ -46,7 +46,7 @@
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
             "bin/strauss-installar.sh",
-            "vendor/stellarwp/validation/bin/set-domain domain=give",
+            "@php vendor/stellarwp/validation/bin/set-domain domain=give",
             "@php bin/strauss.phar",
             "@composer dump-autoload"
         ],
