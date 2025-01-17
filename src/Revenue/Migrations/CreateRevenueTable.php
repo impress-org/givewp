@@ -50,7 +50,7 @@ class CreateRevenueTable extends Migration
   			form_id bigint UNSIGNED NOT NULL,
   			amount int UNSIGNED NOT NULL,
   			PRIMARY KEY  (id)
-		) {$charset_collate};";
+		) {$charset_collate} ENGINE=InnoDB;";
 
         try {
             DB::delta($sql);
