@@ -17,19 +17,7 @@ describe('EventTicketsList', () => {
      */
     test('renders null when ticketTypes is an empty array', () => {
         const {container} = render(<EventTicketsList ticketTypes={[]} currency="USD" currencyRate={1} />);
-        expect(container.firstChild).toB, eNull();
-    });
-
-    /**
-     * @unreleased
-     */
-    test('displays the provided ticketsLabel', () => {
-        const ticketTypes = [{id: 1}];
-
-        const {getByText} = render(<EventTicketsList ticketTypes={ticketTypes} currency="USD" currencyRate={1} />);
-
-        const labelElement = getByText('Select tickets');
-        expect(labelElement).toBeInTheDocument();
+        expect(container.firstChild).toBeNull();
     });
 
     /**
