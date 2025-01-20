@@ -50,9 +50,6 @@ class CreateEventTicketsTable extends Migration {
 			PRIMARY KEY  (id)
 		) $charset";
 
-        echo "----creating table----" . PHP_EOL;
-        echo $sql;
-
         try {
             DB::delta( $sql );
         } catch ( DatabaseQueryException $exception ) {
