@@ -1,7 +1,13 @@
 import {render, within} from '@testing-library/react';
 import EventTicketsHeader from './EventTicketsHeader';
 
+/**
+ * @unreleased
+ */
 describe('EventTicketsHeader', () => {
+    /**
+     * @unreleased
+     */
     test('renders event details (day, month, title, and full formatted date) correctly', () => {
         const title = 'This is a test event title.';
         const startDateTime = new Date('2024-03-15 12:00:00');

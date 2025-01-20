@@ -2,6 +2,9 @@ import {fireEvent, render} from '@testing-library/react';
 import {act} from 'react-dom/test-utils';
 import EventTicketsListHOC from './EventTicketsListHOC';
 
+/**
+ * @unreleased
+ */
 jest.mock('../../components/EventTicketsList', () => (props) => (
     <div data-testid="event-tickets-list">
         {props.ticketTypes.map((ticketType) => {
@@ -37,7 +40,13 @@ jest.mock('../../components/EventTicketsList', () => (props) => (
     </div>
 ));
 
+/**
+ * @unreleased
+ */
 describe('EventTicketsListHOC', () => {
+    /**
+     * @unreleased
+     */
     beforeEach(() => {
         window.givewp = {
             form: {
@@ -59,25 +68,25 @@ describe('EventTicketsListHOC', () => {
         };
     });
 
+    /**
+     * @unreleased
+     */
     test('renders the EventTicketsList component with default props', () => {
-        const {getByTestId, container} = render(
-            <EventTicketsListHOC ticketTypes={[]} name="eventTickets" ticketsLabel="Select tickets" />
-        );
+        const {getByTestId, container} = render(<EventTicketsListHOC ticketTypes={[]} name="eventTickets" />);
 
         const eventTicketsList = getByTestId('event-tickets-list');
         expect(eventTicketsList).toBeInTheDocument();
     });
 
+    /**
+     * @unreleased
+     */
     test('updates the form field value when a ticket is selected', () => {
         const {useFormContext} = window.givewp.form.hooks;
         const {setValue: mockSetValue} = useFormContext();
 
         const {getByTestId} = render(
-            <EventTicketsListHOC
-                name="eventTickets"
-                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
-            />
+            <EventTicketsListHOC name="eventTickets" ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]} />
         );
 
         expect(mockSetValue).toHaveBeenCalledTimes(1);
@@ -95,16 +104,15 @@ describe('EventTicketsListHOC', () => {
         );
     });
 
+    /**
+     * @unreleased
+     */
     test('ensures selected ticket quantity is never negative', () => {
         const {useFormContext} = window.givewp.form.hooks;
         const {setValue: mockSetValue} = useFormContext();
 
         const {getByTestId} = render(
-            <EventTicketsListHOC
-                name="eventTickets"
-                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
-            />
+            <EventTicketsListHOC name="eventTickets" ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]} />
         );
 
         expect(mockSetValue).toHaveBeenCalledTimes(1);
@@ -122,16 +130,15 @@ describe('EventTicketsListHOC', () => {
         );
     });
 
+    /**
+     * @unreleased
+     */
     test('ensures selected ticket quantity does not exceed available tickets', () => {
         const {useFormContext} = window.givewp.form.hooks;
         const {setValue: mockSetValue} = useFormContext();
 
         const {getByTestId} = render(
-            <EventTicketsListHOC
-                name="eventTickets"
-                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 1}]}
-                ticketsLabel="Tickets"
-            />
+            <EventTicketsListHOC name="eventTickets" ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 1}]} />
         );
 
         expect(mockSetValue).toHaveBeenCalledTimes(1);
@@ -160,6 +167,9 @@ describe('EventTicketsListHOC', () => {
         );
     });
 
+    /**
+     * @unreleased
+     */
     test('adds ticket to donation summary when quantity increases from 0', () => {
         const {useDonationSummary} = window.givewp.form.hooks;
         const {addItem: mockAddItem, addToTotal: mockAddToTotal} = useDonationSummary();
@@ -168,7 +178,6 @@ describe('EventTicketsListHOC', () => {
             <EventTicketsListHOC
                 name="eventTickets"
                 ticketTypes={[{id: 1, title: 'General Admission', price: 1000, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
             />
         );
 
@@ -185,6 +194,9 @@ describe('EventTicketsListHOC', () => {
         expect(mockAddToTotal).toHaveBeenCalledWith('eventTickets', 10);
     });
 
+    /**
+     * @unreleased
+     */
     test('adds ticket to donation summary with "Free" price when quantity increases from 0 and ticket price is 0', () => {
         const {useDonationSummary} = window.givewp.form.hooks;
         const {addItem: mockAddItem, addToTotal: mockAddToTotal} = useDonationSummary();
@@ -193,7 +205,6 @@ describe('EventTicketsListHOC', () => {
             <EventTicketsListHOC
                 name="eventTickets"
                 ticketTypes={[{id: 1, title: 'General Admission', price: 0, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
             />
         );
 
@@ -209,16 +220,15 @@ describe('EventTicketsListHOC', () => {
         });
     });
 
+    /**
+     * @unreleased
+     */
     test('ensures an invalid ticket type is not added to the form field value', () => {
         const {useFormContext} = window.givewp.form.hooks;
         const {setValue: mockSetValue} = useFormContext();
 
         const {getByTestId} = render(
-            <EventTicketsListHOC
-                name="eventTickets"
-                ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
-            />
+            <EventTicketsListHOC name="eventTickets" ticketTypes={[{id: 1, price: 1000, ticketsAvailable: 10}]} />
         );
 
         expect(mockSetValue).toHaveBeenCalledTimes(1);
@@ -233,6 +243,9 @@ describe('EventTicketsListHOC', () => {
         expect(mockSetValue).toHaveBeenCalledWith('eventTickets', JSON.stringify([]));
     });
 
+    /**
+     * @unreleased
+     */
     test('removes ticket from donation summary when quantity returns to 0', () => {
         const {useDonationSummary} = window.givewp.form.hooks;
         const {removeItem: mockRemoveItem, removeFromTotal: mockRemoveFromTotal} = useDonationSummary();
@@ -241,7 +254,6 @@ describe('EventTicketsListHOC', () => {
             <EventTicketsListHOC
                 name="eventTickets"
                 ticketTypes={[{id: 1, title: 'General Admission', price: 1000, ticketsAvailable: 10}]}
-                ticketsLabel="Tickets"
             />
         );
 
