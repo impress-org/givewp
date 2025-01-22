@@ -24,7 +24,6 @@
             "wide",
             "full"
         ],
-        "anchor": true,
         "className": true,
         "splitting": true,
         "__experimentalBorder": {
