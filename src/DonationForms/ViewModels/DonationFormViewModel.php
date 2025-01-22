@@ -88,6 +88,16 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased
+     */
+    public function enqueueGlobalScripts()
+    {
+        add_action('wp_print_scripts', static function() {
+            echo '<meta name="viewport" content="width=device-width, initial-scale=1" />';
+        });
+    }
+
+    /**
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()
@@ -252,12 +262,13 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @unreleased Adds class for form design
+     * @unreleased Adds class for form design, add meta tag for viewport
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(): string
     {
+        $this->enqueueGlobalScripts();
         $this->enqueueGlobalStyles();
 
         $this->enqueueFormScripts(
