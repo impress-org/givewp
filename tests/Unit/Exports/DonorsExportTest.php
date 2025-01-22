@@ -2,6 +2,8 @@
 
 namespace Give\Tests\Unit\Exports;
 
+use Give\Donations\Models\Donation;
+use Give\Donors\Models\Donor;
 use Give\Exports\DonorsExport;
 use Give\Tests\TestCase;
 
@@ -23,6 +25,8 @@ final class DonorsExportTest extends TestCase
                 'custom-column' => 'on', // Custom column in the request
             ],
         ]);
+
+        Donor::factory()->create();
 
         add_filter( 'give_export_donors_get_default_columns', static function($columnData) {
             $columnData['custom-column'] = 'My Custom Column';
