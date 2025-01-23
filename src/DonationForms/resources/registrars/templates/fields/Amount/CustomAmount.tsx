@@ -43,6 +43,7 @@ const CustomAmount = (
                     groupSeparator.replace(/\u00A0/g, ' ')
                 }
                 className="givewp-fields-amount__input givewp-fields-amount__input-custom"
+                aria-label={__('Enter custom amount', 'give')}
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
                 name="amount-custom"
