@@ -1,8 +1,9 @@
 import {useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
+import {__} from '@wordpress/i18n';
+import FormModal from '../../common/FormModal';
 
 import '../../editor/styles/index.scss';
-import FormModal from '../../common/FormModal';
 
 type ModalFormProps = {
     dataSrc: string;
@@ -39,6 +40,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
     return (
         <FormModal isOpen={isOpen} onChange={toggleModal} openFormButton={openFormButton}>
             <IframeResizer
+                title={__('Donation Form', 'give')}
                 id={embedId}
                 src={dataSrcUrl}
                 checkOrigin={false}
