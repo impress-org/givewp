@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Exception;
+use Give\Log\Log;
 
 /**
  * @since 2.19.6
@@ -91,6 +92,15 @@ class TemporalFacade
 
             return $date->getTimestamp();
         } catch (Exception $e) {
+            Log::error(
+                'Failed to parse date string into a timestamp',
+                [
+                    'input_date' => $date,
+                    'input_timezone' => $timezone,
+                    'error_code' => $e->getCode(),
+                    'error_message' => $e->getMessage(),
+                ]
+            );
             return 0;
         }
     }
