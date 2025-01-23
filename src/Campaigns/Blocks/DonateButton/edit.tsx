@@ -6,7 +6,7 @@ import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/c
 import useCampaign from '../shared/hooks/useCampaign';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
 
-export default function Edit({attributes, setAttributes,}: BlockEditProps<{
+export default function Edit({attributes, setAttributes}: BlockEditProps<{
     campaignId: number;
     buttonText: string;
     useDefaultForm: boolean;

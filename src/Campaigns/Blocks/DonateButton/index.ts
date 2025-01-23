@@ -8,6 +8,6 @@ export const init = () => initBlock({
     name,
     metadata,
     settings: {
-        edit: Edit,
+        edit: Edit
     }
 });

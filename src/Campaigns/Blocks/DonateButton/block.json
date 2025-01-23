@@ -30,6 +30,6 @@
         }
     },
     "textdomain": "give",
-    "editorStyle": "file:../../../../build/campaignDonateButtonBlock.css",
-    "editorScript": "file:../../../../build/campaignDonateButtonBlock.js"
+    "editorScript": "file:../../../../build/campaignDonateButtonBlock.js",
+    "render": "file:./render.php"
 }
