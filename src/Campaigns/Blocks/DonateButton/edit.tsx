@@ -3,6 +3,7 @@ import {useSelect} from '@wordpress/data';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
+import {Button} from 'react-aria-components';
 import useCampaign from '../shared/hooks/useCampaign';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
 
@@ -36,11 +37,10 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
 
     return (
         <div {...blockProps}>
-
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
-                <div>
+                <Button className="givewp-donation-form-modal__open">
                     {attributes.buttonText}
-                </div>
+                </Button>
             </CampaignSelector>
 
             {hasResolved && campaign?.id && (

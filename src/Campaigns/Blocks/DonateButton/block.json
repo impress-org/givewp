@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "title": "Donate Button",
     "category": "give",
-    "icon": "button",
     "description": "The GiveWP Donate Button inserts an donate button into the page.",
     "supports": {
         "align": [
