@@ -1,9 +1,10 @@
-import {createRoot, render} from '@wordpress/element';
+import {createRoot} from '@wordpress/element';
 import ModalForm from './Components/ModalForm';
 import IframeResizer from 'iframe-resizer-react';
+import {__} from '@wordpress/i18n';
+import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
 import '../editor/styles/index.scss';
-import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
@@ -70,6 +71,7 @@ function DonationFormBlockApp({
 
     return (
         <IframeResizer
+            title={__('Donation Form', 'give')}
             id={embedId}
             src={dataSrc}
             checkOrigin={false}
