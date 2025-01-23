@@ -36,7 +36,7 @@ abstract class Endpoint implements RestRoute
     {
         // Check that date is valid, and formatted YYYY-MM-DD
         if (substr_count($param, '-') !== 2) return false;
-        list($year, $month, $day) = explode('-', $param);
+        list($year, $month, $day) = array_map('intval', explode('-', $param));
         $valid = checkdate($month, $day, $year);
 
         // If checking end date, check that it is after start date
