@@ -5,6 +5,7 @@ namespace Give\DonationForms\AsyncData\Actions;
 use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListViewOptions;
 use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\AsyncData\FormGrid\FormGridViewOptions;
+use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 
 /**
@@ -104,6 +105,10 @@ class GetAsyncFormDataForListView
      */
     private function isFormGoalEnabled(int $formId): bool
     {
+        if ($donationForm = DonationForm::find($formId)) {
+            return $donationForm->settings->enableDonationGoal;
+        }
+
         return give_is_setting_enabled(Give()->form_meta->get_meta($formId,
             DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase(), true));
     }
