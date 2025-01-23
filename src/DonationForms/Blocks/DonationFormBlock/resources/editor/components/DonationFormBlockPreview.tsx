@@ -1,9 +1,10 @@
 import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
+import {useState} from '@wordpress/element';
+import {__} from '@wordpress/i18n';
+import FormModal from '../../common/FormModal';
 
 import '../styles/index.scss';
-import FormModal from '../../common/FormModal';
-import {useState} from '@wordpress/element';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
@@ -46,6 +47,7 @@ export default function DonationFormBlockPreview({
     ) : isModalDisplay ? (
         <FormModal openFormButton={openFormButton} isOpen={isOpen} onChange={() => setIsOpen(!isOpen)}>
             <IframeResizer
+                title={__('Donation Form', 'give')}
                 src={`/?givewp-route=donation-form-view&form-id=${formId}`}
                 checkOrigin={false}
                 style={{
@@ -56,6 +58,7 @@ export default function DonationFormBlockPreview({
         </FormModal>
     ) : (
         <IframeResizer
+            title={__('Donation Form', 'give')}
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}
             checkOrigin={false}
             style={{
