@@ -29,10 +29,15 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
             return []
         }
 
-        return forms.map((form: { name: string, id: string }) => ({
+        const options = forms.map((form: { name: string, id: string }) => ({
             label: form.name,
             value: form.id
         }))
+
+        return [
+            {label: __('Select form', 'give'), value: ''},
+            ...options
+        ];
     })();
 
     return (
@@ -57,7 +62,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                             onChange={(useDefaultForm: boolean) => setAttributes({useDefaultForm})}
                             help={
                                 <>
-                                    {__('Uses the campaign’s default form', 'give')}.
+                                    {__('Uses the campaign’s default form.', 'give')}
                                     {` `}
                                     <a
                                         href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=forms`}
@@ -70,12 +75,15 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                                 </>
                             }
                         />
-                        <SelectControl
-                            label={__('Form', 'give')}
-                            onChange={(selectedForm: string) => setAttributes({selectedForm})}
-                            options={campaignForms}
-                            value={attributes.selectedForm}
-                        />
+                        {!attributes.useDefaultForm && (
+                            <SelectControl
+                                label={__('Form', 'give')}
+                                onChange={(selectedForm: string) => setAttributes({selectedForm})}
+                                options={campaignForms}
+                                value={attributes.selectedForm}
+                                help={__('Donations are collected through this form.', 'give')}
+                            />
+                        )}
                     </PanelBody>
                 </InspectorControls>
             )}
