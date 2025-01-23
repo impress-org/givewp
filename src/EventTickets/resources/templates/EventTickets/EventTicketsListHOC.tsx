@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import EventTicketsList from '../../components/EventTicketsList';
 import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
 
-export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: EventTicketsListHOCProps) {
+export default function EventTicketsListHOC({name, ticketTypes}: EventTicketsListHOCProps) {
     const [selectedTickets, setSelectedTickets] = useState([]);
     const {useWatch, useCurrencyFormatter, useDonationFormSettings, useDonationSummary, useFormContext} =
         window.givewp.form.hooks;
@@ -11,7 +11,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const currencySettings = currencySwitcherSettings.find((setting) => setting.id === currency);
-    const currencyRate = (currencySettings?.exchangeRate ?? Number('1.00')) || 1;
+    const currencyRate = currencySettings?.exchangeRate ?? 1;
     const currencyFormatter = useCurrencyFormatter(currency, {
         minimumFractionDigits: currencySettings?.exchangeRateFractionDigits,
     });
@@ -22,7 +22,7 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
 
         Object.keys(selectedTickets).forEach((ticketId) => {
             const ticket = ticketTypes.find((ticketType) => ticketType.id === Number(ticketId));
-            const quantity = selectedTickets[ticketId]?.quantity ?? 0;
+            const quantity = (ticket && selectedTickets[ticketId]?.quantity) || 0;
 
             if (quantity > 0) {
                 const itemPrice = ticket.price * quantity * currencyRate;
@@ -69,7 +69,6 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
     return (
         <EventTicketsList
             ticketTypes={ticketTypes}
-            ticketsLabel={ticketsLabel}
             currency={currency}
             currencyRate={currencyRate}
             selectedTickets={selectedTickets}

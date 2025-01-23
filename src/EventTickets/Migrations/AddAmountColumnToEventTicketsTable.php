@@ -9,30 +9,45 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 /**
  * @unreleased
  */
-class AddAmountColumnToEventTicketsTable extends Migration {
+class AddAmountColumnToEventTicketsTable extends Migration
+{
     /**
      * @inheritdoc
+     *
+     * @unreleased
      */
-    public static function id() {
+    public static function id()
+    {
         return 'give-events-add-amount-column-to-events-tickets-table';
     }
 
-    public static function title() {
+    /**
+     * @unreleased
+     */
+    public static function title()
+    {
         return 'Add "amount" column to give_event_tickets table';
     }
 
     /**
      * @inheritdoc
+     *
+     * @unreleased
      */
-    public static function timestamp() {
-        return strtotime( '2022-03-18 12:00:00' );
+    public static function timestamp()
+    {
+        return strtotime('2022-03-18 12:00:00');
     }
 
     /**
      * @inheritdoc
+     *
+     * @unreleased
+     *
      * @throws DatabaseMigrationException
      */
-    public function run() {
+    public function run()
+    {
         global $wpdb;
 
         $eventTicketsTable = $wpdb->give_event_tickets;
@@ -43,23 +58,29 @@ class AddAmountColumnToEventTicketsTable extends Migration {
     }
 
     /**
+     * @unreleased
+     *
      * @throws DatabaseMigrationException
      */
-    private function addAmountColumn($wpdb, $eventTicketsTable) {
+    private function addAmountColumn($wpdb, $eventTicketsTable)
+    {
         $sql = "ALTER TABLE $eventTicketsTable
                 ADD COLUMN amount INT UNSIGNED NOT NULL AFTER donation_id";
 
         try {
-            $wpdb->query($sql);
+            maybe_add_column($eventTicketsTable, 'amount', $sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException( "An error occurred while adding the amount column to the $eventTicketsTable table", 0, $exception );
+            throw new DatabaseMigrationException("An error occurred while adding the amount column to the $eventTicketsTable table", 0, $exception);
         }
     }
 
     /**
+     * @unreleased
+     *
      * @throws DatabaseMigrationException
      */
-    private function migrateTicketPrices($wpdb, $eventTicketsTable, $eventTicketTypesTable) {
+    private function migrateTicketPrices($wpdb, $eventTicketsTable, $eventTicketTypesTable)
+    {
         $sql = "UPDATE $eventTicketsTable eventTickets
                 JOIN $eventTicketTypesTable evenTicketTypes
                 ON eventTickets.ticket_type_id = evenTicketTypes.id
@@ -68,7 +89,7 @@ class AddAmountColumnToEventTicketsTable extends Migration {
         try {
             $wpdb->query($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException( "An error occurred while migrating data to the amount column in the $eventTicketsTable table", 0, $exception );
+            throw new DatabaseMigrationException("An error occurred while migrating data to the amount column in the $eventTicketsTable table", 0, $exception);
         }
     }
 };

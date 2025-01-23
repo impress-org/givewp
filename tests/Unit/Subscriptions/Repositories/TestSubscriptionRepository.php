@@ -3,11 +3,15 @@
 namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -198,5 +202,58 @@ class TestSubscriptionRepository extends TestCase
             ->get();
 
         $this->assertNull($subscriptionQuery);
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testCreateRenewalShouldCreateNewRenewal(): void
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $repository = new SubscriptionRepository();
+
+        $renewalCreatedAt = Temporal::getCurrentDateTime();
+        $gatewayTransactionId = 'transaction-id';
+
+        $renewal = $repository->createRenewal($subscription, [
+            'gatewayTransactionId' => $gatewayTransactionId,
+            'createdAt' => $renewalCreatedAt,
+        ]);
+
+        $nextRenewalDate = (new GenerateNextRenewalForSubscription())(
+            $subscription->period,
+            $subscription->frequency,
+            $subscription->renewsAt
+        );
+
+        $initialDonation = $subscription->initialDonation();
+
+        $this->assertCount(2, $subscription->donations);
+        $this->assertTrue($renewal->status->isComplete());
+        $this->assertTrue($renewal->type->isRenewal());
+        $this->assertSame($subscription->id, $renewal->subscriptionId);
+        $this->assertSame($subscription->gatewayId, $renewal->gatewayId);
+        $this->assertSame($subscription->donorId, $renewal->donorId);
+        $this->assertSame($subscription->donationFormId, $renewal->formId);
+        $this->assertTrue($renewal->type->isRenewal());
+        $this->assertTrue($renewal->status->isComplete());
+        $this->assertSame($gatewayTransactionId, $renewal->gatewayTransactionId);
+        $this->assertSame($initialDonation->honorific, $renewal->honorific);
+        $this->assertSame($initialDonation->firstName, $renewal->firstName);
+        $this->assertSame($initialDonation->lastName, $renewal->lastName);
+        $this->assertSame($initialDonation->email, $renewal->email);
+        $this->assertSame($initialDonation->phone, $renewal->phone);
+        $this->assertSame($initialDonation->anonymous, $renewal->anonymous);
+        $this->assertSame($initialDonation->levelId, $renewal->levelId);
+        $this->assertSame($initialDonation->company, $renewal->company);
+        $this->assertSame($subscription->feeAmountRecovered, $renewal->feeAmountRecovered);
+        $this->assertSame($initialDonation->exchangeRate, $renewal->exchangeRate);
+        $this->assertSame($initialDonation->formTitle, $renewal->formTitle);
+        $this->assertSame($subscription->mode->getValue(), $renewal->mode->getValue());
+        $this->assertSame($initialDonation->donorIp, $renewal->donorIp);
+        $this->assertSame($initialDonation->billingAddress->toArray(), $renewal->billingAddress->toArray());
+        $this->assertSame($renewalCreatedAt->getTimestamp(), $renewal->createdAt->getTimestamp());
+        $this->assertSame($subscription->renewsAt->getTimestamp(), $nextRenewalDate->getTimestamp());
     }
 }
