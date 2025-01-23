@@ -5,6 +5,9 @@ import GiveIcon from '@givewp/components/GiveIcon';
 
 const {name} = metadata;
 
+/**
+ * @unreleased
+ */
 export const init = () => initBlock({
     name,
     metadata,
