@@ -19,6 +19,9 @@ class UpdateEvent implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Set the permission callback to "edit_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -38,7 +41,7 @@ class UpdateEvent implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return Event::find($eventId) !== null;
                         },
                         'required' => true,
                     ],
@@ -50,7 +53,7 @@ class UpdateEvent implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'startDateTime' => [
                         'type' => 'string',
