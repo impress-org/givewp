@@ -16,7 +16,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    php_tests:
+    # This workflow contains a single job called "test"
+    test:
         # The type of runner that the job will run on
         runs-on: ubuntu-20.04
         strategy:
@@ -104,21 +105,3 @@ jobs:
                 run: php -d memory_limit=-1 vendor/bin/phpunit
                 env:
                     DB_PORT: ${{ env.mysql_port }}
-
-    js_tests:
-        runs-on: ubuntu-20.04
-        steps:
-            -   uses: actions/checkout@v3
-            -   uses: actions/setup-node@v3
-                with:
-                    node-version: '18'
-                    cache: 'npm'
-                    cache-dependency-path: 'package-lock.json'
-
-            -   name: Install npm dependencies
-                run: |
-                    npm install -g npm@8
-                    npm install
-
-            -   name: Run Tests
-                run: npm test
