@@ -220,23 +220,19 @@ class WebhookEvents
     /**
      * @unreleased
      *
-     * @param string $returnFormat OBJECT, ARRAY_A, or ids.
-     *
-     * @return array
+     * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    public function getAll(string $returnFormat = OBJECT): array
-    {
-        return AsBackgroundJobs::getActionsByGroup($this->getGroup(), $returnFormat);
-    }
+    protected function setDonationStatus(
+        DonationStatus $status,
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    ): int {
+        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
+        $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
+        $group = $this->getGroup();
 
-    /**
-     * @unreleased
-     *
-     * @return int Total deleted webhook events.
-     */
-    public function deleteAll(): int
-    {
-        return AsBackgroundJobs::deleteActionsByGroup($this->getGroup());
+        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
     }
 
     /**
@@ -264,26 +260,8 @@ class WebhookEvents
 
     /**
      * @unreleased
-     *
-     * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    protected function setDonationStatus(
-        DonationStatus $status,
-        string $gatewayTransactionId,
-        string $message = '',
-        $skipRecurringDonations = false
-    ): int {
-        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
-        $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
-        $group = $this->getGroup();
-
-        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getGroup(): string
+    protected function getGroup(): string
     {
         return 'givewp-payment-gateway-' . $this->gatewayId;
     }
