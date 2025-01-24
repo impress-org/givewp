@@ -1,7 +1,6 @@
 # Unit tests
 /tmp
 /tests/bin/tmp
-/tests/resources/coverage
 
 # Bin files
 /bin/*
