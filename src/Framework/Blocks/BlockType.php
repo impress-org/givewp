@@ -221,7 +221,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
-     * @unreleased updated to set always default properties
+     * @unreleased updated to always set default properties
      * @since 3.8.0
      */
     private function fillDefaultProperties(): void
