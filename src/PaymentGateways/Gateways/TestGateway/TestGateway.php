@@ -111,7 +111,7 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     }
 
     /**
-     * This method implementation is a sample that demonstrate how we can handle webhook notifications
+     * This method implementation is a sample that demonstrates how we can handle webhook notifications
      *
      * @unreleased
      */
