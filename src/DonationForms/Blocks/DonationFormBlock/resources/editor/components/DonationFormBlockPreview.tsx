@@ -1,7 +1,7 @@
-import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
+import IframeResizer from 'iframe-resizer-react';
 import FormModal from '../../common/FormModal';
 
 import '../styles/index.scss';
