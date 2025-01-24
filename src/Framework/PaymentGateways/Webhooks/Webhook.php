@@ -33,10 +33,10 @@ class Webhook
 
     public function __construct(PaymentGateway &$paymentGateway)
     {
-        if ($this->paymentGateway->canListeningWebhookNotifications()) {
+        if ($paymentGateway->canListeningWebhookNotifications()) {
             $paymentGateway->routeMethods[] = $this->webhookNotificationsListener;
         }
-        
+
         $this->paymentGateway = &$paymentGateway;
         $this->events = new WebhookEvents($paymentGateway::id());
     }
