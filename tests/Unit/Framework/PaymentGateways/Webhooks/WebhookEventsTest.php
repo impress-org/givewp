@@ -10,6 +10,8 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * @unreleased
@@ -20,6 +22,8 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws ReflectionException
      */
     public function testSetDonationStatus()
     {
@@ -31,8 +35,15 @@ class WebhookEventsTest extends TestCase
 
             $gatewayId = TestGateway::id();
             $webhookEvents = new WebhookEvents($gatewayId);
+
             $webhookEvents->deleteAll();
-            $webhookEvents->setDonationStatus($status, '123456');
+
+            // Workaround to access and test the setDonationStatus() protected method.
+            $reflection = new ReflectionClass($webhookEvents);
+            $setDonationStatus = $reflection->getMethod('setDonationStatus');
+            $setDonationStatus->setAccessible(true);
+            $setDonationStatus->invoke($webhookEvents, $status, '123456');
+
             $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);
@@ -45,6 +56,8 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
+     *
+     * @throws ReflectionException
      */
     public function testSetSubscriptionStatus()
     {
@@ -57,7 +70,13 @@ class WebhookEventsTest extends TestCase
             $gatewayId = TestGateway::id();
             $webhookEvents = new WebhookEvents($gatewayId);
             $webhookEvents->deleteAll();
-            $webhookEvents->setSubscriptionStatus($status, '123456');
+
+            // Workaround to access and test the setSubscriptionStatus() protected method.
+            $reflection = new ReflectionClass($webhookEvents);
+            $setSubscriptionStatus = $reflection->getMethod('setSubscriptionStatus');
+            $setSubscriptionStatus->setAccessible(true);
+            $setSubscriptionStatus->invoke($webhookEvents, $status, '123456');
+
             $events = $webhookEvents->getAll();
 
             $this->assertTrue(count($events) === 1);

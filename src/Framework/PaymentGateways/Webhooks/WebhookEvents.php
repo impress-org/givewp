@@ -26,38 +26,161 @@ class WebhookEvents
 
     /**
      * @unreleased
-     *
-     * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    public function setDonationStatus(
-        DonationStatus $status,
+    public function paymentAbandoned(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
-    ): int {
-        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
-        $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
-        $group = $this->getGroup();
-
-        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
+    ) {
+        $this->setDonationStatus(DonationStatus::ABANDONED(), $gatewayTransactionId, $message, $skipRecurringDonations);
     }
 
     /**
      * @unreleased
-     *
-     * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    public function setSubscriptionStatus(
-        SubscriptionStatus $status,
+    public function paymentCancelled(
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    ) {
+        $this->setDonationStatus(DonationStatus::CANCELLED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentCompleted(
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    ) {
+        $this->setDonationStatus(DonationStatus::COMPLETE(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentFailed(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    {
+        $this->setDonationStatus(DonationStatus::FAILED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentPending(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    {
+        $this->setDonationStatus(DonationStatus::PENDING(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentPreapproval(
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    ) {
+        $this->setDonationStatus(DonationStatus::PREAPPROVAL(), $gatewayTransactionId, $message,
+            $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentProcessing(
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    )
+    {
+        $this->setDonationStatus(DonationStatus::PROCESSING(), $gatewayTransactionId, $message,
+            $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentRefunded(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    {
+        $this->setDonationStatus(DonationStatus::REFUNDED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function paymentRevoked(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    {
+        $this->setDonationStatus(DonationStatus::REVOKED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionActive(
         string $gatewaySubscriptionId,
         string $message = '',
         bool $initialDonationShouldBeCompleted = false
-    ): int {
-        $hook = sprintf('givewp_%s_webhook_event_subscription_status_%s', $this->gatewayId, $status->getValue());
-        $args = [$gatewaySubscriptionId, $message, $initialDonationShouldBeCompleted];
-        $group = $this->getGroup();
+    )
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::ACTIVE(), $gatewaySubscriptionId, $message,
+            $initialDonationShouldBeCompleted);
+    }
 
-        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
+    /**
+     * @unreleased
+     */
+    public function subscriptionCancelled(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::CANCELLED(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionCompleted(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::COMPLETED(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionExpired(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::EXPIRED(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionFailing(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::FAILING(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionPaused(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::PAUSED(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionPending(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::PENDING(), $gatewaySubscriptionId, $message);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionSuspended(string $gatewaySubscriptionId, string $message = '')
+    {
+        $this->setSubscriptionStatus(SubscriptionStatus::SUSPENDED(), $gatewaySubscriptionId, $message);
     }
 
     /**
@@ -114,6 +237,47 @@ class WebhookEvents
     public function deleteAll(): int
     {
         return AsBackgroundJobs::deleteActionsByGroup($this->getGroup());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return int The webhook event ID. Zero if there was an error setting the event.
+     */
+    protected function setSubscriptionStatus(
+        SubscriptionStatus $status,
+        string $gatewaySubscriptionId,
+        string $message = '',
+        bool $initialDonationShouldBeCompleted = false
+    ): int {
+        $hook = sprintf('givewp_%s_webhook_event_subscription_status_%s', $this->gatewayId, $status->getValue());
+        $args = [$gatewaySubscriptionId, $message];
+
+        if ($initialDonationShouldBeCompleted) {
+            $args[] = $initialDonationShouldBeCompleted;
+        }
+
+        $group = $this->getGroup();
+
+        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return int The webhook event ID. Zero if there was an error setting the event.
+     */
+    protected function setDonationStatus(
+        DonationStatus $status,
+        string $gatewayTransactionId,
+        string $message = '',
+        $skipRecurringDonations = false
+    ): int {
+        $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
+        $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
+        $group = $this->getGroup();
+
+        return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
     }
 
     /**
