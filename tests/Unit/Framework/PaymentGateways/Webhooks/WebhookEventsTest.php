@@ -381,14 +381,14 @@ class WebhookEventsTest extends TestCase
     /**
      * @unreleased
      */
-    public function testSetSubscriptionFirstDonation()
+    public function testSubscriptionFirstDonation()
     {
         $gatewayId = TestGateway::id();
         $this->deleteAllEvents($gatewayId);
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->setSubscriptionFirstDonation('123456');
+        $webhookEvents->subscriptionFirstDonation('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -402,14 +402,14 @@ class WebhookEventsTest extends TestCase
     /**
      * @unreleased
      */
-    public function testSetSubscriptionRenewalDonation()
+    public function testSubscriptionRenewalDonation()
     {
         $gatewayId = TestGateway::id();
         $this->deleteAllEvents($gatewayId);
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->setSubscriptionRenewalDonation('abc', '123456');
+        $webhookEvents->subscriptionRenewalDonation('abc', '123456');
 
         $events = $this->getAllEvents($gatewayId);
 

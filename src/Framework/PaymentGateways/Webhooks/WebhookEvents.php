@@ -188,7 +188,7 @@ class WebhookEvents
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    public function setSubscriptionFirstDonation(
+    public function subscriptionFirstDonation(
         string $gatewayTransactionId,
         string $message = '',
         bool $setSubscriptionActive = true
@@ -205,7 +205,7 @@ class WebhookEvents
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
-    public function setSubscriptionRenewalDonation(
+    public function subscriptionRenewalDonation(
         string $gatewaySubscriptionId,
         string $gatewayTransactionId,
         string $message = ''
