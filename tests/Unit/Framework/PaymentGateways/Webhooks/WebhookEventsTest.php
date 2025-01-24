@@ -23,20 +23,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentAbandoned()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentAbandoned('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -47,20 +44,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentCancelled()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentCancelled('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -71,20 +65,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentCompleted()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentCompleted('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -95,20 +86,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentFailed()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentFailed('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -119,20 +107,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentPending()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentPending('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -143,20 +128,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentPreapproval()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentPreapproval('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -167,20 +149,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentProcessing()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentProcessing('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -191,20 +170,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentRefunded()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentRefunded('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -215,20 +191,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testPaymentRevoked()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->paymentRevoked('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -239,20 +212,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionActive()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionActive('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -263,20 +233,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionCancelled()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionCancelled('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -287,20 +254,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionCompleted()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionCompleted('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -311,20 +275,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionExpired()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionExpired('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -335,20 +296,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionFailing()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionFailing('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -359,20 +317,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionPaused()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionPaused('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -383,20 +338,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionPending()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionPending('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -407,20 +359,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSubscriptionSuspended()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-
-        $this->deleteAll($webhookEvents);
-
-        // Creates the event
         $webhookEvents->subscriptionSuspended('123456');
 
-        $events = $this->getAll($webhookEvents);
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -431,16 +380,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSetSubscriptionFirstDonation()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $this->deleteAll($webhookEvents);
         $webhookEvents->setSubscriptionFirstDonation('123456');
-        $events = $this->getAll($webhookEvents);
+
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -451,16 +401,17 @@ class WebhookEventsTest extends TestCase
 
     /**
      * @unreleased
-     *
-     * @throws ReflectionException
      */
     public function testSetSubscriptionRenewalDonation()
     {
         $gatewayId = TestGateway::id();
+        $this->deleteAllEvents($gatewayId);
+
+        // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $this->deleteAll($webhookEvents);
         $webhookEvents->setSubscriptionRenewalDonation('abc', '123456');
-        $events = $this->getAll($webhookEvents);
+
+        $events = $this->getAllEvents($gatewayId);
 
         $this->assertTrue(count($events) === 1);
         $this->assertEquals(
@@ -483,17 +434,16 @@ class WebhookEventsTest extends TestCase
             }
 
             $gatewayId = TestGateway::id();
+            $this->deleteAllEvents($gatewayId);
+
+            // Workaround to access and test the setDonationStatus() protected method
             $webhookEvents = new WebhookEvents($gatewayId);
-
-            $this->deleteAll($webhookEvents);
-
-            // Workaround to access and test the setDonationStatus() protected method.
             $reflection = new ReflectionClass($webhookEvents);
             $setDonationStatus = $reflection->getMethod('setDonationStatus');
             $setDonationStatus->setAccessible(true);
             $setDonationStatus->invoke($webhookEvents, $status, '123456');
 
-            $events = $this->getAll($webhookEvents);
+            $events = $this->getAllEvents($gatewayId);
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
@@ -517,16 +467,16 @@ class WebhookEventsTest extends TestCase
             }
 
             $gatewayId = TestGateway::id();
-            $webhookEvents = new WebhookEvents($gatewayId);
-            $this->deleteAll($webhookEvents);
+            $this->deleteAllEvents($gatewayId);
 
-            // Workaround to access and test the setSubscriptionStatus() protected method.
+            // Workaround to access and test the setSubscriptionStatus() protected method
+            $webhookEvents = new WebhookEvents($gatewayId);
             $reflection = new ReflectionClass($webhookEvents);
             $setSubscriptionStatus = $reflection->getMethod('setSubscriptionStatus');
             $setSubscriptionStatus->setAccessible(true);
             $setSubscriptionStatus->invoke($webhookEvents, $status, '123456');
 
-            $events = $this->getAll($webhookEvents);
+            $events = $this->getAllEvents($gatewayId);
 
             $this->assertTrue(count($events) === 1);
             $this->assertEquals(
@@ -540,37 +490,25 @@ class WebhookEventsTest extends TestCase
      * @unreleased
      *
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
-     *
-     * @throws ReflectionException
      */
-    private function getAll(WebhookEvents $webhookEvents, string $returnFormat = OBJECT): array
+    private function getAllEvents(string $gatewayId, string $returnFormat = OBJECT): array
     {
-        // Workaround to access and test the getGroup() protected method.
-        $reflection = new ReflectionClass($webhookEvents);
-        $getGroup = $reflection->getMethod('getGroup');
-        $getGroup->setAccessible(true);
-        $group = $getGroup->invoke($webhookEvents);
-
-
-        return AsBackgroundJobs::getActionsByGroup($group, $returnFormat);
+        return AsBackgroundJobs::getActionsByGroup($this->getGroup($gatewayId), $returnFormat);
     }
 
     /**
      * @unreleased
      *
      * @return int Total deleted webhook events (action scheduler background jobs).
-     *
-     * @throws ReflectionException
      */
-    private function deleteAll(WebhookEvents $webhookEvents): int
+    private function deleteAllEvents(string $gatewayId): int
     {
-        // Workaround to access and test the getGroup() protected method.
-        $reflection = new ReflectionClass($webhookEvents);
-        $getGroup = $reflection->getMethod('getGroup');
-        $getGroup->setAccessible(true);
-        $group = $getGroup->invoke($webhookEvents);
+        return AsBackgroundJobs::deleteActionsByGroup($this->getGroup($gatewayId));
+    }
 
-        return AsBackgroundJobs::deleteActionsByGroup($group);
+    private function getGroup(string $gatewayId): string
+    {
+        return 'givewp-payment-gateway-' . $gatewayId;
     }
 
     /**
