@@ -49,7 +49,7 @@ class Webhook
     public function getNotificationUrl(array $args = []): string
     {
         if ( ! $this->paymentGateway->canListeningWebhookNotifications()) {
-            throw new Exception('Gateway does not support listening webhook notifications.');
+            throw new Exception('Gateway does not support listening to webhook notifications.');
         }
 
         return $this->paymentGateway->generateGatewayRouteUrl($this->webhookNotificationsListener, $args);
