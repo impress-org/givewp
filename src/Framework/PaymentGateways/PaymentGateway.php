@@ -11,10 +11,11 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardL
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\PaymentGateways\Contracts\WebhookNotificationsListener;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
-use Give\Framework\PaymentGateways\Webhooks\WebhookEvents;
+use Give\Framework\PaymentGateways\Webhooks\Webhook;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
@@ -46,9 +47,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @unreleased
      *
-     * @var WebhookEvents $webhookEvents
+     * @var Webhook $webhook
      */
-    public $webhookEvents;
+    public $webhook;
 
     /**
      * @unreleased Add the webhookEvents property
@@ -65,17 +66,25 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
-        $this->webhookEvents = new WebhookEvents($this::id());
+        $this->webhook = new Webhook($this);
     }
 
     /**
      * @unreleased
      */
-    public static function webhookEvents(): WebhookEvents
+    public static function webhook(): Webhook
     {
         $instance = new static();
 
-        return $instance->webhookEvents;
+        return $instance->webhook;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function canListeningWebhookNotifications(): bool
+    {
+        return $this instanceof WebhookNotificationsListener;
     }
 
     /**
