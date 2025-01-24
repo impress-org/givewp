@@ -16,7 +16,6 @@ export default function EventTicketsField({
     startDateTime,
     endDateTime,
     ticketTypes,
-    ticketsLabel,
 }: Event) {
     const startDateTimeObj = new Date(startDateTime);
     const endDateTimeObj = new Date(endDateTime);
@@ -28,7 +27,7 @@ export default function EventTicketsField({
 
             {description && <EventTicketsDescription description={description} />}
 
-            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />}
+            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} />}
         </div>
     );
 }
