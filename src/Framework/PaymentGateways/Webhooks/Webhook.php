@@ -43,12 +43,12 @@ class Webhook
      *
      * @throws Exception
      */
-    public function getNotificationUrl(): string
+    public function getNotificationUrl(array $args = []): string
     {
         if ( ! $this->paymentGateway->canListeningWebhookNotifications()) {
             throw new Exception('Gateway does not support listening webhook notifications.');
         }
 
-        return $this->paymentGateway->generateGatewayRouteUrl($this->webhookNotificationsListener);
+        return $this->paymentGateway->generateGatewayRouteUrl($this->webhookNotificationsListener, $args);
     }
 }
