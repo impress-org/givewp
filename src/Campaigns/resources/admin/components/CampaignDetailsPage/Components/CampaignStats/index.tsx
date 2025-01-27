@@ -93,7 +93,7 @@ const StatWidget = ({label, values, description, formatter = null}) => {
             </header>
             <div className={styles.statWidgetAmount}>
                 <DisplayText>
-                    {formatter?.format(values[0]) ?? values[0]}
+                    {!isNaN(values[0]) ? formatter?.format(values[0]) ?? values[0] : (<span>&nbsp;</span>)}
                 </DisplayText>
                 {!! values[1] && (
                     <PercentChangePill value={values[0]} comparison={values[1]} />
