@@ -11,6 +11,7 @@ use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAnonymousGiving;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorCompany;
 use Give\Donors\Models\Donor;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.10.0
@@ -79,6 +80,7 @@ class Profile
     /**
      * Return array of donor profile data
      *
+     * @unreleased Replace strtotime() with Temporal::getDateTimestamp() to prevent the use of dates with wrong timezones
      * @since 2.10.0
      *
      * @return array
@@ -97,11 +99,11 @@ class Profile
             'lastName' => $this->donor->get_last_name(),
             'emails' => $this->donor->emails,
             'sinceLastDonation' => ! empty($this->donor->get_last_donation_date()) ? human_time_diff(
-                strtotime($this->donor->get_last_donation_date())
+                Temporal::getDateTimestamp($this->donor->get_last_donation_date())
             ) : '',
             'avatarUrl' => $this->getAvatarUrl(),
             'avatarId' => $this->getAvatarId(),
-            'sinceCreated' => human_time_diff(strtotime($this->donor->date_created)),
+            'sinceCreated' => human_time_diff(Temporal::getDateTimestamp($this->donor->date_created)),
             'company' => $this->donor->get_company_name(),
             'initials' => $this->donor->get_donor_initals(),
             'titlePrefix' => $this->getTitlePrefix(),
