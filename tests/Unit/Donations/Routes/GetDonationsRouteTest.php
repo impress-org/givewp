@@ -15,7 +15,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class GetDonationsTest extends RestApiTestCase
+class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +24,7 @@ class GetDonationsTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsPagination()
+    public function testGetDonationsWithPagination()
     {
         Donation::query()->delete();
 
@@ -34,7 +34,7 @@ class GetDonationsTest extends RestApiTestCase
         /** @var  Donation $donation */
         $donation2 = Donation::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS;
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
@@ -92,7 +92,7 @@ class GetDonationsTest extends RestApiTestCase
         $donation2 = Donation::factory()->create();
         give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS;
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [

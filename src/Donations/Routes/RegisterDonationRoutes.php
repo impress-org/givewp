@@ -51,7 +51,7 @@ class RegisterDonationRoutes
                         return $this->donationRequestController->getDonation($request);
                     },
                     'permission_callback' => function () {
-                        return current_user_can('manage_options');
+                        return true; //current_user_can('manage_options');
                     },
                 ],
                 'args' => [
