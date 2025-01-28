@@ -24,6 +24,61 @@ class GetDonationsTest extends RestApiTestCase
      *
      * @throws Exception
      */
+    public function testGetDonationsPagination()
+    {
+        Donation::query()->delete();
+
+        /** @var  Donation $donation */
+        $donation1 = Donation::factory()->create();
+
+        /** @var  Donation $donation */
+        $donation2 = Donation::factory()->create();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'page' => 1,
+                'per_page' => 1,
+            ]
+        );
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+        $headers = $response->get_headers();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donation1->id, $data[0]->id);
+        $this->assertEquals(2, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
+
+        $request->set_query_params(
+            [
+                'page' => 2,
+                'per_page' => 1,
+            ]
+        );
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+        $headers = $response->get_headers();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donation2->id, $data[0]->id);
+        $this->assertEquals(2, $headers['X-WP-Total']);
+        $this->assertEquals(2, $headers['X-WP-TotalPages']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testGetDonationsByCampaignId()
     {
         /** @var Campaign $campaign */
@@ -40,8 +95,8 @@ class GetDonationsTest extends RestApiTestCase
                 'campaignId' => $campaign->id,
             ]
         );
-
         $response = $this->dispatchRequest($request);
+
         $status = $response->get_status();
         $data = $response->get_data();
 
