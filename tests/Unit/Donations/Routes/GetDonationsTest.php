@@ -85,8 +85,12 @@ class GetDonationsTest extends RestApiTestCase
         $campaign = Campaign::factory()->create();
 
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create();
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
+        $donation1 = Donation::factory()->create();
+        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
+
+        /** @var  Donation $donation */
+        $donation2 = Donation::factory()->create();
+        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -101,6 +105,8 @@ class GetDonationsTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
-        $this->assertEquals($donation->id, $data[0]->id);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donation1->id, $data[0]->id);
+        $this->assertEquals($donation2->id, $data[1]->id);
     }
 }
