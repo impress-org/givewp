@@ -66,6 +66,8 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
+
+        $this->registerRoutes();
     }
 
     /**
@@ -103,5 +105,13 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
         }, 10, 2);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerRoutes()
+    {
+        Hooks::addAction('rest_api_init', Routes\RegisterDonorRoutes::class);
     }
 }

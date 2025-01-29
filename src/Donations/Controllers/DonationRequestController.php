@@ -4,8 +4,8 @@ namespace Give\Donations\Controllers;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationRoute;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -36,16 +36,20 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
-        $campaignId = $request->get_param('campaignId');
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
 
         $query = give(DonationRepository::class)->prepareQuery();
 
-        if ($campaignId) {
-            $metaKey = DonationMetaKeys::CAMPAIGN_ID;
+        if ($campaignId = $request->get_param('campaignId')) {
+            /*$metaKey = DonationMetaKeys::CAMPAIGN_ID;
             $query->attachMeta('give_donationmeta', 'ID', 'donation_id', $metaKey)
-                ->where("give_donationmeta_attach_meta_{$metaKey}.meta_value", $campaignId);
+                ->where("give_donationmeta_attach_meta_{$metaKey}.meta_value", $campaignId)*/
+
+            $query->distinct()->join(function (JoinQueryBuilder $builder) {
+                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', "give_donationmeta_attach_meta_formId.meta_value");
+            })->where('campaign_forms.campaign_id', $campaignId);
         }
 
         $query
