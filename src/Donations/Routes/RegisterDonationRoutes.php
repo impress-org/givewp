@@ -50,9 +50,7 @@ class RegisterDonationRoutes
                     'callback' => function (WP_REST_Request $request) {
                         return $this->donationRequestController->getDonation($request);
                     },
-                    'permission_callback' => function () {
-                        return true; //current_user_can('manage_options');
-                    },
+                    'permission_callback' => '__return_true',
                 ],
                 'args' => [
                     'id' => [

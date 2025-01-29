@@ -42,10 +42,6 @@ class DonationRequestController
         $query = give(DonationRepository::class)->prepareQuery();
 
         if ($campaignId = $request->get_param('campaignId')) {
-            /*$metaKey = DonationMetaKeys::CAMPAIGN_ID;
-            $query->attachMeta('give_donationmeta', 'ID', 'donation_id', $metaKey)
-                ->where("give_donationmeta_attach_meta_{$metaKey}.meta_value", $campaignId)*/
-
             $query->distinct()->join(function (JoinQueryBuilder $builder) {
                 $builder->leftJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', "give_donationmeta_attach_meta_formId.meta_value");

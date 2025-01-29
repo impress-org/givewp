@@ -44,7 +44,6 @@ class DonorRequestController
 
         $query = give(DonorRepository::class)->prepareQuery();
 
-
         if ($campaignId = $request->get_param('campaignId')) {
             $query->select(['donationmeta1.donation_id', 'donationId'])
                 ->distinct()
