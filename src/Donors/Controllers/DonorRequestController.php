@@ -2,7 +2,6 @@
 
 namespace Give\Donors\Controllers;
 
-use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donors\Models\Donor;
@@ -65,8 +64,10 @@ class DonorRequestController
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
+        $sql = $query->getSQL();
+
         $donors = $query->getAll() ?? [];
-        $totalDonors = empty($donors) ? 0 : Donation::query()->count();
+        $totalDonors = empty($donors) ? 0 : Donor::query()->count();
         $totalPages = (int)ceil($totalDonors / $perPage);
 
         $response = rest_ensure_response($donors);
