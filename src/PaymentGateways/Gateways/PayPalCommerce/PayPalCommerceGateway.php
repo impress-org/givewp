@@ -9,12 +9,17 @@ use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 
 /**
  * An extension of the PayPalCommerce gateway in GiveWP that supports the NextGenPaymentGatewayInterface.
  */
 class PayPalCommerceGateway extends PayPalCommerce
 {
+    public $routeMethods = [
+        'createOrder',
+    ];
+
     use HasScriptAssetFile;
 
     /**
@@ -61,8 +66,12 @@ class PayPalCommerceGateway extends PayPalCommerce
     {
         return [
             'ajaxUrl' => admin_url('admin-ajax.php'),
+            'createOrderUrl'=> $this->generateGatewayRouteUrl('createOrder', [
+                'formId' => $formId,
+            ]),
             'donationFormId' => $formId,
             'donationFormNonce' => wp_create_nonce("give_donation_form_nonce_{$formId}"),
+            'nonce' => wp_create_nonce('givewp_paypal_commerce_gateway'),
             'sdkOptions' => $this->getPayPalSDKOptions($formId),
             'validateUrl' => (new GenerateDonationFormValidationRouteUrl())(),
         ];
@@ -108,5 +117,45 @@ class PayPalCommerceGateway extends PayPalCommerce
         }
 
         return $data;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function createOrder(array $queryParams)
+    {
+        check_ajax_referer( 'givewp_paypal_commerce_gateway' );
+
+        $data = give_clean($_POST);
+
+        $args = [
+            'formTitle' => $data['formTitle'],
+            'formId' => $data['formId'],
+            'donationAmount' => $data['donationAmount'],
+            'payer' => [
+                'firstName' => $data['firstName'],
+                'lastName' => $data['lastName'],
+                'email' => $data['email'],
+            ],
+        ];
+
+        /** @var PayPalOrder $payPalOrder */
+        $payPalOrder = give(PayPalOrder::class);
+
+        try {
+            $orderId = $payPalOrder->createOrder($args, 'AUTHORIZE');
+
+            wp_send_json_success(
+                [
+                    'id' => $orderId,
+                ]
+            );
+        } catch (\Exception $ex) {
+            wp_send_json_error(
+                [
+                    'error' => json_decode($ex->getMessage(), true),
+                ]
+            );
+        }
     }
 }

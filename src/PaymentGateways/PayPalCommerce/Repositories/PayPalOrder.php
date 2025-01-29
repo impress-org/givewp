@@ -103,7 +103,7 @@ class PayPalOrder
      *
      * @throws Exception|HttpException|IOException
      */
-    public function createOrder(array $array): string
+    public function createOrder(array $array, $intent = 'CAPTURE'): string
     {
         $this->validateCreateOrderArguments($array);
 
@@ -111,7 +111,7 @@ class PayPalOrder
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
         $request->body = [
-            'intent' => 'CAPTURE',
+            'intent' => $intent,
             'payment_source' => [
                 "paypal" => [
                     'name' => [
@@ -130,9 +130,9 @@ class PayPalOrder
                             'email_address' => $this->merchantDetails->merchantId,
                             'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
                         ],
-                        'payment_instruction' => [
-                            'disbursement_mode' => 'INSTANT',
-                        ],
+//                        'payment_instruction' => [
+//                            'disbursement_mode' => 'INSTANT',
+//                        ],
                     ]
                 ),
             ],

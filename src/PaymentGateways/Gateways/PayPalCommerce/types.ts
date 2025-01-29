@@ -1,3 +1,6 @@
+import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+import type {PayPalCardFieldsComponent} from '@paypal/paypal-js';
+
 /**
  * PayPal Commerce Platform: Standard address.
  *
@@ -39,3 +42,32 @@ export type PayPalSubscriber = {
     email_address: string,
     shipping_address?: PayPalShippingAddress,
 };
+
+
+export type PayPalCommerceGatewaySettings = {
+    ajaxUrl: string,
+    donationFormID: number,
+    donationFormNonce: string,
+    validateUrl: string,
+    createOrderUrl: string,
+    nonce: string,
+    sdkOptions: {
+        "data-namespace": string,
+        "client-id": string,
+        "merchant-id": string,
+        "components": string,
+        "disable-funding": string,
+        "intent": string,
+        "vault": string,
+        "data-partner-attribution-id": string,
+        "data-client-token": string,
+        "currency": string,
+        "enable-funding": string
+    }
+}
+
+export interface PayPalCommerceGateway extends Gateway {
+    cardFieldsForm?: PayPalCardFieldsComponent;
+    settings?: GatewaySettings & PayPalCommerceGatewaySettings;
+    payPalOrderId?: string;
+}
