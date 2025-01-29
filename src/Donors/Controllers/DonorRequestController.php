@@ -3,9 +3,9 @@
 namespace Give\Donors\Controllers;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
+use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
@@ -80,7 +80,7 @@ class DonorRequestController
 
                 return urlencode($value);
             }),
-            rest_url(DonationRoute::DONATIONS)
+            rest_url(DonorRoute::DONORS)
         );
 
         if ($page > 1) {
