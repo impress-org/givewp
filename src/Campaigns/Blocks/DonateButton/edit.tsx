@@ -1,11 +1,15 @@
 import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
+import {addQueryArgs} from '@wordpress/url';
+import apiFetch from '@wordpress/api-fetch';
+import useSWR from 'swr';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {Button} from 'react-aria-components';
 import useCampaign from '../shared/hooks/useCampaign';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
+
 
 /**
  * @unreleased
@@ -26,13 +30,16 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
     );
 
     const campaignForms = (() => {
-        const {forms, isLoading} = campaign.forms();
+        const {data, isLoading}: { data: { items: [] }, isLoading: boolean } = useSWR(
+            addQueryArgs('/give-api/v2/admin/forms', {campaignId: attributes.campaignId, status: 'publish'}),
+            path => apiFetch({path})
+        )
 
         if (isLoading) {
-            return []
+            return [{label: __('Loading...', 'give'), value: ''}]
         }
 
-        const options = forms.map((form: { name: string, id: string }) => ({
+        const options = data.items.map((form: { name: string, id: string }) => ({
             label: form.name,
             value: form.id
         }))
