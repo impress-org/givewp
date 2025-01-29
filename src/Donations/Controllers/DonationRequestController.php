@@ -43,7 +43,7 @@ class DonationRequestController
 
         if ($campaignId = $request->get_param('campaignId')) {
             $query->distinct()->join(function (JoinQueryBuilder $builder) {
-                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
+                $builder->innerJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', "give_donationmeta_attach_meta_formId.meta_value");
             })->where('campaign_forms.campaign_id', $campaignId);
         }

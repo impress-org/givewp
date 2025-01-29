@@ -2,7 +2,6 @@
 
 namespace Give\Donors\Routes;
 
-use Give\Donations\Controllers\DonationRequestController;
 use Give\Donors\Controllers\DonorRequestController;
 use Give\Donors\ValueObjects\DonorRoute;
 use WP_REST_Request;
@@ -14,7 +13,7 @@ use WP_REST_Server;
 class RegisterDonorRoutes
 {
     /**
-     * @var DonationRequestController
+     * @var DonorRequestController
      */
     protected $donorRequestController;
 
@@ -64,7 +63,7 @@ class RegisterDonorRoutes
     }
 
     /**
-     * Get Donor route
+     * Get Donors route
      *
      * @unreleased
      */

@@ -27,7 +27,7 @@ class DonorRequestController
         $donation = Donor::find($request->get_param('id'));
 
         if ( ! $donation) {
-            return new WP_Error('donor_not_found', __('Donation not found', 'give'), ['status' => 404]);
+            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
         return new WP_REST_Response($donation->toArray());
@@ -63,8 +63,6 @@ class DonorRequestController
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
-
-        $sql = $query->getSQL();
 
         $donors = $query->getAll() ?? [];
         $totalDonors = empty($donors) ? 0 : Donor::query()->count();
