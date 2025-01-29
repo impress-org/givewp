@@ -28,10 +28,10 @@ class GetDonationsRouteTest extends RestApiTestCase
     {
         Donation::query()->delete();
 
-        /** @var  Donation $donation */
+        /** @var  Donation $donation1 */
         $donation1 = Donation::factory()->create();
 
-        /** @var  Donation $donation */
+        /** @var  Donation $donation2 */
         $donation2 = Donation::factory()->create();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
@@ -84,11 +84,11 @@ class GetDonationsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        /** @var  Donation $donation */
+        /** @var  Donation $donation1 */
         $donation1 = Donation::factory()->create();
         give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
-        /** @var  Donation $donation */
+        /** @var  Donation $donation2 */
         $donation2 = Donation::factory()->create();
         give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
