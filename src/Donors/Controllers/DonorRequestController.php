@@ -44,8 +44,7 @@ class DonorRequestController
         $query = give(DonorRepository::class)->prepareQuery();
 
         if ($campaignId = $request->get_param('campaignId')) {
-            $query->select(['donationmeta1.donation_id', 'donationId'])
-                ->distinct()
+            $query->distinct()
                 ->join(function (JoinQueryBuilder $builder) use ($campaignId) {
                     $builder->innerJoin('give_donationmeta', 'donationmeta1')
                         ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
