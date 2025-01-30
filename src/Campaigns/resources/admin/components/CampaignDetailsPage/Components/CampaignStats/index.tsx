@@ -150,7 +150,7 @@ const GoalProgressWidget = () => {
                 <HeaderText>{__('Goal progress', 'give')}</HeaderText>
                 <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
             </header>
-            <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
+            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} />
         </div>
     )
 }
