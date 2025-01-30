@@ -24,13 +24,13 @@ class DonorRequestController
      */
     public function getDonor(WP_REST_Request $request)
     {
-        $donation = Donor::find($request->get_param('id'));
+        $donor = Donor::find($request->get_param('id'));
 
-        if ( ! $donation) {
+        if ( ! $donor) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($donation->toArray());
+        return new WP_REST_Response($this->escDonor($donor));
     }
 
     /**
@@ -65,6 +65,7 @@ class DonorRequestController
             ->offset(($page - 1) * $perPage);
 
         $donors = $query->getAll() ?? [];
+        $donors = array_map([$this, 'escDonor'], $donors);
         $totalDonors = empty($donors) ? 0 : Donor::query()->count();
         $totalPages = (int)ceil($totalDonors / $perPage);
 
@@ -99,5 +100,30 @@ class DonorRequestController
         }
 
         return $response;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function escDonor(Donor $donor): array
+    {
+        $donor = $donor->toArray();
+
+        if ( ! current_user_can('manage_options')) {
+            $sensitiveProperties = [
+                'userId',
+                'email',
+                'phone',
+                'additionalEmails',
+            ];
+
+            foreach ($sensitiveProperties as $property) {
+                if (array_key_exists($property, $donor)) {
+                    unset($donor[$property]);
+                }
+            }
+        }
+
+        return $donor;
     }
 }

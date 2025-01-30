@@ -28,7 +28,7 @@ class DonationRequestController
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($donation->toArray());
+        return new WP_REST_Response($this->escDonation($donation));
     }
 
     /**
@@ -53,6 +53,7 @@ class DonationRequestController
             ->offset(($page - 1) * $perPage);
 
         $donations = $query->getAll() ?? [];
+        $donations = array_map([$this, 'escDonation'], $donations);
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();
         $totalPages = (int)ceil($totalDonations / $perPage);
 
@@ -87,5 +88,30 @@ class DonationRequestController
         }
 
         return $response;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function escDonation(Donation $donation): array
+    {
+        $donation = $donation->toArray();
+
+        if ( ! current_user_can('manage_options')) {
+            $sensitiveProperties = [
+                'donorIp',
+                'email',
+                'phone',
+                'billingAddress',
+            ];
+
+            foreach ($sensitiveProperties as $property) {
+                if (array_key_exists($property, $donation)) {
+                    unset($donation[$property]);
+                }
+            }
+        }
+
+        return $donation;
     }
 }

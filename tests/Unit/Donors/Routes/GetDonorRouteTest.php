@@ -33,4 +33,33 @@ class GetDonorRouteTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($donor->id, $data['id']);
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorShouldNotReturnSensitiveData()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveProperties = [
+            'userId',
+            'email',
+            'phone',
+            'additionalEmails',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
+    }
 }

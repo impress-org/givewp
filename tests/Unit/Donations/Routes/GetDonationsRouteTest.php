@@ -51,7 +51,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donation1->id, $data[0]->id);
+        $this->assertEquals($donation1->id, $data[0]['id']);
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
 
@@ -69,7 +69,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donation2->id, $data[0]->id);
+        $this->assertEquals($donation2->id, $data[0]['id']);
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
     }
@@ -106,7 +106,35 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->id, $data[0]->id);
-        $this->assertEquals($donation2->id, $data[1]->id);
+        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals($donation2->id, $data[1]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldNotReturnSensitiveData()
+    {
+        Donation::factory()->create();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveProperties = [
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
     }
 }
