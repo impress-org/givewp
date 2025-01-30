@@ -42,11 +42,18 @@ class DonationRequestController
         $query = give(DonationRepository::class)->prepareQuery();
 
         if ($campaignId = $request->get_param('campaignId')) {
-            $query->distinct()->join(function (JoinQueryBuilder $builder) {
+            // Filter by CampaignId
+            $query->distinct()->join(function (JoinQueryBuilder $builder) use ($campaignId) {
                 $builder->innerJoin('give_campaign_forms', 'campaign_forms')
-                    ->on('campaign_forms.form_id', "give_donationmeta_attach_meta_formId.meta_value");
-            })->where('campaign_forms.campaign_id', $campaignId);
+                    ->joinRaw("ON campaign_forms.form_id = give_donationmeta_attach_meta_formId.meta_value AND campaign_forms.campaign_id = {$campaignId}");
+            });
         }
+
+        // Include only current payment "mode"
+        $query->where('give_donationmeta_attach_meta_mode.meta_value', give_is_test_mode() ? 'test' : 'live');
+
+        // Include only valid statuses
+        $query->whereIn('post_status', ['publish', 'give_subscription']);
 
         $query
             ->limit($perPage)

@@ -5,6 +5,7 @@ namespace Unit\Donations\Routes;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationRoute;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -23,7 +24,7 @@ class GetDonationRouteTest extends RestApiTestCase
     public function testGetDonation()
     {
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create();
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -45,7 +46,7 @@ class GetDonationRouteTest extends RestApiTestCase
     public function testGetDonationShouldNotReturnSensitiveData()
     {
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create();
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);

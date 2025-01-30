@@ -7,6 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationRoute;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -29,10 +30,10 @@ class GetDonationsRouteTest extends RestApiTestCase
         Donation::query()->delete();
 
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create();
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
 
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create();
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -85,11 +86,11 @@ class GetDonationsRouteTest extends RestApiTestCase
         $campaign = Campaign::factory()->create();
 
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create();
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
         give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create();
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
         give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
@@ -117,7 +118,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldNotReturnSensitiveData()
     {
-        Donation::factory()->create();
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
