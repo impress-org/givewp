@@ -158,10 +158,12 @@ class RegisterPaymentGateways
                     throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
                 }
 
-                try {
-                    $gatewayData['paypalOrder'] = give(PayPalOrder::class)->getOrder($paypalOrderId);
-                } catch (\Exception $e) {
-                    throw new PayPalOrderException(__('Unable to get order using order id.', 'give'));
+                if (!array_key_exists('payPalAuthorizationId', $gatewayData)) {
+                    try {
+                        $gatewayData['paypalOrder'] = give(PayPalOrder::class)->getOrder($paypalOrderId);
+                    } catch (\Exception $e) {
+                        throw new PayPalOrderException(__('Unable to get order using order id.', 'give'));
+                    }
                 }
 
                 return $gatewayData;

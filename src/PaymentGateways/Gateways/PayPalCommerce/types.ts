@@ -50,6 +50,7 @@ export type PayPalCommerceGatewaySettings = {
     donationFormNonce: string,
     validateUrl: string,
     createOrderUrl: string,
+    authorizeOrderUrl: string,
     nonce: string,
     sdkOptions: {
         "data-namespace": string,
@@ -70,4 +71,5 @@ export interface PayPalCommerceGateway extends Gateway {
     cardFieldsForm?: PayPalCardFieldsComponent;
     settings?: GatewaySettings & PayPalCommerceGatewaySettings;
     payPalOrderId?: string;
+    payPalAuthorizationId?: string;
 }

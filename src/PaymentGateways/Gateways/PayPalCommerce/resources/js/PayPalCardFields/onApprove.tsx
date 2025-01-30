@@ -2,14 +2,27 @@ import type { CardFieldsOnApproveData } from "@paypal/paypal-js";
 import {PayPalCommerceGateway} from '../../../types';
 
 // TODO: replace with GiveWP endpoint for approving order
-export default async function onApprove(data: CardFieldsOnApproveData, gateway: PayPalCommerceGateway){
+export default async function onApprove(cardData: CardFieldsOnApproveData, url: string, gateway: PayPalCommerceGateway, formData: FormData) {
     try {
-        // orderID comes from createOrder callback
-        console.log('onApprove', { orderID: data.orderID });
+        console.log('onApprove', { orderID: cardData.orderID });
 
-        gateway.payPalOrderId = data.orderID;
+        formData.append('orderId', cardData.orderID);
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
 
-        return true;
+        const responseJson = await response.json();
+
+        if (!responseJson.success) {
+            throw responseJson.data.error;
+        }
+
+        const authorizationID = responseJson.data.id;
+
+        gateway.payPalAuthorizationId = authorizationID;
+
+        return authorizationID;
     } catch (err) {
         console.error(err);
     }

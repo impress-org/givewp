@@ -17,7 +17,15 @@ const payPalCommerceGateway: PayPalCommerceGateway = {
         }
 
         try {
-            await handleSubmit(this.cardFieldsForm);
+            const cardFormState = await this.cardFieldsForm.getState();
+
+            if (!cardFormState.isFormValid) {
+                return new Error('PayPal Card Fields form is invalid');
+            }
+
+            console.log("Card Fields submitting...");
+
+            await this.cardFieldsForm.submit();
 
             if (!this.payPalOrderId) {
                 return new Error('PayPal Order ID is not available.');
@@ -26,6 +34,7 @@ const payPalCommerceGateway: PayPalCommerceGateway = {
             return {
                 paymentMethod: 'card-fields',
                 payPalOrderId: this.payPalOrderId,
+                payPalAuthorizationId: this.payPalAuthorizationId,
             };
 
         } catch (err) {

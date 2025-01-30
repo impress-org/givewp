@@ -7,10 +7,12 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
+use PayPalCheckoutSdk\Orders\OrdersAuthorizeRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Orders\OrdersPatchRequest;
+use PayPalCheckoutSdk\Payments\AuthorizationsCaptureRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
@@ -154,6 +156,53 @@ class PayPalOrder
                 sprintf(
                     '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
                     print_r($request->body, true),
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+            );
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * Authorize order
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function authorizeOrder(string $orderId): string
+    {
+        $request = new OrdersAuthorizeRequest($orderId);
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
+        } catch (Exception $ex) {
+            logError(
+                'Authorize PayPal Commerce order failure',
+                sprintf(
+                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+                    print_r($request->body, true),
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+            );
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * Capture authorized order
+     */
+    public function captureAuthorizedOrder(string $authorizationId): string
+    {
+        $request = new AuthorizationsCaptureRequest($authorizationId);
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
+        } catch (Exception $ex) {
+            logError(
+                'Capture PayPal Commerce payment failure',
+                sprintf(
+                    '<strong>Response</strong><pre>%1$s</pre>',
                     print_r(json_decode($ex->getMessage(), true), true)
                 )
             );

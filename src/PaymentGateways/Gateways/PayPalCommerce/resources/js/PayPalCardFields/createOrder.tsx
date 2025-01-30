@@ -1,5 +1,7 @@
 // TODO: replace with GiveWP endpoint for creating order
-export default async function createOrder(url: string, formData: FormData) {
+import {PayPalCommerceGateway} from '../../../types';
+
+export default async function createOrder(url: string, gateway: PayPalCommerceGateway, formData: FormData) {
     try {
         console.log('createOrder');
         const response = await fetch(url, {
@@ -13,7 +15,11 @@ export default async function createOrder(url: string, formData: FormData) {
             throw responseJson.data.error;
         }
 
-        return responseJson.data.id;
+        const orderId = responseJson.data.id;
+
+        gateway.payPalOrderId = orderId;
+
+        return orderId;
     } catch (err) {
         console.error(err);
     }

@@ -29,11 +29,11 @@ export default function PayPalCardFields({clientId, gateway}: {clientId: string,
     formData.append('formTitle', 'Test Form');
 
     const handleCreateOrder = () => {
-        return createOrder(gateway.settings.createOrderUrl, formData);
+        return createOrder(gateway.settings.createOrderUrl, gateway, formData);
     }
 
-    const handleOnApprove = (data: CardFieldsOnApproveData) => {
-        return onApprove(data, gateway)
+    const handleOnApprove = (cardData: CardFieldsOnApproveData) => {
+        return onApprove(cardData, gateway.settings.authorizeOrderUrl, gateway, formData)
     }
 
     return (
@@ -41,6 +41,7 @@ export default function PayPalCardFields({clientId, gateway}: {clientId: string,
             options={{
                 clientId,
                 components: 'card-fields',
+                intent: 'authorize',
             }}
         >
             <PayPalCardFieldsProvider

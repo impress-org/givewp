@@ -18,6 +18,7 @@ class PayPalCommerceGateway extends PayPalCommerce
 {
     public $routeMethods = [
         'createOrder',
+        'authorizeOrder',
     ];
 
     use HasScriptAssetFile;
@@ -67,6 +68,9 @@ class PayPalCommerceGateway extends PayPalCommerce
         return [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'createOrderUrl'=> $this->generateGatewayRouteUrl('createOrder', [
+                'formId' => $formId,
+            ]),
+            'authorizeOrderUrl'=> $this->generateGatewayRouteUrl('authorizeOrder', [
                 'formId' => $formId,
             ]),
             'donationFormId' => $formId,
@@ -144,6 +148,32 @@ class PayPalCommerceGateway extends PayPalCommerce
 
         try {
             $orderId = $payPalOrder->createOrder($args, 'AUTHORIZE');
+
+            wp_send_json_success(
+                [
+                    'id' => $orderId,
+                ]
+            );
+        } catch (\Exception $ex) {
+            wp_send_json_error(
+                [
+                    'error' => json_decode($ex->getMessage(), true),
+                ]
+            );
+        }
+    }
+
+    public function authorizeOrder(array $queryParams)
+    {
+        check_ajax_referer( 'givewp_paypal_commerce_gateway' );
+
+        $data = give_clean($_POST);
+
+        /** @var PayPalOrder $payPalOrder */
+        $payPalOrder = give(PayPalOrder::class);
+
+        try {
+            $orderId = $payPalOrder->authorizeOrder($data['orderId']);
 
             wp_send_json_success(
                 [

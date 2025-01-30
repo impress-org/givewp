@@ -79,14 +79,22 @@ class PayPalCommerce extends PaymentGateway
      * @inerhitDoc
      * @since 2.19.0
      *
-     * @param array{paypalOrder: PayPalOrder} $gatewayData
+     * @param  array{paypalOrder: PayPalOrder}  $gatewayData
+     * @throws Exception
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        /** @var PayPalOrder $paypalOrder */
-        $paypalOrder = $gatewayData['paypalOrder'];
+        if (isset($gatewayData['payPalAuthorizationId'])){
+            /** @var Repositories\PayPalOrder $paypalOrderRepository */
+            $paypalOrderRepository = give(Repositories\PayPalOrder::class);
+            $transactionId = $paypalOrderRepository->captureAuthorizedOrder($gatewayData['payPalAuthorizationId']);
+        } else {
+            /** @var PayPalOrder $paypalOrder */
+            $paypalOrder = $gatewayData['paypalOrder'];
+            $transactionId = $paypalOrder->payment->id;
+        }
 
-        $command = PaymentComplete::make($paypalOrder->payment->id)
+        $command = PaymentComplete::make($transactionId)
             ->setPaymentNotes(
                 sprintf(
                     __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
