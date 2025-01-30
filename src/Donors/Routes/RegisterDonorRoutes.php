@@ -97,6 +97,11 @@ class RegisterDonorRoutes
                         'required' => false,
                         'default' => 0,
                     ],
+                    'hideAnonymousDonors' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => true,
+                    ],
                 ],
             ]
         );

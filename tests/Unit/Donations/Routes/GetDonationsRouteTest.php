@@ -156,6 +156,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
