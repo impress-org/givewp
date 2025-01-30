@@ -30,10 +30,10 @@ class GetDonationsRouteTest extends RestApiTestCase
         Donation::query()->delete();
 
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -86,11 +86,11 @@ class GetDonationsRouteTest extends RestApiTestCase
         $campaign = Campaign::factory()->create();
 
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
         give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
         give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
@@ -118,7 +118,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldNotReturnSensitiveData()
     {
-        Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -137,5 +137,69 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldNotReturnAnonymousDonations()
+    {
+        Donation::query()->delete();
+
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        // This anonymous donation should NOT be returned to the data array.
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donation->id, $data[0]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldReturnAnonymousDonations()
+    {
+        Donation::query()->delete();
+
+        /** @var  Donation $donation1 */
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        /**
+         * This anonymous donation should be returned to the data array.
+         * @var  Donation $donation2
+         * */
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'hideAnonymousDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals($donation2->id, $data[1]['id']);
     }
 }

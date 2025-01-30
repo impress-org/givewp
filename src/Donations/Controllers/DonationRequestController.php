@@ -48,6 +48,11 @@ class DonationRequestController
             });
         }
 
+        if ($request->get_param('hideAnonymousDonations')) {
+            // Remove anonymous donations from results
+            $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
+        }
+
         // Include only current payment "mode"
         $query->where('give_donationmeta_attach_meta_mode.meta_value', give_is_test_mode() ? 'test' : 'live');
 
