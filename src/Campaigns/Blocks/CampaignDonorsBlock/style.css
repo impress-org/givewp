@@ -100,6 +100,30 @@
     width: 0.25rem;
 }
 
+.givewp-campaign-donors-block__donor-ribbon {
+    align-items: center;
+    border-radius: 100%;
+    color: #1F2937;
+    display: flex;
+    height: 1.25rem;
+    justify-content: center;
+    margin-left: 0.5rem;
+    width: 1.25rem;
+}
+
+.givewp-campaign-donors-block__donor-ribbon[data-position="1"] {
+    background-color: #ffd700;
+}
+
+.givewp-campaign-donors-block__donor-ribbon[data-position="2"] {
+    background-color: #c0c0c0;
+}
+
+.givewp-campaign-donors-block__donor-ribbon[data-position="3"] {
+    background-color: #cd7f32;
+    color: #fffaf2;
+}
+
 .givewp-campaign-donors-block__donor-company {
     color: var(--givewp-neutral-400);
     display: flex;
