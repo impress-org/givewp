@@ -15,25 +15,6 @@
     "attributes": {
         "campaignId": {
             "type": "number"
-        },
-        "goalType": {
-            "type": "string",
-            "enum": [
-                "amount",
-                "donations",
-                "donors",
-                "amountFromSubscriptions",
-                "subscriptions",
-                "donorsFromSubscriptions"
-            ],
-            "default": "amount"
-        },
-        "selectedForm": {
-            "type": "string"
-        },
-        "buttonText": {
-            "type": "string",
-            "default": "Donate now"
         }
     },
     "textdomain": "give",
