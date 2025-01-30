@@ -37,6 +37,8 @@ class DonationRequestController
     {
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
+        $sortColumn = $request->get_param('sort');
+        $sortDirection = $request->get_param('direction');
 
         $query = Donation::query();
 
@@ -61,7 +63,8 @@ class DonationRequestController
 
         $query
             ->limit($perPage)
-            ->offset(($page - 1) * $perPage);
+            ->offset(($page - 1) * $perPage)
+            ->orderBy($sortColumn, $sortDirection);
 
         $donations = $query->getAll() ?? [];
         $donations = array_map([$this, 'escDonation'], $donations);

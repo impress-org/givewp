@@ -39,6 +39,8 @@ class DonorRequestController
     {
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
+        $sortColumn = $request->get_param('sort');
+        $sortDirection = $request->get_param('direction');
 
         $query = Donor::query();
 
@@ -85,7 +87,8 @@ class DonorRequestController
 
         $query
             ->limit($perPage)
-            ->offset(($page - 1) * $perPage);
+            ->offset(($page - 1) * $perPage)
+            ->orderBy($sortColumn, $sortDirection);
 
         $sql = $query->getSQL();
 

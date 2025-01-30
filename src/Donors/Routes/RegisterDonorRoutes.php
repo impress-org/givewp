@@ -12,6 +12,16 @@ use WP_REST_Server;
  */
 class RegisterDonorRoutes
 {
+    const SORTABLE_COLUMNS = [
+        'id',
+        'createdAt',
+        'name',
+        'firstName',
+        'lastName',
+        'totalAmountDonated',
+        'totalNumberOfDonations',
+    ];
+
     /**
      * @var DonorRequestController
      */
@@ -91,6 +101,26 @@ class RegisterDonorRoutes
                         'default' => 30,
                         'minimum' => 1,
                         'maximum' => 100,
+                    ],
+                    'sort' => [
+                        'validate_callback' => function ($param) {
+                            if (empty($param)) {
+                                return true;
+                            }
+
+                            return in_array($param, self::SORTABLE_COLUMNS, true);
+                        },
+                        'default' => 'id',
+                    ],
+                    'direction' => [
+                        'validate_callback' => function ($param) {
+                            if (empty($param)) {
+                                return true;
+                            }
+
+                            return in_array(strtoupper($param), ['ASC', 'DESC'], true);
+                        },
+                        'default' => 'ASC',
                     ],
                     'onlyWithDonations' => [
                         'type' => 'boolean',
