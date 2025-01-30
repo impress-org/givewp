@@ -7,6 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Database\DB;
 use Give\Tests\RestApiTestCase;
@@ -30,25 +31,23 @@ class GetDonorsRouteTest extends RestApiTestCase
     {
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
-        /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor1 = $donation1->donor;
-        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
+        /** @var  Donor $donor1 */
+        $donor1 = Donor::factory()->create();
 
-        /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor2 = $donation2->donor;
-        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::DONOR_ID, $donor2->id);
+        /** @var  Donor $donor2 */
+        $donor2 = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'page' => 1,
                 'per_page' => 1,
             ]
         );
+
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
@@ -62,6 +61,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'page' => 2,
                 'per_page' => 1,
             ]
@@ -128,13 +128,15 @@ class GetDonorsRouteTest extends RestApiTestCase
      */
     public function testGetDonorsShouldNotReturnSensitiveData()
     {
-        /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor = $donation->donor;
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::DONOR_ID, $donor->id);
+        Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
 
         $response = $this->dispatchRequest($request);
 

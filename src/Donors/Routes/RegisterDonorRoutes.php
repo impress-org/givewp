@@ -92,6 +92,11 @@ class RegisterDonorRoutes
                         'minimum' => 1,
                         'maximum' => 100,
                     ],
+                    'onlyWithDonations' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => true,
+                    ],
                     'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
