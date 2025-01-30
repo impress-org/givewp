@@ -9,23 +9,31 @@ import {CampaignSelector} from '../shared/components/CampaignSelector';
 
 import './styles.scss';
 
-const goalOptions = () => {
-    const options = [
-        {value: 'amount', label: __('Amount raised', 'give')},
-        {value: 'donations', label: __('Number of donations', 'give')},
-        {value: 'donors', label: __('Number of donors', 'give')},
-    ]
-
-    if (!window.GiveCampaignOptions.isRecurringEnabled) {
-        return [
-            ...options,
-            {value: 'amountFromSubscriptions', label: __('Recurring amount raised', 'give')},
-            {value: 'subscriptions', label: __('Number of recurring donations', 'give')},
-            {value: 'donorsFromSubscriptions', label: __('Number of recurring donors', 'give')},
-        ]
+const getGoalDescription = (goalType: string) => {
+    switch (goalType) {
+        case 'amount':
+            return __('Amount raised', 'give');
+        case 'donations':
+            return __('Number of donations', 'give');
+        case 'donors':
+            return __('Number of donors', 'give');
+        case 'amountFromSubscriptions':
+            return __('Recurring amount raised', 'give');
+        case 'subscriptions':
+            return __('Number of recurring donations', 'give');
+        case 'donorsFromSubscriptions':
+            return __('Number of recurring donors', 'give');
     }
+}
 
-    return options;
+const getValue = (goalType: string, value: number) => {
+    switch (goalType) {
+        case 'amount':
+        case 'amountFromSubscriptions':
+            return currency.format(value);
+        default:
+            return value;
+    }
 }
 
 const currency = new Intl.NumberFormat('en-US', {
@@ -42,7 +50,6 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
 }>) {
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
 
-
     const blockProps = useBlockProps();
 
     const adminBaseUrl = useSelect(
@@ -55,28 +62,26 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
         return null;
     }
 
-    console.log(campaign)
-
     return (
         <div {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
                 <div className="give-campaign-goal">
                     <div className="give-campaign-goal__container">
                         <div className="give-campaign-goal__container-item">
-                            <span>{__('Amount raised', 'give')}</span>
+                            <span>{getGoalDescription(campaign.goalType)}</span>
                             <strong>
-                                {currency.format(campaign.goalProgress)}
+                                {getValue(campaign.goalType, campaign.goalStats.actual)}
                             </strong>
                         </div>
                         <div className="give-campaign-goal__container-item">
                             <span>{__('Our goal', 'give')}</span>
-                            <strong>{currency.format(campaign.goal || 0)}</strong>
+                            <strong>{getValue(campaign.goalType, campaign.goal)}</strong>
                         </div>
                     </div>
                     <div className="give-campaign-goal__progress-bar">
                         <div className="give-campaign-goal__progress-bar-container">
                             <div className="give-campaign-goal__progress-bar-progress"
-                                 style={{width: campaign.goalProgress > 100 ? '100%' : `${campaign.goalProgress}%`}}>
+                                 style={{width: `${campaign.goalStats.percentage}%`}}>
                             </div>
                         </div>
                     </div>
@@ -86,20 +91,12 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
             {hasResolved && campaign?.id && (
                 <InspectorControls>
                     <PanelBody title={__('Settings', 'give')} initialOpen={true}>
-                        <SelectControl
-                            label={__('Goal type', 'give')}
-                            onChange={(goalType: string) => setAttributes({goalType})}
-                            options={goalOptions()}
-                            value={attributes.goalType}
-                            help={
-                                <ExternalLink
-                                    href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings#campaign-goal`}
-                                    title={__('Edit campaign goal', 'give')}
-                                >
-                                    {__('Edit campaign goal', 'give')}
-                                </ExternalLink>
-                            }
-                        />
+                        <ExternalLink
+                            href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings#campaign-goal`}
+                            title={__('Edit campaign goal settings', 'give')}
+                        >
+                            {__('Edit campaign goal settings', 'give')}
+                        </ExternalLink>
                     </PanelBody>
                 </InspectorControls>
             )}
