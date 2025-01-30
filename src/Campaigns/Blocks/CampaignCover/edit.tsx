@@ -2,13 +2,14 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
 import {external} from '@wordpress/icons';
-import {BaseControl, Icon, PanelBody, TextareaControl} from '@wordpress/components';
+import {BaseControl, Icon, PanelBody, Placeholder, TextareaControl} from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 import {BlockEditProps} from '@wordpress/blocks';
 
 import {CampaignSelector} from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import './editor.scss';
+import {GalleryIcon} from './Icon';
 
 export default function Edit({
     attributes,
@@ -31,7 +32,15 @@ export default function Edit({
     return (
         <div {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
-                {campaign?.image && <ServerSideRender block="givewp/campaign-cover-block" attributes={attributes} />}
+                {campaign?.image ? (
+                    <ServerSideRender block="givewp/campaign-cover-block" attributes={attributes} />
+                ) : (
+                    <Placeholder
+                        icon={<GalleryIcon />}
+                        label={__('Campaign Cover Image', 'give')}
+                        instructions={__('Upload a cover image for your campaign.', 'give')}
+                    />
+                )}
             </CampaignSelector>
 
             {hasResolved && campaign && (
