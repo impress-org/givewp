@@ -3,6 +3,7 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\CampaignOptions;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -49,6 +50,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
+        $this->loadCampaignOptions();
     }
 
     /**
@@ -157,5 +159,13 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadCampaignOptions()
+    {
+        Hooks::addAction('admin_init', CampaignOptions::class);
     }
 }

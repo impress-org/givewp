@@ -1,0 +1,51 @@
+.give-campaign-goal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        &-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+
+            span {
+                text-transform: uppercase;
+                font-size: 12px;
+                line-height: 18px;
+                color: #4b5563;
+            }
+
+            strong {
+                font-size: 20px;
+                line-height: 32px;
+                color: #060c1a;
+            }
+        }
+    }
+
+    &__progress-bar {
+        display: flex;
+
+        &-container {
+            display: flex;
+            height: 8px;
+            flex-grow: 1;
+            border-radius: 14px;
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+            background-color: #f2f2f2;
+        }
+
+        &-progress {
+            display: flex;
+            height: 8px;
+            border-radius: 14px;
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+            background-color: #2d802f;
+        }
+    }
+}

@@ -151,7 +151,7 @@ export default () => {
             </div>
 
             {/* Campaign Goal */}
-            <div className={styles.section}>
+            <div className={styles.section} id="campaign-goal">
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Goal', 'give')}</div>
                     <div className={styles.sectionDescription}>

@@ -1,3 +1,5 @@
+import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
+
 export type Notification = {
     id: string;
     content: string | JSX.Element | Function;
@@ -21,3 +23,15 @@ declare module "@wordpress/data" {
         dismissNotification(id: string): void
     };
 }
+
+declare global {
+    interface Window {
+        GiveCampaignOptions: {
+            currency: string;
+            currencySymbol: string;
+            isRecurringEnabled: boolean;
+        };
+    }
+}
+
+

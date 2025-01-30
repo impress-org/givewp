@@ -1,0 +1,42 @@
+{
+    "$schema": "https://json.schemastore.org/block.json",
+    "apiVersion": 2,
+    "name": "givewp/campaign-goal",
+    "version": "1.0.0",
+    "title": "Campaign Goal",
+    "category": "give",
+    "description": "Displays the goal of the campaign.",
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ]
+    },
+    "attributes": {
+        "campaignId": {
+            "type": "number"
+        },
+        "goalType": {
+            "type": "string",
+            "enum": [
+                "amount",
+                "donations",
+                "donors",
+                "amountFromSubscriptions",
+                "subscriptions",
+                "donorsFromSubscriptions"
+            ],
+            "default": "amount"
+        },
+        "selectedForm": {
+            "type": "string"
+        },
+        "buttonText": {
+            "type": "string",
+            "default": "Donate now"
+        }
+    },
+    "textdomain": "give",
+    "editorScript": "file:../../../../build/campaignGoalBlock.js",
+    "render": "file:./render.php"
+}
