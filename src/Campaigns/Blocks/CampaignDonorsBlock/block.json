@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "title": "Campaign Donors",
     "category": "give",
-    "icon": "heading",
     "description": "Display all the donors associated with a campaign.",
     "attributes": {
         "campaignId": {
