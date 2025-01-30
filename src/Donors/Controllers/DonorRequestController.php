@@ -66,8 +66,7 @@ class DonorRequestController
 
             if ($request->get_param('hideAnonymousDonors')) {
                 // Exclude anonymous donors from results - Donors only can be excluded if they made an anonymous donation
-                $query->distinct()
-                    ->join(function (JoinQueryBuilder $builder) {
+                $query->join(function (JoinQueryBuilder $builder) {
                         $builder->innerJoin('give_donationmeta', 'donationmeta4')
                             ->joinRaw("ON donationmeta4.meta_key = '" . DonationMetaKeys::ANONYMOUS . "' AND donationmeta4.meta_value = 0 AND donationmeta4.donation_id = donationmeta1.donation_id");
                     });
