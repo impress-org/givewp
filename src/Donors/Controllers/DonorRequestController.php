@@ -4,7 +4,6 @@ namespace Give\Donors\Controllers;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
-use Give\Donors\Repositories\DonorRepository;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -41,23 +40,36 @@ class DonorRequestController
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
 
-        $query = give(DonorRepository::class)->prepareQuery();
+        $query = Donor::query();
+
+        $query->join(function (JoinQueryBuilder $builder) {
+            // A donor only can be a donor if it has donations associated with
+            $builder->innerJoin('give_donationmeta', 'donationmeta1')
+                ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
+
+            // Include only current payment "mode"
+            $mode = give_is_test_mode() ? 'test' : 'live';
+            $builder->innerJoin('give_donationmeta', 'donationmeta2')
+                ->joinRaw("ON donationmeta2.meta_key = '" . DonationMetaKeys::MODE . "' AND donationmeta2.meta_value = '{$mode}'");
+        });
 
         if ($campaignId = $request->get_param('campaignId')) {
-            $query->distinct()
-                ->join(function (JoinQueryBuilder $builder) use ($campaignId) {
-                    $builder->innerJoin('give_donationmeta', 'donationmeta1')
-                        ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
-
-                    $builder->innerJoin('give_donationmeta', 'donationmeta2')
-                        ->joinRaw("ON donationmeta2.meta_key = '" . DonationMetaKeys::CAMPAIGN_ID . "' AND donationmeta2.meta_value = {$campaignId}");
-                })->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
-                    $builder
-                        ->select('ID')
-                        ->from('posts')
-                        ->whereRaw("WHERE ID = donationmeta1.donation_id AND post_type = 'give_payment' AND post_status = 'publish'");
-                });
+            // Filter by CampaignId
+            $query->join(function (JoinQueryBuilder $builder) use ($campaignId) {
+                $builder->innerJoin('give_donationmeta', 'donationmeta3')
+                    ->joinRaw("ON donationmeta3.meta_key = '" . DonationMetaKeys::CAMPAIGN_ID . "' AND donationmeta3.meta_value = {$campaignId}");
+            });
         }
+
+        // Make sure the donation is valid
+        $query->distinct()->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
+            $builder
+                ->select('ID')
+                ->from('posts')
+                ->where('post_type', 'give_payment')
+                ->whereIn('post_status', ['publish', 'give_subscription'])
+                ->whereRaw("AND ID = donationmeta1.donation_id");
+        });
 
         $query
             ->limit($perPage)
