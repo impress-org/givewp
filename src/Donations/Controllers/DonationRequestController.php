@@ -3,7 +3,6 @@
 namespace Give\Donations\Controllers;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use WP_Error;
@@ -39,7 +38,7 @@ class DonationRequestController
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
 
-        $query = give(DonationRepository::class)->prepareQuery();
+        $query = Donation::query();
 
         if ($campaignId = $request->get_param('campaignId')) {
             // Filter by CampaignId
