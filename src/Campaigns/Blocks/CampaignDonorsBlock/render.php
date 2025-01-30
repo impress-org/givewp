@@ -134,7 +134,7 @@ if ( ! class_exists(CampaignDonorsBlockRenderer::class)) {
             $donateButtonText = $this->attributes['donateButtonText'] ?? __('Join the list', 'give');
 
             $blockInlineStyles = sprintf(
-                '--givewp-campaign-donors-block__primary-color: %s; --givewp-campaign-donors-block__secondary-color: %s;',
+                '--givewp-primary-color: %s; --givewp-secondary-color: %s;',
                 esc_attr('#0b72d9'),
                 esc_attr('#27ae60')
             );
