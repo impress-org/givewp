@@ -88,18 +88,22 @@ export default function Edit({
                             onChange={(value) => setAttributes({sortBy: value})}
                             help={__('The order donors are displayed in.', 'give')}
                         />
+                        {/* TODO: Revert the label and help text back to what are in the designs once the backend for pagination is ready */}
                         <NumberControl
-                            label={__('Donors Per Page', 'give')}
+                            label={__('Limit', 'give')}
                             value={donorsPerPage}
                             min={1}
                             max={100}
                             onChange={(value) => setAttributes({donorsPerPage: parseInt(value)})}
+                            help={__('The maximum number of donors to display.', 'give')}
                         />
+                        {/* TODO: Revert the field back once the backend for pagination is ready
                         <TextControl
                             label={__('Load More Button', 'give')}
                             value={loadMoreButtonText}
                             onChange={(value) => setAttributes({loadMoreButtonText: value})}
                         />
+                        */}
                     </PanelBody>
                 </InspectorControls>
             )}
