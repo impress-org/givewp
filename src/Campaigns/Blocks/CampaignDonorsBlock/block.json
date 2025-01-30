@@ -33,7 +33,7 @@
         },
         "sortBy": {
             "type": "string",
-            "default": "Top Donors"
+            "default": "top-donors"
         },
         "donorsPerPage": {
             "type": "number",
@@ -48,5 +48,6 @@
         "className": true
     },
     "textdomain": "give",
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    "style": "givewp-CampaignDonorsBlock-style"
 }
