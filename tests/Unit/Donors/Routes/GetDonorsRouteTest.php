@@ -7,7 +7,6 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Database\DB;
 use Give\Tests\RestApiTestCase;
@@ -31,11 +30,15 @@ class GetDonorsRouteTest extends RestApiTestCase
     {
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
-        /** @var  Donor $donor1 */
-        $donor1 = Donor::factory()->create();
+        /** @var  Donation $donation1 */
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor1 = $donation1->donor;
+        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
 
-        /** @var  Donor $donor2 */
-        $donor2 = Donor::factory()->create();
+        /** @var  Donation $donation2 */
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor2 = $donation2->donor;
+        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::DONOR_ID, $donor2->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -125,7 +128,10 @@ class GetDonorsRouteTest extends RestApiTestCase
      */
     public function testGetDonorsShouldNotReturnSensitiveData()
     {
-        Donor::factory()->create();
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor = $donation->donor;
+        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::DONOR_ID, $donor->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
