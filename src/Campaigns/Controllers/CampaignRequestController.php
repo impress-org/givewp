@@ -34,7 +34,7 @@ class CampaignRequestController
 
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
-                'goalProgress' => $campaign->goalProgress(),
+                'goalStats' => $campaign->getGoalStats(),
                 'defaultFormTitle' => $campaign->defaultForm()->title
             ])
         );
