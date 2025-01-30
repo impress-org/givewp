@@ -173,11 +173,11 @@ class PayPalCommerceGateway extends PayPalCommerce
         $payPalOrder = give(PayPalOrder::class);
 
         try {
-            $orderId = $payPalOrder->authorizeOrder($data['orderId']);
+            $authorizationId = $payPalOrder->authorizeOrder($data['orderId']);
 
             wp_send_json_success(
                 [
-                    'id' => $orderId,
+                    'id' => $authorizationId,
                 ]
             );
         } catch (\Exception $ex) {

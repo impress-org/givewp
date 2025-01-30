@@ -174,7 +174,8 @@ class PayPalOrder
         $request = new OrdersAuthorizeRequest($orderId);
 
         try {
-            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
+            $response = $this->paypalClient->getHttpClient()->execute($request)->result;
+            return $response->purchase_units[0]->payments->authorizations[0]->id;
         } catch (Exception $ex) {
             logError(
                 'Authorize PayPal Commerce order failure',
