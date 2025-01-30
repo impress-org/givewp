@@ -42,9 +42,10 @@ class DonorRequestController
 
         $query = Donor::query();
 
+        // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
             $query->join(function (JoinQueryBuilder $builder) {
-                // A donor only can be a donor if it has donations associated with
+                // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
                 $builder->innerJoin('give_donationmeta', 'donationmeta1')
                     ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
 
