@@ -6,7 +6,6 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 /**
  * @var Campaign $campaign
  * @var array $attributes
- * @var array $params
  */
 
 $sortBy = $attributes['sortBy'] ?? 'top-donations';
@@ -30,7 +29,12 @@ $blockInlineStyles = sprintf(
         <?php
         if ($attributes['showButton'] && ! empty($donations)) : ?>
             <div class="givewp-campaign-donations-block__donate-button">
-                <?= (new BlockRenderController())->render($params); ?>
+                <?php
+                echo (new BlockRenderController())->render([
+                    'formId' => $campaign->defaultFormId,
+                    'openFormButton' => $attributes['donateButtonText'],
+                    'formFormat' => 'modal',
+                ]); ?>
             </div>
         <?php
         endif; ?>
@@ -64,13 +68,11 @@ $blockInlineStyles = sprintf(
             if ($attributes['showButton']) : ?>
                 <div class="givewp-campaign-donations-block__empty-button">
                     <?php
-                    $params = [
+                    echo (new BlockRenderController())->render([
                         'formId' => $campaign->defaultFormId,
                         'openFormButton' => __('Be the first', 'give'),
                         'formFormat' => 'modal',
-                    ];
-
-                    echo (new BlockRenderController())->render($params);
+                    ]);
                     ?>
                 </div>
             <?php

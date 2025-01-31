@@ -2,11 +2,13 @@
 
 namespace Give\Campaigns\Blocks\CampaignDonationsBlock;
 
-use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\Views\View;
 
+/**
+ * @unreleased
+ */
 class CampaignDonationsBlockViewModel
 {
     /**
@@ -15,13 +17,14 @@ class CampaignDonationsBlockViewModel
     private $campaign;
 
     /**
+     * @var array
+     */
+    private $donations;
+
+    /**
      * @var array $attributes
      */
     private $attributes;
-    /**
-     * @var CampaignDonationQuery
-     */
-    private $donations;
 
     /**
      * @unreleased
@@ -41,11 +44,7 @@ class CampaignDonationsBlockViewModel
         View::render('Campaigns/Blocks/CampaignDonationsBlock.render', [
             'campaign' => $this->campaign,
             'donations' => $this->formatDonationsData($this->donations),
-            'params' => [
-                'formId' => $this->campaign->defaultFormId,
-                'openFormButton' => $this->attributes['donateButtonText'],
-                'formFormat' => 'modal',
-            ],
+            'attributes' => $this->attributes,
         ]);
     }
 
