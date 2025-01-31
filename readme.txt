@@ -267,12 +267,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 3.20.0: February 3rd, 2025 = 
-* Enhancement: Updated donation form to hide gateway options when donation amount is zero
 * Enhancement: Updated Event list table to truncate long event descriptions
 * Enhancement: Updated Event description field with placeholder text
 * Enhancement: Updated Events block to display a “sold out” message when all tickets have been sold
 * Enhancement: Updated Events block to display an “Ended” message when the event date has passed
 * Enhancement: Updated Event list table to display correct revenue based on the number of tickets and price at the time of the purchase
+* Enhancement: Updated donation form to hide gateway options when donation amount is zero
 * Change: Due to Stripe API changes, we have removed the usage of the statement_descriptor attribute from the Stripe Payment Element Gateway
 * Security: Updated our meta persistence in donor and donation repositories for safer data exchange
 * Fix: Resolved an issue where the donor profile picture in donor list was not correct
