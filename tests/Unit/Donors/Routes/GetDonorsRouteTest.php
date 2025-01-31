@@ -324,7 +324,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorsSortedColumns($sortableColumn)
+    public function testGetDonorsSortedByColumns($sortableColumn)
     {
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
@@ -429,6 +429,9 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals($donor1->{$sortableColumn}, $data[1][$sortableColumn]);
     }
 
+    /**
+     * @unreleased
+     */
     public function sortableColumnsDataProvider(): array
     {
         return [
@@ -443,6 +446,8 @@ class GetDonorsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     private function getDonor1WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
@@ -465,6 +470,8 @@ class GetDonorsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     private function getDonor2WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
@@ -487,6 +494,8 @@ class GetDonorsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     private function getDonor3WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
