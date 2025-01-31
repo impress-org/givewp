@@ -1,5 +1,5 @@
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
-import type {PayPalCardFieldsComponent} from '@paypal/paypal-js';
+import type {OnClickActions, PayPalCardFieldsComponent} from '@paypal/paypal-js';
 
 /**
  * PayPal Commerce Platform: Standard address.
@@ -72,4 +72,15 @@ export interface PayPalCommerceGateway extends Gateway {
     settings?: GatewaySettings & PayPalCommerceGatewaySettings;
     payPalOrderId?: string;
     payPalAuthorizationId?: string;
+    paypalOnClickActions?: OnClickActions;
 }
+
+export function isUsingCardFields(gateway: PayPalCommerceGateway): gateway is PayPalCommerceGateway {
+    return gateway.cardFieldsForm !== undefined;
+}
+
+export function isUsingSmartButtons(gateway: PayPalCommerceGateway): gateway is PayPalCommerceGateway {
+    return gateway.paypalOnClickActions !== undefined;
+}
+
+

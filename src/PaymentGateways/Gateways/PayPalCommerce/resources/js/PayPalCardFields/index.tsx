@@ -1,15 +1,12 @@
-import {
-    PayPalCardFieldsProvider,
-    PayPalScriptProvider,
-} from '@paypal/react-paypal-js';
+import {PayPalCardFieldsProvider} from '@paypal/react-paypal-js';
 import createOrder from './createOrder';
-import onApprove from './onApprove';
-import React, {useState} from 'react';
-import {PayPalCommerceGateway} from '../../../types';
-import FormFields from './FormFields';
+import authorizeOrder from './authorizeOrder';
+import React from 'react';
+import type {PayPalCommerceGateway} from '../../../types';
+import CardFieldsForm from './CardFieldsForm';
 import {CardFieldsOnApproveData} from '@paypal/paypal-js';
 
- function onError(error) {
+function onError(error) {
     console.error(error);
 }
 
@@ -17,8 +14,7 @@ import {CardFieldsOnApproveData} from '@paypal/paypal-js';
  * @unreleased
  * @see https://paypal.github.io/react-paypal-js/?path=/docs/paypal-paypalcardfields-form--default
  */
-export default function PayPalCardFields({clientId, gateway}: {clientId: string, gateway: PayPalCommerceGateway}) {
-    const [isPaying, setIsPaying] = useState<boolean>(false);
+export default function PayPalCardFields({gateway}: {gateway: PayPalCommerceGateway}) {
     const formData = new FormData();
     formData.append('_ajax_nonce', gateway.settings.nonce);
     formData.append('firstName', 'John');
@@ -30,27 +26,20 @@ export default function PayPalCardFields({clientId, gateway}: {clientId: string,
 
     const handleCreateOrder = () => {
         return createOrder(gateway.settings.createOrderUrl, gateway, formData);
-    }
+    };
 
     const handleOnApprove = (cardData: CardFieldsOnApproveData) => {
-        return onApprove(cardData, gateway.settings.authorizeOrderUrl, gateway, formData)
+        return authorizeOrder(cardData, gateway.settings.authorizeOrderUrl, gateway, formData);
+    };
+
+    const handleOnInputSubmitRequest = (event) => {
+        console.log('handleOnInputSubmitRequest', event);
     }
 
     return (
-        <PayPalScriptProvider
-            options={{
-                clientId,
-                components: 'card-fields',
-                intent: 'authorize',
-            }}
+        <PayPalCardFieldsProvider inputEvents={{ onInputSubmitRequest: handleOnInputSubmitRequest}} createOrder={handleCreateOrder} onApprove={handleOnApprove} onError={onError}
         >
-            <PayPalCardFieldsProvider
-                createOrder={handleCreateOrder}
-                onApprove={handleOnApprove}
-                onError={onError}
-            >
-                <FormFields gateway={gateway} />
-            </PayPalCardFieldsProvider>
-        </PayPalScriptProvider>
+            <CardFieldsForm gateway={gateway} />
+        </PayPalCardFieldsProvider>
     );
 }

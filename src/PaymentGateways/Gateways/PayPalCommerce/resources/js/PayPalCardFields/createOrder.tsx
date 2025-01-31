@@ -1,5 +1,4 @@
-// TODO: replace with GiveWP endpoint for creating order
-import {PayPalCommerceGateway} from '../../../types';
+import type {PayPalCommerceGateway} from '../../../types';
 
 export default async function createOrder(url: string, gateway: PayPalCommerceGateway, formData: FormData) {
     try {

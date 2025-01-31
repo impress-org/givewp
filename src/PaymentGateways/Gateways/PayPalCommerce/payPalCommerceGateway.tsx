@@ -1,7 +1,7 @@
-import type {Gateway} from '@givewp/forms/types';
 import PayPalCardFields from './resources/js/PayPalCardFields';
-import type {PayPalCommerceGateway, PayPalCommerceGatewaySettings} from './types';
-import handleSubmit from './resources/js/PayPalCardFields/handleSubmit';
+import {isUsingCardFields, isUsingSmartButtons, PayPalCommerceGateway, PayPalCommerceGatewaySettings} from './types';
+import {PayPalScriptProvider} from '@paypal/react-paypal-js';
+import PayPalSmartButtons from './resources/js/PayPalSmartButtons';
 
 // @ts-ignore
 let payPalDonationsSettings: PayPalCommerceGatewaySettings = [];
@@ -12,42 +12,65 @@ const payPalCommerceGateway: PayPalCommerceGateway = {
         payPalDonationsSettings = this.settings;
     },
     beforeCreatePayment: async function (values): Promise<object> {
-        if (!this.cardFieldsForm) {
-            return new Error('PayPal Card Fields form is not available.');
-        }
+        // this.paypalOnClickActions
+        console.log({beforeCreatePayment: this, paypalOnClickActions: this.paypalOnClickActions});
 
-        try {
-            const cardFormState = await this.cardFieldsForm.getState();
-
-            if (!cardFormState.isFormValid) {
-                return new Error('PayPal Card Fields form is invalid');
+        if (isUsingSmartButtons(this)) {
+            if (!this.payPalOrderId || !this.payPalAuthorizationId) {
+                // trigger smart buttons
+                await this.paypalOnClickActions.resolve();
+            } else {
+                return {
+                    paymentMethod: 'buttons',
+                    payPalOrderId: this.payPalOrderId,
+                    payPalAuthorizationId: this.payPalAuthorizationId,
+                };
+            }
+        } else if (isUsingCardFields(this)) {
+            if (!this.cardFieldsForm) {
+                return new Error('PayPal Card Fields form is not available.');
             }
 
-            console.log("Card Fields submitting...");
+            try {
+                const cardFormState = await this.cardFieldsForm.getState();
 
-            await this.cardFieldsForm.submit();
+                if (!cardFormState.isFormValid) {
+                    return new Error('PayPal Card Fields form is invalid');
+                }
 
-            if (!this.payPalOrderId) {
-                return new Error('PayPal Order ID is not available.');
+                console.log('Card Fields submitting...');
+
+                await this.cardFieldsForm.submit();
+
+                if (!this.payPalOrderId) {
+                    return new Error('PayPal Order ID is not available.');
+                }
+
+                return {
+                    paymentMethod: 'card-fields',
+                    payPalOrderId: this.payPalOrderId,
+                    payPalAuthorizationId: this.payPalAuthorizationId,
+                };
+            } catch (err) {
+                console.error(err);
+                return new Error('Error submitting PayPal Card Fields form.');
             }
-
-            return {
-                paymentMethod: 'card-fields',
-                payPalOrderId: this.payPalOrderId,
-                payPalAuthorizationId: this.payPalAuthorizationId,
-            };
-
-        } catch (err) {
-            console.error(err);
-            return new Error('Error submitting PayPal Card Fields form.');
+        } else {
+            return new Error('PayPal is not available.');
         }
     },
     Fields() {
         return (
-            <PayPalCardFields
-                clientId={payPalDonationsSettings.sdkOptions['client-id']}
-                gateway={payPalCommerceGateway}
-            />
+            <PayPalScriptProvider
+                options={{
+                    clientId: payPalDonationsSettings.sdkOptions['client-id'],
+                    components: ['card-fields', 'buttons'],
+                    intent: 'authorize',
+                }}
+            >
+                <PayPalCardFields gateway={payPalCommerceGateway} />
+                <PayPalSmartButtons gateway={payPalCommerceGateway} />
+            </PayPalScriptProvider>
         );
     },
 };
