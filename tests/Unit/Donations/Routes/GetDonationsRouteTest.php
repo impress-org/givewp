@@ -25,6 +25,72 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
+    public function testGetDonationsShouldNotReturnSensitiveData()
+    {
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveProperties = [
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldReturnSensitiveData()
+    {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'admin38974238473824',
+                'user_pass' => 'admin38974238473824',
+                'user_email' => 'admin38974238473824@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveProperties = [
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertNotEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testGetDonationsWithPagination()
     {
         Donation::query()->delete();
@@ -116,34 +182,6 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldNotReturnSensitiveData()
-    {
-        Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
-        $response = $this->dispatchRequest($request);
-
-        $status = $response->get_status();
-        $data = $response->get_data();
-
-        $sensitiveProperties = [
-            'donorIp',
-            'email',
-            'phone',
-            'billingAddress',
-        ];
-
-        $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
     public function testGetDonationsShouldNotReturnAnonymousDonations()
     {
         Donation::query()->delete();
@@ -156,7 +194,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        
+
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
