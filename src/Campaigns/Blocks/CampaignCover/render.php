@@ -16,7 +16,7 @@ if ( ! $campaign) {
 
 $campaignMediaSetting = $campaign->image;
 
-$altText = $attributes['alt'] ?? 'Campaign cover image';
+$altText = $attributes['alt'] ?? __('Campaign cover image', 'give');
 $alignment = isset($attributes['align']) ? 'align' . $attributes['align'] : '';
 
 // Only assign width and height if the alignment is NOT "full" or "wide"
