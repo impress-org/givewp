@@ -2,12 +2,10 @@ import {useEntityRecord} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 
 export default function useCampaign(campaignId: number) {
-    const campaignData = useEntityRecord('givewp', 'campaign', campaignId);
+    const data = useEntityRecord('givewp', 'campaign', campaignId);
 
     return {
-        campaign: {
-            ...campaignData?.record as Campaign
-        },
-        hasResolved: campaignData?.hasResolved,
+        campaign: data?.record as Campaign,
+        hasResolved: data?.hasResolved,
     };
 }
