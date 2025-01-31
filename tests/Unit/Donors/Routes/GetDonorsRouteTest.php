@@ -92,17 +92,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor1 = $donation1->donor;
-        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
-
-        /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor2 = $donation2->donor;
-        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::DONOR_ID, $donor2->id);
+        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
+        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -167,17 +158,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor = $donation->donor;
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::DONOR_ID, $donor->id);
-
-        /** @var  Donation $anonymousDonation */
-        $anonymousDonation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
-        $anonymousDonor = $anonymousDonation->donor; // This anonymous donor should NOT be returned to the data array.
-        give()->payment_meta->update_meta($anonymousDonation->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($anonymousDonation->id, DonationMetaKeys::DONOR_ID, $anonymousDonor->id);
+        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
+        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id, true);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -188,7 +170,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donor->id, $data[0]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
     }
 
     /**
@@ -203,17 +185,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-        $donor = $donation->donor;
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::DONOR_ID, $donor->id);
-
-        /** @var  Donation $anonymousDonation */
-        $anonymousDonation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
-        $anonymousDonor = $anonymousDonation->donor; // This anonymous donor should be returned to the data array.
-        give()->payment_meta->update_meta($anonymousDonation->id, DonationMetaKeys::CAMPAIGN_ID, $campaign->id);
-        give()->payment_meta->update_meta($anonymousDonation->id, DonationMetaKeys::DONOR_ID, $anonymousDonor->id);
+        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
+        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id, true);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -230,8 +203,8 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor->id, $data[0]['id']);
-        $this->assertEquals($anonymousDonor->id, $data[1]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[1]['id']);
     }
 
     /**
