@@ -152,6 +152,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request->set_query_params(
             [
                 'onlyWithDonations' => false,
+                'direction' => 'ASC',
             ]
         );
 
@@ -189,6 +190,7 @@ class GetDonorsRouteTest extends RestApiTestCase
                 'onlyWithDonations' => false,
                 'page' => 1,
                 'per_page' => 1,
+                'direction' => 'ASC',
             ]
         );
 
@@ -208,6 +210,7 @@ class GetDonorsRouteTest extends RestApiTestCase
                 'onlyWithDonations' => false,
                 'page' => 2,
                 'per_page' => 1,
+                'direction' => 'ASC',
             ]
         );
         $response = $this->dispatchRequest($request);
@@ -243,6 +246,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request->set_query_params(
             [
                 'campaignId' => $campaign->id,
+                'direction' => 'ASC',
             ]
         );
         $response = $this->dispatchRequest($request);
@@ -303,6 +307,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request->set_query_params(
             [
                 'hideAnonymousDonors' => false,
+                'direction' => 'ASC',
             ]
         );
 

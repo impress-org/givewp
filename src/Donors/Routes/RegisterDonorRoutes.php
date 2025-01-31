@@ -107,7 +107,7 @@ class RegisterDonorRoutes
                     ],
                     'direction' => [
                         'type' => 'string',
-                        'default' => 'ASC',
+                        'default' => 'DESC',
                         'enum' => ['ASC', 'DESC'],
                     ],
                     'onlyWithDonations' => [
