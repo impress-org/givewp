@@ -75,7 +75,7 @@ class DonorRequestController
             }
 
             // Make sure the donation is valid
-            $query->distinct()->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
+            $query->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
                 $builder
                     ->select('ID')
                     ->from('posts')
