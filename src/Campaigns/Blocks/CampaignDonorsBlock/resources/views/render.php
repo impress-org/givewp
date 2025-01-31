@@ -9,10 +9,9 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
  */
 
 $sortBy = $attributes['sortBy'] ?? 'top-donors';
-$blockTitle = $sortBy === 'top-donors' ? __('Top Donors', 'give') : __(
-    'Recent Donors',
-    'give'
-);
+$blockTitle = $sortBy === 'top-donors'
+    ? __('Top Donors', 'give')
+    : __('Recent Donors', 'give');
 $donateButtonText = $attributes['donateButtonText'] ?? __('Join the list', 'give');
 
 $blockInlineStyles = sprintf(
