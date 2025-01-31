@@ -14,7 +14,7 @@ use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 class GetAsyncFormDataForListView
 {
     /**
-     * @unreleased Check if form goal is enabled
+     * @since 3.20.0 Check if form goal is enabled
      * @since 3.16.0
      */
     public function __invoke()
@@ -101,7 +101,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     private function isFormGoalEnabled(int $formId): bool
     {

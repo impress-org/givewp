@@ -486,7 +486,7 @@ if ( ! class_exists('Give_License') ) :
 		/**
 		 * Get account url
 		 *
-         * @unreleased allows to override the API URL via constant
+         * @since 3.20.0 allows to override the API URL via constant
 		 * @since 2.5.0
 		 */
         public static function get_website_url(): ?string
@@ -999,7 +999,7 @@ if ( ! class_exists('Give_License') ) :
         /**
          * Returns the API URL for license requests, checking for a constant first.
          *
-         * @unreleased
+         * @since 3.20.0
          */
         public static function get_api_url(): string
         {

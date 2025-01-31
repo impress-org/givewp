@@ -81,7 +81,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function getDateTimestamp(string $date, string $timezone = ''): int
     {
