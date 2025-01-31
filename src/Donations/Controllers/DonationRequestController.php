@@ -62,8 +62,6 @@ class DonationRequestController
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
 
-        $sql = $query->getSQL();
-
         $donations = $query->getAll() ?? [];
         $donations = array_map([$this, 'escDonation'], $donations);
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();

@@ -90,8 +90,6 @@ class DonorRequestController
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
 
-        $sql = $query->getSQL();
-
         $donors = $query->getAll() ?? [];
         $donors = array_map([$this, 'escDonor'], $donors);
         $totalDonors = empty($donors) ? 0 : Donor::query()->count();

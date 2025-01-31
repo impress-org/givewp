@@ -12,16 +12,6 @@ use WP_REST_Server;
  */
 class RegisterDonorRoutes
 {
-    const SORTABLE_COLUMNS = [
-        'id',
-        'createdAt',
-        'name',
-        'firstName',
-        'lastName',
-        'totalAmountDonated',
-        'totalNumberOfDonations',
-    ];
-
     /**
      * @var DonorRequestController
      */
@@ -103,38 +93,33 @@ class RegisterDonorRoutes
                         'maximum' => 100,
                     ],
                     'sort' => [
-                        'validate_callback' => function ($param) {
-                            if (empty($param)) {
-                                return true;
-                            }
-
-                            return in_array($param, self::SORTABLE_COLUMNS, true);
-                        },
+                        'type' => 'string',
                         'default' => 'id',
+                        'enum' => [
+                            'id',
+                            'createdAt',
+                            'name',
+                            'firstName',
+                            'lastName',
+                            'totalAmountDonated',
+                            'totalNumberOfDonations',
+                        ],
                     ],
                     'direction' => [
-                        'validate_callback' => function ($param) {
-                            if (empty($param)) {
-                                return true;
-                            }
-
-                            return in_array(strtoupper($param), ['ASC', 'DESC'], true);
-                        },
+                        'type' => 'string',
                         'default' => 'ASC',
+                        'enum' => ['ASC', 'DESC'],
                     ],
                     'onlyWithDonations' => [
                         'type' => 'boolean',
-                        'required' => false,
                         'default' => true,
                     ],
                     'campaignId' => [
                         'type' => 'integer',
-                        'required' => false,
                         'default' => 0,
                     ],
                     'hideAnonymousDonors' => [
                         'type' => 'boolean',
-                        'required' => false,
                         'default' => true,
                     ],
                 ],
