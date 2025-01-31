@@ -16,7 +16,6 @@ interface EditProps extends BlockEditProps<{
     width: number;
     height: number;
     align: string;
-    duotone: any;
 }> {
     toggleSelection: (isSelected: boolean) => void;
 }
