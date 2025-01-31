@@ -111,7 +111,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
+        $donor1 = $this->getDonor1WithDonation($campaign->id);
         $donor2 = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
@@ -144,7 +144,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
+        $donor1 = $this->getDonor1WithDonation($campaign->id);
         $donor2 = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
@@ -238,8 +238,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
-        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id);
+        $donor1 = $this->getDonor1WithDonation($campaign->id);
+        $donor2 = $this->getDonor2WithDonation($campaign->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -272,8 +272,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
-        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id, true);
+        $donor1 = $this->getDonor1WithDonation($campaign->id);
+        $donor2 = $this->getDonor2WithDonation($campaign->id, true);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -299,8 +299,8 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign->id);
-        $donor2 = $this->getDonor2WithDonationAssociated($campaign->id, true);
+        $donor1 = $this->getDonor1WithDonation($campaign->id);
+        $donor2 = $this->getDonor2WithDonation($campaign->id, true);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -339,10 +339,9 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign2 */
         $campaign2 = Campaign::factory()->create();
 
-
-        $donor1 = $this->getDonor1WithDonationAssociated($campaign1->id);
-        $donor2 = $this->getDonor2WithDonationAssociated($campaign1->id);
-        $donor3 = $this->getDonor3WithDonationAssociated($campaign2->id);
+        $donor1 = $this->getDonor1WithDonation($campaign1->id);
+        $donor2 = $this->getDonor2WithDonation($campaign1->id);
+        $donor3 = $this->getDonor3WithDonation($campaign2->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -455,7 +454,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function getDonor1WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
+    private function getDonor1WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation1 */
         $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
@@ -479,7 +478,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function getDonor2WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
+    private function getDonor2WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation2 */
         $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
@@ -503,7 +502,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function getDonor3WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
+    private function getDonor3WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation3 */
         $donation3 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
