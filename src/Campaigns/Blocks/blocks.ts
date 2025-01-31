@@ -8,11 +8,12 @@ import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/bl
  */
 import campaignCover from './CampaignCover';
 import campaignDonateButton from './DonateButton';
+import campaignDonations from './CampaignDonationsBlock';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
 
 export const getAllBlocks = () => {
-    return [campaignCover, campaignDonateButton, campaignDonors, campaignTitle];
+    return [campaignCover, campaignDonateButton, campaignDonations, campaignDonors, campaignTitle];
 };
 
 getAllBlocks().forEach((block) => {

@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "givewp/campaign-donations-block",
+    "version": "1.0.0",
+    "title": "Campaign Donations",
+    "category": "give",
+    "description": "Display all the donations associated with a campaign.",
+    "attributes": {
+        "campaignId": {
+            "type": "integer"
+        },
+        "showAnonymous": {
+            "type": "boolean",
+            "default": true
+        },
+        "showIcon": {
+            "type": "boolean",
+            "default": true
+        },
+        "showButton": {
+            "type": "boolean",
+            "default": true
+        },
+        "donateButtonText": {
+            "type": "string",
+            "default": "Donate"
+        },
+        "sortBy": {
+            "type": "string",
+            "default": "top-donations"
+        },
+        "donationsPerPage": {
+            "type": "number",
+            "default": 5
+        },
+        "loadMoreButtonText": {
+            "type": "string",
+            "default": "Load more"
+        }
+    },
+    "supports": {
+        "className": true
+    },
+    "textdomain": "give",
+    "render": "file:./render.php",
+    "style": "givewp-CampaignDonationsBlock-style"
+}
