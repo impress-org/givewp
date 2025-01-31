@@ -237,9 +237,11 @@ class GetDonorsRouteTest extends RestApiTestCase
     /**
      * @unreleased
      *
+     * @dataProvider sortableColumnsDataProvider
+     *
      * @throws Exception
      */
-    public function testGetDonorsSortedByTotalAmountDonated()
+    public function testGetDonorsSortedColumns($sortableColumn)
     {
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
@@ -250,9 +252,9 @@ class GetDonorsRouteTest extends RestApiTestCase
         $campaign2 = Campaign::factory()->create();
 
 
-        $donor1 = $this->getDonor1ForSortTest($campaign1->id);
-        $donor2 = $this->getDonor2ForSortTest($campaign1->id);
-        $donor3 = $this->getDonor3ForSortTest($campaign2->id);
+        $donor1 = $this->getDonor1WithDonationAssociated($campaign1->id);
+        $donor2 = $this->getDonor2WithDonationAssociated($campaign1->id);
+        $donor3 = $this->getDonor3WithDonationAssociated($campaign2->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -264,7 +266,7 @@ class GetDonorsRouteTest extends RestApiTestCase
             [
                 'page' => 1,
                 'per_page' => 30,
-                'sort' => 'totalAmountDonated',
+                'sort' => $sortableColumn,
                 'direction' => 'ASC',
             ]
         );
@@ -276,15 +278,15 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor3->totalAmountDonated->getAmount(), $data[2]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor3->{$sortableColumn}, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
                 'page' => 1,
                 'per_page' => 30,
-                'sort' => 'totalAmountDonated',
+                'sort' => $sortableColumn,
                 'direction' => 'ASC',
                 'campaignId' => $campaign1->id, // Filtering by campaignId
             ]
@@ -297,8 +299,8 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -307,7 +309,7 @@ class GetDonorsRouteTest extends RestApiTestCase
             [
                 'page' => 1,
                 'per_page' => 3,
-                'sort' => 'totalAmountDonated',
+                'sort' => $sortableColumn,
                 'direction' => 'DESC',
             ]
         );
@@ -319,15 +321,15 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor3->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[2]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor3->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
                 'page' => 1,
                 'per_page' => 30,
-                'sort' => 'totalAmountDonated',
+                'sort' => $sortableColumn,
                 'direction' => 'DESC',
                 'campaignId' => $campaign1->id, // Filtering by campaignId
             ]
@@ -340,17 +342,30 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
-        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor2->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[1][$sortableColumn]);
+    }
+
+    public function sortableColumnsDataProvider(): array
+    {
+        return [
+            ['id'],
+            ['createdAt'],
+            ['name'],
+            ['firstName'],
+            ['lastName'],
+            ['totalAmountDonated'],
+            ['totalNumberOfDonations'],
+        ];
     }
 
     /**
      * @throws Exception
      */
-    private function getDonor1ForSortTest($campaignId): Donor
+    private function getDonor1WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
         $donor1 = $donation1->donor;
 
         $donor1->firstName = 'A';
@@ -369,10 +384,10 @@ class GetDonorsRouteTest extends RestApiTestCase
     /**
      * @throws Exception
      */
-    private function getDonor2ForSortTest($campaignId): Donor
+    private function getDonor2WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
         $donor2 = $donation2->donor;
 
         $donor2->firstName = 'B';
@@ -391,10 +406,10 @@ class GetDonorsRouteTest extends RestApiTestCase
     /**
      * @throws Exception
      */
-    private function getDonor3ForSortTest($campaignId): Donor
+    private function getDonor3WithDonationAssociated(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation3 */
-        $donation3 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donation3 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
         $donor3 = $donation3->donor;
 
         $donor3->firstName = 'C';
