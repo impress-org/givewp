@@ -19,10 +19,7 @@ class RegisterDonationRoutes
         'status',
         'amount',
         'feeAmountRecovered',
-        'exchangeRate',
-        'gatewayId',
         'donorId',
-        'honorific',
         'firstName',
         'lastName',
     ];

@@ -4,7 +4,6 @@ namespace Give\Donations\Controllers;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationRoute;
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -44,10 +43,7 @@ class DonationRequestController
 
         if ($campaignId = $request->get_param('campaignId')) {
             // Filter by CampaignId
-            $query->join(function (JoinQueryBuilder $builder) use ($campaignId) {
-                $builder->innerJoin('give_campaign_forms', 'campaign_forms')
-                    ->joinRaw("ON campaign_forms.form_id = give_donationmeta_attach_meta_formId.meta_value AND campaign_forms.campaign_id = {$campaignId}");
-            });
+            $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
         if ($request->get_param('hideAnonymousDonations')) {
@@ -65,6 +61,8 @@ class DonationRequestController
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
+
+        $sql = $query->getSQL();
 
         $donations = $query->getAll() ?? [];
         $donations = array_map([$this, 'escDonation'], $donations);
@@ -141,10 +139,7 @@ class DonationRequestController
             'status' => 'post_status',
             'amount' => 'give_donationmeta_attach_meta_amount.meta_value',
             'feeAmountRecovered' => 'give_donationmeta_attach_meta_feeAmountRecovered.meta_value',
-            'exchangeRate' => 'give_donationmeta_attach_meta_exchangeRate.meta_value',
-            'gatewayId' => 'give_donationmeta_attach_meta_gateway.meta_value',
             'donorId' => 'give_donationmeta_attach_meta_donorId.meta_value',
-            'honorific' => 'give_donationmeta_attach_meta_honorific.meta_value',
             'firstName' => 'give_donationmeta_attach_meta_firstName.meta_value',
             'lastName' => 'give_donationmeta_attach_meta_lastName.meta_value',
         ];
