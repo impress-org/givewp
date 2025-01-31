@@ -12,6 +12,21 @@
         },
         "alt": {
             "type": "string"
+        },
+        "width": {
+            "type": "number",
+            "default": 645
+        },
+        "height": {
+            "type": "number",
+            "default": 865
+        },
+        "align": {
+            "type": "string",
+            "default": "none"
+        },
+        "duotone": {
+            "type": "string"
         }
     },
     "supports": {
@@ -22,6 +37,15 @@
             "center",
             "right"
         ],
+        "filter": {
+            "duotone": true
+        },
+        "selectors": {
+            "root": ".give-block-campaign-cover",
+            "filter": {
+                "duotone": ".wp-block-givewp-campaign-cover-block img"
+            }
+        },
         "anchor": true,
         "className": true,
         "splitting": true,
@@ -63,5 +87,6 @@
         }
     },
     "textdomain": "give",
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    "style": "file:./style.css"
 }
