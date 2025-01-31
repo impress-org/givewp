@@ -39,7 +39,7 @@ class DonorRequestController
     {
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
-        $sortColumn = $request->get_param('sort');
+        $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
 
         $query = Donor::query();
@@ -153,5 +153,23 @@ class DonorRequestController
         }
 
         return $donor;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSortColumn(string $sortColumn): string
+    {
+        $sortColumnsMap = [
+            'id' => 'id',
+            'createdAt' => 'date_created',
+            'name' => 'name',
+            'firstName' => 'give_donormeta_attach_meta_firstName.meta_value',
+            'lastName' => 'give_donormeta_attach_meta_lastName.meta_value',
+            'totalAmountDonated' => 'purchase_value',
+            'totalNumberOfDonations' => 'purchase_count',
+        ];
+
+        return $sortColumnsMap[$sortColumn];
     }
 }

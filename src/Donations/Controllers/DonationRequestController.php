@@ -37,7 +37,7 @@ class DonationRequestController
     {
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
-        $sortColumn = $request->get_param('sort');
+        $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
 
         $query = Donation::query();
@@ -127,5 +127,28 @@ class DonationRequestController
         }
 
         return $donation;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSortColumn(string $sortColumn): string
+    {
+        $sortColumnsMap = [
+            'id' => 'ID',
+            'createdAt' => 'post_date',
+            'updatedAt' => 'post_modified',
+            'status' => 'post_status',
+            'amount' => 'give_donationmeta_attach_meta_amount.meta_value',
+            'feeAmountRecovered' => 'give_donationmeta_attach_meta_feeAmountRecovered.meta_value',
+            'exchangeRate' => 'give_donationmeta_attach_meta_exchangeRate.meta_value',
+            'gatewayId' => 'give_donationmeta_attach_meta_gateway.meta_value',
+            'donorId' => 'give_donationmeta_attach_meta_donorId.meta_value',
+            'honorific' => 'give_donationmeta_attach_meta_honorific.meta_value',
+            'firstName' => 'give_donationmeta_attach_meta_firstName.meta_value',
+            'lastName' => 'give_donationmeta_attach_meta_lastName.meta_value',
+        ];
+
+        return $sortColumnsMap[$sortColumn];
     }
 }

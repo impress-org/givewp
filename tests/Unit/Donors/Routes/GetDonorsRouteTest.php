@@ -10,6 +10,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -231,5 +232,181 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(2, count($data));
         $this->assertEquals($donor->id, $data[0]['id']);
         $this->assertEquals($anonymousDonor->id, $data[1]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsSortedByTotalAmountDonated()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_donors'));
+
+        /** @var Campaign $campaign1 */
+        $campaign1 = Campaign::factory()->create();
+
+        /** @var Campaign $campaign2 */
+        $campaign2 = Campaign::factory()->create();
+
+
+        $donor1 = $this->getDonor1ForSortTest($campaign1->id);
+        $donor2 = $this->getDonor2ForSortTest($campaign1->id);
+        $donor3 = $this->getDonor3ForSortTest($campaign2->id);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        /**
+         * Ascendant Direction
+         */
+        $request->set_query_params(
+            [
+                'page' => 1,
+                'per_page' => 30,
+                'sort' => 'totalAmountDonated',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(3, count($data));
+        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor3->totalAmountDonated->getAmount(), $data[2]['totalAmountDonated']->getAmount());
+
+        $request->set_query_params(
+            [
+                'page' => 1,
+                'per_page' => 30,
+                'sort' => 'totalAmountDonated',
+                'direction' => 'ASC',
+                'campaignId' => $campaign1->id, // Filtering by campaignId
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+
+        /**
+         * Descendant Direction
+         */
+        $request->set_query_params(
+            [
+                'page' => 1,
+                'per_page' => 3,
+                'sort' => 'totalAmountDonated',
+                'direction' => 'DESC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(3, count($data));
+        $this->assertEquals($donor3->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[2]['totalAmountDonated']->getAmount());
+
+        $request->set_query_params(
+            [
+                'page' => 1,
+                'per_page' => 30,
+                'sort' => 'totalAmountDonated',
+                'direction' => 'DESC',
+                'campaignId' => $campaign1->id, // Filtering by campaignId
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donor2->totalAmountDonated->getAmount(), $data[0]['totalAmountDonated']->getAmount());
+        $this->assertEquals($donor1->totalAmountDonated->getAmount(), $data[1]['totalAmountDonated']->getAmount());
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getDonor1ForSortTest($campaignId): Donor
+    {
+        /** @var  Donation $donation1 */
+        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor1 = $donation1->donor;
+
+        $donor1->firstName = 'A';
+        $donor1->lastName = 'A';
+        $donor1->name = 'A A';
+        $donor1->totalAmountDonated = new Money(100, 'USD');
+        $donor1->totalNumberOfDonations = 1;
+        $donor1->save();
+
+        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
+        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
+
+        return Donor::find($donor1->id);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getDonor2ForSortTest($campaignId): Donor
+    {
+        /** @var  Donation $donation2 */
+        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor2 = $donation2->donor;
+
+        $donor2->firstName = 'B';
+        $donor2->lastName = 'B';
+        $donor2->name = 'B B';
+        $donor2->totalAmountDonated = new Money(200, 'USD');
+        $donor2->totalNumberOfDonations = 2;
+        $donor2->save();
+
+        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
+        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::DONOR_ID, $donor2->id);
+
+        return Donor::find($donor2->id);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getDonor3ForSortTest($campaignId): Donor
+    {
+        /** @var  Donation $donation3 */
+        $donation3 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+        $donor3 = $donation3->donor;
+
+        $donor3->firstName = 'C';
+        $donor3->lastName = 'C';
+        $donor3->name = 'C C';
+        $donor3->totalAmountDonated = new Money(300, 'USD');
+        $donor3->totalNumberOfDonations = 3;
+        $donor3->save();
+
+        give()->payment_meta->update_meta($donation3->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
+        give()->payment_meta->update_meta($donation3->id, DonationMetaKeys::DONOR_ID, $donor3->id);
+
+        return Donor::find($donor3->id);
     }
 }
