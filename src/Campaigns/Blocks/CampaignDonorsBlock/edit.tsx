@@ -46,7 +46,7 @@ export default function Edit({
                 <ServerSideRender block="givewp/campaign-donors-block" attributes={attributes} />
             </CampaignSelector>
 
-            {hasResolved && campaign && (
+            {hasResolved && campaign?.id && (
                 <InspectorControls>
                     <PanelBody title={__('Display Elements', 'give')} initialOpen={true}>
                         <ToggleControl
