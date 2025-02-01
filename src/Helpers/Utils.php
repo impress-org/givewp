@@ -170,13 +170,10 @@ class Utils
          * Example: In 'O63:8:"stdClass":1:{s63:4:"name";}', it matches 'O63:8:"' and 's63:4:"'.
          */
         $data = preg_replace_callback('/([aOsibd])(?=(?:[^"]*"[^"]*")*[^"]*$)[^:]*:(\d+):"/',
-
-            // Callback function to handle matches
             function ($matches) {
-                static $count = 0; // Static variable to keep track of the number of matches
+                static $count = 0;
                 $count++;
-
-                // Check if this is the first match
+                
                 if ($count === 1) {
                     // Preserve the first occurrence by returning the entire match as is (useful when the serialized data is hidden inside a string)
                     // Example: For input 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}', the first match is 'O63:8:"', and it is returned unchanged.
