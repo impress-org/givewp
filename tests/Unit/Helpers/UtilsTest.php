@@ -102,7 +102,7 @@ class UtilsTest extends TestCase
             ['Lorem ipsum b:1; dolor sit amet', true], // boolean
             ['Lorem ipsum d:3.14; dolor sit amet', true], // float
             ['Lorem ipsum N; dolor sit amet', true], // NULL
-            // Strings with special characters (e.g: emojis, spaces, control characters) that are not part of a predefined set of safe characters for serialized data structures (used to try to bypass the validations)
+            // Strings with special characters (e.g: emojis, spaces, control characters etc.) that are not part of a predefined set of safe characters for serialized data structures (used to try to bypass the validations)
             [
                 // emojis bypass sample
                 'O😼:8:"stdClass":1:{s😼:4:"name";s😼:5:"James";}',
@@ -111,6 +111,11 @@ class UtilsTest extends TestCase
             [
                 // spaces bypass sample
                 'O :8:"stdClass":1:{s :4:"name";s :5:"James";}',
+                true,
+            ],
+            [
+                // %6\3 bypass sample
+                'O%6\3:8:"stdClass":1:{s%6\3:4:"name";s%6\3:5:"James";}',
                 true,
             ],
             // Bypass with simple methods
