@@ -213,7 +213,7 @@ class Utils
      */
     public static function isSerialized($data): bool
     {
-        //$data = self::removeBackslashes($data);
+        $data = self::removeBackslashes($data);
 
         if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
             return true;
