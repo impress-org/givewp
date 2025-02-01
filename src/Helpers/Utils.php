@@ -173,7 +173,7 @@ class Utils
             function ($matches) {
                 static $count = 0;
                 $count++;
-                
+
                 if ($count === 1) {
                     // Preserve the first occurrence by returning the entire match as is (useful when the serialized data is hidden inside a string)
                     // Example: For input 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}', the first match is 'O63:8:"', and it is returned unchanged.
@@ -182,13 +182,9 @@ class Utils
 
                 // For subsequent matches, remove unwanted characters between the delimiter and the pattern
                 // Example: For input 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}', the second match is 's63:4:"'. Here, $matches[1] is 's', and $matches[2] is '4'.
-                // The result is 's:4:"'.
+                // The result is s:4:"
                 return $matches[1] . ':' . $matches[2] . ':"';
             },
-
-            // Example input strings to be processed:
-            // 1. 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}'
-            // 2. 'Loremipsums:5:"hello";dolorsitamet'
             $data
         );
 
