@@ -1,7 +1,8 @@
 import * as campaignTitleBlock from './CampaignTitleBlock';
+import * as campaignCover from './CampaignCover';
 
 const getAllBlocks = () => {
-    return [campaignTitleBlock];
+    return [campaignTitleBlock, campaignCover];
 };
 
 getAllBlocks().forEach((block) => {

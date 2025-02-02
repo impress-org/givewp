@@ -4,19 +4,23 @@ div.media-modal.wp-core-ui {
 
 .givewp-media-library-drop-area {
     text-align: center;
-    padding: 1rem 0 0 0;
+    padding: var(--givewp-spacing-8) 0;
     border: 1px dotted;
-    border-radius: 4px;
+    border-radius: var(--givewp-rounded-4);
 
     button {
         cursor: pointer;
         width: fit-content;
-        margin: 8px auto;
-        background: #E5E7EB;
+        margin: var(--givewp-spacing-4) auto var(--givewp-spacing-2);
+        background: var(--givewp-neutral-100);
         height: initial;
         border: initial;
-        padding: 4px 8px 4px 8px;
-        border-radius: 4px
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+        border-radius: var(--givewp-rounded-4);
+    }
+
+    p, svg {
+        margin: 0;
     }
 }
 
@@ -66,7 +70,7 @@ div.media-modal.wp-core-ui {
         object-fit: cover;
         object-position: center;
         transition: filter 0.3s ease;
-        border-radius: 4px;
+        border-radius: var(--givewp-rounded-4);
         cursor: pointer;
 
         &:hover {
@@ -96,7 +100,7 @@ div.media-modal.wp-core-ui {
         align-items: center;
         gap: 0.5rem;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: var(--givewp-rounded-4);
 
         button {
             margin-top: var(--givewp-spacing-2);
