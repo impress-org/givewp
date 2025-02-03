@@ -117,6 +117,9 @@ class DonationFormsAdminPage
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'swrConfig' => [
+                'revalidateOnFocus' => false
+            ]
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
