@@ -69,7 +69,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                         <div className="give-campaign-goal__container-item">
                             <span>{getGoalDescription(campaign.goalType)}</span>
                             <strong>
-                                {getValue(campaign.goalType, campaign.goalStats.actual)}
+                                {getValue(campaign.goalType, campaign?.goalStats?.actual)}
                             </strong>
                         </div>
                         <div className="give-campaign-goal__container-item">
@@ -80,7 +80,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                     <div className="give-campaign-goal__progress-bar">
                         <div className="give-campaign-goal__progress-bar-container">
                             <div className="give-campaign-goal__progress-bar-progress"
-                                 style={{width: `${campaign.goalStats.percentage}%`}}>
+                                 style={{width: `${campaign?.goalStats?.percentage}%`}}>
                             </div>
                         </div>
                     </div>

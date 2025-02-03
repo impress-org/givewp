@@ -1,6 +1,5 @@
 <?php
 
-use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
@@ -18,7 +17,7 @@ if (
     return;
 }
 
-$stats = (new CampaignGoalData($campaign))->toArray();
+$stats = $campaign->getGoalStats();
 
 $getGoalDescription = function(CampaignGoalType $goalType) {
     $data = [
