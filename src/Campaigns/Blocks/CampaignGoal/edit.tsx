@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
-import {ExternalLink, PanelBody} from '@wordpress/components';
+import {ExternalLink, PanelBody, TextControl} from '@wordpress/components';
 import useCampaign from '../shared/hooks/useCampaign';
 import {CampaignSelector} from '../shared/components/CampaignSelector';
 
@@ -90,6 +90,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
             {hasResolved && campaign?.id && (
                 <InspectorControls>
                     <PanelBody title={__('Settings', 'give')} initialOpen={true}>
+                        <TextControl value={getGoalDescription(campaign.goalType)} onChange={null} disabled={true} />
                         <ExternalLink
                             href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings#campaign-goal`}
                             title={__('Edit campaign goal settings', 'give')}
