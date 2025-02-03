@@ -58,6 +58,11 @@ class CampaignRequestController
         $totalCampaigns = empty($campaigns) ? 0 : Campaign::query()->count();
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
+        // todo: remove - temporary solution
+        $campaigns = array_map(function ($campaign) {
+            return $campaign->toArray();
+        }, $campaigns);
+
         $response = rest_ensure_response($campaigns);
         $response->header('X-WP-Total', $totalCampaigns);
         $response->header('X-WP-TotalPages', $totalPages);
