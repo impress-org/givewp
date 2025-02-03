@@ -78,9 +78,15 @@ const ListTableBlankSlate = () => {
     );
 };
 
+/**
+ * EventTicketsListTable
+ *
+ * @since 3.20.0 Add wrapper class for the EventTicketsListTable
+ * @since 3.6.0
+ */
 export default function EventTicketsListTable() {
     return (
-        <>
+        <div className={styles.listTable}>
             <Feedback />
             <ListTablePage
                 title={__('Events', 'give')}
@@ -94,6 +100,6 @@ export default function EventTicketsListTable() {
             >
                 <CreateEventModal />
             </ListTablePage>
-        </>
+        </div>
     );
 }

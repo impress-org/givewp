@@ -7,8 +7,9 @@ use Give\Framework\FieldsAPI\Field;
 class EventTickets extends Field
 {
     protected $title;
-    protected $startDateTime;
     protected $description;
+    protected $startDateTime;
+    protected $endDateTime;
     protected $ticketTypes = [];
 
     const TYPE = 'eventTickets';
@@ -50,6 +51,24 @@ class EventTickets extends Field
     /**
      * @since 3.6.0
      */
+    public function getEndDateTime(): string
+    {
+        return $this->endDateTime;
+    }
+
+    /**
+     * @since 3.20.0
+     */
+    public function endDateTime(string $date): EventTickets
+    {
+        $this->endDateTime = $date;
+
+        return $this;
+    }
+
+    /**
+     * @since 3.6.0
+     */
     public function getDescription(): string
     {
         return $this->description;
@@ -81,28 +100,4 @@ class EventTickets extends Field
         return $this;
     }
 
-    /**
-     * @since 3.6.0
-     */
-    public function getTicketsLabel(): string
-    {
-        return apply_filters(
-            'givewp_event_tickets_block/tickets_label',
-            __('Select Tickets', 'give')
-        );
-    }
-
-    /**
-     * @since 3.6.0
-     */
-    public function getSoldOutMessage(): string
-    {
-        return apply_filters(
-            'givewp_event_tickets_block/sold_out_message',
-            __(
-                'Thank you for supporting our cause. Our fundraising event tickets are officially sold out. You can still contribute by making a donation.',
-                'give'
-            )
-        );
-    }
 }
