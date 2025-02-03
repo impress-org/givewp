@@ -126,10 +126,10 @@ export default () => {
 
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
-                            {__('Add a cover image or video for your campaign.', 'give')}
+                            {__('Add a cover image for your campaign.', 'give')}
                         </div>
                         <div className={styles.sectionFieldDescription}>
-                            {__('Upload an image or video to represent and inspire your campaign.', 'give')}
+                            {__('Upload an image to represent and inspire your campaign.', 'give')}
                         </div>
                         <div className={styles.upload}>
                             <Upload

@@ -267,9 +267,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             />
                         </div>
                         <div className="givewp-campaigns__form-row">
-                            <label htmlFor="image">{__('Add a cover image or video for your campaign.', 'give')}</label>
+                            <label htmlFor="image">{__('Add a cover image for your campaign.', 'give')}</label>
                             <span>
-                                {__('Upload an image or video to represent and inspire your campaign.', 'give')}
+                                {__('Upload an image to represent and inspire your campaign.', 'give')}
                             </span>
                             <Upload
                                 id="givewp-campaigns-upload-cover-image"
