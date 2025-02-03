@@ -1,10 +1,12 @@
 import * as campaignTitleBlock from './CampaignTitleBlock';
+import * as campaignCover from './CampaignCover';
 import * as campaignDonateButton from './DonateButton';
 
 const getAllBlocks = () => {
     return [
         campaignTitleBlock,
-        campaignDonateButton
+        campaignDonateButton,
+        campaignCover
     ];
 };
 
