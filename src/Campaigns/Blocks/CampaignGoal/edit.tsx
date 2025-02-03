@@ -35,7 +35,7 @@ const getValue = (goalType: string, value: number) => {
     }
 }
 
-const currency = new Intl.NumberFormat('en-US', {
+const currency = new Intl.NumberFormat(navigator.language || navigator.languages[0], {
     style: 'currency',
     currency: window.GiveCampaignOptions.currency,
 })
