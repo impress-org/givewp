@@ -60,7 +60,9 @@ class CampaignRequestController
 
         // todo: remove - temporary solution
         $campaigns = array_map(function ($campaign) {
-            return $campaign->toArray();
+            return array_merge($campaign->toArray(), [
+                'goalStats' => $campaign->getGoalStats(),
+            ]);
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
