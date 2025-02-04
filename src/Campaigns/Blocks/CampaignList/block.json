@@ -1,0 +1,70 @@
+{
+    "$schema": "https://json.schemastore.org/block.json",
+    "apiVersion": 2,
+    "name": "givewp/campaign-list-block",
+    "version": "1.0.0",
+    "title": "Campaign List Block",
+    "category": "give",
+    "description": "Insert an existing campaign into the page.",
+    "supports": {
+        "align": [
+            "wide",
+            "full",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "attributes": {
+        "layout": {
+            "type": "string",
+            "default": "full",
+            "enum": [
+                "full",
+                "full"
+            ]
+        },
+        "showImage": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "showGoal": {
+            "type": "boolean",
+            "default": true
+        },
+        "sortBy": {
+            "type": "string",
+            "default": "date",
+            "enum": [
+                "date"
+            ]
+        },
+        "orderBy": {
+            "type": "string",
+            "default": "desc",
+            "enum": [
+                "asc",
+                "desc"
+            ]
+        },
+        "filterBy": {
+            "type": "array",
+            "default": []
+        },
+        "perPage": {
+            "type": "number",
+            "default": "6"
+        },
+        "showPagination": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "textdomain": "give",
+    "editorScript": "file:../../../../build/campaignListBlock.js",
+    "render": "file:./render.php"
+}
