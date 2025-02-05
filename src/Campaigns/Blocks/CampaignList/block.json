@@ -21,7 +21,8 @@
             "default": "full",
             "enum": [
                 "full",
-                "full"
+                "double",
+                "triple"
             ]
         },
         "showImage": {
