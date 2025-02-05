@@ -105,7 +105,8 @@
             ],
             "exclude_from_copy": {
                 "packages": [
-                    "symfony/deprecation-contracts"
+                    "symfony/deprecation-contracts",
+                    "psr/container"
                 ],
                 "file_patterns": [
                     "/Tests/"
