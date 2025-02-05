@@ -120,6 +120,13 @@ if ( ! class_exists('Give_License') ) :
         private $author;
 
         /**
+         * Plugin basename (as provided by plugin_basename() function)
+         *
+         * @var string
+         */
+        private $plugin_basename;
+
+        /**
          * Plugin directory name
          *
          * @access private
@@ -152,10 +159,11 @@ if ( ! class_exists('Give_License') ) :
         /**
          * array of licensed addons
          *
+         * @unreleased store the Give_License instances, not just the plugin basenames
          * @since  2.1.4
          * @access private
          *
-         * @var    array
+         * @var    Give_License[]
          */
         private static $licensed_addons = [];
 
@@ -232,6 +240,7 @@ if ( ! class_exists('Give_License') ) :
 
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
+            $this->plugin_basename = plugin_basename($this->file);
 			$this->plugin_dirname   = dirname( plugin_basename( $this->file ) );
 			$this->item_shortname   = self::get_short_name( $this->item_name );
 			$this->license_data     = self::get_license_by_plugin_dirname( $this->plugin_dirname );
@@ -244,7 +253,7 @@ if ( ! class_exists('Give_License') ) :
 			self::$account_url      = is_null( $_account_url ) ? self::$account_url : $_account_url;
 
 			// Add plugin to registered licenses list.
-			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
+            array_push(self::$licensed_addons, $this);
 		}
 
 		/**
@@ -454,14 +463,14 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
+         * @unreleased plucks the basename for backwards compatibility
          * @since 2.1.4
-         * @return array
+         * @return string[]
          */
-        static function get_licensed_addons()
+        static function get_licensed_addons(): array
         {
-            return self::$licensed_addons;
+            return wp_list_pluck(self::$licensed_addons, 'plugin_basename');
         }
-
 
         /**
          * Check if license key attached to subscription
