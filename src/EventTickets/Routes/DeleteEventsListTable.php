@@ -32,7 +32,7 @@ class DeleteEventsListTable
     /**
      * @inheritDoc
      *
-     * @unreleased Set the permission callback to "delete_give_payments".
+     * @since 3.20.0 Set the permission callback to "delete_give_payments".
      * @since 3.6.0
      */
     public function registerRoute()

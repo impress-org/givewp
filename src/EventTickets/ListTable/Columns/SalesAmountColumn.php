@@ -38,7 +38,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased Refactored to use event ticket amount instead of ticket type price
+     * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      *
      * @param Event $model

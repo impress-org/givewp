@@ -80,7 +80,7 @@ class Profile
     /**
      * Return array of donor profile data
      *
-     * @unreleased Replace strtotime() with Temporal::getDateTimestamp() to prevent the use of dates with wrong timezones
+     * @since 3.20.0 Replace strtotime() with Temporal::getDateTimestamp() to prevent the use of dates with wrong timezones
      * @since 2.10.0
      *
      * @return array
