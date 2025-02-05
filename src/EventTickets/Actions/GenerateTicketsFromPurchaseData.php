@@ -26,6 +26,7 @@ class GenerateTicketsFromPurchaseData
     }
 
     /**
+     * @since 3.20.0 Add "amount" to the array of props
      * @since 3.6.0
      */
     public function __invoke(TicketPurchaseData $data)
@@ -35,6 +36,7 @@ class GenerateTicketsFromPurchaseData
                 'eventId' => $data->ticketType->eventId,
                 'ticketTypeId' => $data->ticketType->id,
                 'donationId' => $this->donation->id,
+                'amount' => $data->ticketType->price,
             ]);
         }
     }

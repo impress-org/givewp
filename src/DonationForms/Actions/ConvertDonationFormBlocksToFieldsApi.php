@@ -129,6 +129,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.19.4 add max rule to company field
      * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *
@@ -192,7 +193,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 return DonationSummary::make('donation-summary');
 
             case "givewp/company":
-                return Text::make('company');
+                return Text::make('company')->rules('max:255');
 
             case "givewp/text":
                 return Text::make(

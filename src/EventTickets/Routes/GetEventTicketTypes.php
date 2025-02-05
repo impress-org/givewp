@@ -4,7 +4,6 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
-use Give\EventTickets\Models\EventTicket;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Models\Model;
 use WP_REST_Request;
@@ -20,6 +19,9 @@ class GetEventTicketTypes implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @since 3.20.0 Set the permission callback to "read".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -30,14 +32,16 @@ class GetEventTicketTypes implements RestRoute
                 [
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function () {
+                        return current_user_can('edit_give_forms');
+                    },
                 ],
                 'args' => [
                     'event_id' => [
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return Event::find($eventId) !== null;
                         },
                         'required' => true,
                     ],
