@@ -3,7 +3,7 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {FormTokenField, PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {TokenItem} from '@wordpress/components/build-types/form-token-field/types'
-import GridLayout from '../shared/components/GridLayout';
+import GridControl from '../shared/components/GridControl';
 import useCampaigns from '../shared/hooks/useCampaigns';
 
 export default function Edit({attributes, setAttributes}: BlockEditProps<{
@@ -26,7 +26,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
             {hasResolved && (
                 <InspectorControls>
                     <PanelBody title={__('Layout', 'give')} initialOpen={true}>
-                        <GridLayout
+                        <GridControl
                             label={__('Grid', 'give')}
                             value={attributes.layout}
                             onChange={(layout) => setAttributes({layout})}
