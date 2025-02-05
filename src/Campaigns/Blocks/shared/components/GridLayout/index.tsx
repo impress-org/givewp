@@ -5,15 +5,9 @@ import './styles.scss';
 /**
  * @unreleased
  */
-export default ({label, options, onChange, value, defaultValue}: GridLayoutProps) => {
+export default ({label, options, onChange, value}: GridLayoutProps) => {
 
-    const index = options.findIndex((option) => {
-        if (defaultValue && !value) {
-            return defaultValue === option.value
-        }
-
-        return value === option.value;
-    });
+    const index = options.findIndex((option) => value === option.value);
 
     return (
         <>
@@ -28,7 +22,6 @@ export default ({label, options, onChange, value, defaultValue}: GridLayoutProps
                 value={value}
                 onChange={(selected: string) => onChange(selected)}
                 options={options}
-                defaultValue={defaultValue}
             />
         </>
     )
@@ -42,5 +35,4 @@ interface GridLayoutProps {
         label: string
     }[],
     onChange: (value: string) => void,
-    defaultValue?: string;
 }
