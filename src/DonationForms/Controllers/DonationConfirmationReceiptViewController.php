@@ -13,6 +13,7 @@ class DonationConfirmationReceiptViewController
     /**
      * This renders the donation confirmation receipt view.
      *
+     * @unreleased Add locale support
      * @since 3.0.0
      */
     public function show(DonationConfirmationReceiptViewRouteData $data): string
@@ -37,7 +38,8 @@ class DonationConfirmationReceiptViewController
         do_action('givewp_donation_confirmation_receipt_showing', $donation);
 
         ob_clean();
-        return (new DonationConfirmationReceiptViewModel($donation))->render();
+
+        return (new DonationConfirmationReceiptViewModel($donation))->render($data->locale);
     }
 
     /**

@@ -89,6 +89,7 @@ class Router
     }
 
     /**
+     * @unreleased Add locale support
      * @since 3.0.0
      *
      * @param  string  $type
@@ -107,6 +108,7 @@ class Router
             }
 
             $request = $this->getRequestDataByType($type);
+            $request['locale'] = ! empty($request['locale']) ? $request['locale'] : get_locale();
 
             if (is_callable($action)) {
                 return $action($request);

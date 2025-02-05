@@ -15,7 +15,12 @@ class DonationConfirmationReceiptViewRouteData
     public $receiptId;
 
     /**
-     *
+     * @var string
+     */
+    public $locale;
+
+    /**
+     * @unreleased Add locale support
      * @since 3.0.0
      */
     public static function fromRequest(array $request): self
@@ -25,6 +30,8 @@ class DonationConfirmationReceiptViewRouteData
         $self->receiptId = isset($request['receipt-id']) && $self::isReceiptIdValid(
             $request['receipt-id']
         ) ? $request['receipt-id'] : null;
+
+        $self->locale = $request['locale'] ?? '';
 
         return $self;
     }

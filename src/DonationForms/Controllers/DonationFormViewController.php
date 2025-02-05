@@ -12,6 +12,7 @@ class DonationFormViewController
     /**
      * This renders the donation form view.
      *
+     * @unreleased Add locale support
      * @since 3.0.0
      */
     public function show(DonationFormViewRouteData $data): string
@@ -26,7 +27,8 @@ class DonationFormViewController
         );
 
         ob_clean();
-        return $viewModel->render();
+
+        return $viewModel->render($data->locale);
     }
 
     /**
