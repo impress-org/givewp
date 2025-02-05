@@ -121,6 +121,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                             label={__('Show pagination', 'give')}
                             checked={attributes.showPagination}
                             onChange={(showPagination) => setAttributes({showPagination})}
+                            help={__('All campaigns will be spread across multiple pages.', 'give')}
                         />
                     </PanelBody>
                 </InspectorControls>
