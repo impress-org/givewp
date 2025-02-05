@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
-import {FormTokenField, PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
+import {FormTokenField, PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {TokenItem} from '@wordpress/components/build-types/form-token-field/types'
 import GridLayout from '../shared/components/GridLayout';
 import useCampaigns from '../shared/hooks/useCampaigns';
@@ -108,6 +108,19 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                                 setAttributes({filterBy})
                             }}
                             suggestions={suggestions}
+                        />
+                        <TextControl
+                            type="number"
+                            min="1"
+                            label={__('Campaigns per page', 'give')}
+                            value={attributes.perPage}
+                            onChange={(perPage: string) => setAttributes({perPage: Number(perPage)})}
+                            help={__('Set the number of campaigns to be displayed on the first page load.', 'give')}
+                        />
+                        <ToggleControl
+                            label={__('Show pagination', 'give')}
+                            checked={attributes.showPagination}
+                            onChange={(showPagination) => setAttributes({showPagination})}
                         />
                     </PanelBody>
                 </InspectorControls>
