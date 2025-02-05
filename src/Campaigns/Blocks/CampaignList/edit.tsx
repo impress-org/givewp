@@ -2,8 +2,9 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {FormTokenField, PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
-import {TokenItem} from "@wordpress/components/build-types/form-token-field/types"
-import useCampaigns from "../shared/hooks/useCampaigns";
+import {TokenItem} from '@wordpress/components/build-types/form-token-field/types'
+import GridLayout from '../shared/components/GridLayout';
+import useCampaigns from '../shared/hooks/useCampaigns';
 
 export default function Edit({attributes, setAttributes}: BlockEditProps<{
     layout: string;
@@ -18,19 +19,29 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
 }>) {
     const blockProps = useBlockProps();
     const {campaigns, hasResolved} = useCampaigns();
+    const suggestions = campaigns?.map((campaign) => campaign.title);
 
     return (
         <div {...blockProps}>
             {hasResolved && (
                 <InspectorControls>
                     <PanelBody title={__('Layout', 'give')} initialOpen={true}>
-                        <SelectControl
+                        <GridLayout
                             label={__('Grid', 'give')}
-                            onChange={(layout: string) => setAttributes({layout})}
+                            value={attributes.layout}
+                            onChange={(layout) => setAttributes({layout})}
                             options={[
                                 {
                                     value: 'full',
-                                    label: __('Full', 'give'),
+                                    label: __('Full Width', 'give'),
+                                },
+                                {
+                                    value: 'double',
+                                    label: __('Double', 'give'),
+                                },
+                                {
+                                    value: 'triple',
+                                    label: __('Triple', 'give'),
                                 }
                             ]}
                         />
@@ -82,13 +93,21 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                             ]}
                         />
                         <FormTokenField
-                            value={attributes.filterBy}
+                            value={attributes.filterBy?.map((item: TokenItem) => item.title)}
                             label={__('Filter by Campaign', 'give')}
-                            onChange={(filterBy) => setAttributes({filterBy})}
-                            suggestions={campaigns?.map((campaign) => ({
-                                value: String(campaign.id),
-                                title: campaign.title
-                            }))}
+                            onChange={(values) => {
+                                const filterBy = campaigns
+                                    .filter((campaign) => values.includes(campaign.title))
+                                    .map((campaign) => {
+                                        return {
+                                            value: String(campaign.id),
+                                            title: campaign.title
+                                        }
+                                    });
+
+                                setAttributes({filterBy})
+                            }}
+                            suggestions={suggestions}
                         />
                     </PanelBody>
                 </InspectorControls>
