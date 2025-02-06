@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder;
 
+use Give\Helpers\Language;
+
 class FormBuilderRouteBuilder
 {
     const SLUG = 'givewp-form-builder';
@@ -25,7 +27,7 @@ class FormBuilderRouteBuilder
     protected function __construct($donationFormID, string $locale = '')
     {
         $this->donationFormID = $donationFormID;
-        $this->locale = ! empty($locale) ? $locale : get_locale();
+        $this->locale = ! empty($locale) ? $locale : Language::getLocale();
     }
 
     /**

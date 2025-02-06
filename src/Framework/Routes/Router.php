@@ -3,6 +3,7 @@
 namespace Give\Framework\Routes;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Helpers\Language;
 
 use function is_callable;
 use function str_contains;
@@ -108,7 +109,7 @@ class Router
             }
 
             $request = $this->getRequestDataByType($type);
-            $request['locale'] = ! empty($request['locale']) ? $request['locale'] : get_locale();
+            $request['locale'] = ! empty($request['locale']) ? $request['locale'] : Language::getLocale();
 
             if (is_callable($action)) {
                 return $action($request);
