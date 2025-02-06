@@ -65,7 +65,7 @@ module.exports = {
         campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
         campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
-        campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonorsBlock/app.tsx'),
+        campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
     },
 };
 

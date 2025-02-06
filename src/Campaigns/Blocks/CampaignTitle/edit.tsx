@@ -38,7 +38,7 @@ export default function Edit({
     return (
         <div {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
-                <ServerSideRender block="givewp/campaign-title-block" attributes={attributes} />
+                <ServerSideRender block="givewp/campaign-title" attributes={attributes} />
             </CampaignSelector>
 
             {hasResolved && campaign && (

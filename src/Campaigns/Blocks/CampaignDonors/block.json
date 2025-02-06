@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "givewp/campaign-donors-block",
+    "name": "givewp/campaign-donors",
     "version": "1.0.0",
     "title": "Campaign Donors",
     "category": "give",

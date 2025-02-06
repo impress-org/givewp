@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Blocks\CampaignDonorsBlock;
+namespace Give\Campaigns\Blocks\CampaignDonors;
 
 use DateTime;
 use Give\Campaigns\CampaignDonationQuery;
