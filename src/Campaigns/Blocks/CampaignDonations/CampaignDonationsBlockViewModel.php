@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Blocks\CampaignDonationsBlock;
+namespace Give\Campaigns\Blocks\CampaignDonations;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\ValueObjects\Money;
@@ -41,7 +41,7 @@ class CampaignDonationsBlockViewModel
      */
     public function render(): void
     {
-        View::render('Campaigns/Blocks/CampaignDonationsBlock.render', [
+        View::render('Campaigns/Blocks/CampaignDonations.render', [
             'campaign' => $this->campaign,
             'donations' => $this->formatDonationsData($this->donations),
             'attributes' => $this->attributes,

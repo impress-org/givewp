@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Blocks\CampaignDonationsBlock;
+namespace Give\Campaigns\Blocks\CampaignDonations;
 
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;

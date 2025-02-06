@@ -8,7 +8,7 @@ import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/bl
  */
 import campaignCover from './CampaignCover';
 import campaignDonateButton from './DonateButton';
-import campaignDonations from './CampaignDonationsBlock';
+import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
 

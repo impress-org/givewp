@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "givewp/campaign-donations-block",
+    "name": "givewp/campaign-donations",
     "version": "1.0.0",
     "title": "Campaign Donations",
     "category": "give",
@@ -44,5 +44,5 @@
     },
     "textdomain": "give",
     "render": "file:./render.php",
-    "style": "givewp-CampaignDonationsBlock-style"
+    "style": "file:../../../../build/campaignDonationsBlockApp.css"
 }
