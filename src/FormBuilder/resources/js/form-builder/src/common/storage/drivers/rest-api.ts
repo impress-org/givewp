@@ -1,10 +1,18 @@
 import {__} from '@wordpress/i18n';
-import {StorageDriver} from "@givewp/form-builder/common/storage/interface";
+import {StorageDriver} from '@givewp/form-builder/common/storage/interface';
 
 // @ts-ignore
 const storageData = window.giveStorageData;
 // @ts-ignore
 const jQuery = window.jQuery;
+
+const addLocaleToUrl = (url: string) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const locale = urlParams.get('locale');
+    const newUrl = new URL(url);
+    newUrl.searchParams.set('locale', locale);
+    return newUrl.toString();
+};
 
 const restApiStorageDriver: StorageDriver = {
     save: ({blocks, formSettings}) => {
@@ -49,7 +57,7 @@ const restApiStorageDriver: StorageDriver = {
         return new Promise((resolve, reject) => {
             jQuery
                 .post({
-                    url: storageData.previewURL,
+                    url: addLocaleToUrl(storageData.previewURL),
                     headers: {
                         'X-WP-Nonce': storageData.nonce,
                     },

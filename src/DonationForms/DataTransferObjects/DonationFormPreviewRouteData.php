@@ -26,11 +26,17 @@ class DonationFormPreviewRouteData
     public $formSettings;
 
     /**
+     * @var string
+     */
+    public $locale;
+
+    /**
      * Convert data from request into DTO
      *
-     * @param  array{form-id: string, form-settings: string, form-blocks: string}  $request
-     *
+     * @unreleased Add locale support
      * @since 3.0.0
+     *
+     * @param array{form-id: string, form-settings: string, form-blocks: string} $request
      */
     public static function fromRequest(array $request): self
     {
@@ -43,6 +49,8 @@ class DonationFormPreviewRouteData
         $self->formBlocks = !empty($request['form-blocks']) ? BlockCollection::fromJson(
             $request['form-blocks']
         ) : null;
+
+        $self->locale = $request['locale'] ?? '';
 
         return $self;
     }

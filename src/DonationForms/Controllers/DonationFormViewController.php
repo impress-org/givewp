@@ -49,6 +49,7 @@ class DonationFormViewController
         );
 
         ob_clean();
-        return $viewModel->render();
+
+        return $viewModel->render($data->locale);
     }
 }
