@@ -76,6 +76,13 @@ class Language
             $locale = $wpmlLocale != $locale ? $wpmlLocale : $locale;
         }
 
+        // When in the admin area and Polylang is installed, retrieve the language selected in the Polylang language selector of the WordPress admin bar
+        if (function_exists('pll_current_language') && is_admin()) {
+            $pllCurrentLangCode = pll_current_language('slug');
+            $pllCurrentLang = PLL()->model->get_language($pllCurrentLangCode);
+            $locale = $pllCurrentLang && $pllCurrentLang->locale != $locale ? $pllCurrentLang->locale : $locale;
+        }
+
         return $locale;
     }
 
