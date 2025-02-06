@@ -204,6 +204,9 @@ if ( ! class_exists('Give_License') ) :
          *
          * @access public
          *
+         * @since 3.17.2 removed unused auto_updater_obj property assignment
+         * @since  1.0
+         *
          * @param string $_file
          * @param string $_item_name
          * @param string $_version
@@ -211,11 +214,10 @@ if ( ! class_exists('Give_License') ) :
          * @param string $_optname
          * @param string $_api_url
 		 * @param string $_checkout_url
-		 * @param string $_account_url
+         * @param string $_account_url
 		 * @param int    $_item_id
 		 *
-		 * @since 3.17.2 removed unused auto_updater_obj property assignment
-		 * @since  1.0
+         * @unreleased adds plugin_basename property
 		 */
 		public function __construct(
 			$_file,
@@ -281,7 +283,7 @@ if ( ! class_exists('Give_License') ) :
         public static function get_bundled_license(string $plugin_dirname): ?string
         {
             $license   = null;
-            $file_path = WP_PLUGIN_DIR . '/' . $plugin_dirname . '/GIVE_LICENSE.php';
+            $file_path = plugin_dir_path($plugin_dirname) . 'GIVE_LICENSE.php';
             if (is_readable($file_path)) {
                 $license = include $file_path;
             }
