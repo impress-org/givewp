@@ -75,6 +75,9 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.'));
         }
 
+        $locale = give_clean($_GET['locale']) ?? '';
+        Language::switchToLocale($locale);
+
         wp_enqueue_style(
             '@givewp/form-builder/registrars',
             GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.css'

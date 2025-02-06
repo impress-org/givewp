@@ -5,6 +5,7 @@ namespace Give\DonationForms\V2;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 use WP_Post;
 use WP_REST_Request;
 
@@ -38,6 +39,11 @@ class DonationFormsAdminPage
      */
     protected $migrationApiRoot;
 
+    /**
+     * @var string
+     */
+    protected $locale;
+
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
@@ -46,6 +52,11 @@ class DonationFormsAdminPage
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
+    }
+
+    public function setLocale(string $locale)
+    {
+        $this->locale = $locale;
     }
 
     /**
@@ -90,6 +101,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @unreleased Add locale support
      */
     public function loadScripts()
     {
@@ -107,6 +120,7 @@ class DonationFormsAdminPage
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'locale' => Language::getLocale(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')

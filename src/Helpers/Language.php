@@ -2,6 +2,9 @@
 
 namespace Give\Helpers;
 
+use SitePress;
+use WPML_Request;
+
 /**
  * @since 3.0.0
  */
@@ -51,5 +54,40 @@ class Language
         $giveRelativePath = ltrim(apply_filters('give_languages_directory', $giveRelativePath), '/\\');
 
         return trailingslashit($giveRelativePath);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getLocale()
+    {
+        $locale = get_locale();
+
+        /**
+         * @var WPML_Request $wpml_request_handler
+         * @var SitePress    $sitepress
+         */
+        global $wpml_request_handler, $sitepress;
+
+        // When in the admin area and WPML is installed, retrieve the language selected in the WPML language selector of the WordPress admin bar
+        if (isset($wpml_request_handler) && is_admin()) {
+            $requestedLang = $wpml_request_handler->get_requested_lang();
+            $wpmlLocale = $sitepress->get_locale($requestedLang);
+            $locale = $wpmlLocale != $locale ? $wpmlLocale : $locale;
+        }
+
+        return $locale;
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function switchToLocale(string $locale)
+    {
+        if (empty($locale) || $locale == get_locale()) {
+            return;
+        }
+
+        switch_to_locale($locale);
     }
 }
