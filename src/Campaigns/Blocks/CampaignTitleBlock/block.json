@@ -65,5 +65,7 @@
         }
     },
     "textdomain": "give",
+    "editorScript": "file:../../../../build/campaignTitleBlock.js",
+    "editorStyle": "file:../../../../build/campaignTitleBlock.css",
     "render": "file:./render.php"
 }

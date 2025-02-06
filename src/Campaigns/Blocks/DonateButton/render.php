@@ -17,7 +17,7 @@ if (
 }
 
 $params = [
-    'formId' => $attributes['useDefaultForm']
+    'formId' => ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
         ? $campaign->defaultFormId
         : $attributes['selectedForm'],
     'openFormButton' => $attributes['buttonText'],

@@ -18,6 +18,7 @@
         }
     },
     "textdomain": "give",
+    "style": "file:../../../../build/campaignGoalBlock.css",
     "editorScript": "file:../../../../build/campaignGoalBlock.js",
     "render": "file:./render.php"
 }

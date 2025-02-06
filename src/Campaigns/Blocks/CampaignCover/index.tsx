@@ -1,14 +1,12 @@
-import metadata from './block.json';
+import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
 import Edit from './edit';
-import initBlock from '../shared/utils/init-block';
 import {GalleryIcon} from './Icon';
 
-const {name} = metadata;
+import schema from './block.json';
 
-export {metadata, name};
-export const settings = {
-    edit: Edit,
-    icon: <GalleryIcon />,
-};
-
-export const init = () => initBlock({name, metadata, settings});
+if (!getBlockType(schema.name)) {
+    registerBlockType(schema as BlockConfiguration, {
+        icon: <GalleryIcon />,
+        edit: Edit,
+    });
+}

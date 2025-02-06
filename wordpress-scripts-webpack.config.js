@@ -63,7 +63,11 @@ module.exports = {
         campaignEntity: srcPath('Campaigns/resources/entity.ts'),
         campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
-        campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
+        campaignListBlock: srcPath('Campaigns/Blocks/CampaignList/index.tsx'),
+        campaignGoalBlock: srcPath('Campaigns/Blocks/CampaignGoal/index.tsx'),
+        campaignDonateButtonBlock: srcPath('Campaigns/Blocks/DonateButton/index.tsx'),
+        campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitleBlock/index.tsx'),
+        campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
     },
 };
 
