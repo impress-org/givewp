@@ -48,5 +48,5 @@
     },
     "textdomain": "give",
     "render": "file:./render.php",
-    "style": "givewp-CampaignDonorsBlock-style"
+    "style": "file:../../../../build/campaignDonorsBlockApp.css"
 }

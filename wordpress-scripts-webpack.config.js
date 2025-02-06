@@ -1,8 +1,8 @@
 /**
  * External Dependencies
  */
+const fs = require('fs');
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 /**
  * WordPress Dependencies
@@ -65,19 +65,8 @@ module.exports = {
         campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
         campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
+        campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonorsBlock/app.tsx'),
     },
-    plugins: [
-        ...defaultConfig.plugins,
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    from: srcPath('Campaigns/Blocks/**/{style.css,script.js}'),
-                    to: path.resolve(__dirname, 'build/Campaigns/Blocks/[path][name][ext]'),
-                    context: path.resolve(__dirname, 'src/Campaigns/Blocks'),
-                },
-            ],
-        }),
-    ],
 };
 
 /**
