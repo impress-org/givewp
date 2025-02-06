@@ -252,18 +252,14 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @unreleased Add locale support     
+     * @unreleased Add locale support
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
     public function render(string $locale = ''): string
     {
-        $currentLocale = get_locale();
-
-        if ($locale != $currentLocale) {
-            switch_to_locale($locale);
-        }
+        Language::switchToLocale($locale);
 
         $this->enqueueGlobalStyles();
 

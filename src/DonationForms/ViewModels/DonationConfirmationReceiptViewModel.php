@@ -90,11 +90,7 @@ class DonationConfirmationReceiptViewModel
      */
     public function render(string $locale = ''): string
     {
-        $currentLocale = get_locale();
-
-        if ($locale != $currentLocale) {
-            switch_to_locale($locale);
-        }
+        Language::switchToLocale($locale);
 
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
