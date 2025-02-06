@@ -1,12 +1,12 @@
+import {heading as icon} from '@wordpress/icons';
 import schema from './block.json';
 import Edit from './edit';
-import {GalleryIcon} from './Icon';
 
 /**
  * @unreleased
  */
 const settings = {
-    icon: <GalleryIcon />,
+    icon,
     edit: Edit,
 };
 
