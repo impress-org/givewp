@@ -332,7 +332,7 @@ if ( ! class_exists('Give_License') ) :
             };
 
             foreach ($unactivated_bundled_licenses as $license => $addons) {
-                $check_license_res = Give_License::request_license_api(
+                $check_license_res = self::request_license_api(
                     [
                         'edd_action' => 'check_license',
                         'license'    => $license,
@@ -369,7 +369,7 @@ if ( ! class_exists('Give_License') ) :
                     }
                 }
 
-                $activate_license_res = Give_License::request_license_api(
+                $activate_license_res = self::request_license_api(
                     [
                         'edd_action' => 'activate_license',
                         'item_name'  => $check_license_res['item_name'],
@@ -389,7 +389,7 @@ if ( ! class_exists('Give_License') ) :
                 $licenses                              = get_option('give_licenses', []);
 
                 if ($is_plan_license) {
-                    $addonSlugs = Give_License::getAddonSlugsFromAllAccessPassLicense($check_license_res);
+                    $addonSlugs = self::getAddonSlugsFromAllAccessPassLicense($check_license_res);
                     foreach ($licenses as $license_key => $data) {
                         if (in_array($data['plugin_slug'], $addonSlugs, true) || ! empty($data['is_all_access_pass'])) {
                             unset($licenses[$license_key]);
