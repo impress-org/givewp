@@ -4,7 +4,7 @@ import EventTicketsList from '../../../components/EventTicketsList';
 import {getWindowData} from '@givewp/form-builder/common';
 
 /**
- * @unreleased Hide tickets once the event has ended.
+ * @since 3.20.0 Hide tickets once the event has ended.
  * @since 3.6.0
  */
 export default function BlockPlaceholder({attributes}) {
@@ -30,7 +30,6 @@ export default function BlockPlaceholder({attributes}) {
                 {!hasEnded && (
                     <EventTicketsList
                         ticketTypes={event.ticketTypes}
-                        ticketsLabel={ticketsLabel}
                         currency={currency}
                         currencyRate={1}
                     />

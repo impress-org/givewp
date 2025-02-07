@@ -20,7 +20,7 @@ class EventTicketRepository
 {
 
     /**
-     * @unreleased Add "amount" column to the properties array
+     * @since 3.20.0 Add "amount" column to the properties array
      * @since 3.6.0
      *
      * @var string[]
@@ -52,7 +52,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Add "amount" column to the insert statement
+     * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -97,7 +97,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Add "amount" column to the update statement
+     * @since 3.20.0 Add "amount" column to the update statement
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -181,7 +181,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Add "amount" column to the select statement
+     * @since 3.20.0 Add "amount" column to the select statement
      * @since      3.6.0
      * @return ModelQueryBuilder<EventTicket>
      */
@@ -233,7 +233,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Refactored to use event ticket amount instead of ticket type price
+     * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      */
     public function getTotalByDonation(Donation $donation): Money

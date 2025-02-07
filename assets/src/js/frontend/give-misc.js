@@ -24,6 +24,34 @@ jQuery(
 				mainClass: 'modal-fade-slide give-modal',
 			}
 		);
+
+        // Donation grid shortcode:
+        // Offline gateways like Stripe refresh the page, and we need to programmatically reopen the modal for the confirmation page.
+        $(doc).ready(function () {
+            function reopenOnGatewayRedirect()
+            {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                const completedFormEmbedId = urlParams.get('givewp-embed-id');
+
+                const isGatewayRedirect = urlParams.has('givewp-embed-id') &&
+                    urlParams.get('givewp-event') === 'donation-completed' &&
+                    urlParams.get('givewp-listener') === 'show-donation-confirmation-receipt' &&
+                    urlParams.has('givewp-receipt-id');
+
+                if (isGatewayRedirect) {
+                    document.querySelectorAll('.js-give-grid-modal-launcher').forEach(function (formGridModalLauncher) {
+                        const modalFormEmbedId = formGridModalLauncher.nextElementSibling.firstElementChild.dataset.givewpEmbedId;
+
+                        if (modalFormEmbedId === completedFormEmbedId) {
+                            formGridModalLauncher.click();
+                        }
+                    });
+                }
+            }
+            reopenOnGatewayRedirect();
+        });
+
 		// Compatible for X theme and Cornerstone plugin.
 		if ( typeof window.csGlobal !== 'undefined' ) {
 			window.jQuery( function( $ ) {

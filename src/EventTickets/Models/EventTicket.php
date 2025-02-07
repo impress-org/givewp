@@ -25,7 +25,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @inheritdoc
      *
-     * @unreleased Add amount to the properties array
+     * @since 3.20.0 Add amount to the properties array
      * @since      3.6.0
      */
     protected $properties = [
@@ -160,7 +160,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased Add amount to the properties array
+     * @since 3.20.0 Add amount to the properties array
      * @since 3.6.0
      *
      * @param object $object

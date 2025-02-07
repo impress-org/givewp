@@ -27,7 +27,7 @@ class TemplateHandler
     }
 
     /**
-     * @unreleased Add earlier return for archive pages
+     * @since 3.20.0 Add earlier return for archive pages
      * @since 3.0.0
      */
     public function handle($template)
