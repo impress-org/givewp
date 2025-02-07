@@ -70,14 +70,14 @@ class Language
         global $wpml_request_handler, $sitepress;
 
         // When in the admin area and WPML is installed, retrieve the language selected in the WPML language selector of the WordPress admin bar
-        if (isset($wpml_request_handler) && is_admin()) {
+        if (is_admin() && isset($wpml_request_handler)) {
             $requestedLang = $wpml_request_handler->get_requested_lang();
             $wpmlLocale = $sitepress->get_locale($requestedLang);
             $locale = $wpmlLocale != $locale ? $wpmlLocale : $locale;
         }
 
         // When in the admin area and Polylang is installed, retrieve the language selected in the Polylang language selector of the WordPress admin bar
-        if (function_exists('pll_current_language') && is_admin()) {
+        if (is_admin() && function_exists('pll_current_language') && function_exists('PLL')) {
             $pllCurrentLangCode = pll_current_language('slug');
             $pllCurrentLang = PLL()->model->get_language($pllCurrentLangCode);
             $locale = $pllCurrentLang && $pllCurrentLang->locale != $locale ? $pllCurrentLang->locale : $locale;
