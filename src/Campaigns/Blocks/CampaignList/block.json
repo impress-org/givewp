@@ -67,5 +67,6 @@
     },
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignListBlock.js",
+    "viewScript": "file:../../../../build/campaignListApp.js",
     "render": "file:./render.php"
 }
