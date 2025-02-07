@@ -5,6 +5,9 @@ namespace Give\Framework\Support\Facades\DateTime;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
+use Exception;
+use Give\Log\Log;
 
 /**
  * @since 2.19.6
@@ -100,5 +103,30 @@ class TemporalFacade
         return $dateTime instanceof DateTimeImmutable
             ? $dateTime
             : clone $dateTime;
+    }
+
+    /**
+     * @since 3.20.0
+     */
+    public function getDateTimestamp(string $date, string $timezone = ''): int
+    {
+        try {
+            $timezone = empty($timezone) ? wp_timezone_string() : $timezone;
+            $timezone = new DateTimeZone($timezone);
+            $date = new DateTime($date, $timezone);
+
+            return $date->getTimestamp();
+        } catch (Exception $e) {
+            Log::error(
+                'Failed to parse date string into a timestamp',
+                [
+                    'input_date' => $date,
+                    'input_timezone' => $timezone,
+                    'error_code' => $e->getCode(),
+                    'error_message' => $e->getMessage(),
+                ]
+            );
+            return 0;
+        }
     }
 }

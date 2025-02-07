@@ -1,17 +1,24 @@
-import * as campaignTitleBlock from './CampaignTitleBlock';
-import * as campaignCover from './CampaignCover';
-import * as campaignDonateButton from './DonateButton';
-import * as campaignGoal from './CampaignGoal';
+/**
+ * WordPress dependencies
+ */
+import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
 
-const getAllBlocks = () => {
-    return [
-        campaignTitleBlock,
-        campaignDonateButton,
-        campaignGoal,
-        campaignCover
-    ];
+/**
+ * Internal dependencies
+ */
+import campaignCover from './CampaignCover';
+import campaignDonateButton from './DonateButton';
+import campaignDonations from './CampaignDonations';
+import campaignDonors from './CampaignDonors';
+import campaignTitle from './CampaignTitle';
+import campaignGoal from './CampaignGoal';
+
+export const getAllBlocks = () => {
+    return [campaignCover, campaignDonateButton, campaignDonations, campaignDonors, campaignTitle, campaignGoal];
 };
 
 getAllBlocks().forEach((block) => {
-    block.init();
+    if (!getBlockType(block.schema.name)) {
+        registerBlockType(block.schema as BlockConfiguration, block.settings);
+    }
 });

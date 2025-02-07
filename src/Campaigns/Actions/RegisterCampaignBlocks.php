@@ -18,13 +18,17 @@ class RegisterCampaignBlocks
 
         array_map('register_block_type', $blocks);
 
-        $this->enqueueBlocksAssets();
+        if (is_admin()) {
+            $this->enqueueAdminBlocksAssets();
+        }
+
+        $this->registerSharedStyles();
     }
 
     /**
      * @unreleased
      */
-    private function enqueueBlocksAssets()
+    private function enqueueAdminBlocksAssets(): void
     {
         $handleName = 'givewp-campaign-blocks';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocks.asset.php');
@@ -44,6 +48,18 @@ class RegisterCampaignBlocks
             /** @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-components/#usage */
             ['wp-components'],
             $scriptAsset['version']
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerSharedStyles(): void
+    {
+        wp_enqueue_style('givewp-design-system-foundation');
+        wp_enqueue_style(
+            'givewp-campaign-blocks-fonts',
+            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
         );
     }
 }

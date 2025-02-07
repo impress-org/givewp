@@ -114,7 +114,7 @@ class CampaignDonationQuery extends QueryBuilder
      * An opinionated join method for the donation meta table.
      * @unreleased
      */
-    protected function joinDonationMeta($key, $alias): self
+    public function joinDonationMeta($key, $alias): self
     {
         $this->join(function (JoinQueryBuilder $builder) use ($key, $alias) {
             $builder
