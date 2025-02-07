@@ -35,7 +35,7 @@ class CampaignRequestController
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
                 'goalStats' => $campaign->getGoalStats(),
-                'defaultFormTitle' => $campaign->defaultForm()->title
+                'defaultFormTitle' => $campaign->defaultForm()->title,
             ])
         );
     }
@@ -45,10 +45,15 @@ class CampaignRequestController
      */
     public function getCampaigns(WP_REST_Request $request): WP_REST_Response
     {
+        $ids = $request->get_param('ids');
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
 
         $query = give(CampaignRepository::class)->prepareQuery();
+
+        if ( ! empty($ids)) {
+            $query->whereIn('id', $ids);
+        }
 
         $query
             ->limit($perPage)
@@ -138,7 +143,8 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign, $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
+                        $request->get_param('defaultFormId'));
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
@@ -153,7 +159,7 @@ class CampaignRequestController
 
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
-                'defaultFormTitle' => $campaign->defaultForm()->title
+                'defaultFormTitle' => $campaign->defaultForm()->title,
             ])
         );
     }

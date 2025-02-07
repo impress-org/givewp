@@ -88,6 +88,10 @@ class RegisterCampaignRoutes
                     'permission_callback' => '__return_true',
                 ],
                 'args' => [
+                    'ids' => [
+                      'type' => 'array',
+                      'default' => []
+                    ],
                     'page' => [
                         'type' => 'integer',
                         'default' => 1,
