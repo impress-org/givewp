@@ -220,7 +220,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'hideAnonymousDonations' => false,
+                'includeAnonymousDonations' => true,
                 'direction' => 'ASC',
             ]
         );

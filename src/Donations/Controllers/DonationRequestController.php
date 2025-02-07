@@ -47,7 +47,7 @@ class DonationRequestController
             $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
-        if ($request->get_param('hideAnonymousDonations')) {
+        if ( ! $request->get_param('includeAnonymousDonations')) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
         }

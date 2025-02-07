@@ -123,9 +123,9 @@ class RegisterDonorRoutes
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                    'hideAnonymousDonors' => [
+                    'includeAnonymousDonations' => [
                         'type' => 'boolean',
-                        'default' => true,
+                        'default' => false,
                     ],
                 ],
             ]
