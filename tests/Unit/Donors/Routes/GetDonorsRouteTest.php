@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorRoute;
@@ -457,7 +458,11 @@ class GetDonorsRouteTest extends RestApiTestCase
     private function getDonor1WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation1 */
-        $donation1 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
+        $donation1 = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+            'anonymous' => $anonymous,
+            'mode' => DonationMode::LIVE(),
+        ]);
         $donor1 = $donation1->donor;
 
         $donor1->firstName = 'A';
@@ -481,7 +486,11 @@ class GetDonorsRouteTest extends RestApiTestCase
     private function getDonor2WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation2 */
-        $donation2 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
+        $donation2 = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+            'anonymous' => $anonymous,
+            'mode' => DonationMode::LIVE(),
+        ]);
         $donor2 = $donation2->donor;
 
         $donor2->firstName = 'B';
@@ -505,7 +514,11 @@ class GetDonorsRouteTest extends RestApiTestCase
     private function getDonor3WithDonation(int $campaignId, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation3 */
-        $donation3 = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => $anonymous]);
+        $donation3 = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+            'anonymous' => $anonymous,
+            'mode' => DonationMode::LIVE(),
+        ]);
         $donor3 = $donation3->donor;
 
         $donor3->firstName = 'C';

@@ -112,6 +112,11 @@ class RegisterDonationRoutes
                         'default' => 'DESC',
                         'enum' => ['ASC', 'DESC'],
                     ],
+                    'mode' => [
+                        'type' => 'string',
+                        'default' => 'live',
+                        'enum' => ['live', 'test'],
+                    ],
                     'campaignId' => [
                         'type' => 'integer',
                         'default' => 0,
