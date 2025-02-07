@@ -248,7 +248,7 @@ if ( ! class_exists('Give_License') ) :
 			$this->license_data     = self::get_license_by_plugin_dirname( $this->plugin_dirname );
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
-            $this->bundled_license = self::get_bundled_license($this->plugin_dirname);
+            $this->bundled_license = self::get_bundled_license($this->file);
 			$this->author           = $_author;
 			self::$api_url          = is_null( $_api_url ) ? self::$api_url : $_api_url;
 			self::$checkout_url     = is_null( $_checkout_url ) ? self::$checkout_url : $_checkout_url;
@@ -280,10 +280,10 @@ if ( ! class_exists('Give_License') ) :
          *
          * @unreleased
          */
-        public static function get_bundled_license(string $plugin_dirname): ?string
+        public static function get_bundled_license(string $plugin_file): ?string
         {
             $license   = null;
-            $file_path = plugin_dir_path($plugin_dirname) . 'PLUGIN_LICENSE.php';
+            $file_path = plugin_dir_path($plugin_file) . 'PLUGIN_LICENSE.php';
             if (is_readable($file_path)) {
                 $license = include $file_path;
             }
