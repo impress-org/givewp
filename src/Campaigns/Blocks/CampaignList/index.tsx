@@ -1,5 +1,5 @@
 import edit from './edit';
-import icon from '@givewp/components/GiveIcon';
+import GiveIcon from '@givewp/components/GiveIcon';
 import schema from './block.json';
 
 /**
@@ -8,7 +8,7 @@ import schema from './block.json';
 export default {
     schema,
     settings: {
-        icon,
+        icon: <GiveIcon color="grey" />,
         edit,
     },
 };
