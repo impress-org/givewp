@@ -9,10 +9,12 @@ use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteD
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Routes\RouteListener;
+use Give\Helpers\Language;
 
 class BlockRenderController
 {
     /**
+     * @unreleased Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
      *
@@ -38,7 +40,7 @@ class BlockRenderController
 
         $embedId = $blockAttributes->blockId ?? '';
 
-        $locale = get_locale();
+        $locale = Language::getLocale();
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
         $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
         $formViewUrl = $this->getFormViewUrl($donationForm);
