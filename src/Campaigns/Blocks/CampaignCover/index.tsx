@@ -1,12 +1,16 @@
-import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
+import schema from './block.json';
 import Edit from './edit';
 import {GalleryIcon} from './Icon';
 
-import schema from './block.json';
+/**
+ * @unreleased
+ */
+const settings = {
+    icon: <GalleryIcon />,
+    edit: Edit,
+};
 
-if (!getBlockType(schema.name)) {
-    registerBlockType(schema as BlockConfiguration, {
-        icon: <GalleryIcon />,
-        edit: Edit,
-    });
-}
+export default {
+    schema,
+    settings,
+};

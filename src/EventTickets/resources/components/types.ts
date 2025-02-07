@@ -4,11 +4,10 @@ export type Event = {
     id: number;
     name: string;
     title: string;
-    startDateTime: Date;
     description: string;
+    startDateTime: Date;
+    endDateTime: Date;
     ticketTypes: TicketType[];
-    ticketsLabel: string;
-    soldOutMessage: string;
 };
 
 export type TicketType = {
@@ -28,7 +27,6 @@ export type SelectedTicket = {
 
 export type EventTicketsListProps = {
     ticketTypes: TicketType[];
-    ticketsLabel: string;
     currency: string;
     currencyRate: number;
     selectedTickets?: SelectedTicket[];

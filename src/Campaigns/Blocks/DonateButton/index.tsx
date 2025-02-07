@@ -1,12 +1,17 @@
-import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
-import GiveIcon from '@givewp/components/GiveIcon';
-import Edit from './edit';
-
 import schema from './block.json';
+import Edit from './edit';
+import GiveIcon from '@givewp/components/GiveIcon';
 
-if (!getBlockType(schema.name)) {
-    registerBlockType(schema as BlockConfiguration, {
-        icon: <GiveIcon color="grey" />,
-        edit: Edit,
-    });
-}
+/**
+ * @unreleased
+ */
+const settings = {
+    icon: <GiveIcon color="grey" />,
+    edit: Edit,
+    save: () => null,
+};
+
+export default {
+    schema,
+    settings,
+};

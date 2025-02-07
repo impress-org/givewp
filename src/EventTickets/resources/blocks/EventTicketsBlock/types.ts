@@ -3,8 +3,9 @@ import {TicketType} from '../../components/types';
 export type EventSettings = {
     id: number;
     title: string;
-    startDateTime: Date;
     description: string;
+    startDateTime: Date;
+    endDateTime: Date;
     ticketTypes: TicketType[];
 };
 

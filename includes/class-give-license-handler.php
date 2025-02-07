@@ -380,7 +380,7 @@ if ( ! class_exists('Give_License') ) :
 
             // Call the API.
             $response = wp_remote_post(
-                self::$api_url,
+                self::get_api_url(),
                 apply_filters(
                     'give_request_license_api_args',
                     [
@@ -399,7 +399,7 @@ if ( ! class_exists('Give_License') ) :
                     'License Api request failed',
                     [
                         'category'    => 'License',
-                        'api url'     => self::$api_url,
+                        'api url' => self::get_api_url(),
                         'request'     => $api_params,
                         'status code' => $statusCode,
                         'response'    => $response
@@ -486,10 +486,15 @@ if ( ! class_exists('Give_License') ) :
 		/**
 		 * Get account url
 		 *
-		 * @return string|null
+         * @since 3.20.0 allows to override the API URL via constant
 		 * @since 2.5.0
 		 */
-		public static function get_website_url() {
+        public static function get_website_url(): ?string
+        {
+            if (defined('GIVE_SITE_URL')) {
+                return GIVE_SITE_URL;
+            }
+
 			return self::$site_url;
 		}
 
@@ -990,6 +995,20 @@ if ( ! class_exists('Give_License') ) :
 
 			return $result;
 		}
+
+        /**
+         * Returns the API URL for license requests, checking for a constant first.
+         *
+         * @since 3.20.0
+         */
+        public static function get_api_url(): string
+        {
+            if (defined('GIVE_LICENSE_API_URL')) {
+                return GIVE_LICENSE_API_URL;
+            }
+
+            return self::$api_url;
+        }
 	}
 
 endif; // end class_exists check.
