@@ -1,10 +1,6 @@
 import type {DonationTotals} from '@givewp/forms/app/store/donation-summary';
-import type {
-    subscriptionPeriod
-} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
-import {
-    useDonationSummaryContext,
-} from '@givewp/forms/app/store/donation-summary';
+import {useDonationSummaryContext} from '@givewp/forms/app/store/donation-summary';
+import type {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 
 /**
  * Zero decimal currencies are currencies that do not have a minor unit.
@@ -50,7 +46,7 @@ const amountToMinorUnit = (amount: string, currency: string) => {
  *
  * @unreleased
  */
-const getDonationTotal = (totals: DonationTotals, amount: number) =>
+const getAmountTotal = (totals: DonationTotals, amount: number) =>
     Number(
         Object.values({
             ...totals,
@@ -79,17 +75,18 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
     }
 
     return Number(total + amount);
-}
+};
+
 /**
  * @unreleased
  */
 export default function useFormData() {
-    const { totals } = useDonationSummaryContext();
-    const { useWatch } = window.givewp.form.hooks;
+    const {totals} = useDonationSummaryContext();
+    const {useWatch} = window.givewp.form.hooks;
 
-    const firstName = useWatch({ name: 'firstName' }) as string;
-    const lastName = useWatch({ name: 'lastName' }) as string | undefined;
-    const email = useWatch({ name: 'email' }) as string;
+    const firstName = useWatch({name: 'firstName'}) as string;
+    const lastName = useWatch({name: 'lastName'}) as string | undefined;
+    const email = useWatch({name: 'email'}) as string;
     const billingAddress = {
         addressLine1: useWatch({name: 'address1'}) as string | undefined,
         addressLine2: useWatch({name: 'address2'}) as string | undefined,
@@ -97,31 +94,35 @@ export default function useFormData() {
         state: useWatch({name: 'state'}) as string | undefined,
         postalCode: useWatch({name: 'zip'}) as string | undefined,
         country: useWatch({name: 'country'}) as string | undefined,
-    }
-    const amount = useWatch({ name: 'amount' }) as string;
-    const currency = useWatch({ name: 'currency' }) as string;
+    };
+    const amount = useWatch({name: 'amount'}) as string;
+    const currency = useWatch({name: 'currency'}) as string;
     const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'}) as subscriptionPeriod | undefined;
     const subscriptionFrequency = useWatch({name: 'subscriptionFrequency'}) as number | undefined;
     const subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
-    const donationType = useWatch({name: 'donationType'}) as "single" | "subscription" | undefined;
+    const donationType = useWatch({name: 'donationType'}) as 'single' | 'subscription' | undefined;
 
-    const donationAmountTotal = getDonationTotal(totals, Number(amount));
-    const subscriptionAmount = getSubscriptionTotal(totals, Number(amount))
+    const amountTotal = getAmountTotal(totals, Number(amount));
+    const amountTotalInMinorUnits = amountToMinorUnit(amountTotal.toString(), currency);
+    const subscriptionAmountTotal = getSubscriptionTotal(totals, Number(amount));
+    const subscriptionAmountTotalInMinorUnits = amountToMinorUnit(subscriptionAmountTotal.toString(), currency);
+
+    const donationAmount = Number(amount);
+    const donationAmountMinor = amountToMinorUnit(amount, currency);
+
+    const isOneTime = donationType === 'single';
+    const isRecurring = donationType === 'subscription';
 
     return {
         firstName,
         lastName,
         email,
-        billingAddress,
         currency,
-        donationAmount: Number(amount),
-        donationAmountMinor: amountToMinorUnit(amount, currency),
-        donationAmountTotal,
-        donationAmountTotalMinor: amountToMinorUnit(donationAmountTotal.toString(), currency),
-        subscriptionAmount,
-        subscriptionAmountMinor: amountToMinorUnit(subscriptionAmount.toString(), currency),
-        donationIsOneTime: donationType === 'single',
-        donationIsRecurring: donationType === 'subscription',
+        billingAddress,
+        amount: isOneTime ? amountTotal : subscriptionAmountTotal,
+        amountInMinorUnits: isOneTime ? amountTotalInMinorUnits : subscriptionAmountTotalInMinorUnits,
+        isOneTime,
+        isRecurring,
         subscriptionPeriod,
         subscriptionFrequency,
         subscriptionInstallments,
