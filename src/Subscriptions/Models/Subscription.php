@@ -173,7 +173,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function createRenewal(array $attributes = []): Donation
@@ -182,7 +182,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function shouldCreateRenewal(): bool
     {
@@ -194,7 +194,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function totalDonations(): int
     {
@@ -202,7 +202,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function shouldEndSubscription(): bool
     {

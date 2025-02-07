@@ -57,7 +57,7 @@ class EventTickets extends Field
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function endDateTime(string $date): EventTickets
     {

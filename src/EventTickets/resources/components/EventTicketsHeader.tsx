@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {format} from 'date-fns';
 
 /**
- * @unreleased Show "ENDED" badge once the event has ended.
+ * @since 3.20.0 Show "ENDED" badge once the event has ended.
  * @since 3.6.0
  */
 export default function EventTicketsHeader({title, startDateTime, endDateTime}) {
