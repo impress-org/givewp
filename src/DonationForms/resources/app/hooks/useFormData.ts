@@ -87,6 +87,7 @@ export default function useFormData() {
     const firstName = useWatch({name: 'firstName'}) as string;
     const lastName = useWatch({name: 'lastName'}) as string | undefined;
     const email = useWatch({name: 'email'}) as string;
+    const phone = useWatch({name: 'phone'}) as string | undefined;
     const billingAddress = {
         addressLine1: useWatch({name: 'address1'}) as string | undefined,
         addressLine2: useWatch({name: 'address2'}) as string | undefined,
@@ -117,6 +118,7 @@ export default function useFormData() {
         firstName,
         lastName,
         email,
+        phone,
         currency,
         billingAddress,
         amount: isOneTime ? amountTotal : subscriptionAmountTotal,
