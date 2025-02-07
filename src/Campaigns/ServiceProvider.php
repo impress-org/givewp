@@ -14,6 +14,7 @@ use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -113,6 +114,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function setupCampaignPages()
     {
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
+        Hooks::addAction('template_redirect', Actions\RedirectDisabledCampaignPage::class);
         Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 
