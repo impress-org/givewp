@@ -114,8 +114,8 @@ export default function CampaignsDetailsPage({campaignId}) {
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
 
         const shouldSave = formState.isDirty
-            // Force save if the status is active to account for a first publish race condition.
-            || data.status === 'active';
+            // Force save if first publish to account for a race condition.
+            || (campaign.status === 'draft' && data.status === 'active');
 
         if (shouldSave) {
             setIsSaving(data.status);
