@@ -1,6 +1,9 @@
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 
+/**
+ * @unreleased Add locale support
+ */
 export default async function handleRedirect(url: string, inlineRedirectRoutes: string[]) {
     const redirectUrl = new URL(url);
     const redirectUrlParams = new URLSearchParams(redirectUrl.search);

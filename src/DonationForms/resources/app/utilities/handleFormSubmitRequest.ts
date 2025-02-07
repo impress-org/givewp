@@ -14,6 +14,9 @@ import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrl
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
+/**
+ * @unreleased Add locale support
+ */
 export default async function handleSubmitRequest(
     values,
     setError,

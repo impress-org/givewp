@@ -58,6 +58,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @unreleased Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
