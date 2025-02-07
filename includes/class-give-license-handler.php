@@ -283,7 +283,7 @@ if ( ! class_exists('Give_License') ) :
         public static function get_bundled_license(string $plugin_dirname): ?string
         {
             $license   = null;
-            $file_path = plugin_dir_path($plugin_dirname) . 'GIVE_LICENSE.php';
+            $file_path = plugin_dir_path($plugin_dirname) . 'PLUGIN_LICENSE.php';
             if (is_readable($file_path)) {
                 $license = include $file_path;
             }
