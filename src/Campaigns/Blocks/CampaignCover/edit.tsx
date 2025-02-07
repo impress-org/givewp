@@ -92,7 +92,6 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                                 className={'givewp-campaign-cover-block-preview__image'}
                                 src={campaign?.image}
                                 alt={attributes.alt ?? __('Campaign Image', 'give')}
-                                style={{width: '100%', height: '100%'}}
                             />
                         </ResizableBox>
                     ) : (
@@ -100,7 +99,6 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                             className={'givewp-campaign-cover-block-preview__image'}
                             src={campaign?.image}
                             alt={attributes.alt ?? __('Campaign Image', 'give')}
-                            style={{width: '100%', height: '100%'}}
                         />
                     ))}
             </CampaignSelector>
