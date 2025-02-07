@@ -14,7 +14,14 @@ import campaignTitle from './CampaignTitle';
 import campaignGoal from './CampaignGoal';
 
 export const getAllBlocks = () => {
-    return [campaignCover, campaignDonateButton, campaignDonations, campaignDonors, campaignTitle, campaignGoal];
+    return [
+        campaignCover,
+        campaignDonateButton,
+        campaignDonations,
+        campaignDonors,
+        campaignTitle,
+        campaignGoal
+    ];
 };
 
 getAllBlocks().forEach((block) => {

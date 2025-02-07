@@ -1,21 +1,15 @@
-import metadata from './block.json';
-import Edit from './edit';
-import Icon from './icon';
-import initBlock from '../shared/utils/init-block';
-
-const {name} = metadata;
+import edit from './edit';
+import icon from './icon';
+import schema from './block.json';
 
 /**
  * @unreleased
  */
-export const init = () => initBlock({
-    name,
-    metadata,
+export default {
+    schema,
     settings: {
-        edit: Edit,
-        save: () => null,
-        icon: <Icon />,
+        icon,
+        edit
     }
-});
-
+};
 
