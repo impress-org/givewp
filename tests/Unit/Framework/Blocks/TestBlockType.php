@@ -264,6 +264,45 @@ class TestBlockType extends TestCase
     }
 
     /**
+     * @unreleased
+     */
+    public function testShouldCastNullValuesAsIntendedType(): void
+    {
+        $blockModel = BlockModel::make([
+            'name' => 'givewp/donation-amount',
+            'attributes' => [
+                'floatAttribute' => null,
+                'stringAttribute' => null,
+                'intAttribute' => null,
+                'boolAttribute' => null,
+            ]
+        ]);
+
+        $blockType = new class ($blockModel) extends BlockType {
+            protected $properties = [
+                'floatAttribute' => 'float',
+                'stringAttribute' => 'string',
+                'intAttribute' => 'int',
+                'boolAttribute' => 'bool',
+                'extraStringAttribute' => 'string',
+                'extraBoolAttribute' => 'bool',
+            ];
+
+            public static function name(): string
+            {
+                return 'givewp/donation-amount';
+            }
+        };
+
+        $this->assertIsFloat($blockType->floatAttribute);
+        $this->assertIsString($blockType->stringAttribute);
+        $this->assertIsInt($blockType->intAttribute);
+        $this->assertIsBool($blockType->boolAttribute);
+        $this->assertIsBool($blockType->extraBoolAttribute);
+        $this->assertIsString($blockType->extraStringAttribute);
+    }
+
+    /**
      * @since 3.8.0
      *
      * @throws Exception

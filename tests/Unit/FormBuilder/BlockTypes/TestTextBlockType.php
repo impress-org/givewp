@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\FormBuilder\BlockTypes;
 
 use Exception;
+use Give\FormBuilder\BlockTypes\TextBlockType;
 use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -26,7 +27,7 @@ class TestTextBlockType extends TestCase
             ]
         );
 
-        $blockType = new \Give\FormBuilder\BlockTypes\TextBlockType($blockModel);
+        $blockType = new TextBlockType($blockModel);
 
         $this->assertSame('givewp/text', $blockType::name());
     }
@@ -67,7 +68,7 @@ class TestTextBlockType extends TestCase
             ]
         );
 
-        $blockType = new \Give\FormBuilder\BlockTypes\TextBlockType($blockModel);
+        $blockType = new TextBlockType($blockModel);
 
         $this->assertSame('Test Label', $blockType->label);
         $this->assertSame('Test Description', $blockType->description);
@@ -93,5 +94,45 @@ class TestTextBlockType extends TestCase
             ],
             $blockType->conditionalLogic
         );
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testGetFieldNameShouldReturnCustomName(): void
+    {
+        $blockModel = BlockModel::make(
+            [
+                'name' => 'givewp/text',
+                'attributes' => [
+                    'fieldName' => 'custom_field_name',
+                ]
+            ]
+        );
+
+        $blockType = new TextBlockType($blockModel);
+
+        $this->assertSame('custom_field_name', $blockType->getFieldName(1));
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testGetFieldNameShouldReturnNameWithIndex()
+    {
+        $blockModel = BlockModel::make(
+            [
+                'name' => 'givewp/text',
+                'attributes' => [
+                    'fieldName' => '',
+                ]
+            ]
+        );
+
+        $blockType = new TextBlockType($blockModel);
+
+        $this->assertSame('text-1', $blockType->getFieldName(1));
     }
 }
