@@ -39,11 +39,6 @@ class DonationFormsAdminPage
      */
     protected $migrationApiRoot;
 
-    /**
-     * @var string
-     */
-    protected $locale;
-
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
@@ -52,11 +47,6 @@ class DonationFormsAdminPage
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
-    }
-
-    public function setLocale(string $locale)
-    {
-        $this->locale = $locale;
     }
 
     /**
