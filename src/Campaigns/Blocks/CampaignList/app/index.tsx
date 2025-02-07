@@ -1,8 +1,9 @@
-import useCampaigns from "../../shared/hooks/useCampaigns";
+import useCampaigns from '../../shared/hooks/useCampaigns';
 
 export default ({attributes}) => {
     const campaigns = useCampaigns({
-        ids: attributes?.filterBy?.map((campaign: { value: number }) => campaign.value),
+        ids: attributes?.filterBy?.map((item: { value: number }) => item.value),
+        page: attributes?.page,
         per_page: attributes?.per_page,
     });
 
