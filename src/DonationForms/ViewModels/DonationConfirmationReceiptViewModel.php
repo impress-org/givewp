@@ -84,14 +84,11 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased Add locale support
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
-    public function render(string $locale = ''): string
+    public function render(): string
     {
-        Language::switchToLocale($locale);
-
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
 
