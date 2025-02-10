@@ -1,0 +1,36 @@
+.give-campaigns-campaignListBlock-grid {
+    display: grid;
+    column-gap: 16px;
+    row-gap: 16px;
+
+    &-item {
+        padding: 0 0 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px var(--neutral-100);
+        background-color: #fff;
+
+
+        &-image {
+            background-size: cover;
+            height: 180px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        &-title {
+            padding: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5;
+            color: #060c1a;
+        }
+
+        &-description {
+            padding: 0 8px;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.43;
+            color: #363636;
+        }
+    }
+}
