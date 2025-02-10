@@ -90,6 +90,7 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
+use Give\VendorOverrides\AdminNotices\AdminNoticesServiceProvider;
 use Give\VendorOverrides\FieldConditions\FieldConditionsServiceProvider;
 use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
@@ -229,6 +230,7 @@ final class Give
         GlobalStylesServiceProvider::class,
         ValidationServiceProvider::class,
         ValidationRulesServiceProvider::class,
+        AdminNoticesServiceProvider::class,
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
         FieldConditionsServiceProvider::class,
@@ -302,6 +304,9 @@ final class Give
          *
          */
         do_action('give_init', $this);
+
+        // Activate any bundled licenses if not already activated.
+        add_action('admin_init', 'Give_License::activate_bundled_licenses');
     }
 
     /**
