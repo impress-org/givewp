@@ -90,7 +90,7 @@
         "@wordpress/interface": "^5.11.0",
         "@wordpress/server-side-render": "^4.2.0",
         "accounting": "^0.4.1",
-        "axios": "^0.21.2",
+        "axios": "^1.7.9",
         "chart.js": "^2.9.3",
         "chartjs-plugin-crosshair": "^1.1.4",
         "chosen-js": "^1.8.7",
