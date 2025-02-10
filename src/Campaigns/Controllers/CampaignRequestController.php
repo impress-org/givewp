@@ -48,8 +48,11 @@ class CampaignRequestController
         $ids = $request->get_param('ids');
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
+        $status = $request->get_param('status');
 
         $query = give(CampaignRepository::class)->prepareQuery();
+
+        $query->where('status', $status);
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);

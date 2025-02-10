@@ -64,7 +64,7 @@ class RegisterCampaignRoutes
                         'type' => 'integer',
                         'required' => true,
                     ],
-                ]
+                ],
             ]
         );
     }
@@ -88,9 +88,18 @@ class RegisterCampaignRoutes
                     'permission_callback' => '__return_true',
                 ],
                 'args' => [
+                    'status' => [
+                        'type' => 'enum',
+                        'enum' => [
+                            'active',
+                            'draft',
+                            'archived',
+                        ],
+                        'default' => 'active',
+                    ],
                     'ids' => [
-                      'type' => 'array',
-                      'default' => []
+                        'type' => 'array',
+                        'default' => [],
                     ],
                     'page' => [
                         'type' => 'integer',
@@ -301,7 +310,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -323,7 +332,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -345,7 +354,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -367,7 +376,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -389,7 +398,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -411,7 +420,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
