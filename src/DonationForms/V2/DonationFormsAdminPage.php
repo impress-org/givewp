@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms\V2;
 
+use Give\Campaigns\CampaignsAdminPage;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
@@ -38,11 +40,17 @@ class DonationFormsAdminPage
      */
     protected $migrationApiRoot;
 
+    /**
+     * @var string
+     */
+    protected $defaultFormActionUrl;
+
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
         $this->bannerActionUrl = admin_url('admin-ajax.php?action=givewp_show_onboarding_banner');
         $this->tooltipActionUrl = admin_url('admin-ajax.php?action=givewp_show_upgraded_tooltip');
+        $this->defaultFormActionUrl = admin_url('admin-ajax.php?action=givewp_show_default_form_tooltip');
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
@@ -97,6 +105,7 @@ class DonationFormsAdminPage
             'apiRoot' => $this->apiRoot,
             'bannerActionUrl' => $this->bannerActionUrl,
             'tooltipActionUrl' => $this->tooltipActionUrl,
+            'defaultFormActionUrl' => $this->defaultFormActionUrl,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
@@ -104,9 +113,13 @@ class DonationFormsAdminPage
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'showDefaultFormTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-default-form-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'swrConfig' => [
+                'revalidateOnFocus' => false
+            ]
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -146,6 +159,8 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
+            $formId = (int)$_GET['post'];
+            $campaign = Campaign::findByFormId($formId);
             EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
@@ -154,7 +169,8 @@ class DonationFormsAdminPage
                     'supportedGateways' => $this->getSupportedGateways(),
                     'migrationApiRoot' => $this->migrationApiRoot,
                     'apiNonce' => $this->apiNonce,
-                    'isMigrated' => _give_is_form_migrated((int)$_GET['post']),
+                    'isMigrated' => _give_is_form_migrated($formId),
+                    'campaignUrl' => $campaign ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id) : '',
                 ])
                 ->enqueue();
 
@@ -165,6 +181,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
+     * @unreleased Add campaignId parameter on campaigns page
      * @since 2.20.0
      * @return array
      */
@@ -173,7 +190,12 @@ class DonationFormsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 30,
+
         ];
+
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
+        }
 
         $request = WP_REST_Request::from_url(
             add_query_arg(
@@ -267,7 +289,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
     }
 
     /**

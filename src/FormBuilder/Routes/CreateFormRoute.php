@@ -26,7 +26,7 @@ class CreateFormRoute
     {
         if (isset($_GET['page']) && FormBuilderRouteBuilder::SLUG === $_GET['page']) {
             // Little hack for alpha users to make sure the form builder is loaded.
-            if (!isset($_GET['donationFormID'])) {
+            if ( ! isset($_GET['donationFormID'])) {
                 wp_redirect(FormBuilderRouteBuilder::makeCreateFormRoute());
                 exit();
             }

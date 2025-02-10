@@ -58,4 +58,5 @@ export type FormSettings = {
     designSettingsImageColor: string;
     formExcerpt: string;
     enableReceiptConfirmationPage: boolean;
+    campaignId: string;
 };
