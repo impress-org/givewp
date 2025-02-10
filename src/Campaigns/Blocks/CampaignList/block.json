@@ -68,5 +68,6 @@
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignListBlock.js",
     "viewScript": "file:../../../../build/campaignListApp.js",
+    "viewStyle": "file:../../../../build/campaignListApp.css",
     "render": "file:./render.php"
 }
