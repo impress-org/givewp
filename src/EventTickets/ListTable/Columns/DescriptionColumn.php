@@ -37,7 +37,7 @@ class DescriptionColumn extends ModelColumn
     /**
      * @inheritDoc
      *
-     * @unreleased Truncate description to 200 characters
+     * @since 3.20.0 Truncate description to 200 characters
      * @since 3.6.0
      *
      * @param Event $model

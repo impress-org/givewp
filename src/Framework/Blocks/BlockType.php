@@ -162,14 +162,11 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
+     * @unreleased updated to always cast value even if null
      * @since 3.8.0
      */
     public function castAttributeType(string $key, $value)
     {
-        if (is_null($value)) {
-            return null;
-        }
-
         $type = $this->getPropertyType($key);
 
         switch ($type) {
@@ -178,7 +175,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
             case 'string':
                 return (string)($value);
             case 'bool':
-                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                return (bool)filter_var($value, FILTER_VALIDATE_BOOLEAN);
             case 'array':
                 return (array)($value);
             case 'float':
@@ -224,14 +221,13 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     }
 
     /**
+     * @unreleased updated to always set default properties
      * @since 3.8.0
      */
     private function fillDefaultProperties(): void
     {
         foreach ($this->setDefaultProperties() as $key => $type) {
-            if ($this->hasAttribute($key)) {
-                $this->properties[$key] = $type;
-            }
+            $this->properties[$key] = $type;
         }
     }
 }

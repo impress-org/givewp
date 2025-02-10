@@ -40,7 +40,7 @@ const removeTimezoneFromDateISOString = (date: string) => {
 /**
  * Event Form Modal component
  *
- * @unreleased Added placeholder to event description field
+ * @since 3.20.0 Added placeholder to event description field
  * @since 3.6.0
  */
 export default function EventFormModal({isOpen, handleClose, apiSettings, title, event}: EventModalProps) {

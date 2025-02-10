@@ -205,7 +205,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateNewRenewal(): void

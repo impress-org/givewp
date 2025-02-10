@@ -12,7 +12,7 @@ use Give\Framework\Receipts\Properties\ReceiptDetail;
 class AddEventTicketsToDonationConfirmationPageDonationTotal
 {
     /**
-     * @unreleased Refactored to use getTotalByDonation method
+     * @since 3.20.0 Refactored to use getTotalByDonation method
      * @since 3.6.0
      */
     public function __invoke(DonationReceipt $receipt): void
