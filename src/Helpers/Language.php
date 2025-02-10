@@ -2,9 +2,6 @@
 
 namespace Give\Helpers;
 
-use SitePress;
-use WPML_Request;
-
 /**
  * @since 3.0.0
  */
@@ -61,29 +58,7 @@ class Language
      */
     public static function getLocale()
     {
-        $locale = get_locale();
-
-        /**
-         * @var WPML_Request $wpml_request_handler
-         * @var SitePress    $sitepress
-         */
-        global $wpml_request_handler, $sitepress;
-
-        // When in the admin area and WPML is installed, retrieve the language selected in the WPML language selector of the WordPress admin bar
-        if (is_admin() && isset($wpml_request_handler)) {
-            $requestedLang = $wpml_request_handler->get_requested_lang();
-            $wpmlLocale = $sitepress->get_locale($requestedLang);
-            $locale = $wpmlLocale != $locale ? $wpmlLocale : $locale;
-        }
-
-        // When in the admin area and Polylang is installed, retrieve the language selected in the Polylang language selector of the WordPress admin bar
-        if (is_admin() && function_exists('pll_current_language') && function_exists('PLL')) {
-            $pllCurrentLangCode = pll_current_language('slug');
-            $pllCurrentLang = PLL()->model->get_language($pllCurrentLangCode);
-            $locale = $pllCurrentLang && $pllCurrentLang->locale != $locale ? $pllCurrentLang->locale : $locale;
-        }
-
-        return $locale;
+        return apply_filters('givewp_locale', get_locale());
     }
 
     /**
