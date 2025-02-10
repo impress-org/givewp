@@ -19,5 +19,7 @@
     },
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignGoalBlock.js",
+    "viewScript": "file:../../../../build/campaignGoalBlockApp.js",
+    "style": "file:../../../../build/campaignGoalBlockApp.css",
     "render": "file:./render.php"
 }
