@@ -37,7 +37,6 @@ class DonationConfirmationReceiptViewController
         do_action('givewp_donation_confirmation_receipt_showing', $donation);
 
         ob_clean();
-
         return (new DonationConfirmationReceiptViewModel($donation))->render();
     }
 
