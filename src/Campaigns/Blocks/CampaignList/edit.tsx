@@ -5,18 +5,9 @@ import {FormTokenField, PanelBody, SelectControl, TextControl, ToggleControl} fr
 import {TokenItem} from '@wordpress/components/build-types/form-token-field/types'
 import GridControl from '../shared/components/GridControl';
 import useCampaigns from '../shared/hooks/useCampaigns';
+import {CampaignListType} from './types';
 
-export default function Edit({attributes, setAttributes}: BlockEditProps<{
-    layout: string;
-    showImage: boolean;
-    showDescription: boolean;
-    showGoal: boolean;
-    showPagination: boolean;
-    sortBy: string;
-    orderBy: string;
-    filterBy: (string | TokenItem)[];
-    perPage: number;
-}>) {
+export default function Edit({attributes, setAttributes}: BlockEditProps<CampaignListType>) {
     const blockProps = useBlockProps();
     const {campaigns, hasResolved} = useCampaigns();
     const suggestions = campaigns?.map((campaign) => campaign.title);
