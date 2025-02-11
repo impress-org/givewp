@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Controllers;
 
 use Exception;
-use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
@@ -50,12 +49,15 @@ class CampaignRequestController
         $perPage = $request->get_param('per_page');
         $status = $request->get_param('status');
 
-        $query = give(CampaignRepository::class)->prepareQuery();
+        $query = Campaign::query();
+        $totalQuery = Campaign::query();
 
         $query->where('status', $status);
+        $totalQuery->where('status', $status);
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
+            $totalQuery->whereIn('id', $ids);
         }
 
         $query
@@ -63,7 +65,7 @@ class CampaignRequestController
             ->offset(($page - 1) * $perPage);
 
         $campaigns = $query->getAll() ?? [];
-        $totalCampaigns = empty($campaigns) ? 0 : Campaign::query()->count();
+        $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
         // todo: remove - temporary solution

@@ -1,4 +1,6 @@
 import {__} from '@wordpress/i18n';
+import cx from 'classnames';
+import {ChevronLeft, ChevronRight} from './icons';
 
 import './styles.scss';
 
@@ -19,39 +21,56 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                             <a
                                 href="#"
                                 title={__('Previous page', 'give')}
+                                className="give-campaign-components-pagination__pages-links-arrow"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setPage(previousPage);
                                 }}
                             >
-                                ‹
+                                <ChevronLeft />
                             </a>
                         </>
                     ) : (
-                        <span className="give-campaign-components-pagination__pages-links-disabled">‹</span>
+                        <a className="give-campaign-components-pagination__pages-links-arrow-disabled">
+                            <ChevronLeft />
+                        </a>
                     )}
 
-                    <span className="give-campaign-components-pagination__pages-links-info">
-                        <span>{currentPage}</span>
-                        {__('of', 'give')}
-                        <span>{totalPages}</span>
-                    </span>
+                    {[...Array(totalPages)].map((e, i) => {
+                        const page = i += 1;
+                        return (
+                            <a
+                                href="#"
+                                title={`${__('Page', 'give')} ${page}`}
+                                className={cx('give-campaign-components-pagination__pages-links-page', {'give-campaign-components-pagination__pages-links-current': currentPage === page})}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setPage(page);
+                                }}
+                            >
+                                {i}
+                            </a>
+                        )
+                    })}
 
                     {nextPage <= totalPages ? (
                         <>
                             <a
                                 href="#"
                                 title={__('Next page', 'give')}
+                                className="give-campaign-components-pagination__pages-links-arrow"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setPage(nextPage);
                                 }}
                             >
-                                ›
+                                <ChevronRight />
                             </a>
                         </>
                     ) : (
-                        <span className="give-campaign-components-pagination__pages-links-disabled">›</span>
+                        <a className="give-campaign-components-pagination__pages-links-arrow-disabled">
+                            <ChevronRight />
+                        </a>
                     )}
                 </div>
             </div>
