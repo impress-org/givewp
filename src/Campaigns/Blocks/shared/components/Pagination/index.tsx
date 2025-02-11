@@ -35,7 +35,7 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                     )}
 
                     {[...Array(totalPages)].map((e, i) => {
-                        const page = i += 1;
+                        const page = i + 1;
                         return (
                             <a
                                 href="#"
@@ -46,7 +46,7 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                                     setPage(page);
                                 }}
                             >
-                                {i}
+                                {page}
                             </a>
                         )
                     })}
