@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 
 import './styles.scss';
 
-export default ({currentPage, totalPages, setPage, disabled = false}: PaginationProps) => {
+export default ({currentPage, totalPages, setPage}: PaginationProps) => {
     if (1 >= totalPages) {
         return null;
     }
@@ -62,6 +62,5 @@ export default ({currentPage, totalPages, setPage, disabled = false}: Pagination
 interface PaginationProps {
     currentPage: number,
     totalPages: number,
-    setPage: (page: number) => void,
-    disabled?: boolean
+    setPage: (page: number) => void
 }
