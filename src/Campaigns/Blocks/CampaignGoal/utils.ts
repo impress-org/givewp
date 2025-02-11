@@ -22,6 +22,12 @@ export const getGoalFormattedValue = (goalType: string, value: number) => {
     switch (goalType) {
         case 'amount':
         case 'amountFromSubscriptions':
+            const currency = new Intl.NumberFormat(navigator.language, {
+                style: 'currency',
+                currency: window.GiveCampaignOptions.currency,
+            })
+
+            return currency.format(value);
 
         default:
             return value;
