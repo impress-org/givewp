@@ -25,6 +25,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @unreleased
  *
  * @property int              $id
+ * @property int              $pageId
  * @property int              $defaultFormId
  * @property CampaignType     $type
  * @property bool $enableCampaignPage
@@ -50,6 +51,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'pageId' => 'int',
         'defaultFormId' => 'int',
         'type' => CampaignType::class,
         'enableCampaignPage' => ['bool', true],
