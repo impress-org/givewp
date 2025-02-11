@@ -25,6 +25,9 @@ final class ValidateDonationTest extends TestCase
     public function testValidatesNotSpamDonation()
     {
         $data = new DonateControllerData();
+        $data->email = 'test@givewp.com';
+        $data->comment = 'this is a comment';
+        $data->firstName = 'test';
 
         /** @var API|PHPUnit_Framework_MockObject_MockObject */
         $akismet = $this->mockAkismetAPI();

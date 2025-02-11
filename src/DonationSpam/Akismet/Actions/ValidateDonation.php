@@ -46,7 +46,7 @@ class ValidateDonation
     {
         if(!$this->whitelist->validate($data->email)) {
 
-            $args = CommentCheckArgs::make($data->comment, $data->email, $data->firstName);
+            $args = CommentCheckArgs::make($data->comment ?? '', $data->email ?? '', $data->firstName ?? '');
             $response = $this->akismet->commentCheck($args);
             $spam = 'true' === $response[1];
 

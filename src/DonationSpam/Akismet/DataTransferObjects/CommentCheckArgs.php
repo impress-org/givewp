@@ -2,8 +2,6 @@
 
 namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
-use Give\DonationForms\DataTransferObjects\DonateControllerData;
-
 /**
  * @since 3.15.0
  */

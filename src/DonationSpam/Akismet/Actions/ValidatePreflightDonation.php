@@ -50,7 +50,7 @@ class ValidatePreflightDonation
         $lastName = $data['lastName'] ?? '';
 
         if (!$this->whitelist->validate($email)) {
-            $args = CommentCheckArgs::make($comment, $email, $firstName);
+            $args = CommentCheckArgs::make((string)$comment, (string)$email, (string)$firstName);
 
             $response = $this->akismet->commentCheck($args);
             $spam = 'true' === $response[1];
