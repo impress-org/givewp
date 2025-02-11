@@ -71,17 +71,14 @@ class ValidationRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        $data = $validator->validated();
+        $validatedValues = $validator->validated();
 
        /**
-         * Allow for additional validation of the preflight validation form data.
-         * The donation flow can be interrupted by throwing an Exception.
-         *
          * @unreleased
          /**
-         * @param array $data returns the validated values
+         * @param array $validatedValues validated values in key value pairs
          */
-        do_action('givewp_donate_form_preflight_data_validated', $data);
+        do_action('givewp_donation_form_fields_validated', $validatedValues);
 
         return new JsonResponse(['valid' => true]);
     }

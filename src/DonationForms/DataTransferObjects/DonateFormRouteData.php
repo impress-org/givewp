@@ -86,7 +86,16 @@ class DonateFormRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        foreach ($validator->validated() as $fieldId => $value) {
+        $validatedValues = $validator->validated();
+
+        /**
+         * @unreleased
+         /**
+         * @param array $data validated values in key value pairs
+         */
+        do_action('givewp_donation_form_fields_validated', $validatedValues);
+
+        foreach ($validatedValues as $fieldId => $value) {
             $validData->{$fieldId} = $value;
         }
 

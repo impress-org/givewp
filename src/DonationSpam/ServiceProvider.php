@@ -2,6 +2,9 @@
 
 namespace Give\DonationSpam;
 
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\DonationSpam\Akismet\Actions\ValidateDonation;
+use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -30,12 +33,14 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @since 3.15.0
      * @inheritDoc
+     * @throws SpamDonationException
      */
     public function boot(): void
     {
         if($this->isAkismetEnabledAndConfigured()) {
-            Hooks::addAction('givewp_donate_form_data_validated', Akismet\Actions\ValidateDonation::class);
-            Hooks::addAction('givewp_donate_form_preflight_data_validated', Akismet\Actions\ValidatePreflightDonation::class);
+            add_action('givewp_donation_form_fields_validated', static function(array $data) {
+                give(ValidateDonation::class)($data['email'] ?? '', $data['comment'] ?? '', $data['firstName'] ?? '', $data['lastName'] ?? '');
+            });
         }
     }
 

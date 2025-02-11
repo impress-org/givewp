@@ -2,8 +2,6 @@
 
 namespace Give\DonationSpam\Akismet\Actions;
 
-use Akismet;
-use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationSpam\Akismet\API;
 use Give\DonationSpam\Akismet\DataTransferObjects\CommentCheckArgs;
 use Give\DonationSpam\Akismet\DataTransferObjects\SpamContext;
@@ -36,23 +34,26 @@ class ValidateDonation
     }
 
     /**
+     * @unreleased replaced params to $email, $comment, $firstName, $lastName
      * @since 3.15.0
      *
-     * @param DonateControllerData $data
-     *
+     * @param  string  $email
+     * @param  string  $comment
+     * @param  string  $firstName
+     * @param  string|null  $lastName
      * @throws SpamDonationException
      */
-    public function __invoke(DonateControllerData $data): void
+    public function __invoke(string $email, string $comment, string $firstName, string $lastName): void
     {
-        if(!$this->whitelist->validate($data->email)) {
+        if(!$this->whitelist->validate($email)) {
 
-            $args = CommentCheckArgs::make($data->comment ?? '', $data->email ?? '', $data->firstName ?? '');
+            $args = CommentCheckArgs::make($comment, $email, $firstName);
             $response = $this->akismet->commentCheck($args);
             $spam = 'true' === $response[1];
 
             if($spam) {
-                $message = "This donor's email ($data->firstName $data->lastName - $data->email) has been flagged as SPAM";
-                if(!give_akismet_is_email_logged($data->email)) {
+                $message = "This donor's email ($firstName $lastName - $email) has been flagged as SPAM";
+                if(!give_akismet_is_email_logged($email)) {
                     Log::spam($message, (array) new SpamContext($args, $response));
                 }
                 throw new SpamDonationException($message);
