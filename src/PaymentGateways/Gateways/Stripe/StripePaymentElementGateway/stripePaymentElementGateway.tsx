@@ -35,6 +35,10 @@ const StripeFields = ({gateway}) => {
                         email: 'never',
                     },
                 },
+                layout: {
+                    type: 'accordion',
+                },
+                paymentMethodOrder: ['ideal', 'sepa_debit', 'card'],
             }}
         />
     );
