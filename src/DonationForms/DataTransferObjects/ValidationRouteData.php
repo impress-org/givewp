@@ -78,8 +78,8 @@ class ValidationRouteData implements Arrayable
          * The donation flow can be interrupted by throwing an Exception.
          *
          * @unreleased
-         *
-         * @param array $data Returns the validated values
+         /**
+         * @param array $data returns the validated values
          */
         do_action('givewp_donate_form_preflight_data_validated', $data);
 

@@ -41,13 +41,18 @@ final class ValidateDonationTest extends TestCase
     }
 
     /**
+     * @unreleased updated test to prefill data
      * @since 3.15.0
+     * @throws SpamDonationException
      */
     public function testThrowsSpamDonationException()
     {
         $data = new DonateControllerData();
+        $data->email = 'test@givewp.com';
+        $data->comment = 'this is a comment';
+        $data->firstName = 'test';
 
-        /** @var API|PHPUnit_Framework_MockObject_MockObject */
+        /** @var API|PHPUnit_Framework_MockObject_MockObject $akismet */
         $akismet = $this->mockAkismetAPI();
         $akismet->method('commentCheck')->willReturn($this->spamResponse);
 
@@ -58,7 +63,7 @@ final class ValidateDonationTest extends TestCase
 
         $this->expectException(SpamDonationException::class);
 
-        $action->__invoke($data);
+        $action($data);
     }
 
     /**
