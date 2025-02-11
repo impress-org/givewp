@@ -1,4 +1,4 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 import {ChevronLeft, ChevronRight} from './icons';
 
@@ -39,7 +39,7 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                         return (
                             <a
                                 href="#"
-                                title={`${__('Page', 'give')} ${page}`}
+                                title={sprintf(__('Page %d', 'give'), page)}
                                 className={cx('give-campaign-components-pagination__pages-links-page', {'give-campaign-components-pagination__pages-links-current': currentPage === page})}
                                 onClick={(e) => {
                                     e.preventDefault();
