@@ -104,6 +104,7 @@ function give_setup_post_types() {
 		'menu_icon'       => 'dashicons-give',
 		'hierarchical'    => false,
 		'supports'        => apply_filters( 'give_forms_supports', $give_form_supports ),
+		'capabilities' => ['create_posts' => false], // Remove "Add new form" from WP list table and WP admin bar
 	];
 	register_post_type( 'give_forms', apply_filters( 'give_forms_post_type_args', $give_forms_args ) );
 

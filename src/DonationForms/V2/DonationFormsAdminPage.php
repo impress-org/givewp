@@ -271,7 +271,7 @@ class DonationFormsAdminPage
             }
 
             jQuery(function() {
-                jQuery(jQuery('.wrap .page-title-action')[0]).after(
+                jQuery(jQuery('.wrap .wp-heading-inline')[0]).after(
                     '<button class="page-title-action" onclick="showReactTable()"><?php _e(
                         'Switch to New View',
                         'give'
