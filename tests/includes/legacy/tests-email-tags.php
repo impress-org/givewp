@@ -766,7 +766,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		Give()->donor_meta->update_meta( $donor_id, '_give_stripe_customer_id', 2 );
 
 		$this->assertEquals( 2, __give_render_metadata_email_tag( '{meta_donor__give_stripe_customer_id}', $donor_tag_args ) );
-		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_id}', $donor_tag_args ) );
+		$this->assertEquals( $donor_id, __give_render_metadata_email_tag( '{meta_donor_id}', $donor_tag_args ) );
 		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_user_id}', $donor_tag_args ) );
 		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', $donor_tag_args ) );
 		$this->assertEquals( 'admin@example.org', __give_render_metadata_email_tag( '{meta_donor_email}', $donor_tag_args ) );
