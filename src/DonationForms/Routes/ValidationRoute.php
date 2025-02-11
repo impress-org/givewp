@@ -21,6 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
+     * @unreleased added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
      */
     public function __invoke(array $request): bool
