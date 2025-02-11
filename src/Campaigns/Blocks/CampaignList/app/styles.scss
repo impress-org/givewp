@@ -32,5 +32,64 @@
             line-height: 1.43;
             color: #363636;
         }
+
+        &__goal {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 8px;
+            margin-top: 8px;
+
+            &-container {
+                display: flex;
+                flex-direction: row;
+
+                &-item {
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        text-transform: uppercase;
+                        font-size: 12px;
+                        font-weight: 600;
+                        line-height: 1.5;
+                        letter-spacing: 0.48px;
+                        color: #4b5563;
+                    }
+
+                    strong {
+                        font-size: 16px;
+                        font-weight: 600;
+                        line-height: 1.5;
+                        color: #060c1a;
+                    }
+                }
+
+                &-item:first-child {
+                    margin-bottom: 8px;
+                }
+            }
+
+            &-progress {
+                display: flex;
+
+                &-container {
+                    display: flex;
+                    height: 8px;
+                    flex-grow: 1;
+                    border-radius: 14px;
+                    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+                    background-color: #f2f2f2;
+                }
+
+                &-bar {
+                    display: flex;
+                    height: 8px;
+                    border-radius: 14px;
+                    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+                    background-color: #2d802f;
+                }
+            }
+        }
     }
 }

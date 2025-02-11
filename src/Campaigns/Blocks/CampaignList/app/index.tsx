@@ -1,6 +1,8 @@
+import {__} from '@wordpress/i18n';
 import {useState} from '@wordpress/element';
 import useCampaigns from '../../shared/hooks/useCampaigns';
 import {CampaignListType} from '../types';
+import {getGoalDescription, getGoalFormattedValue} from '../../CampaignGoal/utils';
 
 import './styles.scss';
 
@@ -26,9 +28,7 @@ export default ({attributes}: { attributes: CampaignListType }) => {
 
 
     if (!hasResolved) {
-        return (
-            <div>loading</div>
-        )
+        return null;
     }
 
     return (
@@ -57,8 +57,30 @@ export default ({attributes}: { attributes: CampaignListType }) => {
                         )}
 
                         {attributes.showGoal && (
-                            <div>
-
+                            <div className="give-campaigns-campaignListBlock-grid-item__goal">
+                                <div className="give-campaigns-campaignListBlock-grid-item__goal-progress">
+                                    <div
+                                        className="give-campaigns-campaignListBlock-grid-item__goal-progress-container">
+                                        <div
+                                            className="give-campaigns-campaignListBlock-grid-item__goal-progress-bar"
+                                            style={{width: `${campaign.goalStats.percentage}%`}}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="ive-campaigns-campaignListBlock-grid-item__goal-container">
+                                    <div className="give-campaigns-campaignListBlock-grid-item__goal-container-item">
+                                        <span>{getGoalDescription(campaign.goalType)}</span>
+                                        <strong>
+                                            {getGoalFormattedValue(campaign.goalType, campaign.goalStats.actual)}
+                                        </strong>
+                                    </div>
+                                    <div className="give-campaigns-campaignListBlock-grid-item__goal-container-item">
+                                        <span>{__('Our goal', 'give')}</span>
+                                        <strong>
+                                            {getGoalFormattedValue(campaign.goalType, campaign.goal)}
+                                        </strong>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
