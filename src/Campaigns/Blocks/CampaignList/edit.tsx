@@ -68,6 +68,18 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                                     {
                                         value: 'date',
                                         label: __('Date Created', 'give'),
+                                    },
+                                    {
+                                        value: 'amount',
+                                        label: __('Total Amount Raised', 'give'),
+                                    },
+                                    {
+                                        value: 'donations',
+                                        label: __('Number of Donations', 'give'),
+                                    },
+                                    {
+                                        value: 'donors',
+                                        label: __('Number of Donors', 'give'),
                                     }
                                 ]}
                             />

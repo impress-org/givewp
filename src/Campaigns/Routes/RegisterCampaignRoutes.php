@@ -112,6 +112,16 @@ class RegisterCampaignRoutes
                         'minimum' => 1,
                         'maximum' => 100,
                     ],
+                    'orderBy' => [
+                        'type' => 'enum',
+                        'enum' => [
+                            'date',
+                            'amount',
+                            'donors',
+                            'donations',
+                        ],
+                        'default' => 'date',
+                    ],
                 ],
             ]
         );

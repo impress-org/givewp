@@ -48,6 +48,7 @@ class CampaignRequestController
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
         $status = $request->get_param('status');
+        $orderBy = $request->get_param('orderBy');
 
         $query = Campaign::query();
         $totalQuery = Campaign::query();
@@ -63,6 +64,8 @@ class CampaignRequestController
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
+
+        // todo: add sorting logic
 
         $campaigns = $query->getAll() ?? [];
         $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
