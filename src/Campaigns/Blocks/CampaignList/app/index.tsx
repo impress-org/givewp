@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {useState} from '@wordpress/element';
 import useCampaigns from '../../shared/hooks/useCampaigns';
+import Pagination from '../../shared/components/Pagination';
 import {CampaignListType} from '../types';
 import {getGoalDescription, getGoalFormattedValue} from '../../CampaignGoal/utils';
 
@@ -20,7 +21,7 @@ const getGridSettings = (layout: string) => {
 export default ({attributes}: { attributes: CampaignListType }) => {
     const [page, setPage] = useState(1);
 
-    const {campaigns, hasResolved} = useCampaigns({
+    const {campaigns, hasResolved, totalPages} = useCampaigns({
         ids: attributes?.filterBy?.map((item: { value: string }) => Number(item.value)),
         per_page: attributes?.perPage,
         page,
@@ -87,9 +88,9 @@ export default ({attributes}: { attributes: CampaignListType }) => {
                 ))}
             </div>
 
-            {campaigns.length > 0 && attributes.showPagination && (
-                <div>
-                    Pagination
+            {attributes.showPagination && totalPages >= page && (
+                <div className="give-campaigns-campaignListBlock-grid__pagination">
+                    <Pagination currentPage={page} totalPages={totalPages} setPage={(number) => setPage(number)} />
                 </div>
             )}
         </>

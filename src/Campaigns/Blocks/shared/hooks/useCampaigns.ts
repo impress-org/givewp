@@ -13,6 +13,10 @@ export default function useCampaigns({ids = [], page = 1, per_page = 30, status 
 
     return {
         campaigns: data?.records as Campaign[],
+        //@ts-ignore
+        totalItems: data.totalItems,
+        //@ts-ignore
+        totalPages: data.totalPages,
         hasResolved: data?.hasResolved,
     };
 }
