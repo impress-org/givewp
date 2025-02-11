@@ -44,11 +44,10 @@ class ValidationRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
+     * @unreleased added additional validation for form validity, added givewp_donation_form_fields_validated action
      * @since 3.0.0
      *
-     * @throws DonationFormFieldErrorsException
-     * @throws NameCollisionException
-     * @throws DonationFormForbidden
+     * @throws DonationFormFieldErrorsException|NameCollisionException|DonationFormForbidden
      */
     public function validate(): JsonResponse
     {
