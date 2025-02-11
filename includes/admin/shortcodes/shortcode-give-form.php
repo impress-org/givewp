@@ -33,14 +33,16 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	/**
 	 * Define the shortcode attribute fields
 	 *
-	 * @return array
+     * @unreleased Replace "new form" with "new campaign form" link
+     *
+     * @return array
 	 */
 	public function define_fields() {
 
 		$create_form_link = sprintf(
 			/* translators: %s: create new form URL */
-			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
-			admin_url( 'post-new.php?post_type=give_forms' )
+            __('<a href="%s">Create</a> a new Campaign Donation Form.', 'give'),
+            admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign')
 		);
 
 		return array(
@@ -51,10 +53,11 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
-				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
+                'placeholder' => '- ' . esc_attr__('Select a Campaign Donation Form', 'give') . ' -',
 				'required'    => array(
-					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
-					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
+                    'alert' => esc_html__('You must first select a Campaign Form!', 'give'),
+                    'error' => sprintf('<p class="strong">%s</p><p class="no-margin">%s</p>',
+                        esc_html__('No campaign forms found.', 'give'), $create_form_link),
 				),
 			),
 			array(

@@ -249,20 +249,23 @@ class Give_Blank_Slate {
 	/**
 	 * Gets the content of a blank slate message based on provided context.
 	 *
-	 * @since 1.8.13
+     * @unreleased Replace "new form" with "new campaign form" link
+     * @since 1.8.13
 	 *
 	 * @param string $context The key used to determine which content is returned.
+	 *
 	 * @return array Blank slate content.
 	 */
 	private function get_content( $context ) {
 		// Define default content.
 		$defaults = array(
 			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
-			'image_alt' => __( 'GiveWP Icon', 'give' ),
-			'heading'   => __( 'No donation forms found.', 'give' ),
-			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
-			'cta_text'  => __( 'Create Donation Form', 'give' ),
-			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
+			'image_alt' => __( 'GiveWP Icon', 'give'),
+            'heading' => __('No campaign donation forms found.', 'give'),
+            'message' => __('The first step towards accepting online donations is to create a campaign with a default donation form.',
+                'give'),
+            'cta_text' => __('Create Campaign Donation Form', 'give'),
+            'cta_link' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'),
 			'help'      => sprintf(
 				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),
