@@ -166,6 +166,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function loadCampaignOptions()
     {
-        Hooks::addAction('admin_init', CampaignOptions::class);
+        Hooks::addAction('init', CampaignOptions::class);
     }
 }
