@@ -6,6 +6,7 @@ use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
+use Give\Campaigns\Actions\PreventAddFormWithoutCampaign;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -144,6 +145,8 @@ class ServiceProvider implements ServiceProviderInterface
         if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
+
+        Hooks::addAction('admin_init', PreventAddFormWithoutCampaign::class);
 
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
