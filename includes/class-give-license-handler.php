@@ -53,7 +53,7 @@ if ( ! class_exists('Give_License') ) :
         /**
          * The license bundled with the premium add-on.
          *
-         * @unreleased
+         * @since 3.21.0
          *
          * @var string|null
          */
@@ -159,7 +159,7 @@ if ( ! class_exists('Give_License') ) :
         /**
          * array of licensed addons
          *
-         * @unreleased store the Give_License instances, not just the plugin basenames
+         * @since 3.21.0 store the Give_License instances, not just the plugin basenames
          * @since  2.1.4
          * @access private
          *
@@ -217,7 +217,7 @@ if ( ! class_exists('Give_License') ) :
          * @param string $_account_url
 		 * @param int    $_item_id
 		 *
-         * @unreleased adds plugin_basename property
+         * @since 3.21.0 adds plugin_basename property
 		 */
 		public function __construct(
 			$_file,
@@ -278,7 +278,7 @@ if ( ! class_exists('Give_License') ) :
          * Checks to see if the license was bundled with the add-on and if so, returns it. This is meant to be a
          * convenience, so any errors are ignored and the user can still manually enter their license key.
          *
-         * @unreleased
+         * @since 3.21.0
          */
         public static function get_bundled_license(string $plugin_file): ?string
         {
@@ -303,7 +303,7 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: much of this code is taken directly from give_get_license_info_handler()
          *
-         * @unreleased
+         * @since 3.21.0
          */
         public static function activate_bundled_licenses(): void
         {
@@ -465,7 +465,7 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
-         * @unreleased plucks the basename for backwards compatibility
+         * @since 3.21.0 plucks the basename for backwards compatibility
          * @since 2.1.4
          * @return string[]
          */

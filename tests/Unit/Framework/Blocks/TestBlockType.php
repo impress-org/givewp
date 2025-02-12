@@ -264,7 +264,7 @@ class TestBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.21.0
      */
     public function testShouldCastNullValuesAsIntendedType(): void
     {
