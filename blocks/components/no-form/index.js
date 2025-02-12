@@ -19,11 +19,8 @@ import GiveBlankSlate from '../blank-slate';
 const NoForms = () => {
     return (
         <GiveBlankSlate
-            title={__('No campaign donation forms found.', 'give')}
-            description={__(
-                'The first step towards accepting online donations is to create a campaign with a default donation form.',
-                'give'
-            )}
+            title={__('No campaign forms found.', 'give')}
+            description={__('The first step towards accepting online donations is to create a campaign.', 'give')}
             helpLink
         >
             <Button
@@ -32,7 +29,7 @@ const NoForms = () => {
                 className="give-blank-slate__cta"
                 href={`${getSiteUrl()}/wp-admin/edit.php?post_type=give_forms&page=give-campaigns&new=campaign`}
             >
-                {__('Create Campaign Donation Form', 'give')}
+                {__('Create Campaign Form', 'give')}
             </Button>
         </GiveBlankSlate>
     );

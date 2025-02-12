@@ -41,7 +41,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 
 		$create_form_link = sprintf(
 			/* translators: %s: create new form URL */
-            __('<a href="%s">Create</a> a new Campaign Donation Form.', 'give'),
+            __('<a href="%s">Create</a> a new Campaign Form.', 'give'),
             admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign')
 		);
 
@@ -53,7 +53,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
-                'placeholder' => '- ' . esc_attr__('Select a Campaign Donation Form', 'give') . ' -',
+                'placeholder' => '- ' . esc_attr__('Select a Campaign Form', 'give') . ' -',
 				'required'    => array(
                     'alert' => esc_html__('You must first select a Campaign Form!', 'give'),
                     'error' => sprintf('<p class="strong">%s</p><p class="no-margin">%s</p>',

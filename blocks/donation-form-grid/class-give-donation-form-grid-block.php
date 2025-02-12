@@ -285,10 +285,10 @@ class Give_Donation_Form_Grid_Block {
 		$content = array(
 			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'Give Icon', 'give' ),
-            'heading' => __('No campaign donation forms found.', 'give'),
-            'message' => __('The first step towards accepting online donations is to create a campaign with a default donation form.',
+            'heading' => __('No campaign forms found.', 'give'),
+            'message' => __('The first step towards accepting online donations is to create a campaign.',
                 'give'),
-            'cta_text' => __('Create Campaign Donation Form', 'give'),
+            'cta_text' => __('Create Campaign Form', 'give'),
             'cta_link' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'),
 			'help'      => sprintf(
 				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */

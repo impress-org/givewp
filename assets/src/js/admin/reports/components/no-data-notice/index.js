@@ -40,11 +40,11 @@ const NoDataNotice = ({version}) => {
                                 <p>
                                     {__("It looks like there hasn't been any donations yet on your website.", 'give')}{' '}
                                     <br />
-                                    {__('Set up a campaign donation form to begin collecting donations now.', 'give')}
+                                    {__('Set up a campaign form to begin collecting donations now.', 'give')}
                                     <br />
                                 </p>
                                 <button onClick={() => goToNewFormUrl()} className="givewp-not-found-notice-button">
-                                    {__('Create a Campaign Donation Form', 'give')}
+                                    {__('Create a Campaign Form', 'give')}
                                 </button>
                             </Fragment>
                         ) : (
