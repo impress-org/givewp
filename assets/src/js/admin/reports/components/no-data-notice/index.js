@@ -58,7 +58,7 @@ const NoDataNotice = ({version}) => {
                                     {__("It looks like there hasn't been any donations yet on your website. ", 'give')}{' '}
                                     <br />
                                     {__(
-                                        'Set up a donation form to begin collection donations or load some sample data to preview what the reports look like.',
+                                        'Set up a campaign form to begin collection donations or load some sample data to preview what the reports look like.',
                                         'give'
                                     )}{' '}
                                     <br />
