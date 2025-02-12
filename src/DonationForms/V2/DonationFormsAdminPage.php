@@ -271,13 +271,13 @@ class DonationFormsAdminPage
             }
 
             jQuery(function() {
-                jQuery('.page-title-action')[0].remove();
-                jQuery(jQuery('.wrap .wp-heading-inline')[0]).after(
+                jQuery(jQuery('.wrap .wp-heading-inline')).after(
                     '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
                         'Switch to New View',
                         'give'
                     ) ?></button>'
                 );
+                jQuery('.page-title-action:not(.switch-new-view)').remove();
             });
         </script>
         <?php

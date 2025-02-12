@@ -56,6 +56,7 @@ class FormBuilderRouteBuilder
                 'post_type' => 'give_forms',
                 'page' => self::SLUG,
                 'donationFormID' => $this->donationFormID,
+                'campaignId' => $_GET['campaignId'] ?? 0,
             ],
             admin_url('edit.php')
         );
