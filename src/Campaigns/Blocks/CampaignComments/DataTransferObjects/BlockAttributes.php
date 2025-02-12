@@ -61,7 +61,7 @@ class BlockAttributes implements Arrayable
     {
         $self = new self();
 
-        $self->campaignId = !empty($array['campaignId']) ? (string)$array['campaignId'] : null;
+        $self->campaignId = !empty($array['campaignId']) ? (int)$array['campaignId'] : null;
         $self->title = !empty($array['title']) ? (string)$array['title'] : __('Share Your Support', 'give');
         $self->showAnonymous = !isset($array['showAnonymous']) || (bool)$array['showAnonymous'];
         $self->showAvatar = !isset($array['showAvatar']) || (bool)$array['showAvatar'];

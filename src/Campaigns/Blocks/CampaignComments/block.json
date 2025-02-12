@@ -7,9 +7,8 @@
     "category": "give",
     "description": "Display all the donor comments associated with a campaign.",
     "attributes": {
-        "selectedCampaign": {
-            "type": "string",
-            "default": "all"
+        "campaignId": {
+            "type": "number"
         },
         "title": {
             "type": "string",
@@ -86,5 +85,8 @@
         }
     },
     "textdomain": "give",
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    "viewScript": "file:../../../../build/campaignCommentsBlockApp.js",
+    "editorScript": "file:../../../../build/campaignBlocks.js",
+    "style": "file:../../../../build/campaignCommentsBlockApp.css"
 }
