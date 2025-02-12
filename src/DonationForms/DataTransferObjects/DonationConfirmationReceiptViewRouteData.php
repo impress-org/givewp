@@ -15,7 +15,6 @@ class DonationConfirmationReceiptViewRouteData
     public $receiptId;
 
     /**
-     * @unreleased Add locale support
      * @since 3.0.0
      */
     public static function fromRequest(array $request): self
