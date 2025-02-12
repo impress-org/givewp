@@ -267,7 +267,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 3.21.0: February 13th, 2025 =
-* New: Added support for upcoming licensing updates
+* Enhancement: Added support for the future ability to bundle and auto-activate add-on licenses for maximum convenience
 * Enhancement: Added title attribute to Donation Form block to improve accessibility
 * Fix: Added missing form ID to multistep form design template 
 
