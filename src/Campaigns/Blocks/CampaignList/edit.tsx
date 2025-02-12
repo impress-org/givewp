@@ -63,6 +63,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                             <SelectControl
                                 label={__('Order By', 'give')}
                                 onChange={(sortBy: string) => setAttributes({sortBy})}
+                                value={attributes.sortBy}
                                 help={__('The order campaigns are displayed in.', 'give')}
                                 options={[
                                     {
@@ -86,6 +87,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                             <SelectControl
                                 label={__('Order', 'give')}
                                 onChange={(orderBy: string) => setAttributes({orderBy})}
+                                value={attributes.orderBy}
                                 help={__('Choose whether the campaign order ascends or descends.', 'give')}
                                 options={[
                                     {

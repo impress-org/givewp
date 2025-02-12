@@ -9,6 +9,8 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Framework\Database\DB;
+use Give\Framework\Models\ModelQueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -48,30 +50,29 @@ class CampaignRequestController
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
         $status = $request->get_param('status');
+        $sortBy = $request->get_param('sortBy');
         $orderBy = $request->get_param('orderBy');
 
         $query = Campaign::query();
-        $totalQuery = Campaign::query();
 
         $query->where('status', $status);
-        $totalQuery->where('status', $status);
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
-            $totalQuery->whereIn('id', $ids);
         }
+
+        $totalQuery = clone $query;
 
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
-        // todo: add sorting logic
+        $this->orderCampaigns($query, $sortBy, $orderBy);
 
         $campaigns = $query->getAll() ?? [];
         $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
-        // todo: remove - temporary solution
         $campaigns = array_map(function ($campaign) {
             return array_merge($campaign->toArray(), [
                 'goalStats' => $campaign->getGoalStats(),
@@ -212,5 +213,32 @@ class CampaignRequestController
         ]);
 
         return new WP_REST_Response($campaign->toArray(), 201);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
+    {
+        switch ($sortBy) {
+            case 'date':
+                $query->orderBy('date_created', $orderBy);
+
+                break;
+            case 'amount':
+                $query
+                    ->selectRaw('(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
+                        DB::prefix('give_revenue'))
+                    ->orderBy('amount', $orderBy);
+
+                break;
+            case 'donations':
+                $query
+                    ->selectRaw('(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
+                        DB::prefix('give_revenue'))
+                    ->orderBy('donationsCount', $orderBy);
+
+                break;
+        }
     }
 }

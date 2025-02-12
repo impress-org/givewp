@@ -352,7 +352,7 @@ class CampaignRepository
 
         return $builder->from('give_campaigns', 'campaigns')
             ->select(
-                'id',
+                ['campaigns.id', 'id'],
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
                 ['enable_campaign_page', 'enableCampaignPage'],

@@ -6,7 +6,8 @@ type useCampaignsParams = {
     page?: number,
     per_page?: number;
     status?: 'active' | 'draft' | 'archived';
-    orderBy?: 'date' | 'amount' | 'donations' | 'donors';
+    sortBy?: string;
+    orderBy?: string;
 }
 
 export default function useCampaigns({
@@ -14,9 +15,17 @@ export default function useCampaigns({
      page = 1,
      per_page = 30,
      status = 'active',
-     orderBy = 'date'
+     sortBy = 'date',
+     orderBy = 'desc',
  }: useCampaignsParams = {}) {
-    const data = useEntityRecords('givewp', 'campaign', {ids, page, per_page, status, orderBy});
+    const data = useEntityRecords('givewp', 'campaign', {
+        ids,
+        page,
+        per_page,
+        status,
+        sortBy,
+        orderBy
+    });
 
     return {
         campaigns: data?.records as Campaign[],

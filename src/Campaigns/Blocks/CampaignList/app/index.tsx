@@ -24,9 +24,10 @@ export default ({attributes}: { attributes: CampaignListType }) => {
     const {campaigns, hasResolved, totalPages} = useCampaigns({
         ids: attributes?.filterBy?.map((item: { value: string }) => Number(item.value)),
         per_page: attributes?.perPage,
+        sortBy: attributes?.sortBy,
+        orderBy: attributes?.orderBy,
         page,
     });
-
 
     if (!hasResolved) {
         return null;
