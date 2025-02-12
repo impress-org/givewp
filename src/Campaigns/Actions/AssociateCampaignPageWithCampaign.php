@@ -16,7 +16,10 @@ class AssociateCampaignPageWithCampaign
      */
     public function __invoke(CampaignPage $campaignPage){
         $campaign = Campaign::find($campaignPage->campaignId);
-        $campaign->pageId = $campaignPage->id;
-        $campaign->save();
+
+        if ($campaign) {
+            $campaign->pageId = $campaignPage->id;
+            $campaign->save();
+        }
     }
 }
