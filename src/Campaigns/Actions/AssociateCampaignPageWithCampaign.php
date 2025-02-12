@@ -6,6 +6,9 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 
+/**
+ * @unreleased
+ */
 class AssociateCampaignPageWithCampaign
 {
     /**
