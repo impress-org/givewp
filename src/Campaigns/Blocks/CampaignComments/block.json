@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "givewp/campaign-comments-block",
+    "version": "1.0.0",
+    "title": "Campaign Comments",
+    "category": "give",
+    "description": "Display all the donor comments associated with a campaign.",
+    "attributes": {
+        "selectedCampaign": {
+            "type": "string",
+            "default": "all"
+        },
+        "title": {
+            "type": "string",
+            "default": "Share Your Support"
+        },
+        "showAnonymous": {
+            "type": "boolean",
+            "default": true
+        },
+        "showAvatar": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDate": {
+            "type": "boolean",
+            "default": true
+        },
+        "showName": {
+            "type": "boolean",
+            "default": true
+        },
+        "commentLength": {
+            "type": "number",
+            "default": 11
+        },
+        "readMoreText": {
+            "type": "string",
+            "default": "Read More"
+        },
+        "commentsPerPage": {
+            "type": "number",
+            "default": 3
+        }
+    },
+    "supports": {
+        "anchor": true,
+        "className": true,
+        "splitting": true,
+        "__experimentalBorder": {
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true
+        },
+        "color": {
+            "gradients": true,
+            "link": true,
+            "__experimentalDefaultControls": {
+                "background": true,
+                "text": true
+            }
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "margin": false,
+                "padding": false
+            }
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "__experimentalFontFamily": true,
+            "__experimentalFontStyle": true,
+            "__experimentalFontWeight": true,
+            "__experimentalLetterSpacing": true,
+            "__experimentalTextTransform": true,
+            "__experimentalTextDecoration": true,
+            "__experimentalWritingMode": true,
+            "__experimentalDefaultControls": {
+                "fontSize": true
+            }
+        }
+    },
+    "textdomain": "give",
+    "render": "file:./render.php"
+}
