@@ -9,6 +9,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use WP_Error;
@@ -237,6 +238,28 @@ class CampaignRequestController
                     ->selectRaw('(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
                         DB::prefix('give_revenue'))
                     ->orderBy('donationsCount', $orderBy);
+
+                break;
+            case 'donors':
+
+                $postsTable = DB::prefix('posts');
+                $metaTable = DB::prefix('give_donationmeta');
+                $campaignIdKey = DonationMetaKeys::CAMPAIGN_ID;
+                $donorIdKey = DonationMetaKeys::DONOR_ID;
+
+                $query
+                    ->selectRaw(
+                        "(
+                            SELECT COUNT(DISTINCT donorId.meta_value)
+                            FROM {$postsTable} AS donation
+                            LEFT JOIN {$metaTable} campaignId ON donation.ID = campaignId.donation_id AND campaignId.meta_key = '{$campaignIdKey}'
+                            LEFT JOIN {$metaTable} donorId ON donation.ID = donorId.donation_id AND donorId.meta_key = '{$donorIdKey}'
+                            WHERE post_type = 'give_payment'
+                            AND donation.post_status IN ('publish', 'give_subscription')
+                            AND campaignId.meta_value = campaigns.id
+                        ) AS donorsCount"
+                    )
+                    ->orderBy('donorsCount', $orderBy);
 
                 break;
         }
