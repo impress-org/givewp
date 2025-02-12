@@ -355,12 +355,6 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                                 {__('Switch to Legacy View', 'give')}
                             </button>
                         )}
-                        {/*<a
-                            href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                            className={`button button-primary ${styles.button}`}
-                        >
-                            {__('Add Form', 'give')}
-                        </a>*/}
                     </>
                 )}
                 {state.showDefaultFormTooltip && isCampaignDetailsPage && (
