@@ -255,7 +255,9 @@ class ServiceProvider implements ServiceProviderInterface
             ini_set('display_errors', 0);
             $routeData = DonationFormViewRouteData::fromRequest($request);
 
-            Language::switchToLocale($routeData->locale);
+            if ($locale = $request['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
 
             return give(DonationFormViewController::class)->show($routeData);
         });
@@ -268,7 +270,9 @@ class ServiceProvider implements ServiceProviderInterface
             ini_set('display_errors', 0);
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
 
-            Language::switchToLocale($routeData->locale);
+            if ($locale = $request['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
 
             return give(DonationConfirmationReceiptViewController::class)->show($routeData);
         });
@@ -282,7 +286,9 @@ class ServiceProvider implements ServiceProviderInterface
             $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
-            Language::switchToLocale($routeData->locale);
+            if ($locale = $requestData['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
 
             return give(DonationFormViewController::class)->preview($routeData);
         });
