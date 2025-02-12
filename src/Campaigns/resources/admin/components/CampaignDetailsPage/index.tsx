@@ -29,6 +29,14 @@ interface Show {
     confirmationModal?: boolean;
 }
 
+const getCampaignPageUrl = (campaignPage: { id: number; slug: string; link: string; }) => {
+    if (!campaignPage.slug) {
+        return campaignPage.link + '/' + campaignPage.id
+    }
+    return campaignPage.link
+
+}
+
 const StatusBadge = ({status}: { status: string }) => {
     const statusMap = {
         active: __('Active', 'give'),
@@ -176,14 +184,6 @@ export default function CampaignsDetailsPage({campaignId}) {
             }
         })();
     };
-
-    const getCampaignPageUrl = (campaignPage: { id: any; slug: any; link: any; }) => {
-        if (!campaignPage.slug) {
-            return campaignPage.link + '/' + campaignPage.id
-        }
-        return campaignPage.link
-
-    }
 
     if (!hasResolved) {
         return (
