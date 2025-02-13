@@ -2,9 +2,8 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-
-import useCampaigns from '../../shared/hooks/useCampaigns';
 import CampaignComments from './shared/components/CampaignComments';
+import useCampaign from '../../shared/hooks/useCampaign';
 import {CampaignSelector} from '../../shared/components/CampaignSelector';
 
 export default function Edit({
@@ -22,15 +21,15 @@ export default function Edit({
     commentsPerPage: number;
 }>) {
     const blockProps = useBlockProps();
-    const {hasResolved} = useCampaigns();
-
+    const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
+    
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
                 <CampaignComments attributes={attributes} />
             </CampaignSelector>
 
-            {hasResolved && (
+            {hasResolved && campaign?.id && (
                 <InspectorControls>
                     <PanelBody title={__('Display Elements', 'give')} initialOpen={true}>
                         <TextControl
