@@ -5,7 +5,8 @@ import {__} from '@wordpress/i18n';
 import CampaignComments from './shared/components/CampaignComments';
 import useCampaign from '../../shared/hooks/useCampaign';
 import {CampaignSelector} from '../../shared/components/CampaignSelector';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import getGiveCampaignCommentsBlockWindowData, {commentData} from "./shared/window";
 
 export default function Edit({
     attributes,
@@ -25,6 +26,7 @@ export default function Edit({
 }>) {
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
+    const [comments, setComments] = useState<commentData[]>([]);
 
     useEffect(() => {
         if (!attributes.blockId) {
@@ -32,10 +34,15 @@ export default function Edit({
         }
     }, []);
 
+    useEffect(() => {
+        const fetchComments = getGiveCampaignCommentsBlockWindowData();
+        setComments(fetchComments);
+    }, [attributes?.campaignId]);
+
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
-                <CampaignComments attributes={attributes} />
+                <CampaignComments attributes={attributes} comments={comments} />
             </CampaignSelector>
 
             {hasResolved && campaign?.id && (
