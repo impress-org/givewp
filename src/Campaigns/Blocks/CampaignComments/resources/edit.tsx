@@ -5,11 +5,14 @@ import {__} from '@wordpress/i18n';
 import CampaignComments from './shared/components/CampaignComments';
 import useCampaign from '../../shared/hooks/useCampaign';
 import {CampaignSelector} from '../../shared/components/CampaignSelector';
+import {useEffect} from "react";
 
 export default function Edit({
     attributes,
     setAttributes,
+    clientId
 }: BlockEditProps<{
+    blockId: string;
     campaignId: number;
     title: string;
     showAnonymous: boolean;
@@ -22,7 +25,13 @@ export default function Edit({
 }>) {
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
-    
+
+    useEffect(() => {
+        if (!attributes.blockId) {
+            setAttributes({blockId: clientId});
+        }
+    }, []);
+
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>

@@ -10,6 +10,11 @@ use Give\Framework\Support\Contracts\Arrayable;
 class BlockAttributes implements Arrayable
 {
     /**
+     * @var string
+     */
+    public $blockId;
+
+    /**
      * @var int
      */
     public $campaignId;
@@ -61,6 +66,7 @@ class BlockAttributes implements Arrayable
     {
         $self = new self();
 
+        $self->blockId = !empty($array['blockId']) ? (string)$array['blockId'] : null;
         $self->campaignId = !empty($array['campaignId']) ? (int)$array['campaignId'] : null;
         $self->title = !empty($array['title']) ? (string)$array['title'] : __('Share Your Support', 'give');
         $self->showAnonymous = !isset($array['showAnonymous']) || (bool)$array['showAnonymous'];

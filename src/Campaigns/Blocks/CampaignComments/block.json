@@ -7,6 +7,9 @@
     "category": "give",
     "description": "Display all the donor comments associated with a campaign.",
     "attributes": {
+        "blockId": {
+            "type": "string"
+        },
         "campaignId": {
             "type": "number"
         },

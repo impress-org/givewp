@@ -12,11 +12,11 @@ export default function CampaignComments({attributes}: CampaignCommentsProps) {
 
     return (
         <div className={'givewp-campaign-comment-block'}>
-            <h4 className={'givewp-campaign-comment-block__title'}>{attributes.title}</h4>
+            <h4 className={'givewp-campaign-comment-block__title'}>{attributes?.title}</h4>
             <p className={'givewp-campaign-comment-block__cta'}>
                 {__('Leave a supportive message by donating to the campaign.', 'give')}
             </p>
-            {comments && comments?.slice(0, attributes.commentsPerPage)?.map((comment: commentData, index: number) => (
+            {comments && comments?.slice(0, attributes?.commentsPerPage)?.map((comment: commentData, index: number) => (
                 <CampaignCommentCard key={`givewp-campaign-comment-${index}`} attributes={attributes} data={comment} />
             ))}
         </div>

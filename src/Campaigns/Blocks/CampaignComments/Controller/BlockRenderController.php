@@ -22,9 +22,11 @@ class BlockRenderController
 
         $encodedAttributes = json_encode($blockAttributes->toArray());
 
+        $blockId = $blockAttributes->blockId;
+
         $this->loadScripts($blockAttributes);
 
-        return "<div class='givewp-campaign-comment-block' data-attributes='{$encodedAttributes}'></div>";
+        return "<div id='givewp-campaign-comments-block-{$blockId}' class='givewp-campaign-comment-block' data-attributes='{$encodedAttributes}'></div>";
     }
 
     /**

@@ -3,6 +3,7 @@ import {commentData} from '../../window';
 import './styles.scss';
 
 export type AttributeProps = {
+    blockId: string;
     campaignId: number;
     title: string;
     commentLength: number;
