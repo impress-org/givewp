@@ -88,7 +88,7 @@ class CampaignRepository
                 ->insert([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
-                    'campaign_title' => $campaign->title,
+                    'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
                     'campaign_logo' => $campaign->logo,
@@ -143,7 +143,7 @@ class CampaignRepository
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
-                    'campaign_title' => $campaign->title,
+                    'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
                     'campaign_logo' => $campaign->logo,
