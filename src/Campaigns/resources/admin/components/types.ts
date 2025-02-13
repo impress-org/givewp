@@ -1,5 +1,6 @@
 export type Campaign = {
     id?: number;
+    pageId: number;
     type: string;
     title: string;
     shortDescription: string;
