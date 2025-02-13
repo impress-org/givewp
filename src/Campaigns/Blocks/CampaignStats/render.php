@@ -30,7 +30,10 @@ $query = (new CampaignDonationQuery($campaign))
 
 $donationStat = $query->get();
 
-$amount = Money::fromDecimal($donationStat->amount, give_get_currency());
+$amount = $donationStat && $donationStat->amount
+    ? Money::fromDecimal($donationStat->amount, give_get_currency())
+    : Money::fromDecimal(0, give_get_currency());
+
 $title = $attributes['statistic'] === 'top-donation' ? __('Top Donation', 'give') : __('Average Donation', 'give');
 ?>
 
