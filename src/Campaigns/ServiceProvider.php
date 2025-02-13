@@ -61,6 +61,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignStatistics::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignRevenue::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetCampaignComments::class, 'registerRoute');
     }
 
     /**
@@ -77,7 +78,7 @@ class ServiceProvider implements ServiceProviderInterface
                 RevenueTableAddCampaignID::class,
                 AssociateDonationsToCampaign::class,
                 AddIndexes::class,
-                DonationsAddCampaignId::class
+                DonationsAddCampaignId::class,
             ]
         );
     }
@@ -141,7 +142,7 @@ class ServiceProvider implements ServiceProviderInterface
          *
          * @see https://github.com/impress-org/givewp/pull/7483
          */
-        if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
 

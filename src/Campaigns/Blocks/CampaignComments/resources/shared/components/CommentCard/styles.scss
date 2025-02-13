@@ -1,5 +1,4 @@
 .givewp-campaign-comment-block-card {
-    font-family: Inter;
     display: flex;
     gap: var(--givewp-spacing-3);
     padding: var(--givewp-spacing-4) 0;
@@ -32,28 +31,19 @@
         line-height: 1.5;
         text-align: left;
         color: var(--givewp-neutral-700);
-
     }
 
     &__details {
         display: flex;
         gap: var(--givewp-spacing-2);
         align-items: center;
-        height: 20px;
+        height: auto;
         margin: 2px 0 var(--givewp-spacing-3) 0;
         font-size: 14px;
         font-weight: 500;
         line-height: 1.43;
         text-align: left;
         color: var(--givewp-neutral-400);
-
-        &__icon {
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            background-color: var(--givewp-neutral-100);
-            border-radius: 50%;
-        }
     }
 
     &__comment {

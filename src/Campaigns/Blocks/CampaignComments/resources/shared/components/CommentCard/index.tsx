@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {commentData} from '../../window';
+import {CommentData} from '../CampaignComments';
+
 import './styles.scss';
 
 export type AttributeProps = {
@@ -15,11 +16,11 @@ export type AttributeProps = {
     showAnonymous: boolean;
 };
 
-type CampaignCommentCardProps = {attributes: AttributeProps; data: commentData};
+type CampaignCommentCardProps = {attributes: AttributeProps; data: CommentData};
 
 export default function CampaignCommentCard({attributes, data}: CampaignCommentCardProps) {
     const [fullComment, setFullComment] = useState<boolean>(false);
-    const {comment, date, campaignTitle, donorName, avatar, anonymous} = data;
+    const {comment, date, campaignTitle, donorName, avatar} = data;
     const {commentLength, readMoreText, showAvatar, showDate, showName} = attributes;
 
     const truncatedComment = comment
@@ -30,12 +31,9 @@ export default function CampaignCommentCard({attributes, data}: CampaignCommentC
         <div className={'givewp-campaign-comment-block-card'}>
             {showAvatar && <div className="givewp-campaign-comment-block-card__avatar">{<img src={avatar} />}</div>}
             <div className={'givewp-campaign-comment-block__content'}>
-                {showName && !anonymous && (
-                    <p className={'givewp-campaign-comment-block-card__donor-name'}>{donorName}</p>
-                )}
+                {showName && <p className={'givewp-campaign-comment-block-card__donor-name'}>{donorName}</p>}
                 <p className={'givewp-campaign-comment-block-card__details'}>
                     {campaignTitle}
-                    <span className={'givewp-campaign-comment-block-card__details__icon'} />
                     {showDate && date}
                 </p>
                 <p className={'givewp-campaign-comment-block-card__comment'}>

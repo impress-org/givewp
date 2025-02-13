@@ -1,19 +1,32 @@
 import {__} from '@wordpress/i18n';
 import CampaignCommentCard, {AttributeProps} from '../CommentCard';
-import getGiveCampaignCommentsBlockWindowData, {commentData} from '../../window';
+import useSWR from 'swr';
+import apiFetch from '@wordpress/api-fetch';
+import {addQueryArgs} from '@wordpress/url';
+
 import './styles.scss';
 
 type CampaignCommentsProps = {
     attributes: AttributeProps;
-    comments: commentData[];
 };
 
-export default function CampaignComments({attributes, comments}: CampaignCommentsProps) {
-    const filteredComments = comments?.filter((comment: commentData) => {
-        return !comment?.anonymous;
-    });
+export type CommentData = {
+    comment: string;
+    date: string;
+    campaignTitle: string;
+    donorName: string;
+    avatar: string;
+};
 
-    const selectedComments = attributes?.showAnonymous ? comments : filteredComments;
+export default function CampaignComments({attributes}: CampaignCommentsProps) {
+    const {data} = useSWR<CommentData[]>(
+        addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
+            id: attributes?.campaignId,
+            perPage: attributes?.commentsPerPage,
+            anonymous: attributes?.showAnonymous,
+        }),
+        (url) => apiFetch({path: url})
+    );
 
     return (
         <div className={'givewp-campaign-comment-block'}>
@@ -21,7 +34,7 @@ export default function CampaignComments({attributes, comments}: CampaignComment
             <p className={'givewp-campaign-comment-block__cta'}>
                 {__('Leave a supportive message by donating to the campaign.', 'give')}
             </p>
-            {selectedComments && selectedComments?.slice(0, attributes?.commentsPerPage)?.map((comment: commentData, index: number) => (
+            {data?.map((comment: CommentData, index: number) => (
                 <CampaignCommentCard key={`givewp-campaign-comment-${index}`} attributes={attributes} data={comment} />
             ))}
         </div>
