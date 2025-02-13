@@ -2,11 +2,13 @@
 
 namespace Give\Onboarding;
 
+use Exception;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
-use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
-use Give\Log\Log;
 
 /**
  * @since 2.8.0
@@ -72,24 +74,37 @@ class FormRepository
     }
 
     /**
+     * @unreleased Replace "Donation Form" with "Campaign Form"
      * @since 3.15.0 Create the default v3 form.
      * @since 2.8.0
      * @return int Form ID
      *
+     * @throws Exception
      */
-    protected function makeAndPersist()
+    protected function makeAndPersist(): int
     {
-        $form = new DonationForm([
-            'title'    => __('GiveWP Donation Form', 'give'),
-            'status'   => DonationFormStatus::PUBLISHED(),
-            'settings' => FormSettings::fromArray([
-                'designId' => 'multi-step',
-                'designSettingsImageUrl' => GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg',
-                'designSettingsImageStyle' => 'above',
-                'designSettingsImageAlt' => 'GiveWP Onboarding Donation Form',
-            ]),
-            'blocks'   => (new GenerateDefaultDonationFormBlockCollection())(),
+        $campaign = Campaign::create([
+            'type' => CampaignType::CORE(),
+            'title' => __('GiveWP Donation Form', 'give'),
+            'shortDescription' => '',
+            'longDescription' => '',
+            'logo' => '',
+            'image' => '',
+            'primaryColor' => '#0b72d9',
+            'secondaryColor' => '#27ae60',
+            'goal' => 1000,
+            'goalType' => CampaignGoalType::AMOUNT(),
+            'status' => CampaignStatus::ACTIVE(),
         ]);
+
+        $form = DonationForm::find($campaign->defaultFormId);
+
+        $form->title = $campaign->title;
+        $form->status = DonationFormStatus::PUBLISHED();
+        $form->settings->designId = 'multi-step';
+        $form->settings->designSettingsImageUrl = GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg';
+        $form->settings->designSettingsImageStyle = 'above';
+        $form->settings->designSettingsImageAlt = $campaign->title;
 
         $form->save();
 
