@@ -6,6 +6,7 @@ import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
+import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 
 declare const window: {
     GiveCampaignDetails: GiveCampaignDetails;
@@ -199,6 +200,42 @@ export default () => {
                         )}
 
                         {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
+                    </div>
+                </div>
+            </div>
+
+            {/* Campaign Theme */}
+            <div className={styles.section}>
+                <div className={styles.leftColumn}>
+                    <div className={styles.sectionTitle}>{__('Campaign Theme', 'give')}</div>
+                    <div className={styles.sectionDescription}>
+                        {__('Choose a preferred theme for your campaign.', 'give')}
+                    </div>
+                </div>
+
+                <div className={styles.rightColumn}>
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__('Select your preferred primary color', 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__(
+                                'This will affect your main cta’s like your donate button, active and focus states of other UI elements.',
+                                'give'
+                            )}
+                        </div>
+
+                        <ColorControl name="primaryColor" disabled={isDisabled} className={styles.colorControl} />
+                    </div>
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__('Select your preferred secondary color', 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('This will affect your goal progress indicator, badges, icons, etc', 'give')}
+                        </div>
+
+                        <ColorControl name="secondaryColor" disabled={isDisabled} className={styles.colorControl} />
                     </div>
                 </div>
             </div>
