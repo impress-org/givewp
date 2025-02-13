@@ -3,4 +3,4 @@
  * @var array $attributes
  */
 ?>
-<div class="give-campaigns-campaignListBlock-container" data-attributes=<?= json_encode($attributes) ?>></div>
+<div data-givewp-campaign-gird data-attributes=<?= json_encode($attributes) ?>></div>
