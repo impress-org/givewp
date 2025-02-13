@@ -10,7 +10,7 @@ use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 /**
  * Registers and boots the Admin Notices library
  *
- * @unreleased
+ * @since 3.21.0
  *
  * @see https://github.com/stellarwp/admin-notices
  */
@@ -18,7 +18,7 @@ class AdminNoticesServiceProvider implements ServiceProvider {
     /**
      * {@inheritDoc}
      *
-     * @unreleased
+     * @since 3.21.0
      */
     public function register()
     {
@@ -28,7 +28,7 @@ class AdminNoticesServiceProvider implements ServiceProvider {
     /**
      * {@inheritDoc}
      *
-     * @unreleased
+     * @since 3.21.0
      */
     public function boot()
     {

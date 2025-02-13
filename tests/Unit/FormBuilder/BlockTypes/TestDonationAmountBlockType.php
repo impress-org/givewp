@@ -25,7 +25,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
-     * @unreleased updated customAmountMax to expect int value
+     * @since 3.21.0 updated customAmountMax to expect int value
      * @since 3.12.0 Update test to use the new levels schema
      * @since 3.8.0
      * @throws Exception

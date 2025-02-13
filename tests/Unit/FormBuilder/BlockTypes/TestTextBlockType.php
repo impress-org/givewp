@@ -97,7 +97,7 @@ class TestTextBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.21.0
      * @throws Exception
      */
     public function testGetFieldNameShouldReturnCustomName(): void
@@ -117,7 +117,7 @@ class TestTextBlockType extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.21.0
      * @throws Exception
      */
     public function testGetFieldNameShouldReturnNameWithIndex()

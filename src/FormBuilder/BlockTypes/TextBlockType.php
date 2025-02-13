@@ -21,7 +21,7 @@ class TextBlockType extends BlockType
     }
 
     /**
-     * @unreleased
+     * @since 3.21.0
      */
     public function getFieldName(int $blockIndex): string
     {
