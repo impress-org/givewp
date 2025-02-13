@@ -66,8 +66,8 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:../../../../build/campaignListBlock.js",
-    "viewScript": "file:../../../../build/campaignListApp.js",
-    "viewStyle": "file:../../../../build/campaignListApp.css",
+    "editorScript": "file:../../../../build/campaignGridBlock.js",
+    "viewScript": "file:../../../../build/campaignGridApp.js",
+    "viewStyle": "file:../../../../build/campaignGridApp.css",
     "render": "file:./render.php"
 }
