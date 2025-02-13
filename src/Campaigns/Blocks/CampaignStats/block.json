@@ -67,5 +67,5 @@
     "textdomain": "give",
     "render": "file:./render.php",
     "viewScript": "file:../../../../build/campaignStatsApp.js",
-    "style": "file:../../../../build/campaignStatsApp.css"
+    "style": "file:../../../../build/campaignStatsBlockApp.css"
 }
