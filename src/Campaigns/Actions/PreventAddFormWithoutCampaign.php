@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
-use Give\DonationForms\Models\DonationForm;
 
 /**
  * @unreleased
@@ -19,7 +18,7 @@ class PreventAddFormWithoutCampaign
             return;
         }
 
-        if ($this->isEditingForm()) {
+        if ($this->isEditingCampaignForm()) {
             return;
         }
 
@@ -45,7 +44,7 @@ class PreventAddFormWithoutCampaign
     /**
      * @unreleased
      */
-    private function isEditingForm(): bool
+    private function isEditingCampaignForm(): bool
     {
         global $pagenow;
 
@@ -54,7 +53,7 @@ class PreventAddFormWithoutCampaign
         $isGiveFormsCpt = (isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms') || (get_post_type($formId) === 'give_forms');
 
         if ($formId && $isGiveFormsCpt) {
-            return (bool)DonationForm::find($formId);
+            return (bool)Campaign::findByFormId($formId);
         }
 
         return false;
