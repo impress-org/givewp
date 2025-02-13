@@ -1,9 +1,9 @@
-.give-campaigns-campaignListBlock-grid {
+.givewp-campaign-grid {
     display: grid;
     column-gap: 16px;
     row-gap: 16px;
 
-    &-item {
+    &__item {
         padding: 0 0 24px;
         border-radius: 8px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);

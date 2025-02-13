@@ -36,47 +36,47 @@ export default ({attributes}: { attributes: CampaignListType }) => {
     return (
         <>
             <div
-                className="give-campaigns-campaignListBlock-grid"
+                className="givewp-campaign-grid"
                 style={{gridTemplateColumns: `repeat(${getGridSettings(attributes.layout)}, 1fr)`}}
             >
                 {campaigns?.map((campaign) => (
                     <div
-                        className="give-campaigns-campaignListBlock-grid-item"
+                        className="givewp-campaign-grid__item"
                     >
                         {attributes.showImage && campaign.image && (
                             <div
                                 style={{backgroundImage: `url(${campaign.image})`}}
-                                className="give-campaigns-campaignListBlock-grid-item-image">
+                                className="givewp-campaign-grid__item-image">
                             </div>
                         )}
-                        <div className="give-campaigns-campaignListBlock-grid-item-title">
+                        <div className="givewp-campaign-grid__item-title">
                             {campaign.title}
                         </div>
                         {attributes.showDescription && (
-                            <div className="give-campaigns-campaignListBlock-grid-item-description">
+                            <div className="givewp-campaign-grid__item-description">
                                 {campaign.shortDescription}
                             </div>
                         )}
 
                         {attributes.showGoal && (
-                            <div className="give-campaigns-campaignListBlock-grid-item__goal">
-                                <div className="give-campaigns-campaignListBlock-grid-item__goal-progress">
+                            <div className="givewp-campaign-grid__item__goal">
+                                <div className="givewp-campaign-grid__item__goal-progress">
                                     <div
-                                        className="give-campaigns-campaignListBlock-grid-item__goal-progress-container">
+                                        className="givewp-campaign-grid__item__goal-progress-container">
                                         <div
-                                            className="give-campaigns-campaignListBlock-grid-item__goal-progress-bar"
+                                            className="givewp-campaign-grid__item__goal-progress-bar"
                                             style={{width: `${campaign.goalStats.percentage}%`}}>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="ive-campaigns-campaignListBlock-grid-item__goal-container">
-                                    <div className="give-campaigns-campaignListBlock-grid-item__goal-container-item">
+                                    <div className="givewp-campaign-grid__item__goal-container-item">
                                         <span>{getGoalDescription(campaign.goalType)}</span>
                                         <strong>
                                             {getGoalFormattedValue(campaign.goalType, campaign.goalStats.actual)}
                                         </strong>
                                     </div>
-                                    <div className="give-campaigns-campaignListBlock-grid-item__goal-container-item">
+                                    <div className="givewp-campaign-grid__item__goal-container-item">
                                         <span>{__('Our goal', 'give')}</span>
                                         <strong>
                                             {getGoalFormattedValue(campaign.goalType, campaign.goal)}
@@ -90,7 +90,7 @@ export default ({attributes}: { attributes: CampaignListType }) => {
             </div>
 
             {attributes.showPagination && totalPages >= page && (
-                <div className="give-campaigns-campaignListBlock-grid__pagination">
+                <div className="givewp-campaign-grid__pagination">
                     <Pagination currentPage={page} totalPages={totalPages} setPage={(number) => setPage(number)} />
                 </div>
             )}
