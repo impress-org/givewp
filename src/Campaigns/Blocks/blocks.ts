@@ -11,9 +11,10 @@ import campaignDonateButton from './DonateButton';
 import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
+import campaignStats from './CampaignStats';
 
 export const getAllBlocks = () => {
-    return [campaignCover, campaignDonateButton, campaignDonations, campaignDonors, campaignTitle];
+    return [campaignCover, campaignDonateButton, campaignDonations, campaignDonors, campaignTitle, campaignStats];
 };
 
 getAllBlocks().forEach((block) => {
