@@ -20,6 +20,10 @@ export default function Edit({
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
 
+    const statsHelpText = attributes.statistic === 'top-donation'
+        ? __('Displays the top donation of the selected campaign.', 'give')
+        : __('Displays the average donation of the selected campaign.', 'give');
+
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
@@ -31,7 +35,7 @@ export default function Edit({
                     <PanelBody title="Settings" initialOpen={true}>
                         <SelectControl
                             label={__('Type', 'give')}
-                            help={__('Displays the top donation of the selected campaign.', 'give')}
+                            help={statsHelpText}
                             value={attributes.statistic}
                             options={[
                                 {value: 'top-donation', label: __('Top Donation', 'give')},
