@@ -25,7 +25,7 @@ export default function Edit({
         : __('Displays the average donation of the selected campaign.', 'give');
 
     return (
-        <figure {...blockProps}>
+        <div {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
                 <ServerSideRender block="givewp/campaign-stats-block" attributes={attributes} />
             </CampaignSelector>
@@ -46,6 +46,6 @@ export default function Edit({
                     </PanelBody>
                 </InspectorControls>
             )}
-        </figure>
+        </div>
     );
 }
