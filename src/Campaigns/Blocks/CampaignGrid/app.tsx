@@ -5,7 +5,7 @@ import App from './app/index';
 /**
  * @unreleased
  */
-const nodeList = document.querySelectorAll('[data-givewp-campaign-gird]');
+const nodeList = document.querySelectorAll('[data-givewp-campaign-grid]');
 
 if (nodeList) {
     const containers = Array.from(nodeList);
