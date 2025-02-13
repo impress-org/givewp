@@ -41,7 +41,7 @@ class BlockRenderController
         foreach ($donations as $donation) {
             $data[] = [
                 'campaignTitle' => $campaign->title,
-                'anonymous'     => $donation->anonymous,
+                'anonymous'     => $donation->anonymous === '1',
                 'donorName'     => $donation->donorName,
                 'comment'       => $donation->comment,
                 'date'          => human_time_diff(strtotime($donation->date)),

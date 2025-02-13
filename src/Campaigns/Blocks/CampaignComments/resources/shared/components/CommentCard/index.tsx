@@ -30,7 +30,7 @@ export default function CampaignCommentCard({attributes, data}: CampaignCommentC
         <div className={'givewp-campaign-comment-block-card'}>
             {showAvatar && <div className="givewp-campaign-comment-block-card__avatar">{<img src={avatar} />}</div>}
             <div className={'givewp-campaign-comment-block__content'}>
-                {showName && !!anonymous && (
+                {showName && !anonymous && (
                     <p className={'givewp-campaign-comment-block-card__donor-name'}>{donorName}</p>
                 )}
                 <p className={'givewp-campaign-comment-block-card__details'}>
