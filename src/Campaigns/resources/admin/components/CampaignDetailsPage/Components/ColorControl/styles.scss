@@ -42,5 +42,22 @@
             background: var(--givewp-neutral-50);
             cursor: pointer;
         }
+
+        &--active {
+            background: var(--givewp-neutral-700);
+            border: solid 1px var(--givewp-neutral-700);
+            color: var(--givewp-neutral-25);
+
+            &:hover {
+                background: var(--givewp-neutral-900);
+            }
+        }
+    }
+
+    &__popover-content {
+        .components-popover__content {
+            padding: var(--givewp-spacing-4);
+            width: auto;
+        }
     }
 }
