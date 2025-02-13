@@ -21,3 +21,15 @@ export function useCampaignEntityRecord(campaignId?: number) {
 
     return {campaign, hasResolved, save, edit};
 }
+
+
+/**
+ * @unreleased
+ */
+export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], options?: Intl.NumberFormatOptions): Intl.NumberFormat {
+    return new Intl.NumberFormat(navigator.language, {
+        style: 'currency',
+        currency: currency,
+        ...options
+    });
+}

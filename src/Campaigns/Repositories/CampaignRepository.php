@@ -143,6 +143,7 @@ class CampaignRepository
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
+                    'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => $campaign->title,
                     'short_desc' => $campaign->shortDescription,
                     'long_desc' => $campaign->longDescription,
@@ -355,6 +356,7 @@ class CampaignRepository
                 'id',
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
+                ['campaign_page_id', 'pageId'],
                 ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],

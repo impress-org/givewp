@@ -4,6 +4,7 @@ namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\CampaignOptions;
+use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -102,6 +103,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
+        Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
     }
 
     /**

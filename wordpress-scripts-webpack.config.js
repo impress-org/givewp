@@ -67,6 +67,7 @@ module.exports = {
         campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
         campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
         campaignGoalBlockApp: srcPath('Campaigns/Blocks/CampaignGoal/app.tsx'),
+        campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
     },
 };
 
