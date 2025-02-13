@@ -1,12 +1,12 @@
-import {paragraph as icon} from '@wordpress/icons';
 import schema from './block.json';
 import Edit from './edit';
+import {StatsIcon} from './Icon';
 
 /**
  * @unreleased
  */
 const settings = {
-    icon,
+    icon: <StatsIcon />,
     edit: Edit,
 };
 
