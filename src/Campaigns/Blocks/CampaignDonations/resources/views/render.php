@@ -14,8 +14,8 @@ $donateButtonText = $attributes['donateButtonText'] ?? __('Donate', 'give');
 
 $blockInlineStyles = sprintf(
     '--givewp-primary-color: %s; --givewp-secondary-color: %s;',
-    esc_attr('#0b72d9'),
-    esc_attr('#27ae60')
+    esc_attr($campaign->primaryColor ?? '#0b72d9'),
+    esc_attr($campaign->secondaryColor ?? '#27ae60')
 );
 ?>
 <div
