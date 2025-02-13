@@ -225,7 +225,7 @@ export default () => {
                             )}
                         </div>
 
-                        <ColorControl name="primaryColor" disabled={isDisabled} />
+                        <ColorControl name="primaryColor" disabled={isDisabled} className={styles.colorControl} />
                     </div>
                     <div className={styles.sectionField}>
                         <div className={styles.sectionSubtitle}>
@@ -235,7 +235,7 @@ export default () => {
                             {__('This will affect your goal progress indicator, badges, icons, etc', 'give')}
                         </div>
 
-                        <ColorControl name="secondaryColor" disabled={isDisabled} />
+                        <ColorControl name="secondaryColor" disabled={isDisabled} className={styles.colorControl} />
                     </div>
                 </div>
             </div>
