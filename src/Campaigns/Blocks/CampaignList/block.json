@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
     "apiVersion": 2,
-    "name": "givewp/campaign-list-block",
+    "name": "givewp/campaign-grid",
     "version": "1.0.0",
     "title": "Campaign Grid",
     "category": "give",
