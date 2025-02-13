@@ -73,6 +73,8 @@ module.exports = {
         campaignDonateButtonBlock: srcPath('Campaigns/Blocks/DonateButton/index.tsx'),
         campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitle/index.tsx'),
         campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
+        campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
+        campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
     },
 };
 

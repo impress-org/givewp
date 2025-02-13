@@ -1,0 +1,40 @@
+{
+    "$schema": "https://json.schemastore.org/block.json",
+    "apiVersion": 2,
+    "name": "givewp/campaign-block",
+    "version": "1.0.0",
+    "title": "Campaign Block",
+    "category": "give",
+    "description": "Insert an existing campaign into the page.",
+    "supports": {
+        "align": [
+            "wide",
+            "full",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "attributes": {
+        "campaignId": {
+            "type": "number"
+        },
+        "showImage": {
+            "type": "boolean",
+            "default": true
+        },
+        "showDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "showGoal": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "textdomain": "give",
+    "editorScript": "file:../../../../build/campaignBlock.js",
+    "viewScript": "file:../../../../build/campaignBlockApp.js",
+    "viewStyle": "file:../../../../build/campaignBlockApp.css",
+    "render": "file:./render.php"
+}
