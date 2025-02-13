@@ -1,16 +1,16 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {Currency, Editor, Upload} from '../../Inputs';
-import {GiveCampaignDetails} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
+import {getCampaignDetailsWindowData} from '@givewp/campaigns/admin/common';
+import {amountFormatter} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
+const {currency, isRecurringEnabled} = getCampaignDetailsWindowData();
+const currencyFormatter = amountFormatter(currency);
 
 /**
  * @unreleased
@@ -169,7 +169,7 @@ export default () => {
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donations">{__('Number of donations', 'give')}</option>
                             <option value="donors">{__('Number of donors', 'give')}</option>
-                            {window.GiveCampaignDetails.isRecurringEnabled && (
+                            {isRecurringEnabled && (
                                 <>
                                     <option value="amountFromSubscriptions">
                                         {__('Recurring amount raised', 'give')}
@@ -194,7 +194,7 @@ export default () => {
                         </div>
 
                         {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
-                            <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
+                            <Currency name="goal" currency={currency} disabled={isDisabled} />
                         ) : (
                             <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
                         )}
@@ -246,9 +246,9 @@ export default () => {
 const goalDescription = (type: string) => {
     switch (type) {
         case 'amount':
-            return __(
-                'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                'give'
+            return sprintf(__('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
+                currencyFormatter.format(500),
+                currencyFormatter.format(1000)
             );
         case 'donations':
             return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
