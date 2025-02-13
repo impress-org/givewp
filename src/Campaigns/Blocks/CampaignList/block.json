@@ -3,7 +3,7 @@
     "apiVersion": 2,
     "name": "givewp/campaign-list-block",
     "version": "1.0.0",
-    "title": "Campaign List Block",
+    "title": "Campaign Grid",
     "category": "give",
     "description": "Insert an existing campaign into the page.",
     "supports": {
