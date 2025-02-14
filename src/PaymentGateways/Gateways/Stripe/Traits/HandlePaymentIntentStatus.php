@@ -22,6 +22,8 @@ trait HandlePaymentIntentStatus
      */
     public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, Donation $donation)
     {
+      // If there is an Exception $paymentIntent is false
+      if ( $paymentIntent ) {
         switch ($paymentIntent->status()) {
             case 'requires_action':
                 $donation->gatewayTransactionId = $paymentIntent->id();
@@ -35,5 +37,6 @@ trait HandlePaymentIntentStatus
                 throw new PaymentIntentException(
                     sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status()));
         }
+      }
     }
 }
