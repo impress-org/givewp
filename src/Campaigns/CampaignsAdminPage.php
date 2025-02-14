@@ -39,7 +39,7 @@ class CampaignsAdminPage
                 wp_die(__('Campaign not found', 'give'), 404);
             }
 
-            give(LoadCampaignDetailsAssets::class)($campaign);
+            give(LoadCampaignDetailsAssets::class)();
         } else {
             give(LoadCampaignsListTableAssets::class)();
         }

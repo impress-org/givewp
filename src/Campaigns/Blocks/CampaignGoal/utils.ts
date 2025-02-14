@@ -1,4 +1,6 @@
 import {__} from '@wordpress/i18n';
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
+
 
 export const getGoalDescription = (goalType: string) => {
     switch (goalType) {
@@ -22,12 +24,10 @@ export const getGoalFormattedValue = (goalType: string, value: number) => {
     switch (goalType) {
         case 'amount':
         case 'amountFromSubscriptions':
-            const currency = new Intl.NumberFormat(navigator.language, {
-                style: 'currency',
-                currency: window.GiveCampaignOptions.currency,
-            })
+            const {currency} = getCampaignOptionsWindowData()
+            const currencyFormatter = amountFormatter(currency);
 
-            return currency.format(value);
+            return currencyFormatter.format(value);
 
         default:
             return value;
