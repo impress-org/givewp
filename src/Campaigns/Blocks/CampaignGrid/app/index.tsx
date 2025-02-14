@@ -3,6 +3,7 @@ import useCampaigns from '../../shared/hooks/useCampaigns';
 import Pagination from '../../shared/components/Pagination';
 import CampaignCard from '../../shared/components/CampaignCard';
 import {CampaignListType} from '../types';
+import {getGoalDescription, getGoalFormattedValue} from '../../CampaignGoal/utils';
 
 import './styles.scss';
 
@@ -35,7 +36,7 @@ export default ({attributes}: { attributes: CampaignListType }) => {
     return (
         <>
             <div
-                className="give-campaigns-campaignListBlock-grid"
+                className="givewp-campaign-grid"
                 style={{gridTemplateColumns: `repeat(${getGridSettings(attributes.layout)}, 1fr)`}}
             >
                 {campaigns?.map((campaign) => (
@@ -50,7 +51,7 @@ export default ({attributes}: { attributes: CampaignListType }) => {
             </div>
 
             {attributes.showPagination && totalPages >= page && (
-                <div className="give-campaigns-campaignListBlock-grid__pagination">
+                <div className="givewp-campaign-grid__pagination">
                     <Pagination currentPage={page} totalPages={totalPages} setPage={(number) => setPage(number)} />
                 </div>
             )}

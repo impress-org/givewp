@@ -1,9 +1,9 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
     "apiVersion": 2,
-    "name": "givewp/campaign-list-block",
+    "name": "givewp/campaign-grid",
     "version": "1.0.0",
-    "title": "Campaign List Block",
+    "title": "Campaign Grid",
     "category": "give",
     "description": "Insert an existing campaign into the page.",
     "supports": {
@@ -66,8 +66,8 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:../../../../build/campaignListBlock.js",
-    "viewScript": "file:../../../../build/campaignListApp.js",
-    "viewStyle": "file:../../../../build/campaignListApp.css",
+    "editorScript": "file:../../../../build/campaignGridBlock.js",
+    "viewScript": "file:../../../../build/campaignGridApp.js",
+    "viewStyle": "file:../../../../build/campaignGridApp.css",
     "render": "file:./render.php"
 }

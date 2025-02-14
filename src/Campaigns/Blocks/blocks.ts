@@ -11,9 +11,9 @@ import campaignDonateButton from './DonateButton';
 import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
-import campaignStats from './CampaignStats';
 import campaignGoal from './CampaignGoal';
-import campaignList from './CampaignList';
+import campaignGrid from './CampaignGrid';
+import campaignStats from './CampaignStats';
 import campaignBlock from './Campaign';
 
 export const getAllBlocks = () => {
@@ -24,7 +24,7 @@ export const getAllBlocks = () => {
         campaignDonors,
         campaignTitle,
         campaignGoal,
-        campaignList,
+        campaignGrid,
         campaignBlock,
         campaignStats
     ];

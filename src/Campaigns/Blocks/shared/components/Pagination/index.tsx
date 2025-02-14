@@ -17,8 +17,7 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
             <div className="give-campaign-components-pagination__pages">
                 <div className="give-campaign-components-pagination__pages-links">
                     {previousPage > 0 ? (
-                        <a
-                            href="#"
+                        <button
                             title={__('Previous page', 'give')}
                             className="give-campaign-components-pagination__pages-links-arrow"
                             onClick={(e) => {
@@ -27,18 +26,17 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                             }}
                         >
                             <ChevronLeft />
-                        </a>
+                        </button>
                     ) : (
-                        <a className="give-campaign-components-pagination__pages-links-arrow-disabled">
+                        <button className="give-campaign-components-pagination__pages-links-arrow-disabled">
                             <ChevronLeft />
-                        </a>
+                        </button>
                     )}
 
                     {[...Array(totalPages)].map((e, i) => {
                         const page = i + 1;
                         return (
-                            <a
-                                href="#"
+                            <button
                                 title={sprintf(__('Page %d', 'give'), page)}
                                 className={cx('give-campaign-components-pagination__pages-links-page', {'give-campaign-components-pagination__pages-links-current': currentPage === page})}
                                 onClick={(e) => {
@@ -47,13 +45,12 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                                 }}
                             >
                                 {page}
-                            </a>
+                            </button>
                         )
                     })}
 
                     {nextPage <= totalPages ? (
-                        <a
-                            href="#"
+                        <button
                             title={__('Next page', 'give')}
                             className="give-campaign-components-pagination__pages-links-arrow"
                             onClick={(e) => {
@@ -62,11 +59,11 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                             }}
                         >
                             <ChevronRight />
-                        </a>
+                        </button>
                     ) : (
-                        <a className="give-campaign-components-pagination__pages-links-arrow-disabled">
+                        <button className="give-campaign-components-pagination__pages-links-arrow-disabled">
                             <ChevronRight />
-                        </a>
+                        </button>
                     )}
                 </div>
             </div>
