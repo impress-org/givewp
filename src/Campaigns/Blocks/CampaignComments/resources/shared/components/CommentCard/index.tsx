@@ -24,9 +24,7 @@ export default function CampaignCommentCard({attributes, data}: CampaignCommentC
     const {comment, date, donorName, avatar} = data;
     const {commentLength, readMoreText, showAvatar, showDate, showName} = attributes;
 
-    const truncatedComment = comment
-        ? comment.slice(0, commentLength) + (comment.length > commentLength ? '...' : '')
-        : '';
+    const truncatedComment = comment.slice(0, commentLength) + (comment.length > commentLength ? '...' : '');
 
     return (
         <div className={'givewp-campaign-comment-block-card'}>
