@@ -3,9 +3,11 @@
 namespace Give\DonationForms\Routes;
 
 
+use Exception;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
@@ -19,6 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
+     * @unreleased added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
      */
     public function __invoke(array $request): bool
@@ -34,12 +37,18 @@ class ValidationRoute
 
         try {
             $response = $formData->validate();
-            
+
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
+        } catch (DonationFormForbidden $exception) {
+            wp_die($exception->getMessage(), 403);
+        } catch (Exception $exception) {
+            $type = DonationFormErrorTypes::UNKNOWN;
+            $this->logError($type, $exception->getMessage(), $formData);
+            $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
         exit;
