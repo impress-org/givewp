@@ -18,7 +18,7 @@ class ConvertQueryDataToCampaign
      */
     public function __invoke(object $queryObject): Campaign
     {
-        $test = new Campaign([
+        return new Campaign([
             'id' => (int)$queryObject->id,
             'defaultFormId' => (int)$queryObject->defaultFormId,
             'type' => new CampaignType($queryObject->type),
@@ -37,7 +37,5 @@ class ConvertQueryDataToCampaign
             'status' => new CampaignStatus($queryObject->status),
             'createdAt' => Temporal::toDateTime($queryObject->createdAt),
         ]);
-
-        return $test;
     }
 }
