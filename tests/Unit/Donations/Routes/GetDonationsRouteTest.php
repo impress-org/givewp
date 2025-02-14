@@ -56,6 +56,41 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
+    public function testGetDonationsShouldNotReturnSensitiveAndAnonymousData()
+    {
+        $this->createDonation1();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveAndAnonymousData = [
+            // sensitive data
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+            // anonymous data
+            'donorId',
+            'honorific',
+            'firstName',
+            'lastName',
+            'company',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveAndAnonymousData)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function testGetDonationsShouldReturnSensitiveData()
     {
         $newAdminUser = $this->factory()->user->create(

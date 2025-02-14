@@ -56,7 +56,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $status = $response->get_status();
         $data = $response->get_data();
 
-        $sensitiveProperties = [
+        $sensitiveData = [
             'donorIp',
             'email',
             'phone',
@@ -64,6 +64,42 @@ class GetDonationRouteTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
+        $this->assertEmpty(array_intersect_key($data, array_flip($sensitiveData)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationShouldNotReturnSensitiveAndAnonymousData()
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $sensitiveAndAnonymousData = [
+            // sensitive data
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+            // anonymous data
+            'donorId',
+            'honorific',
+            'firstName',
+            'lastName',
+            'company',
+        ];
+
+        $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data, array_flip($sensitiveAndAnonymousData)));
     }
 }

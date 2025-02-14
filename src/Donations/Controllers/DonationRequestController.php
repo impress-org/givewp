@@ -106,20 +106,33 @@ class DonationRequestController
      */
     public function escDonation(Donation $donation): array
     {
-        $donation = $donation->toArray();
+        if (current_user_can('manage_options')) {
+            return $donation->toArray();
+        }
 
-        if ( ! current_user_can('manage_options')) {
-            $sensitiveProperties = [
-                'donorIp',
-                'email',
-                'phone',
-                'billingAddress',
+        $sensitiveData = [
+            'donorIp',
+            'email',
+            'phone',
+            'billingAddress',
+        ];
+
+        if ($donation->anonymous) {
+            $anonymousData = [
+                'donorId',
+                'honorific',
+                'firstName',
+                'lastName',
+                'company',
             ];
 
-            foreach ($sensitiveProperties as $property) {
-                if (array_key_exists($property, $donation)) {
-                    unset($donation[$property]);
-                }
+            $sensitiveData = array_merge($sensitiveData, $anonymousData);
+        }
+
+        $donation = $donation->toArray();
+        foreach ($sensitiveData as $property) {
+            if (array_key_exists($property, $donation)) {
+                unset($donation[$property]);
             }
         }
 
