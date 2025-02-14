@@ -65,7 +65,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     useEffect(() => {
         apiFetch({
-            path: `/give-api/v2/campaigns/${campaignId}`,
+            path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
         }).then(({schema}: {schema: JSONSchemaType<any>}) => {
             setResolver({
@@ -74,12 +74,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         });
     }, []);
 
-    const {
-        campaign,
-        hasResolved,
-        save,
-        edit,
-    } = useCampaignEntityRecord(campaignId);
+    const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -107,7 +102,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             id: 'update-archive-notice',
             type: 'warning',
             onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
+            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
         });
     }, [campaign?.status]);
 

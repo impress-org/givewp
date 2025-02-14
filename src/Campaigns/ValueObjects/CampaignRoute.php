@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  */
 class CampaignRoute extends Enum
 {
-    const NAMESPACE = 'give-api/v2';
+    const NAMESPACE = 'givewp/v3';
     const CAMPAIGN = 'campaigns/(?P<id>[0-9]+)';
     const CAMPAIGNS = 'campaigns';
 }

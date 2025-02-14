@@ -48,7 +48,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
         try {
             const response = await apiFetch({
-                path: addQueryArgs('/give-api/v2/campaigns/' + destinationCampaignId + '/merge', {
+                path: addQueryArgs('/givewp/v3/campaigns/' + destinationCampaignId + '/merge', {
                     campaignsToMergeIds: campaignsToMergeIds,
                 }),
                 method: 'PATCH',

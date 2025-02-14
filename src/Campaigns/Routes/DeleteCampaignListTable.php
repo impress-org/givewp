@@ -5,6 +5,7 @@ namespace Give\Campaigns\Routes;
 use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
@@ -37,7 +38,7 @@ class DeleteCampaignListTable implements RestRoute
     public function registerRoute()
     {
         register_rest_route(
-            'give-api/v2',
+            CampaignRoute::NAMESPACE,
             $this->endpoint,
             [
                 [
