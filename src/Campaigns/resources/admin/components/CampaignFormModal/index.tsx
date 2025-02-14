@@ -124,11 +124,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             goalType: campaign?.goalType ?? '',
             goal: campaign?.goal ?? null,
             startDateTime: getDateString(
-                campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
+                campaign?.startDateTime?.date ? new Date(campaign.startDateTime.date) : getNextSharpHour(1)
             ),
-            endDateTime: getDateString(
-                campaign?.endDateTime?.date ? new Date(campaign?.endDateTime?.date) : getNextSharpHour(2)
-            ),
+            endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
         },
     });
 
@@ -213,7 +211,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
+            inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
 
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
@@ -268,9 +266,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         </div>
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="image">{__('Add a cover image for your campaign.', 'give')}</label>
-                            <span>
-                                {__('Upload an image to represent and inspire your campaign.', 'give')}
-                            </span>
+                            <span>{__('Upload an image to represent and inspire your campaign.', 'give')}</span>
                             <Upload
                                 id="givewp-campaigns-upload-cover-image"
                                 label={__('Cover', 'give')}

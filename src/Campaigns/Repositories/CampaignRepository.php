@@ -82,7 +82,7 @@ class CampaignRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate ?: $currentDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate ?: Temporal::withoutMicroseconds($currentDate->modify('+1 day')));
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : 0;
 
         DB::query('START TRANSACTION');
 
