@@ -18,7 +18,7 @@ class ConvertQueryDataToCampaign
      */
     public function __invoke(object $queryObject): Campaign
     {
-        return new Campaign([
+        $test = new Campaign([
             'id' => (int)$queryObject->id,
             'defaultFormId' => (int)$queryObject->defaultFormId,
             'type' => new CampaignType($queryObject->type),
@@ -32,10 +32,12 @@ class ConvertQueryDataToCampaign
             'secondaryColor' => $queryObject->secondaryColor,
             'goal' => (int)$queryObject->goal,
             'goalType' => new CampaignGoalType($queryObject->goalType),
-            'startDate' => $queryObject->startDate ? Temporal::toDateTime($queryObject->startDate) : Temporal::toDateTime('0000-00-00 00:00:00'),
-            'endDate' => $queryObject->endDate ? Temporal::toDateTime($queryObject->endDate) : Temporal::toDateTime('0000-00-00 00:00:00'),
+            'startDate' => $queryObject->startDate ? Temporal::toDateTime($queryObject->startDate) : null,
+            'endDate' => $queryObject->endDate ? Temporal::toDateTime($queryObject->endDate) : null,
             'status' => new CampaignStatus($queryObject->status),
             'createdAt' => Temporal::toDateTime($queryObject->createdAt),
         ]);
+
+        return $test;
     }
 }
