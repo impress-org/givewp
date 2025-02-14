@@ -15,7 +15,7 @@ const BlockApp = ({campaignId}: { campaignId: number }) => {
 /**
  * @unreleased
  */
-const nodeList = document.querySelectorAll('.give-campaigns-goalBlock-container');
+const nodeList = document.querySelectorAll('[data-givewp-campaign-goal]');
 
 if (nodeList) {
     const containers = Array.from(nodeList);

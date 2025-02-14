@@ -17,4 +17,4 @@ if (
 
 ?>
 
-<div class="give-campaigns-goalBlock-container" data-id="<?= $campaign->id; ?>"></div>
+<div data-givewp-campaign-goal data-id="<?= $campaign->id; ?>"></div>

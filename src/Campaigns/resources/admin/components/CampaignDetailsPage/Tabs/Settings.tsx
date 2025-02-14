@@ -5,11 +5,10 @@ import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {getCampaignDetailsWindowData} from '@givewp/campaigns/admin/common';
-import {amountFormatter} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 
-const {currency, isRecurringEnabled} = getCampaignDetailsWindowData();
+const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
 
 /**

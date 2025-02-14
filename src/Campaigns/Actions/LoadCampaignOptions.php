@@ -8,7 +8,7 @@ namespace Give\Campaigns\Actions;
  *
  * @unreleased
  */
-class CampaignOptions
+class LoadCampaignOptions
 {
     public function __invoke()
     {
@@ -16,6 +16,7 @@ class CampaignOptions
 
         wp_localize_script('give-campaign-options', 'GiveCampaignOptions',
             [
+                'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'currencySymbol' => give_currency_symbol(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')

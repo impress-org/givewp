@@ -1,5 +1,3 @@
-import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-
 export type Notification = {
     id: string;
     content: string | JSX.Element | Function;
@@ -24,14 +22,9 @@ declare module "@wordpress/data" {
     };
 }
 
-declare global {
-    interface Window {
-        GiveCampaignOptions: {
-            currency: string;
-            currencySymbol: string;
-            isRecurringEnabled: boolean;
-        };
-    }
+export type GiveCampaignOptions = {
+    adminUrl: string;
+    currency: string;
+    isRecurringEnabled: boolean;
+    defaultForm: string;
 }
-
-
