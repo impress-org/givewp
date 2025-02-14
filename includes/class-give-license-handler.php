@@ -465,6 +465,7 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
+         * @since 3.21.1 use array_map to safely access the private property
          * @since 3.21.0 plucks the basename for backwards compatibility
          * @since 2.1.4
          * @return string[]
