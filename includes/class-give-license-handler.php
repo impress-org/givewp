@@ -328,7 +328,7 @@ if ( ! class_exists('Give_License') ) :
                 AdminNotices::show(
                     "license-bundle-activation-error-$license_key",
                     "An error occurred while attempting to activate license $license_key: $reason. Please activate the license manually."
-                )->asError()->isDismissible();
+                )->autoParagraph()->asError()->dismissible();
             };
 
             foreach ($unactivated_bundled_licenses as $license => $addons) {
