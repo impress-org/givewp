@@ -23,7 +23,7 @@ export default function CampaignComments({attributes}: CampaignCommentsProps) {
         addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
             id: attributes?.campaignId,
             perPage: attributes?.commentsPerPage,
-            anonymous: attributes?.showAnonymous ? 1 : 0,
+            anonymous: attributes?.showAnonymous,
         }),
         (url) => apiFetch({path: url})
     );

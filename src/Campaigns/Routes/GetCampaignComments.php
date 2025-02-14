@@ -41,9 +41,9 @@ class GetCampaignComments implements RestRoute
                         'sanitize_callback' => 'absint',
                     ],
                     'anonymous' => [
-                        'type'              => 'boolean',
-                        'required'          => false,
-                        'sanitize_callback' => 'absint',
+                        'type'     => 'boolean',
+                        'required' => false,
+                        'default'  => true,
                     ],
                 ],
             ]
