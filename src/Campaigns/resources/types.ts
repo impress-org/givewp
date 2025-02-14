@@ -23,15 +23,3 @@ declare module "@wordpress/data" {
         dismissNotification(id: string): void
     };
 }
-
-declare global {
-    interface Window {
-        GiveCampaignOptions: {
-            currency: string;
-            currencySymbol: string;
-            isRecurringEnabled: boolean;
-        };
-    }
-}
-
-
