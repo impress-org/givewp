@@ -20,7 +20,7 @@ type CampaignCommentCardProps = {attributes: AttributeProps; data: CommentData};
 
 export default function CampaignCommentCard({attributes, data}: CampaignCommentCardProps) {
     const [fullComment, setFullComment] = useState<boolean>(false);
-    const {comment, date, campaignTitle, donorName, avatar} = data;
+    const {comment, date, donorName, avatar} = data;
     const {commentLength, readMoreText, showAvatar, showDate, showName} = attributes;
 
     const truncatedComment = comment
@@ -32,10 +32,7 @@ export default function CampaignCommentCard({attributes, data}: CampaignCommentC
             {showAvatar && <div className="givewp-campaign-comment-block-card__avatar">{<img src={avatar} />}</div>}
             <div className={'givewp-campaign-comment-block__content'}>
                 {showName && <p className={'givewp-campaign-comment-block-card__donor-name'}>{donorName}</p>}
-                <p className={'givewp-campaign-comment-block-card__details'}>
-                    {campaignTitle}
-                    {showDate && date}
-                </p>
+                <p className={'givewp-campaign-comment-block-card__details'}>{showDate && date}</p>
                 <p className={'givewp-campaign-comment-block-card__comment'}>
                     {fullComment ? comment : truncatedComment}
                 </p>

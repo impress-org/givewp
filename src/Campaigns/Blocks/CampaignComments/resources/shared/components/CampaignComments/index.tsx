@@ -13,7 +13,6 @@ type CampaignCommentsProps = {
 export type CommentData = {
     comment: string;
     date: string;
-    campaignTitle: string;
     donorName: string;
     avatar: string;
 };
