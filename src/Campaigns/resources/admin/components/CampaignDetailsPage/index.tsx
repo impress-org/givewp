@@ -5,7 +5,7 @@ import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignDetails} from './types';
+import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
@@ -21,7 +21,7 @@ import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 import styles from './CampaignDetailsPage.module.scss';
 
 declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
+    GiveCampaignOptions: GiveCampaignOptions;
 } & Window;
 
 interface Show {
@@ -203,7 +203,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${window.GiveCampaignOptions.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -220,7 +220,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignDetails.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

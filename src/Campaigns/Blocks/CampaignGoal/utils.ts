@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {getCampaignDetailsWindowData} from '@givewp/campaigns/admin/common';
-import {amountFormatter} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
 
 
 export const getGoalDescription = (goalType: string) => {
@@ -25,7 +24,7 @@ export const getGoalFormattedValue = (goalType: string, value: number) => {
     switch (goalType) {
         case 'amount':
         case 'amountFromSubscriptions':
-            const {currency} = getCampaignDetailsWindowData();
+            const {currency} = getCampaignOptionsWindowData()
             const currencyFormatter = amountFormatter(currency);
 
             return currencyFormatter.format(value);

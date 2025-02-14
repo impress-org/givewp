@@ -1,5 +1,3 @@
-import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-
 export type Notification = {
     id: string;
     content: string | JSX.Element | Function;
@@ -22,4 +20,11 @@ declare module "@wordpress/data" {
         addNotice(notification: Notification): void,
         dismissNotification(id: string): void
     };
+}
+
+export type GiveCampaignOptions = {
+    adminUrl: string;
+    currency: string;
+    isRecurringEnabled: boolean;
+    defaultForm: string;
 }

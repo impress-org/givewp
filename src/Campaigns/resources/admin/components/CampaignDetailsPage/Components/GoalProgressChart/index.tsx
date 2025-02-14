@@ -3,10 +3,9 @@ import Chart from "react-apexcharts";
 import React from "react";
 
 import styles from "./styles.module.scss"
-import {getCampaignDetailsWindowData} from '@givewp/campaigns/admin/common';
-import {amountFormatter} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
 
-const {currency} = getCampaignDetailsWindowData();
+const {currency} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
 
 const GoalProgressChart = ({ value, goal }) => {
