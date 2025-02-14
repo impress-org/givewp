@@ -471,7 +471,9 @@ if ( ! class_exists('Give_License') ) :
          */
         static function get_licensed_addons(): array
         {
-            return wp_list_pluck(self::$licensed_addons, 'plugin_basename');
+            return array_map( static function ( Give_License $license ) {
+                return $license->plugin_basename;
+            }, self::$licensed_addons );
         }
 
         /**
