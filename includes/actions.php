@@ -229,7 +229,13 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 		return $error;
 	}
 
-	$plugin_base    = strtolower( $hook_extra['plugin'] );
+    // If the plugin is GiveWP then bypass the License check altogether. If there's a problem with licensing it's
+    // important that we can always upgrade GiveWP.
+    $plugin_base = strtolower( $hook_extra['plugin'] );
+    if ( GIVE_PLUGIN_BASENAME === $plugin_base ) {
+        return $error;
+    }
+
 	$licensed_addon = array_map( 'strtolower', Give_License::get_licensed_addons() );
 
 	// Skip if not a Give addon.
