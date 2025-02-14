@@ -33,4 +33,16 @@ final class AssignDuplicatedFormToCampaignTest extends TestCase
 
         $this->assertEquals($campaign->id, $duplicatedFormCampaign->id);
     }
+
+    public function testDuplicatingFormWithoutCampaignDoesNotCauseFatalError()
+    {
+        $form = DonationForm::factory()->create();
+
+        // See give/src/DonationForms/V2/Endpoints/FormActions.php:131
+        require_once(GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');
+        \Give_Form_Duplicator::handler($form->id);
+
+        // Prevent fatal error when duplicating form without campaign
+        $this->assertTrue(true);
+    }
 }

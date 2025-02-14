@@ -31,6 +31,14 @@ class AssignDuplicatedFormToCampaign
     {
         $campaign = $this->campaignRepository->queryByFormId($originalFormID)->get();
 
+        if(!$campaign) {
+            Log::error('Campaign does not exist for duplicated form.', [
+                'duplicated_form_id' => $duplicatedFormID,
+                'original_form_id' => $originalFormID,
+            ]);
+            return;
+        }
+
         try {
             $this->campaignRepository->addCampaignForm($campaign, $duplicatedFormID, true);
         } catch (\Exception $e) {
