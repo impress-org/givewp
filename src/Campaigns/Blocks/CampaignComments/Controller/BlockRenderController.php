@@ -20,7 +20,6 @@ class BlockRenderController
 
         $blockId = $blockAttributes->blockId;
         
-
         return "<div id='givewp-campaign-comments-block-{$blockId}' class='givewp-campaign-comment-block' data-attributes='{$encodedAttributes}'></div>";
     }
 }
