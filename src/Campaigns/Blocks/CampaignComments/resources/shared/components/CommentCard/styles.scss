@@ -9,7 +9,7 @@
         justify-content: center;
         width: 40px;
         height: 40px;
-        padding: 8px;
+        padding: .5rem;
         border-radius: 50%;
 
         img {
@@ -19,14 +19,14 @@
             min-width: 40px;
             width: 100%;
             height: auto;
-            padding: 8px;
+            padding: .5rem;
             border-radius: 50%;
         }
     }
 
     &__donor-name {
         margin: 0;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 600;
         line-height: 1.5;
         text-align: left;
@@ -39,7 +39,7 @@
         align-items: center;
         height: auto;
         margin: 2px 0 var(--givewp-spacing-3) 0;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 500;
         line-height: 1.43;
         text-align: left;
@@ -47,16 +47,15 @@
     }
 
     &__comment {
-        min-height: 40px;
         margin: 0;
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 1.5;
         text-align: left;
         color: var(--givewp-neutral-700);
     }
 
     &__read-more {
-        font-size: 14px;
+        font-size: 0.875rem;
         padding: 0;
         background: none;
         color: var(--givewp-blue-500);
