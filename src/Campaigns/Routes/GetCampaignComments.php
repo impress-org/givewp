@@ -44,7 +44,6 @@ class GetCampaignComments implements RestRoute
                         'type'              => 'boolean',
                         'required'          => false,
                         'sanitize_callback' => 'absint',
-                        'default'           => false, // Default to false
                     ],
                 ],
             ]
@@ -75,6 +74,14 @@ class GetCampaignComments implements RestRoute
             ->joinDonationMeta('_give_completed_date', 'dateMeta')
             ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors');
 
+
+        if (!$anonymous) {
+            $query->where('anonymousMeta.meta_value', '0');
+        }
+
+        $query->where('commentMeta.meta_value', '', '!=');
+        $query->whereIsNotNull('commentMeta.meta_value');
+
         $query->select(
             'donorIdMeta.meta_value as donorId',
             'commentMeta.meta_value as comment',
@@ -82,10 +89,6 @@ class GetCampaignComments implements RestRoute
             'dateMeta.meta_value as date',
             'donors.name as donorName'
         );
-
-        if ($anonymous === false) {
-            $query->where('anonymousMeta.meta_value', '0');
-        }
 
         $donations = $query->limit($perPage)->getAll();
 
