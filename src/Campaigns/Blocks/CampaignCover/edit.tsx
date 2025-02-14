@@ -47,15 +47,6 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
-                {hasResolved && !campaign?.image && (
-                    <Placeholder
-                        icon={<GalleryIcon />}
-                        label={__('Campaign Cover Image', 'give')}
-                        instructions={__('Upload a cover image for your campaign.', 'give')}
-                    />
-
-                )}
-
                 {hasResolved && campaign?.image &&
                     (!isSizeAligned ? (
                         <ResizableBox
