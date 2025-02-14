@@ -6,8 +6,8 @@ use Exception;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
-use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\PrintFormMetaTags;
+use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
@@ -45,6 +45,7 @@ use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
+use Give\Helpers\Language;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -247,32 +248,47 @@ class ServiceProvider implements ServiceProviderInterface
         Route::post('authenticate', AuthenticationRoute::class);
 
         /**
+         * @unreleased Add locale support
          * @since 3.0.0
          */
         Route::get('donation-form-view', static function (array $request) {
             ini_set('display_errors', 0);
             $routeData = DonationFormViewRouteData::fromRequest($request);
 
+            if ($locale = $request['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
+
             return give(DonationFormViewController::class)->show($routeData);
         });
 
         /**
+         * @unreleased Add locale support
          * @since 3.0.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
             ini_set('display_errors', 0);
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
 
+            if ($locale = $request['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
+
             return give(DonationConfirmationReceiptViewController::class)->show($routeData);
         });
 
         /**
+         * @unreleased Add locale support
          * @since 3.0.0
          */
         Route::post('donation-form-view-preview', static function () {
             ini_set('display_errors', 0);
             $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
             $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
+
+            if ($locale = $requestData['locale'] ?? '') {
+                Language::switchToLocale($locale);
+            }
 
             return give(DonationFormViewController::class)->preview($routeData);
         });
