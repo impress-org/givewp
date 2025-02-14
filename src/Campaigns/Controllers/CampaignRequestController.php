@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Controllers;
 
 use Exception;
-use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
@@ -186,8 +185,8 @@ class CampaignRequestController
             'longDescription' => '',
             'logo' => '',
             'image' => $request->get_param('image') ?? '',
-            'primaryColor' => '',
-            'secondaryColor' => '',
+            'primaryColor' => '#0b72d9',
+            'secondaryColor' => '#27ae60',
             'goal' => (int)$request->get_param('goal'),
             'goalType' => new CampaignGoalType($request->get_param('goalType')),
             'status' => CampaignStatus::DRAFT(),
