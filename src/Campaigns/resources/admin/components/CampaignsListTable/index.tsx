@@ -2,8 +2,6 @@ import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
-import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {Interweave} from 'interweave';
 import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
@@ -81,29 +79,6 @@ const filters: Array<FilterConfig> = [
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        action: async (selected) => {
-            return await API.fetchWithArgs('', {ids: selected.join(',')}, 'DELETE');
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Really delete the following campaigns?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((campaignId, index) => (
-                        <li key={campaignId}>
-                            <IdBadge id={campaignId} />{' '}
-                            <span>
-                                {__('from ', 'give')} <Interweave content={names[index]} />
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
     {
         label: __('Merge', 'give'),
         value: 'merge',
