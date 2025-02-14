@@ -138,8 +138,6 @@ class InvoicePaymentSucceededTest extends TestCase
 
         //refresh subscription model
         $subscription = Subscription::find($subscription->id);
-        // cache donations
-        $subscriptionDonations = $subscription->donations;
         //refresh donation model
         $donation = Donation::find($donation->id);
 
@@ -178,7 +176,7 @@ class InvoicePaymentSucceededTest extends TestCase
         // Refresh subscription model
         $subscription = Subscription::find($subscription->id);
 
-        $this->assertCount(1, $subscriptionDonations);
+        $this->assertSame(1, $subscription->totalDonations());
         $this->assertTrue($subscription->status->isCompleted());
     }
 
