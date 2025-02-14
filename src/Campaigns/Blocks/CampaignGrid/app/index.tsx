@@ -2,8 +2,7 @@ import {useState} from '@wordpress/element';
 import useCampaigns from '../../shared/hooks/useCampaigns';
 import Pagination from '../../shared/components/Pagination';
 import CampaignCard from '../../shared/components/CampaignCard';
-import {CampaignListType} from '../types';
-import {getGoalDescription, getGoalFormattedValue} from '../../CampaignGoal/utils';
+import {CampaignGridType} from '../types';
 
 import './styles.scss';
 
@@ -18,7 +17,7 @@ const getGridSettings = (layout: string) => {
     }
 }
 
-export default ({attributes}: { attributes: CampaignListType }) => {
+export default ({attributes}: { attributes: CampaignGridType }) => {
     const [page, setPage] = useState(1);
 
     const {campaigns, hasResolved, totalPages} = useCampaigns({

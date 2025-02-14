@@ -1,5 +1,5 @@
 import {render} from '@wordpress/element';
-import {CampaignListType} from './types';
+import {CampaignGridType} from './types';
 import App from './app/index';
 
 /**
@@ -11,7 +11,7 @@ if (nodeList) {
     const containers = Array.from(nodeList);
 
     containers.map((container: any) => {
-        const attributes: CampaignListType = JSON.parse(container.dataset?.attributes);
+        const attributes: CampaignGridType = JSON.parse(container.dataset?.attributes);
         return render(<App attributes={attributes} />, container);
     });
 }

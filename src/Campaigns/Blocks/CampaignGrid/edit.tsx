@@ -5,10 +5,10 @@ import {FormTokenField, PanelBody, SelectControl, TextControl, ToggleControl} fr
 import {TokenItem} from '@wordpress/components/build-types/form-token-field/types'
 import GridControl from '../shared/components/GridControl';
 import useCampaigns from '../shared/hooks/useCampaigns';
-import {CampaignListType} from './types';
-import CampaignListApp from './app/index'
+import {CampaignGridType} from './types';
+import CampaignGridApp from './app/index'
 
-export default function Edit({attributes, setAttributes}: BlockEditProps<CampaignListType>) {
+export default function Edit({attributes, setAttributes}: BlockEditProps<CampaignGridType>) {
     const blockProps = useBlockProps();
     const {campaigns, hasResolved} = useCampaigns();
     const suggestions = campaigns?.map((campaign) => campaign.title);
@@ -17,7 +17,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
         <div {...blockProps}>
             {hasResolved && (
                 <>
-                    <CampaignListApp attributes={attributes} />
+                    <CampaignGridApp attributes={attributes} />
                     <InspectorControls>
                         <PanelBody title={__('Layout', 'give')} initialOpen={true}>
                             <GridControl
