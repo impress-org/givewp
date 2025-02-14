@@ -465,13 +465,16 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
+         * @since 3.21.1 use array_map to safely access the private property
          * @since 3.21.0 plucks the basename for backwards compatibility
          * @since 2.1.4
          * @return string[]
          */
         static function get_licensed_addons(): array
         {
-            return wp_list_pluck(self::$licensed_addons, 'plugin_basename');
+            return array_map( static function ( Give_License $license ) {
+                return $license->plugin_basename;
+            }, self::$licensed_addons );
         }
 
         /**
