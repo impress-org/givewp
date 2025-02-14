@@ -11,8 +11,9 @@ import campaignDonateButton from './DonateButton';
 import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
-import campaignComments from './CampaignComments/resources';
+import campaignGoal from './CampaignGoal';
 import campaignStats from './CampaignStats';
+import campaignComments from './CampaignComments/resources';
 
 export const getAllBlocks = () => {
     return [
@@ -21,6 +22,7 @@ export const getAllBlocks = () => {
         campaignDonations,
         campaignDonors,
         campaignTitle,
+        campaignGoal,
         campaignStats,
         campaignComments,
     ];

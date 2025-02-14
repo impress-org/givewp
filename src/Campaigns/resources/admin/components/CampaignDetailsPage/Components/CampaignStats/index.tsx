@@ -7,14 +7,13 @@ import {addQueryArgs} from '@wordpress/url';
 import HeaderText from '../HeaderText';
 import HeaderSubText from '../HeaderSubText';
 import DefaultFormWidget from "../DefaultForm";
-import {useCampaignEntityRecord, amountFormatter} from '@givewp/campaigns/utils';
-import {getCampaignDetailsWindowData} from '@givewp/campaigns/admin/common';
+import {useCampaignEntityRecord, amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 import styles from "./styles.module.scss"
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
-const {currency} = getCampaignDetailsWindowData();
+const {currency} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
 
 const pluck = (array: any[], property: string) => array.map(element => element[property])
@@ -150,7 +149,7 @@ const GoalProgressWidget = () => {
                 <HeaderText>{__('Goal progress', 'give')}</HeaderText>
                 <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
             </header>
-            <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
+            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} />
         </div>
     )
 }

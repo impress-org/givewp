@@ -33,7 +33,7 @@ class CampaignRequestController
 
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
-                'goalProgress' => $campaign->goalProgress(),
+                'goalStats' => $campaign->getGoalStats(),
                 'defaultFormTitle' => $campaign->defaultForm()->title
             ])
         );
@@ -59,7 +59,9 @@ class CampaignRequestController
 
         // todo: remove - temporary solution
         $campaigns = array_map(function ($campaign) {
-            return $campaign->toArray();
+            return array_merge($campaign->toArray(), [
+                'goalStats' => $campaign->getGoalStats(),
+            ]);
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
