@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {CommentData} from '../CampaignComments';
 
 import './styles.scss';
+import {__} from '@wordpress/i18n';
 
 export type AttributeProps = {
     blockId: string;
@@ -29,10 +30,14 @@ export default function CampaignCommentCard({attributes, data}: CampaignCommentC
 
     return (
         <div className={'givewp-campaign-comment-block-card'}>
-            {showAvatar && <div className="givewp-campaign-comment-block-card__avatar">{<img src={avatar} />}</div>}
+            {showAvatar && (
+                <div className="givewp-campaign-comment-block-card__avatar">
+                    <img src={avatar} alt={__('Donor avatar')} />
+                </div>
+            )}
             <div className={'givewp-campaign-comment-block__content'}>
                 {showName && <p className={'givewp-campaign-comment-block-card__donor-name'}>{donorName}</p>}
-                <p className={'givewp-campaign-comment-block-card__details'}>{showDate && date}</p>
+                {showDate && <p className={'givewp-campaign-comment-block-card__details'}>{date}</p>}
                 <p className={'givewp-campaign-comment-block-card__comment'}>
                     {fullComment ? comment : truncatedComment}
                 </p>
