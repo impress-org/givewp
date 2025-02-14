@@ -85,7 +85,7 @@ class FormRepository
     {
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
-            'title' => __('GiveWP Donation Form', 'give'),
+            'title' => __('GiveWP Onboarding', 'give'),
             'shortDescription' => '',
             'longDescription' => '',
             'logo' => '',
@@ -99,18 +99,20 @@ class FormRepository
 
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $form->title = $campaign->title;
-        $form->status = DonationFormStatus::PUBLISHED();
-        $form->settings->designId = 'multi-step';
-        $form->settings->designSettingsImageUrl = GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg';
-        $form->settings->designSettingsImageStyle = 'above';
-        $form->settings->designSettingsImageAlt = $campaign->title;
+        if ($form) {
+            $form->title = $campaign->title;
+            $form->status = DonationFormStatus::PUBLISHED();
+            $form->settings->designId = 'multi-step';
+            $form->settings->designSettingsImageUrl = GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg';
+            $form->settings->designSettingsImageStyle = 'above';
+            $form->settings->designSettingsImageAlt = $campaign->title;
 
-        $form->save();
+            $form->save();
+        }
 
-        $this->settingsRepository->set('form_id', $form->id);
+        $this->settingsRepository->set('form_id', $campaign->defaultFormId);
         $this->settingsRepository->save();
 
-        return $form->id;
+        return $campaign->defaultFormId;
     }
 }
