@@ -213,6 +213,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
+ * @unreleased add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4
  *
  * @param $error
