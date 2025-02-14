@@ -23,7 +23,15 @@ class PaymentIntent
         $this->paymentIntentObject = $paymentIntentFactory->create( $paymentIntentArgs );
         return $this;
     }
-
+    
+    /**
+     * @since ...
+     * @return bool
+     */
+    public function isset()
+    {
+        return $this->paymentIntentObject;
+    }
     /**
      * @since 2.19.0
      * @return string
