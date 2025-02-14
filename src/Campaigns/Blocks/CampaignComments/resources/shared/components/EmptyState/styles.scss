@@ -1,0 +1,36 @@
+.givewp-campaign-comments-block-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--givewp-spacing-6);
+    background-color: var(--givewp-shades-white);
+    border-radius: 0.5rem;
+    border: 1px solid var(--givewp-neutral-50);
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--givewp-spacing-1);
+        margin: .875rem 0;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--givewp-neutral-700);
+    }
+
+    &__description {
+        margin: 0;
+        font-size: .875rem;
+        line-height: 1.43;
+        color: var(--givewp-neutral-700);
+    }
+
+    &__icon {
+    }
+}

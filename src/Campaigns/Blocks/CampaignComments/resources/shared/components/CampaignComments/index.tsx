@@ -1,10 +1,11 @@
-import {__} from '@wordpress/i18n';
 import CampaignCommentCard, {AttributeProps} from '../CommentCard';
 import useSWR from 'swr';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 
 import './styles.scss';
+import EmptyState from '../EmptyState';
+import {__} from '@wordpress/i18n';
 
 type CampaignCommentsProps = {
     attributes: AttributeProps;
@@ -27,15 +28,27 @@ export default function CampaignComments({attributes}: CampaignCommentsProps) {
         (url) => apiFetch({path: url})
     );
 
+    console.log(data);
+
     return (
         <div className={'givewp-campaign-comment-block'}>
             <h4 className={'givewp-campaign-comment-block__title'}>{attributes?.title}</h4>
-            <p className={'givewp-campaign-comment-block__cta'}>
-                {__('Leave a supportive message by donating to the campaign.', 'give')}
-            </p>
-            {data?.map((comment: CommentData, index: number) => (
-                <CampaignCommentCard key={`givewp-campaign-comment-${index}`} attributes={attributes} data={comment} />
-            ))}
+            {data?.length > 0 ? (
+                <>
+                    <p className={'givewp-campaign-comment-block__cta'}>
+                        {__('Leave a supportive message by donating to the campaign.', 'give')}
+                    </p>
+                    {data?.map((comment: CommentData, index: number) => (
+                        <CampaignCommentCard
+                            key={`givewp-campaign-comment-${index}`}
+                            attributes={attributes}
+                            data={comment}
+                        />
+                    ))}
+                </>
+            ) : (
+                <EmptyState />
+            )}
         </div>
     );
 }
