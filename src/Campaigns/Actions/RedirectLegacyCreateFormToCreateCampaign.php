@@ -7,7 +7,7 @@ use Give\Campaigns\Models\Campaign;
 /**
  * @unreleased
  */
-class PreventAddFormWithoutCampaign
+class RedirectLegacyCreateFormToCreateCampaign
 {
     /**
      * @unreleased
@@ -34,6 +34,7 @@ class PreventAddFormWithoutCampaign
     private function isAddingNewForm(): bool
     {
         global $pagenow;
+
         $isOptionBasedFormEditorPage = $pagenow === 'post-new.php';
         $isVisualFormBuilderPage = $pagenow === 'edit.php' && isset($_GET['page']) && 'givewp-form-builder' === $_GET['page'];
         $isGiveFormsCpt = isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
