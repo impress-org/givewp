@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
+use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -43,6 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot(): void
     {
         $this->registerMenus();
+        $this->replaceGiveFormsCptLabels();
         $this->registerActions();
         $this->setupCampaignPages();
         $this->registerMigrations();
@@ -109,6 +111,14 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerMenus()
     {
         Hooks::addAction('admin_menu', CampaignsAdminPage::class, 'addCampaignsSubmenuPage', 999);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function replaceGiveFormsCptLabels()
+    {
+        Hooks::addFilter('give_forms_labels', ReplaceGiveFormsCptLabels::class);
     }
 
     private function setupCampaignPages()

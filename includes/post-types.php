@@ -56,8 +56,8 @@ function give_setup_post_types() {
 			'name'               => __( 'Donation Forms', 'give' ),
 			'singular_name'      => __( 'Form', 'give' ),
 			'add_new'            => __( 'Add Form', 'give' ),
-			'add_new_item'       => __( 'Add New Campaign Form', 'give' ),
-			'edit_item'          => __( 'Edit Campaign Form', 'give' ),
+			'add_new_item'       => __( 'Add New Donation Form', 'give' ),
+			'edit_item'          => __( 'Edit Donation Form', 'give' ),
 			'new_item'           => __( 'New Form', 'give' ),
 			'all_items'          => __( 'All Forms', 'give' ),
 			'view_item'          => __( 'View Form', 'give' ),
@@ -66,7 +66,7 @@ function give_setup_post_types() {
 			'not_found_in_trash' => __( 'No forms found in Trash.', 'give' ),
 			'parent_item_colon'  => '',
 			'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
-			'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Campaign', 'give' ) ),
+			'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) ),
 		]
 	);
 
