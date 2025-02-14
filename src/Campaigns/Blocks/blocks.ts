@@ -12,7 +12,9 @@ import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
 import campaignGoal from './CampaignGoal';
+import campaignGrid from './CampaignGrid';
 import campaignStats from './CampaignStats';
+import campaignBlock from './Campaign';
 
 export const getAllBlocks = () => {
     return [
@@ -22,9 +24,11 @@ export const getAllBlocks = () => {
         campaignDonors,
         campaignTitle,
         campaignGoal,
+        campaignGrid,
+        campaignBlock,
         campaignStats
     ];
-}
+};
 
 getAllBlocks().forEach((block) => {
     if (!getBlockType(block.schema.name)) {
