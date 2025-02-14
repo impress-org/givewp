@@ -23,7 +23,7 @@ export const getAllBlocks = () => {
         campaignDonors,
         campaignTitle,
         campaignGoal,
-        campaignGrid
+        campaignGrid,
         campaignStats
     ];
 }
