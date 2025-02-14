@@ -5,7 +5,7 @@ namespace Give\Campaigns\Models;
 use DateTime;
 use Exception;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
-use Give\Campaigns\CampaignDonationQuery;
+use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
@@ -176,10 +176,9 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
     }
 
-    public function goalProgress()
+    public function getGoalStats(): array
     {
-        $query = new CampaignDonationQuery($this);
-        return $query->sumIntendedAmount();
+        return (new CampaignGoalData($this))->toArray();
     }
 
     /**

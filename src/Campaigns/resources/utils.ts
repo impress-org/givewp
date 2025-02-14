@@ -1,5 +1,10 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
+import type {GiveCampaignOptions} from '@givewp/campaigns/types';
+
+declare const window: {
+    GiveCampaignOptions: GiveCampaignOptions;
+} & Window;
 
 /**
  * @unreleased
@@ -22,6 +27,12 @@ export function useCampaignEntityRecord(campaignId?: number) {
     return {campaign, hasResolved, save, edit};
 }
 
+/**
+ * @unreleased
+ */
+export function getCampaignOptionsWindowData(): GiveCampaignOptions {
+    return window.GiveCampaignOptions;
+}
 
 /**
  * @unreleased
