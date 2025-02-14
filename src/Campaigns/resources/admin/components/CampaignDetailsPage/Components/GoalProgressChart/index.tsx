@@ -8,8 +8,15 @@ import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/u
 const {currency} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
 
-const GoalProgressChart = ({ value, goal }) => {
-    const percentage: number = Math.abs((value / goal) * 100);
+type GoalProgressChartProps = {
+    value: number;
+    goal: number;
+}
+
+const GoalProgressChart = ({ value, goal }: GoalProgressChartProps) => {
+    const progress = Math.ceil((value / goal) * 100);
+    const percentage = Math.min(progress, 100);
+
     return (
             <div className={styles.goalProgressChart}>
                 <div className={styles.chartContainer}>
