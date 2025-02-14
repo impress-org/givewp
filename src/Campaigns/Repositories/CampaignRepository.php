@@ -143,6 +143,7 @@ class CampaignRepository
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
+                    'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
@@ -355,6 +356,7 @@ class CampaignRepository
                 ['campaigns.id', 'id'],
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
+                ['campaign_page_id', 'pageId'],
                 ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],

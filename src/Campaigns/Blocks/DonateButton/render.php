@@ -16,6 +16,11 @@ if (
     return;
 }
 
+$blockInlineStyles = sprintf(
+    '--givewp-primary-color: %s;',
+    esc_attr($campaign->primaryColor ?? '#0b72d9')
+);
+
 $params = [
     'formId' => ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
         ? $campaign->defaultFormId
@@ -23,5 +28,13 @@ $params = [
     'openFormButton' => $attributes['buttonText'],
     'formFormat' => 'modal',
 ];
+?>
 
-echo (new BlockRenderController())->render($params);
+<div
+    <?php
+    echo wp_kses_data(get_block_wrapper_attributes(['class' => 'givewp-campaign-donate-button-block'])); ?>
+    style="<?php
+    echo esc_attr($blockInlineStyles); ?>">
+    <?php
+    echo (new BlockRenderController())->render($params); ?>
+</div>
