@@ -19,7 +19,7 @@ export type CommentData = {
 };
 
 export default function CampaignComments({attributes}: CampaignCommentsProps) {
-    const {data} = useSWR<CommentData[]>(
+    const {data, isLoading} = useSWR<CommentData[]>(
         addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
             id: attributes?.campaignId,
             perPage: attributes?.commentsPerPage,
@@ -28,27 +28,23 @@ export default function CampaignComments({attributes}: CampaignCommentsProps) {
         (url) => apiFetch({path: url})
     );
 
-    console.log(data);
+    if (isLoading) {
+        return null;
+    }
+
+    if (data && data?.length === 0) {
+        return <EmptyState />;
+    }
 
     return (
         <div className={'givewp-campaign-comment-block'}>
             <h4 className={'givewp-campaign-comment-block__title'}>{attributes?.title}</h4>
-            {data?.length > 0 ? (
-                <>
-                    <p className={'givewp-campaign-comment-block__cta'}>
-                        {__('Leave a supportive message by donating to the campaign.', 'give')}
-                    </p>
-                    {data?.map((comment: CommentData, index: number) => (
-                        <CampaignCommentCard
-                            key={`givewp-campaign-comment-${index}`}
-                            attributes={attributes}
-                            data={comment}
-                        />
-                    ))}
-                </>
-            ) : (
-                <EmptyState />
-            )}
+            <p className={'givewp-campaign-comment-block__cta'}>
+                {__('Leave a supportive message by donating to the campaign.', 'give')}
+            </p>
+            {data?.map((comment: CommentData, index: number) => (
+                <CampaignCommentCard key={`givewp-campaign-comment-${index}`} attributes={attributes} data={comment} />
+            ))}
         </div>
     );
 }
