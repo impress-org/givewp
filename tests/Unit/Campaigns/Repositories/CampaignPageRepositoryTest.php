@@ -128,4 +128,19 @@ final class CampaignPageRepositoryTest extends TestCase
 
         $this->assertNull($campaignPageFresh);
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testCampaignPageShouldBeCreatedWithCampaignTitle()
+    {
+        $campaign = Campaign::factory()->create();
+        $campaignPage = CampaignPage::create([
+            'campaignId' => $campaign->id,
+        ]);
+
+        $this->assertEquals($campaign->title, get_the_title($campaignPage->id));
+    }
 }
