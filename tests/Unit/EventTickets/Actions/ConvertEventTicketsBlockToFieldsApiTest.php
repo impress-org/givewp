@@ -14,14 +14,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 3.20.0
  */
 class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws EmptyNameException
      * @throws Exception
      */

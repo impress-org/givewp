@@ -380,7 +380,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation

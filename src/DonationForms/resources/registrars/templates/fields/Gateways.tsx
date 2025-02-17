@@ -6,7 +6,7 @@ import {createInterpolateElement, useEffect, useMemo} from '@wordpress/element';
 import cx from 'classnames';
 
 /**
- * @unreleased
+ * @since 3.20.0
  */
 function EmptyMessage({message}: {message: string}) {
     return (
@@ -23,7 +23,7 @@ function EmptyMessage({message}: {message: string}) {
 }
 
 /**
- * @unreleased updated message to account for minimum donation amount
+ * @since 3.20.0 updated message to account for minimum donation amount
  * @since 3.0.0
  */
 function GatewayMissingMessage({

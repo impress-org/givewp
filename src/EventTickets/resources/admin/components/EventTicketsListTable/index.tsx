@@ -81,7 +81,7 @@ const ListTableBlankSlate = () => {
 /**
  * EventTicketsListTable
  *
- * @unreleased Add wrapper class for the EventTicketsListTable
+ * @since 3.20.0 Add wrapper class for the EventTicketsListTable
  * @since 3.6.0
  */
 export default function EventTicketsListTable() {
