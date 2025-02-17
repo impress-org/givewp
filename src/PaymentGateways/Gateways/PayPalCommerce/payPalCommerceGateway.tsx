@@ -12,9 +12,6 @@ const payPalCommerceGateway: PayPalCommerceGateway = {
         payPalDonationsSettings = this.settings;
     },
     beforeCreatePayment: async function (values): Promise<object> {
-        // this.paypalOnClickActions
-        console.log({beforeCreatePayment: this, paypalOnClickActions: this.paypalOnClickActions});
-
         if (isUsingSmartButtons(this)) {
             if (!this.payPalOrderId || !this.payPalAuthorizationId) {
                 // trigger smart buttons
@@ -60,16 +57,17 @@ const payPalCommerceGateway: PayPalCommerceGateway = {
         }
     },
     Fields() {
+        const components = ['card-fields', 'buttons'];
         return (
             <PayPalScriptProvider
                 options={{
                     clientId: payPalDonationsSettings.sdkOptions['client-id'],
-                    components: ['card-fields', 'buttons'],
+                    components,
                     intent: 'authorize',
                 }}
             >
-                <PayPalCardFields gateway={payPalCommerceGateway} />
-                <PayPalSmartButtons gateway={payPalCommerceGateway} />
+                {components.includes('card-fields') && <PayPalCardFields gateway={payPalCommerceGateway} />}
+                {components.includes('buttons') && <PayPalSmartButtons gateway={payPalCommerceGateway} />}
             </PayPalScriptProvider>
         );
     },

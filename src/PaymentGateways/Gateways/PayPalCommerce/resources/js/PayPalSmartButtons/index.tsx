@@ -50,11 +50,11 @@ export default function PayPalSmartButtons({gateway}: {gateway: PayPalCommerceGa
     async function handleOnClick(data: Record<string, unknown>, actions: OnClickActions): Promise<void> {
         console.log('handleOnClick', {data, actions});
         // attempting to reject the action and redirect logic to the native form submission and gateway object.
-        return actions.reject().then(() => {
-            console.log('handleOnClickReject', {data, actions});
-            gateway.paypalOnClickActions = actions;
-            return submitButton?.click();
-        });
+        // return actions.reject().then(() => {
+        //     console.log('handleOnClickReject', {data, actions});
+        //     gateway.paypalOnClickActions = actions;
+        //     return submitButton?.click();
+        // });
          // Validate the form values in the client side before proceeding.
         const isClientValidationSuccessful = await trigger();
         if (!isClientValidationSuccessful) {
@@ -108,8 +108,7 @@ export default function PayPalSmartButtons({gateway}: {gateway: PayPalCommerceGa
             onClick={handleOnClick}
             onError={handleOnError}
             onInit={handleOnInit}
-            disabled={true}
-            //disabled={isSubmitting || isSubmitSuccessful}
+            disabled={isSubmitting || isSubmitSuccessful}
         />
     );
 }
