@@ -63,6 +63,7 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
+     * @unreleased added givewp_donation_form_fields_validated action
      * @since 3.14.0 Added form status validation
      * @since 3.0.0
      *
@@ -86,7 +87,16 @@ class DonateFormRouteData implements Arrayable
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
-        foreach ($validator->validated() as $fieldId => $value) {
+        $validatedValues = $validator->validated();
+
+        /**
+         * @unreleased
+         *
+         * @param array $data validated values in key value pairs
+         */
+        do_action('givewp_donation_form_fields_validated', $validatedValues);
+
+        foreach ($validatedValues as $fieldId => $value) {
             $validData->{$fieldId} = $value;
         }
 
