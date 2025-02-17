@@ -67,6 +67,12 @@ module.exports = {
         campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
         campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
         campaignGoalBlockApp: srcPath('Campaigns/Blocks/CampaignGoal/app.tsx'),
+        campaignGridBlock: srcPath('Campaigns/Blocks/CampaignGrid/index.tsx'),
+        campaignGridApp: srcPath('Campaigns/Blocks/CampaignGrid/app.tsx'),
+        campaignGoalBlock: srcPath('Campaigns/Blocks/CampaignGoal/index.tsx'),
+        campaignDonateButtonBlock: srcPath('Campaigns/Blocks/DonateButton/index.tsx'),
+        campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitle/index.tsx'),
+        campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
         campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
     },
 };
