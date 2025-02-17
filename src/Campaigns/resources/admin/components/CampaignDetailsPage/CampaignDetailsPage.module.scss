@@ -470,6 +470,10 @@ select[name="campaignId"] {
             width: 1.25rem;
         }
     }
+
+    .colorControl {
+        margin-top: var(--givewp-spacing-3);
+    }
 }
 
 .loadingContainer {
