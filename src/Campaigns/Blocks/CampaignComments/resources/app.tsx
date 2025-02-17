@@ -1,7 +1,7 @@
 import {createRoot} from '@wordpress/element';
 import CampaignComments from './shared/components/CampaignComments';
 
-const roots = document.querySelectorAll('.givewp-campaign-comment-block');
+const roots = document.querySelectorAll('[data-givewp-campaign-comments]');
 
 if (roots) {
     roots.forEach((root) => {
