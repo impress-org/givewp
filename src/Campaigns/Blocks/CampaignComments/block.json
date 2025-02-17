@@ -35,7 +35,7 @@
         },
         "commentLength": {
             "type": "number",
-            "default": 11
+            "default": 200
         },
         "readMoreText": {
             "type": "string",

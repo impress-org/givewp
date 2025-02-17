@@ -73,7 +73,7 @@ class BlockAttributes implements Arrayable
         $self->showAvatar = !isset($array['showAvatar']) || (bool)$array['showAvatar'];
         $self->showDate = !isset($array['showDate']) || (bool)$array['showDate'];
         $self->showName = !isset($array['showName']) || (bool)$array['showName'];
-        $self->commentLength = isset($array['commentLength']) ? (int)$array['commentLength'] : 11;
+        $self->commentLength = isset($array['commentLength']) ? (int)$array['commentLength'] : 200;
         $self->readMoreText = !empty($array['readMoreText']) ? (string)$array['readMoreText'] : __('Read More', 'give');
         $self->commentsPerPage = isset($array['commentsPerPage']) ? (int)$array['commentsPerPage'] : 3;
 
