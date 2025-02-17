@@ -1,5 +1,5 @@
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {__} from '@wordpress/i18n';
+import {sprintf, __} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
@@ -20,8 +20,10 @@ import {
     SubscriptionsIcon,
 } from './GoalTypeIcons';
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
+import {amountFormatter} from '@givewp/campaigns/utils';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
+const currencyFormatter = amountFormatter(currency);
 
 /**
  * Get the next sharp hour
@@ -160,7 +162,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         amount: {
             label: __('How much do you want to raise?', 'give'),
             description: __('Set the target amount your campaign should raise.', 'give'),
-            placeholder: __('eg. $2,000', 'give'),
+            placeholder: sprintf(__('eg. %s', 'give'),
+                currencyFormatter.format(2000),
+            ),
         },
         donations: {
             label: __('How many donations do you need?', 'give'),
@@ -178,7 +182,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 'Set the target recurring amount your campaign should raise. One-time donations do not count.',
                 'give'
             ),
-            placeholder: __('eg. $2,000', 'give'),
+             placeholder: sprintf(__('eg. %s', 'give'),
+                currencyFormatter.format(2000),
+            ),
         },
         subscriptions: {
             label: __('How many recurring donations do you need?', 'give'),
@@ -304,9 +310,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 <GoalTypeOption
                                     type={'amount'}
                                     label={__('Amount raised', 'give')}
-                                    description={__(
-                                        'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                                        'give'
+                                    description={sprintf(__('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
+                                        currencyFormatter.format(500),
+                                        currencyFormatter.format(1000)
                                     )}
                                     selected={selectedGoalType === 'amount'}
                                     register={register}
