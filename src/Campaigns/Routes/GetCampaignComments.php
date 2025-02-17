@@ -25,9 +25,7 @@ class GetCampaignComments implements RestRoute
                 [
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => [$this, 'handleRequest'],
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
+                    'permission_callback' => '__return_true',
                 ],
                 'args' => [
                     'id'        => [
