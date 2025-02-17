@@ -2,7 +2,8 @@
 
 namespace Give\DonationSpam;
 
-use Give\Helpers\Hooks;
+use Give\DonationSpam\Akismet\Actions\ValidateDonation;
+use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -22,19 +23,30 @@ class ServiceProvider implements ServiceProviderInterface
          */
         give()->singleton(EmailAddressWhiteList::class, function () {
             return new EmailAddressWhiteList(
-                (array) apply_filters( 'give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails() )
+                (array)apply_filters('give_akismet_whitelist_emails', give_akismet_get_whitelisted_emails())
             );
         });
     }
 
     /**
+     * @unreleased updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
+     *
      * @inheritDoc
+     *
+     * @throws SpamDonationException
      */
     public function boot(): void
     {
-        if($this->isAkismetEnabledAndConfigured()) {
-            Hooks::addAction('givewp_donate_form_data_validated', Akismet\Actions\ValidateDonation::class);
+        if ($this->isAkismetEnabledAndConfigured()) {
+            add_action('givewp_donation_form_fields_validated', static function (array $data) {
+                give(ValidateDonation::class)(
+                    $data['email'] ?? '',
+                    $data['comment'] ?? '',
+                    $data['firstName'] ?? '',
+                    $data['lastName'] ?? ''
+                );
+            });
         }
     }
 
@@ -47,7 +59,7 @@ class ServiceProvider implements ServiceProviderInterface
         return
             give_check_akismet_key()
             && give_is_setting_enabled(
-                give_get_option( 'akismet_spam_protection', 'enabled')
+                give_get_option('akismet_spam_protection', 'enabled')
             );
     }
 }

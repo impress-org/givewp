@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.20.0
+Stable tag: 3.21.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,6 +266,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.21.1: February 14th, 2025 =
+* Fix: Resolved an issue that was preventing WordPress plugins from being updated
+
+= 3.21.0: February 13th, 2025 =
+* Enhancement: Added support for the future ability to bundle and auto-activate add-on licenses for maximum convenience
+* Enhancement: Added title attribute to Donation Form block to improve accessibility
+* Fix: Added missing form ID to multistep form design template 
+
 = 3.20.0: February 3rd, 2025 = 
 * Enhancement: Updated Event list table to truncate long event descriptions
 * Enhancement: Updated Event description field with placeholder text
