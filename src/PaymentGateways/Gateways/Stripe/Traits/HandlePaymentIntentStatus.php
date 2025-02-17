@@ -22,7 +22,7 @@ trait HandlePaymentIntentStatus
      */
     public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, Donation $donation)
     {
-      // If there is an Exception $paymentIntent is false
+      // If there is an Exception, paymentIntentObject is false
       if ( $paymentIntent ) {
         switch ($paymentIntent->status()) {
             case 'requires_action':
