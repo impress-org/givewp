@@ -12,6 +12,7 @@ import campaignDonations from './CampaignDonations';
 import campaignDonors from './CampaignDonors';
 import campaignTitle from './CampaignTitle';
 import campaignGoal from './CampaignGoal';
+import campaignGrid from './CampaignGrid';
 import campaignStats from './CampaignStats';
 
 export const getAllBlocks = () => {
@@ -22,6 +23,7 @@ export const getAllBlocks = () => {
         campaignDonors,
         campaignTitle,
         campaignGoal,
+        campaignGrid,
         campaignStats
     ];
 }
