@@ -181,7 +181,6 @@ select[name="campaignId"] {
 
 .tabs [role='tab']:hover,
 .tabs [data-reach-tab]:hover {
-    font-weight: 500;
     color: var(--givewp-neutral-900);
     background-color: var(--givewp-neutral-50);
 }
@@ -346,7 +345,7 @@ select[name="campaignId"] {
                 textarea,
                 select,
                 .editor,
-                .upload{
+                .upload {
                     margin-top: var(--givewp-spacing-1);
                     color: var(--givewp-neutral-900);
                     font-weight: 500;
@@ -364,7 +363,7 @@ select[name="campaignId"] {
             }
 
             .sectionField:last-child {
-               margin: 0;
+                margin: 0;
             }
 
             .sectionFieldDescription {
@@ -537,7 +536,7 @@ select[name="campaignId"] {
         padding: var(--givewp-spacing-2);
 
         &:hover, &:active, &:focus {
-            background-color:var(--givewp-neutral-200);
+            background-color: var(--givewp-neutral-200);
             border-color: var(--givewp-neutral-200);
         }
     }

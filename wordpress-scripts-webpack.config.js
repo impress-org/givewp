@@ -9,6 +9,11 @@ const path = require('path');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 
 /**
+ * Webpack config used by Laravel Mix, we can pull in the other aliases from here.
+ */
+const legacyConfig = require('./webpack.config.js');
+
+/**
  * Custom config
  */
 module.exports = {
@@ -17,6 +22,7 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
+            ...legacyConfig.resolve.alias,
             '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
             '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             '@givewp/forms/app': srcPath('DonationForms/resources/app'),
@@ -25,7 +31,7 @@ module.exports = {
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
             '@givewp/components': srcPath('Views/Components/'),
-            '@givewp/campaigns': srcPath('Campaigns/resources'),
+            '@givewp/campaigns': srcPath('Campaigns/resources')
         },
     },
     entry: {

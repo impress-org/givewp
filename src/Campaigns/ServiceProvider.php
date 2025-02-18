@@ -104,6 +104,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
+        Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
     }
 
     /**
