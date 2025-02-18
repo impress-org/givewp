@@ -15,4 +15,4 @@ if (
 }
 
 ?>
-<div class="give-campaigns-campaignBlock-container" data-attributes=<?= json_encode($attributes) ?>></div>
+<div data-givewp-campaign-block data-attributes=<?= json_encode($attributes) ?>></div>

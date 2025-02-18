@@ -23,7 +23,7 @@ const BlockApp = ({attributes}: { attributes: CampaignBlockType }) => {
 /**
  * @unreleased
  */
-const nodeList = document.querySelectorAll('.give-campaigns-campaignBlock-container');
+const nodeList = document.querySelectorAll('[data-givewp-campaign-block]');
 
 if (nodeList) {
     const containers = Array.from(nodeList);
