@@ -3,14 +3,14 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
-if ( ! isset($attributes['campaignId'])) {
+if (!isset($attributes['campaignId'])) {
     return;
 }
 
 /** @var Campaign $campaign */
 $campaign = give(CampaignRepository::class)->getById($attributes['campaignId']);
 
-if ( ! $campaign) {
+if (!$campaign) {
     return;
 }
 
@@ -35,8 +35,8 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
         src="<?php echo esc_url($campaign->image); ?>"
         alt="<?php echo esc_attr($altText); ?>"
         style="
-            <?php echo $widthStyle ?>
-            <?php echo $heightStyle; ?>
+        <?php echo esc_attr($widthStyle) ?>
+        <?php echo esc_attr($heightStyle) ?>
             border-radius: 8px;"
     />
 </figure>
