@@ -11,10 +11,9 @@ import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 import AddCampaignFormModal from './AddCampaignFormModal';
-import DefaultFormNotice
-    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
-import apiFetch from "@wordpress/api-fetch";
-import {CampaignEntity} from "@givewp/campaigns/admin/components/types";
+import DefaultFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DefaultFormNotice';
+import apiFetch from '@wordpress/api-fetch';
+import {CampaignEntity} from '@givewp/campaigns/admin/components/types';
 
 declare global {
     interface Window {
@@ -25,14 +24,15 @@ declare global {
             migrationApiRoot: string;
             defaultFormActionUrl: string;
             apiRoot: string;
-            authors: Array<{ id: string | number; name: string }>;
-            table: { columns: Array<object> };
+            authors: Array<{id: string | number; name: string}>;
+            table: {columns: Array<object>};
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;
+            locale: string;
             showDefaultFormTooltip: boolean;
             campaignUrl: string;
         };
@@ -283,11 +283,11 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
             setState((prevState) => {
                 return {
                     ...prevState,
-                    showDefaultFormTooltip: false
-                }
+                    showDefaultFormTooltip: false,
+                };
             });
-        })
-    }
+        });
+    };
 
     const [isOpen, setOpen] = useState<boolean>(false);
     const openModal = () => setOpen(true);
@@ -300,7 +300,15 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                 singleName={__('donation form', 'give')}
                 pluralName={__('donation forms', 'give')}
                 rowActions={({data, item, removeRow, addRow, setUpdateErrors, parameters}) => {
-                    return DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity})
+                    return DonationFormsRowActions({
+                        data,
+                        item,
+                        removeRow,
+                        addRow,
+                        setUpdateErrors,
+                        parameters,
+                        entity,
+                    });
                 }}
                 bulkActions={donationFormsBulkActions}
                 apiSettings={window.GiveDonationForms}
@@ -348,12 +356,6 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                                 {__('Switch to Legacy View', 'give')}
                             </button>
                         )}
-                        <a
-                            href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                            className={`button button-primary ${styles.button}`}
-                        >
-                            {__('Add Form', 'give')}
-                        </a>
                     </>
                 )}
                 {state.showDefaultFormTooltip && isCampaignDetailsPage && (
