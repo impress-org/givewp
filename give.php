@@ -246,6 +246,7 @@ final class Give
         Give\DonationSpam\ServiceProvider::class,
         Give\Settings\ServiceProvider::class,
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
+        Give\ThirdPartySupport\ServiceProvider::class,
     ];
 
     /**
