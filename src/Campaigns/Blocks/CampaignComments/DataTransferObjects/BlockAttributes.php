@@ -68,13 +68,13 @@ class BlockAttributes implements Arrayable
 
         $self->blockId = !empty($array['blockId']) ? (string)$array['blockId'] : null;
         $self->campaignId = !empty($array['campaignId']) ? (int)$array['campaignId'] : null;
-        $self->title = !empty($array['title']) ? (string)$array['title'] : __('Share Your Support', 'give');
+        $self->title = !empty($array['title']) ? (string)$array['title'] : '';
         $self->showAnonymous = !isset($array['showAnonymous']) || (bool)$array['showAnonymous'];
         $self->showAvatar = !isset($array['showAvatar']) || (bool)$array['showAvatar'];
         $self->showDate = !isset($array['showDate']) || (bool)$array['showDate'];
         $self->showName = !isset($array['showName']) || (bool)$array['showName'];
         $self->commentLength = isset($array['commentLength']) ? (int)$array['commentLength'] : 200;
-        $self->readMoreText = !empty($array['readMoreText']) ? (string)$array['readMoreText'] : __('Read More', 'give');
+        $self->readMoreText = !empty($array['readMoreText']) ? (string)$array['readMoreText'] : '';
         $self->commentsPerPage = isset($array['commentsPerPage']) ? (int)$array['commentsPerPage'] : 3;
 
         return $self;

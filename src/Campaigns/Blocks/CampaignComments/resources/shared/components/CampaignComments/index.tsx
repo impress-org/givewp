@@ -9,6 +9,8 @@ import {Attributes, CommentData} from '../../../types';
 import './styles.scss';
 
 export default function CampaignComments({attributes}: {attributes: Attributes}) {
+    const {title = __('Share your support', 'give')} = attributes;
+
     const {data, isLoading} = useSWR<CommentData[]>(
         addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
             id: attributes?.campaignId,
@@ -28,7 +30,7 @@ export default function CampaignComments({attributes}: {attributes: Attributes})
 
     return (
         <div className={'givewp-campaign-comment-block'}>
-            <h4 className={'givewp-campaign-comment-block__title'}>{attributes?.title}</h4>
+            <h4 className={'givewp-campaign-comment-block__title'}>{title}</h4>
             <p className={'givewp-campaign-comment-block__cta'}>
                 {__('Leave a supportive message by donating to the campaign.', 'give')}
             </p>

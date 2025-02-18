@@ -18,6 +18,8 @@ export default function Edit({attributes, setAttributes, clientId}: BlockEditPro
         }
     }, []);
 
+    const {title = __('Share your support', 'give'), readMoreText = __('Read More', 'give')} = attributes;
+
     return (
         <figure {...blockProps}>
             <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
@@ -29,7 +31,7 @@ export default function Edit({attributes, setAttributes, clientId}: BlockEditPro
                     <PanelBody title={__('Display Elements', 'give')} initialOpen={true}>
                         <TextControl
                             label={__('Title', 'give')}
-                            value={attributes.title}
+                            value={title}
                             onChange={(value: string) => setAttributes({title: value})}
                         />
                         <ToggleControl
@@ -65,7 +67,7 @@ export default function Edit({attributes, setAttributes, clientId}: BlockEditPro
                         />
                         <TextControl
                             label={__('Read More Text', 'give')}
-                            value={attributes.readMoreText}
+                            value={readMoreText}
                             onChange={(value: string) => setAttributes({readMoreText: value})}
                         />
                         <TextControl

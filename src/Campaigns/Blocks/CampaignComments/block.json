@@ -14,8 +14,7 @@
             "type": "number"
         },
         "title": {
-            "type": "string",
-            "default": "Share Your Support"
+            "type": "string"
         },
         "showAnonymous": {
             "type": "boolean",
@@ -38,8 +37,7 @@
             "default": 200
         },
         "readMoreText": {
-            "type": "string",
-            "default": "Read More"
+            "type": "string"
         },
         "commentsPerPage": {
             "type": "number",

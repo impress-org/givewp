@@ -6,7 +6,7 @@ import './styles.scss';
 export default function CampaignCommentCard({attributes, data}: {attributes: Attributes; data: CommentData}) {
     const [fullComment, setFullComment] = useState<boolean>(false);
     const {comment, date, donorName, avatar} = data;
-    const {commentLength, readMoreText, showAvatar, showDate, showName} = attributes;
+    const {commentLength, showAvatar, showDate, showName, readMoreText = __('Read More', 'give')} = attributes;
 
     const truncatedComment = comment.slice(0, commentLength) + (comment.length > commentLength ? '...' : '');
 
