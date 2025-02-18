@@ -1,24 +1,14 @@
-import CampaignCommentCard, {AttributeProps} from '../CommentCard';
-import useSWR from 'swr';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
+import {__} from '@wordpress/i18n';
+import useSWR from 'swr';
+import CampaignCommentCard from '../CommentCard';
+import EmptyState from '../EmptyState';
+import {Attributes, CommentData} from '../../../types';
 
 import './styles.scss';
-import EmptyState from '../EmptyState';
-import {__} from '@wordpress/i18n';
 
-type CampaignCommentsProps = {
-    attributes: AttributeProps;
-};
-
-export type CommentData = {
-    comment: string;
-    date: string;
-    donorName: string;
-    avatar: string;
-};
-
-export default function CampaignComments({attributes}: CampaignCommentsProps) {
+export default function CampaignComments({attributes}: {attributes: Attributes}) {
     const {data, isLoading} = useSWR<CommentData[]>(
         addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
             id: attributes?.campaignId,

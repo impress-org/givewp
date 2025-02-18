@@ -1,25 +1,9 @@
 import {useState} from 'react';
-import {CommentData} from '../CampaignComments';
-
-import './styles.scss';
 import {__} from '@wordpress/i18n';
+import {Attributes, CommentData} from '../../../types';
+import './styles.scss';
 
-export type AttributeProps = {
-    blockId: string;
-    campaignId: number;
-    title: string;
-    commentLength: number;
-    commentsPerPage: number;
-    readMoreText: string;
-    showAvatar: boolean;
-    showDate: boolean;
-    showName: boolean;
-    showAnonymous: boolean;
-};
-
-type CampaignCommentCardProps = {attributes: AttributeProps; data: CommentData};
-
-export default function CampaignCommentCard({attributes, data}: CampaignCommentCardProps) {
+export default function CampaignCommentCard({attributes, data}: {attributes: Attributes; data: CommentData}) {
     const [fullComment, setFullComment] = useState<boolean>(false);
     const {comment, date, donorName, avatar} = data;
     const {commentLength, readMoreText, showAvatar, showDate, showName} = attributes;

@@ -6,23 +6,9 @@ import CampaignComments from './shared/components/CampaignComments';
 import useCampaign from '../../shared/hooks/useCampaign';
 import {CampaignSelector} from '../../shared/components/CampaignSelector';
 import {useEffect} from 'react';
+import {Attributes} from './types';
 
-export default function Edit({
-    attributes,
-    setAttributes,
-    clientId,
-}: BlockEditProps<{
-    blockId: string;
-    campaignId: number;
-    title: string;
-    showAnonymous: boolean;
-    showAvatar: boolean;
-    showDate: boolean;
-    showName: boolean;
-    commentLength: number;
-    readMoreText: string;
-    commentsPerPage: number;
-}>) {
+export default function Edit({attributes, setAttributes, clientId}: BlockEditProps<Attributes>) {
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
 
