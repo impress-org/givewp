@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mix = require('laravel-mix');
-const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const webpackConfig = require('./webpack.config');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 mix.setPublicPath('assets/dist')
@@ -60,7 +60,6 @@ mix.setPublicPath('assets/dist')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
-    .ts('src/Campaigns/resources/admin/campaigns-list-table.tsx', 'js/give-admin-campaigns-list-table.js')
 
     .react()
     .sourceMaps(false, 'source-map')
@@ -81,16 +80,10 @@ mix.setPublicPath('assets/dist')
     .copyDirectory('assets/src/images', 'assets/dist/images')
     .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
 
-mix.webpackConfig({
-    resolve: {
-        alias: {
-            '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
-            '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
-            '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
-            '@givewp/campaigns':  path.resolve(__dirname, 'src/Campaigns/resources'),
-        },
-    },
-    plugins: [
+mix.webpackConfig(webpackConfig);
+mix.webpackConfig((webpack, config) => {
+    return {
+        plugins: [
         /*
          * Transform script dependencies only for following external libraries:
          * - @wordpress/
@@ -132,8 +125,10 @@ mix.webpackConfig({
                 }
             },
         }),
+        ...config.plugins,
     ],
-});
+    }
+})
 
 mix.options({
     // Don't perform any css url rewriting by default

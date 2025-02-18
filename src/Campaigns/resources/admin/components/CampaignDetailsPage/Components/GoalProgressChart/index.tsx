@@ -3,14 +3,20 @@ import Chart from "react-apexcharts";
 import React from "react";
 
 import styles from "./styles.module.scss"
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
 
-const currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-})
+const {currency} = getCampaignOptionsWindowData();
+const currencyFormatter = amountFormatter(currency);
 
-const GoalProgressChart = ({ value, goal }) => {
-    const percentage: number = Math.abs((value / goal) * 100);
+type GoalProgressChartProps = {
+    value: number;
+    goal: number;
+}
+
+const GoalProgressChart = ({ value, goal }: GoalProgressChartProps) => {
+    const progress = Math.ceil((value / goal) * 100);
+    const percentage = Math.min(progress, 100);
+
     return (
             <div className={styles.goalProgressChart}>
                 <div className={styles.chartContainer}>
@@ -49,7 +55,7 @@ const GoalProgressChart = ({ value, goal }) => {
                                 }
                             },
                             colors: ['#459948'],
-                            labels: [currency.format(value)],
+                            labels: [currencyFormatter.format(value)],
                         }}
                         series={[percentage]}
                         type="radialBar"
@@ -57,7 +63,7 @@ const GoalProgressChart = ({ value, goal }) => {
                 </div>
                 <div className={styles.goalDetails}>
                     <div className={styles.goal}>{__('Goal', 'give')}</div>
-                    <div className={styles.amount}>{currency.format(goal)}</div>
+                    <div className={styles.amount}>{currencyFormatter.format(goal)}</div>
                     <div className={styles.goalType}>{__('Amount raised', 'give')}</div>
                 </div>
             </div>

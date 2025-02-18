@@ -19,6 +19,7 @@ class RegisterCampaignPagePostType
             'show_in_menu' => false,
             'show_in_rest' => true,
             'supports' => [
+                'title',
                 'editor'
             ],
             'rewrite' => [
