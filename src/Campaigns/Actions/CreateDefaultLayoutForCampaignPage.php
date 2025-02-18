@@ -2,8 +2,14 @@
 
 namespace Give\Campaigns\Actions;
 
+/**
+ * @unreleased
+ */
 class CreateDefaultLayoutForCampaignPage
 {
+    /**
+     * @unreleased
+     */
     protected $blocks = [
         'givewp/campaign-cover-block',
         'givewp/campaign-goal',
@@ -11,6 +17,9 @@ class CreateDefaultLayoutForCampaignPage
         'givewp/campaign-donors',
     ];
 
+    /**
+     * @unreleased
+     */
     public function __invoke($campaignId)
     {
         $layout = array_map(function($blockName) use ($campaignId) {
