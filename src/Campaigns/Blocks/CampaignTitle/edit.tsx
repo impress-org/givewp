@@ -8,7 +8,7 @@ import {
 import {BlockEditProps} from '@wordpress/blocks';
 import {BaseControl, Icon, PanelBody, TextareaControl} from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import {__} from '@wordpress/i18n';
 import {useSelect} from '@wordpress/data';
@@ -17,9 +17,9 @@ import {external} from '@wordpress/icons';
 import './editor.scss';
 
 export default function Edit({
-    attributes,
-    setAttributes,
-}: BlockEditProps<{
+                                 attributes,
+                                 setAttributes,
+                             }: BlockEditProps<{
     campaignId: number;
     headingLevel: string;
     textAlign: string;
@@ -37,7 +37,10 @@ export default function Edit({
 
     return (
         <div {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <ServerSideRender block="givewp/campaign-title" attributes={attributes} />
             </CampaignSelector>
 

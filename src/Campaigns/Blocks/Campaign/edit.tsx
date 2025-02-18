@@ -3,7 +3,7 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, ToggleControl} from '@wordpress/components';
 import {CampaignBlockType} from './types';
-import {CampaignSelector} from "../shared/components/CampaignSelector";
+import CampaignSelector from "../shared/components/CampaignSelector";
 import useCampaign from "../shared/hooks/useCampaign";
 import CampaignCard from "../shared/components/CampaignCard";
 
@@ -15,7 +15,11 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
         <div {...blockProps}>
             {hasResolved && (
                 <>
-                    <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+                    <CampaignSelector
+                        showInCampaignContextOnly={false}
+                        campaignId={attributes.campaignId}
+                        handleSelect={(campaignId: number) => setAttributes({campaignId})}
+                    >
                         <CampaignCard
                             campaign={campaign}
                             showImage={attributes.showImage}

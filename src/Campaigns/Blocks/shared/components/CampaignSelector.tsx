@@ -1,28 +1,43 @@
-import useCampaignId from '../hooks/useCampaignId';
+import {useEffect} from 'react';
+import {select} from '@wordpress/data';
 import CampaignDropdown from './CampaignDropdown';
+import useCampaigns from '../hooks/useCampaigns';
+import CampaignSelector from './CampaignSelector/index';
 
-export function CampaignSelector({attributes, setAttributes, children}) {
-    const campaignId = useCampaignId(attributes, setAttributes);
+export default ({campaignId, handleSelect, children}) => {
+
+    // set campaign id from context
+    useEffect(() => {
+        // @ts-ignore
+        const id = select('core/editor').getEditedPostAttribute('campaignId');
+
+        if (id && id !== campaignId) {
+            handleSelect(id);
+        }
+    }, []);
+
+    const {campaigns, hasResolved} = useCampaigns();
 
     return (
         <>
-            {!campaignId && !attributes?.campaignId && (
-                <CampaignDropdown
-                    campaignId={attributes?.campaignId}
-                    setAttributes={setAttributes}
-                    placement="inline"
-                />
-            )}
-
             {!campaignId && (
-                <CampaignDropdown
-                    campaignId={attributes?.campaignId}
-                    setAttributes={setAttributes}
-                    placement="sidebar"
-                />
+                <>
+                    <CampaignSelector
+                        handleSelect={(id: number) => handleSelect(id)}
+                        campaigns={campaigns}
+                        hasResolved={hasResolved}
+                    />
+
+                    <CampaignDropdown
+                        campaignId={campaignId}
+                        campaigns={campaigns}
+                        hasResolved={hasResolved}
+                        handleSelect={(id: number) => handleSelect(id)}
+                    />
+                </>
             )}
 
-            {attributes?.campaignId && children}
+            {campaignId && children}
         </>
     );
 }

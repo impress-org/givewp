@@ -5,7 +5,7 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {ExternalLink, PanelBody, TextControl} from '@wordpress/components';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignGoalApp from './app/index';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 import {getGoalDescription} from './utils';
 
 /**
@@ -31,7 +31,10 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
 
     return (
         <div {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <CampaignGoalApp campaign={campaign} />
             </CampaignSelector>
 

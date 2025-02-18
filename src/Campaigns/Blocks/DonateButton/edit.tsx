@@ -8,7 +8,7 @@ import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {Button} from 'react-aria-components';
 import useCampaign from '../shared/hooks/useCampaign';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 
 
 /**
@@ -39,7 +39,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
             return [{label: __('Loading...', 'give'), value: ''}]
         }
 
-        const options = data.items.map((form: { name: string, id: string }) => ({
+        const options = data?.items.map((form: { name: string, id: string }) => ({
             label: form.name,
             value: form.id
         }))
@@ -52,7 +52,10 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
 
     return (
         <div {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <Button className="givewp-donation-form-modal__open">
                     {attributes.buttonText}
                 </Button>

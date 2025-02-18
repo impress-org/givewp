@@ -9,13 +9,13 @@ import {
 } from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 
 export default function Edit({
-    attributes,
-    setAttributes,
-}: BlockEditProps<{
+                                 attributes,
+                                 setAttributes,
+                             }: BlockEditProps<{
     campaignId: number;
     showAnonymous: boolean;
     showIcon: boolean;
@@ -33,7 +33,10 @@ export default function Edit({
 
     return (
         <div {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <ServerSideRender block="givewp/campaign-donations" attributes={attributes} />
             </CampaignSelector>
 
