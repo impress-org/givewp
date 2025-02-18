@@ -5,6 +5,7 @@ namespace Give\DonationForms\V2;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 use WP_Post;
 use WP_REST_Request;
 
@@ -90,6 +91,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @unreleased Add locale support
      */
     public function loadScripts()
     {
@@ -107,6 +110,7 @@ class DonationFormsAdminPage
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'locale' => Language::getLocale(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')

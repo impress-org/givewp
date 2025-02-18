@@ -58,6 +58,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @unreleased Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -74,6 +75,9 @@ class RegisterFormBuilderPageRoute
         if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        $locale = give_clean($_GET['locale']) ?? '';
+        Language::switchToLocale($locale);
 
         wp_enqueue_style(
             '@givewp/form-builder/registrars',
