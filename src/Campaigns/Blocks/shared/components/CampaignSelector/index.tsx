@@ -36,6 +36,8 @@ export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) =
         return [{label: __('No campaigns found.', 'give'), value: ''}];
     })();
 
+    const campaign = campaignOptions.find(option => option.value === selectedCampaign);
+
     return (
         <div className="givewp-campaign-selector">
             <img className="givewp-campaign-selector__logo" src={logo} alt="givewp-logo" />
@@ -47,8 +49,7 @@ export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) =
                 <ReactSelect
                     name="campaignId"
                     inputId="campaignId"
-                    value={selectedCampaign}
-                    placeholder={__('Select...', 'give')}
+                    value={campaign}
                     //@ts-ignore
                     onChange={(option) => setSelectedCampaign(option?.value)}
                     noOptionsMessage={() => <p>{__('No campaigns were found.', 'give')}</p>}
