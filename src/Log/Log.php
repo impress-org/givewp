@@ -55,14 +55,14 @@ use Give\Log\ValueObjects\LogType;
  * }
  *
  *
- * @method static error(string $message, array $context = [])
- * @method static warning(string $message, array $context = [])
- * @method static notice(string $message, array $context = [])
- * @method static success(string $message, array $context = [])
- * @method static info(string $message, array $context = [])
- * @method static http(string $message, array $context = [])
- * @method static spam(string $message, array $context = [])
- * @method static debug(string $message, array $context = [])
+ * @method static void error(string $message, array $context = [])
+ * @method static void warning(string $message, array $context = [])
+ * @method static void notice(string $message, array $context = [])
+ * @method static void success(string $message, array $context = [])
+ * @method static void info(string $message, array $context = [])
+ * @method static void http(string $message, array $context = [])
+ * @method static void spam(string $message, array $context = [])
+ * @method static void debug(string $message, array $context = [])
  */
 class Log
 {
