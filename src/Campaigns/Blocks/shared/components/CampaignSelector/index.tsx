@@ -19,7 +19,6 @@ type CampaignSelectorProps = {
 export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) => {
     const [selectedCampaign, setSelectedCampaign] = useState<number>(null);
 
-
     const campaignOptions = (() => {
         if (!hasResolved) {
             return [{label: __('Loading...', 'give'), value: ''}];
@@ -51,7 +50,7 @@ export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) =
                     value={selectedCampaign}
                     placeholder={__('Select...', 'give')}
                     //@ts-ignore
-                    onChange={(option) => handleSelect(option?.value)}
+                    onChange={(option) => setSelectedCampaign(option?.value)}
                     noOptionsMessage={() => <p>{__('No campaigns were found.', 'give')}</p>}
                     //@ts-ignore
                     options={campaignOptions}
