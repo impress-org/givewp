@@ -33,7 +33,6 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:../../../../build/campaignBlock.js",
     "viewScript": "file:../../../../build/campaignBlockApp.js",
     "viewStyle": "file:../../../../build/campaignBlockApp.css",
     "render": "file:./render.php"

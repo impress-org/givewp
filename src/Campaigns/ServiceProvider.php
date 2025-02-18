@@ -162,7 +162,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
-        Hooks::addFilter('allowed_block_types_all', Actions\DisableBlocksOutsideCampaignContext::class, '__invoke', 100, 2);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
     }
 
     /**

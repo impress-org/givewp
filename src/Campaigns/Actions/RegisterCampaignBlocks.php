@@ -18,18 +18,16 @@ class RegisterCampaignBlocks
 
         array_map('register_block_type', $blocks);
 
-        if (is_admin()) {
-            $this->enqueueAdminBlocksAssets();
-        }
-
         $this->registerSharedStyles();
     }
 
     /**
      * @unreleased
      */
-    private function enqueueAdminBlocksAssets(): void
+    public function loadBlockEditorAssets(): void
     {
+        global $post;
+
         $handleName = 'givewp-campaign-blocks';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocks.asset.php');
 
@@ -48,7 +46,30 @@ class RegisterCampaignBlocks
             ['wp-components'],
             $scriptAsset['version']
         );
+
+        if ($post && $post->post_type === 'give_campaign_page') {
+            $handleName = 'givewp-campaign-landing-page-blocks';
+            $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
+
+            wp_register_script(
+                $handleName,
+                GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.js',
+                $scriptAsset['dependencies'],
+                $scriptAsset['version'],
+                true
+            );
+
+            wp_enqueue_script($handleName);
+            wp_enqueue_style(
+                $handleName,
+                GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.css',
+                ['wp-components'],
+                $scriptAsset['version']
+            );
+        }
     }
+
+
 
     /**
      * @unreleased
