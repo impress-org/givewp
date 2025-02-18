@@ -1,12 +1,13 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
-import {Currency, Editor, Upload} from '../../Inputs';
+import {Currency, Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
+import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
+import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -33,7 +34,6 @@ export default () => {
 
     return (
         <div className={styles.sections}>
-
             {/* Campaign Page */}
             <div className={styles.section}>
                 <div className={styles.leftColumn}>
@@ -109,15 +109,13 @@ export default () => {
                             {__('Let your donors know the story behind your campaign.', 'give')}
                         </div>
 
-                        {isDisabled ? (
-                            <textarea disabled={true} rows={10}>
-                                {shortDescription.replace(/(<([^>]+)>)/gi, '')}
-                            </textarea>
-                        ) : (
-                            <div className={styles.editor}>
-                                <Editor name="shortDescription" />
-                            </div>
-                        )}
+                        <TextareaControl
+                            name={'shortDescription'}
+                            disabled={isDisabled}
+                            maxLength={120}
+                            rows={3}
+                            help={__('This will be displayed in your campaign block and campaign grid.', 'give')}
+                        />
 
                         {errors.shortDescription && (
                             <div className={styles.errorMsg}>{`${errors.shortDescription.message}`}</div>

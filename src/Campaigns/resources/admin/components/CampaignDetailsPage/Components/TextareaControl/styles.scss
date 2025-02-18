@@ -1,0 +1,29 @@
+.givewp-textarea-control.givewp-textarea-control.givewp-textarea-control {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    justify-content: space-between;
+
+    .givewp-textarea-control {
+        &__textarea {
+            border-radius: 0.25rem;
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        }
+
+        &__help,
+        &__counter {
+            font-size: 0.875rem;
+            line-height: 1.43;
+            margin: var(--givewp-spacing-1) 0 0;
+        }
+
+        &__help {
+            color: var(--givewp-neutral-500);
+        }
+
+        &__counter {
+            color: var(--givewp-neutral-700);
+        }
+    }
+}
