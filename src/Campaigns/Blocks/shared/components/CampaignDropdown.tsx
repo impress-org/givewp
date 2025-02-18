@@ -1,6 +1,5 @@
 import {PanelBody, SelectControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
-import useCampaigns from '../hooks/useCampaigns';
 import {__} from '@wordpress/i18n';
 
 export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect}) {
