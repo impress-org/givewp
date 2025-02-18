@@ -9,6 +9,11 @@ const path = require('path');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 
 /**
+ * Webpack config used by Laravel Mix, we can pull in the other aliases from here.
+ */
+const legacyConfig = require('./webpack.config.js');
+
+/**
  * Custom config
  */
 module.exports = {
@@ -17,6 +22,7 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
+            ...legacyConfig.resolve.alias,
             '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
             '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             '@givewp/forms/app': srcPath('DonationForms/resources/app'),
@@ -25,7 +31,7 @@ module.exports = {
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
             '@givewp/components': srcPath('Views/Components/'),
-            '@givewp/campaigns': srcPath('Campaigns/resources'),
+            '@givewp/campaigns': srcPath('Campaigns/resources')
         },
     },
     entry: {
@@ -66,6 +72,14 @@ module.exports = {
         campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
         campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
         campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
+        campaignGoalBlockApp: srcPath('Campaigns/Blocks/CampaignGoal/app.tsx'),
+        campaignGridBlock: srcPath('Campaigns/Blocks/CampaignGrid/index.tsx'),
+        campaignGridApp: srcPath('Campaigns/Blocks/CampaignGrid/app.tsx'),
+        campaignGoalBlock: srcPath('Campaigns/Blocks/CampaignGoal/index.tsx'),
+        campaignDonateButtonBlock: srcPath('Campaigns/Blocks/DonateButton/index.tsx'),
+        campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitle/index.tsx'),
+        campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
+        campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
     },
 };
 

@@ -3,9 +3,11 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
+use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
@@ -52,6 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
+        $this->loadCampaignOptions();
     }
 
     /**
@@ -103,6 +106,8 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
+        Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
+        Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
     }
 
     /**
@@ -170,5 +175,13 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadCampaignOptions()
+    {
+        Hooks::addAction('init', LoadCampaignOptions::class);
     }
 }

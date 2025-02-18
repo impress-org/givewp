@@ -1,10 +1,11 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useDispatch} from '@wordpress/data';
+import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignDetails} from './types';
+import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
@@ -20,7 +21,7 @@ import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 import styles from './CampaignDetailsPage.module.scss';
 
 declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
+    GiveCampaignOptions: GiveCampaignOptions;
 } & Window;
 
 interface Show {
@@ -28,7 +29,15 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-const StatusBadge = ({status}: {status: string}) => {
+const getCampaignPageUrl = (campaignPage: { id: number; slug: string; link: string; }) => {
+    if (!campaignPage.slug) {
+        return campaignPage.link + '/' + campaignPage.id
+    }
+    return campaignPage.link
+
+}
+
+const StatusBadge = ({status}: { status: string }) => {
     const statusMap = {
         active: __('Active', 'give'),
         archived: __('Archived', 'give'),
@@ -67,7 +76,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/give-api/v2/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+        }).then(({schema}: { schema: JSONSchemaType<any> }) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -80,6 +89,10 @@ export default function CampaignsDetailsPage({campaignId}) {
         save,
         edit,
     } = useCampaignEntityRecord(campaignId);
+
+    const {record: campaignPage}: {
+        record: { id: number, slug: string, link: string }
+    } = useEntityRecord('postType', 'give_campaign_page', campaign?.pageId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -112,7 +125,12 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, [campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
-        if (formState.isDirty) {
+
+        const shouldSave = formState.isDirty
+            // Force save if first publish to account for a race condition.
+            || (campaign.status === 'draft' && data.status === 'active');
+
+        if (shouldSave) {
             setIsSaving(data.status);
 
             edit(data);
@@ -190,7 +208,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${window.GiveCampaignOptions.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -207,7 +225,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignDetails.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -243,9 +261,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && (
+                                        {enableCampaignPage && campaignPage?.id && (
                                             <a
-                                                href="#"
+                                                href={getCampaignPageUrl(campaignPage)}
                                                 aria-label={__('View Campaign', 'give')}
                                                 className={styles.contextMenuItem}
                                             >
