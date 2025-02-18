@@ -21,21 +21,19 @@ export default ({campaignId, handleSelect, children}) => {
     return (
         <>
             {!campaignId && (
-                <>
-                    <CampaignSelector
-                        handleSelect={(id: number) => handleSelect(id)}
-                        campaigns={campaigns}
-                        hasResolved={hasResolved}
-                    />
-
-                    <CampaignDropdown
-                        campaignId={campaignId}
-                        campaigns={campaigns}
-                        hasResolved={hasResolved}
-                        handleSelect={(id: number) => handleSelect(id)}
-                    />
-                </>
+                <CampaignSelector
+                    handleSelect={(id: number) => handleSelect(id)}
+                    campaigns={campaigns}
+                    hasResolved={hasResolved}
+                />
             )}
+
+            <CampaignDropdown
+                campaignId={campaignId}
+                campaigns={campaigns}
+                hasResolved={hasResolved}
+                handleSelect={(id: number) => handleSelect(id)}
+            />
 
             {campaignId && children}
         </>

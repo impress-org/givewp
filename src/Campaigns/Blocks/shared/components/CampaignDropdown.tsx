@@ -1,8 +1,16 @@
+import {__} from '@wordpress/i18n';
 import {PanelBody, SelectControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
-import {__} from '@wordpress/i18n';
+import {Campaign} from '@givewp/campaigns/admin/components/types';
 
-export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect}) {
+type CampaignDropdownProps = {
+    campaignId: number;
+    campaigns: Campaign[],
+    hasResolved: boolean;
+    handleSelect: (id: number) => void;
+}
+
+export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect}: CampaignDropdownProps) {
     const options = (() => {
         if (!hasResolved) {
             return [{label: __('Loading...', 'give'), value: ''}];
@@ -25,10 +33,9 @@ export default function CampaignDropdown({campaignId, campaigns, hasResolved, ha
             <PanelBody title={__('Campaign', 'give')} initialOpen={true}>
                 <SelectControl
                     label={__('Select a Campaign', 'give')}
-                    value={campaignId || ''}
+                    value={campaignId?.toString()}
                     options={options}
-                    disabled={options.length === 1}
-                    onChange={(newValue: string) => handleSelect({campaignId: newValue ? parseInt(newValue) : null})}
+                    onChange={(newValue: string) => handleSelect(parseInt(newValue))}
                 />
             </PanelBody>
         </InspectorControls>
