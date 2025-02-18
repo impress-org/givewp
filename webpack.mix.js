@@ -59,7 +59,9 @@ mix.setPublicPath('assets/dist')
     .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/donation-options.ts', 'js/donation-options.js')
     .ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
-    .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
+    .ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js').
+    ts('src/Campaigns/resources/admin/campaigns-list-table.tsx',
+        'js/give-admin-campaigns-list-table.js')
 
     .react()
     .sourceMaps(false, 'source-map')

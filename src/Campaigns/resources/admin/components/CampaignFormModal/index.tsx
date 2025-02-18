@@ -1,5 +1,5 @@
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {sprintf, __} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
@@ -21,6 +21,7 @@ import {
 } from './GoalTypeIcons';
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
+import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -263,9 +264,10 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
                             <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
-                            <textarea
-                                {...register('shortDescription')}
+                            <TextareaControl
+                                name="shortDescription"
                                 rows={4}
+                                maxLength={120}
                                 placeholder={__(
                                     'Every family deserves a home-cooked holiday meal. Our organization collects non-perishable food and monetary donations each year to deliver holiday meal boxes to dozens of families in need from our own community.',
                                     'give'
