@@ -62,6 +62,7 @@ class CampaignPageRepository
         try {
             DB::table('posts')
                 ->insert([
+                    'post_title' => $campaignPage->campaign()->title,
                     'post_date' => $dateCreatedFormatted,
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateUpdatedFormatted,
@@ -70,7 +71,7 @@ class CampaignPageRepository
                     'post_type' => 'give_campaign_page',
                 ]);
 
-            $campaignPage->id = DB::last_insert_id();;
+            $campaignPage->id = DB::last_insert_id();
             $campaignPage->createdAt = $dateCreated;
             $campaignPage->updatedAt = $dateUpdated;
 

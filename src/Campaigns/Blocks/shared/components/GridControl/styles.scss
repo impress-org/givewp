@@ -1,0 +1,22 @@
+.give-campaign-components-gridLayout {
+    background-color: #d9d9d9;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    &__columns {
+        padding: 8px;
+        gap: 8px;
+        border-radius: 2px;
+        border: 1px dashed #000000;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+
+        &-item {
+            flex: 1;
+            height: 42px;
+            border-radius: 2px;
+            background-color: #2271b1;
+        }
+    }
+}
