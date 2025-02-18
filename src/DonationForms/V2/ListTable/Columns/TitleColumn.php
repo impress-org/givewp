@@ -6,6 +6,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Helpers\Language;
 
 /**
  * @since 2.24.0
@@ -38,6 +39,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
+     * @unreleased Add locale support
      * @since 3.0.0 remove html tags from title
      * @since 2.24.0
      *
@@ -49,7 +51,7 @@ class TitleColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" target="_blank" rel="noopener noreferrer" class="giveDonationFormsLink">%s</a>',
-            get_edit_post_link( $model->id ),
+            add_query_arg(['locale' => Language::getLocale()], get_edit_post_link($model->id)),
             wp_strip_all_tags($model->title)
         );
     }

@@ -110,13 +110,15 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
             ) : (
                 <>
                     <RowAction href={item.edit} displayText={__('Edit', 'give')} hiddenText={item?.name} />
-                    <RowAction
-                        onClick={confirmTrashModal}
-                        actionId={item.id}
-                        highlight={true}
-                        displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
-                        hiddenText={item?.name}
-                    />
+                    {!item.isDefaultCampaignForm && (
+                        <RowAction
+                            onClick={confirmTrashModal}
+                            actionId={item.id}
+                            highlight={true}
+                            displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
                     <RowAction href={item.permalink} displayText={__('View', 'give')} hiddenText={item?.name} />
                     <RowAction
                         onClick={addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'))}
