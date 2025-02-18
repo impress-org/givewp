@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {PanelBody, SelectControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
+import {useSelect} from "@wordpress/data";
 
 type CampaignDropdownProps = {
     campaignId: number;
@@ -11,6 +12,13 @@ type CampaignDropdownProps = {
 }
 
 export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect}: CampaignDropdownProps) {
+
+    const adminBaseUrl = useSelect(
+        // @ts-ignore
+        (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
+        []
+    );
+
     const options = (() => {
         if (!hasResolved) {
             return [{label: __('Loading...', 'give'), value: ''}];
@@ -36,6 +44,22 @@ export default function CampaignDropdown({campaignId, campaigns, hasResolved, ha
                     value={campaignId?.toString()}
                     options={options}
                     onChange={(newValue: string) => handleSelect(parseInt(newValue))}
+                    help={
+                        <>
+                            {__('Select a campaign to display.', 'give') +  ` `}
+                            {campaignId && (
+                                <a
+                                    href={`${adminBaseUrl}&id=${campaignId}&tab=settings`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="givewp-campaign-cover-block__edit-campaign-link"
+                                    aria-label={__('Edit campaign settings in a new tab', 'give')}
+                                >
+                                    {__('Edit campaign', 'give')}
+                                </a>
+                            )}
+                        </>
+                    }
                 />
             </PanelBody>
         </InspectorControls>
