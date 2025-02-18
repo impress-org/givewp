@@ -16,7 +16,6 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
             {hasResolved && (
                 <>
                     <CampaignSelector
-                        showInCampaignContextOnly={false}
                         campaignId={attributes.campaignId}
                         handleSelect={(campaignId: number) => setAttributes({campaignId})}
                     >
