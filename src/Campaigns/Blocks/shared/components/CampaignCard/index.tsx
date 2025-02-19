@@ -14,6 +14,12 @@ export default ({showImage, showGoal, showDescription, campaign}: {
     return (
         <div
             className="give-campaigns-component-campaign"
+            {...(campaign.pagePermalink && {
+                style: {
+                    cursor: 'pointer',
+                },
+                onClick: () => window.location = campaign.pagePermalink
+            })}
         >
             {showImage && campaign.image && (
                 <div
