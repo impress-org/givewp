@@ -134,7 +134,7 @@ class CampaignRepository
         $this->validateProperties($campaign);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         Hooks::doAction('givewp_campaign_updating', $campaign);
 
