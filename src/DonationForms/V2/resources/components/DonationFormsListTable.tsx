@@ -335,10 +335,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                         ) : (
                             <>
                                 <a
-                                    href={
-                                        'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
-                                        campaignId
-                                    }
+                                    href={`edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&locale=${window.GiveDonationForms.locale}&campaignId=${campaignId}`}
                                     className={styles.addCampaignFormButton}
                                 >
                                     {__('Add campaign form', 'give')}
