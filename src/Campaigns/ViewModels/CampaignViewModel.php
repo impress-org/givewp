@@ -50,7 +50,7 @@ class CampaignViewModel
             'goalStats' => $this->campaign->getGoalStats(),
             'status' => $this->campaign->status->getValue(),
             'startDate' => Temporal::getFormattedDateTime($this->campaign->startDate),
-            'endDate' => $this->campaign->startDate
+            'endDate' => $this->campaign->endDate
                 ? Temporal::getFormattedDateTime($this->campaign->endDate)
                 : null,
             'createdAt' => Temporal::getFormattedDateTime($this->campaign->createdAt),
