@@ -1,6 +1,11 @@
 import {__} from '@wordpress/i18n';
 import {getGoalDescription, getGoalFormattedValue} from '../../../CampaignGoal/utils';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
+import {GiveCampaignOptions} from '@givewp/campaigns/types';
+
+declare const window: {
+    GiveCampaignOptions: GiveCampaignOptions;
+} & Window;
 
 import './styles.scss';
 
@@ -14,7 +19,7 @@ export default ({showImage, showGoal, showDescription, campaign}: {
     return (
         <div
             className="give-campaigns-component-campaign"
-            {...(campaign.pagePermalink && {
+            {...(campaign.pagePermalink && !window.GiveCampaignOptions.isAdmin && {
                 style: {
                     cursor: 'pointer',
                 },
