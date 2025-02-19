@@ -29,7 +29,7 @@ export default function LeftContentSection({assets}: LeftContentSectionProps) {
             <Row>
                 <h2>{__('Create a donation form', 'give')}</h2>
                 <p>{__('This is powered by the new Visual Donation Form Builder', 'give')}</p>
-                <InternalLink href={'/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder'}>
+                <InternalLink href={'/wp-admin/edit.php?post_type=give_forms&page=give-campaigns&new=campaign'}>
                     {__('Try the new form builder', 'give')}
                 </InternalLink>
             </Row>
