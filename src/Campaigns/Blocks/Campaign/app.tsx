@@ -1,4 +1,4 @@
-import {render} from '@wordpress/element';
+import {createRoot} from '@wordpress/element';
 import {CampaignBlockType} from './types';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignCard from '../shared/components/CampaignCard';
@@ -30,6 +30,7 @@ if (nodeList) {
 
     containers.map((container: any) => {
         const attributes: CampaignBlockType = JSON.parse(container.dataset?.attributes);
-        return render(<BlockApp attributes={attributes} />, container);
+        const root = createRoot(container);
+        return root.render(<BlockApp attributes={attributes} />)
     });
 }

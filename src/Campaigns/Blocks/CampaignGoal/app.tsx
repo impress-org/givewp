@@ -1,4 +1,4 @@
-import {render} from '@wordpress/element';
+import {createRoot} from '@wordpress/element';
 import useCampaign from '../shared/hooks/useCampaign';
 import App from './app/index';
 
@@ -21,6 +21,7 @@ if (nodeList) {
     const containers = Array.from(nodeList);
 
     containers.map((container: any) => {
-        return render(<BlockApp campaignId={container.dataset?.id} />, container);
+        const root = createRoot(container);
+        return root.render(<BlockApp campaignId={container.dataset?.id} />);
     });
 }
