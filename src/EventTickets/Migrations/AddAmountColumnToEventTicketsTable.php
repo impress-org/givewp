@@ -7,14 +7,14 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 3.20.0
  */
 class AddAmountColumnToEventTicketsTable extends Migration
 {
     /**
      * @inheritdoc
      *
-     * @unreleased
+     * @since 3.20.0
      */
     public static function id()
     {
@@ -22,7 +22,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public static function title()
     {
@@ -32,7 +32,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     /**
      * @inheritdoc
      *
-     * @unreleased
+     * @since 3.20.0
      */
     public static function timestamp()
     {
@@ -42,7 +42,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     /**
      * @inheritdoc
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @throws DatabaseMigrationException
      */
@@ -58,7 +58,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      *
      * @throws DatabaseMigrationException
      */
@@ -75,7 +75,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      *
      * @throws DatabaseMigrationException
      */

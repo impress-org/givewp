@@ -39,7 +39,7 @@ class StripePaymentIntentData
     public $receiptEmail;
 
     /**
-     * @unreleased removed statement_descriptor. As of 01/02/2024, Stripe no longer supports the `statement_descriptor` parameter on the PaymentIntent API for PaymentIntents in which one of the supported `payment_method_types` is `card`.
+     * @since 3.20.0 removed statement_descriptor. As of 01/02/2024, Stripe no longer supports the `statement_descriptor` parameter on the PaymentIntent API for PaymentIntents in which one of the supported `payment_method_types` is `card`.
      * @since 3.0.0
      *
      * @param  array{amount: string, currency: string, customer: string, description: string, metadata: array, automatic_payment_methods: array, application_fee_amount: string, receipt_email: string }  $array

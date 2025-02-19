@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.19.4
+Stable tag: 3.21.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,6 +266,36 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.21.1: February 14th, 2025 =
+* Fix: Resolved an issue that was preventing WordPress plugins from being updated
+
+= 3.21.0: February 13th, 2025 =
+* Enhancement: Added support for the future ability to bundle and auto-activate add-on licenses for maximum convenience
+* Enhancement: Added title attribute to Donation Form block to improve accessibility
+* Fix: Added missing form ID to multistep form design template 
+
+= 3.20.0: February 3rd, 2025 = 
+* Enhancement: Updated Event list table to truncate long event descriptions
+* Enhancement: Updated Event description field with placeholder text
+* Enhancement: Updated Events block to display a “sold out” message when all tickets have been sold
+* Enhancement: Updated Events block to display an “Ended” message when the event date has passed
+* Enhancement: Updated Event list table to display correct revenue based on the number of tickets and price at the time of the purchase
+* Enhancement: Updated donation form to hide gateway options when donation amount is zero
+* Change: Due to Stripe API changes, we have removed the usage of the statement_descriptor attribute from the Stripe Payment Element Gateway
+* Security: Updated our meta persistence in donor and donation repositories for safer data exchange
+* Fix: Resolved an issue where the donor profile picture in donor list was not correct
+* Fix: Resolved an issue with the donation form archive page not displaying all forms
+* Fix: Restored keyboard accessibility in the donation amount field
+* Fix: Explicitly execute script with PHP for Windows compatibility
+* Fix: Prevent duplicated column error in Event Tickets migration
+* Fix: Set content for missing title in event tickets template
+* Fix: Display donation receipt in Form Grid modal after offline gateway redirect
+* Fix: Updated the donor dashboard to use the date timestamp with the proper timezone
+* Fix: Check if the form goal is enabled before calling the goal stats function
+* Dev: Added a CSS class for each form design
+* Dev: Updated Strauss installer script to auto download and use latest release
+* Dev: Added renewal methods to the subscription model
+
 = 3.19.4: January 7th, 2025 =
 * Security: Added additional sanitization to the donation form request to prevent malicious encoded data
 * Security: Added additional validation to the company field

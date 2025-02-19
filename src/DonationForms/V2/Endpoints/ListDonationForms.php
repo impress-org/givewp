@@ -5,6 +5,7 @@ namespace Give\DonationForms\V2\Endpoints;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Language;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -108,6 +109,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @unreleased Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
      * @param WP_REST_Request $request
@@ -131,7 +133,8 @@ class ListDonationForms extends Endpoint
 
             foreach ($items as $i => &$item) {
                 $item['name'] = get_the_title($item['id']);
-                $item['edit'] = get_edit_post_link($item['id'], 'edit');
+                $item['edit'] = add_query_arg(['locale' => Language::getLocale()],
+                    get_edit_post_link($item['id'], 'edit'));
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
                 $item['status_raw'] = $forms[$i]->status->getValue();

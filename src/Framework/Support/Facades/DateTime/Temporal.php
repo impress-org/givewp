@@ -2,7 +2,6 @@
 
 namespace Give\Framework\Support\Facades\DateTime;
 
-use DateTime;
 use DateTimeInterface;
 use Give\Framework\Support\Facades\Facade;
 
@@ -14,6 +13,7 @@ use Give\Framework\Support\Facades\Facade;
  * @method static string getFormattedDateTime(DateTimeInterface $dateTime)
  * @method static string getCurrentFormattedDateForDatabase()
  * @method static DateTimeInterface withoutMicroseconds(DateTimeInterface $dateTime)
+ * @method static int getDateTimestamp(string $date, string $timezone = '')
  */
 class Temporal extends Facade
 {

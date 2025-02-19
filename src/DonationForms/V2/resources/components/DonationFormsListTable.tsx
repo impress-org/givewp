@@ -27,6 +27,7 @@ declare global {
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;
+            locale: string;
         };
 
         GiveNextGen?: {
@@ -267,7 +268,10 @@ export default function DonationFormsListTable() {
                     </button>
                 )}
                 <a
-                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                    href={
+                        'edit.php?post_type=give_forms&page=givewp-form-builder&locale=' +
+                        window.GiveDonationForms.locale
+                    }
                     className={`button button-primary ${styles.button}`}
                 >
                     {__('Add Form', 'give')}

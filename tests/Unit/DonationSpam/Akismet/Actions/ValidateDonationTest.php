@@ -2,7 +2,6 @@
 
 namespace Give\Tests\Unit\DonationSpam\Akismet\Actions;
 
-use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationSpam\Akismet\Actions\ValidateDonation;
 use Give\DonationSpam\Akismet\API;
 use Give\DonationSpam\EmailAddressWhiteList;
@@ -20,13 +19,17 @@ final class ValidateDonationTest extends TestCase
     protected $notSpamResponse = [1 => 'false'];
 
     /**
+     * @unreleased updated with new arguments
      * @since 3.15.0
+     * @throws SpamDonationException
      */
-    public function testValidatesNotSpamDonation()
+    public function testValidatesNotSpamDonation(): void
     {
-        $data = new DonateControllerData();
+        $email = 'test@givewp.com';
+        $comment = 'this is a comment';
+        $firstName = 'test';
 
-        /** @var API|PHPUnit_Framework_MockObject_MockObject */
+        /** @var API|PHPUnit_Framework_MockObject_MockObject $akismet */
         $akismet = $this->mockAkismetAPI();
         $akismet->method('commentCheck')->willReturn($this->notSpamResponse);
 
@@ -35,19 +38,23 @@ final class ValidateDonationTest extends TestCase
             new EmailAddressWhiteList()
         );
 
-        $action->__invoke($data);
+        $action($email, $comment, $firstName, '');
 
         $this->assertTrue(true); // Assert no exception thrown.
     }
 
     /**
+     * @unreleased updated with new arguments
      * @since 3.15.0
+     * @throws SpamDonationException
      */
-    public function testThrowsSpamDonationException()
+    public function testThrowsSpamDonationException(): void
     {
-        $data = new DonateControllerData();
+        $email = 'test@givewp.com';
+        $comment = 'this is a comment';
+        $firstName = 'test';
 
-        /** @var API|PHPUnit_Framework_MockObject_MockObject */
+        /** @var API|PHPUnit_Framework_MockObject_MockObject $akismet */
         $akismet = $this->mockAkismetAPI();
         $akismet->method('commentCheck')->willReturn($this->spamResponse);
 
@@ -58,7 +65,7 @@ final class ValidateDonationTest extends TestCase
 
         $this->expectException(SpamDonationException::class);
 
-        $action->__invoke($data);
+        $action($email, $comment, $firstName, '');
     }
 
     /**

@@ -270,7 +270,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws \Give\Framework\Exceptions\Primitives\Exception
      */
     public function testInsertShouldSafelyStoreMetaValues(): void

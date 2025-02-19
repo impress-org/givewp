@@ -97,7 +97,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased store meta using native WP functions
+     * @since 3.20.0 store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
@@ -402,7 +402,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
-     * @unreleased store meta using native WP functions
+     * @since 3.20.0 store meta using native WP functions
      * @since 2.19.6
      *
      * @return void

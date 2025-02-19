@@ -39,7 +39,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateRenewalWithAttributes(): void
@@ -55,7 +55,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldCreateRenewalShouldReturnTrueWhenInstallmentsIsZero()
     {
@@ -70,7 +70,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldCreateRenewalShouldReturnTrueWhenInstallmentsIsLessThanDonations(): void
     {
@@ -85,7 +85,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldCreateRenewalShouldReturnFalseWhenInstallmentsAreReached(): void
     {
@@ -100,7 +100,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldCreateRenewalShouldReturnFalseWhenStatusIsNotActive(): void
     {
@@ -113,7 +113,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldEndSubscriptionShouldReturnTrueWhenInstallmentsAreReached(): void
     {
@@ -127,7 +127,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldEndSubscriptionShouldReturnFalseWhenInstallmentsAreNotReached(): void
     {
@@ -141,7 +141,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function testShouldEndSubscriptionShouldReturnFalseWhenInstallmentsAreZero(): void
     {

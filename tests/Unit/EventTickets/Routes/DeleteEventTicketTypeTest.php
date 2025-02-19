@@ -18,7 +18,7 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that a valid request successfully deletes an Event Ticket Type.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeDeletionSuccess()
@@ -34,7 +34,7 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that an invalid ticket type ID returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeDeletionWithInvalidId()
@@ -47,7 +47,7 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that a ticket type with associated tickets cannot be deleted.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeDeletionPreventedByTickets()
@@ -79,7 +79,7 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that unauthorized requests are denied.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeDeletionRequiresAuthorization()
@@ -94,7 +94,7 @@ class DeleteEventTicketTypeTest extends RestApiTestCase
     /**
      * Handle the request common to all tests.
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @param int  $ticketTypeId
      * @param bool $authenticatedAsAdmin

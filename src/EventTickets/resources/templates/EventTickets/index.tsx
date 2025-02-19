@@ -6,7 +6,7 @@ import {Event} from '../../components/types';
 import './styles.scss';
 
 /**
- * @unreleased Hide tickets once the event has ended.
+ * @since 3.20.0 Hide tickets once the event has ended.
  * @since 3.6.0
  */
 export default function EventTicketsField({

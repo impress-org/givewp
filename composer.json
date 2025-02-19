@@ -17,7 +17,9 @@
         "symfony/polyfill-ctype": "^1.19",
         "symfony/polyfill-mbstring": "^1.19",
         "woocommerce/action-scheduler": "^3.6",
-        "ext-json": "*"
+        "psr/container": "1.1.1",
+        "ext-json": "*",
+        "stellarwp/admin-notices": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -94,6 +96,7 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
+                "stellarwp/admin-notices",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
                 "symfony/polyfill-ctype",
@@ -102,7 +105,8 @@
             ],
             "exclude_from_copy": {
                 "packages": [
-                    "symfony/deprecation-contracts"
+                    "symfony/deprecation-contracts",
+                    "psr/container"
                 ],
                 "file_patterns": [
                     "/Tests/"

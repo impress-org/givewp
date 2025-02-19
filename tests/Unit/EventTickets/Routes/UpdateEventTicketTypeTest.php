@@ -18,7 +18,7 @@ class UpdateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that a valid request successfully updates an Event Ticket Type's title.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeTitleUpdateSuccess()
@@ -36,7 +36,7 @@ class UpdateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that a valid request successfully updates an Event Ticket Type's price.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypePriceUpdateSuccess()
@@ -54,7 +54,7 @@ class UpdateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that an invalid Event Ticket Type ID returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeUpdateWithInvalidId()
@@ -67,7 +67,7 @@ class UpdateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that unauthorized requests are denied.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventUpdateRequiresAuthorization()
@@ -82,7 +82,7 @@ class UpdateEventTicketTypeTest extends RestApiTestCase
     /**
      * Handle the request common to all tests.
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @param int   $ticketTypeId
      * @param array $data

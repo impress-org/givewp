@@ -19,4 +19,12 @@ class TextBlockType extends BlockType
     {
         return 'givewp/text';
     }
+
+    /**
+     * @since 3.21.0
+     */
+    public function getFieldName(int $blockIndex): string
+    {
+        return !empty($this->fieldName) ? $this->fieldName : $this->block->getShortName() . '-' . $blockIndex;
+    }
 }
