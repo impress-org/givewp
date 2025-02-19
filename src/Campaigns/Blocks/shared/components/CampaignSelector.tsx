@@ -4,7 +4,14 @@ import CampaignDropdown from './CampaignDropdown';
 import useCampaigns from '../hooks/useCampaigns';
 import CampaignSelector from './CampaignSelector/index';
 
-export default ({campaignId, handleSelect, children}) => {
+type CampaignSelectorProps = {
+    campaignId: number;
+    children: JSX.Element | JSX.Element[],
+    handleSelect: (id: number) => void;
+    showInspectorControl?: boolean;
+}
+
+export default ({campaignId, handleSelect, children, showInspectorControl = false}: CampaignSelectorProps) => {
 
     // set campaign id from context
     useEffect(() => {
@@ -28,12 +35,14 @@ export default ({campaignId, handleSelect, children}) => {
                 />
             )}
 
-            <CampaignDropdown
-                campaignId={campaignId}
-                campaigns={campaigns}
-                hasResolved={hasResolved}
-                handleSelect={(id: number) => handleSelect(id)}
-            />
+            {showInspectorControl && (
+                <CampaignDropdown
+                    campaignId={campaignId}
+                    campaigns={campaigns}
+                    hasResolved={hasResolved}
+                    handleSelect={(id: number) => handleSelect(id)}
+                />
+            )}
 
             {campaignId && children}
         </>
