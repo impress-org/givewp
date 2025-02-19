@@ -18,6 +18,7 @@ class LoadCampaignOptions
             [
                 'isAdmin' => is_admin(),
                 'adminUrl' => admin_url(),
+                'campaignsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns'),
                 'currency' => give_get_currency(),
                 'currencySymbol' => give_currency_symbol(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')
