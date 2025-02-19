@@ -9,9 +9,10 @@ type CampaignDropdownProps = {
     campaigns: Campaign[],
     hasResolved: boolean;
     handleSelect: (id: number) => void;
+    inspectorControls?: JSX.Element | JSX.Element[];
 }
 
-export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect}: CampaignDropdownProps) {
+export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect, inspectorControls = null}: CampaignDropdownProps) {
 
     const adminBaseUrl = useSelect(
         // @ts-ignore
@@ -61,6 +62,7 @@ export default function CampaignDropdown({campaignId, campaigns, hasResolved, ha
                         </>
                     }
                 />
+                {inspectorControls}
             </PanelBody>
         </InspectorControls>
     );

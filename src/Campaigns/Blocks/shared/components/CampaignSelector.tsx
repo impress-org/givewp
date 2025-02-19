@@ -8,17 +8,21 @@ type CampaignSelectorProps = {
     campaignId: number;
     children: JSX.Element | JSX.Element[],
     handleSelect: (id: number) => void;
+    inspectorControls?: JSX.Element | JSX.Element[];
     showInspectorControl?: boolean;
 }
 
-export default ({campaignId, handleSelect, children, showInspectorControl = false}: CampaignSelectorProps) => {
+export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = false}: CampaignSelectorProps) => {
 
     // set campaign id from context
     useEffect(() => {
+        if (campaignId) {
+            return;
+        }
         // @ts-ignore
         const id = select('core/editor').getEditedPostAttribute('campaignId');
 
-        if (id && id !== campaignId) {
+        if (id) {
             handleSelect(id);
         }
     }, []);
@@ -41,6 +45,7 @@ export default ({campaignId, handleSelect, children, showInspectorControl = fals
                     campaigns={campaigns}
                     hasResolved={hasResolved}
                     handleSelect={(id: number) => handleSelect(id)}
+                    inspectorControls={inspectorControls}
                 />
             )}
 
