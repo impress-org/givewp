@@ -30,7 +30,7 @@ export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) =
                 value: campaign.id,
             }));
 
-            return [{label: __('Select campaign...', 'give'), value: ''}, ...campaignOptions];
+            return [{label: __('Select a campaign', 'give'), value: ''}, ...campaignOptions];
         }
 
         return [{label: __('No campaigns found.', 'give'), value: ''}];
