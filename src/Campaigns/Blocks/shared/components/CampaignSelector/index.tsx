@@ -1,77 +1,55 @@
-import {useState} from 'react';
-import {__} from '@wordpress/i18n';
-import {Campaign} from '@givewp/campaigns/admin/components/types';
-import ReactSelect from 'react-select';
-import {reactSelectStyles, reactSelectThemeStyles} from './reactSelectStyles';
-import logo from './images/givewp-logo.svg';
-
-import './styles.scss';
+import {useEffect} from 'react';
+import {select} from '@wordpress/data';
+import Inspector from './Inspector';
+import useCampaigns from '../../hooks/useCampaigns';
+import Selector from './Selector';
 
 type CampaignSelectorProps = {
-    hasResolved: boolean;
-    campaigns: Campaign[];
+    campaignId: number;
+    children: JSX.Element | JSX.Element[],
     handleSelect: (id: number) => void;
+    inspectorControls?: JSX.Element | JSX.Element[];
+    showInspectorControl?: boolean;
 }
 
-/**
- * @unreleased
- */
-export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) => {
-    const [selectedCampaign, setSelectedCampaign] = useState<number>(null);
+export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = false}: CampaignSelectorProps) => {
 
-    const campaignOptions = (() => {
-        if (!hasResolved) {
-            return [{label: __('Loading...', 'give'), value: ''}];
+    // set campaign id from context
+    useEffect(() => {
+        if (campaignId) {
+            return;
         }
+        // @ts-ignore
+        const id = select('core/editor').getEditedPostAttribute('campaignId');
 
-        if (campaigns.length) {
-            const campaignOptions = campaigns.map((campaign) => ({
-                label: campaign.title,
-                value: campaign.id,
-            }));
-
-            return [{label: __('Select a campaign', 'give'), value: ''}, ...campaignOptions];
+        if (id) {
+            handleSelect(id);
         }
+    }, []);
 
-        return [{label: __('No campaigns found.', 'give'), value: ''}];
-    })();
-
-    const campaign = campaignOptions.find(option => option.value === selectedCampaign);
+    const {campaigns, hasResolved} = useCampaigns();
 
     return (
-        <div className="givewp-campaign-selector">
-            <img className="givewp-campaign-selector__logo" src={logo} alt="givewp-logo" />
-            <div className="givewp-campaign-selector__select">
-                <label htmlFor="campaignId" className="givewp-campaign-selector__label">
-                    {__('Choose a campaign', 'give')}
-                </label>
-
-                <ReactSelect
-                    name="campaignId"
-                    inputId="campaignId"
-                    value={campaign}
-                    //@ts-ignore
-                    onChange={(option) => setSelectedCampaign(option?.value)}
-                    noOptionsMessage={() => <p>{__('No campaigns were found.', 'give')}</p>}
-                    //@ts-ignore
-                    options={campaignOptions}
-                    loadingMessage={() => <>{__('Loading Campaigns...', 'give')}</>}
-                    isLoading={!hasResolved}
-                    theme={reactSelectThemeStyles}
-                    styles={reactSelectStyles}
+        <>
+            {!campaignId && (
+                <Selector
+                    handleSelect={(id: number) => handleSelect(id)}
+                    campaigns={campaigns}
+                    hasResolved={hasResolved}
                 />
-            </div>
+            )}
 
-            <button
-                className="givewp-campaign-selector__submit"
-                type="button"
-                disabled={!selectedCampaign}
-                onClick={() => {
-                    handleSelect(selectedCampaign);
-                }}
-            >
-                {__('Confirm', 'give')}
-            </button>
-        </div>
+            {showInspectorControl && (
+                <Inspector
+                    campaignId={campaignId}
+                    campaigns={campaigns}
+                    hasResolved={hasResolved}
+                    handleSelect={(id: number) => handleSelect(id)}
+                    inspectorControls={inspectorControls}
+                />
+            )}
+
+            {campaignId && children}
+        </>
     );
 }

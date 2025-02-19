@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {PanelBody, SelectControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
-import {useSelect} from "@wordpress/data";
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 type CampaignDropdownProps = {
     campaignId: number;
@@ -12,14 +12,8 @@ type CampaignDropdownProps = {
     inspectorControls?: JSX.Element | JSX.Element[];
 }
 
-export default function CampaignDropdown({campaignId, campaigns, hasResolved, handleSelect, inspectorControls = null}: CampaignDropdownProps) {
-
-    const adminBaseUrl = useSelect(
-        // @ts-ignore
-        (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
-        []
-    );
-
+export default function Inspector({campaignId, campaigns, hasResolved, handleSelect, inspectorControls = null}: CampaignDropdownProps) {
+    const campaignWindowData = getCampaignOptionsWindowData();
     const options = (() => {
         if (!hasResolved) {
             return [{label: __('Loading...', 'give'), value: ''}];
@@ -50,7 +44,7 @@ export default function CampaignDropdown({campaignId, campaigns, hasResolved, ha
                             {__('Select a campaign to display.', 'give') +  ` `}
                             {campaignId && (
                                 <a
-                                    href={`${adminBaseUrl}&id=${campaignId}&tab=settings`}
+                                    href={`${campaignWindowData.campaignsAdminUrl}&id=${campaignId}&tab=settings`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="givewp-campaign-cover-block__edit-campaign-link"
