@@ -1,9 +1,12 @@
 <?php
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Repositories\CampaignRepository;
 
-
+/**
+ * @unreleased
+ *
+ * @var Campaign $campaign
+ */
 
 $headingLevel = isset($attributes['headingLevel']) ? (int) $attributes['headingLevel'] : 1;
 $headingTag = 'h' . min(6, max(1, $headingLevel));
