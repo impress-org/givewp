@@ -26,6 +26,7 @@
                 input, textarea {
                     border-color: var(--givewp-grey-400);
                     font-size: 1rem;
+                    font-weight: 400;
                     line-height: 1.5;
                     padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
 
@@ -39,7 +40,7 @@
                     }
                 }
 
-                span:not(.givewp-field-required) {
+                span:not(.givewp-field-required, .givewp-textarea-control__counter) {
                     color: var(--givewp-neutral-500);
                     font-size: 0.875rem;
                     line-height: 1.5;
