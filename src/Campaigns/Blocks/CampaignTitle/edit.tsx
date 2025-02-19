@@ -11,7 +11,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import {__} from '@wordpress/i18n';
-import {useSelect} from '@wordpress/data';
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {external} from '@wordpress/icons';
 
 import './editor.scss';
@@ -26,19 +26,14 @@ export default function Edit({
 }>) {
     const blockProps = useBlockProps();
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
+    const campaignWindowData = getCampaignOptionsWindowData();
 
-    const adminBaseUrl = useSelect(
-        // @ts-ignore
-        (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
-        []
-    );
-
-    const editCampaignUrl = `${adminBaseUrl}&id=${attributes.campaignId}&tab=settings`;
+    const editCampaignUrl = `${campaignWindowData.campaignsAdminUrl}&id=${attributes.campaignId}&tab=settings`;
 
     return (
         <div {...blockProps}>
             <CampaignSelector
-                campaignId={attributes}
+                campaignId={attributes.campaignId}
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
                 <ServerSideRender block="givewp/campaign-title" attributes={attributes} />
