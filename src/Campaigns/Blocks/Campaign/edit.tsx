@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useState, CSSProperties} from 'react';
+import {CSSProperties, useState} from 'react';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, ToggleControl} from '@wordpress/components';
@@ -7,37 +7,25 @@ import {CampaignBlockType} from './types';
 import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignCard from '../shared/components/CampaignCard';
-import {useSelect} from '@wordpress/data';
-import {GiveCampaignOptions} from '@givewp/campaigns/types';
+import {BlockNotice} from '@givewp/form-builder-library';
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
-declare const window: {
-    GiveCampaignOptions: GiveCampaignOptions;
-} & Window;
 
 const styles = {
-    shared: {
+    title: {
+        fontWeight: 600
+    },
+    notice: {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
         padding: 16,
         borderRadius: 2,
-        color: '#0e0e0e'
-    },
-    title: {
-        fontWeight: 600
-    },
-    link: {
-        color: '#0e0e0e'
-    },
-    enabled: {
+        color: '#0e0e0e',
         background: '#f2f2f2',
         fontSize: 12,
         lineHeight: 1.33,
-    },
-    disabled: {
-        background: '#fffaf2',
-        borderLeft: '1px solid #f29718',
     },
     close: {
         position: 'absolute',
@@ -57,13 +45,9 @@ const CloseIcon = () => (
 
 export default function Edit({attributes, setAttributes}: BlockEditProps<CampaignBlockType>) {
     const blockProps = useBlockProps();
-    const [showNotification, setShowNotification] = useState(window.GiveCampaignOptions.admin.showCampaignInteractionNotice);
+    const campaignWindowData = getCampaignOptionsWindowData();
+    const [showNotification, setShowNotification] = useState(campaignWindowData.admin.showCampaignInteractionNotice);
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
-    const adminBaseUrl = useSelect(
-        // @ts-ignore
-        (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
-        []
-    );
 
     const Notices = () => {
         if (!attributes.campaignId) {
@@ -76,11 +60,11 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
             }
 
             return (
-                <p style={{...styles['shared'], ...styles['enabled']}}>
+                <p style={styles['notice']}>
                     <span
                         style={styles['close']}
                         onClick={() => {
-                            fetch(window.GiveCampaignOptions.adminUrl + '/admin-ajax.php?action=givewp_campaign_interaction_notice', {method: 'POST'})
+                            fetch(campaignWindowData.adminUrl + '/admin-ajax.php?action=givewp_campaign_interaction_notice', {method: 'POST'})
                                 .then(() => setShowNotification(false))
                         }}>
                         <CloseIcon />
@@ -96,22 +80,12 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
         }
 
         return (
-            <p style={{...styles['shared'], ...styles['disabled']}}>
-                <span style={styles['title']}>
-                    {__('Campaign page has been disabled for this campaign.', 'give ')}
-                </span>
-                <span>
-                    {__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
-                </span>
-                <a
-                    style={styles['link']}
-                    href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings`}
-                    rel="noopener noreferrer"
-                    aria-label={__('Edit campaign settings in a new tab', 'give')}
-                >
-                    {__('Enable campaign page', 'give')}
-                </a>
-            </p>
+            <BlockNotice
+                title={__('Campaign page has been disabled for this campaign.', 'give ')}
+                description={__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
+                anchorText={__('Enable campaign page', 'give')}
+                href={`${campaignWindowData.campaignsAdminUrl}&id=${attributes.campaignId}&tab=settings`}
+            />
         )
     };
 
