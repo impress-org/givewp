@@ -161,11 +161,7 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response(
-            array_merge($campaign->toArray(), [
-                'defaultFormTitle' => $campaign->defaultForm()->title,
-            ])
-        );
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports());
     }
 
     /**
@@ -207,7 +203,7 @@ class CampaignRequestController
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
-        return new WP_REST_Response($campaign->toArray(), 201);
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
     }
 
     /**
