@@ -23,6 +23,7 @@ declare module "@wordpress/data" {
 }
 
 export type GiveCampaignOptions = {
+    isAdmin: boolean;
     adminUrl: string;
     currency: string;
     isRecurringEnabled: boolean;
