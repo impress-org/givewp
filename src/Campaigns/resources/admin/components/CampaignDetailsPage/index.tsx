@@ -29,14 +29,6 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-const getCampaignPageUrl = (campaignPage: { id: number; slug: string; link: string; }) => {
-    if (!campaignPage.slug) {
-        return campaignPage.link + '/' + campaignPage.id
-    }
-    return campaignPage.link
-
-}
-
 const StatusBadge = ({status}: { status: string }) => {
     const statusMap = {
         active: __('Active', 'give'),
@@ -89,10 +81,6 @@ export default function CampaignsDetailsPage({campaignId}) {
         save,
         edit,
     } = useCampaignEntityRecord(campaignId);
-
-    const {record: campaignPage}: {
-        record: { id: number, slug: string, link: string }
-    } = useEntityRecord('postType', 'give_campaign_page', campaign?.pageId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -261,9 +249,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && campaignPage?.id && (
+                                        {enableCampaignPage && campaign.pagePermalink && (
                                             <a
-                                                href={getCampaignPageUrl(campaignPage)}
+                                                href={campaign.pagePermalink}
                                                 aria-label={__('View Campaign', 'give')}
                                                 className={styles.contextMenuItem}
                                             >
