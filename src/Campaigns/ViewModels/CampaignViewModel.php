@@ -30,7 +30,7 @@ class CampaignViewModel
     {
         return [
             'id' => $this->campaign->id,
-            'pageId' => $this->campaign->pageId,
+            'pageId' => (int)$this->campaign->pageId,
             'pagePermalink' => $this->campaign->pageId
                 ? get_permalink($this->campaign->pageId)
                 : null,
