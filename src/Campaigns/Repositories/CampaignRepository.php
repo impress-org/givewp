@@ -76,10 +76,13 @@ class CampaignRepository
 
         Hooks::doAction('givewp_campaign_creating', $campaign);
 
-        $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
+        $currentDate = Temporal::getCurrentDateTime();
+
+        $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: $currentDate);
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
-        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+
+        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate ?: $currentDate);
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         DB::query('START TRANSACTION');
 
@@ -131,7 +134,7 @@ class CampaignRepository
         $this->validateProperties($campaign);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         Hooks::doAction('givewp_campaign_updating', $campaign);
 

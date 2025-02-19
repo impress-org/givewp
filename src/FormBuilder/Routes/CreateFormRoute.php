@@ -9,6 +9,7 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\Helpers\Hooks;
+use Give\Helpers\Language;
 
 /**
  * Route to create a new form
@@ -16,6 +17,7 @@ use Give\Helpers\Hooks;
 class CreateFormRoute
 {
     /**
+     * @unreleased Add locale support
      * @since 3.1.0 updated default form blocks to be generated from block models instead of json
      * @since 3.0.0
      *
@@ -25,12 +27,18 @@ class CreateFormRoute
     public function __invoke()
     {
         if (isset($_GET['page']) && FormBuilderRouteBuilder::SLUG === $_GET['page']) {
+            $locale = $_GET['locale'] ?? '';
+
             // Little hack for alpha users to make sure the form builder is loaded.
-            if ( ! isset($_GET['donationFormID'])) {
-                wp_redirect(FormBuilderRouteBuilder::makeCreateFormRoute());
+            if (!isset($_GET['donationFormID'])) {
+                wp_redirect(FormBuilderRouteBuilder::makeCreateFormRoute($locale)->getUrl());
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
+                // Make sure the Form will be created using the proper locale
+                $locale = $_GET['locale'] ?? '';
+                Language::switchToLocale($locale);
+
                 $form = new DonationForm([
                     'title' => __('GiveWP Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
@@ -45,7 +53,7 @@ class CreateFormRoute
 
                 $form->save();
 
-                wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($form->id));
+                wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($form->id, $locale)->getUrl());
                 exit();
             }
         }

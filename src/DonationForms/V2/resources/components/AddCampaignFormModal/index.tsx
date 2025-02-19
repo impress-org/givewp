@@ -126,9 +126,8 @@ export default function AddCampaignFormModal({isOpen, handleClose, title, campai
                     <a
                         href={
                             editorSelected === 'visualFormBuilder'
-                                ? 'edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&campaignId=' +
-                                  campaignId
-                                : 'post-new.php?post_type=give_forms&campaignId=' + campaignId
+                                ? `edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=new&locale=${window.GiveDonationForms.locale}&campaignId=${campaignId}`
+                                : `post-new.php?post_type=give_forms&campaignId=${campaignId}`
                         }
                         className={`button button-primary givewp-editor-actions__button ${
                             !editorSelected ? 'disabled' : ''
