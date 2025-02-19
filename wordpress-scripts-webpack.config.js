@@ -80,6 +80,7 @@ module.exports = {
         campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitle/index.tsx'),
         campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
         campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
+        campaignCommentsBlockApp: srcPath('Campaigns/Blocks/CampaignComments/resources/app.tsx'),
     },
 };
 
