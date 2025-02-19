@@ -17,7 +17,7 @@ export default ({showImage, showGoal, showDescription, campaign}: {
     return (
         <div
             className="give-campaigns-component-campaign"
-            {...(campaign.pagePermalink && !campaignWindowData.isAdmin && {
+            {...(campaign.enableCampaignPage && campaign.pagePermalink && !campaignWindowData.isAdmin && {
                 style: {
                     cursor: 'pointer',
                 },
