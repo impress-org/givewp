@@ -16,6 +16,7 @@ class LoadCampaignOptions
 
         wp_localize_script('give-campaign-options', 'GiveCampaignOptions',
             [
+                'isAdmin' => is_admin(),
                 'adminUrl' => admin_url(),
                 'currency' => give_get_currency(),
                 'currencySymbol' => give_currency_symbol(),
