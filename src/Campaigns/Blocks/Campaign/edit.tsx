@@ -18,6 +18,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                     <CampaignSelector
                         campaignId={attributes.campaignId}
                         handleSelect={(campaignId: number) => setAttributes({campaignId})}
+                        showInspectorControl={true}
                     >
                         <CampaignCard
                             campaign={campaign}
