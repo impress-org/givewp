@@ -28,4 +28,7 @@ export type GiveCampaignOptions = {
     currency: string;
     isRecurringEnabled: boolean;
     defaultForm: string;
+    admin: {
+        showCampaignInteractionNotice: boolean
+    }
 }

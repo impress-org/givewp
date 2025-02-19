@@ -23,6 +23,11 @@ class LoadCampaignOptions
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')
                     ? GIVE_RECURRING_VERSION
                     : null,
+                'admin' => is_admin()
+                    ? [
+                        'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', true),
+                    ]
+                    : null,
             ]
         );
 

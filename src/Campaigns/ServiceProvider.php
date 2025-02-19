@@ -163,6 +163,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
+
+        // notices
+        add_action('wp_ajax_givewp_campaign_interaction_notice', static function () {
+            add_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', time(), true);
+        });
     }
 
     /**

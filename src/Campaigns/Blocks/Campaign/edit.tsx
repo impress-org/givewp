@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {CSSProperties} from 'react';
+import {useState, CSSProperties} from 'react';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, ToggleControl} from '@wordpress/components';
@@ -8,6 +8,11 @@ import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignCard from '../shared/components/CampaignCard';
 import {useSelect} from '@wordpress/data';
+import {GiveCampaignOptions} from '@givewp/campaigns/types';
+
+declare const window: {
+    GiveCampaignOptions: GiveCampaignOptions;
+} & Window;
 
 const styles = {
     shared: {
@@ -36,6 +41,7 @@ const styles = {
     },
     close: {
         position: 'absolute',
+        cursor: 'pointer',
         right: 16,
         top: 16,
     }
@@ -51,12 +57,63 @@ const CloseIcon = () => (
 
 export default function Edit({attributes, setAttributes}: BlockEditProps<CampaignBlockType>) {
     const blockProps = useBlockProps();
+    const [showNotification, setShowNotification] = useState(window.GiveCampaignOptions.admin.showCampaignInteractionNotice);
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
     const adminBaseUrl = useSelect(
         // @ts-ignore
         (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
         []
     );
+
+    const Notices = () => {
+        if (!attributes.campaignId) {
+            return null;
+        }
+
+        if (campaign.enableCampaignPage) {
+            if (!showNotification) {
+                return null;
+            }
+
+            return (
+                <p style={{...styles['shared'], ...styles['enabled']}}>
+                    <span
+                        style={styles['close']}
+                        onClick={() => {
+                            fetch(window.GiveCampaignOptions.adminUrl + '/admin-ajax.php?action=givewp_campaign_interaction_notice', {method: 'POST'})
+                                .then(() => setShowNotification(false))
+                        }}>
+                        <CloseIcon />
+                    </span>
+                    <span style={styles['title']}>
+                        {__('Campaign interaction', 'give ')}
+                    </span>
+                    <span>
+                        {__('Users will be redirected to campaign page.', 'give')}
+                    </span>
+                </p>
+            )
+        }
+
+        return (
+            <p style={{...styles['shared'], ...styles['disabled']}}>
+                <span style={styles['title']}>
+                    {__('Campaign page has been disabled for this campaign.', 'give ')}
+                </span>
+                <span>
+                    {__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
+                </span>
+                <a
+                    style={styles['link']}
+                    href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings`}
+                    rel="noopener noreferrer"
+                    aria-label={__('Edit campaign settings in a new tab', 'give')}
+                >
+                    {__('Enable campaign page', 'give')}
+                </a>
+            </p>
+        )
+    };
 
     return (
         <div {...blockProps}>
@@ -66,44 +123,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                         campaignId={attributes.campaignId}
                         handleSelect={(campaignId: number) => setAttributes({campaignId})}
                         showInspectorControl={true}
-                        inspectorControls={
-                            <>
-                                {attributes.campaignId && (
-                                    campaign.enableCampaignPage
-                                        ? (
-                                            <p style={{...styles['shared'], ...styles['enabled']}}>
-                                            <span style={styles['close']}>
-                                                <CloseIcon />
-                                            </span>
-                                                <span style={styles['title']}>
-                                                {__('Campaign interaction', 'give ')}
-                                            </span>
-                                                <span>
-                                                {__('Users will be redirected to campaign page.', 'give')}
-                                            </span>
-                                            </p>
-                                        )
-                                        : (
-                                            <p style={{...styles['shared'], ...styles['disabled']}}>
-                                            <span style={styles['title']}>
-                                                {__('Campaign page has been disabled for this campaign.', 'give ')}
-                                            </span>
-                                                <span>
-                                                {__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
-                                            </span>
-                                                <a
-                                                    style={styles['link']}
-                                                    href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=settings`}
-                                                    rel="noopener noreferrer"
-                                                    aria-label={__('Edit campaign settings in a new tab', 'give')}
-                                                >
-                                                    {__('Enable campaign page', 'give')}
-                                                </a>
-                                            </p>
-                                        )
-                                )}
-                            </>
-                        }
+                        inspectorControls={<Notices />}
                     >
                         <CampaignCard
                             campaign={campaign}
