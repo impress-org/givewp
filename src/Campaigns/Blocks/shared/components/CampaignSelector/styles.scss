@@ -46,7 +46,8 @@
         transition: 0.2s;
 
         &:disabled {
-            background-color: #e0e0e0;
+            background-color: #f3f4f6;
+            color: #9ca0af;
         }
 
         &:hover:not(:disabled) {
