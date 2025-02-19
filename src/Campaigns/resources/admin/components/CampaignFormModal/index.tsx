@@ -129,9 +129,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
-            endDateTime: getDateString(
-                campaign?.endDateTime?.date ? new Date(campaign?.endDateTime?.date) : getNextSharpHour(2)
-            ),
+            endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
         },
     });
 
@@ -220,8 +218,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
-
+            inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
+           
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
