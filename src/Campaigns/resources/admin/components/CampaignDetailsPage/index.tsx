@@ -1,7 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useDispatch} from '@wordpress/data';
-import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
