@@ -73,7 +73,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
                 		$e->getMessage()
                 	)
                 );
-
+                give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
                 return false;
             } // End try().
         }
