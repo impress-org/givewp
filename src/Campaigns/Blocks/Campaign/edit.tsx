@@ -54,7 +54,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
 
     const enableCampaignPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
-        edit({...campaign, enableCampaignPage: true});
+        edit({enableCampaignPage: true});
         save();
     }
 
