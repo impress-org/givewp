@@ -48,9 +48,10 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
 
             if (!attachment.type || attachment.type !== 'image') {
                 alert(__('Please select an image file only.', 'give'));
+                frame.open();
                 return;
             }
-
+            
             onChange(attachment.url, attachment.alt);
         });
 
