@@ -1,14 +1,13 @@
 import {__} from '@wordpress/i18n';
-import {CSSProperties, useState} from 'react';
+import React, {CSSProperties, useState} from 'react';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, ToggleControl} from '@wordpress/components';
 import {CampaignBlockType} from './types';
 import CampaignSelector from '../shared/components/CampaignSelector';
-import useCampaign from '../shared/hooks/useCampaign';
 import CampaignCard from '../shared/components/CampaignCard';
 import {BlockNotice} from '@givewp/form-builder-library';
-import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 
 const styles = {
@@ -32,6 +31,9 @@ const styles = {
         cursor: 'pointer',
         right: 16,
         top: 16,
+    },
+    link: {
+        color: '#0e0e0e',
     }
 } as CSSProperties;
 
@@ -47,7 +49,14 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
     const blockProps = useBlockProps();
     const campaignWindowData = getCampaignOptionsWindowData();
     const [showNotification, setShowNotification] = useState(campaignWindowData.admin.showCampaignInteractionNotice);
-    const {campaign, hasResolved} = useCampaign(attributes.campaignId);
+    const {campaign, hasResolved, edit, save} = useCampaignEntityRecord(attributes.campaignId);
+
+
+    const enableCampaignPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        edit({...campaign, enableCampaignPage: true});
+        save();
+    }
 
     const Notices = () => {
         if (!attributes.campaignId) {
@@ -83,9 +92,15 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
             <BlockNotice
                 title={__('Campaign page has been disabled for this campaign.', 'give ')}
                 description={__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
-                anchorText={__('Enable campaign page', 'give')}
-                href={`${campaignWindowData.campaignsAdminUrl}&id=${attributes.campaignId}&tab=settings`}
-            />
+            >
+                <a
+                    href="#"
+                    onClick={(e) => enableCampaignPage(e)}
+                    style={styles['link']}
+                >
+                    {__('Enable campaign page.', 'give')}
+                </a>
+            </BlockNotice>
         )
     };
 
