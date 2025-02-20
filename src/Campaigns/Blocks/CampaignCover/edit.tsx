@@ -55,7 +55,7 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                     />
 
                 )}
-
+                
                 {hasResolved && campaign?.image &&
                     (!isSizeAligned ? (
                         <ResizableBox
