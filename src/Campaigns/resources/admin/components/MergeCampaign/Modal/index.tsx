@@ -13,7 +13,11 @@ const removeActionParam = () => {
 
     if (actionParam) {
         queryParams.delete('action');
-        window.history.replaceState(null, '', `${window.location.pathname}?${queryParams.toString()}`);
+        window.history.replaceState(
+            'merge-campaigns-modal-closed',
+            '',
+            `${window.location.pathname}?${queryParams.toString()}`
+        );
     }
 };
 

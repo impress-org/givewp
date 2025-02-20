@@ -86,7 +86,9 @@ export type BulkActionsConfig =
     | BulkActionsConfigWithoutType
     | BulkActionsConfigWithoutAction;
 
-export const ShowConfirmModalContext = createContext((label, confirm, action, type = null,  confirmButtonText = __('Confirm', 'give')) => {});
+export const ShowConfirmModalContext = createContext(
+    (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
+);
 export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
@@ -163,7 +165,7 @@ export default function ListTablePage({
         confirm,
         action,
         type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
-        confirmButtonText?: string,
+        confirmButtonText?: string
     ) => {
         setModalContent({label, confirm, action, type, confirmButtonText});
         dialog.current.show();
@@ -193,6 +195,7 @@ export default function ListTablePage({
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
             if ('custom' === bulkActions[actionIndex].type) {
+                window.history.replaceState(null, '');
                 modalContent?.confirm(selected, names);
             } else {
                 dialog.current.show();

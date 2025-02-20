@@ -84,6 +84,10 @@ const bulkActions: Array<BulkActionsConfig> = [
         value: 'merge',
         type: 'custom',
         confirm: (selected, names) => {
+            if (window.history.state === 'merge-campaigns-modal-closed') {
+                return null;
+            }
+
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('action', 'merge');
             window.history.replaceState(
