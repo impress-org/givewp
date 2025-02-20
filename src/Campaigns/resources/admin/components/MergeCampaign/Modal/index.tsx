@@ -95,7 +95,7 @@ export default function MergeCampaignModal() {
             window.history.pushState = originalPushState;
             window.history.replaceState = originalReplaceState;
         };
-    }, [campaigns]);
+    }, []);
 
     return (
         <>
