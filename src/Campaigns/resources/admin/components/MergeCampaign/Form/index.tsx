@@ -14,10 +14,6 @@ import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
  * @unreleased
  */
 export default function MergeCampaignsForm({isOpen, handleClose, title, campaigns}: MergeCampaignFormProps) {
-    if (!campaigns?.selected || !campaigns?.names) {
-        return null;
-    }
-
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<MergeCampaignFormInputs>({

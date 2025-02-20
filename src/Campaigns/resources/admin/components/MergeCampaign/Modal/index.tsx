@@ -50,6 +50,11 @@ export default function MergeCampaignModal() {
         setOpen(false);
     };
 
+    const campaigns = {
+        selected: window.history.state?.selected || [],
+        names: window.history.state?.names || [],
+    };
+
     useEffect(() => {
         // Override pushState and replaceState to trigger a custom event
         const originalPushState = window.history.pushState;
@@ -66,7 +71,18 @@ export default function MergeCampaignModal() {
         };
 
         // Add listeners for "popstate" and the custom "urlChange" event
-        const handleQueryParamsChange = () => setOpen(autoOpenModal());
+        const handleQueryParamsChange = () => {
+            /**
+             * This timeout prevents this error from being thrown in the browser console:
+             * Warning: Cannot update a component (`MergeCampaignModal`) while rendering a different component (`ListTablePage`).
+             *
+             * @see https://github.com/facebook/react/issues/18178#issuecomment-595846312
+             */
+            const initializeModalState = () => {
+                setOpen(autoOpenModal());
+            };
+            setTimeout(initializeModalState, 0);
+        };
         window.addEventListener('popstate', handleQueryParamsChange);
         window.addEventListener('urlChange', handleQueryParamsChange);
 
@@ -79,7 +95,7 @@ export default function MergeCampaignModal() {
             window.history.pushState = originalPushState;
             window.history.replaceState = originalReplaceState;
         };
-    }, []);
+    }, [campaigns]);
 
     return (
         <>
@@ -87,7 +103,7 @@ export default function MergeCampaignModal() {
                 isOpen={isOpen}
                 handleClose={closeModal}
                 title={__('Merge campaigns', 'give')}
-                campaigns={window.history.state}
+                campaigns={campaigns}
             />
         </>
     );
