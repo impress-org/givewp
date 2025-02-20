@@ -48,18 +48,6 @@ const campaignStatus = [
         value: 'draft',
         text: __('Draft', 'give'),
     },
-    {
-        value: 'pending',
-        text: __('Pending', 'give'),
-    },
-    {
-        value: 'processing',
-        text: __('Processing', 'give'),
-    },
-    {
-        value: 'failed',
-        text: __('Failed', 'give'),
-    },
 ];
 
 const filters: Array<FilterConfig> = [
