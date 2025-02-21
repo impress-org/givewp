@@ -3,14 +3,14 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
-if ( ! isset($attributes['campaignId'])) {
+if (!isset($attributes['campaignId'])) {
     return;
 }
 
 /** @var Campaign $campaign */
 $campaign = give(CampaignRepository::class)->getById($attributes['campaignId']);
 
-if ( ! $campaign) {
+if (!$campaign || !$campaign->image) {
     return;
 }
 

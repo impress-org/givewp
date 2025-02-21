@@ -1,5 +1,5 @@
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {sprintf, __} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
@@ -21,6 +21,7 @@ import {
 } from './GoalTypeIcons';
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
+import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -126,7 +127,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             goalType: campaign?.goalType ?? '',
             goal: campaign?.goal ?? null,
             startDateTime: getDateString(
-                campaign?.startDateTime?.date ? new Date(campaign.startDateTime.date) : getNextSharpHour(1)
+                campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
             endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
         },
@@ -218,7 +219,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
             inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
-
+           
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
@@ -261,13 +262,11 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
                             <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
-                            <textarea
-                                {...register('shortDescription')}
+                            <TextareaControl
+                                name="shortDescription"
                                 rows={4}
-                                placeholder={__(
-                                    'Every family deserves a home-cooked holiday meal. Our organization collects non-perishable food and monetary donations each year to deliver holiday meal boxes to dozens of families in need from our own community.',
-                                    'give'
-                                )}
+                                maxLength={120}
+                                placeholder={__('Brief description for your campaign.', 'give')}
                             />
                         </div>
                         <div className="givewp-campaigns__form-row">
@@ -306,7 +305,11 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 <GoalTypeOption
                                     type={'amount'}
                                     label={__('Amount raised', 'give')}
-                                    description={sprintf(__('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
+                                    description={sprintf(
+                                        __(
+                                            'Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.',
+                                            'give'
+                                        ),
                                         currencyFormatter.format(500),
                                         currencyFormatter.format(1000)
                                     )}
