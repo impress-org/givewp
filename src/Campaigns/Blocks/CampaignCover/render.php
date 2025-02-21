@@ -10,7 +10,7 @@ if (!isset($attributes['campaignId'])) {
 /** @var Campaign $campaign */
 $campaign = give(CampaignRepository::class)->getById($attributes['campaignId']);
 
-if (!$campaign) {
+if (!$campaign || !$campaign->image) {
     return;
 }
 

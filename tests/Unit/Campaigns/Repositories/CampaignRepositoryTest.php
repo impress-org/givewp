@@ -430,4 +430,22 @@ final class CampaignRepositoryTest extends TestCase
 
         $this->assertEquals($defaultFormBeforeMerge->id, $destinationCampaign->defaultForm()->id);
     }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testUpdateCampaignShouldAllowNullableEndDate(): void
+    {
+        $repository = new CampaignRepository();
+        $campaignFactory = Campaign::factory()->create();
+
+        $campaignFactory->endDate = null;
+
+        $repository->update($campaignFactory);
+
+        $campaign = $repository->getById($campaignFactory->id);
+
+        $this->assertNull($campaign->endDate);
+    }
 }

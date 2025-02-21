@@ -1,6 +1,6 @@
 import {TokenItem} from '@wordpress/components/build-types/form-token-field/types';
 
-export type CampaignListType = {
+export type CampaignGridType = {
     layout: string;
     showImage: boolean;
     showDescription: boolean;

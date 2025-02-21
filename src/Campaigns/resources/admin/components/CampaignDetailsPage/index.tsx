@@ -1,7 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useDispatch} from '@wordpress/data';
-import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -27,14 +26,6 @@ declare const window: {
 interface Show {
     contextMenu?: boolean;
     confirmationModal?: boolean;
-}
-
-const getCampaignPageUrl = (campaignPage: { id: number; slug: string; link: string; }) => {
-    if (!campaignPage.slug) {
-        return campaignPage.link + '/' + campaignPage.id
-    }
-    return campaignPage.link
-
 }
 
 const StatusBadge = ({status}: { status: string }) => {
@@ -89,10 +80,6 @@ export default function CampaignsDetailsPage({campaignId}) {
         save,
         edit,
     } = useCampaignEntityRecord(campaignId);
-
-    const {record: campaignPage}: {
-        record: { id: number, slug: string, link: string }
-    } = useEntityRecord('postType', 'give_campaign_page', campaign?.pageId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -157,37 +144,36 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = (status: 'archived' | 'draft') => {
+    const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
-        handleSubmit(async (data) => {
-            edit(data);
 
-            try {
-                const response: Campaign = await save();
+        edit({...campaign, status})
 
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
-                reset(response);
+        try {
+            const response: Campaign = await save();
 
-                dispatch.addSnackbarNotice({
-                    id: `update-${status}`,
-                    content: getMessageByStatus(status),
-                });
-            } catch (err) {
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+            reset(response);
 
-                dispatch.addSnackbarNotice({
-                    id: 'update-error',
-                    type: 'error',
-                    content: __('Something went wrong', 'give'),
-                });
-            }
-        })();
+            dispatch.addSnackbarNotice({
+                id: `update-${status}`,
+                content: getMessageByStatus(status),
+            });
+        } catch (err) {
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+
+            dispatch.addSnackbarNotice({
+                id: 'update-error',
+                type: 'error',
+                content: __('Something went wrong', 'give'),
+            });
+        }
     };
 
     if (!hasResolved) {
@@ -261,9 +247,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && campaignPage?.id && (
+                                        {enableCampaignPage && campaign.pagePermalink && (
                                             <a
-                                                href={getCampaignPageUrl(campaignPage)}
+                                                href={campaign.pagePermalink}
                                                 aria-label={__('View Campaign', 'give')}
                                                 className={styles.contextMenuItem}
                                             >

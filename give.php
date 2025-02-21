@@ -249,6 +249,7 @@ final class Give
         Give\Settings\ServiceProvider::class,
         Give\Campaigns\ServiceProvider::class,
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
+        Give\ThirdPartySupport\ServiceProvider::class,
     ];
 
     /**

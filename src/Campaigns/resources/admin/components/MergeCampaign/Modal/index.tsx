@@ -18,7 +18,7 @@ const removeActionParam = () => {
 };
 
 /**
- * Auto open modal if the URL has the query parameter id as new
+ * Auto open modal if the URL has the query parameter action as "merge"
  *
  * @unreleased
  */

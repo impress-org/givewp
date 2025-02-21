@@ -14,6 +14,9 @@ import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrl
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
+/**
+ * @unreleased Add locale support
+ */
 export default async function handleSubmitRequest(
     values,
     setError,
@@ -31,13 +34,14 @@ export default async function handleSubmitRequest(
     }
 
     try {
-        const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
+        const {originUrl, isEmbed, embedId, locale} = getCurrentFormUrlData();
 
         const formValues = {
             ...values,
             originUrl,
             isEmbed,
             embedId,
+            locale,
         };
 
         const formData = convertValuesToFormData(formValues);
@@ -80,4 +84,4 @@ export default async function handleSubmitRequest(
             message: error?.message ?? __('Something went wrong, please try again or contact support.', 'give'),
         });
     }
-};
+}

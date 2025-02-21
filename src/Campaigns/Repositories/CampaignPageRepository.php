@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Repositories;
 
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -69,6 +70,7 @@ class CampaignPageRepository
                     'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
                     'post_status' => 'publish', // TODO: Update to value object
                     'post_type' => 'give_campaign_page',
+                    'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignPage->campaignId),
                 ]);
 
             $campaignPage->id = DB::last_insert_id();

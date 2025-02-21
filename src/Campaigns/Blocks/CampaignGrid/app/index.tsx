@@ -1,9 +1,8 @@
-import {__} from '@wordpress/i18n';
 import {useState} from '@wordpress/element';
 import useCampaigns from '../../shared/hooks/useCampaigns';
 import Pagination from '../../shared/components/Pagination';
-import {CampaignListType} from '../types';
-import {getGoalDescription, getGoalFormattedValue} from '../../CampaignGoal/utils';
+import CampaignCard from '../../shared/components/CampaignCard';
+import {CampaignGridType} from '../types';
 
 import './styles.scss';
 
@@ -18,7 +17,7 @@ const getGridSettings = (layout: string) => {
     }
 }
 
-export default ({attributes}: { attributes: CampaignListType }) => {
+export default ({attributes}: { attributes: CampaignGridType }) => {
     const [page, setPage] = useState(1);
 
     const {campaigns, hasResolved, totalPages} = useCampaigns({
@@ -40,52 +39,13 @@ export default ({attributes}: { attributes: CampaignListType }) => {
                 style={{gridTemplateColumns: `repeat(${getGridSettings(attributes.layout)}, 1fr)`}}
             >
                 {campaigns?.map((campaign) => (
-                    <div
-                        className="givewp-campaign-grid__item"
-                    >
-                        {attributes.showImage && campaign.image && (
-                            <div
-                                style={{backgroundImage: `url(${campaign.image})`}}
-                                className="givewp-campaign-grid__item-image">
-                            </div>
-                        )}
-                        <div className="givewp-campaign-grid__item-title">
-                            {campaign.title}
-                        </div>
-                        {attributes.showDescription && (
-                            <div className="givewp-campaign-grid__item-description">
-                                {campaign.shortDescription}
-                            </div>
-                        )}
-
-                        {attributes.showGoal && (
-                            <div className="givewp-campaign-grid__item__goal">
-                                <div className="givewp-campaign-grid__item__goal-progress">
-                                    <div
-                                        className="givewp-campaign-grid__item__goal-progress-container">
-                                        <div
-                                            className="givewp-campaign-grid__item__goal-progress-bar"
-                                            style={{width: `${campaign.goalStats.percentage}%`}}>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="ive-campaigns-campaignListBlock-grid-item__goal-container">
-                                    <div className="givewp-campaign-grid__item__goal-container-item">
-                                        <span>{getGoalDescription(campaign.goalType)}</span>
-                                        <strong>
-                                            {getGoalFormattedValue(campaign.goalType, campaign.goalStats.actual)}
-                                        </strong>
-                                    </div>
-                                    <div className="givewp-campaign-grid__item__goal-container-item">
-                                        <span>{__('Our goal', 'give')}</span>
-                                        <strong>
-                                            {getGoalFormattedValue(campaign.goalType, campaign.goal)}
-                                        </strong>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <CampaignCard
+                        key={campaign.id}
+                        campaign={campaign}
+                        showImage={attributes.showImage}
+                        showDescription={attributes.showDescription}
+                        showGoal={attributes.showGoal}
+                    />
                 ))}
             </div>
 

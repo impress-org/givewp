@@ -282,6 +282,7 @@ class RegisterCampaignRoutes
                 'shortDescription' => [
                     'type' => 'string',
                     'description' => esc_html__('Campaign short description', 'give'),
+                    'maxLength' => 120,
                 ],
                 'primaryColor' => [
                     'type' => 'string',
