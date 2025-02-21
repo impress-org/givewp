@@ -22,6 +22,7 @@ use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -110,6 +111,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
+
+        // notices
+        add_action('wp_ajax_givewp_campaign_interaction_notice', static function () {
+            add_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', time(), true);
+        });
     }
 
     /**
@@ -132,6 +138,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
         Hooks::addAction('template_redirect', Actions\RedirectDisabledCampaignPage::class);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
         Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 
@@ -178,6 +185,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
     }
 
     /**

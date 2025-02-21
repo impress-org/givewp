@@ -29,6 +29,5 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:../../../../build/campaignDonateButtonBlock.js",
     "render": "file:./render.php"
 }
