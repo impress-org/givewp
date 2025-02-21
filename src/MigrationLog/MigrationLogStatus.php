@@ -6,6 +6,7 @@ namespace Give\MigrationLog;
  * Class MigrationLogStatus
  * @package Give\MigrationLog
  *
+ * @unreleased add running status
  * @since 2.10.0
  */
 class MigrationLogStatus
@@ -13,6 +14,7 @@ class MigrationLogStatus
     const SUCCESS = 'success';
     const FAILED = 'failed';
     const PENDING = 'pending';
+    const RUNNING = 'running';
 
     /**
      * Get default migration status
@@ -35,6 +37,7 @@ class MigrationLogStatus
             MigrationLogStatus::SUCCESS => esc_html__('Success', 'give'),
             MigrationLogStatus::FAILED => esc_html__('Failed', 'give'),
             MigrationLogStatus::PENDING => esc_html__('Pending', 'give'),
+            MigrationLogStatus::RUNNING => esc_html__('Running', 'give'),
         ];
     }
 
