@@ -12,22 +12,22 @@ class RegisterCampaignPagePostType
      */
     public function __invoke()
     {
-        register_post_type( 'give_campaign_page', [
+        register_post_type('give_campaign_page', [
             'label' => __('Campaign Page', 'give'),
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => false,
             'show_in_rest' => true,
+            'show_in_admin_bar' => true,
             'supports' => [
                 'title',
-                'editor'
+                'editor',
             ],
             'rewrite' => [
-                'slug' => 'campaign'
+                'slug' => 'campaign',
+                'with_front' => true,
             ],
-            'template' => [
-                // TODO: Add default blocks template.
-            ],
-        ] );
+            'template' => [],
+        ]);
     }
 }
