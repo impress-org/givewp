@@ -20,7 +20,7 @@ class RedirectDisabledCampaignPage
 
         $campaignPage = CampaignPage::find(get_the_ID());
 
-        if(!$campaignPage->campaign()->enableCampaignPage) {
+        if($campaignPage && !$campaignPage->campaign()->enableCampaignPage) {
             global $wp_query;
             $wp_query->set_404();
             status_header(404);
