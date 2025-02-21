@@ -6,7 +6,7 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
@@ -18,7 +18,7 @@ declare const window: {
  *
  * @unreleased
  */
-const autoOpenModal = () => {
+const autoOpenCreateCampaignModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const newParam = queryParams.get('new');
 
@@ -66,31 +66,47 @@ const filters: Array<FilterConfig> = [
     },
 ];
 
-const bulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Merge', 'give'),
-        value: 'merge',
-        type: 'custom',
-        confirm: (selected, names) => {
-            if (window.history.state === 'merge-campaigns-modal-closed') {
-                return null;
-            }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            urlParams.set('action', 'merge');
-            window.history.replaceState(
-                {selected: selected, names: names},
-                __('Merge Campaigns', 'give'),
-                `${window.location.pathname}?${urlParams.toString()}`
-            );
-
-            return null;
-        },
-    },
-];
-
 export default function CampaignsListTable() {
-    const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
+    const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
+    const [isMergeCampaignsModalOpen, setMergeCampaignsModalOpen] = useState<boolean>(false);
+    const [campaignsToMerge, setCampaignsToMerge] = useState({
+        selected: [] as (string | number)[],
+        names: [] as string[],
+    });
+
+    /**
+     * useRef is used to store the latest value of `isMergeCampaignsModalOpen` without causing re-renders.
+     * This ensures that the most up-to-date state is accessible synchronously, even during asynchronous updates or closures,
+     * such as when the `confirm` function is executed. Without useRef, the stale value of `isMergeCampaignsModalOpen` captured by
+     * the closure could lead to incorrect behavior, like reopening the modal unnecessarily.
+     */
+    const isMergeCampaignsModalOpenRef = useRef<boolean>(isMergeCampaignsModalOpen);
+    useEffect(() => {
+        isMergeCampaignsModalOpenRef.current = isMergeCampaignsModalOpen;
+    }, [isMergeCampaignsModalOpen]);
+
+    const bulkActions: Array<BulkActionsConfig> = [
+        {
+            label: __('Merge', 'give'),
+            value: 'merge',
+            type: 'custom',
+            confirm: (selected, names) => {
+                if (!isMergeCampaignsModalOpenRef.current) {
+                    /**
+                     * This timeout prevents this error from being thrown in the browser console:
+                     * Warning: Cannot update a component (`CampaignsListTable`) while rendering a different component (`ListTablePage`).
+                     *
+                     * @see https://github.com/facebook/react/issues/18178#issuecomment-595846312
+                     */
+                    setTimeout(() => {
+                        setCampaignsToMerge({selected, names});
+                        setMergeCampaignsModalOpen(true);
+                    }, 0);
+                }
+                return null;
+            },
+        },
+    ];
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -109,7 +125,10 @@ export default function CampaignsListTable() {
                     {__('Don’t worry, let’s help you setup your first campaign.', 'give')}
                 </p>
                 <p>
-                    <a onClick={() => setOpen(true)} className={`button button-primary ${styles.button}`}>
+                    <a
+                        onClick={() => setCreateCampaignModalOpen(true)}
+                        className={`button button-primary ${styles.button}`}
+                    >
                         {__('Create campaign', 'give')}
                     </a>
                 </p>
@@ -129,8 +148,12 @@ export default function CampaignsListTable() {
                 rowActions={CampaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
             >
-                <CreateCampaignModal isOpen={isOpen} setOpen={setOpen} />
-                <MergeCampaignModal />
+                <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
+                <MergeCampaignModal
+                    isOpen={isMergeCampaignsModalOpen}
+                    setOpen={setMergeCampaignsModalOpen}
+                    campaigns={campaignsToMerge}
+                />
             </ListTablePage>
         </>
     );
