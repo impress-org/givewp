@@ -212,7 +212,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        href={`${window.GiveCampaignOptions.adminUrl}/post.php?post=${campaign.pageId}&action=edit`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
