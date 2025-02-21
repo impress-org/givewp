@@ -16,9 +16,15 @@ abstract class Migration
     /**
      * Bootstrap migration logic.
      *
+     * @unreleased this method is now optional if migration class implements BatchMigration interface
      * @since 2.9.0
      */
-    abstract public function run();
+    public function run()
+    {
+        if ( ! is_subclass_of($this, BatchMigration::class)) {
+            throw new RuntimeException('run method is not defined.');
+        }
+    }
 
     /**
      * Return a unique identifier for the migration
