@@ -5,13 +5,14 @@ namespace Give\Campaigns\Migrations\Donations;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
  * @unreleased
  */
-class AddCampaignId extends Migration
+class AddCampaignId extends Migration implements BatchMigration
 {
     /**
      * @inheritDoc
@@ -41,7 +42,7 @@ class AddCampaignId extends Migration
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
-    public function run()
+    public function runBatch($batchNumber)
     {
         $relationships = [];
 
@@ -63,6 +64,8 @@ class AddCampaignId extends Migration
                     [DonationMetaKeys::FORM_ID(), 'formId']
                 )
                 ->where('post_type', 'give_payment')
+                ->offset($batchNumber)
+                ->limit($this->getBatchSize())
                 ->getAll();
 
             $donationMeta = [];
@@ -86,7 +89,26 @@ class AddCampaignId extends Migration
                     ->insert($donationMeta, ['%d', '%s', '%d']);
             }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table",
+                0, $exception);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItemsCount(): int
+    {
+        return DB::table('posts')
+            ->where('post_type', 'give_payment')
+            ->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBatchSize(): int
+    {
+        return 50;
     }
 }
