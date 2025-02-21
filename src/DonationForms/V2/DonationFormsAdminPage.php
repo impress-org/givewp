@@ -194,7 +194,7 @@ class DonationFormsAdminPage
         ];
 
         if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = absint($_GET['id']);
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
         }
 
         $request = WP_REST_Request::from_url(

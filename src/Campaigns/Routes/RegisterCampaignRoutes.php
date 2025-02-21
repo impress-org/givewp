@@ -252,6 +252,14 @@ class RegisterCampaignRoutes
                     'type' => 'string',
                     'description' => esc_html__('Campaign short description', 'give'),
                 ],
+                'primaryColor' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Primary color for the campaign', 'give'),
+                ],
+                'secondaryColor' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Secondary color for the campaign', 'give'),
+                ],
                 'goal' => [
                     'type' => 'number',
                     'minimum' => 1,

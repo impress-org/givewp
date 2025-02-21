@@ -3,35 +3,28 @@ import {useEffect, useState} from "react";
 import RevenueChart from "../RevenueChart";
 import GoalProgressChart from "../GoalProgressChart";
 import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
+import {addQueryArgs} from '@wordpress/url';
 import HeaderText from '../HeaderText';
 import HeaderSubText from '../HeaderSubText';
 import DefaultFormWidget from "../DefaultForm";
-import {GiveCampaignDetails} from "@givewp/campaigns/admin/components/CampaignDetailsPage/types";
-import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {useCampaignEntityRecord, amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 import styles from "./styles.module.scss"
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
+const {currency} = getCampaignOptionsWindowData();
+const currencyFormatter = amountFormatter(currency);
 
 const pluck = (array: any[], property: string) => array.map(element => element[property])
 
 const filterOptions = [
-    { label: __('Today', 'give'), value: 1, description: __('from today', 'give') },
-    { label: __('Last 7 days', 'give'), value: 7, description: __('from the last 7 days', 'give') },
-    { label: __('Last 30 days', 'give'), value: 30, description: __('from the last 30 days', 'give') },
-    { label: __('Last 90 days', 'give'), value: 90, description: __('from the last 90 days', 'give') },
-    { label: __('All-time', 'give'), value: 0, description: __('total for all-time', 'give') },
+    {label: __('Today', 'give'), value: 1, description: __('from today', 'give')},
+    {label: __('Last 7 days', 'give'), value: 7, description: __('from the last 7 days', 'give')},
+    {label: __('Last 30 days', 'give'), value: 30, description: __('from the last 30 days', 'give')},
+    {label: __('Last 90 days', 'give'), value: 90, description: __('from the last 90 days', 'give')},
+    {label: __('All-time', 'give'), value: 0, description: __('total for all-time', 'give')},
 ]
-
-const currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-})
 
 const CampaignStats = () => {
 
@@ -46,7 +39,7 @@ const CampaignStats = () => {
     const onDayRangeChange = async (days: number) => {
         setDayRange(days)
 
-        apiFetch({path: addQueryArgs( '/give-api/v2/campaigns/' + campaignId +'/statistics', {rangeInDays: days} ) } )
+        apiFetch({path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/statistics', {rangeInDays: days})})
             .then(setStats);
     }
 
@@ -56,10 +49,13 @@ const CampaignStats = () => {
         <>
             <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
             <div className={styles.mainGrid}>
-                    <StatWidget label={__('Amount raised', 'give')} values={pluck(stats, 'amountRaised')} description={widgetDescription} formatter={currency} />
-                    <StatWidget label={__('Number of donations', 'give')} values={pluck(stats, 'donationCount')} description={widgetDescription} />
-                    <StatWidget label={__('Number of donors', 'give')} values={pluck(stats, 'donorCount')} description={widgetDescription} />
-                    <RevenueWidget />
+                <StatWidget label={__('Amount raised', 'give')} values={pluck(stats, 'amountRaised')}
+                            description={widgetDescription} formatter={currencyFormatter} />
+                <StatWidget label={__('Number of donations', 'give')} values={pluck(stats, 'donationCount')}
+                            description={widgetDescription} />
+                <StatWidget label={__('Number of donors', 'give')} values={pluck(stats, 'donorCount')}
+                            description={widgetDescription} />
+                <RevenueWidget />
                 <div className={styles.nestedGrid}>
                     <GoalProgressWidget />
                     <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
@@ -93,9 +89,12 @@ const StatWidget = ({label, values, description, formatter = null}) => {
             </header>
             <div className={styles.statWidgetAmount}>
                 <DisplayText>
-                    {formatter?.format(values[0]) ?? values[0]}
+                    {'undefined' !== typeof values[0]
+                        ? formatter?.format(values[0]) ?? values[0]
+                        : <span>&nbsp;</span>
+                    }
                 </DisplayText>
-                {!! values[1] && (
+                {!!values[1] && (
                     <PercentChangePill value={values[0]} comparison={values[1]} />
                 )}
             </div>
@@ -150,7 +149,7 @@ const GoalProgressWidget = () => {
                 <HeaderText>{__('Goal progress', 'give')}</HeaderText>
                 <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
             </header>
-            <GoalProgressChart value={campaign.goalProgress} goal={campaign.goal} />
+            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} />
         </div>
     )
 }

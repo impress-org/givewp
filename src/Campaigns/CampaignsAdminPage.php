@@ -39,7 +39,7 @@ class CampaignsAdminPage
                 wp_die(__('Campaign not found', 'give'), 404);
             }
 
-            give(LoadCampaignDetailsAssets::class)($campaign);
+            give(LoadCampaignDetailsAssets::class)();
         } else {
             give(LoadCampaignsListTableAssets::class)();
         }
@@ -52,6 +52,6 @@ class CampaignsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id']) && isset($_GET['page']) && 'give-campaigns' == isset($_GET['page']);
+        return isset($_GET['id'], $_GET['page']) && 'give-campaigns' === $_GET['page'];
     }
 }

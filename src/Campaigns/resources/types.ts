@@ -21,3 +21,10 @@ declare module "@wordpress/data" {
         dismissNotification(id: string): void
     };
 }
+
+export type GiveCampaignOptions = {
+    adminUrl: string;
+    currency: string;
+    isRecurringEnabled: boolean;
+    defaultForm: string;
+}

@@ -1,15 +1,15 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {Currency, Editor, Upload} from '../../Inputs';
-import {GiveCampaignDetails} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
+import {getCampaignOptionsWindowData, amountFormatter} from '@givewp/campaigns/utils';
+import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
+const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
+const currencyFormatter = amountFormatter(currency);
 
 /**
  * @unreleased
@@ -151,7 +151,7 @@ export default () => {
             </div>
 
             {/* Campaign Goal */}
-            <div className={styles.section}>
+            <div className={styles.section} id="campaign-goal">
                 <div className={styles.leftColumn}>
                     <div className={styles.sectionTitle}>{__('Campaign Goal', 'give')}</div>
                     <div className={styles.sectionDescription}>
@@ -168,7 +168,7 @@ export default () => {
                             <option value="amount">{__('Amount raised', 'give')}</option>
                             <option value="donations">{__('Number of donations', 'give')}</option>
                             <option value="donors">{__('Number of donors', 'give')}</option>
-                            {window.GiveCampaignDetails.isRecurringEnabled && (
+                            {isRecurringEnabled && (
                                 <>
                                     <option value="amountFromSubscriptions">
                                         {__('Recurring amount raised', 'give')}
@@ -193,12 +193,48 @@ export default () => {
                         </div>
 
                         {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
-                            <Currency name="goal" currency={window.GiveCampaignDetails.currency} disabled={isDisabled} />
+                            <Currency name="goal" currency={currency} disabled={isDisabled} />
                         ) : (
                             <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
                         )}
 
                         {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
+                    </div>
+                </div>
+            </div>
+
+            {/* Campaign Theme */}
+            <div className={styles.section}>
+                <div className={styles.leftColumn}>
+                    <div className={styles.sectionTitle}>{__('Campaign Theme', 'give')}</div>
+                    <div className={styles.sectionDescription}>
+                        {__('Choose a preferred theme for your campaign.', 'give')}
+                    </div>
+                </div>
+
+                <div className={styles.rightColumn}>
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__('Select your preferred primary color', 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__(
+                                'This will affect your main cta’s like your donate button, active and focus states of other UI elements.',
+                                'give'
+                            )}
+                        </div>
+
+                        <ColorControl name="primaryColor" disabled={isDisabled} className={styles.colorControl} />
+                    </div>
+                    <div className={styles.sectionField}>
+                        <div className={styles.sectionSubtitle}>
+                            {__('Select your preferred secondary color', 'give')}
+                        </div>
+                        <div className={styles.sectionFieldDescription}>
+                            {__('This will affect your goal progress indicator, badges, icons, etc', 'give')}
+                        </div>
+
+                        <ColorControl name="secondaryColor" disabled={isDisabled} className={styles.colorControl} />
                     </div>
                 </div>
             </div>
@@ -209,9 +245,9 @@ export default () => {
 const goalDescription = (type: string) => {
     switch (type) {
         case 'amount':
-            return __(
-                'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                'give'
+            return sprintf(__('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
+                currencyFormatter.format(500),
+                currencyFormatter.format(1000)
             );
         case 'donations':
             return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
