@@ -9,6 +9,7 @@ import {MergeCampaignModalProps} from '@givewp/campaigns/admin/components/MergeC
  */
 export default function MergeCampaignModal({isOpen, setOpen, campaigns}: MergeCampaignModalProps) {
     const closeModal = () => {
+        window.history.replaceState('merge-campaigns-modal-closed', '');
         setOpen(false);
     };
 

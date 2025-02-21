@@ -91,6 +91,10 @@ export default function CampaignsListTable() {
             value: 'merge',
             type: 'custom',
             confirm: (selected, names) => {
+                if (window.history.state === 'merge-campaigns-modal-closed') {
+                    return null;
+                }
+
                 if (!isMergeCampaignsModalOpenRef.current) {
                     /**
                      * This timeout prevents this error from being thrown in the browser console:
