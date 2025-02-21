@@ -42,10 +42,7 @@
     "supports": {
         "className": true
     },
-    "example": {
-        "attributes": {
-        }
-    },
+    "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
     "style": "file:../../../../build/campaignDonationsBlockApp.css"

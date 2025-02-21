@@ -17,10 +17,7 @@
             "type": "number"
         }
     },
-    "example": {
-        "attributes": {
-        }
-    },
+    "example": {},
     "textdomain": "give",
     "viewScript": "file:../../../../build/campaignGoalBlockApp.js",
     "style": "file:../../../../build/campaignGoalBlockApp.css",

@@ -65,10 +65,7 @@
             "default": true
         }
     },
-    "example": {
-        "attributes": {
-        }
-    },
+    "example": {},
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignGridBlock.js",
     "viewScript": "file:../../../../build/campaignGridApp.js",

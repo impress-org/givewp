@@ -85,10 +85,7 @@
             }
         }
     },
-    "example": {
-        "attributes": {
-        }
-    },
+    "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
     "viewScript": "file:../../../../build/campaignCommentsBlockApp.js",
