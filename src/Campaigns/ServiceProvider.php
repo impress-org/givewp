@@ -18,9 +18,11 @@ use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -135,6 +137,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function setupCampaignPages()
     {
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
         Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 

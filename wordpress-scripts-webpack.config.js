@@ -84,6 +84,7 @@ module.exports = {
         campaignCommentsBlockApp: srcPath('Campaigns/Blocks/CampaignComments/resources/app.tsx'),
         campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
         campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
+        campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
     },
 };
 
