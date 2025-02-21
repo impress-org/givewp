@@ -28,6 +28,10 @@
             "default": "Donate now"
         }
     },
+    "example": {
+        "attributes": {
+        }
+    },
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignDonateButtonBlock.js",
     "render": "file:./render.php"

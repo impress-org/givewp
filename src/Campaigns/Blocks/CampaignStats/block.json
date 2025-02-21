@@ -64,6 +64,10 @@
             }
         }
     },
+    "example": {
+        "attributes": {
+        }
+    },
     "textdomain": "give",
     "render": "file:./render.php",
     "viewScript": "file:../../../../build/campaignStatsApp.js",

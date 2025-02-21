@@ -46,6 +46,10 @@
     "supports": {
         "className": true
     },
+    "example": {
+        "attributes": {
+        }
+    },
     "textdomain": "give",
     "render": "file:./render.php",
     "style": "file:../../../../build/campaignDonorsBlockApp.css"

@@ -82,6 +82,10 @@
             }
         }
     },
+    "example": {
+        "attributes": {
+        }
+    },
     "textdomain": "give",
     "render": "file:./render.php",
     "editorScript": "file:../../../../build/campaignCoverBlock.js",

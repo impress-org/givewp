@@ -63,6 +63,11 @@
             }
         }
     },
+    "example": {
+        "attributes": {
+            "textAlign": "center"
+        }
+    },
     "textdomain": "give",
     "editorScript": "file:../../../../build/campaignTitleBlock.js",
     "editorStyle": "file:../../../../build/campaignTitleBlock.css",
