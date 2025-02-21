@@ -135,7 +135,6 @@ class ServiceProvider implements ServiceProviderInterface
     private function setupCampaignPages()
     {
         Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
-        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
     }
 
     /**
