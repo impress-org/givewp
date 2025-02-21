@@ -43,6 +43,25 @@ class AsBackgroundJobsFacade
     }
 
     /**
+     * @unreleased
+     */
+    public function enqueueAction(
+        int $timestamp,
+        string $hook,
+        array $args,
+        string $group,
+        bool $unique = false,
+        int $priority = 10
+    ): int {
+        $enqueuedAction = $this->getActionByHookArgsGroup($hook, $args, $group, 'ids');
+        if (empty($enqueuedAction)) {
+            return as_schedule_single_action($timestamp, $hook, $args, $group, $unique, $priority);
+        }
+
+        return $enqueuedAction[0];
+    }
+
+    /**
      * @since 3.6.0
      *
      * @param string $hook         The hook to trigger.
@@ -76,6 +95,7 @@ class AsBackgroundJobsFacade
 
     /**
      * @since 3.6.0
+     * @unreleased - switch parameter $status position with $returnFormat position
      *
      * @param string $group        The group to assign this job to.
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
@@ -83,7 +103,7 @@ class AsBackgroundJobsFacade
      *
      * @return array
      */
-    public function getActionsByGroup(string $group, string $returnFormat = OBJECT, string $status = ''): array
+    public function getActionsByGroup(string $group, string $status = '', string $returnFormat = OBJECT): array
     {
         $args = [
             'group' => $group,
