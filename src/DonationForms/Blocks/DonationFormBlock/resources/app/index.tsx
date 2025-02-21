@@ -1,9 +1,10 @@
-import {createRoot, render} from '@wordpress/element';
-import ModalForm from './Components/ModalForm';
+import {createRoot} from '@wordpress/element';
+import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
+import ModalForm from './Components/ModalForm';
+import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
 import '../editor/styles/index.scss';
-import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
@@ -70,6 +71,7 @@ function DonationFormBlockApp({
 
     return (
         <IframeResizer
+            title={__('Donation Form', 'give')}
             id={embedId}
             src={dataSrc}
             checkOrigin={false}
@@ -85,8 +87,19 @@ function DonationFormBlockApp({
 
 const roots = document.querySelectorAll('.root-data-givewp-embed');
 
+/**
+ * @unreleased Add locale support
+ */
 roots.forEach((root) => {
-    const dataSrc = root.getAttribute('data-src');
+    let dataSrcUrl = root.getAttribute('data-src');
+    const locale = root.getAttribute('data-form-locale');
+    if (locale) {
+        const url = new URL(dataSrcUrl);
+        url.searchParams.set('locale', locale);
+        dataSrcUrl = url.toString();
+    }
+
+    const dataSrc = dataSrcUrl;
     const embedId = root.getAttribute('data-givewp-embed-id');
     const formFormat = root.getAttribute('data-form-format');
     const openFormButton = root.getAttribute('data-open-form-button');

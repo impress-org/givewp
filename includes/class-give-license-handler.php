@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Log\Log;
+use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 
 if ( ! defined('ABSPATH') ) {
     exit;
@@ -48,6 +49,15 @@ if ( ! class_exists('Give_License') ) :
          * @var    string
          */
         private $license;
+
+        /**
+         * The license bundled with the premium add-on.
+         *
+         * @since 3.21.0
+         *
+         * @var string|null
+         */
+        private $bundled_license;
 
         /**
          * Item name
@@ -110,6 +120,13 @@ if ( ! class_exists('Give_License') ) :
         private $author;
 
         /**
+         * Plugin basename (as provided by plugin_basename() function)
+         *
+         * @var string
+         */
+        private $plugin_basename;
+
+        /**
          * Plugin directory name
          *
          * @access private
@@ -142,10 +159,11 @@ if ( ! class_exists('Give_License') ) :
         /**
          * array of licensed addons
          *
+         * @since 3.21.0 store the Give_License instances, not just the plugin basenames
          * @since  2.1.4
          * @access private
          *
-         * @var    array
+         * @var    Give_License[]
          */
         private static $licensed_addons = [];
 
@@ -186,6 +204,9 @@ if ( ! class_exists('Give_License') ) :
          *
          * @access public
          *
+         * @since 3.17.2 removed unused auto_updater_obj property assignment
+         * @since  1.0
+         *
          * @param string $_file
          * @param string $_item_name
          * @param string $_version
@@ -193,11 +214,10 @@ if ( ! class_exists('Give_License') ) :
          * @param string $_optname
          * @param string $_api_url
 		 * @param string $_checkout_url
-		 * @param string $_account_url
+         * @param string $_account_url
 		 * @param int    $_item_id
 		 *
-		 * @since 3.17.2 removed unused auto_updater_obj property assignment
-		 * @since  1.0
+         * @since 3.21.0 adds plugin_basename property
 		 */
 		public function __construct(
 			$_file,
@@ -222,20 +242,21 @@ if ( ! class_exists('Give_License') ) :
 
 			$this->file             = $_file;
 			$this->item_name        = $_item_name;
+            $this->plugin_basename = plugin_basename($this->file);
 			$this->plugin_dirname   = dirname( plugin_basename( $this->file ) );
 			$this->item_shortname   = self::get_short_name( $this->item_name );
 			$this->license_data     = self::get_license_by_plugin_dirname( $this->plugin_dirname );
 			$this->version          = $_version;
 			$this->license          = ! empty( $this->license_data['license_key'] ) ? $this->license_data['license_key'] : '';
+            $this->bundled_license = self::get_bundled_license($this->file);
 			$this->author           = $_author;
 			self::$api_url          = is_null( $_api_url ) ? self::$api_url : $_api_url;
 			self::$checkout_url     = is_null( $_checkout_url ) ? self::$checkout_url : $_checkout_url;
 			self::$account_url      = is_null( $_account_url ) ? self::$account_url : $_account_url;
 
 			// Add plugin to registered licenses list.
-			array_push( self::$licensed_addons, plugin_basename( $this->file ) );
+            array_push(self::$licensed_addons, $this);
 		}
-
 
 		/**
 		 * Get plugin shortname
@@ -253,7 +274,138 @@ if ( ! class_exists('Give_License') ) :
 			return $plugin_name;
 		}
 
-		/**
+        /**
+         * Checks to see if the license was bundled with the add-on and if so, returns it. This is meant to be a
+         * convenience, so any errors are ignored and the user can still manually enter their license key.
+         *
+         * @since 3.21.0
+         */
+        public static function get_bundled_license(string $plugin_file): ?string
+        {
+            $license   = null;
+            $file_path = plugin_dir_path($plugin_file) . 'PLUGIN_LICENSE.php';
+            if (is_readable($file_path)) {
+                $license = include $file_path;
+            }
+
+            return $license ?: null;
+        }
+
+        /**
+         * This sorts through all the registered add-ons and checks to see if any of them have bundled licenses, but
+         * aren't set up with a license key. If so, it will attempt to activate the license key for them.
+         *
+         * It's likely that many add-ons will have the same license key which is a plan, so the license key will only be
+         * activated once for all add-ons using it.
+         *
+         * If any sort of error occurs, an admin notice will be shown to the user providing the error and instructions
+         * to manually activate the license key.
+         *
+         * Note: much of this code is taken directly from give_get_license_info_handler()
+         *
+         * @since 3.21.0
+         */
+        public static function activate_bundled_licenses(): void
+        {
+            $unactivated_bundled_licenses = [];
+            foreach (self::$licensed_addons as $addon) {
+                if ($addon->bundled_license && empty($addon->license)) {
+                    // Store a unique associative array where the key is the license key and the value is an array of
+                    // addons using that license
+                    if ( ! isset($unactivated_bundled_licenses[$addon->bundled_license])) {
+                        $unactivated_bundled_licenses[$addon->bundled_license] = [];
+                    }
+
+                    $unactivated_bundled_licenses[$addon->bundled_license][] = $addon;
+                }
+            }
+
+            if (empty($unactivated_bundled_licenses)) {
+                return;
+            }
+
+            $show_failed_activation_notice = static function ($license_key, $reason) {
+                AdminNotices::show(
+                    "license-bundle-activation-error-$license_key",
+                    "An error occurred while attempting to activate license $license_key: $reason. Please activate the license manually."
+                )->asError()->isDismissible();
+            };
+
+            foreach ($unactivated_bundled_licenses as $license => $addons) {
+                $check_license_res = self::request_license_api(
+                    [
+                        'edd_action' => 'check_license',
+                        'license'    => $license,
+                    ],
+                    true
+                );
+                $is_plan_license   = ! empty($check_license_res['is_all_access_pass']);
+
+                if (is_wp_error($check_license_res)) {
+                    $show_failed_activation_notice($license, $check_license_res->get_error_message());
+                    continue;
+                }
+
+                if ( ! $check_license_res['success']) {
+                    $show_failed_activation_notice($license, $check_license_res['error']);
+                    continue;
+                }
+
+                if ( ! $is_plan_license) {
+                    if (count($addons) > 1) {
+                        $show_failed_activation_notice(
+                            $license,
+                            'A single add-on license cannot be used for multiple add-ons'
+                        );
+                        continue;
+                    }
+
+                    if ($check_license_res['plugin_slug'] !== $addons[0]->plugin_dirname) {
+                        $show_failed_activation_notice(
+                            $license,
+                            'The license is not valid for this add-on'
+                        );
+                        continue;
+                    }
+                }
+
+                $activate_license_res = self::request_license_api(
+                    [
+                        'edd_action' => 'activate_license',
+                        'item_name'  => $check_license_res['item_name'],
+                        'license'    => $license,
+                    ],
+                    true
+                );
+
+                if (is_wp_error($activate_license_res)) {
+                    $show_failed_activation_notice($license, $activate_license_res->get_error_message());
+                    continue;
+                }
+
+                $check_license_res['license']          = $activate_license_res['license'];
+                $check_license_res['site_count']       = $activate_license_res['site_count'];
+                $check_license_res['activations_left'] = $activate_license_res['activations_left'];
+                $licenses                              = get_option('give_licenses', []);
+
+                if ($is_plan_license) {
+                    $addonSlugs = self::getAddonSlugsFromAllAccessPassLicense($check_license_res);
+                    foreach ($licenses as $license_key => $data) {
+                        if (in_array($data['plugin_slug'], $addonSlugs, true) || ! empty($data['is_all_access_pass'])) {
+                            unset($licenses[$license_key]);
+                        }
+                    }
+                }
+
+                $licenses[$check_license_res['license_key']] = $check_license_res;
+                update_option('give_licenses', $licenses);
+            }
+
+            // Have WordPress check for updates
+            give_refresh_licenses();
+        }
+
+        /**
 		 * Activate License
 		 *
 		 * Activate the license key.
@@ -313,14 +465,17 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
+         * @since 3.21.1 use array_map to safely access the private property
+         * @since 3.21.0 plucks the basename for backwards compatibility
          * @since 2.1.4
-         * @return array
+         * @return string[]
          */
-        static function get_licensed_addons()
+        static function get_licensed_addons(): array
         {
-            return self::$licensed_addons;
+            return array_map( static function ( Give_License $license ) {
+                return $license->plugin_basename;
+            }, self::$licensed_addons );
         }
-
 
         /**
          * Check if license key attached to subscription

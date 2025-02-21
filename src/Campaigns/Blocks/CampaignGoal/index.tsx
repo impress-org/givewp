@@ -9,7 +9,7 @@ export default {
     schema,
     settings: {
         icon,
-        edit
-    }
+        edit,
+    },
 };
 

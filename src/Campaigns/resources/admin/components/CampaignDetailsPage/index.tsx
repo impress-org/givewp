@@ -125,7 +125,12 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, [campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
-        if (formState.isDirty) {
+
+        const shouldSave = formState.isDirty
+            // Force save if first publish to account for a race condition.
+            || (campaign.status === 'draft' && data.status === 'active');
+
+        if (shouldSave) {
             setIsSaving(data.status);
 
             edit(data);
@@ -152,37 +157,36 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = (status: 'archived' | 'draft') => {
+    const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
-        handleSubmit(async (data) => {
-            edit(data);
 
-            try {
-                const response: Campaign = await save();
+        edit({...campaign, status})
 
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
-                reset(response);
+        try {
+            const response: Campaign = await save();
 
-                dispatch.addSnackbarNotice({
-                    id: `update-${status}`,
-                    content: getMessageByStatus(status),
-                });
-            } catch (err) {
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+            reset(response);
 
-                dispatch.addSnackbarNotice({
-                    id: 'update-error',
-                    type: 'error',
-                    content: __('Something went wrong', 'give'),
-                });
-            }
-        })();
+            dispatch.addSnackbarNotice({
+                id: `update-${status}`,
+                content: getMessageByStatus(status),
+            });
+        } catch (err) {
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+
+            dispatch.addSnackbarNotice({
+                id: 'update-error',
+                type: 'error',
+                content: __('Something went wrong', 'give'),
+            });
+        }
     };
 
     if (!hasResolved) {

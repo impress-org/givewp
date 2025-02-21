@@ -39,6 +39,7 @@ const RevenueChart = () => {
         },
         yaxis: {
             max,
+            min: 0,
         },
         stroke: {
             color: ['#60a1e2'],

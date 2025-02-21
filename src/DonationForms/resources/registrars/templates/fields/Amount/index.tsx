@@ -7,6 +7,7 @@ import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';
 
 /**
+ * @unreleased updated default custom amount value to respect level amounts
  * @since 3.12.0 Update default level when having distinct default currency
  * @since 3.0.0
  */
@@ -24,8 +25,10 @@ export default function Amount({
     messages,
 }: AmountProps) {
     const isFixedAmount = !allowLevels;
+    const defaultCustomAmountValue = isFixedAmount && fixedAmountValue > 0 ? fixedAmountValue.toString() : defaultValue.toString();
+    const levelsHaveDefaultCustomAmountValue = levels.some((level) => level.value === Number(defaultCustomAmountValue));
     const [customAmountValue, setCustomAmountValue] = useState<string>(
-        isFixedAmount ? fixedAmountValue.toString() : ''
+        !levelsHaveDefaultCustomAmountValue ? defaultCustomAmountValue : ''
     );
     const {useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
     const {setValue} = useFormContext();

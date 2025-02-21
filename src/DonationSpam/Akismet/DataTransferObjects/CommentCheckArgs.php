@@ -2,8 +2,6 @@
 
 namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
-use Give\DonationForms\DataTransferObjects\DonateControllerData;
-
 /**
  * @since 3.15.0
  */
@@ -21,16 +19,17 @@ class CommentCheckArgs
     public $comment_author_email;
 
     /**
+     * @unreleased updated params to receive
      * @since 3.15.0
      */
-    public static function make(DonateControllerData $data): CommentCheckArgs
+    public static function make(string $comment, string $email, string $firstName): CommentCheckArgs
     {
         $self = new self();
 
         $self->comment_type = 'contact-form';
-        $self->comment_content = $data->comment;
-        $self->comment_author = $data->firstName;
-        $self->comment_author_email = $data->email;
+        $self->comment_content = $comment;
+        $self->comment_author = $firstName;
+        $self->comment_author_email = $email;
 
         $self->blog = get_option('home');
         $self->blog_lang = get_locale();

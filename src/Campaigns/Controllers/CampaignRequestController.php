@@ -9,6 +9,9 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\Database\DB;
+use Give\Framework\Models\ModelQueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -34,7 +37,7 @@ class CampaignRequestController
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
                 'goalStats' => $campaign->getGoalStats(),
-                'defaultFormTitle' => $campaign->defaultForm()->title
+                'defaultFormTitle' => $campaign->defaultForm()->title,
             ])
         );
     }
@@ -44,20 +47,33 @@ class CampaignRequestController
      */
     public function getCampaigns(WP_REST_Request $request): WP_REST_Response
     {
+        $ids = $request->get_param('ids');
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
+        $status = $request->get_param('status');
+        $sortBy = $request->get_param('sortBy');
+        $orderBy = $request->get_param('orderBy');
 
-        $query = give(CampaignRepository::class)->prepareQuery();
+        $query = Campaign::query();
+
+        $query->where('status', $status);
+
+        if ( ! empty($ids)) {
+            $query->whereIn('id', $ids);
+        }
+
+        $totalQuery = clone $query;
 
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
+        $this->orderCampaigns($query, $sortBy, $orderBy);
+
         $campaigns = $query->getAll() ?? [];
-        $totalCampaigns = empty($campaigns) ? 0 : Campaign::query()->count();
+        $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
-        // todo: remove - temporary solution
         $campaigns = array_map(function ($campaign) {
             return array_merge($campaign->toArray(), [
                 'goalStats' => $campaign->getGoalStats(),
@@ -137,7 +153,8 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign, $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
+                        $request->get_param('defaultFormId'));
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
@@ -152,7 +169,7 @@ class CampaignRequestController
 
         return new WP_REST_Response(
             array_merge($campaign->toArray(), [
-                'defaultFormTitle' => $campaign->defaultForm()->title
+                'defaultFormTitle' => $campaign->defaultForm()->title,
             ])
         );
     }
@@ -197,5 +214,54 @@ class CampaignRequestController
         ]);
 
         return new WP_REST_Response($campaign->toArray(), 201);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
+    {
+        switch ($sortBy) {
+            case 'date':
+                $query->orderBy('date_created', $orderBy);
+
+                break;
+            case 'amount':
+                $query
+                    ->selectRaw('(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
+                        DB::prefix('give_revenue'))
+                    ->orderBy('amount', $orderBy);
+
+                break;
+            case 'donations':
+                $query
+                    ->selectRaw('(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
+                        DB::prefix('give_revenue'))
+                    ->orderBy('donationsCount', $orderBy);
+
+                break;
+            case 'donors':
+
+                $postsTable = DB::prefix('posts');
+                $metaTable = DB::prefix('give_donationmeta');
+                $campaignIdKey = DonationMetaKeys::CAMPAIGN_ID;
+                $donorIdKey = DonationMetaKeys::DONOR_ID;
+
+                $query
+                    ->selectRaw(
+                        "(
+                            SELECT COUNT(DISTINCT donorId.meta_value)
+                            FROM {$postsTable} AS donation
+                            LEFT JOIN {$metaTable} campaignId ON donation.ID = campaignId.donation_id AND campaignId.meta_key = '{$campaignIdKey}'
+                            LEFT JOIN {$metaTable} donorId ON donation.ID = donorId.donation_id AND donorId.meta_key = '{$donorIdKey}'
+                            WHERE post_type = 'give_payment'
+                            AND donation.post_status IN ('publish', 'give_subscription')
+                            AND campaignId.meta_value = campaigns.id
+                        ) AS donorsCount"
+                    )
+                    ->orderBy('donorsCount', $orderBy);
+
+                break;
+        }
     }
 }

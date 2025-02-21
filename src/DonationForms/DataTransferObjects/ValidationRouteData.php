@@ -3,8 +3,10 @@
 namespace Give\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromFormFields;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
@@ -42,9 +44,10 @@ class ValidationRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
+     * @unreleased added additional validation for form validity, added givewp_donation_form_fields_validated action
      * @since 3.0.0
      *
-     * @throws DonationFormFieldErrorsException
+     * @throws DonationFormFieldErrorsException|NameCollisionException|DonationFormForbidden
      */
     public function validate(): JsonResponse
     {
@@ -53,8 +56,8 @@ class ValidationRouteData implements Arrayable
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
-        if (!$form) {
-            $this->throwDonationFormFieldErrorsException(['formId' => 'Invalid Form ID, Form not found']);
+        if (!$form || !$this->isValidForm($form)) {
+            throw new DonationFormForbidden();
         }
 
         $formFields = array_filter($form->schema()->getFields(), static function ($field) use ($request) {
@@ -66,6 +69,15 @@ class ValidationRouteData implements Arrayable
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
         }
+
+        $validatedValues = $validator->validated();
+
+       /**
+         * @unreleased
+         /**
+         * @param array $validatedValues validated values in key value pairs
+         */
+        do_action('givewp_donation_form_fields_validated', $validatedValues);
 
         return new JsonResponse(['valid' => true]);
     }
@@ -89,7 +101,7 @@ class ValidationRouteData implements Arrayable
      *
      * @throws DonationFormFieldErrorsException
      */
-    private function throwDonationFormFieldErrorsException(array $errors)
+    private function throwDonationFormFieldErrorsException(array $errors): void
     {
         $wpError = new WP_Error();
 
@@ -98,6 +110,22 @@ class ValidationRouteData implements Arrayable
         }
 
         throw new DonationFormFieldErrorsException($wpError);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isValidForm(DonationForm $form): bool
+    {
+        if ($form->status->isTrash()) {
+            return false;
+        }
+
+        if (!$form->status->isPublished() && !current_user_can('edit_give_forms')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
