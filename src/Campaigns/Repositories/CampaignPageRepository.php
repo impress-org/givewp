@@ -45,6 +45,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function insert(CampaignPage $campaignPage): void
     {
@@ -60,16 +61,19 @@ class CampaignPageRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::table('posts')
-                ->insert([
-                    'post_title' => $campaignPage->campaign()->title,
-                    'post_date' => $dateCreatedFormatted,
-                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                    'post_modified' => $dateUpdatedFormatted,
-                    'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
-                    'post_status' => 'publish', // TODO: Update to value object
-                    'post_type' => 'give_campaign_page',
-                ]);
+            $insert = wp_insert_post([
+                'post_title' => $campaignPage->campaign()->title,
+                'post_date' => $dateCreatedFormatted,
+                'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                'post_modified' => $dateUpdatedFormatted,
+                'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
+                'post_status' => 'publish', // TODO: Update to value object
+                'post_type' => 'give_campaign_page',
+            ]);
+
+            if (is_wp_error($insert)) {
+                throw new Exception($insert->get_error_message());
+            }
 
             $campaignPage->id = DB::last_insert_id();
             $campaignPage->createdAt = $dateCreated;
