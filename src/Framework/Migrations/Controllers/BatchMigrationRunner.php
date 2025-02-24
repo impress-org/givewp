@@ -48,7 +48,14 @@ class BatchMigrationRunner
         ]);
 
         if ( ! $actions) {
-            $batches = ceil($this->migration->getItemsCount() / $this->migration->getBatchSize());
+            $itemsCount = $this->migration->getItemsCount();
+
+            // Bailout if there are no items to process
+            if ( ! $itemsCount) {
+                return MigrationLogStatus::SUCCESS;
+            }
+
+            $batches = ceil($itemsCount / $this->migration->getBatchSize());
 
             // Register migration action for each batch
             for ($i = 0; $i < $batches; $i++) {
