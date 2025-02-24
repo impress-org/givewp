@@ -16,11 +16,18 @@ class LoadCampaignOptions
 
         wp_localize_script('give-campaign-options', 'GiveCampaignOptions',
             [
+                'isAdmin' => is_admin(),
                 'adminUrl' => admin_url(),
+                'campaignsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns'),
                 'currency' => give_get_currency(),
                 'currencySymbol' => give_currency_symbol(),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')
                     ? GIVE_RECURRING_VERSION
+                    : null,
+                'admin' => is_admin()
+                    ? [
+                        'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', true),
+                    ]
                     : null,
             ]
         );

@@ -146,10 +146,10 @@ class CampaignRepository
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
+                    'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
-                    'campaign_page_id' => $campaign->pageId,
                     'campaign_logo' => $campaign->logo,
                     'campaign_image' => $campaign->image,
                     'primary_color' => $campaign->primaryColor,
