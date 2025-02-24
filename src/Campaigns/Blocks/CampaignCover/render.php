@@ -3,14 +3,14 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
-if ( ! isset($attributes['campaignId'])) {
+if (!isset($attributes['campaignId'])) {
     return;
 }
 
 /** @var Campaign $campaign */
 $campaign = give(CampaignRepository::class)->getById($attributes['campaignId']);
 
-if ( ! $campaign) {
+if (!$campaign || !$campaign->image) {
     return;
 }
 
@@ -21,11 +21,11 @@ $alignment = isset($attributes['align']) ? 'align' . $attributes['align'] : '';
 
 // Only assign width and height if the alignment is NOT "full" or "wide"
 if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
-    $width = isset($attributes['width']) ? $attributes['width'] : '100%';
-    $height = isset($attributes['height']) ? $attributes['height'] : '100%';
+    $widthStyle = isset($attributes['width']) ? "width: {$attributes['width']}px;" : '';
+    $heightStyle = isset($attributes['height']) ? "max-height: {$attributes['height']}px;" : '';
 } else {
-    $width = 'auto';
-    $height = 'auto';
+    $widthStyle = 'width: auto;';
+    $heightStyle = 'height: auto;';
 }
 ?>
 
@@ -35,8 +35,8 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
         src="<?php echo esc_url($campaign->image); ?>"
         alt="<?php echo esc_attr($altText); ?>"
         style="
-            width:<?php echo $width ?>px;
-            height: <?php echo $height ?>px;
+        <?php echo esc_attr($widthStyle) ?>
+        <?php echo esc_attr($heightStyle) ?>
             border-radius: 8px;"
     />
 </figure>

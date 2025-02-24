@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Repositories;
 
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
