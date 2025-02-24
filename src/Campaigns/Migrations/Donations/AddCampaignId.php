@@ -6,13 +6,12 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
-use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
  * @unreleased
  */
-class AddCampaignId extends Migration implements BatchMigration
+class AddCampaignId extends BatchMigration
 {
     /**
      * @inheritDoc
