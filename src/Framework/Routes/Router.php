@@ -90,7 +90,7 @@ class Router
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      *
      * @param  string  $type

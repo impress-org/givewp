@@ -39,7 +39,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0 remove html tags from title
      * @since 2.24.0
      *

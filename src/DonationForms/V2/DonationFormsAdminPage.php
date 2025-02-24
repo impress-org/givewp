@@ -92,7 +92,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {

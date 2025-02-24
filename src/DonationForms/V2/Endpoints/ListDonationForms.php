@@ -109,7 +109,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
      * @param WP_REST_Request $request

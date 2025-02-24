@@ -7,7 +7,7 @@ import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';
 
 /**
- * @unreleased updated default custom amount value to respect level amounts
+ * @since 3.22.0 updated default custom amount value to respect level amounts
  * @since 3.12.0 Update default level when having distinct default currency
  * @since 3.0.0
  */
