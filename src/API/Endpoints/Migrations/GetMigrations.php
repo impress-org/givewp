@@ -177,6 +177,7 @@ class GetMigrations extends Endpoint
                 'run_order' => $this->migrationHelper->getRunOrderForMigration($migration::id()),
                 'source' => $migration::source(),
                 'title' => $migration::title(),
+                'isBatchMigration' => is_subclass_of($migration, BatchMigration::class)
             ];
         }
 
