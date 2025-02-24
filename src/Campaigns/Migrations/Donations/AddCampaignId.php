@@ -34,7 +34,7 @@ class AddCampaignId extends BatchMigration
      */
     public static function timestamp(): string
     {
-        return strtotime('2024-11-22 00:00:00');
+        return time();
     }
 
     /**
