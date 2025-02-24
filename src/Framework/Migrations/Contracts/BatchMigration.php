@@ -3,28 +3,31 @@
 namespace Give\Framework\Migrations\Contracts;
 
 /**
+ * Extend this class when you need database migration to run in batches.
+ *
  * @unreleased
  */
-interface BatchMigration
+abstract class BatchMigration extends BaseMigration
 {
     /**
-     * @unreleased
-     *
      * Get the number of items per batch
+     *
+     * @unreleased
      */
-    public function getBatchSize(): int;
+    abstract public function getBatchSize(): int;
 
     /**
-     * @unreleased
      *
      * Get the total items count
+     *
+     * @unreleased
      */
-    public function getItemsCount(): int;
+    abstract public function getItemsCount(): int;
 
     /**
-     * @unreleased
-     *
      * Run batch
+     *
+     * @unreleased
      */
-    public function runBatch($batchNumber);
+    abstract public function runBatch($batchNumber);
 }
