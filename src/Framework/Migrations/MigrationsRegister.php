@@ -4,7 +4,6 @@ namespace Give\Framework\Migrations;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Migrations\Contracts\BaseMigration;
-use Give\Framework\Migrations\Contracts\Migration;
 
 class MigrationsRegister
 {
@@ -29,7 +28,7 @@ class MigrationsRegister
     {
         $migrations = [];
 
-        /* @var Migration $migrationClass */
+        /* @var BaseMigration $migrationClass */
         foreach ($this->migrations as $migrationClass) {
             $migrations[$migrationClass::id()] = $migrationClass::timestamp();
         }
