@@ -62,7 +62,7 @@ class CampaignPageRepository
         DB::query('START TRANSACTION');
 
         try {
-            $insert = wp_insert_post([
+            $pageId = wp_insert_post([
                 'post_title' => $campaignPage->campaign()->title,
                 'post_date' => $dateCreatedFormatted,
                 'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
@@ -72,11 +72,11 @@ class CampaignPageRepository
                 'post_type' => 'give_campaign_page',
             ]);
 
-            if (is_wp_error($insert)) {
-                throw new Exception($insert->get_error_message());
+            if ( ! $pageId) {
+                throw new Exception('Error while creating campaign page');
             }
 
-            $campaignPage->id = DB::last_insert_id();
+            $campaignPage->id = $pageId;
             $campaignPage->createdAt = $dateCreated;
             $campaignPage->updatedAt = $dateUpdated;
 
@@ -86,7 +86,6 @@ class CampaignPageRepository
                     'meta_key' => 'campaignId',
                     'meta_value' => $campaignPage->campaignId,
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -132,7 +131,6 @@ class CampaignPageRepository
                 ->update([
                     'meta_value' => $campaignPage->campaignId,
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -209,7 +207,7 @@ class CampaignPageRepository
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
-            if (!isset($campaignPage->$key)) {
+            if ( ! isset($campaignPage->$key)) {
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }
