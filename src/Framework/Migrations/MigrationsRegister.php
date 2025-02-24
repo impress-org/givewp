@@ -4,6 +4,7 @@ namespace Give\Framework\Migrations;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Migrations\Contracts\BaseMigration;
+use Give\Framework\Migrations\Contracts\Migration;
 
 class MigrationsRegister
 {
@@ -19,13 +20,27 @@ class MigrationsRegister
     /**
      * Returns all of the registered migrations
      *
+     * @unreleased fix: sort migrations by run order
      * @since 2.9.0
      *
      * @return string[]
      */
     public function getMigrations()
     {
-        return $this->migrations;
+        $migrations = [];
+
+        /* @var Migration $migrationClass */
+        foreach ($this->migrations as $migrationClass) {
+            $migrations[$migrationClass::id()] = $migrationClass::timestamp();
+        }
+
+        asort($migrations);
+
+        foreach ($migrations as $id => $migrationClass) {
+            $migrations[$id] = $this->migrations[$id];
+        }
+
+        return $migrations;
     }
 
     /**
