@@ -4,7 +4,7 @@ import {PanelBody, TextControl, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import CampaignComments from './shared/components/CampaignComments';
 import useCampaign from '../../shared/hooks/useCampaign';
-import {CampaignSelector} from '../../shared/components/CampaignSelector';
+import CampaignSelector from '../../shared/components/CampaignSelector';
 import {useEffect} from 'react';
 import {Attributes} from './types';
 
@@ -22,7 +22,10 @@ export default function Edit({attributes, setAttributes, clientId}: BlockEditPro
 
     return (
         <figure {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <CampaignComments attributes={attributes} />
             </CampaignSelector>
 

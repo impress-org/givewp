@@ -84,6 +84,5 @@
     },
     "textdomain": "give",
     "render": "file:./render.php",
-    "editorScript": "file:../../../../build/campaignCoverBlock.js",
     "style": "file:../../../../build/campaignCoverBlock.css"
 }

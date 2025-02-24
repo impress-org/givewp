@@ -2,7 +2,7 @@ import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl} from '@wordpress/components';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 import ServerSideRender from '@wordpress/server-side-render';
 import useCampaign from '../shared/hooks/useCampaign';
 
@@ -26,7 +26,10 @@ export default function Edit({
 
     return (
         <div {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 <ServerSideRender block="givewp/campaign-stats-block" attributes={attributes} />
             </CampaignSelector>
 
