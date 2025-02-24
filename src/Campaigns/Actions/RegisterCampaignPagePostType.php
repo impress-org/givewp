@@ -14,6 +14,9 @@ class RegisterCampaignPagePostType
     {
         register_post_type('give_campaign_page', [
             'label' => __('Campaign Page', 'give'),
+            'labels' => [
+                'edit_item' => __('Edit Campaign Page', 'give'),
+            ],
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => false,
