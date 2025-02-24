@@ -5,9 +5,10 @@ namespace Give\Framework\Migrations;
 use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Migrations\Contracts\BaseMigration;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
-use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
+use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
 use Give\MigrationLog\MigrationLogRepository;
@@ -90,7 +91,7 @@ class MigrationsRunner
         $migrations = [];
 
         foreach ($this->migrationRegister->getMigrations() as $migrationClass) {
-            /* @var Migration $migrationClass */
+            /* @var BaseMigration $migrationClass */
             $migrations[$migrationClass::timestamp() . '_' . $migrationClass::id()] = $migrationClass;
         }
 
@@ -110,16 +111,39 @@ class MigrationsRunner
                 $migration = give($migrationClass);
 
                 if (is_subclass_of($migration, BatchMigration::class)) {
-                    $status = $this->runBatch($migration);
+                    $status = (new BatchMigrationRunner($migration))->run();
 
                     if ($status === MigrationLogStatus::RUNNING) {
                         give()->notices->register_notice(
                             [
                                 'id' => $migrationId,
-                                'description' => esc_html__('Running DB migration: ' . $migration::title(), 'give'),
+                                'description' => sprintf(
+                                    esc_html__('Running DB migration: %s', 'give'),
+                                    $migration::title()
+                                ),
                             ]
                         );
+
+                        // Update status to RUNNING
+                        if (MigrationLogStatus::RUNNING !== $migrationLog->getStatus()) {
+                            $migrationLog->setStatus(MigrationLogStatus::RUNNING);
+                            $migrationLog->save();
+                        }
+
                         break;
+                    }
+
+                    if ($status === MigrationLogStatus::INCOMPLETE) {
+                        give()->notices->register_notice(
+                            [
+                                'id' => $migrationId,
+                                'type' => 'warning',
+                                'description' => sprintf(
+                                    esc_html__('Incomplete DB migration: %s', 'give'),
+                                    $migration::title()
+                                ),
+                            ]
+                        );
                     }
 
                     $migrationLog->setStatus($status);
@@ -179,60 +203,5 @@ class MigrationsRunner
     public function hasMigrationToRun()
     {
         return (bool)array_diff($this->migrationRegister->getRegisteredIds(), $this->completedMigrations);
-    }
-
-    /**
-     * Run migration batch
-     *
-     * @unreleased
-     * @throws Exception
-     */
-    public function runBatch(BatchMigration $migration): string
-    {
-        $group = $migration::id();
-        $actionHook = 'givewp-batch-' . $group;
-
-        add_action($actionHook, function ($batchNumber) use ($migration) {
-            DB::beginTransaction();
-
-            try {
-                $migration->runBatch($batchNumber);
-
-                DB::commit();
-            } catch (Exception $e) {
-                DB::rollback();
-                throw new Exception($e->getMessage(), 0, $e);
-            }
-        });
-
-        $actions = AsBackgroundJobs::getActionsByGroup($group);
-
-        // register actions - initial run
-        if (empty($actions)) {
-            $batches = ceil($migration->getItemsCount() / $migration->getBatchSize());
-
-            for ($i = 0; $i < $batches; $i++) {
-                AsBackgroundJobs::enqueueAsyncAction($actionHook, [$i], $group);
-            }
-
-            return MigrationLogStatus::RUNNING;
-        }
-
-        $pendingActions = AsBackgroundJobs::getActionsByGroup($group, 'pending');
-
-        if ( ! empty($pendingActions)) {
-            return MigrationLogStatus::RUNNING;
-        }
-
-        $failedActions = AsBackgroundJobs::getActionsByGroup($group, 'failed');
-
-        if ( ! empty($failedActions)) {
-            return MigrationLogStatus::FAILED;
-        }
-
-        // todo: discuss deleting actions
-        // AsBackgroundJobs::deleteActionsByGroup($group);
-
-        return MigrationLogStatus::SUCCESS;
     }
 }
