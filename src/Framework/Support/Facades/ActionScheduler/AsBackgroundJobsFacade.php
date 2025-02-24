@@ -43,25 +43,6 @@ class AsBackgroundJobsFacade
     }
 
     /**
-     * @unreleased
-     */
-    public function enqueueAction(
-        int $timestamp,
-        string $hook,
-        array $args,
-        string $group,
-        bool $unique = false,
-        int $priority = 10
-    ): int {
-        $enqueuedAction = $this->getActionByHookArgsGroup($hook, $args, $group, 'ids');
-        if (empty($enqueuedAction)) {
-            return as_schedule_single_action($timestamp, $hook, $args, $group, $unique, $priority);
-        }
-
-        return $enqueuedAction[0];
-    }
-
-    /**
      * @since 3.6.0
      *
      * @param string $hook         The hook to trigger.
@@ -128,7 +109,7 @@ class AsBackgroundJobsFacade
      */
     public function deleteActionsByGroup(string $group, string $status = ''): int
     {
-        $actions = $this->getActionsByGroup($group, 'ids', $status);
+        $actions = $this->getActionsByGroup($group, $status, 'ids');
 
         $deletedActions = 0;
         foreach ($actions as $actionID) {
