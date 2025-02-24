@@ -3,7 +3,7 @@
 namespace Give\Framework\Migrations;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\BaseMigration;
 
 class MigrationsRegister
 {
@@ -81,8 +81,8 @@ class MigrationsRegister
      */
     public function addMigration($migrationClass)
     {
-        if ( ! is_subclass_of($migrationClass, Migration::class)) {
-            throw new InvalidArgumentException('Class must extend the ' . Migration::class . ' class');
+        if ( ! is_subclass_of($migrationClass, BaseMigration::class)) {
+            throw new InvalidArgumentException('Class must extend the ' . BaseMigration::class . ' class');
         }
 
         $migrationId = $migrationClass::id();
