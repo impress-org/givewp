@@ -195,7 +195,6 @@ export default function ListTablePage({
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
             if ('custom' === bulkActions[actionIndex].type) {
-                window.history.replaceState(null, '');
                 modalContent?.confirm(selected, names);
             } else {
                 dialog.current.show();

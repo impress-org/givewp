@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import MergeCampaignsForm from './../Form';
 import {MergeCampaignModalProps} from '@givewp/campaigns/admin/components/MergeCampaign/Form/types';
+import {useState} from 'react';
 
 /**
  * Create Campaign Modal component
@@ -8,15 +9,17 @@ import {MergeCampaignModalProps} from '@givewp/campaigns/admin/components/MergeC
  * @unreleased
  */
 export default function MergeCampaignModal({isOpen, setOpen, campaigns}: MergeCampaignModalProps) {
+    const [isModalOpen, setIsModalOpen] = useState(isOpen);
+
     const closeModal = () => {
-        window.history.replaceState('merge-campaigns-modal-closed', '');
+        setIsModalOpen(false);
         setOpen(false);
     };
 
     return (
         <>
             <MergeCampaignsForm
-                isOpen={isOpen}
+                isOpen={isModalOpen}
                 handleClose={closeModal}
                 title={__('Merge campaigns', 'give')}
                 campaigns={campaigns}

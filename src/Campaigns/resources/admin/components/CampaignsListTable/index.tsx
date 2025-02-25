@@ -6,7 +6,7 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
-import {useEffect, useRef, useState} from 'react';
+import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 
 declare const window: {
@@ -66,51 +66,28 @@ const filters: Array<FilterConfig> = [
     },
 ];
 
+const bulkActions: Array<BulkActionsConfig> = [
+    {
+        label: __('Merge', 'give'),
+        value: 'merge',
+        type: 'custom',
+        confirm: (selected, names) => {
+            return (
+                <MergeCampaignModal
+                    isOpen={true}
+                    setOpen={() => {}}
+                    campaigns={{
+                        selected: selected,
+                        names: names,
+                    }}
+                />
+            );
+        },
+    },
+];
+
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
-    const [isMergeCampaignsModalOpen, setMergeCampaignsModalOpen] = useState<boolean>(false);
-    const [campaignsToMerge, setCampaignsToMerge] = useState({
-        selected: [] as (string | number)[],
-        names: [] as string[],
-    });
-
-    /**
-     * useRef is used to store the latest value of `isMergeCampaignsModalOpen` without causing re-renders.
-     * This ensures that the most up-to-date state is accessible synchronously, even during asynchronous updates or closures,
-     * such as when the `confirm` function is executed. Without useRef, the stale value of `isMergeCampaignsModalOpen` captured by
-     * the closure could lead to incorrect behavior, like reopening the modal unnecessarily.
-     */
-    const isMergeCampaignsModalOpenRef = useRef<boolean>(isMergeCampaignsModalOpen);
-    useEffect(() => {
-        isMergeCampaignsModalOpenRef.current = isMergeCampaignsModalOpen;
-    }, [isMergeCampaignsModalOpen]);
-
-    const bulkActions: Array<BulkActionsConfig> = [
-        {
-            label: __('Merge', 'give'),
-            value: 'merge',
-            type: 'custom',
-            confirm: (selected, names) => {
-                if (window.history.state === 'merge-campaigns-modal-closed') {
-                    return null;
-                }
-
-                if (!isMergeCampaignsModalOpenRef.current) {
-                    /**
-                     * This timeout prevents this error from being thrown in the browser console:
-                     * Warning: Cannot update a component (`CampaignsListTable`) while rendering a different component (`ListTablePage`).
-                     *
-                     * @see https://github.com/facebook/react/issues/18178#issuecomment-595846312
-                     */
-                    setTimeout(() => {
-                        setCampaignsToMerge({selected, names});
-                        setMergeCampaignsModalOpen(true);
-                    }, 0);
-                }
-                return null;
-            },
-        },
-    ];
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -153,11 +130,6 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
-                <MergeCampaignModal
-                    isOpen={isMergeCampaignsModalOpen}
-                    setOpen={setMergeCampaignsModalOpen}
-                    campaigns={campaignsToMerge}
-                />
             </ListTablePage>
         </>
     );
