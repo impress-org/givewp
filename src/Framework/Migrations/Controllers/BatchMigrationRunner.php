@@ -32,16 +32,19 @@ class BatchMigrationRunner
     {
         $this->migration = $migration;
         $this->actionSchedulerStore = ActionScheduler_Store::instance();
-        $this->registerAction();
     }
 
     /**
      * Run batch migration
      *
      * @unreleased
+     *
+     * @throws Exception
      */
     public function run(): string
     {
+        $this->registerAction();
+
         $actions = $this->actionSchedulerStore->query_actions([
             'group' => $this->getGroup(),
             'per_page' => 0,
@@ -55,11 +58,16 @@ class BatchMigrationRunner
                 return MigrationLogStatus::SUCCESS;
             }
 
+            $current = 0;
             $batches = ceil($itemsCount / $this->migration->getBatchSize());
 
             // Register migration action for each batch
             for ($i = 0; $i < $batches; $i++) {
-                as_enqueue_async_action($this->getHook(), [$i], $this->getGroup());
+                if ($items = $this->migration->getBatchItemsAfter($current)) {
+                    [$firstId, $lastId] = $items;
+                    $current = $lastId;
+                    as_enqueue_async_action($this->getHook(), [$firstId, $lastId], $this->getGroup());
+                }
             }
 
             return MigrationLogStatus::RUNNING;
@@ -87,6 +95,11 @@ class BatchMigrationRunner
 
         if ($failedActions) {
             return MigrationLogStatus::INCOMPLETE;
+        }
+
+        // Run the last check
+        if ($this->migrationHasIncomingData()) {
+            return MigrationLogStatus::RUNNING;
         }
 
         // If everything went well, delete scheduled actions
@@ -122,18 +135,50 @@ class BatchMigrationRunner
      */
     private function registerAction()
     {
-        add_action($this->getHook(), function ($batchNumber) {
+        add_action($this->getHook(), function ($firstId, $lastId) {
             DB::beginTransaction();
 
             try {
-                $this->migration->runBatch($batchNumber);
+                $this->migration->runBatch($firstId, $lastId);
 
                 DB::commit();
             } catch (Exception $e) {
                 DB::rollback();
                 throw new Exception($e->getMessage(), 0, $e);
             }
-        });
+        }, 10, 2);
+    }
+
+
+    /**
+     * Check if the current migration has new data
+     *
+     * @unreleased
+     */
+    private function migrationHasIncomingData(): bool
+    {
+        // todo: We already have a list of all actions in run method, maybe we can simply pass end($actions) to this method?
+
+        // Get the last completed action
+        $actionId = $this->actionSchedulerStore->query_action([
+            'group' => $this->getGroup(),
+            'per_page' => 1,
+            'status' => ActionScheduler_Store::STATUS_COMPLETE,
+            'order' => 'DESC',
+            'orderby' => 'action_id',
+        ]);
+
+        $action = $this->actionSchedulerStore->fetch_action($actionId);
+
+        [, $lastId] = $action->get_args();
+
+        if ($this->migration->hasIncomingData($lastId)) {
+            as_enqueue_async_action($this->getHook(), [$lastId, null], $this->getGroup());
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
