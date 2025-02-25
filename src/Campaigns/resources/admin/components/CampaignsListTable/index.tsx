@@ -71,11 +71,11 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Merge', 'give'),
         value: 'merge',
         type: 'custom',
-        confirm: (selected, names) => {
+        confirm: (selected, names, isOpen, setOpen) => {
             return (
                 <MergeCampaignModal
-                    isOpen={true}
-                    setOpen={() => {}}
+                    isOpen={isOpen}
+                    setOpen={setOpen}
                     campaigns={{
                         selected: selected,
                         names: names,

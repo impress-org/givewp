@@ -1,6 +1,6 @@
 export interface MergeCampaignModalProps {
     isOpen: boolean;
-    setOpen: (response?: any) => void;
+    setOpen?: (isOpen?: boolean) => void;
     campaigns: {
         selected: (string | number)[];
         names: string[];
