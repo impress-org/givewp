@@ -26,7 +26,6 @@ class CreateDefaultLayoutForCampaignPage
      */
     public function __invoke(Campaign $campaign)
     {
-
         $layout = array_map(function($block) use ($campaign) {
             return str_replace(
                 ['%id%', '%description%'],
@@ -35,6 +34,6 @@ class CreateDefaultLayoutForCampaignPage
             );
         }, $this->blocks);
 
-        return implode('', $layout);
+        return implode(PHP_EOL, $layout);
     }
 }
