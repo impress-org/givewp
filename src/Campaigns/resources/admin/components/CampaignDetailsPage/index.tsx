@@ -210,7 +210,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
                                         href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
-                                        target="_blank"
                                         rel="noopener noreferrer"
                                     >
                                         {__('Edit campaign page', 'give')}
