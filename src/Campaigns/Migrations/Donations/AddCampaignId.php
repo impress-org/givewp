@@ -7,6 +7,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
@@ -34,14 +35,24 @@ class AddCampaignId extends BatchMigration
      */
     public static function timestamp(): string
     {
-        return time();
+        return strtotime('2024-11-22 00:00:00');
+    }
+
+    /**
+     * Base query
+     *
+     * @unreleased
+     */
+    protected function query(): QueryBuilder
+    {
+        return DB::table('posts')->where('post_type', 'give_payment');
     }
 
     /**
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
-    public function runBatch($batchNumber)
+    public function runBatch($firstId, $lastId)
     {
         $relationships = [];
 
@@ -54,18 +65,23 @@ class AddCampaignId extends BatchMigration
                 $relationships[$relationship->campaign_id][] = $relationship->form_id;
             }
 
-            $donations = DB::table('posts')
+            $query = $this->query()
                 ->select('ID')
                 ->attachMeta(
                     'give_donationmeta',
                     'ID',
                     'donation_id',
                     [DonationMetaKeys::FORM_ID(), 'formId']
-                )
-                ->where('post_type', 'give_payment')
-                ->offset($batchNumber)
-                ->limit($this->getBatchSize())
-                ->getAll();
+                );
+
+            // Migration Runner will pass null for lastId in the last step
+            if (is_null($lastId)) {
+                $query->where('ID', $firstId, '>');
+            } else {
+                $query->whereBetween('ID', $firstId, $lastId);
+            }
+
+            $donations = $query->getAll();
 
             $donationMeta = [];
 
@@ -98,9 +114,29 @@ class AddCampaignId extends BatchMigration
      */
     public function getItemsCount(): int
     {
-        return DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->count();
+        return $this->query()->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBatchItemsAfter($lastId): ?array
+    {
+        $items = $this->query()
+            ->select('ID')
+            ->where('ID', $lastId, '>')
+            ->orderBy('ID')
+            ->limit($this->getBatchSize())
+            ->getAll();
+
+        if ( ! $items) {
+            return null;
+        }
+
+        return [
+            min($items)->ID,
+            max($items)->ID,
+        ];
     }
 
     /**
@@ -108,6 +144,16 @@ class AddCampaignId extends BatchMigration
      */
     public function getBatchSize(): int
     {
-        return 50;
+        return 100;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasIncomingData($lastProcessedId): ?bool
+    {
+        return $this->query()
+            ->where('ID', $lastProcessedId, '>')
+            ->count();
     }
 }
