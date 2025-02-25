@@ -5,7 +5,6 @@ namespace Give\Framework\Migrations;
 use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
-use Give\Framework\Migrations\Contracts\BaseMigration;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
@@ -87,15 +86,7 @@ class MigrationsRunner
             return;
         }
 
-        // Store and sort migrations by timestamp
-        $migrations = [];
-
-        foreach ($this->migrationRegister->getMigrations() as $migrationClass) {
-            /* @var BaseMigration $migrationClass */
-            $migrations[$migrationClass::timestamp() . '_' . $migrationClass::id()] = $migrationClass;
-        }
-
-        ksort($migrations);
+        $migrations = $this->migrationRegister->getMigrations();
 
         foreach ($migrations as $migrationClass) {
             $migrationId = $migrationClass::id();
@@ -107,10 +98,12 @@ class MigrationsRunner
             $migrationLog = $this->migrationLogFactory->make($migrationId);
 
             try {
-                /** @var Migration $migration */
+                /**
+                 * @var Migration|BatchMigration $migration
+                 */
                 $migration = give($migrationClass);
 
-                if (is_subclass_of($migration, BatchMigration::class)) {
+                if ($migration instanceof BatchMigration) {
                     $status = (new BatchMigrationRunner($migration))->run();
 
                     if ($status === MigrationLogStatus::RUNNING) {
