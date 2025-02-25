@@ -19,27 +19,20 @@ class MigrationsRegister
     /**
      * Returns all of the registered migrations
      *
-     * @unreleased fix: sort migrations by run order
+     * @unreleased sort migrations
      * @since 2.9.0
      *
      * @return string[]
      */
     public function getMigrations()
     {
-        $migrations = [];
+        $sortedMigrations = $this->migrations;
 
-        /* @var BaseMigration $migrationClass */
-        foreach ($this->migrations as $migrationClass) {
-            $migrations[$migrationClass::id()] = $migrationClass::timestamp();
-        }
+        uasort($sortedMigrations, function($a, $b) {
+            return $a::timestamp() <=> $b::timestamp();
+        });
 
-        asort($migrations);
-
-        foreach ($migrations as $id => $migrationClass) {
-            $migrations[$id] = $this->migrations[$id];
-        }
-
-        return $migrations;
+        return $sortedMigrations;
     }
 
     /**
