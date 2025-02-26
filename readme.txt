@@ -267,7 +267,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 3.22.0: February 26th, 2025 =
-* New: Added WPML and Polylang multilingual translations support to forms using the visual form builder
+* New: Added initial WPML and Polylang multilingual translation support to visual form builder forms that currently excludes custom fields
 * Fix: Resolved a validation issue with PayPal donations when using Akismet
 * Fix: Resolved an issue with the custom amount block input behaving unexpectedly with some currencies and languages
 * Fix: Prevent recording donation status change if no modification (Open-source contribution by @yiedpozi)
