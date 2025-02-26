@@ -129,4 +129,35 @@ final class CRUDTest extends TestCase
         $this->assertNull($post);
     }
 
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testInsertManyRowsAtOnceTest()
+    {
+        $testData = [
+            [
+                'post_title' => 'Query Builder CRUD test 1',
+                'post_type' => 'crud_test',
+                'post_content' => 'Hello World!',
+            ],
+            [
+                'post_title' => 'Query Builder CRUD test 2',
+                'post_type' => 'crud_test',
+                'post_content' => 'Hello World!',
+            ]
+        ];
+
+
+        DB::table('posts')->insert($testData);
+
+        $posts = DB::table('posts')
+            ->where('post_type', 'crud_test')
+            ->count();
+
+        $this->assertEquals(2, $posts);
+    }
+
 }
