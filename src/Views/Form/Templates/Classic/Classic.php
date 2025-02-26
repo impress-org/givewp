@@ -183,7 +183,7 @@ class Classic extends Template implements Hookable, Scriptable
         // JS
         wp_enqueue_script(
             'give-classic-template-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-classic-template.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-classic-template.js',
             ['give'],
             GIVE_VERSION,
             true

@@ -41,7 +41,7 @@ class AddonsAdminPage
             ]
         );
 
-        EnqueueScript::make('give-in-plugin-upsells-addons', 'assets/dist/js/admin-upsell-addons-page.js')
+        EnqueueScript::make('give-in-plugin-upsells-addons', 'build/assets/dist/js/admin-upsell-addons-page.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveAddons', $data)

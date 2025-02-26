@@ -350,7 +350,7 @@ class Sequoia extends Template implements Hookable, Scriptable
 
         wp_enqueue_script(
             'give-sequoia-template-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-sequoia-template.js',
             ['give'],
             GIVE_VERSION,
             true

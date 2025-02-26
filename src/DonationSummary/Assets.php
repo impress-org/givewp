@@ -22,7 +22,7 @@ class Assets
 
         wp_enqueue_script(
             'give-donation-summary-script-frontend',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-donation-summary.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-donation-summary.js',
             ['wp-i18n'],
             GIVE_VERSION,
             true

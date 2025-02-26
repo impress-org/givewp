@@ -121,7 +121,7 @@ class Give_Scripts {
         // WP-Admin.
         EnqueueScript::make(
             'give-admin-scripts',
-            'assets/dist/js/admin.js'
+            'build/assets/dist/js/admin.js'
         )
             ->dependencies(
                 [
@@ -137,7 +137,7 @@ class Give_Scripts {
 		// WP-admin: plugin page.
 		wp_register_script(
 			'plugin-deactivation-survey-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
+			GIVE_PLUGIN_URL . 'build/assets/dist/js/plugin-deactivation-survey.js',
 			[ 'jquery' ],
 			GIVE_VERSION,
 			true
@@ -146,14 +146,14 @@ class Give_Scripts {
 		// WP-admin: add-ons page.
 		wp_register_script(
 			'admin-add-ons-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
+			GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-add-ons.js',
 			[ 'jquery' ],
 			GIVE_VERSION,
 			true
 		);
 
         // Frontend.
-        $giveScript = EnqueueScript::make('give', 'assets/dist/js/give.js')
+        $giveScript = EnqueueScript::make('give', 'build/assets/dist/js/give.js')
                                    ->registerTranslations();
 
         if (self::$scripts_footer) {

@@ -273,7 +273,7 @@ EOT;
             )
         ];
 
-        EnqueueScript::make($scriptId, 'assets/dist/js/paypal-commerce.js')
+        EnqueueScript::make($scriptId, 'build/assets/dist/js/paypal-commerce.js')
             ->registerTranslations()
             ->loadInFooter()
             ->registerLocalizeData('givePayPalCommerce', $data)

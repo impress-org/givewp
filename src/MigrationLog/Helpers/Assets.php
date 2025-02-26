@@ -22,7 +22,7 @@ class Assets
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
 
-        EnqueueScript::make('give-migrations-list-table-app', 'assets/dist/js/give-migrations-list-table-app.js')
+        EnqueueScript::make('give-migrations-list-table-app', 'build/assets/dist/js/give-migrations-list-table-app.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveMigrations', $data)

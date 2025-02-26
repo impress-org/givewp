@@ -87,15 +87,15 @@ class Page
         wp_enqueue_style('givewp-admin-fonts');
         wp_enqueue_script(
             'give-admin-setup-script',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-setup.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-setup.js',
             ['jquery'],
             GIVE_VERSION,
             $in_footer = true
         );
-        
+
         wp_enqueue_script(
             'give-admin-add-ons-script',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-add-ons.js',
             ['jquery'],
             GIVE_VERSION,
             $in_footer = true
