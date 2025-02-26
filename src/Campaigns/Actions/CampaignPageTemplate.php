@@ -14,7 +14,7 @@ class CampaignPageTemplate
      */
     public function registerTemplate()
     {
-        if ( ! $this->canWeRegisterBlockTemplate()) {
+        if ( ! $this->canRegisterBlockTemplate()) {
             return;
         }
 
@@ -35,7 +35,7 @@ class CampaignPageTemplate
             'give_campaign_page' === get_query_var('post_type')
             && current_theme_supports('block-templates')
         ) {
-            $template = $this->canWeRegisterBlockTemplate()
+            $template = $this->canRegisterBlockTemplate()
                 ? $template
                 : GIVE_PLUGIN_DIR . '/src/Campaigns/resources/views/campaign-page-template.php';
 
@@ -48,7 +48,7 @@ class CampaignPageTemplate
     /**
      * @unreleased
      */
-    private function canWeRegisterBlockTemplate(): bool
+    private function canRegisterBlockTemplate(): bool
     {
         return function_exists('register_block_template');
     }
