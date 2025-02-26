@@ -15,7 +15,7 @@ use Give\ValueObjects\DonorInfo;
  *
  * @package Give\Session\SessionDonation\SessionObjects
  */
-#[AllowDynamicProperties]
+#[\AllowDynamicProperties]
 class FormEntry implements Objects
 {
     /**
