@@ -44,7 +44,7 @@ class ValidationRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @unreleased added additional validation for form validity, added givewp_donation_form_fields_validated action
+     * @since 3.22.0 added additional validation for form validity, added givewp_donation_form_fields_validated action
      * @since 3.0.0
      *
      * @throws DonationFormFieldErrorsException|NameCollisionException|DonationFormForbidden
@@ -73,7 +73,7 @@ class ValidationRouteData implements Arrayable
         $validatedValues = $validator->validated();
 
        /**
-         * @unreleased
+         * @since 3.22.0
          /**
          * @param array $validatedValues validated values in key value pairs
          */
@@ -113,7 +113,7 @@ class ValidationRouteData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     private function isValidForm(DonationForm $form): bool
     {

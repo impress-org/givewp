@@ -7,19 +7,19 @@ use Give\ThirdPartySupport\Polylang\Helpers\Polylang;
 use Give\ThirdPartySupport\WPML\Helpers\WPML;
 
 /**
- * @unreleased
+ * @since 3.22.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public function register()
     {
     }
 
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public function boot()
     {

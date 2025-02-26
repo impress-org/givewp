@@ -6,12 +6,12 @@ use SitePress;
 use WPML_Request;
 
 /**
- * @unreleased
+ * @since 3.22.0
  */
 class WPML
 {
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public static function getLocale(): string
     {
