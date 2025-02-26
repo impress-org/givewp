@@ -87,7 +87,7 @@
         "@wordpress/html-entities": "^3.25.0",
         "@wordpress/i18n": "^4.25.0",
         "@wordpress/interface": "^5.11.0",
-        "@wordpress/scripts": "^27.9.0",
+        "@wordpress/scripts": "^30.11.0",
         "@wordpress/server-side-render": "^4.2.0",
         "accounting": "^0.4.1",
         "axios": "^1.7.9",
