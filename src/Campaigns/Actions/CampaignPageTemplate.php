@@ -21,7 +21,9 @@ class CampaignPageTemplate
         register_block_template('givewp//campaign-page-template', [
             'title' => __('Campaign page', 'give'),
             'description' => __('Give Campaign Page template', 'give'),
-            'post_types' => 'give_campaign_page',
+            'post_types' => [
+                'give_campaign_page'
+            ],
             'content' => View::load('Campaigns.campaign-page-content'),
         ]);
     }
