@@ -65,6 +65,7 @@ class CampaignPageRepository
             DB::table('posts')
                 ->insert([
                     'post_title' => $campaignPage->campaign()->title,
+                    'post_name' => sanitize_title($campaignPage->campaign()->title),
                     'post_date' => $dateCreatedFormatted,
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateUpdatedFormatted,
