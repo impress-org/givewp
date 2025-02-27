@@ -17,7 +17,7 @@ class EnqueueCampaignPageEditorAssets
     {
         $currentPost = get_post();
 
-        if($currentPost->post_type !== 'give_campaign_page') {
+        if ( ! $currentPost || $currentPost->post_type !== 'give_campaign_page') {
             return;
         }
 
