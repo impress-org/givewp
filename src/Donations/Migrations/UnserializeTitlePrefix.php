@@ -54,6 +54,6 @@ class UnserializeTitlePrefix extends Migration
      */
     public static function timestamp()
     {
-        return strtotime('2024-23-10');
+        return strtotime('2024-10-23');
     }
 }

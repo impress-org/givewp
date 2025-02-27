@@ -197,10 +197,10 @@ class MigrationLogRepository
     {
         try {
             $query = sprintf(
-                "SELECT count(id) FROM %s WHERE id IN ('%s') AND status != '%s'",
+                "SELECT count(id) FROM %s WHERE id IN ('%s') AND status = '%s'",
                 $this->migration_table,
                 implode("','", array_map('esc_sql', $migrationIds)),
-                MigrationLogStatus::SUCCESS
+                MigrationLogStatus::FAILED
             );
 
             return DB::get_var($query);
