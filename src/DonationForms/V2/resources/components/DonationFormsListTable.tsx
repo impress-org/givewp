@@ -240,6 +240,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         value: 'trash',
         type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
+        isIdSelectable: (id, data) => data.defaultForm == null || data.defaultForm !== +id,
         action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
             <div>
