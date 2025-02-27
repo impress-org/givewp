@@ -57,7 +57,12 @@ interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
-    confirm: (selected: Array<string | number>, names?: Array<string>) => JSX.Element | JSX.Element[] | string;
+    confirm: (
+        selected: Array<string | number>,
+        names?: Array<string>,
+        isOpen?: boolean,
+        setOpen?: (isOpen?: boolean) => void
+    ) => JSX.Element | JSX.Element[] | string;
 
     //optional
     isVisible?: (data: any, parameters: any) => boolean;
@@ -86,7 +91,9 @@ export type BulkActionsConfig =
     | BulkActionsConfigWithoutType
     | BulkActionsConfigWithoutAction;
 
-export const ShowConfirmModalContext = createContext((label, confirm, action, type = null,  confirmButtonText = __('Confirm', 'give')) => {});
+export const ShowConfirmModalContext = createContext(
+    (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
+);
 export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
@@ -109,6 +116,7 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
+    const [isOpen, setOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{
         confirm;
         action?;
@@ -163,7 +171,7 @@ export default function ListTablePage({
         confirm,
         action,
         type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
-        confirmButtonText?: string,
+        confirmButtonText?: string
     ) => {
         setModalContent({label, confirm, action, type, confirmButtonText});
         dialog.current.show();
@@ -193,7 +201,8 @@ export default function ListTablePage({
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
             if ('custom' === bulkActions[actionIndex].type) {
-                modalContent?.confirm(selected, names);
+                setOpen(true);
+                modalContent?.confirm(selected, names, isOpen, setOpen);
             } else {
                 dialog.current.show();
             }
@@ -344,7 +353,9 @@ export default function ListTablePage({
                     closeButton: 'hidden',
                 }}
             >
-                <div className={styles.modalContent}>{modalContent?.confirm(selectedIds, selectedNames) || null}</div>
+                <div className={styles.modalContent}>
+                    {modalContent?.confirm(selectedIds, selectedNames, isOpen, setOpen) || null}
+                </div>
                 <div className={styles.gutter}>
                     <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
                         {__('Cancel', 'give')}
