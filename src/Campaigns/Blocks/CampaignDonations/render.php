@@ -31,7 +31,7 @@ $query = (new CampaignDonationQuery($campaign))
         'donorIdMeta.meta_value as donorId',
         'amountMeta.meta_value as amount',
         'donorName.meta_value as donorName',
-        'donation.post_date as date',
+        'donation.post_date as date'
     )
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
