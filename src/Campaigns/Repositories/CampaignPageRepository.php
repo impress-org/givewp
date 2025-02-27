@@ -62,21 +62,19 @@ class CampaignPageRepository
         DB::query('START TRANSACTION');
 
         try {
-            $pageId = wp_insert_post([
-                'post_title' => $campaignPage->campaign()->title,
-                'post_date' => $dateCreatedFormatted,
-                'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                'post_modified' => $dateUpdatedFormatted,
-                'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
-                'post_status' => 'publish', // TODO: Update to value object
-                'post_type' => 'give_campaign_page',
-            ]);
+            DB::table('posts')
+                ->insert([
+                    'post_title' => $campaignPage->campaign()->title,
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'post_modified' => $dateUpdatedFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
+                    'post_status' => 'publish', // TODO: Update to value object
+                    'post_type' => 'give_campaign_page',
+                    'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignPage->campaignId),
+                ]);
 
-            if ( ! $pageId) {
-                throw new Exception('Error while creating campaign page');
-            }
-
-            $campaignPage->id = $pageId;
+            $campaignPage->id = DB::last_insert_id();
             $campaignPage->createdAt = $dateCreated;
             $campaignPage->updatedAt = $dateUpdated;
 
