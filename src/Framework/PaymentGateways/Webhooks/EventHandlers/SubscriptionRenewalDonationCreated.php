@@ -3,10 +3,7 @@
 namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers;
 
 use Exception;
-use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 
 /**
@@ -15,6 +12,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
+     * @unreleased updated to create the renewal from subscription model
      * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
      */
@@ -72,22 +70,7 @@ class SubscriptionRenewalDonationCreated
         }
 
         try {
-            $donation = Donation::create([
-                'subscriptionId' => $subscription->id,
-                'amount' => $subscription->amount,
-                'status' => DonationStatus::COMPLETE(),
-                'type' => DonationType::RENEWAL(),
-                'donorId' => $subscription->donor->id,
-                'firstName' => $subscription->donor->firstName,
-                'lastName' => $subscription->donor->lastName,
-                'email' => $subscription->donor->email,
-                'gatewayId' => $subscription->gatewayId,
-                'formId' => $subscription->donationFormId,
-                'levelId' => $subscription->initialDonation()->levelId,
-                'anonymous' => $subscription->initialDonation()->anonymous,
-                'company' => $subscription->initialDonation()->company,
-                'gatewayTransactionId' => $gatewayTransactionId,
-            ]);
+            $donation = $subscription->createRenewal(['gatewayTransactionId' => $gatewayTransactionId]);
 
             if (empty($message)) {
                 $message = __('Subscription Renewal Donation Created.', 'give');
