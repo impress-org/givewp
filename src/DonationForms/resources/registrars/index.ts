@@ -5,6 +5,7 @@ import defaultFormTemplates from './templates';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
+import useFormData from '@givewp/forms/app/hooks/useFormData';
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ declare global {
                     useCurrencyFormatter: typeof useCurrencyFormatter;
                     useDonationSummary: typeof useDonationSummary;
                     useDonationFormSettings: typeof useDonationFormSettings;
+                    useFormData: typeof useFormData;
                 };
             };
         };
