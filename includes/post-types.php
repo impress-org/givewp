@@ -151,6 +151,8 @@ function give_setup_post_types() {
         'show_in_menu' => false,
         'show_in_rest' => true,
         'show_in_admin_bar' => true,
+        'query_var' => true,
+        'hierarchical' => false,
         'supports' => [
             'title',
             'editor',
