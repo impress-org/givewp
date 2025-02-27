@@ -15,13 +15,9 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
-
-declare const window: {
-    GiveCampaignOptions: GiveCampaignOptions;
-} & Window;
 
 interface Show {
     contextMenu?: boolean;
@@ -51,6 +47,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         contextMenu: false,
         confirmationModal: false,
     });
+
+    const {adminUrl} = getCampaignOptionsWindowData();
 
     const dispatch = useDispatch('givewp/campaign-notifications');
 
@@ -194,7 +192,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignOptions.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -211,7 +209,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
                                         rel="noopener noreferrer"
                                     >
                                         {__('Edit campaign page', 'give')}
