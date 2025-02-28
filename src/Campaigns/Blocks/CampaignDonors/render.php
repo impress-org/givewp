@@ -39,7 +39,7 @@ if ($sortBy === 'top-donors') {
         'donorName.meta_value as name'
     )
         ->groupBy('donorIdMeta.meta_value')
-        ->orderByRaw('CAST(amountMeta.meta_value AS DECIMAL) DESC');
+        ->orderByRaw('CAST(amount AS DECIMAL) DESC');
 } else {
     $query->joinDonationMeta(DonationMetaKeys::COMPANY, 'companyMeta')
         ->select(
