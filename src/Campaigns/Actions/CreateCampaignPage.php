@@ -16,6 +16,10 @@ class CreateCampaignPage
      */
     public function __invoke(Campaign $campaign)
     {
+        if ( ! $campaign->type->isCore()) {
+            return;
+        }
+
         $campaignPage = CampaignPage::create([
             'campaignId' => $campaign->id,
         ]);
