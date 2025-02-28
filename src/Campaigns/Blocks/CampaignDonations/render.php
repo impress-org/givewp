@@ -37,8 +37,13 @@ $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
     ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
-    ->orderBy($sortBy === 'top-donations' ? 'amountMeta.meta_value' : 'donation.ID', 'DESC')
     ->limit($attributes['donationsPerPage'] ?? 5);
+
+if ($sortBy === 'top-donations') {
+    $query->orderByRaw('CAST(amountMeta.meta_value AS DECIMAL) DESC');
+} else {
+    $query->orderBy('donation.ID', 'DESC');
+}
 
 if ( ! $attributes['showAnonymous']) {
     $query->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')

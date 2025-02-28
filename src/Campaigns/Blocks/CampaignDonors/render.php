@@ -2,7 +2,6 @@
 
 namespace Give\Campaigns\Blocks\CampaignDonors;
 
-use DateTime;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
@@ -40,7 +39,7 @@ if ($sortBy === 'top-donors') {
         'donorName.meta_value as name'
     )
         ->groupBy('donorIdMeta.meta_value')
-        ->orderBy('amount', 'DESC');
+        ->orderByRaw('CAST(amountMeta.meta_value AS DECIMAL) DESC');
 } else {
     $query->joinDonationMeta(DonationMetaKeys::COMPANY, 'companyMeta')
         ->select(
