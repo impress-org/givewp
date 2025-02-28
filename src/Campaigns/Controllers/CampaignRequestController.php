@@ -210,8 +210,6 @@ class CampaignRequestController
             'campaignId' => $campaign->id,
         ]);
 
-        $campaignPage->save();
-
         $campaign->pageId = $campaignPage->id;
         $campaign->save();
 
