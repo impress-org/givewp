@@ -29,6 +29,7 @@ $sortBy = $attributes['sortBy'] ?? 'top-donors';
 $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
+    ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
     ->limit($attributes['donorsPerPage'] ?? 5);
 
@@ -36,7 +37,7 @@ if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
         'SUM(amountMeta.meta_value) as amount',
-        'donors.name as name'
+        'donorName.meta_value as name'
     )
         ->groupBy('donorIdMeta.meta_value')
         ->orderBy('amount', 'DESC');
@@ -48,7 +49,7 @@ if ($sortBy === 'top-donors') {
             'companyMeta.meta_value as company',
             'donation.post_date as date',
             'amountMeta.meta_value as amount',
-            'donors.name as name'
+            'donorName.meta_value as name'
         )
         ->orderBy('donation.ID', 'DESC');
 }
