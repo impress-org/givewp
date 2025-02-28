@@ -175,7 +175,7 @@ export default function TransferSuccessDialog() {
                 onClick={() => (window.location.href = window.headerContainer.campaignUrl + '&tab=forms')}
                 style={{width: '100%'}}
             >
-                {__('Go back to campaign form list', 'give')}
+                {__('Go back to campaign forms', 'give')}
             </Button>
         </>
     );
