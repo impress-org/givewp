@@ -35,11 +35,11 @@ $query = (new CampaignDonationQuery($campaign))
 if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
-        'SUM(amountMeta.meta_value) as amount',
-        'donorName.meta_value as name'
+        'SUM(CAST(amountMeta.meta_value AS DECIMAL)) AS amount',
+        'MAX(donorName.meta_value) AS name'
     )
         ->groupBy('donorIdMeta.meta_value')
-        ->orderByRaw('CAST(amount AS DECIMAL) DESC');
+        ->orderBy('amount', 'DESC');
 } else {
     $query->joinDonationMeta(DonationMetaKeys::COMPANY, 'companyMeta')
         ->select(
