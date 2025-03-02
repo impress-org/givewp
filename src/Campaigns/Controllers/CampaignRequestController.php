@@ -4,6 +4,7 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
@@ -202,6 +203,17 @@ class CampaignRequestController
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),
         ]);
+
+        $campaign->save();
+
+        $campaignPage = CampaignPage::create([
+            'campaignId' => $campaign->id,
+        ]);
+
+        $campaignPage->save();
+
+        $campaign->pageId = $campaignPage->id;
+        $campaign->save();
 
         return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
     }
