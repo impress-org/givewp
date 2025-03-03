@@ -1,7 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {useEffect, useState} from '@wordpress/element';
 import {useDispatch} from '@wordpress/data';
-import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
@@ -16,25 +15,13 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
-
-declare const window: {
-    GiveCampaignOptions: GiveCampaignOptions;
-} & Window;
 
 interface Show {
     contextMenu?: boolean;
     confirmationModal?: boolean;
-}
-
-const getCampaignPageUrl = (campaignPage: { id: number; slug: string; link: string; }) => {
-    if (!campaignPage.slug) {
-        return campaignPage.link + '/' + campaignPage.id
-    }
-    return campaignPage.link
-
 }
 
 const StatusBadge = ({status}: { status: string }) => {
@@ -60,6 +47,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         contextMenu: false,
         confirmationModal: false,
     });
+
+    const {adminUrl} = getCampaignOptionsWindowData();
 
     const dispatch = useDispatch('givewp/campaign-notifications');
 
@@ -89,10 +78,6 @@ export default function CampaignsDetailsPage({campaignId}) {
         save,
         edit,
     } = useCampaignEntityRecord(campaignId);
-
-    const {record: campaignPage}: {
-        record: { id: number, slug: string, link: string }
-    } = useEntityRecord('postType', 'give_campaign_page', campaign?.pageId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -207,7 +192,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignOptions.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -224,8 +209,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
-                                        target="_blank"
+                                        href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
                                         rel="noopener noreferrer"
                                     >
                                         {__('Edit campaign page', 'give')}
@@ -260,9 +244,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && campaignPage?.id && (
+                                        {enableCampaignPage && campaign.pagePermalink && (
                                             <a
-                                                href={getCampaignPageUrl(campaignPage)}
+                                                href={campaign.pagePermalink}
                                                 aria-label={__('View Campaign', 'give')}
                                                 className={styles.contextMenuItem}
                                             >

@@ -4,11 +4,13 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Campaigns\ViewModels\CampaignViewModel;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -34,12 +36,7 @@ class CampaignRequestController
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response(
-            array_merge($campaign->toArray(), [
-                'goalStats' => $campaign->getGoalStats(),
-                'defaultFormTitle' => $campaign->defaultForm()->title,
-            ])
-        );
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports());
     }
 
     /**
@@ -75,9 +72,7 @@ class CampaignRequestController
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
         $campaigns = array_map(function ($campaign) {
-            return array_merge($campaign->toArray(), [
-                'goalStats' => $campaign->getGoalStats(),
-            ]);
+            return (new CampaignViewModel($campaign))->exports();
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
@@ -167,11 +162,7 @@ class CampaignRequestController
             $campaign->save();
         }
 
-        return new WP_REST_Response(
-            array_merge($campaign->toArray(), [
-                'defaultFormTitle' => $campaign->defaultForm()->title,
-            ])
-        );
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports());
     }
 
     /**
@@ -213,7 +204,14 @@ class CampaignRequestController
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
-        return new WP_REST_Response($campaign->toArray(), 201);
+        $campaignPage = CampaignPage::create([
+            'campaignId' => $campaign->id,
+        ]);
+
+        $campaign->pageId = $campaignPage->id;
+        $campaign->save();
+
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
     }
 
     /**

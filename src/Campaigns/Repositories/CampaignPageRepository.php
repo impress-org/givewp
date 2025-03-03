@@ -46,6 +46,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function insert(CampaignPage $campaignPage): void
     {
@@ -57,20 +58,22 @@ class CampaignPageRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $campaignPage->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
+        $campaign = $campaignPage->campaign();
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('posts')
                 ->insert([
-                    'post_title' => $campaignPage->campaign()->title,
+                    'post_title' => $campaign->title,
+                    'post_name' => sanitize_title($campaign->title),
                     'post_date' => $dateCreatedFormatted,
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateUpdatedFormatted,
                     'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
                     'post_status' => 'publish', // TODO: Update to value object
                     'post_type' => 'give_campaign_page',
-                    'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignPage->campaignId),
+                    'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign),
                 ]);
 
             $campaignPage->id = DB::last_insert_id();
@@ -83,7 +86,6 @@ class CampaignPageRepository
                     'meta_key' => 'campaignId',
                     'meta_value' => $campaignPage->campaignId,
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -129,7 +131,6 @@ class CampaignPageRepository
                 ->update([
                     'meta_value' => $campaignPage->campaignId,
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -206,7 +207,7 @@ class CampaignPageRepository
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
-            if (!isset($campaignPage->$key)) {
+            if ( ! isset($campaignPage->$key)) {
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }

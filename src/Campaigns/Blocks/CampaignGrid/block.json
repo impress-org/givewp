@@ -67,7 +67,6 @@
     },
     "example": {},
     "textdomain": "give",
-    "editorScript": "file:../../../../build/campaignGridBlock.js",
     "viewScript": "file:../../../../build/campaignGridApp.js",
     "viewStyle": "file:../../../../build/campaignGridApp.css",
     "render": "file:./render.php"

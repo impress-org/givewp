@@ -4,7 +4,7 @@ import {useSelect} from '@wordpress/data';
 import {external} from '@wordpress/icons';
 import {BaseControl, Icon, PanelBody, Placeholder, ResizableBox, TextareaControl} from '@wordpress/components';
 import {BlockEditProps} from '@wordpress/blocks';
-import {CampaignSelector} from '../shared/components/CampaignSelector';
+import CampaignSelector from '../shared/components/CampaignSelector';
 import useCampaign from '../shared/hooks/useCampaign';
 import {GalleryIcon} from "./Icon";
 
@@ -46,7 +46,10 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
 
     return (
         <figure {...blockProps}>
-            <CampaignSelector attributes={attributes} setAttributes={setAttributes}>
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
                 {hasResolved && !campaign?.image && (
                     <Placeholder
                         icon={<GalleryIcon />}
@@ -92,7 +95,6 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                                 className={'givewp-campaign-cover-block-preview__image'}
                                 src={campaign?.image}
                                 alt={attributes.alt ?? __('Campaign Image', 'give')}
-                                style={{width: '100%', height: '100%'}}
                             />
                         </ResizableBox>
                     ) : (
@@ -100,7 +102,6 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                             className={'givewp-campaign-cover-block-preview__image'}
                             src={campaign?.image}
                             alt={attributes.alt ?? __('Campaign Image', 'give')}
-                            style={{width: '100%', height: '100%'}}
                         />
                     ))}
             </CampaignSelector>

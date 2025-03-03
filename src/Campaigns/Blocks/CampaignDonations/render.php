@@ -30,13 +30,14 @@ $query = (new CampaignDonationQuery($campaign))
         'donation.ID as id',
         'donorIdMeta.meta_value as donorId',
         'amountMeta.meta_value as amount',
-        'donation.post_date as date',
-        'donors.name as donorName'
+        'donorName.meta_value as donorName',
+        'donation.post_date as date'
     )
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
+    ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
-    ->orderBy($sortBy === 'top-donations' ? 'amount' : 'donation.ID', 'DESC')
+    ->orderBy($sortBy === 'top-donations' ? 'amountMeta.meta_value' : 'donation.ID', 'DESC')
     ->limit($attributes['donationsPerPage'] ?? 5);
 
 if ( ! $attributes['showAnonymous']) {
