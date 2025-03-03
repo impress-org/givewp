@@ -103,7 +103,7 @@ class Give_DB_Sequential_Ordering extends Give_DB {
         id bigint(20) NOT NULL AUTO_INCREMENT,
         payment_id bigint(20) NOT NULL,
         PRIMARY KEY  (id)
-        ) {$charset_collate};";
+        ) {$charset_collate} ENGINE=InnoDB;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
