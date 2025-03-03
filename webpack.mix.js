@@ -5,24 +5,24 @@ const webpackConfig = require('./webpack.config');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 mix.setPublicPath('assets/dist')
-    .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
-    .sass('assets/src/css/admin/block-editor.scss', 'css/admin-block-editor.css')
-    .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
-    .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
-    .sass('assets/src/css/admin/setup.scss', 'css/admin-setup.css')
-    .sass('assets/src/css/admin/shortcodes.scss', 'css/admin-shortcode-button.css')
-    .sass('assets/src/css/admin/plugin-deactivation-survey.scss', 'css/')
-    .sass('assets/src/css/admin/widgets.scss', 'css/admin-widgets.css')
-    .sass('assets/src/css/admin/paypal-commerce.scss', 'css/admin-paypal-commerce.css')
-    .sass('src/Views/Form/Templates/Sequoia/assets/css/form.scss', 'css/give-sequoia-template.css')
-    .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
-    .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
-    .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
-    .sass(
-        'src/Promotions/InPluginUpsells/resources/css/stellarwp-sales-banner.scss',
-        'css/admin-stellarwp-sales-banner.css'
-    )
-    .sass('src/DonationForms/AsyncData/resources/loadAsyncData.scss', 'css/give-donation-forms-load-async-data.css')
+    // .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
+    // .sass('assets/src/css/admin/block-editor.scss', 'css/admin-block-editor.css')
+    // .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
+    // .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
+    // .sass('assets/src/css/admin/setup.scss', 'css/admin-setup.css')
+    // .sass('assets/src/css/admin/shortcodes.scss', 'css/admin-shortcode-button.css')
+    // .sass('assets/src/css/admin/plugin-deactivation-survey.scss', 'css/')
+    // .sass('assets/src/css/admin/widgets.scss', 'css/admin-widgets.css')
+    // .sass('assets/src/css/admin/paypal-commerce.scss', 'css/admin-paypal-commerce.css')
+    // .sass('src/Views/Form/Templates/Sequoia/assets/css/form.scss', 'css/give-sequoia-template.css')
+    // .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
+    // .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
+    // .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
+    // .sass(
+    //     'src/Promotions/InPluginUpsells/resources/css/stellarwp-sales-banner.scss',
+    //     'css/admin-stellarwp-sales-banner.css'
+    // )
+    // .sass('src/DonationForms/AsyncData/resources/loadAsyncData.scss', 'css/give-donation-forms-load-async-data.css')
 
     //.js('assets/src/js/frontend/give.js', 'js/')
     //.js('assets/src/js/frontend/give-stripe.js', 'js/')
@@ -61,8 +61,8 @@ mix.setPublicPath('assets/dist')
     //.ts('src/Promotions/InPluginUpsells/resources/js/payment-gateway.ts', 'js/payment-gateway.js')
     //.ts('src/Promotions/WelcomeBanner/resources/js/index.tsx', 'js/welcome-banner.js')
 
-    .react()
-    .sourceMaps(false, 'source-map')
+    //.react()
+    //.sourceMaps(false, 'source-map')
 
     .css('node_modules/@givewp/design-system-foundation/css/foundation.css', 'css/design-system/foundation.css')
     .after(() => {

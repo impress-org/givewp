@@ -14,7 +14,7 @@ const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {
                 <button
                     type="button"
                     aria-label="sort"
-                    className={styles['sortButton']}
+                    className={styles.sortButton}
                     onClick={(event) => column.sortable && handleItemSort(event, column.id)}
                 >
                     <div className={styles.text}>{column.label}</div>

@@ -144,7 +144,7 @@ class EnqueueScript
             wp_register_style(
                 $this->scriptId,
                 $styleUrl,
-                ['wp-components'],
+                [],
                 $scriptAsset['version']
             );
         }
@@ -156,7 +156,7 @@ class EnqueueScript
             wp_register_style(
                 'style-' . $this->scriptId,
                 $styleUrlIndex,
-                ['wp-components'],
+                [],
                 $scriptAsset['version']
             );
         }
@@ -226,9 +226,16 @@ class EnqueueScript
         if (!wp_script_is($this->scriptId, 'registered')) {
             $this->register();
         }
-        wp_enqueue_style($this->scriptId);
-        wp_enqueue_style('style-' . $this->scriptId);
+
         wp_enqueue_script($this->scriptId);
+
+        if (wp_style_is($this->scriptId, 'registered')) {
+            wp_enqueue_style($this->scriptId);
+        }
+
+        if (wp_style_is('style-' . $this->scriptId, 'registered')) {
+            wp_enqueue_style('style-' . $this->scriptId);
+        }
 
         return $this;
     }
