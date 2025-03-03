@@ -137,13 +137,25 @@ class EnqueueScript
         $scriptUrl = $this->pluginDirUrl . $this->relativeScriptPath;
         $scriptAsset = $this->getAssetFileData();
 
-        $stylePath = trailingslashit(dirname($this->absoluteScriptPath))
-            . basename($this->absoluteScriptPath, '.js') . '.css';
+        $stylePath = $this->getStylePath();
+        $styleUrl = $this->getStyleUrl();
 
         if (file_exists($stylePath)) {
             wp_register_style(
                 $this->scriptId,
-                $scriptUrl,
+                $styleUrl,
+                ['wp-components'],
+                $scriptAsset['version']
+            );
+        }
+
+        $stylePathIndex = $this->getStylePath('style-');
+        $styleUrlIndex = $this->getStyleUrl('style-');
+
+        if (file_exists($stylePathIndex)) {
+            wp_register_style(
+                'style-' . $this->scriptId,
+                $styleUrlIndex,
                 ['wp-components'],
                 $scriptAsset['version']
             );
@@ -215,6 +227,7 @@ class EnqueueScript
             $this->register();
         }
         wp_enqueue_style($this->scriptId);
+        wp_enqueue_style('style-' . $this->scriptId);
         wp_enqueue_script($this->scriptId);
 
         return $this;
@@ -248,6 +261,19 @@ class EnqueueScript
         }
 
         return $scriptAsset;
+    }
+
+    public function getStylePath($prefix = '')
+    {
+        return trailingslashit(dirname($this->absoluteScriptPath))
+            . trim($prefix . basename($this->relativeScriptPath, '.js')) . '.css';
+    }
+
+    public function getStyleUrl($prefix = '')
+    {
+        $cssFileName = trim($prefix . basename($this->relativeScriptPath, '.js')) . '.css';
+
+        return $this->pluginDirUrl . str_replace(basename($this->relativeScriptPath), $cssFileName, $this->relativeScriptPath);
     }
 }
 
