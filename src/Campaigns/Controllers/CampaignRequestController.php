@@ -204,8 +204,6 @@ class CampaignRequestController
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
-        $campaign->save();
-
         $campaignPage = CampaignPage::create([
             'campaignId' => $campaign->id,
         ]);
