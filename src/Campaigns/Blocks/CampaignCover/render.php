@@ -32,7 +32,7 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
 ?>
 
 <div
-    <?php echo get_block_wrapper_attributes(); ?>
+    <?php echo wp_kses_data(get_block_wrapper_attributes()); ?>
 >
     <figure class="givewp-campaign-cover-block__figure">
         <img
