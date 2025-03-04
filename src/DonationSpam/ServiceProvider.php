@@ -29,7 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased updated Akismet validation to use new givewp_donation_form_fields_validated action
+     * @since 3.22.0 updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
      *
      * @inheritDoc
