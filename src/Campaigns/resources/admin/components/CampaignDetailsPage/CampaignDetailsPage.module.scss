@@ -363,6 +363,27 @@ select[name="campaignId"] {
 
             .sectionField:last-child {
                 margin: 0;
+
+                .sectionFieldCurrencyControl {
+                    font-size: 1rem;
+                    line-height: 2;
+                    display: block;
+                    width: 100%;
+                    border: 1px solid #9ca0af;
+                    border-radius: var(--givewp-spacing-1);
+                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+                    div {
+                        margin: 0;
+                    }
+
+                    input {
+                        border: none;
+                        outline: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+                }
             }
 
             .sectionFieldDescription {

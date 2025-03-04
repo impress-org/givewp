@@ -8,6 +8,7 @@ import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
+import {CurrencyControl} from "@givewp/form-builder-library";
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -191,7 +192,9 @@ export default () => {
                         </div>
 
                         {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
-                            <Currency name="goal" currency={currency} disabled={isDisabled} />
+                            <div className={styles.sectionFieldCurrencyControl}>
+                                <CurrencyControl name="goal" currency={currency} disabled={isDisabled} value={watch('goal')} onValueChange={(value) => setValue('goal', value)}  />
+                            </div>
                         ) : (
                             <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
                         )}
