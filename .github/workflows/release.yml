@@ -10,7 +10,7 @@ jobs:
 
     release:
         name: New release
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         environment: live
         needs: tests
         steps:
