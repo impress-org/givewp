@@ -248,7 +248,7 @@ class ServiceProvider implements ServiceProviderInterface
         Route::post('authenticate', AuthenticationRoute::class);
 
         /**
-         * @unreleased Add locale support
+         * @since 3.22.0 Add locale support
          * @since 3.0.0
          */
         Route::get('donation-form-view', static function (array $request) {
@@ -263,7 +263,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
-         * @unreleased Add locale support
+         * @since 3.22.0 Add locale support
          * @since 3.0.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
@@ -278,7 +278,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
-         * @unreleased Add locale support
+         * @since 3.22.0 Add locale support
          * @since 3.0.0
          */
         Route::post('donation-form-view-preview', static function () {

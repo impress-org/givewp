@@ -3,12 +3,12 @@
 namespace Give\ThirdPartySupport\Polylang\Helpers;
 
 /**
- * @unreleased
+ * @since 3.22.0
  */
 class Polylang
 {
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public static function getLocale($field = 'slug'): string
     {

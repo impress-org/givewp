@@ -14,7 +14,7 @@ use Give\Helpers\Language;
 class BlockRenderController
 {
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
      *

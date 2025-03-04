@@ -19,7 +19,7 @@ class FormBuilderRouteBuilder
     protected $locale;
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      *
      * @param  int|string  $donationFormID
@@ -31,7 +31,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      */
     public static function makeCreateFormRoute(string $locale = ''): self
@@ -41,7 +41,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      */
     public static function makeEditFormRoute(int $donationFormID, string $locale = ''): self
@@ -58,7 +58,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      */
     public function getUrl(): string
