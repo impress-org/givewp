@@ -17,7 +17,7 @@ use Give\Helpers\Language;
 class CreateFormRoute
 {
     /**
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.1.0 updated default form blocks to be generated from block models instead of json
      * @since 3.0.0
      *

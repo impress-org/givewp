@@ -23,7 +23,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @unreleased updated to use model method
+     * @since 3.22.0 updated to use model method
      * @since 3.0.0
      */
     public function shouldEndSubscription(): bool
@@ -32,7 +32,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @unreleased updated to use model method
+     * @since 3.22.0 updated to use model method
      * @since 3.0.0
      */
     public function shouldCreateRenewal(): bool
@@ -41,7 +41,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @unreleased updated to use model method
+     * @since 3.22.0 updated to use model method
      * @since 3.0.0
      *
      * @throws Exception

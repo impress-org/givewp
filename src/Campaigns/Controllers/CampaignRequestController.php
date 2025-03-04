@@ -203,8 +203,6 @@ class CampaignRequestController
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
-        $campaign->save();
-
         return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
     }
 
