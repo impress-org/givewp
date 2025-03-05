@@ -36,6 +36,7 @@
         }
     ],
     "devDependencies": {
+        "@types/css-modules": "^1.0.5",
         "@types/lodash": "^4.14.199",
         "@types/react": "^18.0.38",
         "@types/react-datepicker": "^4.15.0",
