@@ -19,7 +19,7 @@ final class ValidateDonationTest extends TestCase
     protected $notSpamResponse = [1 => 'false'];
 
     /**
-     * @unreleased updated with new arguments
+     * @since 3.22.0 updated with new arguments
      * @since 3.15.0
      * @throws SpamDonationException
      */
@@ -44,7 +44,7 @@ final class ValidateDonationTest extends TestCase
     }
 
     /**
-     * @unreleased updated with new arguments
+     * @since 3.22.0 updated with new arguments
      * @since 3.15.0
      * @throws SpamDonationException
      */

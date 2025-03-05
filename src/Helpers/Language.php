@@ -54,7 +54,7 @@ class Language
     }
 
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public static function getLocale()
     {
@@ -62,7 +62,7 @@ class Language
     }
 
     /**
-     * @unreleased
+     * @since 3.22.0
      */
     public static function switchToLocale(string $locale)
     {

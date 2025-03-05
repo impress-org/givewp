@@ -34,7 +34,7 @@ class ValidateDonation
     }
 
     /**
-     * @unreleased replaced params to $email, $comment, $firstName, $lastName
+     * @since 3.22.0 replaced params to $email, $comment, $firstName, $lastName
      * @since 3.15.0
      *
      * @param  string  $email
