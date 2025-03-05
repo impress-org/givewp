@@ -1,6 +1,6 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
-import {Currency, Upload} from '../../Inputs';
+import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import campaignPageImage from './images/campaign-page.svg';
@@ -9,6 +9,7 @@ import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/u
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from "@givewp/form-builder-library";
+import type {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -195,7 +196,7 @@ export default () => {
                             <div className={styles.sectionFieldCurrencyControl}>
                                 <CurrencyControl
                                     name="goal"
-                                    currency={currency}
+                                    currency={currency as CurrencyCode}
                                     disabled={isDisabled}
                                     value={watch('goal')}
                                     onValueChange={(value) => {
