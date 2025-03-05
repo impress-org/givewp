@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Framework\Views\View;
 
 /**
@@ -22,7 +24,7 @@ class CampaignPageTemplate
             'title' => __('Campaign page', 'give'),
             'description' => __('Give Campaign Page template', 'give'),
             'post_types' => [
-                'give_campaign_page'
+                'give_campaign_page',
             ],
             'content' => View::load('Campaigns.campaign-page-content'),
         ]);
@@ -37,6 +39,12 @@ class CampaignPageTemplate
             'give_campaign_page' === get_query_var('post_type')
             && current_theme_supports('block-templates')
         ) {
+            if ( ! $this->isPageVisible()) {
+                status_header(404);
+
+                return get_404_template();
+            }
+
             $template = $this->canRegisterBlockTemplate()
                 ? $template
                 : GIVE_PLUGIN_DIR . '/src/Campaigns/resources/views/campaign-page-template.php';
@@ -53,5 +61,28 @@ class CampaignPageTemplate
     private function canRegisterBlockTemplate(): bool
     {
         return function_exists('register_block_template');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isPageVisible(): bool
+    {
+        $campaign = Campaign::find(get_post_field('campaignId'));
+
+        if ( ! $campaign) {
+            return false;
+        }
+
+        // Allow logged in admin users to preview the page
+        if (
+            ! current_user_can('manage_options')
+            && ! $campaign->enableCampaignPage
+            && $campaign->status->getValue() !== CampaignStatus::ACTIVE()
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
