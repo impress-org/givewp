@@ -137,7 +137,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     private function setupCampaignPages()
     {
-        Hooks::addAction('template_redirect', Actions\RedirectDisabledCampaignPage::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
     }
 
