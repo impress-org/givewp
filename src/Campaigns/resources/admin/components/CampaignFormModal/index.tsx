@@ -219,7 +219,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
             inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
-           
+
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
