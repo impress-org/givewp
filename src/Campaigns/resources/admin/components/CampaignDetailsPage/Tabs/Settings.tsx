@@ -193,7 +193,15 @@ export default () => {
 
                         {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
                             <div className={styles.sectionFieldCurrencyControl}>
-                                <CurrencyControl name="goal" currency={currency} disabled={isDisabled} value={watch('goal')} onValueChange={(value) => setValue('goal', value)}  />
+                                <CurrencyControl
+                                    name="goal"
+                                    currency={currency}
+                                    disabled={isDisabled}
+                                    value={watch('goal')}
+                                    onValueChange={(value) => {
+                                        setValue('goal', Number(value), {shouldDirty: true});
+                                    }}
+                                />
                             </div>
                         ) : (
                             <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
