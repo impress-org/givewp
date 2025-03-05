@@ -8,6 +8,7 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -81,7 +82,9 @@ class CampaignRepository
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: $currentDate);
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
-        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate ?: $currentDate);
+        $startDate = Temporal::withoutMicroseconds($campaign->startDate ?: $currentDate);
+        $startDateFormatted = Temporal::getFormattedDateTime($startDate);
+
         $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         DB::query('START TRANSACTION');
@@ -120,6 +123,7 @@ class CampaignRepository
 
         $campaign->id = $campaignId;
         $campaign->createdAt = $dateCreated;
+        $campaign->startDate = $startDate;
 
         Hooks::doAction('givewp_campaign_created', $campaign);
     }
