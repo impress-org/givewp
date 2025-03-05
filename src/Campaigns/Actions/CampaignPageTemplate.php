@@ -39,12 +39,9 @@ class CampaignPageTemplate
             'give_campaign_page' === get_query_var('post_type')
             && current_theme_supports('block-templates')
         ) {
-            $campaign = Campaign::find(get_post_field('campaignId'));
+            if ( ! $this->isPageVisible()) {
+                status_header(404);
 
-            if (
-                ! $campaign
-                || ( ! current_user_can('manage_options') && $campaign->status->getValue() !== CampaignStatus::ACTIVE())
-            ) {
                 return get_404_template();
             }
 
@@ -64,5 +61,28 @@ class CampaignPageTemplate
     private function canRegisterBlockTemplate(): bool
     {
         return function_exists('register_block_template');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isPageVisible(): bool
+    {
+        $campaign = Campaign::find(get_post_field('campaignId'));
+
+        if ( ! $campaign) {
+            return false;
+        }
+
+        // Allow logged in admin users to preview the page
+        if (
+            ! current_user_can('manage_options')
+            && ! $campaign->enableCampaignPage
+            && $campaign->status->getValue() !== CampaignStatus::ACTIVE()
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
