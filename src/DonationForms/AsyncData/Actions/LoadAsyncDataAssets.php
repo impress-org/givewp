@@ -31,7 +31,7 @@ class LoadAsyncDataAssets
     {
         wp_register_style(
             LoadAsyncDataAssets::handleName(),
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-donation-forms-load-async-data.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-donation-forms-load-async-data.css',
             [],
             GIVE_VERSION
         );

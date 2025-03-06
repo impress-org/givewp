@@ -3,6 +3,7 @@
  */
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackRTLPlugin = require('webpack-rtl-plugin');
 
 /**
  * WordPress Dependencies
@@ -75,26 +76,13 @@ const legacyScriptsEntry = {
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
 };
 
+const isProduction = defaultConfig.mode === 'production';
+
 /**
  * Custom config
  */
 module.exports = {
     ...defaultConfig,
-     plugins: [
-        ...defaultConfig.plugins,
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    from: assetPath('src/images'),
-                    to: path.resolve(__dirname, 'build/assets/dist/images'),
-                },
-                {
-                    from: assetPath('src/fonts'),
-                    to: path.resolve(__dirname, 'build/assets/dist/fonts'),
-                },
-            ],
-        }),
-    ],
     resolve: {
         ...defaultConfig.resolve,
         alias: {
@@ -145,7 +133,35 @@ module.exports = {
         adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
         ...legacyScriptsEntry,
         ...legacyStyleEntry,
-    }
+    },
+    plugins: [
+        ...defaultConfig.plugins,
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: assetPath('src/images'),
+                    to: path.resolve(__dirname, 'build/assets/dist/images'),
+                },
+                {
+                    from: assetPath('src/fonts'),
+                    to: path.resolve(__dirname, 'build/assets/dist/fonts'),
+                },
+            ],
+        }),
+        ...(isProduction
+            ? [
+                  new WebpackRTLPlugin({
+                      suffix: '-rtl',
+                      minify: true,
+                  }),
+              ]
+            : []),
+    ],
+    stats: {
+        colors: true,
+        children: false,
+        errorDetails: true
+    },
 };
 
 /**

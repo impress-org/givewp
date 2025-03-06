@@ -15,7 +15,7 @@ class Assets
     {
         wp_enqueue_style(
             'give-donation-summary-style-frontend',
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-donation-summary.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-donation-summary.css',
             [],
             GIVE_VERSION
         );

@@ -131,7 +131,7 @@ class Sequoia extends Template implements Hookable, Scriptable
         // Enqueue Sequoia template styles
         wp_enqueue_style(
             'give-sequoia-template-css',
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-sequoia-template.css',
             ['give-styles'],
             GIVE_VERSION
         );

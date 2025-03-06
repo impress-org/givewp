@@ -80,7 +80,7 @@ class Page
 
         wp_enqueue_style(
             'give-admin-setup-style',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-setup.css',
             [],
             GIVE_VERSION
         );

@@ -102,7 +102,7 @@ final class Give_Shortcode_Button {
 
 		wp_enqueue_style(
 			'give-admin-shortcode-button-style',
-			GIVE_PLUGIN_URL . 'assets/dist/css/admin-shortcode-button' . $direction . '.css',
+			GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-shortcode-button' . $direction . '.css',
 			array(),
 			GIVE_VERSION
 		);
