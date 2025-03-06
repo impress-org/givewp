@@ -1,4 +1,4 @@
-import styles from './style.module.scss';
+import styles from './index.module.scss';
 
 interface ToggleSwitchProps {
     onChange: React.Dispatch<React.SetStateAction<boolean>>;
