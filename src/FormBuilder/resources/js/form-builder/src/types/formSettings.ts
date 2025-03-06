@@ -2,6 +2,7 @@ import {FormStatus} from '@givewp/form-builder/types/formStatus';
 import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
 
 /**
+ * @unreleased Added goalSource
  * @since 3.16.0 Added enableReceiptConfirmationPage
  * @since 3.7.0 Added formExcerpt
  * @since 3.0.0
@@ -15,6 +16,7 @@ export type FormSettings = {
     enableAutoClose: boolean;
     goalAchievedMessage: string;
     registrationNotification: boolean;
+    goalSource: string;
     goalType: string;
     goalProgressType: string;
     goalStartDate: string;
