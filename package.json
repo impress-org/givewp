@@ -3,9 +3,9 @@
     "main": "index.js",
     "scripts": {
         "start": "npm install && npm run watch",
-        "dev": "wp-scripts build --config wordpress-scripts-webpack.config.js",
-        "build": "wp-scripts build --config wordpress-scripts-webpack.config.js",
-        "watch": "wp-scripts start --config wordpress-scripts-webpack.config.js",
+        "dev": "wp-scripts build --config webpack.config.js",
+        "build": "wp-scripts build --config webpack.config.js",
+        "watch": "wp-scripts start --config webpack.config.js",
         "env": "wp-env",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip"
