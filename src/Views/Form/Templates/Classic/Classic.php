@@ -56,7 +56,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-classic.png';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/template-preview-classic.png';
     }
 
     /**

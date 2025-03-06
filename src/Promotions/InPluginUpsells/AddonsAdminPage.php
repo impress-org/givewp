@@ -34,7 +34,7 @@ class AddonsAdminPage
         $data = array_merge(
             (new AddonsRepository())->getAddons(),
             [
-                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/',
+                'assetsUrl' => GIVE_PLUGIN_URL . 'build/assets/dist/',
                 'containerId' => $this->containerId,
                 'siteUrl' => site_url(),
                 'siteName' => get_bloginfo('name'),

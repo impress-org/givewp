@@ -68,7 +68,7 @@ class Reports
                 'allTimeStart' => $this->get_all_time_start(),
                 'currency' => give_get_currency(),
                 'testMode' => give_is_test_mode(),
-                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
+                'assetsUrl' => GIVE_PLUGIN_URL . 'build/assets/dist',
             ]
         );
         wp_set_script_translations( 'give-admin-reports-widget-js', 'give' );

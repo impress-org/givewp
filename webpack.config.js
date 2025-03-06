@@ -11,8 +11,9 @@ const WebpackRTLPlugin = require('webpack-rtl-plugin');
  */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 
-const legacyConfig = require('./webpack.config.js');
-
+/**
+ * Files from before Give 3.0
+ */
 const legacyStyleEntry = {
     'assets/dist/css/give': assetPath('src/css/frontend/give-frontend.scss'),
     'assets/dist/css/admin-block-editor.css': assetPath('src/css/admin/block-editor.scss'),
@@ -39,6 +40,9 @@ const legacyStyleEntry = {
     ),
 };
 
+/**
+ * Files from before Give 3.0
+ */
 const legacyScriptsEntry = {
     'assets/dist/js/give': assetPath('src/js/frontend/give.js'),
     'assets/dist/js/give-stripe': assetPath('src/js/frontend/give-stripe.js'),
