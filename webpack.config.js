@@ -230,9 +230,23 @@ module.exports = {
     },
     entry,
     plugins,
-    stats: {
-        colors: true,
-        children: false,
-        errorDetails: true,
+    optimization: {
+        ...defaultConfig.optimization,
+        splitChunks: {
+            ...defaultConfig.optimization.splitChunks,
+            cacheGroups: {
+                ...defaultConfig.optimization.splitChunks.cacheGroups,
+                style: {
+                    ...defaultConfig.optimization.splitChunks.cacheGroups.style,
+                    /**
+                     * This was preventing some of our styles from being extracted into their own CSS files.
+                     * This is really specific to the purpose of Gutenberg blocks where you want to have a css file for the editor and front-end ("style-[entry].css").
+                     * However, we are using this config for various applications and rarely have a use case for splitting up styles.
+                     * Preserving this with a new syntax of "frontend.(pc|sc|sa|c)ss" instead of "style.(pc|sc|sa|c)ss" in case we need it in the future.
+                     */
+                    test: /[\\/]frontend(\.module)?\.(pc|sc|sa|c)ss$/,
+                }
+            }
+        }
     },
 };
