@@ -12,6 +12,41 @@ const WebpackRTLPlugin = require('webpack-rtl-plugin');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 
 /**
+ * Production flag
+ */
+const isProduction = defaultConfig.mode === 'production';
+
+/**
+ * Helper for getting the path to the src directory.
+ *
+ * @param {string} relativePath
+ * @returns {string}
+ */
+function srcPath(relativePath) {
+    return path.resolve(process.cwd(), 'src', relativePath);
+}
+
+/**
+ * Helper for getting the path to the assets directory.
+ *
+ * @param {string} relativePath
+ * @returns {string}
+ */
+function assetPath(relativePath) {
+    return path.resolve(process.cwd(), 'assets', relativePath);
+}
+
+/**
+ * Helper for getting the path to the includes directory.
+ *
+ * @param {string} relativePath
+ * @returns {string}
+ */
+function includesPath(relativePath) {
+    return path.resolve(process.cwd(), 'includes', relativePath);
+}
+
+/**
  * Files from before Give 3.0
  */
 const legacyStyleEntry = {
@@ -81,7 +116,108 @@ const legacyScriptsEntry = {
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
 };
 
-const isProduction = defaultConfig.mode === 'production';
+/**
+ * Alias
+ * @see https://webpack.js.org/configuration/resolve/#resolvealias
+ */
+const alias = {
+    '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
+    '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
+    '@givewp/forms/app': srcPath('DonationForms/resources/app'),
+    '@givewp/forms/registrars': srcPath('DonationForms/resources/registrars'),
+    '@givewp/forms/shared': srcPath('DonationForms/resources/shared'),
+    '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
+    '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
+    '@givewp/components': srcPath('Views/Components/'),
+    '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
+    '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
+    '@givewp/src': path.resolve(__dirname, 'src/'),
+    ...defaultConfig.resolve.alias,
+};
+
+/**
+ * Entry points
+ * @see https://webpack.js.org/concepts/entry-points/
+ */
+const entry = {
+    donationFormBlock: srcPath('DonationForms/Blocks/DonationFormBlock/resources/block.ts'),
+    donationFormBlockApp: srcPath('DonationForms/Blocks/DonationFormBlock/resources/app/index.tsx'),
+    donationFormApp: srcPath('DonationForms/resources/app/DonationFormApp.tsx'),
+    donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
+    donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
+    donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
+    eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
+    eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
+    stripePaymentElementGateway: srcPath(
+        'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
+    ),
+    stripePaymentElementFormBuilder: srcPath(
+        'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/resources/js/index.tsx'
+    ),
+    testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
+    testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
+    offlineGateway: srcPath('PaymentGateways/Gateways/Offline/resources/offlineGateway.tsx'),
+    offlineGatewayFormBuilder: srcPath('PaymentGateways/Gateways/Offline/resources/formBuilder/index.tsx'),
+    payPalStandardGateway: srcPath('PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'),
+    payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
+    classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
+    classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
+    multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
+    twoPanelStepsFormLayoutCss: srcPath('DonationForms/FormDesigns/TwoPanelStepsFormLayout/css/main.scss'),
+    donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
+    baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
+    formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
+    formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
+    formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
+    adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
+    ...legacyScriptsEntry,
+    ...legacyStyleEntry,
+};
+
+/**
+ * Plugins
+ * @see https://webpack.js.org/concepts/plugins/
+ */
+const plugins = [
+    ...defaultConfig.plugins,
+    new CopyWebpackPlugin({
+        patterns: [
+            {
+                from: assetPath('src/images'),
+                to: path.resolve(__dirname, 'build/assets/dist/images'),
+            },
+            {
+                from: assetPath('src/fonts'),
+                to: path.resolve(__dirname, 'build/assets/dist/fonts'),
+            },
+        ],
+    }),
+    ...(isProduction
+        ? [
+              new WebpackRTLPlugin({
+                  suffix: '-rtl',
+                  minify: true,
+              }),
+          ]
+        : []),
+    {
+        apply: (compiler) => {
+            compiler.hooks.done.tap('WriteDesignSystemVersion', () => {
+                // Store the design system version in a file
+                const packageJson = require('./node_modules/@givewp/design-system-foundation/package.json');
+                const version = packageJson.version;
+
+                const versionFilePath = path.join(__dirname, 'build', 'assets', 'dist', 'css', 'design-system');
+
+                if (!fs.existsSync(versionFilePath)) {
+                    fs.mkdirSync(versionFilePath, {recursive: true});
+                }
+
+                fs.writeFileSync(path.join(versionFilePath, 'version'), version);
+            });
+        },
+    },
+];
 
 /**
  * Custom config
@@ -90,130 +226,13 @@ module.exports = {
     ...defaultConfig,
     resolve: {
         ...defaultConfig.resolve,
-        alias: {
-            ...defaultConfig.resolve.alias,
-            '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
-            '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
-            '@givewp/forms/app': srcPath('DonationForms/resources/app'),
-            '@givewp/forms/registrars': srcPath('DonationForms/resources/registrars'),
-            '@givewp/forms/shared': srcPath('DonationForms/resources/shared'),
-            '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
-            '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
-            '@givewp/components': srcPath('Views/Components/'),
-            '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
-            '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
-            '@givewp/src': path.resolve(__dirname, 'src/'),
-        },
+        alias,
     },
-    entry: {
-        donationFormBlock: srcPath('DonationForms/Blocks/DonationFormBlock/resources/block.ts'),
-        donationFormBlockApp: srcPath('DonationForms/Blocks/DonationFormBlock/resources/app/index.tsx'),
-        donationFormApp: srcPath('DonationForms/resources/app/DonationFormApp.tsx'),
-        donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
-        donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
-        donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
-        eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
-        eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
-        stripePaymentElementGateway: srcPath(
-            'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
-        ),
-        stripePaymentElementFormBuilder: srcPath(
-            'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/resources/js/index.tsx'
-        ),
-        testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
-        testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
-        offlineGateway: srcPath('PaymentGateways/Gateways/Offline/resources/offlineGateway.tsx'),
-        offlineGatewayFormBuilder: srcPath('PaymentGateways/Gateways/Offline/resources/formBuilder/index.tsx'),
-        payPalStandardGateway: srcPath(
-            'PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'
-        ),
-        payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
-        classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
-        classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
-        multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
-        twoPanelStepsFormLayoutCss: srcPath('DonationForms/FormDesigns/TwoPanelStepsFormLayout/css/main.scss'),
-        donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
-        baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
-        formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
-        formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
-        formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
-        adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
-        ...legacyScriptsEntry,
-        ...legacyStyleEntry,
-    },
-    plugins: [
-        ...defaultConfig.plugins,
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    from: assetPath('src/images'),
-                    to: path.resolve(__dirname, 'build/assets/dist/images'),
-                },
-                {
-                    from: assetPath('src/fonts'),
-                    to: path.resolve(__dirname, 'build/assets/dist/fonts'),
-                },
-            ],
-        }),
-        ...(isProduction
-            ? [
-                  new WebpackRTLPlugin({
-                      suffix: '-rtl',
-                      minify: true,
-                  }),
-              ]
-            : []),
-        {
-            apply: (compiler) => {
-                compiler.hooks.done.tap('WriteDesignSystemVersion', () => {
-                    // Store the design system version in a file
-                    const packageJson = require('./node_modules/@givewp/design-system-foundation/package.json');
-                    const version = packageJson.version;
-
-                    const versionFilePath = path.join(__dirname, 'build', 'assets', 'dist', 'css', 'design-system');
-
-                    if (!fs.existsSync(versionFilePath)) {
-                        fs.mkdirSync(versionFilePath, {recursive: true});
-                    }
-
-                    fs.writeFileSync(path.join(versionFilePath, 'version'), version);
-                });
-            },
-        },
-    ],
+    entry,
+    plugins,
     stats: {
         colors: true,
         children: false,
         errorDetails: true,
     },
 };
-
-/**
- * Helper for getting the path to the src directory.
- *
- * @param {string} relativePath
- * @returns {string}
- */
-function srcPath(relativePath) {
-    return path.resolve(process.cwd(), 'src', relativePath);
-}
-
-/**
- * Helper for getting the path to the assets directory.
- *
- * @param {string} relativePath
- * @returns {string}
- */
-function assetPath(relativePath) {
-    return path.resolve(process.cwd(), 'assets', relativePath);
-}
-
-/**
- * Helper for getting the path to the includes directory.
- *
- * @param {string} relativePath
- * @returns {string}
- */
-function includesPath(relativePath) {
-    return path.resolve(process.cwd(), 'includes', relativePath);
-}
