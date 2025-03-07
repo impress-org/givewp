@@ -3,8 +3,9 @@
 namespace Give\Donations\Controllers;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationRoute;
-use phpDocumentor\Reflection\Types\Boolean;
+use Give\Donations\ValueObjects\DonationSensitiveDataMode;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -14,21 +15,6 @@ use WP_REST_Response;
  */
 class DonationRequestController
 {
-    /**
-     * @var Boolean
-     */
-    private $isAdmin;
-
-    /**
-     * @var Boolean
-     */
-    private $isAnonymousDonationsRedacted;
-
-    /**
-     * @var Boolean
-     */
-    private $isSensitiveDataIncluded;
-
     /**
      * @unreleased
      *
@@ -50,20 +36,18 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
-        $this->isAdmin = current_user_can('manage_options');
-        $this->isSensitiveDataIncluded = 'include' === $request->get_param('sensitiveData');
+        $isAdmin = current_user_can('manage_options');
 
-        if ( ! $this->isAdmin && $this->isSensitiveDataIncluded) {
+        $donationSensitiveDataMode = new DonationSensitiveDataMode($request->get_param('sensitiveData'));
+        if ( ! $isAdmin && $donationSensitiveDataMode->isIncluded()) {
             return new WP_REST_Response(
                 ['message' => __('You do not have permission to include sensitive data.', 'give')],
                 403
             );
         }
 
-        $anonymousDonations = $request->get_param('anonymousDonations');
-        $this->isAnonymousDonationsRedacted = 'redact' === $anonymousDonations;
-
-        if ( ! $this->isAdmin && 'include' === $anonymousDonations) {
+        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
             return new WP_REST_Response(
                 ['message' => __('You do not have permission to include anonymous donations.', 'give')],
                 403
@@ -83,7 +67,7 @@ class DonationRequestController
             $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
-        if ('exclude' === $anonymousDonations) {
+        if ($donationAnonymousMode->isExcluded()) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
         }
@@ -100,7 +84,9 @@ class DonationRequestController
             ->orderBy($sortColumn, $sortDirection);
 
         $donations = $query->getAll() ?? [];
-        $donations = array_map([$this, 'escDonation'], $donations);
+        $donations = array_map(function ($donation) use ($donationSensitiveDataMode, $donationAnonymousMode) {
+            return $this->escDonation($donation, $donationSensitiveDataMode, $donationAnonymousMode);
+        }, $donations);
 
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();
         $totalPages = (int)ceil($totalDonations / $perPage);
@@ -141,11 +127,15 @@ class DonationRequestController
     /**
      * @unreleased
      */
-    public function escDonation(Donation $donation): array
+    public function escDonation(
+        Donation $donation,
+        DonationSensitiveDataMode $donationSensitiveDataMode = null,
+        DonationAnonymousMode $donationAnonymousMode = null
+    ): array
     {
-        $sensitiveDataToRemove = [];
-        if ( ! $this->isSensitiveDataIncluded) {
-            $sensitiveDataToRemove = [
+        $sensitiveDataExcluded = [];
+        if ($donationSensitiveDataMode->isExcluded()) {
+            $sensitiveDataExcluded = [
                 'donorIp',
                 'email',
                 'phone',
@@ -154,7 +144,7 @@ class DonationRequestController
         }
 
         $anonymousDataRedacted = [];
-        if ($donation->anonymous && $this->isAnonymousDonationsRedacted) {
+        if ($donation->anonymous && $donationAnonymousMode->isRedacted()) {
             $anonymousDataRedacted = [
                 'donorId',
                 'honorific',
@@ -166,7 +156,7 @@ class DonationRequestController
 
         $donation = $donation->toArray();
 
-        foreach ($sensitiveDataToRemove as $property) {
+        foreach ($sensitiveDataExcluded as $property) {
             if (array_key_exists($property, $donation)) {
                 unset($donation[$property]);
             }

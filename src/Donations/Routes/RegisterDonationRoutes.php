@@ -134,8 +134,8 @@ class RegisterDonationRoutes
                         'default' => 'exclude',
                         'enum' => [
                             'exclude',
-                            'redact',
                             'include',
+                            'redact',
                         ],
                     ],
                 ],
