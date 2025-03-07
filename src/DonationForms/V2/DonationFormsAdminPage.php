@@ -7,6 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 use WP_Post;
 use WP_REST_Request;
 
@@ -98,6 +99,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {
@@ -117,6 +120,10 @@ class DonationFormsAdminPage
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'locale' => Language::getLocale(),
+            'swrConfig' => [
+                'revalidateOnFocus' => false
+            ]
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -191,7 +198,7 @@ class DonationFormsAdminPage
         ];
 
         if (CampaignsAdminPage::isShowingDetailsPage()) {
-            $queryParameters['campaignId'] = absint($_GET['id']);
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
         }
 
         $request = WP_REST_Request::from_url(
@@ -268,12 +275,13 @@ class DonationFormsAdminPage
             }
 
             jQuery(function() {
-                jQuery(jQuery('.wrap .page-title-action')[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e(
+                jQuery(jQuery('.wrap .wp-heading-inline')).after(
+                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
                         'Switch to New View',
                         'give'
                     ) ?></button>'
                 );
+                jQuery('.page-title-action:not(.switch-new-view)').remove();
             });
         </script>
         <?php

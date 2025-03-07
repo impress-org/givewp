@@ -53,6 +53,7 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                         className={classNames('givewp-fields-amount__level-container', {
                             'givewp-fields-amount__level-container--col': hasDescription,
                         })}
+                        key={index}
                     >
                         <button
                             className={classNames('givewp-fields-amount__level', {

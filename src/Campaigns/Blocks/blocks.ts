@@ -1,9 +1,23 @@
-import * as campaignTitleBlock from './CampaignTitleBlock';
+/**
+ * WordPress dependencies
+ */
+import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
 
-const getAllBlocks = () => {
-    return [campaignTitleBlock];
+/**
+ * Internal dependencies
+ */
+import campaignGrid from './CampaignGrid';
+import campaignBlock from './Campaign';
+
+export const getAllBlocks = () => {
+    return [
+        campaignGrid,
+        campaignBlock,
+    ];
 };
 
 getAllBlocks().forEach((block) => {
-    block.init();
+    if (!getBlockType(block.schema.name)) {
+        registerBlockType(block.schema as BlockConfiguration, block.settings);
+    }
 });

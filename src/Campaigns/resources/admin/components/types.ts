@@ -1,5 +1,7 @@
 export type Campaign = {
     id?: number;
+    pageId: number;
+    pagePermalink: string & Location;
     type: string;
     title: string;
     shortDescription: string;
@@ -10,7 +12,11 @@ export type Campaign = {
     secondaryColor: string;
     goalType: string;
     goal: number;
-    goalProgress: number;
+    goalStats: {
+        actual: number,
+        percentage: number,
+        goal: number,
+    };
     status: string;
     startDateTime: {
         date: string;

@@ -56,8 +56,8 @@ function give_setup_post_types() {
 			'name'               => __( 'Donation Forms', 'give' ),
 			'singular_name'      => __( 'Form', 'give' ),
 			'add_new'            => __( 'Add Form', 'give' ),
-			'add_new_item'       => __( 'Add New Campaign Form', 'give' ),
-			'edit_item'          => __( 'Edit Campaign Form', 'give' ),
+			'add_new_item'       => __( 'Add New Donation Form', 'give' ),
+			'edit_item'          => __( 'Edit Donation Form', 'give' ),
 			'new_item'           => __( 'New Form', 'give' ),
 			'all_items'          => __( 'All Forms', 'give' ),
 			'view_item'          => __( 'View Form', 'give' ),
@@ -135,6 +135,34 @@ function give_setup_post_types() {
 		'can_export'      => true,
 	];
 	register_post_type( 'give_payment', $payment_args );
+
+    /**
+     * Register Campaign Page CPT
+     *
+     * @unreleased
+     */
+    register_post_type('give_campaign_page', [
+        'label' => __('Campaign Page', 'give'),
+        'labels' => [
+            'edit_item' => __('Edit Campaign Page', 'give'),
+        ],
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'show_in_rest' => true,
+        'show_in_admin_bar' => true,
+        'query_var' => true,
+        'hierarchical' => false,
+        'supports' => [
+            'title',
+            'editor',
+        ],
+        'rewrite' => [
+            'slug' => 'campaign',
+            'with_front' => true,
+        ],
+        'template' => [],
+    ]);
 
 }
 

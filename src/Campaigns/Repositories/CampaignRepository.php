@@ -8,6 +8,7 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -76,10 +77,15 @@ class CampaignRepository
 
         Hooks::doAction('givewp_campaign_creating', $campaign);
 
-        $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: Temporal::getCurrentDateTime());
+        $currentDate = Temporal::getCurrentDateTime();
+
+        $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: $currentDate);
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
-        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+
+        $startDate = Temporal::withoutMicroseconds($campaign->startDate ?: $currentDate);
+        $startDateFormatted = Temporal::getFormattedDateTime($startDate);
+
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         DB::query('START TRANSACTION');
 
@@ -88,9 +94,9 @@ class CampaignRepository
                 ->insert([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
-                    'campaign_title' => $campaign->title,
-                    'short_desc' => $campaign->shortDescription,
-                    'long_desc' => $campaign->longDescription,
+                    'campaign_title' => wp_strip_all_tags($campaign->title, true),
+                    'short_desc' => wp_strip_all_tags($campaign->shortDescription),
+                    'long_desc' => wp_strip_all_tags($campaign->longDescription),
                     'campaign_logo' => $campaign->logo,
                     'campaign_image' => $campaign->image,
                     'primary_color' => $campaign->primaryColor,
@@ -117,6 +123,7 @@ class CampaignRepository
 
         $campaign->id = $campaignId;
         $campaign->createdAt = $dateCreated;
+        $campaign->startDate = $startDate;
 
         Hooks::doAction('givewp_campaign_created', $campaign);
     }
@@ -131,7 +138,7 @@ class CampaignRepository
         $this->validateProperties($campaign);
 
         $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate);
-        $endDateFormatted = Temporal::getFormattedDateTime($campaign->endDate);
+        $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         Hooks::doAction('givewp_campaign_updating', $campaign);
 
@@ -143,9 +150,10 @@ class CampaignRepository
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
                     'enable_campaign_page' => $campaign->enableCampaignPage,
-                    'campaign_title' => $campaign->title,
-                    'short_desc' => $campaign->shortDescription,
-                    'long_desc' => $campaign->longDescription,
+                    'campaign_page_id' => $campaign->pageId,
+                    'campaign_title' => wp_strip_all_tags($campaign->title, true),
+                    'short_desc' => wp_strip_all_tags($campaign->shortDescription),
+                    'long_desc' => wp_strip_all_tags($campaign->longDescription),
                     'campaign_logo' => $campaign->logo,
                     'campaign_image' => $campaign->image,
                     'primary_color' => $campaign->primaryColor,
@@ -352,9 +360,10 @@ class CampaignRepository
 
         return $builder->from('give_campaigns', 'campaigns')
             ->select(
-                'id',
+                ['campaigns.id', 'id'],
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
+                ['campaign_page_id', 'pageId'],
                 ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],

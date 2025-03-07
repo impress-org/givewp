@@ -4,7 +4,7 @@ import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignDetails} from './types';
+import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
@@ -15,20 +15,16 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
-
-declare const window: {
-    GiveCampaignDetails: GiveCampaignDetails;
-} & Window;
 
 interface Show {
     contextMenu?: boolean;
     confirmationModal?: boolean;
 }
 
-const StatusBadge = ({status}: {status: string}) => {
+const StatusBadge = ({status}: { status: string }) => {
     const statusMap = {
         active: __('Active', 'give'),
         archived: __('Archived', 'give'),
@@ -52,6 +48,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         confirmationModal: false,
     });
 
+    const {adminUrl} = getCampaignOptionsWindowData();
+
     const dispatch = useDispatch('givewp/campaign-notifications');
 
     const setShow = (data: Show) => {
@@ -67,7 +65,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+        }).then(({schema}: { schema: JSONSchemaType<any> }) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -107,7 +105,12 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, [campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
-        if (formState.isDirty) {
+
+        const shouldSave = formState.isDirty
+            // Force save if first publish to account for a race condition.
+            || (campaign.status === 'draft' && data.status === 'active');
+
+        if (shouldSave) {
             setIsSaving(data.status);
 
             edit(data);
@@ -134,37 +137,36 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = (status: 'archived' | 'draft') => {
+    const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
-        handleSubmit(async (data) => {
-            edit(data);
 
-            try {
-                const response: Campaign = await save();
+        edit({...campaign, status})
 
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
-                reset(response);
+        try {
+            const response: Campaign = await save();
 
-                dispatch.addSnackbarNotice({
-                    id: `update-${status}`,
-                    content: getMessageByStatus(status),
-                });
-            } catch (err) {
-                setShow({
-                    contextMenu: false,
-                    confirmationModal: false,
-                });
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+            reset(response);
 
-                dispatch.addSnackbarNotice({
-                    id: 'update-error',
-                    type: 'error',
-                    content: __('Something went wrong', 'give'),
-                });
-            }
-        })();
+            dispatch.addSnackbarNotice({
+                id: `update-${status}`,
+                content: getMessageByStatus(status),
+            });
+        } catch (err) {
+            setShow({
+                contextMenu: false,
+                confirmationModal: false,
+            });
+
+            dispatch.addSnackbarNotice({
+                id: 'update-error',
+                type: 'error',
+                content: __('Something went wrong', 'give'),
+            });
+        }
     };
 
     if (!hasResolved) {
@@ -185,7 +187,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignDetails.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -202,8 +204,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignDetails.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
-                                        target="_blank"
+                                        href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
                                         rel="noopener noreferrer"
                                     >
                                         {__('Edit campaign page', 'give')}
@@ -238,9 +239,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && (
+                                        {enableCampaignPage && campaign.pagePermalink && (
                                             <a
-                                                href="#"
+                                                href={campaign.pagePermalink}
                                                 aria-label={__('View Campaign', 'give')}
                                                 className={styles.contextMenuItem}
                                             >

@@ -36,6 +36,9 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
             button: {
                 text: __('Use this media', 'gie'),
             },
+            library: {
+                type: 'image', // Restricts media library to image files only
+            },
             multiple: false, // Set to true to allow multiple files to be selected
         });
 
@@ -43,6 +46,12 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
             // Get media attachment details from the frame state
             var attachment = frame.state().get('selection').first().toJSON();
 
+            if (!attachment.type || attachment.type !== 'image') {
+                alert(__('Please select an image file only.', 'give'));
+                frame.open();
+                return;
+            }
+            
             onChange(attachment.url, attachment.alt);
         });
 
@@ -130,7 +139,7 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
                     <button className={'givewp-media-library-control__button'} onClick={openMediaLibrary}>
                         {actionLabel}
                     </button>
-                    <p>{__('or drag your image or video here', 'give')}</p>
+                    <p>{__('or drag your image here', 'give')}</p>
                 </div>
             )}
         </div>

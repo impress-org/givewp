@@ -1153,6 +1153,11 @@ a.give-delete {
     display: none;
 }
 
+.give-subsubsub .givewp-feature-flag-notification-counter {
+    translate: 0 -0.125rem;
+    vertical-align: middle;
+}
+
 .give-admin-beta-features-message {
     background-color: #fff;
     padding: 1rem;
@@ -1166,6 +1171,16 @@ a.give-delete {
 	font-family: 'Inter' ,sans-serif;
 	font-weight: 400;
 	line-height: 1.5rem;
+  margin-bottom: 1.5rem;
+
+    .givewp-beta-icon {
+        margin-right: 0.25rem;
+    }
+
+    p {
+        line-height: 1.6;
+        margin: 0;
+    }
 }
 
 .give-admin-beta-features-feedback-link {

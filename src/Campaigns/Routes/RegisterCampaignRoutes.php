@@ -64,7 +64,7 @@ class RegisterCampaignRoutes
                         'type' => 'integer',
                         'required' => true,
                     ],
-                ]
+                ],
             ]
         );
     }
@@ -88,6 +88,19 @@ class RegisterCampaignRoutes
                     'permission_callback' => '__return_true',
                 ],
                 'args' => [
+                    'status' => [
+                        'type' => 'enum',
+                        'enum' => [
+                            'active',
+                            'draft',
+                            'archived',
+                        ],
+                        'default' => 'active',
+                    ],
+                    'ids' => [
+                        'type' => 'array',
+                        'default' => [],
+                    ],
                     'page' => [
                         'type' => 'integer',
                         'default' => 1,
@@ -98,6 +111,24 @@ class RegisterCampaignRoutes
                         'default' => 30,
                         'minimum' => 1,
                         'maximum' => 100,
+                    ],
+                    'sortBy' => [
+                        'type' => 'enum',
+                        'enum' => [
+                            'date',
+                            'amount',
+                            'donors',
+                            'donations',
+                        ],
+                        'default' => 'date',
+                    ],
+                    'orderBy' => [
+                        'type' => 'enum',
+                        'enum' => [
+                            'asc',
+                            'desc'
+                        ],
+                        'default' => 'desc',
                     ],
                 ],
             ]
@@ -251,6 +282,15 @@ class RegisterCampaignRoutes
                 'shortDescription' => [
                     'type' => 'string',
                     'description' => esc_html__('Campaign short description', 'give'),
+                    'maxLength' => 120,
+                ],
+                'primaryColor' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Primary color for the campaign', 'give'),
+                ],
+                'secondaryColor' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Secondary color for the campaign', 'give'),
                 ],
                 'goal' => [
                     'type' => 'number',
@@ -297,7 +337,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -319,7 +359,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -341,7 +381,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -363,7 +403,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -385,7 +425,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [
@@ -407,7 +447,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number'
+                                'type' => 'number',
                             ],
                         ],
                         'errorMessage' => [

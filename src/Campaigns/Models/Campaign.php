@@ -5,7 +5,7 @@ namespace Give\Campaigns\Models;
 use DateTime;
 use Exception;
 use Give\Campaigns\Actions\ConvertQueryDataToCampaign;
-use Give\Campaigns\CampaignDonationQuery;
+use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
@@ -25,6 +25,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @unreleased
  *
  * @property int              $id
+ * @property int              $pageId
  * @property int              $defaultFormId
  * @property CampaignType     $type
  * @property bool $enableCampaignPage
@@ -50,6 +51,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'pageId' => 'int',
         'defaultFormId' => 'int',
         'type' => CampaignType::class,
         'enableCampaignPage' => ['bool', true],
@@ -174,10 +176,9 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
     }
 
-    public function goalProgress()
+    public function getGoalStats(): array
     {
-        $query = new CampaignDonationQuery($this);
-        return $query->sumIntendedAmount();
+        return (new CampaignGoalData($this))->toArray();
     }
 
     /**

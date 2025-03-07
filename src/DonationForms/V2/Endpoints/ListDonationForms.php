@@ -7,6 +7,7 @@ use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Language;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -120,6 +121,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
      * @param WP_REST_Request $request
@@ -130,9 +132,11 @@ class ListDonationForms extends Endpoint
     {
         $this->request = $request;
         $this->listTable = give(DonationFormsListTable::class);
-        $this->defaultForm = $this->request->get_param('campaignId')
-            ? Campaign::find((int)$this->request->get_param('campaignId'))->defaultForm()->id
-            : 0;
+        $campaignId = (int)($this->request->get_param('campaignId'));
+        $campaign = $campaignId ? Campaign::find($campaignId) : null;
+        $defaultCampaignForm = $campaign ? $campaign->defaultForm() : null;
+
+        $this->defaultForm = $defaultCampaignForm->id ?? 0;
 
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
@@ -144,11 +148,10 @@ class ListDonationForms extends Endpoint
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
 
-            $defaultCampaignForm = ($campaignId = $this->request->get_param('campaignId')) ? Campaign::find($campaignId)->defaultForm() : false;
-
             foreach ($items as $i => &$item) {
                 $item['name'] = get_the_title($item['id']);
-                $item['edit'] = get_edit_post_link($item['id'], 'edit');
+                $item['edit'] = add_query_arg(['locale' => Language::getLocale()],
+                    get_edit_post_link($item['id'], 'edit'));
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
                 $item['status_raw'] = $forms[$i]->status->getValue();

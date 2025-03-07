@@ -9,6 +9,7 @@ use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * @since 3.6.0
@@ -20,6 +21,9 @@ class CreateEventTicketType implements RestRoute
 
     /**
      * @inheritDoc
+     *
+     * @since 3.20.0 Set the permission callback to "publish_give_payments" and description's sanitize callback to "textarea".
+     * @since 3.6.0
      */
     public function registerRoute()
     {
@@ -28,10 +32,10 @@ class CreateEventTicketType implements RestRoute
             $this->endpoint,
             [
                 [
-                    'methods' => 'POST',
+                    'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can( 'manage_options' );
+                        return current_user_can('edit_give_forms');
                     }
                 ],
                 'args' => [
@@ -39,7 +43,7 @@ class CreateEventTicketType implements RestRoute
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
                         'validate_callback' => function ($eventId) {
-                            return Event::find($eventId);
+                            return Event::find($eventId) !== null;
                         },
                         'required' => true,
                     ],
@@ -51,7 +55,7 @@ class CreateEventTicketType implements RestRoute
                     'description' => [
                         'type' => 'string',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'sanitize_callback' => 'sanitize_textarea_field',
                     ],
                     'price' => [
                         'type' => 'integer',

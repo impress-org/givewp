@@ -38,6 +38,7 @@ class SalesAmountColumn extends ModelColumn
     /**
      * @inheritDoc
      *
+     * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      *
      * @param Event $model
@@ -46,22 +47,26 @@ class SalesAmountColumn extends ModelColumn
     {
         $ticketTypes = [];
         foreach ($model->ticketTypes()->getAll() ?? [] as $ticketType) {
+            $salesCount = $ticketType->eventTickets()->count();
+            $ticketsAvailable = $ticketType->capacity - $salesCount;
+
             $ticketTypes[$ticketType->id] = [
                 'price' => $ticketType->price,
                 'capacity' => $ticketType->capacity,
+                'ticketsAvailable' => $ticketsAvailable,
             ];
         }
 
         $salesTotal = array_reduce(
             $model->eventTickets()->getAll() ?? [],
-                function (Money $carry, $eventTicket) use ($ticketTypes) {
-                    return $carry->add($ticketTypes[$eventTicket->ticketTypeId]['price']);
+                function (Money $carry, $eventTicket) {
+                    return $carry->add($eventTicket->amount);
             },
             new Money(0, give_get_currency())
         );
         $maxCapacitySales = array_reduce($ticketTypes, function (Money $carry, $ticketType) {
-            return $carry->add($ticketType['price']->multiply($ticketType['capacity']));
-        }, new Money(0, give_get_currency()));
+            return $carry->add($ticketType['price']->multiply($ticketType['ticketsAvailable']));
+        }, $salesTotal);
 
         $salesPercentage = $maxCapacitySales->formatToMinorAmount() > 0 ? max(
             min($salesTotal->formatToMinorAmount() / $maxCapacitySales->formatToMinorAmount(), 100),

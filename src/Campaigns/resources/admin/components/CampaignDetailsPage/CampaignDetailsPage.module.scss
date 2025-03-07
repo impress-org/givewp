@@ -181,7 +181,6 @@ select[name="campaignId"] {
 
 .tabs [role='tab']:hover,
 .tabs [data-reach-tab]:hover {
-    font-weight: 500;
     color: var(--givewp-neutral-900);
     background-color: var(--givewp-neutral-50);
 }
@@ -345,8 +344,7 @@ select[name="campaignId"] {
                 input,
                 textarea,
                 select,
-                .editor,
-                .upload{
+                .upload {
                     margin-top: var(--givewp-spacing-1);
                     color: var(--givewp-neutral-900);
                     font-weight: 500;
@@ -364,7 +362,29 @@ select[name="campaignId"] {
             }
 
             .sectionField:last-child {
-               margin: 0;
+                margin: 0;
+
+                .sectionFieldCurrencyControl {
+                    font-size: 1rem;
+                    line-height: 2;
+                    display: block;
+                    width: 100%;
+                    border: 1px solid #9ca0af;
+                    border-radius: var(--givewp-spacing-1);
+                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+                    div {
+                        margin: 0;
+                    }
+
+                    input {
+                        border: none;
+                        outline: none;
+                        box-shadow: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+                }
             }
 
             .sectionFieldDescription {
@@ -384,8 +404,7 @@ select[name="campaignId"] {
             }
 
             input,
-            select,
-            textarea {
+            select {
                 font-size: 1rem;
                 line-height: 2;
                 display: block;
@@ -471,6 +490,10 @@ select[name="campaignId"] {
             width: 1.25rem;
         }
     }
+
+    .colorControl {
+        margin-top: var(--givewp-spacing-3);
+    }
 }
 
 .loadingContainer {
@@ -533,7 +556,7 @@ select[name="campaignId"] {
         padding: var(--givewp-spacing-2);
 
         &:hover, &:active, &:focus {
-            background-color:var(--givewp-neutral-200);
+            background-color: var(--givewp-neutral-200);
             border-color: var(--givewp-neutral-200);
         }
     }

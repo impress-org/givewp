@@ -1,5 +1,5 @@
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
@@ -20,8 +20,11 @@ import {
     SubscriptionsIcon,
 } from './GoalTypeIcons';
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
+import {amountFormatter} from '@givewp/campaigns/utils';
+import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
+const currencyFormatter = amountFormatter(currency);
 
 /**
  * Get the next sharp hour
@@ -126,9 +129,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
             ),
-            endDateTime: getDateString(
-                campaign?.endDateTime?.date ? new Date(campaign?.endDateTime?.date) : getNextSharpHour(2)
-            ),
+            endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
         },
     });
 
@@ -160,7 +161,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         amount: {
             label: __('How much do you want to raise?', 'give'),
             description: __('Set the target amount your campaign should raise.', 'give'),
-            placeholder: __('eg. $2,000', 'give'),
+            placeholder: sprintf(__('eg. %s', 'give'),
+                currencyFormatter.format(2000),
+            ),
         },
         donations: {
             label: __('How many donations do you need?', 'give'),
@@ -178,7 +181,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                 'Set the target recurring amount your campaign should raise. One-time donations do not count.',
                 'give'
             ),
-            placeholder: __('eg. $2,000', 'give'),
+             placeholder: sprintf(__('eg. %s', 'give'),
+                currencyFormatter.format(2000),
+            ),
         },
         subscriptions: {
             label: __('How many recurring donations do you need?', 'give'),
@@ -213,7 +218,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
 
         try {
             inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = getDateString(new Date(inputs.endDateTime));
+            inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
 
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
@@ -257,20 +262,16 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         <div className="givewp-campaigns__form-row">
                             <label htmlFor="shortDescription">{__("What's your campaign about?", 'give')}</label>
                             <span>{__('Let your donors know the story behind your campaign.', 'give')}</span>
-                            <textarea
-                                {...register('shortDescription')}
+                            <TextareaControl
+                                name="shortDescription"
                                 rows={4}
-                                placeholder={__(
-                                    'Every family deserves a home-cooked holiday meal. Our organization collects non-perishable food and monetary donations each year to deliver holiday meal boxes to dozens of families in need from our own community.',
-                                    'give'
-                                )}
+                                maxLength={120}
+                                placeholder={__('Brief description for your campaign.', 'give')}
                             />
                         </div>
                         <div className="givewp-campaigns__form-row">
-                            <label htmlFor="image">{__('Add a cover image or video for your campaign.', 'give')}</label>
-                            <span>
-                                {__('Upload an image or video to represent and inspire your campaign.', 'give')}
-                            </span>
+                            <label htmlFor="image">{__('Add a cover image for your campaign.', 'give')}</label>
+                            <span>{__('Upload an image to represent and inspire your campaign.', 'give')}</span>
                             <Upload
                                 id="givewp-campaigns-upload-cover-image"
                                 label={__('Cover', 'give')}
@@ -304,9 +305,13 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 <GoalTypeOption
                                     type={'amount'}
                                     label={__('Amount raised', 'give')}
-                                    description={__(
-                                        'Your goal progress is measured by the total amount of funds raised eg. $500 of $1,000 raised.',
-                                        'give'
+                                    description={sprintf(
+                                        __(
+                                            'Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.',
+                                            'give'
+                                        ),
+                                        currencyFormatter.format(500),
+                                        currencyFormatter.format(1000)
                                     )}
                                     selected={selectedGoalType === 'amount'}
                                     register={register}

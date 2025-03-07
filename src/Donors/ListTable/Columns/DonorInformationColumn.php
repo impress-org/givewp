@@ -38,6 +38,7 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
+     * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
      *
      * @inheritDoc
@@ -56,7 +57,7 @@ class DonorInformationColumn extends ModelColumn
 
         return sprintf(
             $template,
-            get_avatar_url($model->id, ['size' => 64]),
+            get_avatar_url($model->email, ['size' => 64]),
             admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->id"),
             trim("$model->firstName $model->lastName"),
             $model->email

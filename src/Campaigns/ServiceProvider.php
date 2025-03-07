@@ -3,9 +3,14 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
+use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
+use Give\Campaigns\Actions\LoadCampaignOptions;
+use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
+use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -42,6 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot(): void
     {
         $this->registerMenus();
+        $this->replaceGiveFormsCptLabels();
         $this->registerActions();
         $this->setupCampaignPages();
         $this->registerMigrations();
@@ -49,6 +55,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
+        $this->loadCampaignOptions();
     }
 
     /**
@@ -61,6 +68,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignStatistics::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\GetCampaignRevenue::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', Routes\GetCampaignComments::class, 'registerRoute');
     }
 
     /**
@@ -77,7 +85,7 @@ class ServiceProvider implements ServiceProviderInterface
                 RevenueTableAddCampaignID::class,
                 AssociateDonationsToCampaign::class,
                 AddIndexes::class,
-                DonationsAddCampaignId::class
+                DonationsAddCampaignId::class,
             ]
         );
     }
@@ -100,6 +108,15 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
+        Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
+        Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
+        Hooks::addAction('init', Actions\CampaignPageTemplate::class, 'registerTemplate');
+        Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
+
+        // notices
+        add_action('wp_ajax_givewp_campaign_interaction_notice', static function () {
+            add_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', time(), true);
+        });
     }
 
     /**
@@ -110,10 +127,17 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_menu', CampaignsAdminPage::class, 'addCampaignsSubmenuPage', 999);
     }
 
+    /**
+     * @unreleased
+     */
+    private function replaceGiveFormsCptLabels()
+    {
+        Hooks::addFilter('give_forms_labels', ReplaceGiveFormsCptLabels::class);
+    }
+
     private function setupCampaignPages()
     {
-        Hooks::addAction('init', Actions\RegisterCampaignPagePostType::class);
-        Hooks::addAction('admin_action_edit_campaign_page', Actions\EditCampaignPageRedirect::class);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
     }
 
     /**
@@ -141,13 +165,16 @@ class ServiceProvider implements ServiceProviderInterface
          *
          * @see https://github.com/impress-org/givewp/pull/7483
          */
-        if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
+
+        Hooks::addAction('admin_init', RedirectLegacyCreateFormToCreateCampaign::class);
 
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
+        Hooks::addAction('givewp_campaign_created', CreateCampaignPage::class);
     }
 
     /**
@@ -157,5 +184,14 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
+        Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadCampaignOptions()
+    {
+        Hooks::addAction('init', LoadCampaignOptions::class);
     }
 }

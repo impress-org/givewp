@@ -6,7 +6,7 @@ use Exception;
 use Give\Campaigns\Controllers\CampaignRequestController;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignRoute;
-use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Campaigns\ViewModels\CampaignViewModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Error;
@@ -29,6 +29,7 @@ class CampaignsRequestControllerTest extends TestCase
     public function testShowShouldReturnCampaignData()
     {
         $campaign = Campaign::factory()->create();
+        $campaignViewModel = new CampaignViewModel($campaign);
 
         $request = $this->getMockRequest(WP_REST_Server::READABLE);
         $request->set_param('id', $campaign->id);
@@ -37,8 +38,8 @@ class CampaignsRequestControllerTest extends TestCase
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
         $this->assertSame(
-            $this->campaignViewModelFromArray($response->data),
-            $this->campaignViewModelFromArray($campaign->toArray())
+            $response->data,
+            $campaignViewModel->exports()
         );
     }
 
@@ -52,6 +53,8 @@ class CampaignsRequestControllerTest extends TestCase
         $campaign = Campaign::factory()->create();
         $campaign->title = 'Updated Campaign Title';
 
+        $campaignViewModel = new CampaignViewModel($campaign);
+
         $request = $this->getMockRequest(WP_REST_Server::CREATABLE);
         $request->set_param('id', $campaign->id);
         $request->set_param('title', $campaign->title);
@@ -60,8 +63,8 @@ class CampaignsRequestControllerTest extends TestCase
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
         $this->assertSame(
-            $this->campaignViewModelFromArray($response->data),
-            $this->campaignViewModelFromArray($campaign->toArray())
+            $response->data,
+            $campaignViewModel->exports()
         );
     }
 
@@ -106,31 +109,6 @@ class CampaignsRequestControllerTest extends TestCase
             $method,
             CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGN
         );
-    }
-
-
-    /**
-     * @unreleased
-     */
-    public function campaignViewModelFromArray(array $data): array
-    {
-        return [
-            'id' => $data['id'],
-            'type' => $data['type']->getValue(),
-            'title' => $data['title'],
-            'shortDescription' => $data['shortDescription'],
-            'longDescription' => $data['longDescription'],
-            'logo' => $data['logo'],
-            'image' => $data['image'],
-            'primaryColor' => $data['primaryColor'],
-            'secondaryColor' => $data['secondaryColor'],
-            'goal' => (int)$data['goal'],
-            'goalType' => $data['goalType']->getValue(),
-            'status' => $data['status']->getValue(),
-            'startDate' => Temporal::getFormattedDateTime($data['startDate']),
-            'endDate' => Temporal::getFormattedDateTime($data['endDate']),
-            'createdAt' => Temporal::getFormattedDateTime($data['createdAt']),
-        ];
     }
 }
 

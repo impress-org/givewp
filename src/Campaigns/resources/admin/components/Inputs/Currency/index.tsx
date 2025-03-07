@@ -11,8 +11,30 @@ type Props = {
 /**
  * @unreleased
  */
+function getNumberFormattingParts(): { groupSeparator: string; decimalSeparator: string } {
+    const numberFormat = new Intl.NumberFormat(window.navigator.language);
+    const parts = numberFormat.formatToParts(1234.56);
+
+    let groupSeparator = '';
+    let decimalSeparator = '';
+
+    for (const part of parts) {
+        if (part.type === 'group') {
+            groupSeparator = part.value;
+        } else if (part.type === 'decimal') {
+            decimalSeparator = part.value;
+        }
+    }
+
+    return {groupSeparator, decimalSeparator};
+}
+
+/**
+ * @unreleased
+ */
 export default ({name, currency, placeholder, disabled, ...rest}: Props) => {
     const {control} = useFormContext();
+    const {groupSeparator, decimalSeparator} = getNumberFormattingParts();
 
     return (
         <Controller
@@ -21,6 +43,15 @@ export default ({name, currency, placeholder, disabled, ...rest}: Props) => {
             render={({field}) => (
                 <CurrencyInput
                     disabled={disabled}
+                    disableAbbreviations
+                    decimalSeparator={decimalSeparator}
+                    groupSeparator={
+                        /**
+                         * Replace non-breaking space to avoid conflict with the suffix separator.
+                         * @link https://github.com/cchanxzy/react-currency-input-field/issues/266
+                         */
+                        groupSeparator.replace(/\u00A0/g, ' ')
+                    }
                     onValueChange={(value) => {
                         field.onChange(Number(value ?? 0));
                     }}
