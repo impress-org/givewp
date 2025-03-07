@@ -28,6 +28,7 @@
             "default": "Donate now"
         }
     },
+    "example": {},
     "textdomain": "give",
     "render": "file:./render.php"
 }
