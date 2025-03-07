@@ -28,7 +28,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldNotReturnSensitiveData()
+    public function testGetDonationsShouldNotIncludeSensitiveData()
     {
         $this->createDonation1();
 
@@ -56,7 +56,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldReturnSensitiveData()
+    public function testGetDonationsShouldIncludeSensitiveData()
     {
         $newAdminUser = $this->factory()->user->create(
             [
@@ -73,6 +73,12 @@ class GetDonationsRouteTest extends RestApiTestCase
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
+        $request->set_query_params(
+            [
+                'sensitiveData' => 'include',
+            ]
+        );
+
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
@@ -87,6 +93,31 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertNotEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldReturn403ErrorWhenNotAdminIncludeSensitiveData()
+    {
+        $this->createDonation1();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'sensitiveData' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
     }
 
     /**

@@ -25,6 +25,11 @@ class DonationRequestController
     private $isAnonymousDonationsRedacted;
 
     /**
+     * @var Boolean
+     */
+    private $isSensitiveDataIncluded;
+
+    /**
      * @unreleased
      *
      * @return WP_Error | WP_REST_Response
@@ -45,9 +50,18 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
+        $this->isAdmin = current_user_can('manage_options');
+        $this->isSensitiveDataIncluded = 'include' === $request->get_param('sensitiveData');
+
+        if ( ! $this->isAdmin && $this->isSensitiveDataIncluded) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include sensitive data.', 'give')],
+                403
+            );
+        }
+
         $anonymousDonations = $request->get_param('anonymousDonations');
         $this->isAnonymousDonationsRedacted = 'redact' === $anonymousDonations;
-        $this->isAdmin = current_user_can('manage_options');
 
         if ( ! $this->isAdmin && 'include' === $anonymousDonations) {
             return new WP_REST_Response(
@@ -130,7 +144,7 @@ class DonationRequestController
     public function escDonation(Donation $donation): array
     {
         $sensitiveDataToRemove = [];
-        if ( ! $this->isAdmin) {
+        if ( ! $this->isSensitiveDataIncluded) {
             $sensitiveDataToRemove = [
                 'donorIp',
                 'email',
