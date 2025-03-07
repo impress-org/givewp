@@ -2,17 +2,11 @@
 
 namespace Give\Campaigns\Routes;
 
-use DateInterval;
-use DatePeriod;
-use DateTime;
-use DateTimeImmutable;
-use DateTimeInterface;
 use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignRoute;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_REST_Response;
 use WP_REST_Server;
 
@@ -55,21 +49,22 @@ class GetCampaignRevenue implements RestRoute
      */
     public function handleRequest($request): WP_REST_Response
     {
-
         $campaign = Campaign::find($request->get_param('id'));
 
-        $dates = $this->getDatesFromRange(new DateTime('-7 days'), new DateTime());
+        if (!$campaign) {
+            return new WP_REST_Response([], 404);
+        }
 
         $query = new CampaignDonationQuery($campaign);
-        $query->between(new DateTime('-7 days'), new DateTime());
         $results = $query->getDonationsByDay();
 
-        foreach($results as $result) {
+        $dates = [];
+        foreach ($results as $result) {
             $dates[$result->date] = $result->amount;
         }
 
         $data = [];
-        foreach($dates as $date => $amount) {
+        foreach ($dates as $date => $amount) {
             $data[] = [
                 'date' => $date,
                 'amount' => $amount,
@@ -77,20 +72,5 @@ class GetCampaignRevenue implements RestRoute
         }
 
         return new WP_REST_Response($data, 200);
-    }
-
-    public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate): array
-    {
-        $period = new DatePeriod(
-            $startDate,
-            new DateInterval('P1D'),
-            $endDate
-        );
-
-        $dates = array_map(function($date) {
-            return $date->format('Y-m-d');
-        }, iterator_to_array($period));
-
-        return array_fill_keys($dates, 0);
     }
 }

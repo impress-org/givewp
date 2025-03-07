@@ -10,20 +10,22 @@ const RevenueChart = () => {
     const {currency} = getCampaignOptionsWindowData();
     const currencyFormatter = amountFormatter(currency);
     const [max, setMax] = useState(0);
-    const [categories, setCategories] = useState([]);
     const [series, setSeries] = useState([{name: "Revenue", data: []}]);
 
     useEffect(() => {
         apiFetch({path: addQueryArgs( '/give-api/v2/campaigns/' + campaignId +'/revenue' ) } )
             .then((data: {date: string, amount: number}[]) => {
 
-                setMax(Math.max(...data.map(item => item.amount)) * 1.1)
-
-                setCategories(data.map(item => item.date))
+                setMax(Math.max(...data.map(item => item.amount)) * 1.2)
 
                 setSeries([{
                     name: "Revenue",
-                    data: data.map(item => item.amount)
+                    data: data.map(item => {
+                        return {
+                            x: new Date(item.date).getTime(),
+                            y: item.amount
+                        }
+                    })
                 }])
             });
     }, [])
@@ -36,7 +38,6 @@ const RevenueChart = () => {
             },
         },
         xaxis: {
-            categories,
             type: 'datetime' as "datetime" | "category" | "numeric",
         },
         yaxis: {
