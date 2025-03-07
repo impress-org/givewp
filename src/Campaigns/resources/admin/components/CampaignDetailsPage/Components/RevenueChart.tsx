@@ -42,7 +42,6 @@ const RevenueChart = () => {
         yaxis: {
             max,
             min: 0,
-            showForNullSeries: false,
             labels: {
                  formatter: (value) => {
                     return currencyFormatter.format(Math.ceil(Number(value)))

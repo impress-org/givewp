@@ -84,7 +84,7 @@ final class CampaignDonationQueryTest extends TestCase
 
         $db = DB::table('give_campaign_forms');
         $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
-        
+
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -155,10 +155,6 @@ final class CampaignDonationQueryTest extends TestCase
                 'createdAt' => new DateTime('2021-01-02 00:00:00'),
             ]),
         ];
-
-        foreach($donations as $donation) {
-            give_update_meta($donation->id, '_give_completed_date', $donation->createdAt->format('Y-m-d H:i:s'));
-        }
 
         $query = new CampaignDonationQuery($campaign);
 
