@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 /**
  * WordPress Dependencies
@@ -180,6 +181,7 @@ const entry = {
  */
 const plugins = [
     ...defaultConfig.plugins,
+    // copy images and fonts
     new CopyWebpackPlugin({
         patterns: [
             {
@@ -192,6 +194,7 @@ const plugins = [
             },
         ],
     }),
+    // Generate RTL files
     ...(isProduction
         ? [
               new WebpackRTLPlugin({
@@ -201,6 +204,7 @@ const plugins = [
           ]
         : []),
     {
+        // Write the design system version to a file
         apply: (compiler) => {
             compiler.hooks.done.tap('WriteDesignSystemVersion', () => {
                 // Store the design system version in a file
@@ -217,6 +221,8 @@ const plugins = [
             });
         },
     },
+    // TypeScript type checking
+    new ForkTsCheckerWebpackPlugin()
 ];
 
 /**
