@@ -11,6 +11,11 @@ class AddNewBadgeToAdminMenuItem {
      */
     public function __invoke()
     {
+        // only continue if in admin
+        if (!is_admin()) {
+            return;
+        }
+
         // only show bade for existing users who have upgraded from a version prior to 4.0.0
         if (version_compare((string)get_option('give_version_upgraded_from', ''), '4.0.0', '>=')) {
             return;
