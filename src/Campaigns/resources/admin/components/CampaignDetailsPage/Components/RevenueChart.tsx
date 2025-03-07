@@ -22,13 +22,15 @@ const RevenueChart = () => {
                     name: "Revenue",
                     data: data.map(item => {
                         return {
-                            x: new Date(item.date).getTime(),
+                            x: item.date,
                             y: item.amount
                         }
                     })
                 }])
             });
     }, [])
+
+    console.log(series);
 
     const options = {
         chart: {
