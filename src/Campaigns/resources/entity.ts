@@ -8,12 +8,10 @@ dispatch(coreStore).addEntities([
     {
         name: 'campaign',
         kind: 'givewp',
-        baseURL: '/give-api/v2/campaigns',
+        baseURL: '/givewp/v3/campaigns',
         baseURLParams: {},
         plural: 'campaigns',
         label: __('Campaign', 'give'),
-        supportsPagination: true
-    }
+        supportsPagination: true,
+    },
 ]);
-
-
