@@ -30,8 +30,6 @@ const RevenueChart = () => {
             });
     }, [])
 
-    console.log(series);
-
     const options = {
         chart: {
             id: "campaign-revenue",
