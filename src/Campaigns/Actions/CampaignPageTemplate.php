@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Framework\Views\View;
 
 /**
@@ -16,7 +15,7 @@ class CampaignPageTemplate
      */
     public function registerTemplate()
     {
-        if ( ! $this->canRegisterBlockTemplate()) {
+        if (!$this->canRegisterBlockTemplate()) {
             return;
         }
 
@@ -39,7 +38,7 @@ class CampaignPageTemplate
             'give_campaign_page' === get_query_var('post_type')
             && current_theme_supports('block-templates')
         ) {
-            if ( ! $this->isPageVisible()) {
+            if (!$this->isPageVisible()) {
                 status_header(404);
 
                 return get_404_template();
@@ -64,25 +63,33 @@ class CampaignPageTemplate
     }
 
     /**
+     *
      * @unreleased
      */
     private function isPageVisible(): bool
     {
-        $campaign = Campaign::find(get_post_field('campaignId'));
+        $campaignId = get_post_field('campaignId');
 
-        if ( ! $campaign) {
+        if (!$campaignId) {
             return false;
         }
 
-        // Allow logged in admin users to preview the page
-        if (
-            ! current_user_can('manage_options')
-            && ! $campaign->enableCampaignPage
-            && $campaign->status->getValue() !== CampaignStatus::ACTIVE()
-        ) {
+        $campaign = Campaign::find($campaignId);
+
+        if (!$campaign) {
             return false;
         }
 
-        return true;
+        // if the campaign page is disabled, no one can see it
+        if (!$campaign->enableCampaignPage) {
+            return false;
+        }
+
+        // logged-in users can see the page if the campaign is active or draft
+        if (current_user_can('manage_options') && ($campaign->status->isActive() || $campaign->status->isDraft()) ) {
+            return true;
+        }
+
+        return $campaign->status->isActive();
     }
 }
