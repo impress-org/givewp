@@ -4,6 +4,7 @@ namespace Give\Donations\Controllers;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationRoute;
+use phpDocumentor\Reflection\Types\Boolean;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -13,6 +14,16 @@ use WP_REST_Response;
  */
 class DonationRequestController
 {
+    /**
+     * @var Boolean
+     */
+    private $isAdmin;
+
+    /**
+     * @var Boolean
+     */
+    private $isAnonymousDonationsRedacted;
+
     /**
      * @unreleased
      *
@@ -34,6 +45,17 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
+        $anonymousDonations = $request->get_param('anonymousDonations');
+        $this->isAnonymousDonationsRedacted = 'redact' === $anonymousDonations;
+        $this->isAdmin = current_user_can('manage_options');
+
+        if ( ! $this->isAdmin && 'include' === $anonymousDonations) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                403
+            );
+        }
+
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
@@ -47,7 +69,7 @@ class DonationRequestController
             $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
-        if ( ! $request->get_param('includeAnonymousDonations')) {
+        if ('exclude' === $anonymousDonations) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
         }
@@ -65,6 +87,7 @@ class DonationRequestController
 
         $donations = $query->getAll() ?? [];
         $donations = array_map([$this, 'escDonation'], $donations);
+
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();
         $totalPages = (int)ceil($totalDonations / $perPage);
 
@@ -106,33 +129,38 @@ class DonationRequestController
      */
     public function escDonation(Donation $donation): array
     {
-        if (current_user_can('manage_options')) {
-            return $donation->toArray();
+        $sensitiveDataToRemove = [];
+        if ( ! $this->isAdmin) {
+            $sensitiveDataToRemove = [
+                'donorIp',
+                'email',
+                'phone',
+                'billingAddress',
+            ];
         }
 
-        $sensitiveData = [
-            'donorIp',
-            'email',
-            'phone',
-            'billingAddress',
-        ];
-
-        if ($donation->anonymous) {
-            $anonymousData = [
+        $anonymousDataRedacted = [];
+        if ($donation->anonymous && $this->isAnonymousDonationsRedacted) {
+            $anonymousDataRedacted = [
                 'donorId',
                 'honorific',
                 'firstName',
                 'lastName',
                 'company',
             ];
-
-            $sensitiveData = array_merge($sensitiveData, $anonymousData);
         }
 
         $donation = $donation->toArray();
-        foreach ($sensitiveData as $property) {
+
+        foreach ($sensitiveDataToRemove as $property) {
             if (array_key_exists($property, $donation)) {
                 unset($donation[$property]);
+            }
+        }
+
+        foreach ($anonymousDataRedacted as $property) {
+            if (array_key_exists($property, $donation)) {
+                $donation[$property] = __('anonymous', 'give');
             }
         }
 
