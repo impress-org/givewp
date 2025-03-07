@@ -24,7 +24,7 @@ class GetDonationRouteTest extends RestApiTestCase
     public function testGetDonation()
     {
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -43,10 +43,10 @@ class GetDonationRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationShouldNotReturnSensitiveData()
+    public function testGetDonationShouldNotIncludeSensitiveData()
     {
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -72,23 +72,29 @@ class GetDonationRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationShouldReturnSensitiveData()
+    public function testGetDonationShouldIncludeSensitiveData()
     {
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'admin38974238473824',
-                'user_pass' => 'admin38974238473824',
-                'user_email' => 'admin38974238473824@test.com',
+                'user_login' => 'testGetDonationShouldIncludeSensitiveData',
+                'user_pass' => 'testGetDonationShouldIncludeSensitiveData',
+                'user_email' => 'testGetDonationShouldIncludeSensitiveData@test.com',
             ]
         );
         wp_set_current_user($newAdminUser);
 
         /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'sensitiveData' => 'include',
+            ]
+        );
 
         $response = $this->dispatchRequest($request);
 
@@ -111,7 +117,34 @@ class GetDonationRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationShouldNotReturnSensitiveAndAnonymousData()
+    public function testGetDonationShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'sensitiveData' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationShouldNotReturnAnonymousDonationByDefault()
     {
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
@@ -119,33 +152,12 @@ class GetDonationRouteTest extends RestApiTestCase
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
-        $request->set_query_params(
-            [
-                'includeAnonymousDonations' => true,
-            ]
-        );
 
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
 
-        $sensitiveAndAnonymousData = [
-            // sensitive data
-            'donorIp',
-            'email',
-            'phone',
-            'billingAddress',
-            // anonymous data
-            'donorId',
-            'honorific',
-            'firstName',
-            'lastName',
-            'company',
-        ];
-
-        $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data, array_flip($sensitiveAndAnonymousData)));
+        $this->assertEquals(403, $status);
     }
 
     /**
@@ -153,14 +165,14 @@ class GetDonationRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationShouldReturnSensitiveAndAnonymousData()
+    public function testGetDonationShouldIncludeAnonymousDonation()
     {
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'admin38974238473824',
-                'user_pass' => 'admin38974238473824',
-                'user_email' => 'admin38974238473824@test.com',
+                'user_login' => 'testGetDonationsShouldIncludeAnonymousDonations',
+                'user_pass' => 'testGetDonationsShouldIncludeAnonymousDonations',
+                'user_email' => 'testGetDonationsShouldIncludeAnonymousDonations@test.com',
             ]
         );
         wp_set_current_user($newAdminUser);
@@ -173,7 +185,7 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
-                'includeAnonymousDonations' => true,
+                'anonymousDonations' => 'include',
             ]
         );
 
@@ -182,13 +194,64 @@ class GetDonationRouteTest extends RestApiTestCase
         $status = $response->get_status();
         $data = $response->get_data();
 
-        $sensitiveAndAnonymousData = [
-            // sensitive data
-            'donorIp',
-            'email',
-            'phone',
-            'billingAddress',
-            // anonymous data
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donation->id, $data['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonation()
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'anonymousDonations' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationShouldRedactAnonymousDonation()
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'anonymousDonations' => 'redact',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donation->id, $data['id']);
+
+        $anonymousDataRedacted = [
             'donorId',
             'honorific',
             'firstName',
@@ -196,7 +259,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'company',
         ];
 
-        $this->assertEquals(200, $status);
-        $this->assertNotEmpty(array_intersect_key($data, array_flip($sensitiveAndAnonymousData)));
+        foreach ($anonymousDataRedacted as $property) {
+            $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+        }
     }
 }

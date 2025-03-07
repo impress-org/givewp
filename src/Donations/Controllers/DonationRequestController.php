@@ -28,7 +28,25 @@ class DonationRequestController
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($this->escDonation($donation));
+        $isAdmin = current_user_can('manage_options');
+
+        $donationSensitiveDataMode = new DonationSensitiveDataMode($request->get_param('sensitiveData'));
+        if ( ! $isAdmin && $donationSensitiveDataMode->isIncluded()) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include sensitive data.', 'give')],
+                403
+            );
+        }
+
+        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        if ( ! $isAdmin && $donation->anonymous && ! $donationAnonymousMode->isRedacted()) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                403
+            );
+        }
+
+        return new WP_REST_Response($this->escDonation($donation, $donationSensitiveDataMode, $donationAnonymousMode));
     }
 
     /**

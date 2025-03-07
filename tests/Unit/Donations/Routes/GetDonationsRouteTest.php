@@ -100,7 +100,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldReturn403ErrorWhenNotAdminIncludeSensitiveData()
+    public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
         $this->createDonation1();
 
@@ -238,52 +238,6 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldRedactAnonymousDonations()
-    {
-        Donation::query()->delete();
-
-        $donation1 = $this->createDonation1();
-
-        // This anonymous donation should be returned to the data array.
-        $donation2 = $this->createDonation2(0, true);
-
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        $request->set_query_params(
-            [
-                'anonymousDonations' => 'redact',
-                'direction' => 'ASC',
-            ]
-        );
-
-        $response = $this->dispatchRequest($request);
-
-        $status = $response->get_status();
-        $data = $response->get_data();
-
-        $this->assertEquals(200, $status);
-        $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
-        $this->assertEquals($donation2->id, $data[1]['id']);
-
-        $anonymousDataRedacted = [
-            'donorId',
-            'honorific',
-            'firstName',
-            'lastName',
-            'company',
-        ];
-
-        foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
     public function testGetDonationsShouldIncludeAnonymousDonations()
     {
         $newAdminUser = $this->factory()->user->create(
@@ -328,7 +282,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldReturn403ErrorWhenNotAdminIncludeAnonymousDonations()
+    public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonations()
     {
         Donation::query()->delete();
 
@@ -347,6 +301,52 @@ class GetDonationsRouteTest extends RestApiTestCase
         $status = $response->get_status();
 
         $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonationsShouldRedactAnonymousDonations()
+    {
+        Donation::query()->delete();
+
+        $donation1 = $this->createDonation1();
+
+        // This anonymous donation should be returned to the data array.
+        $donation2 = $this->createDonation2(0, true);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonations' => 'redact',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals($donation2->id, $data[1]['id']);
+
+        $anonymousDataRedacted = [
+            'donorId',
+            'honorific',
+            'firstName',
+            'lastName',
+            'company',
+        ];
+
+        foreach ($anonymousDataRedacted as $property) {
+            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+        }
     }
 
     /**
