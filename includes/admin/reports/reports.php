@@ -298,7 +298,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
- * @unreleased added permissions check
+ * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void
  */
