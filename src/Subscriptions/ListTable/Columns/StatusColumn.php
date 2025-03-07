@@ -103,7 +103,7 @@ class StatusColumn extends ModelColumn
             $model->status->label(),
             isset($extra) ? sprintf(
                 $extraTemplate,
-                GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
+                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
                 $extra['label'],
                 $extra['status'],
                 $extra['text']

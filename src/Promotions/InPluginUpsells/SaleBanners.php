@@ -43,13 +43,13 @@ class SaleBanners
         return [
             [
                 'id' => 'bfgt2023',
-                'giveIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
-                'discountIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
-                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
-                'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
-                'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
-                'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
-                'dismissIconURL' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
+                'giveIconURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/give-logo-icon.svg',
+                'discountIconURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/discount-icon.svg',
+                'backgroundImageLargeURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/background-image-lg.svg',
+                'backgroundImageMediumURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/background-image-md.svg',
+                'backgroundImageSmallURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/background-image-s.svg',
+                'shoppingCartIconURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/shopping-cart-icon.svg',
+                'dismissIconURL' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/bfcm-banner/dismiss-icon.svg',
                 'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
                 'leadText' => self::getDataByPricingPlan(
                     [
@@ -155,7 +155,7 @@ class SaleBanners
     {
         wp_enqueue_script(
             'give-in-plugin-upsells-sale-banners',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-sale-banner.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-upsell-sale-banner.js',
             [],
             GIVE_VERSION,
             true

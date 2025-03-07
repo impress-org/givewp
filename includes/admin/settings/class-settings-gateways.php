@@ -392,7 +392,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                             'Uses the blocks-based visual form builder for creating and customizing a donation form.',
                             'give'
                         ),
-                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v3.jpg',
+                        'image' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/give-settings-gateways-v3.jpg',
                     ]
                 ],
                 'v2' => [
@@ -406,7 +406,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                             'Uses the traditional settings options for creating and customizing a donation form.',
                             'give'
                         ),
-                        'image' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg',
+                        'image' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/give-settings-gateways-v2.jpg',
                     ],
                 ],
             ];
@@ -440,7 +440,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                                     <p>%4$s</p>
                                 </div>
                             </div>',
-                            esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
+                            esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/help-circle.svg'),
                             esc_url($group['helper']['image']),
                             esc_html($group['label']),
                             esc_html($group['helper']['text'])

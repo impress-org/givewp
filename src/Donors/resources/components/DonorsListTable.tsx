@@ -79,7 +79,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveDonors.pluginUrl}assets/dist/images/list-table/blank-slate-donor-icon.svg`}
+        imagePath={`${window.GiveDonors.pluginUrl}build/assets/dist/images/list-table/blank-slate-donor-icon.svg`}
         description={__('No donors found', 'give')}
         href={'https://docs.givewp.com/donors'}
         linkText={__('GiveWP Donors.', 'give')}

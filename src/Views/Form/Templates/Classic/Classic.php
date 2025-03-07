@@ -56,7 +56,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-classic.png';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/template-preview-classic.png';
     }
 
     /**
@@ -151,7 +151,7 @@ class Classic extends Template implements Hookable, Scriptable
 
         wp_enqueue_style(
             'give-classic-template',
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-classic-template.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-classic-template.css',
             [],
             GIVE_VERSION
         );
@@ -183,7 +183,7 @@ class Classic extends Template implements Hookable, Scriptable
         // JS
         wp_enqueue_script(
             'give-classic-template-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-classic-template.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-classic-template.js',
             ['give'],
             GIVE_VERSION,
             true

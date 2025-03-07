@@ -59,18 +59,18 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
             <td colSpan={visibleColumns.length + 1}>
                 <div className={styles.productRecommendation}>
                     <div className={styles.container}>
-                            <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
+                            <img src={`${pluginUrl}build/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
                             <TranslatedMessage message={message} />
 
                         <a target="_blank" href={documentationPage}>
                             {innerHtml}
-                            <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
+                            <img src={`${pluginUrl}build/assets/dist/images/list-table/external-link-icon.svg`} />
                         </a>
                     </div>
 
                     <button onClick={closeMessage}>
-                        <img src={`${pluginUrl}/assets/dist/images/list-table/circular-exit-icon.svg`} />
+                        <img src={`${pluginUrl}build/assets/dist/images/list-table/circular-exit-icon.svg`} />
                     </button>
                 </div>
             </td>

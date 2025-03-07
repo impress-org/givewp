@@ -233,7 +233,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveDonationForms.pluginUrl}/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`}
+        imagePath={`${window.GiveDonationForms.pluginUrl}build/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`}
         description={__('No donation forms', 'give')}
         href={'https://docs.givewp.com/forms'}
         linkText={__('GiveWP Forms', 'give')}

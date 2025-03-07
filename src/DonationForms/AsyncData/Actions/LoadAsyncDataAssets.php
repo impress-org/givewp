@@ -31,14 +31,14 @@ class LoadAsyncDataAssets
     {
         wp_register_style(
             LoadAsyncDataAssets::handleName(),
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-donation-forms-load-async-data.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-donation-forms-load-async-data.css',
             [],
             GIVE_VERSION
         );
 
         wp_register_script(
             LoadAsyncDataAssets::handleName(),
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-donation-forms-load-async-data.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-donation-forms-load-async-data.js',
             [],
             GIVE_VERSION,
             true

@@ -31,7 +31,7 @@ class WelcomeBanner
     {
         wp_enqueue_script(
             'givewp-welcome-banner',
-            GIVE_PLUGIN_URL . 'assets/dist/js/welcome-banner.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/welcome-banner.js',
             [],
             GIVE_VERSION,
             true
@@ -44,12 +44,12 @@ class WelcomeBanner
                 'root' => esc_url_raw(rest_url('give-api/v2/welcome-banner')),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'action' => 'givewp_welcome_banner_dismiss',
-                'assets' => GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/welcome-banner',
+                'assets' => GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/promotions/welcome-banner',
             ]
         );
 
         wp_set_script_translations( 'givewp-welcome-banner', 'give' );
-        
+
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style('givewp-admin-fonts');
     }

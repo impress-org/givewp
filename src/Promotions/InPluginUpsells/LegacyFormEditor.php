@@ -22,7 +22,7 @@ class LegacyFormEditor
 
         EnqueueScript::make(
             'give-in-plugin-upsells-legacy-form-editor',
-            'assets/dist/js/donation-options.js'
+            'build/assets/dist/js/donation-options.js'
         )
             ->loadInFooter()
             ->registerTranslations()

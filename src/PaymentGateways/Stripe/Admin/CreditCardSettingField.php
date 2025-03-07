@@ -97,7 +97,7 @@ class CreditCardSettingField
 						<span class="stripe-cc-fields-example-text"><?php
                             esc_html_e('Example', 'give'); ?>:</span>
 						<img src="<?php
-                        echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-single-cc-field.png'; ?>"
+                        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-single-cc-field.png'; ?>"
                              width="340px" />
 					</span>
 
@@ -134,7 +134,7 @@ class CreditCardSettingField
 						<span class="stripe-cc-fields-example-text"><?php
                             esc_html_e('Example', 'give'); ?>:</span>
 						<img src="<?php
-                        echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>"
+                        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/stripe-multiple-cc-fields.png'; ?>"
                              width="340px" />
 					</span>
 

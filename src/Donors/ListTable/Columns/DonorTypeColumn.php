@@ -64,7 +64,7 @@ class DonorTypeColumn extends ModelColumn
             $template,
             $model->id,
             $donorType->getValue(),
-            GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $icons[$donorType->getValue()],
+            GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/' . $icons[$donorType->getValue()],
             sprintf( __('%s icon', 'give'), $donorType->label()),
             $donorType->label()
         );

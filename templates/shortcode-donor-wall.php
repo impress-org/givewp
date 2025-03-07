@@ -30,7 +30,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
             if ($atts['show_avatar']) {
                 if (!empty($donation['_give_anonymous_donation'])) {
                     // Donor gave anonymously
-                    $imageUrl = GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg';
+                    $imageUrl = GIVE_PLUGIN_URL . 'build/assets/dist/images/anonymous-user.svg';
                     $alt = __('Anonymous User', 'give');
 
                     echo "

@@ -76,19 +76,19 @@ export default function ProductRecommendations() {
         <div className={'givewp-reports-recommendation'}>
             <div className={'givewp-reports-recommendation-container'}>
                 <div>
-                    <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
+                    <img src={`${pluginUrl}build/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
                     <TranslatedMessage message={selectedOption?.message} />
                 </div>
 
                 <a target="_blank" href={selectedOption?.documentationPage}>
                     {selectedOption?.innerHtml}
-                    <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
+                    <img src={`${pluginUrl}build/assets/dist/images/list-table/external-link-icon.svg`} />
                 </a>
             </div>
 
             <button onClick={closeMessage}>
-                <img src={`${pluginUrl}/assets/dist/images/close-icon.svg`} />
+                <img src={`${pluginUrl}build/assets/dist/images/close-icon.svg`} />
             </button>
         </div>
     );

@@ -13,7 +13,7 @@ $setupUrl = add_query_arg(
      data-give-dismissible="upgrade-donor-dashboards-notice-210">
     <div class="give-donor-dashboard-upgrade-notice__graphic">
         <img src="<?php
-        echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/donor-dashboard.svg'; ?>" />
+        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/donor-dashboard.svg'; ?>" />
     </div>
     <div class="give-donor-dashboard-upgrade-notice__copy">
         <div class="give-donor-dashboard-upgrade-notice__row">

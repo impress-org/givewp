@@ -27,7 +27,7 @@ class Legacy extends Template
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-legacy.png';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/template-preview-legacy.png';
     }
 
     /**

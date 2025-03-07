@@ -146,7 +146,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        imagePath={`${window.GiveDonations.pluginUrl}build/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
         description={__('No donations found', 'give')}
         href={'https://docs.givewp.com/donations'}
         linkText={__('GiveWP Donations.', 'give')}
@@ -231,7 +231,7 @@ export default function DonationsListTable() {
                     {__('Enter Donations', 'give')}
                     <span className={styles.manualDonationsMessage}>
                         <img
-                            src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/triangle-tip.svg`}
+                            src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
                             alt={'manual donations'}
                         />{' '}
                         {__(

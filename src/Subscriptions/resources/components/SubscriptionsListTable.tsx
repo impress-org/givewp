@@ -120,7 +120,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
+        imagePath={`${window.GiveSubscriptions.pluginUrl}build/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
         description={__('No subscriptions found', 'give')}
         href={'https://docs.givewp.com/subscriptions'}
         linkText={__('Recurring Donations.', 'give')}

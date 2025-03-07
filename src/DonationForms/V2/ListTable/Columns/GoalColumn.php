@@ -82,7 +82,7 @@ class GoalColumn extends ModelColumn
             sprintf(
                 '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
                 apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goal['progress'] >= 100 ? 1 : 0),
-                GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
+                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')
             )

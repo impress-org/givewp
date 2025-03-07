@@ -55,7 +55,7 @@ class Reports
 
         wp_enqueue_script(
             'give-admin-reports-widget-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-reports-widget.js',
             ['wp-element', 'wp-api', 'wp-i18n'],
             GIVE_VERSION,
             true
@@ -68,7 +68,7 @@ class Reports
                 'allTimeStart' => $this->get_all_time_start(),
                 'currency' => give_get_currency(),
                 'testMode' => give_is_test_mode(),
-                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
+                'assetsUrl' => GIVE_PLUGIN_URL . 'build/assets/dist',
             ]
         );
         wp_set_script_translations( 'give-admin-reports-widget-js', 'give' );

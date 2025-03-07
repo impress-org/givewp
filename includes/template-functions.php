@@ -400,7 +400,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/give-placeholder.jpg');
+	$placeholder_url = esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/give-placeholder.jpg');
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }

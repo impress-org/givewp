@@ -60,7 +60,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  * @since 3.6.0
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-events-icon.svg`;
+    const imagePath = `${window.GiveEventTickets.pluginUrl}build/assets/dist/images/list-table/blank-slate-events-icon.svg`;
     return (
         <div className={styles.container}>
             <img src={imagePath} alt={__('No event created yet', 'give')} />
