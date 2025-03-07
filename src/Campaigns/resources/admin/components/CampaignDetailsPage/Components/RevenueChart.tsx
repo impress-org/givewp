@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import Chart from "react-apexcharts";
 import apiFetch from "@wordpress/api-fetch";
 import {addQueryArgs} from "@wordpress/url";
+import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
 const RevenueChart = () => {
-
+    const {currency} = getCampaignOptionsWindowData();
+    const currencyFormatter = amountFormatter(currency);
     const [max, setMax] = useState(0);
     const [categories, setCategories] = useState([]);
     const [series, setSeries] = useState([{name: "Revenue", data: []}]);
@@ -40,6 +42,12 @@ const RevenueChart = () => {
         yaxis: {
             max,
             min: 0,
+            showForNullSeries: false,
+            labels: {
+                 formatter: (value) => {
+                    return currencyFormatter.format(Math.ceil(Number(value)))
+                },
+            },
         },
         stroke: {
             color: ['#60a1e2'],
@@ -77,15 +85,13 @@ const RevenueChart = () => {
     };
 
     return (
-        <>
-            <Chart
-                options={options}
-                series={series}
-                type="area"
-                width="100%"
-                height="300"
-            />
-        </>
+        <Chart
+            options={options}
+            series={series}
+            type="area"
+            width="100%"
+            height="300"
+        />
     )
 }
 
