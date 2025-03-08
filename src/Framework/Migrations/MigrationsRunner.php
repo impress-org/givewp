@@ -3,8 +3,11 @@
 namespace Give\Framework\Migrations;
 
 use Exception;
+use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
 use Give\MigrationLog\MigrationLogRepository;
@@ -67,12 +70,11 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @since 2.9.0
+     * @unreleased add support for batch processing
+     * @since      2.9.0
      */
     public function run()
     {
-        global $wpdb;
-
         if ( ! $this->hasMigrationToRun()) {
             return;
         }
@@ -84,17 +86,9 @@ class MigrationsRunner
             return;
         }
 
-        // Store and sort migrations by timestamp
-        $migrations = [];
+        $migrations = $this->migrationRegister->getMigrations();
 
-        foreach ($this->migrationRegister->getMigrations() as $migrationClass) {
-            /* @var Migration $migrationClass */
-            $migrations[$migrationClass::timestamp() . '_' . $migrationClass::id()] = $migrationClass;
-        }
-
-        ksort($migrations);
-
-        foreach ($migrations as $key => $migrationClass) {
+        foreach ($migrations as $migrationClass) {
             $migrationId = $migrationClass::id();
 
             if (in_array($migrationId, $this->completedMigrations, true)) {
@@ -103,19 +97,55 @@ class MigrationsRunner
 
             $migrationLog = $this->migrationLogFactory->make($migrationId);
 
-            // Begin transaction
-            $wpdb->query('START TRANSACTION');
-
             try {
-                /** @var Migration $migration */
+                /**
+                 * @var Migration|BatchMigration $migration
+                 */
                 $migration = give($migrationClass);
 
-                $migration->run();
+                if ($migration instanceof BatchMigration) {
+                    $status = (new BatchMigrationRunner($migration))->run();
 
-                // Save migration status
-                $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
+                    if ($status === MigrationLogStatus::RUNNING) {
+                        give()->notices->register_notice(
+                            [
+                                'id' => $migrationId,
+                                'description' => sprintf(
+                                    esc_html__('Running DB migration: %s', 'give'),
+                                    $migration::title()
+                                ),
+                            ]
+                        );
+
+                        // Update status to RUNNING
+                        if (MigrationLogStatus::RUNNING !== $migrationLog->getStatus()) {
+                            $migrationLog->setStatus(MigrationLogStatus::RUNNING);
+                            $migrationLog->save();
+                        }
+
+                        break;
+                    }
+
+                    if ($status === MigrationLogStatus::INCOMPLETE) {
+                        give()->notices->register_notice(
+                            [
+                                'id' => $migrationId,
+                                'type' => 'warning',
+                                'description' => sprintf(
+                                    esc_html__('Incomplete DB migration: %s', 'give'),
+                                    $migration::title()
+                                ),
+                            ]
+                        );
+                    }
+
+                    $migrationLog->setStatus($status);
+                } else {
+                    $migration->run();
+                    $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
+                }
             } catch (Exception $exception) {
-                $wpdb->query('ROLLBACK');
+                DB::rollback();
 
                 $migrationLog->setStatus(MigrationLogStatus::FAILED);
                 $migrationLog->setError($exception);
@@ -152,7 +182,7 @@ class MigrationsRunner
             }
 
             // Commit transaction if successful
-            $wpdb->query('COMMIT');
+            DB::commit();
         }
     }
 
