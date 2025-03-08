@@ -6,8 +6,6 @@
  * @since 2.8.0
  */
 
-use Give\DonationForms\Models\DonationForm;
-
 /**
  * Variables from onboarding PageView
  *
@@ -45,16 +43,18 @@ use Give\DonationForms\Models\DonationForm;
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
-        $form = DonationForm::find((int)$settings['form_id']);
+        $campaign = give()->campaigns->getByFormId((int)$settings['form_id']);
 
-        $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
+        $customizeCampaignURL = $campaign && $campaign->id
+            ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&tab=settings&id=' . $campaign->id)
+            : admin_url('edit.php?post_type=give_forms&page=give-campaigns');
     }
 
     echo $this->render_template(
         'section',
         [
             'class' => !$this->isFormConfigured() ? 'current-step' : '',
-            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first donation form', 'give')),
+            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first campaign', 'give')),
             'badge' => ($this->isFormConfigured()
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -67,8 +67,8 @@ use Give\DonationForms\Models\DonationForm;
             ),
             'button' => ($this->isFormConfigured()
                 ? $this->render_template('action-button', [
-                    'href' => esc_url($customizeFormURL),
-                    'text' => esc_html__('Customize form', 'give'),
+                    'href' => esc_url($customizeCampaignURL),
+                    'text' => esc_html__('Customize campaign', 'give'),
                     'target' => '_blank',
                 ])
                 : $this->render_template('action-button', [

@@ -19,7 +19,8 @@
         "woocommerce/action-scheduler": "^3.6",
         "psr/container": "1.1.1",
         "ext-json": "*",
-        "stellarwp/admin-notices": "^2.0"
+        "stellarwp/admin-notices": "^2.0",
+        "stellarwp/arrays": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -96,6 +97,7 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
+                "stellarwp/arrays",
                 "stellarwp/admin-notices",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
