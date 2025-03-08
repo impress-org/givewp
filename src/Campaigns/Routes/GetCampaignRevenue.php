@@ -58,17 +58,14 @@ class GetCampaignRevenue implements RestRoute
         $query = new CampaignDonationQuery($campaign);
         $results = $query->getDonationsByDay();
 
-        $dates = [];
-        foreach ($results as $result) {
-            $dates[$result->date] = $result->amount;
-        }
-
         $data = [];
-        foreach ($dates as $date => $amount) {
-            $data[] = [
-                'date' => $date,
-                'amount' => $amount,
-            ];
+        if (!empty($results)) {
+            foreach ($results as $result) {
+                $data[] = [
+                    'date' => $result->date,
+                    'amount' => $result->amount
+                ];
+            }
         }
 
         return new WP_REST_Response($data, 200);
