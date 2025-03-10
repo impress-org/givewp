@@ -8,12 +8,12 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @unreleased
  *
  * @method static GoalSource CAMPAIGN()
- * @method static GoalSource CUSTOM()
+ * @method static GoalSource FORM()
  * @method bool isCampaign()
- * @method bool isCustom()
+ * @method bool isForm()
  */
 class GoalSource extends Enum
 {
     const CAMPAIGN = 'campaign';
-    const CUSTOM = 'custom';
+    const FORM = 'form';
 }
