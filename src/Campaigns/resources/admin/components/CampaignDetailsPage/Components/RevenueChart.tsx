@@ -28,8 +28,9 @@ const RevenueChart = () => {
         apiFetch({path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/revenue')}).then(
             (data: {date: string; amount: number}[]) => {
                 if (data?.length > 0) {
-                    setMax(Math.max(...data.map((item) => item.amount)) * 1.2);
-
+                    // By default we set a max value so the chart does not look empty.
+                    // once we have data we can reset the max value for the chart to auto calculate
+                    setMax(undefined);
                     setSeries([
                         {
                             name: 'Revenue',
@@ -63,9 +64,9 @@ const RevenueChart = () => {
             type: 'datetime' as 'datetime' | 'category' | 'numeric',
         },
         yaxis: {
-            max,
             min: 0,
-            tickAmount: 6,
+            max,
+            showForNullSeries: false,
             labels: {
                 formatter: (value) => {
                     return currencyFormatter.format(Math.ceil(Number(value)));
