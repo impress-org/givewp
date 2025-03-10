@@ -53,6 +53,12 @@ const RevenueChart = () => {
                 enabled: false,
             },
         },
+        markers: {
+            size: 5,
+            hover: {
+              size: 5,
+            },
+          },
         xaxis: {
             type: 'datetime' as 'datetime' | 'category' | 'numeric',
         },
