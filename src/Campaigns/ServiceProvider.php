@@ -3,6 +3,7 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
@@ -56,6 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
         $this->loadCampaignOptions();
+        $this->addNewBadgeToMenu();
     }
 
     /**
@@ -193,5 +195,15 @@ class ServiceProvider implements ServiceProviderInterface
     private function loadCampaignOptions()
     {
         Hooks::addAction('init', LoadCampaignOptions::class);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function addNewBadgeToMenu(): void
+    {
+        (new AddNewBadgeToAdminMenuItem())();
     }
 }
