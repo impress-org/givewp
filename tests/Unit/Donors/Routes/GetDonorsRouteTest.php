@@ -343,7 +343,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
                 'direction' => 'ASC',
             ]
         );
@@ -378,7 +378,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
                 'direction' => 'ASC',
             ]
         );
@@ -409,7 +409,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'redact',
+                'anonymousDonors' => 'redact',
                 'direction' => 'ASC',
             ]
         );

@@ -144,7 +144,7 @@ class GetDonorRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorShouldIncludeAnonymousData()
+    public function testGetDonorShouldIncludeAnonymousDonor()
     {
         Donation::query()->delete();
 
@@ -164,7 +164,7 @@ class GetDonorRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
             ]
         );
 
@@ -182,7 +182,7 @@ class GetDonorRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorShouldReturn403ErrorWhenNotAdminUserIncludeIncludeAnonymousData()
+    public function testGetDonorShouldReturn403ErrorWhenNotAdminUserIncludeIncludeAnonymousDonor()
     {
         Donation::query()->delete();
 
@@ -192,7 +192,7 @@ class GetDonorRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
             ]
         );
 
@@ -208,7 +208,7 @@ class GetDonorRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorShouldRedactAnonymousData()
+    public function testGetDonorShouldRedactAnonymousDonor()
     {
         Donation::query()->delete();
 
@@ -218,7 +218,7 @@ class GetDonorRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'redact',
+                'anonymousDonors' => 'redact',
             ]
         );
 

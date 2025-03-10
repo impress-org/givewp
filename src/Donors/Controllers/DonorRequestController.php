@@ -2,9 +2,9 @@
 
 namespace Give\Donors\Controllers;
 
-use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -40,10 +40,10 @@ class DonorRequestController
             );
         }
 
-        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        $donationAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
         if ( ! $isAdmin && $this->isAnonymousDonor($donor) && ! $donationAnonymousMode->isRedacted()) {
             return new WP_REST_Response(
-                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                ['message' => __('You do not have permission to include anonymous donors.', 'give')],
                 403
             );
         }
@@ -72,10 +72,10 @@ class DonorRequestController
             );
         }
 
-        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        $donationAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
         if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
             return new WP_REST_Response(
-                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                ['message' => __('You do not have permission to include anonymous donors.', 'give')],
                 403
             );
         }
@@ -174,7 +174,7 @@ class DonorRequestController
     public function escDonor(
         Donor $donor,
         bool $includeSensitiveData = false,
-        DonationAnonymousMode $donationAnonymousMode = null
+        DonorAnonymousMode $donationAnonymousMode = null
     ): array
     {
         $sensitiveDataExcluded = [];

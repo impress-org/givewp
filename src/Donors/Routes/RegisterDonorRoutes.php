@@ -61,7 +61,7 @@ class RegisterDonorRoutes
                         'type' => 'boolean',
                         'default' => false,
                     ],
-                    'anonymousDonations' => [
+                    'anonymousDonors' => [
                         'type' => 'string',
                         'default' => 'exclude',
                         'enum' => [
@@ -140,7 +140,7 @@ class RegisterDonorRoutes
                         'type' => 'boolean',
                         'default' => false,
                     ],
-                    'anonymousDonations' => [
+                    'anonymousDonors' => [
                         'type' => 'string',
                         'default' => 'exclude',
                         'enum' => [
