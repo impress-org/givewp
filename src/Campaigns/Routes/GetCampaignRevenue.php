@@ -110,8 +110,6 @@ class GetCampaignRevenue implements RestRoute
 
     /**
      * @unreleased
-     * @throws DateMalformedPeriodStringException
-     * @throws DateMalformedPeriodStringException
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate): array
     {
@@ -127,7 +125,13 @@ class GetCampaignRevenue implements RestRoute
             $startDate->modify("-$defaultDays days");
         }
 
-        $interval = new DateInterval('P1D');
+        $intervalTime = '1 day';
+        // If the date range is more than 1 year, group by month
+        if ($startDateInterval->days >= 365) {
+            $intervalTime = '1 months';
+        }
+
+        $interval = DateInterval::createFromDateString($intervalTime);
         $dateRange = new DatePeriod($startDate, $interval, $endDate);
 
         $days = [];
