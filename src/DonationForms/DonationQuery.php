@@ -78,8 +78,8 @@ class DonationQuery extends QueryBuilder
             ? date('Y-m-d H:i:s')
             : date('Y-m-d H:i:s', strtotime($endDate));
 
-        //$this->joinMeta('_give_completed_date', 'completed');
-        $this->whereBetween('donation.post_date', $startDate, $endDate);
+        $this->joinMeta('_give_completed_date', 'completed');
+        $this->whereBetween('completed.meta_value', $startDate, $endDate);
         return $this;
     }
 
