@@ -3,10 +3,9 @@
 namespace Give\Campaigns\Routes;
 
 use DateInterval;
-use DateMalformedPeriodStringException;
-use \DatePeriod;
+use DatePeriod;
 use DateTime;
-use \DateTimeInterface;
+use DateTimeInterface;
 use Exception;
 use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
@@ -88,13 +87,17 @@ class GetCampaignRevenue implements RestRoute
         $firstResultDate = new DateTime($results[0]->date);
         $lastResultDate = new DateTime($results[count($results) - 1]->date);
 
+        // the query start date is the earliest of the first result date and the campaign start date
         $queryStartDate = ($firstResultDate < $campaign->startDate) ? $firstResultDate : $campaign->startDate;
         $campaignEndDate = current_datetime();
+        // the query end date is the latest of the last result date and the campaign end date
         $queryEndDate = ($lastResultDate > $campaignEndDate) ? $lastResultDate : $campaignEndDate;
 
+        // Get all dates between the start and end date
         $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate);
 
         $data = [];
+        // Fill in the data with the results
         foreach($dates as $date) {
             $data[] = [
                 'date' => $date,
@@ -108,6 +111,7 @@ class GetCampaignRevenue implements RestRoute
     /**
      * @unreleased
      * @throws DateMalformedPeriodStringException
+     * @throws DateMalformedPeriodStringException
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate): array
     {
@@ -115,8 +119,12 @@ class GetCampaignRevenue implements RestRoute
         $endDate->modify('+1 day');
 
         $startDateInterval = $startDate->diff($endDate);
+
+        // If the date range is less than 7 days, pad the start date to include the last 7 days
+        // This is to ensure that the chart always shows at least 7 days of data
         if ($startDateInterval->days < 7) {
-            $startDate->modify('-7 days');
+            $defaultDays = 7 - $startDateInterval->days;
+            $startDate->modify("-$defaultDays days");
         }
 
         $interval = new DateInterval('P1D');
