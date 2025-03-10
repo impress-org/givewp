@@ -71,7 +71,7 @@ class DonationFormGoalData implements Arrayable
         $this->formId = $formId;
         $this->formSettings = $formSettings;
         $this->isEnabled = $formSettings->enableDonationGoal ?? false;
-        $this->goalSource = $formSettings->goalSource ?? GoalSource::CAMPAIGN();
+        $this->goalSource = $formSettings->goalSource ?? GoalSource::FORM();
         $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
         $this->targetAmount = $this->formSettings->goalAmount ?? 0;
         $this->goalProgressType = $this->formSettings->goalProgressType ?? GoalProgressType::ALL_TIME();
