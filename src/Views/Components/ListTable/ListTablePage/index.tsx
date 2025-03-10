@@ -66,6 +66,7 @@ interface BulkActionsConfigBase {
 
     //optional
     isVisible?: (data: any, parameters: any) => boolean;
+    isIdSelectable?: (id: string, data: any) => boolean;
     type?: 'normal' | 'warning' | 'danger' | 'custom';
 }
 
@@ -184,25 +185,27 @@ export default function ListTablePage({
             bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
         }
 
-        const actionIndex = bulkActions.findIndex((config) => selectedAction === config.value);
+        const bulkAction = bulkActions.find((config) => selectedAction === config.value);
 
-        if (actionIndex < 0) return;
+        if (!bulkAction) return;
 
         const selected = [];
         const names = [];
-        checkboxRefs.current.forEach((checkbox) => {
-            if (checkbox.checked) {
-                selected.push(checkbox.dataset.id);
-                names.push(checkbox.dataset.name);
-            }
+        const selectedRefs = checkboxRefs.current.filter((checkbox) => {
+            const isSelectable = bulkAction?.isIdSelectable?.(checkbox.dataset.id, data) ?? true;
+            return checkbox.checked && isSelectable;
+        });
+        selectedRefs.forEach((checkbox) => {
+            selected.push(checkbox.dataset.id);
+            names.push(checkbox.dataset.name);
         });
         setSelectedIds(selected);
         setSelectedNames(names);
         if (selected.length) {
-            setModalContent({...bulkActions[actionIndex]});
-            if ('custom' === bulkActions[actionIndex].type) {
+            setModalContent({...bulkAction});
+            if ('custom' === bulkAction.type) {
                 setOpen(true);
-                modalContent?.confirm(selected, names, isOpen, setOpen);
+                bulkAction?.confirm(selected, names, isOpen, setOpen);
             } else {
                 dialog.current.show();
             }

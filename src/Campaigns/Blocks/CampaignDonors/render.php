@@ -2,7 +2,6 @@
 
 namespace Give\Campaigns\Blocks\CampaignDonors;
 
-use DateTime;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
@@ -36,8 +35,8 @@ $query = (new CampaignDonationQuery($campaign))
 if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
-        'SUM(amountMeta.meta_value) as amount',
-        'donorName.meta_value as name'
+        'SUM(CAST(amountMeta.meta_value AS DECIMAL)) AS amount',
+        'MAX(donorName.meta_value) AS name'
     )
         ->groupBy('donorIdMeta.meta_value')
         ->orderBy('amount', 'DESC');

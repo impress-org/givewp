@@ -3,7 +3,9 @@
 namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
+use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
+use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -55,6 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
         $this->loadCampaignOptions();
+        $this->addNewBadgeToMenu();
     }
 
     /**
@@ -136,7 +139,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     private function setupCampaignPages()
     {
-        Hooks::addAction('template_redirect', Actions\RedirectDisabledCampaignPage::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
     }
 
@@ -174,6 +176,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
         Hooks::addAction('givewp_donation_form_created', AddCampaignFormFromRequest::class, 'visualFormBuilder');
         Hooks::addAction('givewp_campaign_created', CreateDefaultCampaignForm::class);
+        Hooks::addAction('givewp_campaign_created', CreateCampaignPage::class);
     }
 
     /**
@@ -192,5 +195,15 @@ class ServiceProvider implements ServiceProviderInterface
     private function loadCampaignOptions()
     {
         Hooks::addAction('init', LoadCampaignOptions::class);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function addNewBadgeToMenu(): void
+    {
+        (new AddNewBadgeToAdminMenuItem())();
     }
 }

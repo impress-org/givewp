@@ -7,7 +7,7 @@ const storageData = window.giveStorageData;
 const jQuery = window.jQuery;
 
 /**
- * @unreleased
+ * @since 3.22.0
  */
 const addLocaleToUrl = (url: string) => {
     const urlParams = new URLSearchParams(window.location.search);
