@@ -53,6 +53,9 @@ const RevenueChart = () => {
             zoom: {
                 enabled: false,
             },
+            toolbar: {
+                show: false
+            }
         },
         markers: {
             size: 5,
