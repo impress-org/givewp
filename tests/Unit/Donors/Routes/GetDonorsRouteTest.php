@@ -29,7 +29,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorsShouldNotReturnSensitiveData()
+    public function testGetDonorsShouldNotIncludeSensitiveData()
     {
         Donor::factory()->create();
 
@@ -62,14 +62,14 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorsShouldReturnSensitiveData()
+    public function testGetDonorsShouldIncludeSensitiveData()
     {
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'admin38974238473824',
-                'user_pass' => 'admin38974238473824',
-                'user_email' => 'admin38974238473824@test.com',
+                'user_login' => 'testGetDonorsShouldIncludeSensitiveData',
+                'user_pass' => 'testGetDonorsShouldIncludeSensitiveData',
+                'user_email' => 'testGetDonorsShouldIncludeSensitiveData@test.com',
             ]
         );
         wp_set_current_user($newAdminUser);
@@ -81,6 +81,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request->set_query_params(
             [
                 'onlyWithDonations' => false,
+                'includeSensitiveData' => true,
             ]
         );
 
@@ -98,6 +99,31 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertNotEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
+    {
+        Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
     }
 
     /**
@@ -266,7 +292,7 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorsShouldNotReturnAnonymousDonors()
+    public function testGetDonorsShouldNotIncludeAnonymousDonors()
     {
         Donation::query()->delete();
 
@@ -293,8 +319,18 @@ class GetDonorsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorsShouldReturnAnonymousDonors()
+    public function testGetDonorsShouldIncludeAnonymousDonors()
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorsShouldIncludeAnonymousDonors',
+                'user_pass' => 'testGetDonorsShouldIncludeAnonymousDonors',
+                'user_email' => 'testGetDonorsShouldIncludeAnonymousDonors@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
         Donation::query()->delete();
 
         /** @var Campaign $campaign */
@@ -307,7 +343,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'includeAnonymousDonations' => true,
+                'anonymousDonations' => 'include',
                 'direction' => 'ASC',
             ]
         );
@@ -321,6 +357,84 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(2, count($data));
         $this->assertEquals($donor1->id, $data[0]['id']);
         $this->assertEquals($donor2->id, $data[1]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonors()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $this->createDonor1WithDonation($campaign->id);
+        $this->createDonor2WithDonation($campaign->id, true);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonations' => 'include',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldRedactAnonymousDonors()
+    {
+        Donation::query()->delete();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonations' => 'redact',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals(0, $data[1]['id']);
+
+        $anonymousDataRedacted = [
+            //'id', // This property is Checked above...
+            'name',
+            'firstName',
+            'lastName',
+            'prefix',
+        ];
+
+        foreach ($anonymousDataRedacted as $property) {
+            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+        }
     }
 
     /**

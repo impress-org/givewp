@@ -2,12 +2,12 @@
 
 namespace Give\Donors\Controllers;
 
+use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -18,18 +18,37 @@ class DonorRequestController
 {
     /**
      * @unreleased
-     *
-     * @return WP_Error | WP_REST_Response
      */
-    public function getDonor(WP_REST_Request $request)
+    public function getDonor(WP_REST_Request $request): WP_REST_Response
     {
         $donor = Donor::find($request->get_param('id'));
 
         if ( ! $donor) {
-            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
+            return new WP_REST_Response(
+                ['message' => __('Donor not found', 'give')],
+                404
+            );
         }
 
-        return new WP_REST_Response($this->escDonor($donor));
+        $isAdmin = current_user_can('manage_options');
+
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include sensitive data.', 'give')],
+                403
+            );
+        }
+
+        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        if ( ! $isAdmin && $this->isAnonymousDonor($donor) && ! $donationAnonymousMode->isRedacted()) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                403
+            );
+        }
+
+        return new WP_REST_Response($this->escDonor($donor, $includeSensitiveData, $donationAnonymousMode));
     }
 
     /**
@@ -42,6 +61,24 @@ class DonorRequestController
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
         $mode = $request->get_param('mode');
+
+        $isAdmin = current_user_can('manage_options');
+
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include sensitive data.', 'give')],
+                403
+            );
+        }
+
+        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
+            return new WP_REST_Response(
+                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
+                403
+            );
+        }
 
         $query = Donor::query();
 
@@ -66,7 +103,7 @@ class DonorRequestController
                 });
             }
 
-            if ( ! $request->get_param('includeAnonymousDonations')) {
+            if ($donationAnonymousMode->isExcluded()) {
                 // Exclude anonymous donors from results - Donors only can be excluded if they made an anonymous donation
                 $query->join(function (JoinQueryBuilder $builder) {
                         $builder->innerJoin('give_donationmeta', 'donationmeta4')
@@ -91,7 +128,10 @@ class DonorRequestController
             ->orderBy($sortColumn, $sortDirection);
 
         $donors = $query->getAll() ?? [];
-        $donors = array_map([$this, 'escDonor'], $donors);
+        $donors = array_map(function ($donor) use ($includeSensitiveData, $donationAnonymousMode) {
+            return $this->escDonor($donor, $includeSensitiveData, $donationAnonymousMode);
+        }, $donors);
+
         $totalDonors = empty($donors) ? 0 : Donor::query()->count();
         $totalPages = (int)ceil($totalDonors / $perPage);
 
@@ -131,22 +171,44 @@ class DonorRequestController
     /**
      * @unreleased
      */
-    public function escDonor(Donor $donor): array
+    public function escDonor(
+        Donor $donor,
+        bool $includeSensitiveData = false,
+        DonationAnonymousMode $donationAnonymousMode = null
+    ): array
     {
-        $donor = $donor->toArray();
-
-        if ( ! current_user_can('manage_options')) {
-            $sensitiveProperties = [
+        $sensitiveDataExcluded = [];
+        if ( ! $includeSensitiveData) {
+            $sensitiveDataExcluded = [
                 'userId',
                 'email',
                 'phone',
                 'additionalEmails',
             ];
+        }
 
-            foreach ($sensitiveProperties as $property) {
-                if (array_key_exists($property, $donor)) {
-                    unset($donor[$property]);
-                }
+        $anonymousDataRedacted = [];
+        if ( ! is_null($donationAnonymousMode) && $donationAnonymousMode->isRedacted() && $this->isAnonymousDonor($donor)) {
+            $anonymousDataRedacted = [
+                'id',
+                'name',
+                'firstName',
+                'lastName',
+                'prefix',
+            ];
+        }
+
+        $donor = $donor->toArray();
+
+        foreach ($sensitiveDataExcluded as $property) {
+            if (array_key_exists($property, $donor)) {
+                unset($donor[$property]);
+            }
+        }
+
+        foreach ($anonymousDataRedacted as $property) {
+            if (array_key_exists($property, $donor)) {
+                $donor[$property] = 'id' === $property ? 0 : __('anonymous', 'give');
             }
         }
 
@@ -169,5 +231,24 @@ class DonorRequestController
         ];
 
         return $sortColumnsMap[$sortColumn];
+    }
+
+    /**
+     * @unreleased
+     */
+    private function isAnonymousDonor(Donor $donor): bool
+    {
+        $isAnonymousDonor = false;
+
+        if ($donor->donations) {
+            foreach ($donor->donations as $donation) {
+                if ($donation->anonymous) {
+                    $isAnonymousDonor = true;
+                    break;
+                }
+            }
+        }
+
+        return $isAnonymousDonor;
     }
 }

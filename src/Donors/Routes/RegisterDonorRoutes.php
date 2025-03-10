@@ -57,6 +57,19 @@ class RegisterDonorRoutes
                         'type' => 'integer',
                         'required' => true,
                     ],
+                    'includeSensitiveData' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                    ],
+                    'anonymousDonations' => [
+                        'type' => 'string',
+                        'default' => 'exclude',
+                        'enum' => [
+                            'exclude',
+                            'include',
+                            'redact',
+                        ],
+                    ],
                 ],
             ]
         );
@@ -123,9 +136,18 @@ class RegisterDonorRoutes
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                    'includeAnonymousDonations' => [
+                    'includeSensitiveData' => [
                         'type' => 'boolean',
                         'default' => false,
+                    ],
+                    'anonymousDonations' => [
+                        'type' => 'string',
+                        'default' => 'exclude',
+                        'enum' => [
+                            'exclude',
+                            'include',
+                            'redact',
+                        ],
                     ],
                 ],
             ]
