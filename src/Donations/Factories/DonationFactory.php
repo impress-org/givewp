@@ -42,12 +42,18 @@ class DonationFactory extends ModelFactory
             'comment' => $this->faker->optional()->text,
         ];
 
+        // Add backwards compatibility for the formId property without a campaignId
         if (empty($definition['campaignId'])) {
-            /** @var Campaign $campaign */
-            $campaign = Campaign::factory()->create();
+            $formId = (int)$definition['formId'];
+            $campaign = give()->campaigns->getByFormId($formId);
+
+            if (!$campaign){
+                $campaign = Campaign::factory()->create();
+                $formId = $campaign->defaultFormId;
+            }
 
             $definition['campaignId'] = $campaign->id;
-            $definition['formId'] = $campaign->defaultFormId;
+            $definition['formId'] = $formId;
         }
 
         return $definition;
