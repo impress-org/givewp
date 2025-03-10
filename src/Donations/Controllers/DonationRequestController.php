@@ -5,8 +5,6 @@ namespace Give\Donations\Controllers;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationRoute;
-use Give\Donations\ValueObjects\DonationSensitiveDataMode;
-use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -17,21 +15,22 @@ class DonationRequestController
 {
     /**
      * @unreleased
-     *
-     * @return WP_Error | WP_REST_Response
      */
-    public function getDonation(WP_REST_Request $request)
+    public function getDonation(WP_REST_Request $request): WP_REST_Response
     {
         $donation = Donation::find($request->get_param('id'));
 
         if ( ! $donation) {
-            return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
+            return new WP_REST_Response(
+                ['message' => __('Donation not found', 'give')],
+                404
+            );
         }
 
         $isAdmin = current_user_can('manage_options');
 
-        $donationSensitiveDataMode = new DonationSensitiveDataMode($request->get_param('sensitiveData'));
-        if ( ! $isAdmin && $donationSensitiveDataMode->isIncluded()) {
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
             return new WP_REST_Response(
                 ['message' => __('You do not have permission to include sensitive data.', 'give')],
                 403
@@ -46,7 +45,7 @@ class DonationRequestController
             );
         }
 
-        return new WP_REST_Response($this->escDonation($donation, $donationSensitiveDataMode, $donationAnonymousMode));
+        return new WP_REST_Response($this->escDonation($donation, $includeSensitiveData, $donationAnonymousMode));
     }
 
     /**
@@ -56,8 +55,8 @@ class DonationRequestController
     {
         $isAdmin = current_user_can('manage_options');
 
-        $donationSensitiveDataMode = new DonationSensitiveDataMode($request->get_param('sensitiveData'));
-        if ( ! $isAdmin && $donationSensitiveDataMode->isIncluded()) {
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
             return new WP_REST_Response(
                 ['message' => __('You do not have permission to include sensitive data.', 'give')],
                 403
@@ -102,8 +101,8 @@ class DonationRequestController
             ->orderBy($sortColumn, $sortDirection);
 
         $donations = $query->getAll() ?? [];
-        $donations = array_map(function ($donation) use ($donationSensitiveDataMode, $donationAnonymousMode) {
-            return $this->escDonation($donation, $donationSensitiveDataMode, $donationAnonymousMode);
+        $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode) {
+            return $this->escDonation($donation, $includeSensitiveData, $donationAnonymousMode);
         }, $donations);
 
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();
@@ -147,12 +146,12 @@ class DonationRequestController
      */
     public function escDonation(
         Donation $donation,
-        DonationSensitiveDataMode $donationSensitiveDataMode = null,
+        bool $includeSensitiveData = false,
         DonationAnonymousMode $donationAnonymousMode = null
     ): array
     {
         $sensitiveDataExcluded = [];
-        if ($donationSensitiveDataMode->isExcluded()) {
+        if ( ! $includeSensitiveData) {
             $sensitiveDataExcluded = [
                 'donorIp',
                 'email',

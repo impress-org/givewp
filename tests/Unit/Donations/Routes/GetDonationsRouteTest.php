@@ -75,7 +75,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
-                'sensitiveData' => 'include',
+                'includeSensitiveData' => true,
             ]
         );
 
@@ -109,7 +109,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
-                'sensitiveData' => 'include',
+                'includeSensitiveData' => true,
             ]
         );
 
