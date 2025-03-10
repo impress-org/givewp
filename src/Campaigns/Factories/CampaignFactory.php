@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Factories;
 
+use Exception;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -16,6 +17,7 @@ class CampaignFactory extends ModelFactory
 {
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function definition(): array
     {

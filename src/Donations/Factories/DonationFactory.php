@@ -25,7 +25,7 @@ class DonationFactory extends ModelFactory
      */
     public function definition(): array
     {
-        $definition =  [
+        return [
             'status' => DonationStatus::PENDING(),
             'gatewayId' => TestGateway::id(),
             'mode' => DonationMode::TEST(),
@@ -35,27 +35,12 @@ class DonationFactory extends ModelFactory
             'firstName' => $this->faker->firstName,
             'lastName' => $this->faker->lastName,
             'email' => $this->faker->email,
+            'campaignId' => 1,
             'formId' => 1,
             'formTitle' => 'Form Title',
             'anonymous' => $this->faker->optional(0.5, false)->boolean(true),
             'company' => $this->faker->optional()->company,
             'comment' => $this->faker->optional()->text,
         ];
-
-        // Add backwards compatibility for the formId property without a campaignId
-        if (empty($definition['campaignId'])) {
-            $formId = (int)$definition['formId'];
-            $campaign = give()->campaigns->getByFormId($formId);
-
-            if (!$campaign){
-                $campaign = Campaign::factory()->create();
-                $formId = $campaign->defaultFormId;
-            }
-
-            $definition['campaignId'] = $campaign->id;
-            $definition['formId'] = $formId;
-        }
-
-        return $definition;
     }
 }
