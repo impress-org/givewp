@@ -3,6 +3,7 @@
 namespace Give\Donations\Factories;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -15,6 +16,7 @@ class DonationFactory extends ModelFactory
 {
 
     /**
+     * @unreleased added campaignId
      * @since 2.22.0 add optional support for anonymous and company properties
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
@@ -23,7 +25,7 @@ class DonationFactory extends ModelFactory
      */
     public function definition(): array
     {
-        return [
+        $definition =  [
             'status' => DonationStatus::PENDING(),
             'gatewayId' => TestGateway::id(),
             'mode' => DonationMode::TEST(),
@@ -39,5 +41,15 @@ class DonationFactory extends ModelFactory
             'company' => $this->faker->optional()->company,
             'comment' => $this->faker->optional()->text,
         ];
+
+        if (empty($definition['campaignId'])) {
+            /** @var Campaign $campaign */
+            $campaign = Campaign::factory()->create();
+
+            $definition['campaignId'] = $campaign->id;
+            $definition['formId'] = $campaign->defaultFormId;
+        }
+
+        return $definition;
     }
 }

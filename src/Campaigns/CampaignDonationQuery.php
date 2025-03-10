@@ -39,9 +39,9 @@ class CampaignDonationQuery extends QueryBuilder
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
         $query = clone $this;
-        $query->joinDonationMeta('_give_completed_date', 'completed');
+        //$query->joinDonationMeta('_give_completed_date', 'completed');
         $query->whereBetween(
-            'completed.meta_value',
+            'donation.post_date',
             $startDate->format('Y-m-d H:i:s'),
             $endDate->format('Y-m-d H:i:s')
         );
@@ -103,8 +103,8 @@ class CampaignDonationQuery extends QueryBuilder
             'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
         );
 
-        $query->joinDonationMeta('_give_completed_date', 'completed');
-        $query->select('DATE(completed.meta_value) as date');
+        //$query->joinDonationMeta('_give_completed_date', 'completed');
+        $query->select('DATE(donation.post_date) as date');
         $query->groupBy('date');
 
         return $query->getAll();
