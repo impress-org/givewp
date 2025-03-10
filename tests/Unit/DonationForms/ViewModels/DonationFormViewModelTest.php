@@ -32,7 +32,8 @@ class DonationFormViewModelTest extends TestCase
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray([
                 'designId' => $formDesign::id(),
-                'goalSource' => GoalSource::FORM()
+                'goalSource' => GoalSource::FORM(),
+                'goalType' => GoalType::AMOUNT()
             ]),
         ]);
 

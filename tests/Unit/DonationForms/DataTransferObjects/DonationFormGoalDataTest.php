@@ -24,7 +24,8 @@ class DonationFormGoalDataTest extends TestCase
          */
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray([
-                'goalSource' => GoalSource::FORM()
+                'goalSource' => GoalSource::FORM(),
+                'goalType' => GoalType::AMOUNT()
             ]),
         ]);
 
