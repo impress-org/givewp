@@ -90,5 +90,6 @@
     "render": "file:./render.php",
     "viewScript": "file:../../../../build/campaignCommentsBlockApp.js",
     "editorScript": "file:../../../../build/campaignBlocks.js",
-    "style": "file:../../../../build/campaignCommentsBlockApp.css"
+    "style": "file:../../../../build/campaignCommentsBlockApp.css",
+    "editorStyle": "file:../../../../assets/dist/css/design-system/foundation.css"
 }

@@ -1,8 +1,8 @@
 .givewp-campaign-comment-block {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
-    padding:  1.5rem 0;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-6) 0;
     background-color: var(--givewp-shades-white);
 
     &__title {
@@ -20,9 +20,9 @@
         height: 36px;
         gap: 8px;
         margin: 0;
-        padding: .5rem 1rem;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         border-radius: 4px;
-        background-color: var(--givewp-neutral-50, #f5f5f5);
+        background-color: var(--givewp-neutral-50);
         font-size: 14px;
         font-weight: 600;
         line-height: 1.43;
