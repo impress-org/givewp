@@ -12,7 +12,7 @@ const getDefaultData = (days = 7) => {
     for (let i = 0; i < days; i++) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        data.push({x: date, y: 0});
+        data.push({x: date.toISOString().split('T')[0], y: 0});
     }
 
     return data;
