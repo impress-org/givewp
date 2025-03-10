@@ -57,14 +57,6 @@ class RegisterDonationRoutes
                         'type' => 'integer',
                         'required' => true,
                     ],
-                    /*'sensitiveData' => [
-                        'type' => 'string',
-                        'default' => 'exclude',
-                        'enum' => [
-                            'exclude',
-                            'include',
-                        ],
-                    ],*/
                     'includeSensitiveData' => [
                         'type' => 'boolean',
                         'default' => false,
