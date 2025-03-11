@@ -85,7 +85,9 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
 
-        (new CampaignsWelcomeBanner)->render();
+        if (is_admin()) {
+            (new CampaignsWelcomeBanner)->render();
+        }
     }
 
     /**
