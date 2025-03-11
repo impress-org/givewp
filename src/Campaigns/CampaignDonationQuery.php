@@ -126,13 +126,13 @@ class CampaignDonationQuery extends QueryBuilder
         $query->select("DATE(donation.post_date) as date_created");
 
         if ($groupBy === 'DAY') {
-            $query->groupBy('DATE(date_created) ASC');
+            $query->groupBy('DATE(date_created)');
         } else if ($groupBy === 'MONTH') {
-            $query->groupBy('YEAR(donation.post_date), MONTH(donation.post_date) ASC');
+            $query->groupBy('YEAR(donation.post_date), MONTH(donation.post_date)');
         } elseif ($groupBy === 'YEAR') {
-            $query->groupBy('YEAR(donation.post_date) ASC');
+            $query->groupBy('YEAR(donation.post_date)');
         } else {
-            $query->groupBy("$groupBy(donation.post_date) ASC");
+            $query->groupBy("$groupBy(donation.post_date)");
         }
 
         return $query->getAll();
