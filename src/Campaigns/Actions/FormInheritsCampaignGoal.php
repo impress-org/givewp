@@ -5,7 +5,6 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalSource;
-use Give\DonationForms\ValueObjects\GoalType;
 
 /**
  * @unreleased

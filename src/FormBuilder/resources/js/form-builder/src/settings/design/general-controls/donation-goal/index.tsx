@@ -40,7 +40,7 @@ const DonationGoal = ({dispatch}) => {
         },
     } = useFormState();
 
-    const {publishGoal, publishGoalType} = useDonationFormPubSub();
+    const {publishGoal, publishGoalType, publishGoalSource} = useDonationFormPubSub();
     const [showNotice, setShowNotice] = useState(!window.goalNotificationData.isDismissed);
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
@@ -115,7 +115,7 @@ const DonationGoal = ({dispatch}) => {
                             }
                             onChange={(goalSource: string) => {
                                 dispatch(setFormSettings({goalSource}));
-                                publishGoalType(goalSource);
+                                publishGoalSource({goalSource});
                             }}
                             help={selectedGoalDescription}
                         />

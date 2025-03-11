@@ -4,7 +4,6 @@ namespace Give\DonationForms\Factories;
 
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
-use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Models\Factories\ModelFactory;
@@ -28,7 +27,6 @@ class DonationFormFactory extends ModelFactory
                 'goalAmount' => $this->faker->numberBetween(100, 5000),
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalSource' => GoalSource::FORM(),
                 'goalType' => GoalType::AMOUNT(),
                 'designId' => 'classic',
                 'showHeading' => true,
