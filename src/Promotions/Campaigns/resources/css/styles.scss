@@ -1,3 +1,13 @@
+.givewp-campaign-welcome-banner-background {
+    position: relative;
+    background: no-repeat right;
+    background-size: cover;
+    height: 354px;
+    padding: 28px 56px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
 .givewp-campaign-welcome-banner {
     display: flex;
     flex-direction: column;

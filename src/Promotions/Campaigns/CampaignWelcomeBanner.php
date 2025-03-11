@@ -40,7 +40,7 @@ class CampaignWelcomeBanner
         $exitIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/dismiss-icon.svg';
 
         return "
-            <div style='position: relative; background: url(\"$backgroundUrl\") no-repeat right; background-size: cover; height: 354px; padding: 28px 56px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); border-radius: 8px;'>
+            <div class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\");'>
                <div class='givewp-campaign-welcome-banner'>
                 <div class='givewp-campaign-welcome-banner__actions'>
                     <div class='givewp-campaign-welcome-banner__actions__badge'><img src='$badgeIconUrl' alt='badge'/> NEW</div>
