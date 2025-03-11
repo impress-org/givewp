@@ -53,13 +53,6 @@ class GetCampaignRevenue implements RestRoute
      *
      * @example
      *
-     * $data = [
-     * ['date' => '2025-01-01', 'amount' => 100],
-     * ['date' => '2025-01-02', 'amount' => 0],
-     * ['date' => '2025-01-03', 'amount' => 200],
-     * ['date' => '2025-01-04', 'amount' => 0],
-     * ];
-     *
      * @unreleased
      *
      * @throws Exception
@@ -73,48 +66,35 @@ class GetCampaignRevenue implements RestRoute
         }
 
         $query = new CampaignDonationQuery($campaign);
-        $results = $query->getDonationsByDay();
 
-        if (empty($results)){
+        $oldestRevenueDate = $query->getOldestDonationDate();
+
+        if (!$oldestRevenueDate) {
             return new WP_REST_Response([], 200);
         }
 
-        $resultMap = [];
-        foreach ($results as $result) {
-            $resultMap[$result->date] = $result->amount;
-        }
-
-        $firstResultDate = new DateTime($results[0]->date, wp_timezone());
-        $lastResultDate = new DateTime($results[count($results) - 1]->date, wp_timezone());
+        $firstResultDate = new DateTime($oldestRevenueDate, wp_timezone());
 
         // the query start date is the earliest of the first result date and the campaign start date
         $queryStartDate = ($firstResultDate < $campaign->startDate) ? $firstResultDate : $campaign->startDate;
-        $campaignEndDate = current_datetime();
-        // the query end date is the latest of the last result date and the campaign end date
-        $queryEndDate = ($lastResultDate > $campaignEndDate) ? $lastResultDate : $campaignEndDate;
+        $queryEndDate = $campaign->endDate ?: current_datetime();
 
-        // Get all dates between the start and end date
-        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate);
+        $groupBy = $this->getGroupByFromDateRange($queryStartDate, $queryEndDate);
 
-        $data = [];
-        // Fill in the data with the results
-        foreach($dates as $date) {
-            $data[] = [
-                'date' => $date,
-                'amount' => $resultMap[$date] ?? 0
-            ];
+        $results = $query->getDonationsByDate($groupBy);
 
-            // Remove the result from the map so we don't duplicate it
-            unset($resultMap[$date]);
+        if (empty($results)) {
+            return new WP_REST_Response([], 200);
         }
 
-        // Fill in the data with the remaining results
-        foreach($resultMap as $date => $amount) {
-            $data[] = [
-                'date' => $date,
-                'amount' => $amount
-            ];
-        }
+        // Map the results by date
+        $resultMap = $this->mapResultsByDate($results, $groupBy);
+
+        // Get all dates between the start and end date based on the group by
+        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate, $groupBy);
+
+        // Merge the results with the dates to ensure that all dates are included
+        $data = $this->mergeResultsWithDates($dates, $resultMap);
 
         return new WP_REST_Response($data, 200);
     }
@@ -122,7 +102,7 @@ class GetCampaignRevenue implements RestRoute
     /**
      * @unreleased
      */
-    public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate): array
+    public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
         // Include the end date
         $endDate->modify('+1 day');
@@ -136,23 +116,96 @@ class GetCampaignRevenue implements RestRoute
             $startDate->modify("-$defaultDays days");
         }
 
-        $intervalTime = '1 day';
-        // If the date range is more than 1 year, group by month
-        if ($startDateInterval->days >= 365) {
-            $intervalTime = '1 months';
-        } elseif ($startDateInterval->days >= 90) {
-            // If the date range is more than 90 days, group by week
-            $intervalTime = '1 week';
+        $differenceInMonths = ($startDateInterval->y * 12) + $startDateInterval->m;
+
+        $intervalTime = 'days';
+        if ($startDateInterval->y >= 5) {
+            // If the date range is more than 5 years, group by year
+            $intervalTime = 'years';
+        } elseif ($differenceInMonths >= 6) {
+            // If the date range is more than 6 months, group by month
+            $intervalTime = 'months';
         }
 
-        $interval = DateInterval::createFromDateString($intervalTime);
+        $interval = DateInterval::createFromDateString("1 $intervalTime");
         $dateRange = new DatePeriod($startDate, $interval, $endDate);
 
-        $days = [];
+        $dates = [];
         foreach ($dateRange as $date) {
-            $days[] = $date->format('Y-m-d');
+            $dateFormatted = $this->getFormattedDateFromGroupBy($groupBy, $date);
+
+            $dates[] = $dateFormatted;
         }
 
-        return $days;
+        return $dates;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGroupByFromDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): string
+    {
+        $startDateInterval = $startDate->diff($endDate);
+        $differenceInMonths = ($startDateInterval->y * 12) + $startDateInterval->m;
+
+        // If the date range is more than 1 year, group by month
+        if ($startDateInterval->y >= 5) {
+            return 'YEAR';
+        }
+
+        if ($differenceInMonths >= 6) {
+            // If the date range is more than 90 days, group by week
+            return 'MONTH';
+        }
+
+        return 'DAY';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getFormattedDateFromGroupBy(string $groupBy, DateTimeInterface $date): string
+    {
+        if ($groupBy === 'MONTH') {
+            return $date->format('Y-m');
+        }
+
+        if ($groupBy === 'YEAR') {
+            return $date->format('Y');
+        }
+
+        return $date->format('Y-m-d');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function mergeResultsWithDates(array $dates, array $resultMap): array
+    {
+        $data = [];
+         // Fill in the data with the results
+        foreach ($dates as $date) {
+            $data[] = [
+                'date' => $date,
+                'amount' => $resultMap[$date] ?? 0
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function mapResultsByDate(array $results, string $groupBy): array
+    {
+        $resultMap = [];
+        foreach ($results as $result) {
+            $date = $this->getFormattedDateFromGroupBy($groupBy, date_create($result->date_created));
+
+            $resultMap[$date] = $result->amount;
+        }
+
+        return $resultMap;
     }
 }
