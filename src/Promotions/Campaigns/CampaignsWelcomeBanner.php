@@ -26,6 +26,7 @@ class CampaignsWelcomeBanner
         AdminNotices::show($this->id, [$this, 'renderCallback'])
             ->custom()
             ->location('below_header')
+            ->dismissible()
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerCss.css', [], '1.0.0')
             ->enqueueScript(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerJs.js', [], '1.0.0')
             ->on('plugins.php');
@@ -43,7 +44,7 @@ class CampaignsWelcomeBanner
         $campaignsPageUrl = admin_url('admin.php?page=give-campaigns');
 
         return "
-            <div class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\") no-repeat right;'>
+            <div {$elements->customWrapperAttributes} class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\") no-repeat right;'>
                <div class='givewp-campaign-welcome-banner'>
                 <div class='givewp-campaign-welcome-banner__actions'>
                     <div class='givewp-campaign-welcome-banner__actions__badge'><img src='$badgeIconUrl' alt='badge'/> NEW</div>
