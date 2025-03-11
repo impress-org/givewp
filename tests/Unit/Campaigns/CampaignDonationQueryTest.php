@@ -25,11 +25,12 @@ final class CampaignDonationQueryTest extends TestCase
      */
     public function testCountCampaignDonations()
     {
+        /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -53,10 +54,10 @@ final class CampaignDonationQueryTest extends TestCase
     public function testSumCampaignDonations()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -80,11 +81,11 @@ final class CampaignDonationQueryTest extends TestCase
     public function testCountCampaignDonors()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
-        
+
+
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -107,10 +108,10 @@ final class CampaignDonationQueryTest extends TestCase
     public function testCoalesceIntendedAmountWithoutRecoveredFees()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
 
         $donation = Donation::factory()->create([
             'formId' => $form->id,
@@ -130,10 +131,7 @@ final class CampaignDonationQueryTest extends TestCase
     public function testGetDonationsByDate()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
-
-        $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $donations = [
             Donation::factory()->create([

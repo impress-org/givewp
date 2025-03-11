@@ -45,6 +45,7 @@
         "anchor": true,
         "className": true
     },
+    "example":{},
     "textdomain": "give",
     "render": "file:./render.php",
     "style": "file:../../../../build/campaignCoverBlock.css"

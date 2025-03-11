@@ -37,9 +37,20 @@ class CampaignRepository
      */
     public function getById(int $id)
     {
+        return $this->queryById($id)->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * Query Campaign by ID
+     *
+     * @unreleased
+     */
+    public function queryById(int $id): ModelQueryBuilder
+    {
         return $this->prepareQuery()
-            ->where('id', $id)
-            ->get();
+            ->where('id', $id);
     }
 
     /**

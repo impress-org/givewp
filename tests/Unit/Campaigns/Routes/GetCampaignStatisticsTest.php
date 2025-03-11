@@ -27,10 +27,10 @@ final class GetCampaignStatisticsTest extends TestCase
     public function testReturnsAllTimeDonationsStatistics()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
 
         $donation1 = Donation::factory()->create([
             'formId' => $form->id,
@@ -73,10 +73,10 @@ final class GetCampaignStatisticsTest extends TestCase
     public function testReturnsPeriodStatisticsWithPreviousPeriod()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
+
 
         $donation1 = Donation::factory()->create([
             'formId' => $form->id,
