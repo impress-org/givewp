@@ -129,6 +129,9 @@ class GetCampaignRevenue implements RestRoute
         // If the date range is more than 1 year, group by month
         if ($startDateInterval->days >= 365) {
             $intervalTime = '1 months';
+        } elseif ($startDateInterval->days >= 90) {
+            // If the date range is more than 90 days, group by week
+            $intervalTime = '1 week';
         }
 
         $interval = DateInterval::createFromDateString($intervalTime);
