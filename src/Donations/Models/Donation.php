@@ -31,6 +31,7 @@ use Give\Subscriptions\Models\Subscription;
  * @since 2.19.6
  *
  * @property int $id
+ * @property int $campaignId
  * @property int $formId
  * @property string $formTitle
  * @property DateTime $createdAt
@@ -69,6 +70,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'campaignId' => 'int',
         'formId' => 'int',
         'formTitle' => 'string',
         'purchaseKey' => 'string',
@@ -194,7 +196,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      */
     public function campaign(): ModelQueryBuilder
     {
-        return give()->campaigns->queryByFormId($this->formId);
+        return give()->campaigns->queryById($this->campaignId);
     }
 
     /**
