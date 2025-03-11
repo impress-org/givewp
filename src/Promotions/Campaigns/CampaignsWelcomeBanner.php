@@ -43,7 +43,7 @@ class CampaignsWelcomeBanner
         $campaignsPageUrl = admin_url('admin.php?page=give-campaigns');
 
         return "
-            <div class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\");'>
+            <div class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\") no-repeat right;'>
                <div class='givewp-campaign-welcome-banner'>
                 <div class='givewp-campaign-welcome-banner__actions'>
                     <div class='givewp-campaign-welcome-banner__actions__badge'><img src='$badgeIconUrl' alt='badge'/> NEW</div>
