@@ -2,7 +2,6 @@
 
 namespace Give\Tests\Unit\Campaigns;
 
-use DateTime;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
@@ -56,9 +55,6 @@ final class CampaignDonationQueryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $db = DB::table('give_campaign_forms');
-
-
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -83,8 +79,6 @@ final class CampaignDonationQueryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $db = DB::table('give_campaign_forms');
-
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -108,9 +102,6 @@ final class CampaignDonationQueryTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
-
-        $db = DB::table('give_campaign_forms');
-
 
         $donation = Donation::factory()->create([
             'formId' => $form->id,
@@ -226,24 +217,24 @@ final class CampaignDonationQueryTest extends TestCase
     /**
      * @unreleased
      */
-    protected function getYear($date): string
+    protected function getYear(string $date): string
     {
-        return (new DateTime($date))->format('Y');
+        return date_create($date)->format('Y');
     }
 
     /**
      * @unreleased
      */
-    protected function getMonth($date): string
+    protected function getMonth(string $date): string
     {
-        return (new DateTime($date))->format('m');
+        return date_create($date)->format('m');
     }
 
     /**
      * @unreleased
      */
-    protected function getDay($date): string
+    protected function getDay(string $date): string
     {
-        return (new DateTime($date))->format('d');
+        return date_create($date)->format('d');
     }
 }
