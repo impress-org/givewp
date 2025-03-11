@@ -16,14 +16,14 @@ class CampaignsWelcomeBanner
     /**
      * @var string
      */
-    public static $id = 'givewp-campaigns-welcome-banner-2025';
+    public $id = 'givewp-campaigns-welcome-banner-2025';
 
     /**
      * @unreleased
      */
-    public static function render()
+    public function render()
     {
-        AdminNotices::show(self::$id, [self::class, 'renderCallback'])
+        AdminNotices::show($this->id, [$this, 'renderCallback'])
             ->custom()
             ->location('below_header')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerCss.css', [], '1.0.0')
@@ -34,7 +34,7 @@ class CampaignsWelcomeBanner
     /**
      * @unreleased
      */
-    public static function renderCallback(AdminNotice $notice, NoticeElementProperties $elements): string
+    public function renderCallback(AdminNotice $notice, NoticeElementProperties $elements): string
     {
         $backgroundUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/welcome-banner-background.svg';
         $badgeIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/star-badge-icon.svg';
