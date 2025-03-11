@@ -25,6 +25,7 @@ class CampaignsWelcomeBanner
     {
         AdminNotices::show(self::$id, [self::class, 'renderCallback'])
             ->custom()
+            ->location('below_header')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerCss.css', [], '1.0.0')
             ->on('plugins.php');
     }
@@ -38,6 +39,7 @@ class CampaignsWelcomeBanner
         $badgeIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/star-badge-icon.svg';
         $heartIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/heart-icon.svg';
         $exitIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/dismiss-icon.svg';
+        $campaignsPageUrl = admin_url('admin.php?page=give-campaigns');
 
         return "
             <div class='givewp-campaign-welcome-banner-background' style='background-image: url(\"$backgroundUrl\");'>
@@ -73,7 +75,7 @@ class CampaignsWelcomeBanner
                         </div>
                     </div>
                 </div>
-                <a class='givewp-campaign-welcome-banner__cta-button'>
+                <a class='givewp-campaign-welcome-banner__cta-button' href='$campaignsPageUrl' >
                     <span class='givewp-campaign-welcome-banner'>Explore campaigns</span>
                 </a>
               </div>

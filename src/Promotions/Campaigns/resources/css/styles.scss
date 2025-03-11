@@ -86,20 +86,21 @@
     }
 
     &__cta-button {
-        height: 48px;
-        width: 324px;
-        margin: var(--givewp-spacing-10) 0;
         flex-grow: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 8px;
+        height: 48px;
+        width: 324px;
+        margin: var(--givewp-spacing-10) 0;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        background: var(--givewp-orange-400);
         border-radius: var(--givewp-rounded-8);
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
-        color: #fff;
-        background: #f29718;
+        color: var(--givewp-shades-white);
         cursor: pointer;
+        text-decoration: none;
 
         span {
             color: #fff;
