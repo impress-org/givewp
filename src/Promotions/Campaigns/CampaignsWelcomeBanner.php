@@ -27,6 +27,7 @@ class CampaignsWelcomeBanner
             ->custom()
             ->location('below_header')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerCss.css', [], '1.0.0')
+            ->enqueueScript(GIVE_PLUGIN_URL . 'build/campaignWelcomeBannerJs.js', [], '1.0.0')
             ->on('plugins.php');
     }
 

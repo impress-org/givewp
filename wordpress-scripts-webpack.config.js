@@ -86,6 +86,7 @@ module.exports = {
         campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
         campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
         campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
+        campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     },
 };
 
