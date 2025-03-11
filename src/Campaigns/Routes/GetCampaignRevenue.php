@@ -103,6 +103,17 @@ class GetCampaignRevenue implements RestRoute
                 'date' => $date,
                 'amount' => $resultMap[$date] ?? 0
             ];
+
+            // Remove the result from the map so we don't duplicate it
+            unset($resultMap[$date]);
+        }
+
+        // Fill in the data with the remaining results
+        foreach($resultMap as $date => $amount) {
+            $data[] = [
+                'date' => $date,
+                'amount' => $amount
+            ];
         }
 
         return new WP_REST_Response($data, 200);
