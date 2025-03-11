@@ -3,7 +3,7 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
-use Give\Promotions\Campaigns\CampaignWelcomeBanner;
+use Give\Promotions\Campaigns\CampaignsWelcomeBanner;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
@@ -85,7 +85,7 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
 
-        CampaignWelcomeBanner::render();
+        CampaignsWelcomeBanner::render();
     }
 
     /**

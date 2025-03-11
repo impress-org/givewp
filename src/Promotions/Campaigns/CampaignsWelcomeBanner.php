@@ -11,7 +11,7 @@ use Give\Vendors\StellarWP\AdminNotices\DataTransferObjects\NoticeElementPropert
 /**
  * @unreleased
  */
-class CampaignWelcomeBanner
+class CampaignsWelcomeBanner
 {
     /**
      * @var string
