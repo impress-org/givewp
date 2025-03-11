@@ -187,7 +187,7 @@ class DonationFormGoalData implements Arrayable
     public function getTargetAmount()
     {
         return $this->goalSource->isCampaign()
-            ? $this->campaign->goal
+            ? $this->campaign->goal ?? 0
             : $this->targetAmount;
     }
 

@@ -426,7 +426,7 @@ class FormSettings implements Arrayable, Jsonable
             array_merge(
                 $this->toArray(),
                 [
-                    'goalSource' => $this->goalSource ? $this->goalSource->getValue() : GoalSource::CAMPAIGN()->getValue(),
+                    'goalSource' => $this->goalSource ? $this->goalSource->getValue() : GoalSource::FORM()->getValue(),
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
                 ]
             )
