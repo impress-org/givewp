@@ -48,10 +48,12 @@ class GetCampaignRevenue implements RestRoute
 
     /**
      *
-     * This request returns revenue for a campaign by day.
-     * The result will include all days between either the (campaign start date or oldest result) and the current date.
-     *
-     * @example
+     * This request returns revenue over time based on the oldest data point for the campaign in the database.
+     * The result will return an array of revenue that includes date and amount.
+     * The revenue is grouped by day, month, or year based on the date range.
+     * If the date range is less than 7 days, the result will be padded to include the last 7 days.
+     * If the date range is more than 6 months, the result will be grouped by month.
+     * If the date range is more than 5 years, the result will be grouped by year.
      *
      * @unreleased
      *
@@ -59,7 +61,7 @@ class GetCampaignRevenue implements RestRoute
      */
     public function handleRequest($request): WP_REST_Response
     {
-        $campaign = Campaign::find($request->get_param('id'));
+        $campaign = Campaign::find((int)$request->get_param('id'));
 
         if (!$campaign) {
             return new WP_REST_Response([], 404);
