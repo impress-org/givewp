@@ -84,8 +84,8 @@ class GetCampaignRevenue implements RestRoute
             $resultMap[$result->date] = $result->amount;
         }
 
-        $firstResultDate = new DateTime($results[0]->date);
-        $lastResultDate = new DateTime($results[count($results) - 1]->date);
+        $firstResultDate = new DateTime($results[0]->date, wp_timezone());
+        $lastResultDate = new DateTime($results[count($results) - 1]->date, wp_timezone());
 
         // the query start date is the earliest of the first result date and the campaign start date
         $queryStartDate = ($firstResultDate < $campaign->startDate) ? $firstResultDate : $campaign->startDate;
