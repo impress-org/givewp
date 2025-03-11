@@ -136,6 +136,8 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_type' => 'core',
+                'enable_campaign_page' => false,
+                //'campaign_page_id' => $campaignPageId,
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
@@ -152,6 +154,21 @@ class MigrateFormsToCampaignForms extends Migration
             ]);
 
         $campaignId = DB::last_insert_id();
+
+        DB::table('posts')
+            ->insert([
+                'post_title' => $formTitle,
+                'post_name' => sanitize_title($formTitle),
+                'post_date' => $formCreatedAt,
+                'post_date_gmt' => get_gmt_from_date($formCreatedAt),
+                'post_modified' => $formCreatedAt,
+                'post_modified_gmt' => get_gmt_from_date($formCreatedAt),
+                'post_status' => 'publish',
+                'post_type' => 'give_campaign_page',
+                'post_content' => $this->createDefaultLayoutForCampaignPage($campaignId, $formSettings->formExcerpt),
+            ]);
+
+        $campaignPageId = DB::last_insert_id();
 
         $this->addCampaignFormRelationship($formId, $campaignId);
     }
@@ -308,5 +325,31 @@ class MigrateFormsToCampaignForms extends Migration
             default:
                 return $onlyRecurringEnabled ? 'amountFromSubscriptions' : 'amount';
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function createDefaultLayoutForCampaignPage($campaignId, $campaignShortDescription): string
+    {
+        $blocks = [
+            '<!-- wp:givewp/campaign-title {"campaignId":"%id%"} /-->',
+            '<!-- wp:givewp/campaign-cover-block {"campaignId":"%id%"} /-->',
+            '<!-- wp:givewp/campaign-goal {"campaignId":"%id%"} /-->',
+            '<!-- wp:givewp/campaign-donate-button {"campaignId":"%id%"} /-->',
+            '<!-- wp:paragraph --><p>%description%</p><!-- /wp:paragraph -->',
+            '<!-- wp:givewp/campaign-donations {"campaignId":"%id%"} /-->',
+            '<!-- wp:givewp/campaign-donors {"campaignId":"%id%"} /-->',
+        ];
+
+        $layout = array_map(function ($block) use ($campaignId, $campaignShortDescription) {
+            return str_replace(
+                ['%id%', '%description%'],
+                [$campaignId, $campaignShortDescription],
+                $block
+            );
+        }, $blocks);
+
+        return implode(PHP_EOL, $layout);
     }
 }
