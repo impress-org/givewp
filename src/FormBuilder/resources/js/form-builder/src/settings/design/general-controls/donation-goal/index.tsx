@@ -31,7 +31,6 @@ const DonationGoal = ({dispatch}) => {
             enableDonationGoal,
             enableAutoClose,
             goalAchievedMessage,
-            goalSource,
             goalType,
             goalProgressType,
             goalAmount,

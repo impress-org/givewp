@@ -10,7 +10,6 @@ use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
-use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\DonationForms\ViewModels\DonationFormViewModel;
 use Give\Tests\TestCase;
@@ -32,7 +31,6 @@ class DonationFormViewModelTest extends TestCase
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray([
                 'designId' => $formDesign::id(),
-                'goalSource' => GoalSource::FORM(),
                 'goalType' => GoalType::AMOUNT()
             ]),
         ]);

@@ -5,7 +5,6 @@ namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
-use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -24,7 +23,6 @@ class DonationFormGoalDataTest extends TestCase
          */
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray([
-                'goalSource' => GoalSource::FORM(),
                 'goalType' => GoalType::AMOUNT()
             ]),
         ]);
