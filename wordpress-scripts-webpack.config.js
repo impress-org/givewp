@@ -31,7 +31,7 @@ module.exports = {
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
             '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
             '@givewp/components': srcPath('Views/Components/'),
-            '@givewp/campaigns': srcPath('Campaigns/resources')
+            '@givewp/campaigns': srcPath('Campaigns/resources'),
         },
     },
     entry: {
@@ -85,6 +85,7 @@ module.exports = {
         campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
         campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
         campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
+        campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
     },
 };
 
