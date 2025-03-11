@@ -9,10 +9,12 @@ use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\SubscriptionQuery;
 use Give\DonationForms\ValueObjects\GoalProgressType;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
+ * @unreleased added goalSource
  * @since 3.0.0
  */
 class DonationFormGoalData implements Arrayable
@@ -55,6 +57,10 @@ class DonationFormGoalData implements Arrayable
      * @var Campaign|null
      */
     public $campaign;
+    /**
+     * @var GoalSource $goalSource
+     */
+    public $goalSource;
 
     /**
      * @since 3.0.0
@@ -65,6 +71,7 @@ class DonationFormGoalData implements Arrayable
         $this->formSettings = $formSettings;
         $this->isEnabled = $formSettings->enableDonationGoal ?? false;
         $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
+        $this->goalSource = $formSettings->goalSource ?? GoalSource::CAMPAIGN();
         $this->targetAmount = $this->formSettings->goalAmount ?? 0;
         $this->goalProgressType = $this->formSettings->goalProgressType ?? GoalProgressType::ALL_TIME();
         $this->goalStartDate = $this->formSettings->goalStartDate ?? null;
@@ -80,7 +87,7 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        $query = $this->goalType->isCampaign()
+        $query = $this->goalSource->isCampaign()
             ? $this->getCampaignQuery()
             : $this->getFormQuery();
 
@@ -89,7 +96,7 @@ class DonationFormGoalData implements Arrayable
             case 'donorsFromSubscriptions':
                 return $query->countDonors();
             case 'donations':
-                return $this->goalType->isCampaign()
+                return $this->goalSource->isCampaign()
                     ? $query->countDonations()
                     : $query->count();
             case 'subscriptions':
@@ -165,7 +172,7 @@ class DonationFormGoalData implements Arrayable
      */
     public function getGoalType()
     {
-        return $this->goalType->isCampaign()
+        return $this->goalSource->isCampaign()
             ? $this->campaign->goalType
             : $this->goalType;
     }
@@ -179,7 +186,7 @@ class DonationFormGoalData implements Arrayable
      */
     public function getTargetAmount()
     {
-        return $this->goalType->isCampaign()
+        return $this->goalSource->isCampaign()
             ? $this->campaign->goal
             : $this->targetAmount;
     }
