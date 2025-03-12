@@ -13,7 +13,6 @@ use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\StellarSaleBanners;
 use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
-use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -78,11 +77,6 @@ class ServiceProvider implements ServiceProviderContract
                 LegacyFormEditor::class,
                 'renderDonationOptionsRecurringRecommendation'
             );
-        }
-
-        if (WelcomeBanner::isShowing()) {
-            Hooks::addAction('admin_notices', WelcomeBanner::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
         }
 
         if (is_admin()) {
