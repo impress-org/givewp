@@ -30,6 +30,7 @@ class CampaignSubscriptionQuery extends QueryBuilder
         // Include only forms associated with the Campaign.
         $this->joinDonationMeta(DonationMetaKeys::CAMPAIGN_ID, 'campaignId');
         $this->where('campaignId.meta_value', $campaign->id);
+
     }
 
     /**
@@ -37,13 +38,13 @@ class CampaignSubscriptionQuery extends QueryBuilder
      */
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
-        $this->whereBetween(
+        $query = clone $this;
+        $query->whereBetween(
             'created',
             $startDate->format('Y-m-d H:i:s'),
             $endDate->format('Y-m-d H:i:s')
         );
-
-        return $this;
+        return $query;
     }
 
     /**
@@ -55,7 +56,7 @@ class CampaignSubscriptionQuery extends QueryBuilder
      */
     public function sumInitialAmount()
     {
-        return $this->sum('initial_amount');
+        return (clone $this)->sum('initial_amount');
     }
 
     /**
@@ -63,7 +64,7 @@ class CampaignSubscriptionQuery extends QueryBuilder
      */
     public function countDonations(): int
     {
-        return $this->count('donation.ID');
+        return (clone $this)->count('donation.ID');
     }
 
     /**
@@ -71,9 +72,9 @@ class CampaignSubscriptionQuery extends QueryBuilder
      */
     public function countDonors(): int
     {
-        $this->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
-
-        return $this->count('DISTINCT donorId.meta_value');
+        $query = clone $this;
+        $query->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
+        return $query->count('DISTINCT donorId.meta_value');
     }
 
     /**
@@ -103,7 +104,6 @@ class CampaignSubscriptionQuery extends QueryBuilder
                 ->on('subscription.parent_payment_id', $alias . '.donation_id')
                 ->andOn($alias . '.meta_key', $key, true);
         });
-
         return $this;
     }
 }
