@@ -58,6 +58,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->select(
                 ['forms.ID', 'id'],
                 ['forms.post_title', 'title'],
+                ['forms.post_name', 'name'], // unique slug
                 ['forms.post_status', 'status'],
                 ['forms.post_date', 'createdAt']
             )
@@ -127,6 +128,7 @@ class MigrateFormsToCampaignForms extends Migration
     {
         $formId = $formData->id;
         $formStatus = $formData->status;
+        $formName = $formData->name;
         $formTitle = $formData->title;
         $formCreatedAt = $formData->createdAt;
         $isV3Form = ! is_null($formData->settings);
@@ -159,7 +161,7 @@ class MigrateFormsToCampaignForms extends Migration
         DB::table('posts')
             ->insert([
                 'post_title' => $formTitle,
-                'post_name' => sanitize_title($formTitle),
+                'post_name' => $formName, // unique slug
                 'post_date' => $formCreatedAt,
                 'post_date_gmt' => get_gmt_from_date($formCreatedAt),
                 'post_modified' => $formCreatedAt,
