@@ -26,10 +26,10 @@
         </div> <!-- End actions -->
 
         <h2 class='givewp-campaign-welcome-banner__title'>
-            <?php echo esc_html__('Introducing Campaigns in Give 4.0 ! 🎉', 'give'); ?>
+            <?php echo esc_html__('Introducing Campaigns in Give 4.0 !', 'give'); ?> &nbsp; 🎉
         </h2>
         <p class='givewp-campaign-welcome-banner__description'>
-            <?php echo esc_html__('Say hello to a whole new way to supercharge your fundraising! 🚀', 'give'); ?>
+            <?php echo esc_html__('Say hello to a whole new way to supercharge your fundraising!', 'give'); ?> &nbsp;🚀
         </p>
 
         <div class='givewp-campaign-welcome-banner__features'>
