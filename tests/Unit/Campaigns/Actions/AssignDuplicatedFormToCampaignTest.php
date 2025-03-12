@@ -21,10 +21,9 @@ final class AssignDuplicatedFormToCampaignTest extends TestCase
     public function testDuplicatedFormIsAssignedToCampaign()
     {
         $campaign = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
 
         $db = DB::table('give_campaign_forms');
-        $db->insert(['form_id' => $form->id, 'campaign_id' => $campaign->id]);
 
         // See give/src/DonationForms/V2/Endpoints/FormActions.php:131
         require_once(GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');

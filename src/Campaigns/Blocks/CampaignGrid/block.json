@@ -65,6 +65,7 @@
             "default": true
         }
     },
+    "example": {},
     "textdomain": "give",
     "viewScript": "file:../../../../build/campaignGridApp.js",
     "viewStyle": "file:../../../../build/campaignGridApp.css",

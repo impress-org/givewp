@@ -170,7 +170,11 @@ class GetCampaignsListTable implements RestRoute
             }
         }
 
-        if ($status && 'any' !== $status) {
+        if ($status === 'any') {
+            $query->whereNotLike('status', 'archived');
+        } elseif ($status === 'inactive') {
+            $query->where('status', 'archived');
+        } elseif ($status) {
             $query->where('status', $status);
         }
 
