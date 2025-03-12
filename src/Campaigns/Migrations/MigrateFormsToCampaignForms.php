@@ -146,8 +146,8 @@ class MigrateFormsToCampaignForms extends Migration
                 'secondary_color' => $formSettings->secondaryColor,
                 'campaign_goal' => $formSettings->goalAmount,
                 'goal_type' => $formSettings->goalType,
-                'start_date' => $formSettings->goalStartDate,
-                'end_date' => $formSettings->goalEndDate,
+                'start_date' => $formCreatedAt,
+                'end_date' => null,
                 'date_created' => $formCreatedAt,
             ]);
 
