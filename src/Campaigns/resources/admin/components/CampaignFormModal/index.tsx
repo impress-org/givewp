@@ -425,7 +425,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             style={{marginBottom: 0}}
                         >
                             <button
-                                type="submit"
+                                type="button"
                                 onClick={() => setStep(1)}
                                 className={`button button-secondary ${styles.button} ${styles.previousButton}`}
                             >
