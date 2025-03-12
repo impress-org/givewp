@@ -38,14 +38,14 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
-        $query = clone $this;
-        $query->joinDonationMeta('_give_completed_date', 'completed');
-        $query->whereBetween(
+        $this->joinDonationMeta('_give_completed_date', 'completed');
+        $this->whereBetween(
             'completed.meta_value',
             $startDate->format('Y-m-d H:i:s'),
             $endDate->format('Y-m-d H:i:s')
         );
-        return $query;
+
+        return $this;
     }
 
     /**
@@ -57,10 +57,10 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function sumIntendedAmount()
     {
-        $query = clone $this;
-        $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
-        return $query->sum(
+        $this->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
+        $this->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+
+        return $this->sum(
             /**
              * The intended amount meta and the amount meta could either be 0 or NULL.
              * So we need to use the NULLIF function to treat the 0 values as NULL.
@@ -76,8 +76,7 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function countDonations(): int
     {
-        $query = clone $this;
-        return $query->count('donation.ID');
+        return $this->count('donation.ID');
     }
 
     /**
@@ -85,9 +84,9 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function countDonors(): int
     {
-        $query = clone $this;
-        $query->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
-        return $query->count('DISTINCT donorId.meta_value');
+        $this->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
+
+        return $this->count('DISTINCT donorId.meta_value');
     }
 
     /**
@@ -95,19 +94,17 @@ class CampaignDonationQuery extends QueryBuilder
      */
     public function getDonationsByDay(): array
     {
-        $query = clone $this;
-
-        $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
-        $query->select(
+        $this->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
+        $this->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        $this->select(
             'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
         );
 
-        $query->joinDonationMeta('_give_completed_date', 'completed');
-        $query->select('DATE(completed.meta_value) as date');
-        $query->groupBy('date');
+        $this->joinDonationMeta('_give_completed_date', 'completed');
+        $this->select('DATE(completed.meta_value) as date');
+        $this->groupBy('date');
 
-        return $query->getAll();
+        return $this->getAll();
     }
 
     /**
