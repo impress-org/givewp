@@ -39,9 +39,8 @@ class CampaignDonationQuery extends QueryBuilder
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
         $query = clone $this;
-        $query->joinDonationMeta('_give_completed_date', 'completed');
         $query->whereBetween(
-            'completed.meta_value',
+            'donation.post_date',
             $startDate->format('Y-m-d H:i:s'),
             $endDate->format('Y-m-d H:i:s')
         );
@@ -93,7 +92,25 @@ class CampaignDonationQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function getDonationsByDay(): array
+    public function getOldestDonationDate()
+    {
+        $query = clone $this;
+        $query->select('DATE(donation.post_date) as date_created');
+        $query->orderBy('donation.post_date', 'ASC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return null;
+        }
+
+        return $result->date_created;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationsByDate($groupBy = 'DATE'): array
     {
         $query = clone $this;
 
@@ -103,9 +120,20 @@ class CampaignDonationQuery extends QueryBuilder
             'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
         );
 
-        $query->joinDonationMeta('_give_completed_date', 'completed');
-        $query->select('DATE(completed.meta_value) as date');
-        $query->groupBy('date');
+        $query->select('YEAR(donation.post_date) as year');
+        $query->select('MONTH(donation.post_date) as month');
+        $query->select('DAY(donation.post_date) as day');
+        $query->select("DATE(donation.post_date) as date_created");
+
+        if ($groupBy === 'DAY') {
+            $query->groupBy('DATE(date_created)');
+        } else if ($groupBy === 'MONTH') {
+            $query->groupBy('YEAR(donation.post_date), MONTH(donation.post_date)');
+        } elseif ($groupBy === 'YEAR') {
+            $query->groupBy('YEAR(donation.post_date)');
+        } else {
+            $query->groupBy("$groupBy(donation.post_date)");
+        }
 
         return $query->getAll();
     }
