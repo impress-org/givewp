@@ -137,7 +137,6 @@ class MigrateFormsToCampaignForms extends Migration
                 'form_id' => $formId,
                 'campaign_type' => 'core',
                 'enable_campaign_page' => false,
-                //'campaign_page_id' => $campaignPageId,
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
@@ -155,6 +154,8 @@ class MigrateFormsToCampaignForms extends Migration
 
         $campaignId = DB::last_insert_id();
 
+        $this->addCampaignFormRelationship($formId, $campaignId);
+
         DB::table('posts')
             ->insert([
                 'post_title' => $formTitle,
@@ -170,7 +171,18 @@ class MigrateFormsToCampaignForms extends Migration
 
         $campaignPageId = DB::last_insert_id();
 
-        $this->addCampaignFormRelationship($formId, $campaignId);
+        DB::table('postmeta')
+            ->insert([
+                'post_id' => $campaignPageId,
+                'meta_key' => 'campaignId',
+                'meta_value' => $campaignId,
+            ]);
+
+        DB::table('give_campaigns')
+            ->where('id', $campaignId)
+            ->update([
+                'campaign_page_id' => $campaignPageId,
+            ]);
     }
 
     /**
