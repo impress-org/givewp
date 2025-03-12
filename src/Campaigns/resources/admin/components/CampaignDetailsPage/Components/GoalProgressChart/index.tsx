@@ -4,22 +4,15 @@ import React from 'react';
 
 import styles from './styles.module.scss';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import type {Campaign} from '@givewp/campaigns/admin/components/types';
 
 const {currency} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
 
-type GoalType =
-    | 'amount'
-    | 'donations'
-    | 'donors'
-    | 'amountFromSubscriptions'
-    | 'subscriptions'
-    | 'donorsFromSubscriptions';
-
 type GoalProgressChartProps = {
     value: number;
     goal: number;
-    goalType: GoalType;
+    goalType: Partial<Campaign>['goalType'];
 };
 
 const goalTypeLabels = {
