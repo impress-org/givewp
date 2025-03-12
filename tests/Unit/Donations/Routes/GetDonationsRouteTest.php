@@ -45,6 +45,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
+            'purchaseKey'
         ];
 
         $this->assertEquals(200, $status);
@@ -89,6 +90,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
+            'purchaseKey'
         ];
 
         $this->assertEquals(200, $status);
@@ -552,5 +554,73 @@ class GetDonationsRouteTest extends RestApiTestCase
         }
 
         return $donation3;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonationShouldReturnExpectedData()
+    {
+        $donation = $this->createDonation1();
+
+        $newAdminUser = self::factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonationShouldIncludeSensitiveData',
+                'user_pass' => 'testGetDonationShouldIncludeSensitiveData',
+                'user_email' => 'testGetDonationShouldIncludeSensitiveData@test.com',
+            ]
+        );
+
+        wp_set_current_user($newAdminUser);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        // TODO: show shape of DateTime objects
+        $createdAtJson = json_encode($data[0]['createdAt']);
+        $updatedAtJson = json_encode($data[0]['updatedAt']);
+
+        $this->assertEquals([
+            'id' => $donation->id,
+            'amount' => $donation->amount->toArray(),
+            'donorId' => $donation->donorId,
+            'firstName' => $donation->firstName,
+            'lastName' => $donation->lastName,
+            'email' => $donation->email,
+            'formId' => $donation->formId,
+            'levelId' => $donation->levelId,
+            'anonymous' => $donation->anonymous,
+            'company' => $donation->company,
+            'createdAt' => json_decode($createdAtJson, true),
+            'updatedAt' => json_decode($updatedAtJson, true),
+            'status' => $donation->status->getValue(),
+            'gatewayId' => $donation->gatewayId,
+            'campaignId' => $donation->campaignId,
+            'formTitle' => $donation->formTitle,
+            'purchaseKey' => $donation->purchaseKey,
+            'type' => $donation->type->getValue(),
+            'mode' => $donation->mode->getValue(),
+            'feeAmountRecovered' => $donation->feeAmountRecovered->toArray(),
+            'exchangeRate' => $donation->exchangeRate,
+            'honorific' => $donation->honorific,
+            'subscriptionId' => $donation->subscriptionId,
+            'gatewayTransactionId' => $donation->gatewayTransactionId,
+            'comment' => $donation->comment,
+            'donorIp' => $donation->donorIp,
+            'phone' => $donation->phone,
+            'billingAddress' => $donation->billingAddress->toArray()
+        ], $data[0]);
     }
 }

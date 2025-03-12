@@ -157,6 +157,7 @@ class DonationRequestController
                 'email',
                 'phone',
                 'billingAddress',
+                'purchaseKey'
             ];
         }
 
@@ -167,7 +168,7 @@ class DonationRequestController
                 'honorific',
                 'firstName',
                 'lastName',
-                'company',
+                'company'
             ];
         }
 
