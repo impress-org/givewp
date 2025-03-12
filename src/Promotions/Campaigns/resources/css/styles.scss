@@ -102,7 +102,6 @@
         justify-content: center;
         align-items: center;
         gap: 8px;
-        height: 48px;
         width: 324px;
         margin: var(--givewp-spacing-10) 0;
         padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
@@ -114,7 +113,7 @@
         text-decoration: none;
 
         span {
-            color: #fff;
+            color: var(--givewp-shades-white);
             font-size: 16px;
             font-weight: 600;
             text-align: center;
