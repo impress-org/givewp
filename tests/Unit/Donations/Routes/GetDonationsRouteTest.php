@@ -559,7 +559,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testGetDonationShouldReturnExpectedData()
+    public function testGetDonationShouldReturnExpectedData(): void
     {
         $donation = $this->createDonation1();
 
@@ -612,7 +612,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'purchaseKey' => $donation->purchaseKey,
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
-            'feeAmountRecovered' => $donation->feeAmountRecovered->toArray(),
+            'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->toArray() : null,
             'exchangeRate' => $donation->exchangeRate,
             'honorific' => $donation->honorific,
             'subscriptionId' => $donation->subscriptionId,
@@ -620,7 +620,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'comment' => $donation->comment,
             'donorIp' => $donation->donorIp,
             'phone' => $donation->phone,
-            'billingAddress' => $donation->billingAddress->toArray()
+            'billingAddress' => $donation->billingAddress ? $donation->billingAddress->toArray() : null,
         ], $data[0]);
     }
 }

@@ -272,10 +272,10 @@ class GetDonationRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testGetDonationShouldReturnExpectedData()
+    public function testGetDonationShouldReturnExpectedData(): void
     {
          /** @var  Donation $donation */
-        $donation = $this->
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false, 'mode' => DonationMode::LIVE()]);
 
         $newAdminUser = self::factory()->user->create(
             [
@@ -326,7 +326,7 @@ class GetDonationRouteTest extends RestApiTestCase
             'purchaseKey' => $donation->purchaseKey,
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
-            'feeAmountRecovered' => $donation->feeAmountRecovered->toArray(),
+            'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->toArray() : null,
             'exchangeRate' => $donation->exchangeRate,
             'honorific' => $donation->honorific,
             'subscriptionId' => $donation->subscriptionId,
@@ -334,7 +334,7 @@ class GetDonationRouteTest extends RestApiTestCase
             'comment' => $donation->comment,
             'donorIp' => $donation->donorIp,
             'phone' => $donation->phone,
-            'billingAddress' => $donation->billingAddress->toArray()
+            'billingAddress' => $donation->billingAddress ? $donation->billingAddress->toArray() : null,
         ], $data);
     }
 }
