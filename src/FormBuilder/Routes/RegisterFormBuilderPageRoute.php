@@ -21,6 +21,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased set parent slug to empty string
      * @since 3.0.0
      *
      * @return void
