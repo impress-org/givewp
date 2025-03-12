@@ -303,14 +303,4 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     {
         return new DonationFactory(static::class);
     }
-
-//    public function toArray(): array
-//    {
-//        return array_merge(parent::toArray(), [
-//            'amount' => $this->amount->formatToDecimal(),
-//            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-//            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-//            'status' => $this->status->getValue(),
-//        ]);
-//    }
 }
