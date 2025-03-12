@@ -1,28 +1,48 @@
-import React, {useEffect, useState} from 'react';
-import Chart from 'react-apexcharts';
-import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
+import React, {useEffect, useState} from "react";
+import Chart from "react-apexcharts";
+import apiFetch from "@wordpress/api-fetch";
+import {addQueryArgs} from "@wordpress/url";
+import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
+const getDefaultData = (days = 7) => {
+    const data = [];
+
+    for (let i = 0; i < days; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        data.push({x: date.toISOString().split('T')[0], y: 0});
+    }
+
+    return data;
+};
+
 const RevenueChart = () => {
-    const [max, setMax] = useState(0);
-    const [categories, setCategories] = useState([]);
-    const [series, setSeries] = useState([{name: 'Revenue', data: []}]);
+    const {currency} = getCampaignOptionsWindowData();
+    const currencyFormatter = amountFormatter(currency);
+    const [max, setMax] = useState(100);
+    const [series, setSeries] = useState([{name: 'Revenue', data: getDefaultData()}]);
 
     useEffect(() => {
-        apiFetch({path: addQueryArgs('/givewp/v3/campaigns/' + campaignId + '/revenue')}).then(
+        apiFetch({path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/revenue')}).then(
             (data: {date: string; amount: number}[]) => {
-                setMax(Math.max(...data.map((item) => item.amount)) * 1.1);
-
-                setCategories(data.map((item) => item.date));
-
-                setSeries([
-                    {
-                        name: 'Revenue',
-                        data: data.map((item) => item.amount),
-                    },
-                ]);
+                if (data?.length > 0) {
+                    // By default we set a max value so the chart does not look empty.
+                    // once we have data we can reset the max value for the chart to auto calculate
+                    setMax(undefined);
+                    setSeries([
+                        {
+                            name: 'Revenue',
+                            data: data.map((item) => {
+                                return {
+                                    x: item.date,
+                                    y: item.amount,
+                                };
+                            }),
+                        },
+                    ]);
+                }
             }
         );
     }, []);
@@ -33,14 +53,22 @@ const RevenueChart = () => {
             zoom: {
                 enabled: false,
             },
+            toolbar: {
+                show: false
+            }
         },
         xaxis: {
-            categories,
             type: 'datetime' as 'datetime' | 'category' | 'numeric',
         },
         yaxis: {
-            max,
             min: 0,
+            max,
+            showForNullSeries: false,
+            labels: {
+                formatter: (value) => {
+                    return currencyFormatter.format(Math.ceil(Number(value)));
+                },
+            },
         },
         stroke: {
             color: ['#60a1e2'],
@@ -83,15 +111,7 @@ const RevenueChart = () => {
         },
     };
 
-    return (
-        <Chart
-            options={options}
-            series={series}
-            type="area"
-            width="100%"
-            height="100%"
-        />
-    );
+    return <Chart options={options} series={series} type="area" width="100%" height="100%" />;
 };
 
 export default RevenueChart;
