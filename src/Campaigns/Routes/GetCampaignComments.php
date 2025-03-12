@@ -69,7 +69,6 @@ class GetCampaignComments implements RestRoute
             ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
             ->joinDonationMeta(DonationMetaKeys::COMMENT, 'commentMeta')
             ->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')
-            ->joinDonationMeta('_give_completed_date', 'dateMeta')
             ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors');
 
 
@@ -84,7 +83,7 @@ class GetCampaignComments implements RestRoute
             'donorIdMeta.meta_value as donorId',
             'commentMeta.meta_value as comment',
             'anonymousMeta.meta_value as anonymous',
-            'dateMeta.meta_value as date',
+            'donation.post_date as date',
             'donors.name as donorName'
         );
 
