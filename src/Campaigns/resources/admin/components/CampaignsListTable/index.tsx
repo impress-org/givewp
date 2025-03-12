@@ -9,6 +9,7 @@ import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
+import {getCampaignOptionsWindowData} from "@givewp/campaigns/utils";
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -25,6 +26,8 @@ const autoOpenCreateCampaignModal = () => {
 
     return newParam === 'campaign';
 };
+
+const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.showExistingUserIntroNotice;
 
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
@@ -89,7 +92,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
-    const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(null);
+    const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(shouldShowExistingUserIntroModal);
 
     /**
      * Displays a blank slate for the Campaigns table.

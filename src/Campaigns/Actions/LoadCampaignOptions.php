@@ -27,6 +27,7 @@ class LoadCampaignOptions
                 'admin' => is_admin()
                     ? [
                         'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', true),
+                        'showExistingUserIntroNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_existing_user_intro_notice', true),
                     ]
                     : null,
             ]
