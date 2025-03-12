@@ -3,6 +3,8 @@
  */
 import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
 
+import './styles.scss'
+
 /**
  * Internal dependencies
  */
