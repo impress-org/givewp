@@ -46,10 +46,10 @@ class CampaignsWelcomeBanner
      */
     public function renderCallback(AdminNotice $notice, NoticeElementProperties $elements): string
     {
-        $backgroundUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/welcome-banner-background.svg';
-        $badgeIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/star-badge-icon.svg';
-        $heartIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/heart-icon.svg';
-        $exitIconUrl = GIVE_PLUGIN_URL . 'assets/src/images/admin/promotions/campaigns/dismiss-icon.svg';
+        $backgroundUrl = GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/campaigns/welcome-banner-background.svg';
+        $badgeIconUrl = GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/campaigns/star-badge-icon.svg';
+        $heartIconUrl = GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/campaigns/heart-icon.svg';
+        $exitIconUrl = GIVE_PLUGIN_URL . 'assets/dist/images/admin/promotions/campaigns/dismiss-icon.svg';
         $campaignsPageUrl = admin_url('admin.php?page=give-campaigns');
 
         return View::load(
