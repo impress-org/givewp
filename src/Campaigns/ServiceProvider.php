@@ -114,6 +114,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
         Hooks::addAction('init', Actions\CampaignPageTemplate::class, 'registerTemplate');
         Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
+        Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
 
         // notices
         $noticeActions = [
