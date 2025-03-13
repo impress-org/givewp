@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -325,6 +326,15 @@ class CampaignRepository
                 DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
+                    ])
+            );
+
+            // Update donations campaign id meta value
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix('give_donationmeta') . " SET meta_value = %d WHERE meta_key = %s AND meta_value IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                        DonationMetaKeys::CAMPAIGN_ID
                     ])
             );
 
