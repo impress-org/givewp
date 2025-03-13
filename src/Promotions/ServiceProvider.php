@@ -79,9 +79,7 @@ class ServiceProvider implements ServiceProviderContract
             );
         }
 
-        if (is_admin()) {
-            Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
-        }
+        Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
     }
 
     /**
