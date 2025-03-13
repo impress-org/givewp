@@ -4,7 +4,6 @@ import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
