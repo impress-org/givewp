@@ -148,4 +148,22 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
 
         $this->assertNotEquals($form1->id, $campaign->defaultFormId);
     }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testFormDatesMatchCampaignDates(): void
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::findByFormId($form->id);
+        $this->assertEquals($form->createdAt, $campaign->createdAt);
+        $this->assertEquals($form->createdAt, $campaign->startDate);
+        $this->assertNull($campaign->endDate);
+    }
 }
