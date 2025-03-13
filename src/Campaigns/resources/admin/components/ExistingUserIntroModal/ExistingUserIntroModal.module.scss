@@ -37,7 +37,7 @@
         justify-content: center;
         align-items: center;
         gap: var(--givewp-spacing-1);
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+        padding: var(--givewp-spacing-1) 0;
         border-radius: 12px;
         font-size: 12px;
         font-weight: bold;
@@ -116,7 +116,7 @@
                 text-decoration: none;
 
                 &:hover {
-                    background-color: var(--givewp-neutral-100);
+                    background-color: var(--givewp-neutral-200);
 
                 }
             }
