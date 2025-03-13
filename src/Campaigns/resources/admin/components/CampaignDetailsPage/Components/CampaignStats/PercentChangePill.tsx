@@ -5,7 +5,6 @@ import type {PercentChangePillProps} from './types';
  * @unreleased
  */
 const getPercentageChange = (previousValue: number, currentValue: number) => {
-    console.log({previousValue, currentValue});
     if (previousValue === 0) {
         return currentValue === 0 ? 0 : 100;
     }

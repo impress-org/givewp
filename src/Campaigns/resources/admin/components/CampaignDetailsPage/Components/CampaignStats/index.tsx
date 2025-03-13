@@ -26,6 +26,22 @@ export const filterOptions = [
     {label: __('All-time', 'give'), value: 0, description: __('total for all-time', 'give')},
 ];
 
+const fetchCampaignOverviewStats = async (days: number, setLoading: Function, setStats: Function) => {
+        setLoading(true);
+
+        try {
+            const response = await apiFetch({
+                path: addQueryArgs(`/give-api/v2/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
+            });
+
+            setStats(response as CampaignOverViewStat[]);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching campaign stats:', error);
+            setLoading(false);
+        }
+    };
+
 const CampaignStats = () => {
     const [dayRange, setDayRange] = useState<number>(0);
     /**
@@ -39,26 +55,8 @@ const CampaignStats = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (stats.length === 0) {
-            onDayRangeChange(0);
-        }
-    }, []);
-
-    const onDayRangeChange = async (days: number) => {
-        setDayRange(days);
-        setLoading(true);
-
-        try {
-            const response = await apiFetch({
-                path: addQueryArgs(`/give-api/v2/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
-            });
-
-            setStats(response as CampaignOverViewStat[]);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching campaign stats:', error);
-        }
-    };
+        fetchCampaignOverviewStats(dayRange, setLoading, setStats);
+    }, [dayRange]);
 
     const widgetDescription = filterOptions.find((option) => option.value === dayRange)?.description;
 
@@ -71,7 +69,7 @@ const CampaignStats = () => {
 
     return (
         <>
-            <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={onDayRangeChange} />
+            <DateRangeFilters selected={dayRange} options={filterOptions} onSelect={(value) => setDayRange(value)} />
             <div className={styles.mainGrid}>
                 <StatWidget
                     label={__('Amount raised', 'give')}
