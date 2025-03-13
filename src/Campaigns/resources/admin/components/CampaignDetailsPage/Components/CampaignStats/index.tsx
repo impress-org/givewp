@@ -62,8 +62,8 @@ const CampaignStats = () => {
 
     const widgetDescription = filterOptions.find((option) => option.value === dayRange)?.description;
 
-    const amountRaised = stats.length > 0 ? Number(stats[0].amountRaised) : 0;
-    const previousAmountRaised = stats.length > 1 ? Number(stats[1].amountRaised) : null;
+    const amountRaised = stats.length > 0 ? stats[0].amountRaised : 0;
+    const previousAmountRaised = stats.length > 1 ? stats[1].amountRaised : null;
     const donationCount = stats.length > 0 ? stats[0].donationCount : 0;
     const previousDonationCount = stats.length > 1 ? stats[1].donationCount : null;
     const donorCount  = stats.length > 0 ? stats[0].donorCount : 0;
