@@ -2,11 +2,8 @@
 
 namespace Unit\Donations\Routes;
 
-use DateTime;
-use DateTimeInterface;
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Tests\RestApiTestCase;
@@ -272,17 +269,17 @@ class GetDonationRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testGetDonationShouldReturnExpectedData(): void
+    public function testGetDonationShouldReturnAllModelProperties(): void
     {
          /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false, 'mode' => DonationMode::LIVE()]);
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $newAdminUser = self::factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_pass' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_email' => 'testGetDonationShouldIncludeSensitiveData@test.com',
+                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
             ]
         );
 

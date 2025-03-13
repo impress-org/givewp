@@ -559,16 +559,16 @@ class GetDonationsRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testGetDonationShouldReturnExpectedData(): void
+    public function testGetDonationShouldReturnAllModelProperties(): void
     {
         $donation = $this->createDonation1();
 
         $newAdminUser = self::factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_pass' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_email' => 'testGetDonationShouldIncludeSensitiveData@test.com',
+                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
             ]
         );
 
