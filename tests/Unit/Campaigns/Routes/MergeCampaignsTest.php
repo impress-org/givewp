@@ -4,6 +4,7 @@ namespace Unit\Campaigns\Routes;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Tests\RestApiTestCase;
 use WP_REST_Request;
 
@@ -26,7 +27,8 @@ class MergeCampaignsTest extends RestApiTestCase
         /** @var Campaign $destinationCampaign */
         $destinationCampaign = Campaign::factory()->create();
 
-        $request = new WP_REST_Request('PUT', "/give-api/v2/campaigns/$destinationCampaign->id/merge");
+        $route = '/' . CampaignRoute::NAMESPACE . "/campaigns/$destinationCampaign->id/merge";
+        $request = new WP_REST_Request('PUT', $route);
         $request->set_query_params(
             [
                 'id' => $destinationCampaign->id,
@@ -64,7 +66,8 @@ class MergeCampaignsTest extends RestApiTestCase
         );
         wp_set_current_user($newAdminUser);
 
-        $request = new WP_REST_Request('PUT', "/give-api/v2/campaigns/$destinationCampaign->id/merge");
+        $route = '/' . CampaignRoute::NAMESPACE . "/campaigns/$destinationCampaign->id/merge";
+        $request = new WP_REST_Request('PUT', $route);
         $request->set_query_params(
             [
                 'id' => $destinationCampaign->id,
