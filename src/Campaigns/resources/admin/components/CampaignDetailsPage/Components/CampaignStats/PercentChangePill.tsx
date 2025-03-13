@@ -5,11 +5,17 @@ import type {PercentChangePillProps} from './types';
  * @unreleased
  */
 const getPercentageChange = (previousValue: number, currentValue: number) => {
+    console.log({previousValue, currentValue});
     if (previousValue === 0) {
-        return 0;
+        return currentValue === 0 ? 0 : 100;
     }
 
-    return Math.ceil(100 * ((currentValue - previousValue) / Math.abs(previousValue)));
+    const value = currentValue - previousValue / Math.abs(previousValue) * 100;
+    if (value !== 100) {
+        return value.toFixed(1);
+    }
+
+    return value;
 }
 
 const IconArrowUp = () => (
