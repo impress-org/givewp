@@ -19,6 +19,77 @@ class GetDonationRouteTest extends RestApiTestCase
     use RefreshDatabase;
 
     /**
+     * @unreleased
+     */
+    public function testGetDonationShouldReturnAllModelProperties()
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
+
+        $newAdminUser = self::factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
+                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
+            ]
+        );
+
+        wp_set_current_user($newAdminUser);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+
+        $request->set_query_params(
+            [
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        // TODO: show shape of DateTime objects
+        $createdAtJson = json_encode($data['createdAt']);
+        $updatedAtJson = json_encode($data['updatedAt']);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals([
+            'id' => $donation->id,
+            'amount' => $donation->amount->toArray(),
+            'donorId' => $donation->donorId,
+            'firstName' => $donation->firstName,
+            'lastName' => $donation->lastName,
+            'email' => $donation->email,
+            'formId' => $donation->formId,
+            'levelId' => $donation->levelId,
+            'anonymous' => $donation->anonymous,
+            'company' => $donation->company,
+            'createdAt' => json_decode($createdAtJson, true),
+            'updatedAt' => json_decode($updatedAtJson, true),
+            'status' => $donation->status->getValue(),
+            'gatewayId' => $donation->gatewayId,
+            'campaignId' => $donation->campaignId,
+            'formTitle' => $donation->formTitle,
+            'purchaseKey' => $donation->purchaseKey,
+            'type' => $donation->type->getValue(),
+            'mode' => $donation->mode->getValue(),
+            'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->toArray() : null,
+            'exchangeRate' => $donation->exchangeRate,
+            'honorific' => $donation->honorific,
+            'subscriptionId' => $donation->subscriptionId,
+            'gatewayTransactionId' => $donation->gatewayTransactionId,
+            'comment' => $donation->comment,
+            'donorIp' => $donation->donorIp,
+            'phone' => $donation->phone,
+            'billingAddress' => $donation->billingAddress ? $donation->billingAddress->toArray() : null,
+        ], $data);
+    }
+
+    /**
      * @throws Exception
      */
     public function testGetDonation()
@@ -264,74 +335,5 @@ class GetDonationRouteTest extends RestApiTestCase
         foreach ($anonymousDataRedacted as $property) {
             $this->assertEquals(__('anonymous', 'give'), $data[$property]);
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testGetDonationShouldReturnAllModelProperties(): void
-    {
-         /** @var  Donation $donation */
-        $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
-
-        $newAdminUser = self::factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
-            ]
-        );
-
-        wp_set_current_user($newAdminUser);
-
-        $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
-        $request->set_query_params(
-            [
-                'includeSensitiveData' => true,
-            ]
-        );
-
-        $response = $this->dispatchRequest($request);
-
-        $dataJson = json_encode($response->get_data());
-        $data = json_decode($dataJson, true);
-
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data['createdAt']);
-        $updatedAtJson = json_encode($data['updatedAt']);
-
-        $this->assertEquals([
-            'id' => $donation->id,
-            'amount' => $donation->amount->toArray(),
-            'donorId' => $donation->donorId,
-            'firstName' => $donation->firstName,
-            'lastName' => $donation->lastName,
-            'email' => $donation->email,
-            'formId' => $donation->formId,
-            'levelId' => $donation->levelId,
-            'anonymous' => $donation->anonymous,
-            'company' => $donation->company,
-            'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
-            'status' => $donation->status->getValue(),
-            'gatewayId' => $donation->gatewayId,
-            'campaignId' => $donation->campaignId,
-            'formTitle' => $donation->formTitle,
-            'purchaseKey' => $donation->purchaseKey,
-            'type' => $donation->type->getValue(),
-            'mode' => $donation->mode->getValue(),
-            'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->toArray() : null,
-            'exchangeRate' => $donation->exchangeRate,
-            'honorific' => $donation->honorific,
-            'subscriptionId' => $donation->subscriptionId,
-            'gatewayTransactionId' => $donation->gatewayTransactionId,
-            'comment' => $donation->comment,
-            'donorIp' => $donation->donorIp,
-            'phone' => $donation->phone,
-            'billingAddress' => $donation->billingAddress ? $donation->billingAddress->toArray() : null,
-        ], $data);
     }
 }

@@ -26,6 +26,59 @@ class GetDonorsRouteTest extends RestApiTestCase
 
     /**
      * @unreleased
+     */
+    public function testGetDonorsShouldReturnAllModelProperties()
+    {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorsShouldReturnAllModelProperties',
+                'user_pass' => 'testGetDonorsShouldReturnAllModelProperties',
+                'user_email' => 'testGetDonorsShouldReturnAllModelProperties@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+                'includeSensitiveData' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        // TODO: show shape of DateTime objects
+        $createdAtJson = json_encode($data[0]['createdAt']);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals([
+            'id' => $donor->id,
+            'userId' => $donor->userId,
+            'createdAt' => json_decode($createdAtJson, true),
+            'name' => $donor->name,
+            'firstName' => $donor->firstName,
+            'lastName' => $donor->lastName,
+            'email' => $donor->email,
+            'phone' => $donor->phone,
+            'prefix' => $donor->prefix,
+            'additionalEmails' => $donor->additionalEmails,
+            'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
+            'totalNumberOfDonations' => $donor->totalNumberOfDonations,
+        ], $data[0]);
+    }
+
+    /**
+     * @unreleased
      *
      * @throws Exception
      */
