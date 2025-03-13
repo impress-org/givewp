@@ -174,6 +174,16 @@ class GetDonorRouteTest extends RestApiTestCase
      */
     public function testGetDonorShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
+        $newSubscriberUser = $this->factory()->user->create(
+            [
+                'role' => 'subscriber',
+                'user_login' => 'testGetDonorShouldReturn403ErrorSensitiveData',
+                'user_pass' => 'testGetDonorShouldReturn403ErrorSensitiveData',
+                'user_email' => 'testGetDonorShouldReturn403ErrorSensitiveData@test.com',
+            ]
+        );
+        wp_set_current_user($newSubscriberUser);
+
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
@@ -238,6 +248,16 @@ class GetDonorRouteTest extends RestApiTestCase
      */
     public function testGetDonorShouldReturn403ErrorWhenNotAdminUserIncludeIncludeAnonymousDonor()
     {
+        $newSubscriberUser = $this->factory()->user->create(
+            [
+                'role' => 'subscriber',
+                'user_login' => 'testGetDonorShouldReturn403ErrorAnonymousDonors',
+                'user_pass' => 'testGetDonorShouldReturn403ErrorAnonymousDonors',
+                'user_email' => 'testGetDonorShouldReturn403ErrorAnonymousDonors@test.com',
+            ]
+        );
+        wp_set_current_user($newSubscriberUser);
+
         Donation::query()->delete();
 
         $donor = $this->createAnonymousDonorWithDonation();

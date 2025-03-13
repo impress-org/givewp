@@ -5,6 +5,7 @@ namespace Give\Donations\Controllers;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationRoute;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -15,34 +16,17 @@ class DonationRequestController
 {
     /**
      * @unreleased
+     *
+     * @return WP_Error|WP_REST_Response
      */
-    public function getDonation(WP_REST_Request $request): WP_REST_Response
+    public function getDonation(WP_REST_Request $request)
     {
         $donation = Donation::find($request->get_param('id'));
-
-        if ( ! $donation) {
-            return new WP_REST_Response(
-                ['message' => __('Donation not found', 'give')],
-                404
-            );
-        }
-
-        $isAdmin = current_user_can('manage_options');
-
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
-            return new WP_REST_Response(
-                ['message' => __('You do not have permission to include sensitive data.', 'give')],
-                403
-            );
-        }
-
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-        if ( ! $isAdmin && $donation->anonymous && ! $donationAnonymousMode->isRedacted()) {
-            return new WP_REST_Response(
-                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
-                403
-            );
+
+        if ( ! $donation || ($donation->anonymous && $donationAnonymousMode->isExcluded())) {
+            return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
         return new WP_REST_Response($this->escDonation($donation, $includeSensitiveData, $donationAnonymousMode));
@@ -53,23 +37,10 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
-        $isAdmin = current_user_can('manage_options');
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
-            return new WP_REST_Response(
-                ['message' => __('You do not have permission to include sensitive data.', 'give')],
-                403
-            );
-        }
 
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-        if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
-            return new WP_REST_Response(
-                ['message' => __('You do not have permission to include anonymous donations.', 'give')],
-                403
-            );
-        }
 
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');

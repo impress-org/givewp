@@ -3,7 +3,9 @@
 namespace Give\Donations\Routes;
 
 use Give\Donations\Controllers\DonationRequestController;
+use Give\Donations\ValueObjects\DonationAnonymousMode;
 use Give\Donations\ValueObjects\DonationRoute;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -50,7 +52,9 @@ class RegisterDonationRoutes
                     'callback' => function (WP_REST_Request $request) {
                         return $this->donationRequestController->getDonation($request);
                     },
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return $this->permissionsCheck($request);
+                    },
                 ],
                 'args' => [
                     'id' => [
@@ -91,7 +95,9 @@ class RegisterDonationRoutes
                     'callback' => function (WP_REST_Request $request) {
                         return $this->donationRequestController->getDonations($request);
                     },
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return $this->permissionsCheck($request);
+                    },
                 ],
                 'args' => [
                     'page' => [
@@ -150,5 +156,45 @@ class RegisterDonationRoutes
                 ],
             ]
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function permissionsCheck(WP_REST_Request $request)
+    {
+        $isAdmin = current_user_can('manage_options');
+
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+        if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to include anonymous donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function authorizationStatusCode(): int
+    {
+        if (is_user_logged_in()) {
+            return 403;
+        }
+
+        return 401;
     }
 }
