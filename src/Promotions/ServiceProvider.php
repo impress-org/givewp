@@ -80,7 +80,7 @@ class ServiceProvider implements ServiceProviderContract
         }
 
         if (is_admin()) {
-            (new CampaignsWelcomeBanner)->render();
+            Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
         }
     }
 

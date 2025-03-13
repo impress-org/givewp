@@ -22,6 +22,14 @@ class CampaignsWelcomeBanner
     /**
      * @unreleased
      */
+    public function __invoke()
+    {
+        $this->render();
+    }
+
+    /**
+     * @unreleased
+     */
     public function render()
     {
         AdminNotices::show($this->id, [$this, 'renderCallback'])
