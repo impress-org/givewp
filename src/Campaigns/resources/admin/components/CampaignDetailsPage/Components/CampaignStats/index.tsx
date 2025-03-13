@@ -149,9 +149,9 @@ const GoalProgressWidget = () => {
                 <HeaderText>{__('Goal progress', 'give')}</HeaderText>
                 <HeaderSubText>{__('Show your campaign performance', 'give')}</HeaderSubText>
             </header>
-            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} />
+            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} goalType={campaign.goalType} />
         </div>
-    )
+    );
 }
 
 const DateRangeFilters = ({options, onSelect, selected}) => {

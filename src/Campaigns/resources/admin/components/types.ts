@@ -10,12 +10,18 @@ export type Campaign = {
     image: string;
     primaryColor: string;
     secondaryColor: string;
-    goalType: string;
+    goalType:
+        | 'amount'
+        | 'donations'
+        | 'donors'
+        | 'amountFromSubscriptions'
+        | 'subscriptions'
+        | 'donorsFromSubscriptions';
     goal: number;
     goalStats: {
-        actual: number,
-        percentage: number,
-        goal: number,
+        actual: number;
+        percentage: number;
+        goal: number;
     };
     status: string;
     startDateTime: {
