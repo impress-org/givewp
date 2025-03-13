@@ -104,14 +104,21 @@
                 outline: none;
                 cursor: pointer;
                 margin-left: auto;
-
             }
 
+            .button:hover {
+                background-color: var(--givewp-green-600);
+            }
 
             .link {
                 background-color: var(--givewp-neutral-100);
                 color: var(--givewp-neutral-900);
                 text-decoration: none;
+
+                &:hover {
+                    background-color: var(--givewp-neutral-100);
+
+                }
             }
         }
     }

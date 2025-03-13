@@ -20,7 +20,12 @@ export function StepDetails({stepConfig, handleClick}: StepDetailsProps) {
 
             <div className={styles.actions}>
                 {stepConfig.linkText && (
-                    <a href={''} className={`${styles.button} ${styles.link}`}>
+                    <a
+                        href="https://docs.givewp.com/campaigns-release"
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`${styles.button} ${styles.link}`}
+                    >
                         {stepConfig.linkText}
                     </a>
                 )}
