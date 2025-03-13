@@ -73,7 +73,7 @@ class CampaignPageRepository
                 'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign),
             ]);
 
-            if ( ! $campaignPage->id || is_wp_error($campaignPage->id)) {
+            if ( ! $campaignPage->id) {
                 throw new Exception('Failed creating a campaign page');
             }
 
