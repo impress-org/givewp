@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import Chart from 'react-apexcharts';
-import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
+import React, {useEffect, useState} from "react";
+import Chart from "react-apexcharts";
+import apiFetch from "@wordpress/api-fetch";
+import {addQueryArgs} from "@wordpress/url";
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');

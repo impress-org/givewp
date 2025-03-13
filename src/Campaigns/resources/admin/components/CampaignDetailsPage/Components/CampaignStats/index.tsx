@@ -31,7 +31,7 @@ const fetchCampaignOverviewStats = async (days: number, setLoading: Function, se
 
         try {
             const response = await apiFetch({
-                path: addQueryArgs(`/give-api/v2/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
+                path: addQueryArgs(`/givewp/v3/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
             });
 
             setStats(response as CampaignOverViewStat[]);
