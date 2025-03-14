@@ -113,7 +113,7 @@ class BatchMigrationRunner
     /**
      * @unreleased
      */
-    public function getHook(): string
+    private function getHook(): string
     {
         return 'givewp-batch-' . $this->migration::id();
     }
@@ -121,7 +121,7 @@ class BatchMigrationRunner
     /**
      * @unreleased
      */
-    public function getGroup(): string
+    private function getGroup(): string
     {
         return $this->migration::id();
     }
