@@ -111,7 +111,7 @@ class MigrationsRunner
                             [
                                 'id' => $migrationId,
                                 'description' => sprintf(
-                                    esc_html__('Running DB migration: %s', 'give'),
+                                    esc_html__('GiveWP is running the "%s" migration in the background. You will be notified as soon as it completes.', 'give'),
                                     $migration::title()
                                 ),
                             ]
