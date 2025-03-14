@@ -91,6 +91,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
+ * @since 3.18.0 added fields conditional when donation amount is zero
  * @since 3.13.0 Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
  * @since 3.12.1 updated afterCreatePayment response type to include billing details address
  * @since 3.0.0
@@ -211,6 +212,10 @@ const stripePaymentElementGateway: StripeGateway = {
             currency: donationCurrency.toLowerCase(),
             appearance: appearanceOptions,
         };
+
+        if (donationAmount <= 0) {
+            return <>{__('Donation amount must be greater than zero to proceed.', 'give')}</>;
+        }
 
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>

@@ -116,7 +116,7 @@ final class GiveInsertPaymentData
      *
      * Check legacy code give_get_donation_form_user:1212
      *
-     * @unlreased
+     * @since 2.24.0
      *
      * @return array|bool
      */

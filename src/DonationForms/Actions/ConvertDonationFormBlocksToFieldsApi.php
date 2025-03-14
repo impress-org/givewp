@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Actions;
 
+use Exception;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Rules\AuthenticationRule;
 use Give\DonationForms\Rules\BillingAddressCityRule;
@@ -10,6 +11,7 @@ use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\DonationForms\Rules\PhoneIntlInputRule;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
+use Give\FormBuilder\BlockTypes\TextBlockType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
@@ -129,6 +131,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.21.0 updated to use TextBlockType
+     * @since 3.19.4 add max rule to company field
      * @since 3.9.0 Add "givewp/donor-phone" block
      * @since 3.0.0
      *
@@ -136,6 +140,7 @@ class ConvertDonationFormBlocksToFieldsApi
      * @throws NameCollisionException
      *
      * @throws EmptyNameException
+     * @throws Exception
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex)
     {
@@ -192,17 +197,15 @@ class ConvertDonationFormBlocksToFieldsApi
                 return DonationSummary::make('donation-summary');
 
             case "givewp/company":
-                return Text::make('company');
+                return Text::make('company')->rules('max:255');
 
-            case "givewp/text":
-                return Text::make(
-                    $block->hasAttribute('fieldName') ?
-                        $block->getAttribute('fieldName') :
-                        $block->getShortName() . '-' . $blockIndex
-                )->storeAsDonorMeta(
-                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
-                )->description($block->getAttribute('description'))
-                    ->defaultValue($block->getAttribute('defaultValue'));
+            case TextBlockType::name():
+                $textBlockType = new TextBlockType($block);
+
+                return Text::make($textBlockType->getFieldName($blockIndex))
+                    ->storeAsDonorMeta($textBlockType->storeAsDonorMeta)
+                    ->description($textBlockType->description)
+                    ->defaultValue($textBlockType->defaultValue);
 
             case "givewp/terms-and-conditions":
                 return $this->createNodeFromConsentBlock($block, $blockIndex)
@@ -261,6 +264,8 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 3.17.0 updated honorific field with validation, global options, and user defaults
+     *
      * @since 3.0.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
@@ -293,9 +298,17 @@ class ConvertDonationFormBlocksToFieldsApi
 
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
-                $group->getNodeByName('honorific')
-                    ->label('Title')
-                    ->options(...array_values($block->getAttribute('honorifics')));
+                $options = array_filter(array_values((array)$block->getAttribute('honorifics')));
+                if ($block->hasAttribute('useGlobalSettings') && $block->getAttribute('useGlobalSettings') === true) {
+                    $options = give_get_option('title_prefixes', give_get_default_title_prefixes());
+                }
+
+                if (!empty($options)){
+                    $group->getNodeByName('honorific')
+                        ->label(__('Title', 'give'))
+                        ->options(...$options)
+                        ->rules('max:255', 'in:' . implode(',', $options));
+                    }
             } else {
                 $group->remove('honorific');
             }

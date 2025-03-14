@@ -4,7 +4,7 @@
 
 // Vendor dependencies
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 // Onboarding Wizard app
 import App from './app/index.js';
@@ -13,7 +13,7 @@ import App from './app/index.js';
 import './style.scss';
 
 // Render application
-ReactDOM.render(
-	<App />,
-	document.getElementById( 'onboarding-wizard-app' )
-);
+const element = document.getElementById('onboarding-wizard-app');
+if (element) {
+    createRoot(element).render(<App />);
+}

@@ -35,6 +35,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		// Windows compatibility
 		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
 		$this->assertSame( GIVE_PLUGIN_FILE, $path . 'give.php' );
+    $this->assertSame(GIVE_PLUGIN_FILE, untrailingslashit($path) . DIRECTORY_SEPARATOR . 'give.php');
 	}
 
 	/**

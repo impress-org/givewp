@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // Import styles
 import styles from './style.module.scss';
 
-const Card = ({width, title, children}) => {
+const Card = ({width = 4, title = null, children = null}) => {
     return (
         <div className={styles.card} style={{gridColumn: 'span ' + width}}>
             {title && <div className={styles.title}>{title}</div>}
@@ -19,12 +19,6 @@ Card.propTypes = {
     title: PropTypes.string,
     // Elements to displayed in content area of card (eg: Chart, List)
     children: PropTypes.node.isRequired,
-};
-
-Card.defaultProps = {
-    width: 4,
-    title: null,
-    children: null,
 };
 
 export default Card;

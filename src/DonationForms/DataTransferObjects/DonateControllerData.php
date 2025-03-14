@@ -25,7 +25,7 @@ class DonateControllerData
      */
     public $amount;
     /**
-     * @var bool
+     * @var bool|null
      */
     public $anonymous;
     /**
@@ -49,7 +49,7 @@ class DonateControllerData
      */
     public $email;
     /**
-     * @var string
+     * @var string|null
      */
     public $phone;
     /**
@@ -101,31 +101,31 @@ class DonateControllerData
      */
     public $subscriptionInstallments;
     /**
-     * @var string
+     * @var string|null
      */
     public $country;
     /**
-     * @var string
+     * @var string|null
      */
     public $address1;
     /**
-     * @var string
+     * @var string|null
      */
     public $address2;
     /**
-     * @var string
+     * @var string|null
      */
     public $city;
     /**
-     * @var string
+     * @var string|null
      */
     public $state;
     /**
-     * @var string
+     * @var string|null
      */
     public $zip;
     /**
-     * @var string
+     * @var string|null
      */
     public $comment;
 
@@ -187,10 +187,17 @@ class DonateControllerData
     }
 
     /**
+     * @since 3.16.0 Added "givewp_donation_confirmation_page_redirect_enabled" filter
      * @since 3.0.0
      */
     public function getSuccessUrl(Donation $donation): string
     {
+        $form = $this->getDonationForm();
+
+        if (apply_filters('givewp_donation_confirmation_page_redirect_enabled', $form->settings->enableReceiptConfirmationPage, $donation->formId)) {
+            return $this->getDonationConfirmationPageFromSettings($donation);
+        }
+
         return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
@@ -220,6 +227,22 @@ class DonateControllerData
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
         return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->embedId);
+    }
+
+    /**
+     * @since 3.16.0
+     */
+    public function getDonationConfirmationPageFromSettings(Donation $donation): string
+    {
+        $settings = give_get_settings();
+
+        $page = isset($settings['success_page'])
+            ? get_permalink(absint($settings['success_page']))
+            : get_bloginfo('url');
+
+        $page = apply_filters('givewp_donation_confirmation_page_redirect_permalink', $page, $donation->formId);
+
+        return esc_url_raw(add_query_arg(['receipt-id' => $donation->purchaseKey], $page));
     }
 
     /**

@@ -23,6 +23,7 @@ class DonateFormRouteDataTest extends TestCase
 {
 
     /**
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedData()
@@ -37,6 +38,8 @@ class DonateFormRouteDataTest extends TestCase
         add_filter('give_default_gateway', static function () {
             return TestGateway::id();
         });
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
 
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',
@@ -96,6 +99,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedDataWithSubscriptionData()
@@ -110,6 +114,8 @@ class DonateFormRouteDataTest extends TestCase
         add_filter('give_default_gateway', static function () {
             return TestGateway::id();
         });
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
 
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',

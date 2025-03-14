@@ -3149,7 +3149,7 @@ const gravatar = require('gravatar');
                                 orderedOptions.push({
                                     text: option.textContent,
                                     value: option.value,
-                                    selected: false,
+                                    selected: option.selected,
                                 });
                             }
                         });

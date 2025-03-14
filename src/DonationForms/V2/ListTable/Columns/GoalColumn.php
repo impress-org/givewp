@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\DonationQuery;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -36,7 +35,8 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @since 3.14.0 Use the 'give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
+     * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content
+     * @since 3.14.0 Use the "give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,10 +48,6 @@ class GoalColumn extends ModelColumn
         if ( ! $model->goalOption) {
             return __('No Goal Set', 'give');
         }
-
-        add_filter('give_get_form_earnings_stats', function ($earnings, $donationFormId) {
-            return (new DonationQuery())->form($donationFormId)->sumAmount();
-        }, 10, 2);
 
         $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',
@@ -84,7 +80,8 @@ class GoalColumn extends ModelColumn
                 $goal['goal']
             ),
             sprintf(
-                ($goal['progress'] >= 100 ? '<span class="goalProgress--achieved"><img src="%1$s" alt="%2$s" />%3$s</span>' : ''),
+                '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
+                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goal['progress'] >= 100 ? 1 : 0),
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

@@ -26,6 +26,7 @@ class DonateFormDataTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      *
      * @return void
@@ -43,6 +44,8 @@ class DonateFormDataTest extends TestCase
         add_filter('give_default_gateway', static function () {
             return TestGateway::id();
         });
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
 
         $data = (object)[
             'gatewayId' => TestGateway::id(),

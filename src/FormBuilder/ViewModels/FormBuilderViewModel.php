@@ -81,7 +81,7 @@ class FormBuilderViewModel
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
             'goalProgressOptions' => $this->getGoalProgressOptions(),
-            'nameTitlePrefixes' => give_get_option('title_prefixes'),
+            'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
             'intlTelInputSettings' => IntlTelInput::getSettings(),
         ];

@@ -72,7 +72,7 @@ class FormRepository
     }
 
     /**
-     * @unreleased Create the default v3 form.
+     * @since 3.15.0 Create the default v3 form.
      * @since 2.8.0
      * @return int Form ID
      *

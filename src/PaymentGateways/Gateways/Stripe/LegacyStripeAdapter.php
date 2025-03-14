@@ -86,16 +86,16 @@ class LegacyStripeAdapter
                 $account = 'connect' === $accountDetail['type'] ?
                     "{$accountDetail['account_name']} ({$accountId})" :
                     give_stripe_convert_slug_to_title($accountId);
-                ?>
+?>
                 <div class="give-donation-stripe-account-used give-admin-box-inside">
                     <p>
                         <strong><?php
-                            esc_html_e('Stripe Account:', 'give'); ?></strong><br/>
+                                esc_html_e('Stripe Account:', 'give'); ?></strong><br />
                         <?php
                         echo $account; ?>
                     </p>
                 </div>
-                <?php
+<?php
             }
         });
 

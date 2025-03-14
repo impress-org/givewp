@@ -26,6 +26,8 @@ declare global {
             isMigrated: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
+            isOptionBasedFormEditorEnabled: boolean;
+            locale: string;
         };
 
         GiveNextGen?: {
@@ -257,14 +259,19 @@ export default function DonationFormsListTable() {
                 columnFilters={columnFilters}
                 banner={Onboarding}
             >
-                <button
-                    className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
-                    onClick={showLegacyDonationForms}
-                >
-                    {__('Switch to Legacy View')}
-                </button>
+                {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
+                    <button
+                        className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}
+                        onClick={showLegacyDonationForms}
+                    >
+                        {__('Switch to Legacy View', 'give')}
+                    </button>
+                )}
                 <a
-                    href={'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                    href={
+                        'edit.php?post_type=give_forms&page=givewp-form-builder&locale=' +
+                        window.GiveDonationForms.locale
+                    }
                     className={`button button-primary ${styles.button}`}
                 >
                     {__('Add Form', 'give')}

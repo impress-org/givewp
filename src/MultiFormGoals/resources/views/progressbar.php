@@ -2,6 +2,9 @@
 /**
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
+ *
+ * @since 3.19.1 Format the donation count
+ *
  * @var Give\MultiFormGoals\ProgressBar\Model $this
  */
 
@@ -32,7 +35,7 @@ $uniqueId = uniqid('', true);
         </div>
         <div part="stat-count" class="give-progress-bar-block__stat">
             <div part="stat-count-value"><?php
-                echo esc_html($this->getDonationCount()); ?></div>
+                echo esc_html($this->getFormattedDonationCount()); ?></div>
             <div part="stat-count-label"><?php
                 echo _n('donation', 'donations', $this->getDonationCount(), 'give'); ?></div>
         </div>

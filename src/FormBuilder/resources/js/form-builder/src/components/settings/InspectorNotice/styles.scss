@@ -1,0 +1,36 @@
+.givewp-inspector-notice {
+    &__container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 2px;
+        background-color: #f2f2f2;
+        color: #0e0e0e;
+        font-size: 12px;
+        margin: var(--givewp-spacing-4)
+    }
+
+    &__title {
+        font-weight: 600;
+    }
+
+    &__closeIcon {
+        cursor: pointer;
+        height: 16px;
+        width: 16px;
+        position: absolute;
+        right: 12px;
+        top: 12px;
+    }
+
+    &__externalIcon {
+        height: 18px;
+        width: 18px;
+        fill: #2271b1;
+        float: left;
+        margin-top: 2px;
+        margin-right: 8px;
+    }
+}

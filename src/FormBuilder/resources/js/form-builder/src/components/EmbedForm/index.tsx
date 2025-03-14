@@ -86,8 +86,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }, []);
 
     const postOptions = [
-        {label: 'Page', value: 'page'},
-        {label: 'Post', value: 'post'},
+        {label: __('Page', 'give'), value: 'page'},
+        {label: __('Post', 'give'), value: 'post'},
     ];
 
     const displayStyles = [

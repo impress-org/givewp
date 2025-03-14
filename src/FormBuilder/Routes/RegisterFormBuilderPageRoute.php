@@ -58,6 +58,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -74,6 +75,9 @@ class RegisterFormBuilderPageRoute
         if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        $locale = give_clean($_GET['locale']) ?? '';
+        Language::switchToLocale($locale);
 
         wp_enqueue_style(
             '@givewp/form-builder/registrars',
@@ -155,6 +159,14 @@ class RegisterFormBuilderPageRoute
         wp_localize_script('@givewp/form-builder/script', 'goalNotificationData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_goal_hide_notice'),
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-goal-notice-dismissed', true),
+        ]);
+
+        /**
+         * @since 3.16.2
+         */
+        wp_localize_script('@givewp/form-builder/script', 'additionalPaymentGatewaysNotificationData', [
+            'actionUrl' => admin_url('admin-ajax.php?action=givewp_additional_payment_gateways_hide_notice'),
+            'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
         ]);
 
         View::render('FormBuilder.admin-form-builder');

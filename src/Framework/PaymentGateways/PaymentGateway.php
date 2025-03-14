@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
@@ -136,6 +137,52 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function cancelSubscription(Subscription $subscription)
     {
         $this->subscriptionModule->cancelSubscription($subscription);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @since 3.17.0
+     */
+    public function pauseSubscription(Subscription $subscription, array $data = []): void
+    {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
+            $this->subscriptionModule->pauseSubscription($subscription, $data);
+
+            return;
+        }
+
+        throw new Exception('Gateway does not support pausing the subscription.');
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @since 3.17.0
+     */
+    public function resumeSubscription(Subscription $subscription): void
+    {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
+            $this->subscriptionModule->resumeSubscription($subscription);
+
+            return;
+        }
+
+        throw new Exception('Gateway does not support resuming the subscription.');
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @since 3.17.0
+     */
+    public function canPauseSubscription(): bool
+    {
+        if ($this->subscriptionModule instanceof SubscriptionPausable) {
+            return $this->subscriptionModule->canPauseSubscription();
+        }
+
+        return false;
     }
 
     /**

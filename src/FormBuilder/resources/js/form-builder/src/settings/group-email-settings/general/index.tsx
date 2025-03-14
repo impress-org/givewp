@@ -36,11 +36,11 @@ export default function EmailGeneralSettings({ settings, setSettings }) {
                 >
                     <PanelRow>
                         <SelectControl
-                            label={__('Email Template', 'givewp')}
-                            help={__('Choose your template from the available registered template types', 'givewp')}
+                            label={__('Email Template', 'give')}
+                            help={__('Choose your template from the available registered template types', 'give')}
                             options={[
-                                {label: __('Default template', 'givewp'), value: 'default'},
-                                {label: __('No template, plain text only', 'givewp'), value: 'none'},
+                                {label: __('Default template', 'give'), value: 'default'},
+                                {label: __('No template, plain text only', 'give'), value: 'none'},
                             ]}
                             value={emailTemplate}
                             onChange={(emailTemplate) => setSettings({ emailTemplate })}
@@ -48,10 +48,10 @@ export default function EmailGeneralSettings({ settings, setSettings }) {
                     </PanelRow>
                     <PanelRow>
                         <TextControl
-                            label={__('From Name', 'givewp')}
+                            label={__('From Name', 'give')}
                             help={__(
                                 'The name which appears in the "From" field in all GiveWP donation emails.',
-                                'givewp'
+                                'give'
                             )}
                             value={emailFromName}
                             onChange={(emailFromName) => setSettings({ emailFromName })}
@@ -59,10 +59,10 @@ export default function EmailGeneralSettings({ settings, setSettings }) {
                     </PanelRow>
                     <PanelRow>
                         <TextControl
-                            label={__('From Email', 'givewp')}
+                            label={__('From Email', 'give')}
                             help={__(
                                 'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.',
-                                'givewp'
+                                'give'
                             )}
                             value={emailFromEmail}
                             onChange={(emailFromEmail) => setSettings({ emailFromEmail })}

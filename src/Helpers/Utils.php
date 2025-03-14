@@ -111,4 +111,125 @@ class Utils
 
         return is_plugin_active($plugin);
     }
+
+    /**
+     * @since 3.17.2
+     */
+    public static function removeBackslashes($data)
+    {
+        /**
+         * The stripslashes_deep() method removes only the first backslash occurrence from
+         * a given string, so we are using the ltrim() method to make sure we are removing
+         * all other occurrences. We need to remove these backslashes from the beginner of
+         * the input because attackers can use them to bypass the is_serialized() check.
+         */
+        $data = stripslashes_deep($data);
+        $data = is_string($data) ? ltrim($data, '\\') : $data;
+
+        return $data;
+    }
+
+    /**
+     * Decode strings recursively to prevent double (or more) encoded strings
+     *
+     * @since 3.19.4
+     */
+    public static function recursiveUrlDecode(string $data): string
+    {
+        $decoded = urldecode($data);
+
+        return $decoded === $data ? $data : self::recursiveUrlDecode($decoded);
+    }
+
+    /**
+     * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
+     *
+     * @since 3.19.4 Decode the string and remove any character not allowed in a serialized string
+     * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
+     * @since 3.17.2
+     */
+    public static function containsSerializedDataRegex($data): bool
+    {
+        if ( ! is_string($data)) {
+            return false;
+        }
+
+        $data = self::recursiveUrlDecode($data);
+
+        /**
+         * This regular expression removes any special character that is not:
+         * a Letter (a-zA-Z), number (0-9), or any of the characters {}, :, ;, ", ', ., [, ], (, ), ,
+         */
+        $data = preg_replace('/[^a-zA-Z0-9:{};"\'.\[\](),]/', '', $data);
+
+        $pattern = '/
+        (a:\d+:\{.*}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
+        (O:\d+:"[^"]+":\{.*}) | # Matches objects (e.g: O:8:"stdClass":1:{s:4:"name";s:5:"James";})
+        (s:\d+:"[^"]*";) |       # Matches strings (e.g: s:5:"hello";)
+        (i:\d+;) |               # Matches integers (e.g: i:42;)
+        (b:[01];) |              # Matches booleans (e.g: b:1; or b:0;)
+        (d:\d+(\.\d+)?;) |       # Matches floats (e.g: d:3.14;)
+        (N;)                     # Matches NULL (e.g: N;)
+        /x';
+
+        return preg_match($pattern, $data) === 1;
+    }
+
+    /**
+     * @since 3.17.2
+     */
+    public static function isSerialized($data): bool
+    {
+        $data = self::removeBackslashes($data);
+
+        if (is_serialized($data) || self::containsSerializedDataRegex($data)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @since 3.17.2
+     */
+    public static function safeUnserialize($data)
+    {
+        $data = self::removeBackslashes($data);
+
+        /**
+         * We are setting the allowed_classes to false as a default to
+         * prevent the injection of objects that can run unwished code.
+         *
+         * From PHP docs:
+         * allowed_classes - Either an array of class names which should be accepted, false to accept no classes, or
+         * true to accept all classes. If this option is defined and unserialize() encounters an object of a class
+         * that isn't to be accepted, then the object will be instantiated as __PHP_Incomplete_Class instead. Omitting
+         * this option is the same as defining it as true: PHP will attempt to instantiate objects of any class.
+         */
+        $unserializedData = @unserialize(trim($data), ['allowed_classes' => false]);
+
+        /*
+         * In case the passed string is not unserializeable, false is returned.
+         *
+         * @see https://www.php.net/manual/en/function.unserialize.php
+         */
+
+        return ! $unserializedData && ! self::containsSerializedDataRegex($data) ? $data : $unserializedData;
+    }
+
+    /**
+     * Avoid insecure usage of `unserialize` when the data could be submitted by the user.
+     *
+     * @since 3.16.1
+     *
+     * @param string $data Data that might be unserialized.
+     *
+     * @return mixed Unserialized data can be any type.
+     */
+    public static function maybeSafeUnserialize($data)
+    {
+        return self::isSerialized($data)
+            ? self::safeUnserialize($data)
+            : $data;
+    }
 }

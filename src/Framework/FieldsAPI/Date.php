@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unlreased add date format attribute
+ * @since 3.0.0 add date format attribute
  * @since 2.32.0 added description
  * @since 2.12.0
  */

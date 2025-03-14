@@ -1,5 +1,6 @@
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 import Migrations from './Migrations';
 
-ReactDOM.render(<Migrations />, document.getElementById('give_migrations_table_app'));
+const root = createRoot(document.getElementById('give_migrations_table_app'));
+root.render(<Migrations />);

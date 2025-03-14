@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unlreased add phone format attribute
+ * @since 3.9.0 add phone format attribute
  * @since 2.32.0 added description
  * @since 2.12.0
  * @since 2.14.0 add min/max length validation

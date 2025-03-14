@@ -38,6 +38,17 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                                 <img class='give-donor-container__image__anonymous' src='$imageUrl' alt='$alt' style='height: {$avatarSize}px;'/>
                             </div>
                         ";
+                } elseif (($avatar = $donor->get_meta('_give_donor_avatar_id', true))) {
+                    // Donor has an avatar
+                    $imageUrl = wp_get_attachment_image_url($avatar, 'thumbnail');
+                    $alt = __('Donor Avatar', 'give');
+
+                    echo "
+                            <div class='give-donor-container__image' >
+                                <img src='$imageUrl' alt='$alt' style='height: {$avatarSize}px;'/>
+                            </div>
+                        ";
+
                 } elseif ($donation['_give_payment_donor_email'] && give_validate_gravatar(
                         $donation['_give_payment_donor_email']
                     )) {

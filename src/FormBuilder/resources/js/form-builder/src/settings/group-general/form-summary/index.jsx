@@ -28,7 +28,7 @@ const FormSummarySettings = ({settings, setSettings}) => {
         <>
             <PanelRow>
                 <TextControl
-                    label={__('Title')}
+                    label={__('Title', 'give')}
                     value={formTitle}
                     onChange={(formTitle) => {
                         !isPublished && setSettings({pageSlug: cleanForSlug(formTitle)});
@@ -59,7 +59,7 @@ const FormSummarySettings = ({settings, setSettings}) => {
             {isExcerptEnabled && (
                 <PanelRow>
                     <TextareaControl
-                        label={'Excerpt'}
+                        label={__('Excerpt', 'give')}
                         help={__(
                             'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.',
                             'give'

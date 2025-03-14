@@ -7,7 +7,7 @@ import styles from './style.module.scss';
 
 import {__} from '@wordpress/i18n';
 
-const Table = ({title, columns, data, columnFilters, stripped, isLoading, isSorting, ...rest}) => {
+const Table = ({title = null, columns = [], data = [], columnFilters = {}, stripped = false, isLoading = false, isSorting, ...rest}) => {
     const [state, setState] = useState({});
     const [cachedData, setCachedData] = useState([]);
 
@@ -159,15 +159,6 @@ Table.propTypes = {
     stripped: PropTypes.bool,
     // Show spinner if data is loading
     isLoading: PropTypes.bool,
-};
-
-Table.defaultProps = {
-    title: null,
-    columns: [],
-    data: [],
-    columnFilters: {},
-    stripped: true,
-    isLoading: false,
 };
 
 export default Table;

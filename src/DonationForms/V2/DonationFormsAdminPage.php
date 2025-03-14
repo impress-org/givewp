@@ -3,7 +3,9 @@
 namespace Give\DonationForms\V2;
 
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 use WP_Post;
 use WP_REST_Request;
 
@@ -89,6 +91,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {
@@ -105,6 +109,8 @@ class DonationFormsAdminPage
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
+            'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'locale' => Language::getLocale(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -339,18 +345,13 @@ class DonationFormsAdminPage
             'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
             'Constant Contact' => class_exists('Give_Constant_Contact'),
             'MailChimp' => class_exists('Give_MailChimp'),
-            //            'Manual Donations' => class_exists('Give_Manual_Donations'),
+            'Manual Donations' => class_exists('Give_Manual_Donations'),
             'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
             'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
             'Gift Aid' => class_exists('Give_Gift_Aid'),
-            //            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
-            //            'Donation Block for Stripe' => defined('DONATION_BLOCK_FILE'),
+            'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
             'Double the Donation' => defined('GIVE_DTD_NAME'),
-            //            'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
-            //            'Receipt Attachments' => defined('GIVERA_VERSION'),
             'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
-            //            'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
-            //            'Form Countdown' => class_exists('Give_Form_Countdown'),
             'ConvertKit' => defined('GIVE_CONVERTKIT_VERSION'),
             'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
             'Razorpay' => class_exists('Give_Razorpay_Gateway'),

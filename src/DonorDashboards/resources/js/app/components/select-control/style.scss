@@ -1,5 +1,7 @@
 /* stylelint-disable  function-url-quotes, selector-class-pattern */
 .give-donor-dashboard-select-control {
+    display: flex;
+    flex-direction: column;
     margin-top: 10px;
 
     .give-donor-dashboard-select-control__label {

@@ -44,6 +44,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @since 3.0.0
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

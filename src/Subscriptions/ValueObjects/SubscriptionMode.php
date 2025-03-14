@@ -2,7 +2,7 @@
 
 namespace Give\Subscriptions\ValueObjects;
 
-use MyCLabs\Enum\Enum;
+use Give\Framework\Support\ValueObjects\Enum;
 
 /**
  * @since 2.19.6

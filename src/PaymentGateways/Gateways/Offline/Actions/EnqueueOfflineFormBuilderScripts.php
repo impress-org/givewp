@@ -9,6 +9,8 @@ class EnqueueOfflineFormBuilderScripts
     /**
      * Enqueues the Stripe scripts and styles for the Form Builder.
      *
+     * @since 3.16.2 On the "offlineEnabled" option check if the offline gateway is enabled  for v3 forms instead of v2 forms
+     *
      * @return void
      */
     public function __invoke()
@@ -34,7 +36,7 @@ class EnqueueOfflineFormBuilderScripts
             'givewp-offline-gateway-form-builder',
             'window.giveOfflineGatewaySettings = ' . wp_json_encode(
                 [
-                    'offlineEnabled' => give_is_gateway_active(OfflineGateway::id()),
+                    'offlineEnabled' => give_is_gateway_active(OfflineGateway::id(), 3),
                     'offlineSettingsUrl' => admin_url(
                         'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=offline-donations'
                     ),

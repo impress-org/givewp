@@ -2,6 +2,7 @@ import {FormStatus} from '@givewp/form-builder/types/formStatus';
 import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
 
 /**
+ * @since 3.16.0 Added enableReceiptConfirmationPage
  * @since 3.7.0 Added formExcerpt
  * @since 3.0.0
  */
@@ -56,4 +57,5 @@ export type FormSettings = {
     designSettingsImageOpacity: string;
     designSettingsImageColor: string;
     formExcerpt: string;
+    enableReceiptConfirmationPage: boolean;
 };

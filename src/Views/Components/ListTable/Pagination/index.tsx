@@ -4,14 +4,16 @@ import styles from './Pagination.module.scss';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 
-const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage, singleName, pluralName}) => {
+const Pagination = ({currentPage = 1, totalPages = 0, totalItems = -1, disabled = false, setPage = (n) => {}, singleName, pluralName}) => {
     const [pageInput, setPageInput] = useState(1);
 
     useEffect(() => {
         setPageInput(currentPage);
     }, [currentPage]);
 
+    // @ts-ignore
     const nextPage = parseInt(currentPage) + 1;
+    // @ts-ignore
     const previousPage = parseInt(currentPage) - 1;
 
     return (
@@ -42,6 +44,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                         aria-label={__('previous page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
+                                // @ts-ignore
                                 setPage(parseInt(currentPage) - 1);
                             }
                         }}
@@ -80,6 +83,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                         aria-label={__('next page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
+                                // @ts-ignore
                                 setPage(parseInt(currentPage) + 1);
                             }
                         }}
@@ -115,13 +119,6 @@ Pagination.propTypes = {
     setPage: PropTypes.func.isRequired,
     // Is pagination disabled
     disabled: PropTypes.bool.isRequired,
-};
-
-Pagination.defaultProps = {
-    currentPage: 1,
-    totalPages: 0,
-    setPage: () => {},
-    disabled: false,
 };
 
 export default Pagination;

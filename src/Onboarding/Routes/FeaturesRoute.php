@@ -91,7 +91,7 @@ class FeaturesRoute implements RestRoute
     }
 
     /**
-     * @unreleased Handle v3 form features.
+     * @since 3.15.0 Handle v3 form features.
      * @since 2.8.0
      *
      * @param WP_REST_Request $request
@@ -118,7 +118,7 @@ class FeaturesRoute implements RestRoute
     }
 
     /**
-     * @unreleased Update the v3 form features based on Wizard settings.
+     * @since 3.15.0 Update the v3 form features based on Wizard settings.
      *
      * @param $formID
      * @param $features

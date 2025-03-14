@@ -11,7 +11,7 @@ const {DateTimePicker, BaseControl, Button, Dropdown} = wp.components;
 const {__experimentalGetSettings, date} = wp.date;
 import { __ } from '@wordpress/i18n'
 
-const DateTimeControl = ({name, label, help, className, value, onChange}) => {
+const DateTimeControl = ({name, label, help, className, value, onChange = null}) => {
     const instanceId = useInstanceId(DateTimeControl);
     const id = `give-date-time-control-${name}-${instanceId}`;
     const settings = __experimentalGetSettings(); // eslint-disable-line no-restricted-syntax
@@ -57,10 +57,6 @@ DateTimeControl.propTypes = {
     name: PropTypes.string.isRequired,
     help: PropTypes.string,
     className: PropTypes.string,
-};
-
-DateTimeControl.defaultProps = {
-    onChange: null,
 };
 
 export default DateTimeControl;

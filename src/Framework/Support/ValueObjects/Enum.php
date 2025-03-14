@@ -6,9 +6,9 @@ use BadMethodCallException;
 use Give\Framework\Support\Facades\Str;
 
 /**
- * @method public getKeyAsCamelCase()
+ * @since 2.10.0
  */
-abstract class Enum extends \MyCLabs\Enum\Enum
+abstract class Enum extends BaseEnum
 {
     /**
      * @since 2.20.0
@@ -37,11 +37,9 @@ abstract class Enum extends \MyCLabs\Enum\Enum
     }
 
     /**
-     * @param ...$enums
-     *
-     * @return bool
+     * @since 2.20.0
      */
-    public function isOneOf(...$enums) {
+    public function isOneOf(Enum...$enums): bool {
         foreach($enums as $enum) {
             if ( $this->equals($enum) ) {
                 return true;
@@ -52,19 +50,17 @@ abstract class Enum extends \MyCLabs\Enum\Enum
     }
 
     /**
-     * @return string
+     * @since 2.20.0
      */
-    public function getKeyAsCamelCase()
+    public function getKeyAsCamelCase(): string
     {
         return Str::camel($this->getKey());
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * @since 2.20.0
      */
-    protected static function hasConstant($name)
+    protected static function hasConstant(string $name): bool
     {
         return array_key_exists($name, static::toArray());
     }

@@ -1,9 +1,13 @@
 import {__} from '@wordpress/i18n';
-import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import MediaLibrary from '@givewp/form-builder/components/settings/MediaLibrary';
 import {upload} from '@wordpress/icons';
+import {ClassicEditor} from '@givewp/form-builder-library';
 
+/**
+ * @since 3.16.2 Replace TextareaControl component with ClassicEditor component on the description option
+ */
 export default function Header({dispatch, publishSettings}) {
     const {
         settings: {
@@ -99,10 +103,12 @@ export default function Header({dispatch, publishSettings}) {
                     )}
                     {showDescription && (
                         <PanelRow>
-                            <TextareaControl
+                            <ClassicEditor
+                                key={'givewp-header-description'}
+                                id={'givewp-header-description'}
                                 label={__('Description', 'give')}
-                                value={description}
-                                onChange={(description) => {
+                                content={description}
+                                setContent={(description) => {
                                     dispatch(
                                         setFormSettings({
                                             description,
@@ -112,6 +118,7 @@ export default function Header({dispatch, publishSettings}) {
                                         description,
                                     });
                                 }}
+                                rows={10}
                             />
                         </PanelRow>
                     )}

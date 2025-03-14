@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Helpers\Utils;
+
 if ( ! defined('ABSPATH')) {
     exit;
 }
@@ -733,16 +735,22 @@ function give_get_cache_key($action, $query_args)
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
+ * @since 3.19.3 Don't unserialize data by default and return an empty string when data is serialized and $allow_serialized_data is false
+ * @since 3.17.2 Safe unserialize data by default
  * @since  1.8
  *
  * @param string|array $var
  *
  * @return string|array
  */
-function give_clean($var)
+function give_clean($var, $allow_serialized_data = false)
 {
     if (is_array($var)) {
         return array_map('give_clean', $var);
+    }
+
+    if ( Utils::isSerialized($var)) {
+        $var = $allow_serialized_data ? Utils::safeUnserialize($var) : '';
     }
 
     return is_scalar($var) ? sanitize_text_field(wp_unslash($var)) : $var;

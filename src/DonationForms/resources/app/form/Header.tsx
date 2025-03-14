@@ -27,7 +27,7 @@ export default function Header({form}: {form: DonationForm}) {
     return (
         <DonationFormErrorBoundary>
             <HeaderTemplate
-                isMultiStep={form.design.isMultiStep}
+                isMultiStep={form.design?.isMultiStep}
                 HeaderImage={() =>
                     form.settings?.designSettingsImageUrl && (
                         <HeaderImageTemplate

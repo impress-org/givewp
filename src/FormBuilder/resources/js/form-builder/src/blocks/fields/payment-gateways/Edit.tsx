@@ -2,6 +2,10 @@ import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {applyFilters} from '@wordpress/hooks';
+import {InspectorControls} from "@wordpress/block-editor";
+import {__} from "@wordpress/i18n";
+import {Icon} from '@wordpress/components';
+import {external} from "@wordpress/icons";
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -62,6 +66,20 @@ export default function Edit(props: BlockEditProps<any>) {
                         />
                     ))}
             </div>
+            <InspectorControls>
+                <div style={{
+                    marginTop: '-8px', // Adjust spacing between block card and link.
+                    borderBottom: '1px solid #e0e0e0', // Emulate the border between block card and inspector controls.
+                    padding: '0 0 var(--givewp-spacing-4) var(--givewp-spacing-13)' // Align with block card padding.
+                }}>
+                    <a
+                        href={'/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=gateways-settings&group=v3'}
+                        target="_blank">
+                        <Icon style={{marginRight: '4px'}} icon={external} className='givewp-inspector-notice__externalIcon' />
+                        {__('Enable more payment gateways', 'give')}
+                    </a>
+                </div>
+            </InspectorControls>
         </div>
     );
 }

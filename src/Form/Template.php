@@ -9,7 +9,9 @@
 
 namespace Give\Form;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Form\Template\Options;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Receipt\DonationReceipt;
 
@@ -323,6 +325,10 @@ abstract class Template
      */
     public function getFormFeaturedImage($formId)
     {
+        if (Utils::isV3Form($formId)) {
+            return DonationForm::find($formId)->settings->designSettingsImageUrl;
+        }
+
         return get_the_post_thumbnail_url($formId, 'full');
     }
 

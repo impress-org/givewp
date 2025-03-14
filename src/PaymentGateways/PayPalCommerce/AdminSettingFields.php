@@ -13,6 +13,7 @@ use Give_License;
  * Class AdminSettingFields
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @since 3.16.0 added nonce to disconnect button
  * @since 2.9.0
  */
 class AdminSettingFields
@@ -166,7 +167,7 @@ class AdminSettingFields
                     </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>"
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.png'; ?>"
                          width="316"
                          height="84"
                          alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
@@ -431,9 +432,7 @@ class AdminSettingFields
                                         <?php esc_html_e('Click to get started!', 'give'); ?>
                                     </span>
                                     <?php // We are using one PayPal button to handle both sandbox and live mode connection.?>
-                                    <a class="give-hidden" target="PPFrame"
-                                       data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
-                                       data-paypal-button="true">
+                                    <a class="give-hidden" target="PPFrame" data-paypal-button="true">
                                         <?php esc_html_e('Sign up for PayPal', 'give'); ?>
                                     </a>
                                 <?php endif; ?>
@@ -472,7 +471,9 @@ class AdminSettingFields
                                 <span class="actions">
                                     <button
                                         class="js-give-paypal-disconnect-paypal-account"
-                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                        data-mode="<?php echo $paypalSetting->mode; ?>"
+                                        data-nonce="<?php echo esc_attr(wp_create_nonce('give_paypal_commerce_disconnect_account')); ?>"
+                                    >
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>

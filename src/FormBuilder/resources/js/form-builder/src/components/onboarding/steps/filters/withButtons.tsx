@@ -1,31 +1,33 @@
+import {__} from '@wordpress/i18n';
+
 const withButtons = (steps) => {
     const previous = {
         classes: 'shepherd-button-secondary',
-        text: 'Previous',
+        text: __('Previous', 'give'),
         type: 'back',
     };
 
     const next = {
         classes: 'shepherd-button-primary',
-        text: 'Next',
+        text: __('Next', 'give'),
         type: 'next',
     };
 
     const nextVariant = {
         classes: 'shepherd-button-primary',
-        text: 'Got it',
+        text: __('Got it', 'give'),
         type: 'next',
     };
 
     const complete = {
         classes: 'shepherd-button-primary',
-        text: 'Got it',
+        text: __('Got it', 'give'),
         type: 'complete',
     };
 
     const okay = {
         classes: 'shepherd-button-primary shepherd-button-primary--tools',
-        text: 'Okay',
+        text: __('Okay', 'give'),
         type: 'complete',
     };
 

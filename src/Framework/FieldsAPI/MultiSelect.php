@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 use InvalidArgumentException;
 
 /**
- * @unlreased
+ * @since 3.0.0
  */
 class MultiSelect extends Field
 {

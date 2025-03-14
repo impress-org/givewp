@@ -1,17 +1,19 @@
 import {__} from '@wordpress/i18n';
-import {PanelRow} from '@wordpress/components';
+import {PanelRow, ToggleControl} from '@wordpress/components';
 import {SettingsSection} from '@givewp/form-builder-library';
 import DonationConfirmation from './donation-confirmation';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import TemplateTags from '@givewp/form-builder/components/settings/TemplateTags';
+import {createInterpolateElement} from '@wordpress/element';
 
 const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 /**
+ * @since 3.16.0 Added setting for enableReceiptConfirmationPage
  * @since 3.3.0
  */
 export default function FormDonationConfirmationSettingsGroup({settings, setSettings}) {
-    const {receiptHeading, receiptDescription} = settings;
+    const {receiptHeading, receiptDescription, enableReceiptConfirmationPage} = settings;
 
     return (
         <>
@@ -44,6 +46,21 @@ export default function FormDonationConfirmationSettingsGroup({settings, setSett
             >
                 <PanelRow>
                     <TemplateTags templateTags={donationConfirmationTemplateTags} />
+                </PanelRow>
+            </SettingsSection>
+            <SettingsSection title={__('Confirmation Page Redirect', 'give')}>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Enable redirect', 'give')}
+                        checked={enableReceiptConfirmationPage}
+                        onChange={() => setSettings({enableReceiptConfirmationPage: !enableReceiptConfirmationPage})}
+                        help={createInterpolateElement(
+                          __( 'When enabled, donors are redirected to a separate page to view their donation confirmation rather than viewing it on the donation form page. This can be useful for event and conversion tracking tools like Google Analytics. <a>Learn how to customize the confirmation page.</a>', 'give' ),
+                          {
+                            a: <a href="https://docs.givewp.com/success-page" target="_blank" title="GiveWP success page docs"/>,
+                          }
+                        )}
+                    />
                 </PanelRow>
             </SettingsSection>
         </>

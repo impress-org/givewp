@@ -6,22 +6,48 @@ import {createInterpolateElement, useEffect, useMemo} from '@wordpress/element';
 import cx from 'classnames';
 
 /**
+ * @since 3.20.0
+ */
+function EmptyMessage({message}: {message: string}) {
+    return (
+        <div className="givewp-fields-gateways__gateway--empty">
+            <p>
+                <b>{__('Payment options are not available:', 'give')}</b>
+            </p>
+
+            <p>
+                <em>{message}</em>
+            </p>
+        </div>
+    );
+}
+
+/**
+ * @since 3.20.0 updated message to account for minimum donation amount
  * @since 3.0.0
  */
-function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: boolean}) {
-    return (
-        <em>
-            {currencyNotSupported
-                ? __(
-                      'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
-                      'give'
-                  )
-                : __(
-                      'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
-                      'give'
-                  )}
-        </em>
+function GatewayMissingMessage({
+    donationAmountMinimumNotReached,
+    currencyNotSupported,
+}: {
+    donationAmountMinimumNotReached?: boolean;
+    currencyNotSupported?: boolean;
+}) {
+    let message = __(
+        'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+        'give'
     );
+
+    if (donationAmountMinimumNotReached) {
+        message = __('Donation amount must be greater than zero.', 'give');
+    } else if (currencyNotSupported) {
+        message = __(
+            'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
+            'give'
+        );
+    }
+
+    return <EmptyMessage message={message} />;
 }
 
 /**
@@ -82,11 +108,14 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
 
+    const donationAmount = useWatch({name: 'amount'});
     const currency = useWatch({name: 'currency'});
     const activeGatewayId = useWatch({name: 'gatewayId'});
 
+    const donationAmountMinimumNotReached = donationAmount === 0;
+
     // filter gateway options if currency switcher settings are present
-    const gatewayOptions = useMemo(() => {
+    const gatewayOptionsWithCurrencySettings = useMemo(() => {
         if (currencySwitcherSettings.length <= 1) {
             return gateways;
         }
@@ -99,6 +128,10 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 
         return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
     }, [currency]);
+
+    const gatewayOptions = useMemo(() => {
+        return donationAmountMinimumNotReached ? [] : gatewayOptionsWithCurrencySettings;
+    }, [donationAmountMinimumNotReached, gatewayOptionsWithCurrencySettings]);
 
     // reset the default /selected gateway based on the gateway options available
     useEffect(() => {
@@ -129,7 +162,10 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
                     </ul>
                 </>
             ) : (
-                <GatewayMissingMessage currencyNotSupported={currencySwitcherSettings.length > 1} />
+                <GatewayMissingMessage
+                    donationAmountMinimumNotReached={donationAmountMinimumNotReached}
+                    currencyNotSupported={gatewayOptionsWithCurrencySettings.length > 1}
+                />
             )}
 
             <ErrorMessage

@@ -3,7 +3,11 @@
 namespace Give\Subscriptions\Repositories;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -186,6 +190,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
@@ -209,6 +214,7 @@ class SubscriptionRepository
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
                 ->update([
+                    'expiration' => Temporal::getFormattedDateTime($subscription->renewsAt),
                     'status' => $subscription->status->getValue(),
                     'profile_id' => $subscription->gatewaySubscriptionId,
                     'customer_id' => $subscription->donorId,
@@ -371,6 +377,47 @@ class SubscriptionRepository
         }
 
         return (int)$query->ID;
+    }
+
+    /**
+     * @since 3.20.0
+     * @throws Exception
+     */
+   public function createRenewal(Subscription $subscription, array $attributes = []): Donation
+   {
+       $initialDonation = $subscription->initialDonation();
+
+        $donation = Donation::create(
+            array_merge([
+                'subscriptionId' => $subscription->id,
+                'gatewayId' => $subscription->gatewayId,
+                'amount' => $subscription->amount,
+                'status' => DonationStatus::COMPLETE(),
+                'type' => DonationType::RENEWAL(),
+                'donorId' => $subscription->donorId,
+                'formId' => $subscription->donationFormId,
+                'honorific' => $initialDonation->honorific,
+                'firstName' => $initialDonation->firstName,
+                'lastName' => $initialDonation->lastName,
+                'email' => $initialDonation->email,
+                'phone' => $initialDonation->phone,
+                'anonymous' => $initialDonation->anonymous,
+                'levelId' => $initialDonation->levelId,
+                'company' => $initialDonation->company,
+                'comment' => $initialDonation->comment,
+                'billingAddress' => $initialDonation->billingAddress,
+                'feeAmountRecovered' => $subscription->feeAmountRecovered,
+                'exchangeRate' => $initialDonation->exchangeRate,
+                'formTitle' => $initialDonation->formTitle,
+                'mode' => $subscription->mode->isLive() ? DonationMode::LIVE() : DonationMode::TEST(),
+                'donorIp' => $initialDonation->donorIp,
+            ], $attributes)
+        );
+
+        $subscription->bumpRenewalDate();
+        $subscription->save();
+
+        return $donation;
     }
 
     /**

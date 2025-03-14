@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 import {__} from '@wordpress/i18n';
 
-const Modal = ({visible, type, children, isLoading, handleClose, ...rest}) => {
+const Modal = ({visible = true, type = 'notice', children = {}, isLoading = false, handleClose = () => {}, ...rest}) => {
     const closeModal = useCallback((event) => {
         if (event.keyCode === 27 && typeof handleClose === 'function') {
             handleClose();
@@ -154,14 +154,6 @@ Modal.AdditionalContext.propTypes = {
     type: PropTypes.string.isRequired,
     // String or Array of objects
     context: PropTypes.any.isRequired,
-};
-
-Modal.defaultProps = {
-    visible: true,
-    isLoading: false,
-    type: 'notice',
-    children: {},
-    handleClose: () => {},
 };
 
 export default Modal;

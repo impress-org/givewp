@@ -7,7 +7,7 @@ import {useAcceptJs} from 'react-acceptjs';
 
 import './style.scss';
 
-const AuthorizeControl = ({label, value, forwardedRef, gateway}) => {
+const AuthorizeControl = ({label = null, value = null, forwardedRef, gateway}) => {
     const [cardNumber, setCardNumber] = useState(value ? value.card_number : '');
     const [cardExpiryDate, setCardExpiryDate] = useState(
         value ? `${value.card_exp_month} \ ${value.card_exp_year}` : '',
@@ -154,12 +154,6 @@ AuthorizeControl.propTypes = {
     label: PropTypes.string,
     value: PropTypes.object,
     onChange: PropTypes.func,
-};
-
-AuthorizeControl.defaultProps = {
-    label: null,
-    value: null,
-    onChange: null,
 };
 
 export default AuthorizeControl;

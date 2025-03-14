@@ -144,7 +144,7 @@ export const ListTable = ({
                             </div>
                         </div>
                     )}
-                    <table ref={tableRef} className={styles.table}>
+                    <table ref={tableRef}  className={`giveListTable ${isLoading ? `giveListTableIsLoading` : `giveListTableIsLoaded`} ${styles.table}`} >
                         <caption id="giveListTableCaption" className={styles.tableCaption}>
                             {title}
                         </caption>
