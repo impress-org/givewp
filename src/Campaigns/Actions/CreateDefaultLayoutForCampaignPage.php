@@ -2,8 +2,6 @@
 
 namespace Give\Campaigns\Actions;
 
-use Give\Campaigns\Models\Campaign;
-
 /**
  * @unreleased
  */
@@ -25,12 +23,12 @@ class CreateDefaultLayoutForCampaignPage
     /**
      * @unreleased
      */
-    public function __invoke(Campaign $campaign)
+    public function __invoke(array $campaign): string
     {
         $layout = array_map(function($block) use ($campaign) {
             return str_replace(
                 ['%id%', '%description%'],
-                [$campaign->id, $campaign->shortDescription],
+                [$campaign['id'], $campaign['shortDescription']],
                 $block
             );
         }, $this->blocks);

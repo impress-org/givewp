@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Migrations;
 
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
@@ -168,7 +169,10 @@ class MigrateFormsToCampaignForms extends Migration
                 'post_modified_gmt' => get_gmt_from_date($formCreatedAt),
                 'post_status' => 'publish',
                 'post_type' => 'give_campaign_page',
-                'post_content' => $this->createDefaultLayoutForCampaignPage($campaignId, $formSettings->formExcerpt),
+                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)([
+                    'id' => $campaignId,
+                    'shortDescription' => $formSettings->formExcerpt,
+                ]),
             ]);
 
         $campaignPageId = DB::last_insert_id();
@@ -339,31 +343,5 @@ class MigrateFormsToCampaignForms extends Migration
             default:
                 return $onlyRecurringEnabled ? 'amountFromSubscriptions' : 'amount';
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function createDefaultLayoutForCampaignPage($campaignId, $campaignShortDescription): string
-    {
-        $blocks = [
-            '<!-- wp:givewp/campaign-title {"campaignId":"%id%"} /-->',
-            '<!-- wp:givewp/campaign-cover-block {"campaignId":"%id%"} /-->',
-            '<!-- wp:givewp/campaign-goal {"campaignId":"%id%"} /-->',
-            '<!-- wp:givewp/campaign-donate-button {"campaignId":"%id%"} /-->',
-            '<!-- wp:paragraph --><p>%description%</p><!-- /wp:paragraph -->',
-            '<!-- wp:givewp/campaign-donations {"campaignId":"%id%"} /-->',
-            '<!-- wp:givewp/campaign-donors {"campaignId":"%id%"} /-->',
-        ];
-
-        $layout = array_map(function ($block) use ($campaignId, $campaignShortDescription) {
-            return str_replace(
-                ['%id%', '%description%'],
-                [$campaignId, $campaignShortDescription],
-                $block
-            );
-        }, $blocks);
-
-        return implode(PHP_EOL, $layout);
     }
 }
