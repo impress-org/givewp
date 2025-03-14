@@ -98,7 +98,7 @@ class BatchMigrationRunner
         }
 
         // Run the last check
-        if ($this->migrationHasIncomingData()) {
+        if ($this->migrationHasMoreItemsToBatch()) {
             return MigrationLogStatus::RUNNING;
         }
 
@@ -155,7 +155,7 @@ class BatchMigrationRunner
      *
      * @unreleased
      */
-    private function migrationHasIncomingData(): bool
+    private function migrationHasMoreItemsToBatch(): bool
     {
         // todo: We already have a list of all actions in run method, maybe we can simply pass end($actions) to this method?
 
@@ -172,7 +172,7 @@ class BatchMigrationRunner
 
         [, $lastId] = $action->get_args();
 
-        if ($this->migration->hasIncomingData($lastId)) {
+        if ($this->migration->hasMoreItemsToBatch($lastId)) {
             as_enqueue_async_action($this->getHook(), [$lastId, null], $this->getGroup());
 
             return true;
