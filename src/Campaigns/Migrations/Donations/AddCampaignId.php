@@ -122,20 +122,20 @@ class AddCampaignId extends BatchMigration
      */
     public function getBatchItemsAfter($lastId): ?array
     {
-        $items = $this->query()
-            ->select('ID')
+        $item = $this->query()
+            ->select('MIN(id) AS first_id, MAX(id) AS last_id')
             ->where('ID', $lastId, '>')
             ->orderBy('ID')
             ->limit($this->getBatchSize())
-            ->getAll();
+            ->get();
 
-        if ( ! $items) {
+        if ( ! $item) {
             return null;
         }
 
         return [
-            min($items)->ID,
-            max($items)->ID,
+            $item->first_id,
+            $item->last_id,
         ];
     }
 
