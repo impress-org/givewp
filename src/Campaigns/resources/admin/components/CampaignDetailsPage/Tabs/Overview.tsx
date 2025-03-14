@@ -1,11 +1,9 @@
-import CampaignStats from "../Components/CampaignStats";
+import CampaignStats from '../Components/CampaignStats';
 
 /**
  * @unreleased
  */
 export default () => {
-
-
     return (
         <div>
             <div>
@@ -13,4 +11,4 @@ export default () => {
             </div>
         </div>
     );
-}
+};

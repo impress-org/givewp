@@ -25,7 +25,7 @@ const RevenueChart = () => {
     const [series, setSeries] = useState([{name: 'Revenue', data: getDefaultData()}]);
 
     useEffect(() => {
-        apiFetch({path: addQueryArgs('/give-api/v2/campaigns/' + campaignId + '/revenue')}).then(
+        apiFetch({path: addQueryArgs('/givewp/v3/campaigns/' + campaignId + '/revenue')}).then(
             (data: {date: string; amount: number}[]) => {
                 if (data?.length > 0) {
                     // By default we set a max value so the chart does not look empty.
@@ -54,8 +54,8 @@ const RevenueChart = () => {
                 enabled: false,
             },
             toolbar: {
-                show: false
-            }
+                show: false,
+            },
         },
         xaxis: {
             type: 'datetime' as 'datetime' | 'category' | 'numeric',
