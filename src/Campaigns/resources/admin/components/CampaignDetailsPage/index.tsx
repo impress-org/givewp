@@ -4,7 +4,6 @@ import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
@@ -63,7 +62,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     useEffect(() => {
         apiFetch({
-            path: `/give-api/v2/campaigns/${campaignId}`,
+            path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
         }).then(({schema}: { schema: JSONSchemaType<any> }) => {
             setResolver({
@@ -72,12 +71,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         });
     }, []);
 
-    const {
-        campaign,
-        hasResolved,
-        save,
-        edit,
-    } = useCampaignEntityRecord(campaignId);
+    const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -105,7 +99,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             id: 'update-archive-notice',
             type: 'warning',
             onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
+            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
         });
     }, [campaign?.status]);
 

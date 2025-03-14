@@ -89,9 +89,15 @@
 }
 
 .percentChangePill {
-    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 12px 2px 4px;
     font-size: .8rem;
     border-radius: var(--givewp-rounded-16);
+    min-width: 71px;
+    height: 24px;
+    gap: 2px;
 }
 
 .progressWidget {
@@ -125,7 +131,7 @@
       grid-template-columns: 1fr;
       gap: var(--givewp-spacing-3);
     }
-  
+
     .revenueWidget {
       grid-column: span 1;
     }

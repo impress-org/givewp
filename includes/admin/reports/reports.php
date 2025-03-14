@@ -298,10 +298,15 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
+ * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void
  */
 function give_reports_earnings() {
+    if (!current_user_can('view_give_reports')){
+        wp_die(__('You do not have permission to access this report', 'give'), __('Error', 'give'), ['response' => 403]);
+    }
+
 	?>
 	<div class="tablenav top reports-table-nav">
 		<h2 class="reports-earnings-title screen-reader-text"><?php _e( 'Revenue Report', 'give' ); ?></h2>

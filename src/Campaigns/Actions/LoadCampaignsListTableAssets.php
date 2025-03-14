@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
@@ -28,7 +29,7 @@ class LoadCampaignsListTableAssets
 
         wp_localize_script($handleName, 'GiveCampaignsListTable',
             [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2/campaigns/list-table')),
+                'apiRoot' => esc_url_raw(rest_url(CampaignRoute::NAMESPACE . '/campaigns/list-table')),
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'table' => give(CampaignsListTable::class)->toArray(),
                 'adminUrl' => admin_url(),

@@ -12,7 +12,7 @@ export default function CampaignComments({attributes}: {attributes: Attributes})
     const {title = __('Share your support', 'give')} = attributes;
 
     const {data, isLoading} = useSWR<CommentData[]>(
-        addQueryArgs(`/give-api/v2/campaigns/${attributes?.campaignId}/comments`, {
+        addQueryArgs(`/givewp/v3/campaigns/${attributes?.campaignId}/comments`, {
             id: attributes?.campaignId,
             perPage: attributes?.commentsPerPage,
             anonymous: attributes?.showAnonymous,
