@@ -150,10 +150,11 @@ class AddCampaignId extends BatchMigration
     /**
      * @inheritDoc
      */
-    public function hasIncomingData($lastProcessedId): ?bool
+    public function hasMoreItemsToBatch($lastProcessedId): ?bool
     {
         return $this->query()
             ->where('ID', $lastProcessedId, '>')
+            ->limit(1)
             ->count();
     }
 }

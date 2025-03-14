@@ -56,5 +56,5 @@ abstract class BatchMigration extends BaseMigration
      *
      * @return bool - true if there are new items, otherwise false
      */
-    abstract public function hasIncomingData($lastProcessedId): ?bool;
+    abstract public function hasMoreItemsToBatch($lastProcessedId): ?bool;
 }
