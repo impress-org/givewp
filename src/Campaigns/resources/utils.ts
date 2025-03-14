@@ -1,7 +1,7 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 import type {GiveCampaignOptions} from '@givewp/campaigns/types';
-import apiFetch from "@wordpress/api-fetch";
+import apiFetch from '@wordpress/api-fetch';
 
 declare const window: {
     GiveCampaignOptions: GiveCampaignOptions;
@@ -55,14 +55,12 @@ export async function updateUserNoticeOptions(metaKey: string){
         // @ts-ignore
         const currentUserId = currentUser?.id;
 
-        const response = await wp.data.dispatch('core').saveEntityRecord('root', 'user', {
+        return await wp.data.dispatch('core').saveEntityRecord('root', 'user', {
             id: currentUserId,
             meta: {
                 [metaKey]: true
             }
         });
-
-        console.log('User meta updated:', response);
     } catch (error) {
         console.error('Error updating user meta:', error);
     }
