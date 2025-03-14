@@ -110,10 +110,8 @@ class MigrationsRunner
                         give()->notices->register_notice(
                             [
                                 'id' => $migrationId,
-                                'description' => sprintf(
-                                    esc_html__('GiveWP is running the "%s" migration in the background. You will be notified as soon as it completes.', 'give'),
-                                    $migration::title()
-                                ),
+                                'description' => esc_html__('GiveWP is running database updates in the background. You will be notified as soon as it completes.',
+                                    'give'),
                             ]
                         );
 
@@ -127,13 +125,20 @@ class MigrationsRunner
                     }
 
                     if ($status === MigrationLogStatus::INCOMPLETE) {
+                        $listTableLink = sprintf(
+                            '<a href="%s">%s</a>',
+                            admin_url('edit.php?post_type=give_forms&page=give-tools&tab=data'),
+                            esc_html__('Resume update', 'give')
+                        );
+
                         give()->notices->register_notice(
                             [
                                 'id' => $migrationId,
                                 'type' => 'warning',
                                 'description' => sprintf(
-                                    esc_html__('Incomplete DB migration: %s', 'give'),
-                                    $migration::title()
+                                    __('Incomplete database update: "%s". %s', 'give'),
+                                    $migration::title(),
+                                    $listTableLink
                                 ),
                             ]
                         );
