@@ -103,7 +103,7 @@ export default function CampaignsListTable() {
                 <img src={imagePath} alt={__('No campaign created yet', 'give')} />
                 <h3>{__('No campaign created yet', 'give')}</h3>
                 <p className={styles.helpMessage}>
-                    {__('Don’t worry, let’s help you setup your first campaign.', 'give')}
+                    {__('Don’t worry, let’s help you set up your first campaign.', 'give')}
                 </p>
                 <p>
                     <a
