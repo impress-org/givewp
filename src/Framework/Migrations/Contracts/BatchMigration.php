@@ -31,7 +31,7 @@ abstract class BatchMigration extends BaseMigration
      *
      * @unreleased
      *
-     * @return array<int, int>
+     * @return array{0: int, 1: int} the first value is the first id and the second value is the last id of a batch
      */
     abstract public function getBatchItemsAfter($lastId): ?array;
 
