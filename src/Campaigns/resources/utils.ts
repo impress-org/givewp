@@ -51,11 +51,19 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
  */
 export async function updateUserNoticeOptions(metaKey: string){
     try {
-        await apiFetch({
-            url: `${getCampaignOptionsWindowData().adminUrl}/admin-ajax.php?action=${metaKey}`,
-            method: 'POST',
+        const currentUser = await apiFetch( { path: '/wp/v2/users/me' } );
+        // @ts-ignore
+        const currentUserId = currentUser?.id;
+
+        const response = await wp.data.dispatch('core').saveEntityRecord('root', 'user', {
+            id: currentUserId,
+            meta: {
+                [metaKey]: true
+            }
         });
+
+        console.log('User meta updated:', response);
     } catch (error) {
-        console.error('Failed to update user meta:', error);
+        console.error('Error updating user meta:', error);
     }
 }
