@@ -18,7 +18,7 @@ We use these migrations each time we want to:
 ### Batch migration
 Batch migrations, as name suggests, are processed in batches. We use them __only when we need to process large data sets__.
 
-__Important__: You will never use this type of migration for table creation, or table editing.
+__Important__: Do not use this type of migration for table creation, or table editing.
 
 
 ## Migration structure
