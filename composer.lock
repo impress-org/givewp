@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3355703fc1378c1f110e4a86d076143d",
+    "content-hash": "2041bc746ca5cf124a78fa356e680133",
     "packages": [
         {
             "name": "composer/installers",
@@ -2359,34 +2359,6 @@
                 "source": "https://github.com/jsonrainbow/json-schema/tree/5.3.0"
             },
             "time": "2024-07-06T21:00:26+00:00"
-        },
-        {
-            "name": "kjohnson/since-unreleased",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kjohnson/since-unreleased.git",
-                "reference": "31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kjohnson/since-unreleased/zipball/31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f",
-                "reference": "31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/since-unreleased.sh"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "support": {
-                "issues": "https://github.com/kjohnson/since-unreleased/issues",
-                "source": "https://github.com/kjohnson/since-unreleased/tree/1.0.0"
-            },
-            "time": "2021-03-26T15:00:24+00:00"
         },
         {
             "name": "mck89/peast",
@@ -7860,7 +7832,7 @@
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "7.2.24"
+        "php": "7.4.0"
     },
     "plugin-api-version": "2.6.0"
 }
