@@ -347,4 +347,25 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeObserver.observe(wpBlockEditorContent);
         }
     };
+
+    // Trigger the async logic every time the forms tab of the campaign page gets updated
+    window.onload = function () {
+        const campaignsPage = document.querySelector('#give-admin-campaigns-root');
+        if (!!campaignsPage) {
+            // create an Observer instance
+            const resizeObserver = new ResizeObserver((entries) => {
+                const queryString = window.location.search;
+                const params = new URLSearchParams(queryString);
+                const isCampaignFormsTab = params.has('tab') && 'forms' === params.get('tab');
+                if (isCampaignFormsTab) {
+                    window.GiveDonationFormsAsyncData.scriptDebug &&
+                        console.log('Campaigns Page height changed:', entries[0].target.clientHeight);
+                    maybeLoadAsyncData();
+                }
+            });
+
+            // start observing a DOM node
+            resizeObserver.observe(campaignsPage);
+        }
+    };
 });
