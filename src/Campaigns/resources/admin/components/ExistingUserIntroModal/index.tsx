@@ -5,8 +5,7 @@ import {getGiveCampaignsListTableWindowData} from '@givewp/campaigns/admin/compo
 import {__} from '@wordpress/i18n';
 import {StepDetails} from '@givewp/campaigns/admin/components/ExistingUserIntroModal/StepDetails';
 import styles from './ExistingUserIntroModal.module.scss';
-import apiFetch from "@wordpress/api-fetch";
-import {getCampaignOptionsWindowData, updateUserNoticeOptions} from "@givewp/campaigns/utils";
+import {updateUserNoticeOptions} from "@givewp/campaigns/utils";
 
 /**
  * @unreleased
@@ -92,7 +91,7 @@ export default function ExistingUserIntroModal({isOpen, setOpen}: ExisingUserInt
                     className={styles.previewImage}
                     src={`${
                         getGiveCampaignsListTableWindowData().pluginUrl
-                    }/assets/dist/images/admin/campaigns/campaigns-cover.jpg`}
+                    }/assets/dist/images/admin/campaigns/campaigns-cover.png`}
                     alt={'Campaign Preview Image'}
                 />
             </div>
