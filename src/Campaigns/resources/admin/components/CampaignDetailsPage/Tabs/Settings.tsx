@@ -8,7 +8,7 @@ import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
-import {CurrencyControl} from "@givewp/form-builder-library";
+import {CurrencyControl} from '@givewp/form-builder-library';
 import type {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
@@ -17,7 +17,7 @@ const currencyFormatter = amountFormatter(currency);
 /**
  * @unreleased
  */
-export default () => {
+export default function CampaignDetailsSettingsTab() {
     const {
         register,
         watch,
@@ -50,10 +50,7 @@ export default () => {
 
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
-                        <img
-                            src={campaignPageImage}
-                            alt={__('Enable campaign page for your campaign.', 'give')}
-                        />
+                        <img src={campaignPageImage} alt={__('Enable campaign page for your campaign.', 'give')} />
                         <div className={styles.toggle}>
                             <ToggleControl
                                 label={__('Enable campaign page for your campaign.', 'give')}
