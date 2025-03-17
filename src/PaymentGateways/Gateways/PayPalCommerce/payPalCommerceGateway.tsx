@@ -10,7 +10,7 @@ import type {Gateway} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
-import {CSSProperties, useEffect, useRef, useState} from 'react';
+import {CSSProperties, useEffect, useState} from 'react';
 import {PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 
