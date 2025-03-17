@@ -19,7 +19,7 @@ jobs:
     # This workflow contains a single job called "test"
     test:
         # The type of runner that the job will run on
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         strategy:
             matrix:
                 php: [ 7.2, 7.4, 8.0 ]
@@ -97,6 +97,12 @@ jobs:
 
             -   name: Reload Composer autoload
                 run: composer dump-autoload
+
+            -   name: Install SVN
+                run: |
+                  sudo apt-get update
+                  sudo apt-get install -y subversion
+                  svn --version
 
             -   name: Set Up Tests
                 run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}

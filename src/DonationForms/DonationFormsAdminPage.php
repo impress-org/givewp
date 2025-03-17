@@ -5,7 +5,7 @@ namespace Give\DonationForms;
 use Give\Helpers\Language;
 
 /**
- * @unreleased Add locale support
+ * @since 3.22.0 Add locale support
  * @since 3.15.0
  */
 class DonationFormsAdminPage

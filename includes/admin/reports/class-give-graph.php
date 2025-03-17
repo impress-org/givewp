@@ -155,16 +155,16 @@ class Give_Graph {
 		// Use minified libraries if SCRIPT_DEBUG is turned off
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-orderbars', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.orderBars' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-orderbars' );
 
-		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.time' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-time', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.time' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-time' );
 
-		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
+		wp_register_script( 'jquery-flot-resize', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot.resize' . $suffix . '.js', array( 'jquery-flot' ), GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot-resize' );
 
-		wp_register_script( 'jquery-flot', GIVE_PLUGIN_URL . 'assets/js/plugins/jquery.flot' . $suffix . '.js', false, GIVE_VERSION );
+		wp_register_script( 'jquery-flot', GIVE_PLUGIN_URL . 'build/assets/js/plugins/jquery.flot' . $suffix . '.js', false, GIVE_VERSION );
 		wp_enqueue_script( 'jquery-flot' );
 
 	}
