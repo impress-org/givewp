@@ -4,7 +4,6 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\Models\DonationForm;
-use Give\Log\Log;
 
 /**
  * @var array    $attributes
