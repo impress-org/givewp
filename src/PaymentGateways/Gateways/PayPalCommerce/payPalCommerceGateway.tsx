@@ -10,7 +10,7 @@ import type {Gateway} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
-import {CSSProperties, useEffect, useState} from 'react';
+import {CSSProperties, useEffect, useRef, useState} from 'react';
 import {PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 
@@ -568,7 +568,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             }
 
             if (!validateHostedFields()) {
-                throw new Error('Invalid hosted fields');
+                throw new Error('Invalid PayPal card fields');
             }
 
             const approveOrderCallback = async (data) => {
@@ -636,7 +636,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     'form#give-next-gen button[type="submit"]'
                 );
 
-                if (submitButton) {
+                if (submitButton && !hostedField) {
                     submitButton.style.display = 'none';
                 }
 
