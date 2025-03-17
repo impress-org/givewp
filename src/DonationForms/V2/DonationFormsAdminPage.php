@@ -113,7 +113,7 @@ class DonationFormsAdminPage
             'locale' => Language::getLocale(),
         ];
 
-        EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
+        EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
@@ -137,7 +137,7 @@ class DonationFormsAdminPage
     public function loadMigrationScripts()
     {
         if ($this->isShowingAddV2FormPage()) {
-            EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
+            EnqueueScript::make('give-add-v2form', 'build/assets/dist/js/give-add-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
@@ -150,7 +150,7 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
-            EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
+            EnqueueScript::make('give-edit-v2form', 'build/assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
