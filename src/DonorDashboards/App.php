@@ -163,7 +163,7 @@ class App
 
         EnqueueScript::make(
             'give-donor-dashboards-app',
-            'assets/dist/js/donor-dashboards-app.js'
+            'build/assets/dist/js/donor-dashboards-app.js'
         )
             ->loadInFooter()
             ->registerTranslations()

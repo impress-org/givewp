@@ -68,6 +68,44 @@ class TestListDonations extends TestCase
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldFilterInvalidDateArgument_missingMonthDay()
+    {
+        $listDonation = give(ListDonations::class);
+        $key = 'start';
+        $value = '2020';
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param($key, $value);
+
+        $response = $listDonation->validateDate($value, $mockRequest, $key);
+        $this->assertFalse($response);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldFilterInvalidDateArgument_InvalidChar()
+    {
+        $listDonation = give(ListDonations::class);
+        $key = 'start';
+        $value = '2020-mar-02';
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param($key, $value);
+
+        $response = $listDonation->validateDate($value, $mockRequest, $key);
+        $this->assertFalse($response);
+    }
+
+    /**
      *
      * @since 2.25.0
      */

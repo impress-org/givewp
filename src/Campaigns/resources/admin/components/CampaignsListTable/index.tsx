@@ -97,7 +97,7 @@ export default function CampaignsListTable() {
     const ListTableBlankSlate = () => {
         const imagePath = `${
             getGiveCampaignsListTableWindowData().pluginUrl
-        }/assets/dist/images/list-table/blank-slate-campaigns-icon.svg`;
+        }build/assets/dist/images/list-table/blank-slate-campaigns-icon.svg`;
         return (
             <div className={styles.container}>
                 <img src={imagePath} alt={__('No campaign created yet', 'give')} />
