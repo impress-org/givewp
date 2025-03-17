@@ -12,7 +12,7 @@ const tabs: CampaignDetailsTab[] = tabsDefinitions;
 /**
  * @unreleased
  */
-export default () => {
+export default function CampaignDetailsTabs() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
 
     const getTabFromURL = () => {
