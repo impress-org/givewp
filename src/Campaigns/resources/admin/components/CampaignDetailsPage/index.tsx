@@ -4,7 +4,6 @@ import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {GiveCampaignOptions} from '@givewp/campaigns/types';
 import {Campaign} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
@@ -15,13 +14,9 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
-
-declare const window: {
-    GiveCampaignOptions: GiveCampaignOptions;
-} & Window;
 
 interface Show {
     contextMenu?: boolean;
@@ -52,6 +47,8 @@ export default function CampaignsDetailsPage({campaignId}) {
         confirmationModal: false,
     });
 
+    const {adminUrl} = getCampaignOptionsWindowData();
+
     const dispatch = useDispatch('givewp/campaign-notifications');
 
     const setShow = (data: Show) => {
@@ -65,7 +62,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     useEffect(() => {
         apiFetch({
-            path: `/give-api/v2/campaigns/${campaignId}`,
+            path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
         }).then(({schema}: { schema: JSONSchemaType<any> }) => {
             setResolver({
@@ -74,12 +71,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         });
     }, []);
 
-    const {
-        campaign,
-        hasResolved,
-        save,
-        edit,
-    } = useCampaignEntityRecord(campaignId);
+    const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -107,7 +99,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             id: 'update-archive-notice',
             type: 'warning',
             onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />
+            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
         });
     }, [campaign?.status]);
 
@@ -194,7 +186,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
                             <a
-                                href={`${window.GiveCampaignOptions.adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
+                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
                             >
                                 {__('Campaigns', 'give')}
                             </a>
@@ -211,7 +203,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 {enableCampaignPage && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${window.GiveCampaignOptions.adminUrl}?action=edit_campaign_page&campaign_id=${campaignId}`}
+                                        href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
                                         rel="noopener noreferrer"
                                     >
                                         {__('Edit campaign page', 'give')}

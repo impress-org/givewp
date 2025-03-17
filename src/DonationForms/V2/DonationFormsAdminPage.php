@@ -59,12 +59,13 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @unreleased set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            'edit.php?post_type=give_forms',
+            '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
             'edit_give_forms',
@@ -100,7 +101,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {

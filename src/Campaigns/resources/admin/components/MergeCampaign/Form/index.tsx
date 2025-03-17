@@ -14,10 +14,6 @@ import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
  * @unreleased
  */
 export default function MergeCampaignsForm({isOpen, handleClose, title, campaigns}: MergeCampaignFormProps) {
-    if (!campaigns) {
-        return null;
-    }
-
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<MergeCampaignFormInputs>({
@@ -48,7 +44,7 @@ export default function MergeCampaignsForm({isOpen, handleClose, title, campaign
 
         try {
             const response = await apiFetch({
-                path: addQueryArgs('/give-api/v2/campaigns/' + destinationCampaignId + '/merge', {
+                path: addQueryArgs('/givewp/v3/campaigns/' + destinationCampaignId + '/merge', {
                     campaignsToMergeIds: campaignsToMergeIds,
                 }),
                 method: 'PATCH',
