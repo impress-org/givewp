@@ -55,7 +55,7 @@ class PaymentTypeColumn extends ModelColumn
                 $template,
                 $model->id,
                 'recurring',
-                GIVE_PLUGIN_URL . 'assets/dist/images/list-table/recurring-donation-icon.svg',
+                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/recurring-donation-icon.svg',
                 __('Recurring donation icon', 'give'),
                 __('recurring', 'give')
             );
@@ -65,7 +65,7 @@ class PaymentTypeColumn extends ModelColumn
             $template,
             $model->id,
             'onetime',
-            GIVE_PLUGIN_URL . 'assets/dist/images/list-table/onetime-donation-icon.svg',
+            GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/onetime-donation-icon.svg',
             __('One-time donation icon', 'give'),
             __('one-time', 'give')
         );

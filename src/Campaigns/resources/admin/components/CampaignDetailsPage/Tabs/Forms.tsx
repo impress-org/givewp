@@ -4,7 +4,7 @@ import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 /**
  * @unreleased
  */
-export default () => {
+export default function CampaignDetailsFormsTab() {
     const entity = useCampaignEntityRecord();
     return <DonationFormsListTable entity={entity} />;
 };

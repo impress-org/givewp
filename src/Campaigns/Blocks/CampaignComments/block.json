@@ -91,5 +91,5 @@
     "viewScript": "file:../../../../build/campaignCommentsBlockApp.js",
     "editorScript": "file:../../../../build/campaignBlocks.js",
     "style": "file:../../../../build/campaignCommentsBlockApp.css",
-    "editorStyle": "file:../../../../assets/dist/css/design-system/foundation.css"
+    "editorStyle": "file:../../../../build/assets/dist/css/design-system/foundation.css"
 }

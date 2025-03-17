@@ -18,7 +18,7 @@ class EnqueueListTableScripts
             'pluginUrl' => GIVE_PLUGIN_URL,
         ];
 
-        EnqueueScript::make('give-admin-event-tickets', 'assets/dist/js/give-admin-event-tickets.js')
+        EnqueueScript::make('give-admin-event-tickets', 'build/assets/dist/js/give-admin-event-tickets.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveEventTickets', $data)->enqueue();

@@ -17,7 +17,7 @@ class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
         $this->id = 'recurring';
         $this->label = sprintf(
             __('%s Recurring Donations %s', 'give'),
-            '<img style="display: inline-block; vertical-align: middle; margin: 0 5px 2px 0; " src="' . GIVE_PLUGIN_URL . '/assets/dist/images/admin/black-external-icon.svg" alt="icon"/>',
+            '<img style="display: inline-block; vertical-align: middle; margin: 0 5px 2px 0; " src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/black-external-icon.svg" alt="icon"/>',
             '<span class="givewp-upsells-recurring-recommended">
                 <strong>' . __('RECOMMENDED', 'give') . '</strong>
             </span>'
