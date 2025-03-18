@@ -23,7 +23,7 @@ export default function AdditionalFieldsPanel({isLicensed}: {isLicensed: boolean
             <div className="block-editor-inserter__panel-content">
                 {isLicensed ? (
                     <div className={'block-editor-inserter__panel-content-wrapper'}>
-                        <p>{__('Install Form Field Manager to unlock additional fields', 'give')}</p>
+                        <p>{__('Install Form Field Manager to unlock additional fields.', 'give')}</p>
                         <a
                             className={'block-editor-inserter__panel-content-link'}
                             href={'https://givewp.com/my-downloads'}
