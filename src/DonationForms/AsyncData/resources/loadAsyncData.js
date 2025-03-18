@@ -7,6 +7,7 @@
  * 2) When the user adds a block in the WP block editor
  * 3) When the user scrolls the mouse
  * 4) When the user resizes the screen
+ * 5) the "Forms" tab of the campaign details page gets updated
  *
  * @since 3.16.0
  */
@@ -348,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Trigger the async logic every time the forms tab of the campaign page gets updated
+    // Trigger the async logic every time the "Forms" tab of the campaign details page gets updated
     window.onload = function () {
         const campaignsPage = document.querySelector('#give-admin-campaigns-root');
         if (!!campaignsPage) {
