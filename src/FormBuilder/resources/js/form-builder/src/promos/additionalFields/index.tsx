@@ -21,7 +21,7 @@ export default function AdditionalFieldsPanel({isLicensed}: {isLicensed: boolean
             </div>
 
             <div className="block-editor-inserter__panel-content">
-                {true ? (
+                {isLicensed ? (
                     <div className={'block-editor-inserter__panel-content-wrapper'}>
                         <p>{__('Install Form Field Manager to unlock additional fields', 'give')}</p>
                         <a
