@@ -11,8 +11,10 @@ import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
-import {PayPalSubscriber} from './types';
+import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
+import createOrder from './resources/js/createOrder';
+import authorizeOrder from './resources/js/authorizeOrder';
 
 (() => {
     /**
@@ -33,6 +35,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
     let hostedField;
     let payPalDonationsSettings;
     let payPalOrderId;
+    let payPalAuthorizationId;
     let payPalSubscriptionId;
 
     let subscriptionFrequency;
@@ -176,6 +179,8 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
          */
         formData.append('give-cs-form-currency', currency);
 
+        formData.append('give-paypal-authorize-order', 'true');
+
         return formData;
     };
 
@@ -186,17 +191,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
     };
 
     const createOrderHandler = async (): Promise<string> => {
-        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
-            method: 'POST',
-            body: getFormData(),
-        });
-        const responseJson = await response.json();
-
-        if (!responseJson.success) {
-            throw responseJson.data.error;
-        }
-
-        return (payPalOrderId = responseJson.data.id);
+        return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalDonationsSettings, getFormData());
     };
 
     const createSubscriptionHandler = async (data, actions) => {
@@ -329,7 +324,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             trigger,
             setError,
         } = useFormContext();
-        const gateway = window.givewp.gateways.get('paypal-commerce');
+        const gateway = window.givewp.gateways.get('paypal-commerce') as PayPalCommerceGateway;
 
         const props = {
             style: buttonsStyle,
@@ -406,21 +401,24 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                 submitButton.textContent = __('Waiting for PayPal...', 'give');
                 submitButton.disabled = true;
 
-                if (payPalOrderId && updateOrderAmount) {
-                    const response = await fetch(
-                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_order_amount&order=${payPalOrderId}`,
-                        {
-                            method: 'POST',
-                            body: getFormData(),
-                        }
-                    );
+                //TODO: figure out what to do with updateOrderAmount
+                const orderId = data.orderID;
+                if (orderId) {
+                    try {
+                        const authorizationId = await authorizeOrder(
+                            `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_authorize_order&orderId=${orderId}`,
+                            gateway,
+                            getFormData(),
+                            orderId
+                        );
 
-                    const {data: ajaxResponseData} = await response.json();
-
-                    if (ajaxResponseData.hasOwnProperty('error')) {
+                        payPalOrderId = orderId;
+                        payPalAuthorizationId = authorizationId;
+                    } catch (error) {
+                        console.error(error);
                         submitButton.disabled = false;
                         submitButton.textContent = submitButtonDefaultText;
-                        throw new Error(ajaxResponseData.error);
+                        throw new Error(__('Failed to authorize payment', 'give'));
                     }
                 }
 
@@ -431,11 +429,10 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     return;
                 }
 
-                return actions.order.capture().then((details) => {
-                    submitButton.disabled = false;
-                    submitButton.textContent = submitButtonDefaultText;
-                    submitButton.click();
-                });
+                submitButton.disabled = false;
+                submitButton.textContent = submitButtonDefaultText;
+                submitButton.click();
+                return;
             },
         };
 
@@ -524,13 +521,15 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
         useEffect(() => {
             const isSubscription = donationType === 'subscription';
 
+            const options = getPayPalScriptOptions({isSubscription});
+
             dispatch({
                 type: 'resetOptions',
                 value: {
-                    ...getPayPalScriptOptions({isSubscription}),
+                    ...options,
                     currency: currency,
                     vault: donationType === 'subscription',
-                    intent: donationType === 'subscription' ? 'subscription' : 'capture',
+                    intent: donationType === 'subscription' ? 'subscription' : options.intent,
                 },
             });
         }, [currency, donationType]);
@@ -554,10 +553,11 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {
-            if (payPalOrderId) {
+            if (payPalOrderId && payPalAuthorizationId) {
                 // If order ID already set by payment buttons then return early.
                 return {
                     payPalOrderId: payPalOrderId,
+                    payPalAuthorizationId: payPalAuthorizationId
                 };
             }
 

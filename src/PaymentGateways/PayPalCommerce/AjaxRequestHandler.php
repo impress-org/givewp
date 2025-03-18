@@ -238,9 +238,37 @@ class AjaxRequestHandler
     {
         $this->validateFrontendRequest();
         $data = $this->getOrderData();
+        $shouldAuthorize = isset($_POST['give-paypal-authorize-order']);
 
         try {
-            $result = give(PayPalOrder::class)->createOrder($data);
+            $result = give(PayPalOrder::class)->createOrder($data, $shouldAuthorize ? 'AUTHORIZE' : 'CAPTURE');
+
+            wp_send_json_success(
+                [
+                    'id' => $result,
+                ]
+            );
+        } catch (\Exception $ex) {
+            wp_send_json_error(
+                [
+                    'error' => json_decode($ex->getMessage(), true),
+                ]
+            );
+        }
+    }
+
+    /**
+     * Authorize order.
+     *
+     * @unreleased
+     */
+    public function authorizeOrder()
+    {
+        $this->validateFrontendRequest();
+        $orderId = give_clean((string)$_POST['orderId']);
+
+        try {
+            $result = give(PayPalOrder::class)->authorizeOrder($orderId);
 
             wp_send_json_success(
                 [

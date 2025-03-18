@@ -251,6 +251,14 @@ class PaymentGateways implements ServiceProvider
             'updateOrderAmount'
         );
 
+        Hooks::addAction('wp_ajax_give_paypal_commerce_authorize_order', AjaxRequestHandler::class,
+            'authorizeOrder');
+        Hooks::addAction(
+            'wp_ajax_nopriv_give_paypal_commerce_authorize_order',
+            AjaxRequestHandler::class,
+            'authorizeOrder'
+        );
+
         Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');
         Hooks::addAction('wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets');
         Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');

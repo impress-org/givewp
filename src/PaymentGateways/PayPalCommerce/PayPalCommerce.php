@@ -76,29 +76,43 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @inerhitDoc
+     * @unreleased updated to authorize and capture payment
      * @since 2.19.0
      *
-     * @param array{paypalOrder: PayPalOrder} $gatewayData
+     * @param  array{paypalOrder: PayPalOrder|null, payPalOrderId: string|null, payPalAuthorizationId: string|null}  $gatewayData
+     * @throws \Exception
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        /** @var PayPalOrder $paypalOrder */
-        $paypalOrder = $gatewayData['paypalOrder'];
+        $payPalOrderId = $gatewayData['payPalOrderId'] ?? null;
+        $payPalAuthorizationId = $gatewayData['payPalAuthorizationId'] ?? null;
 
-        $command = PaymentComplete::make($paypalOrder->payment->id)
+        if (isset($payPalOrderId, $payPalAuthorizationId)) {
+            /** @var Repositories\PayPalOrder $paypalOrderRepository */
+            $paypalOrderRepository = give(Repositories\PayPalOrder::class);
+
+            $paypalAuthorizationId = (string)$gatewayData['payPalAuthorizationId'];
+            $transactionId = $paypalOrderRepository->captureAuthorizedOrder($paypalAuthorizationId);
+        } else {
+            /** @var PayPalOrder $paypalOrder */
+            $paypalOrder = $gatewayData['paypalOrder'];
+            $payPalOrderId = $paypalOrder->id;
+            $transactionId = $paypalOrder->payment->id;
+        }
+
+        $command = PaymentComplete::make($transactionId)
             ->setPaymentNotes(
                 sprintf(
                     __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                    $paypalOrder->payment->id,
-                    $paypalOrder->id
+                    $transactionId,
+                    $payPalOrderId
                 )
             );
 
         give()->payment_meta->update_meta(
             $donation->id,
             '_give_order_id',
-            $paypalOrder->id
+            $payPalOrderId
         );
 
         return $command;

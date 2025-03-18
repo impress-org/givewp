@@ -2,15 +2,18 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\Framework\Exceptions\Primitives\Exception;
+use Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
+use PayPalCheckoutSdk\Orders\OrdersAuthorizeRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Orders\OrdersPatchRequest;
+use PayPalCheckoutSdk\Payments\AuthorizationsCaptureRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
@@ -103,15 +106,36 @@ class PayPalOrder
      *
      * @throws Exception|HttpException|IOException
      */
-    public function createOrder(array $array): string
+    public function createOrder(array $array, string $intent = 'CAPTURE'): string
     {
         $this->validateCreateOrderArguments($array);
 
         $request = new OrdersCreateRequest();
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-        $request->body = [
-            'intent' => 'CAPTURE',
+        $purchaseUnits = [
+            array_merge(
+                $this->getAmountParameters($array),
+                [
+                    'description' => $array['formTitle'],
+                    'payee' => [
+                        'email_address' => $this->merchantDetails->merchantId,
+                        'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
+                    ],
+                ]
+            ),
+        ];
+
+        if ($intent === 'CAPTURE') {
+            $purchaseUnits = array_merge($purchaseUnits, [
+                'payment_instruction' => [
+                    'disbursement_mode' => 'INSTANT',
+                ]
+            ]);
+        }
+
+        $requestBody = [
+            'intent' => $intent,
             'payment_source' => [
                 "paypal" => [
                     'name' => [
@@ -121,26 +145,14 @@ class PayPalOrder
                     "email_address" => $array['payer']['email'],
                 ],
             ],
-            'purchase_units' => [
-                array_merge(
-                    $this->getAmountParameters($array),
-                    [
-                        'description' => $array['formTitle'],
-                        'payee' => [
-                            'email_address' => $this->merchantDetails->merchantId,
-                            'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
-                        ],
-                        'payment_instruction' => [
-                            'disbursement_mode' => 'INSTANT',
-                        ],
-                    ]
-                ),
-            ],
+            'purchase_units' => $purchaseUnits,
             'application_context' => [
                 'shipping_preference' => 'NO_SHIPPING',
                 'user_action' => 'PAY_NOW',
             ],
         ];
+
+        $request->body = $requestBody;
 
         if (! empty($array['payer']['address'])) {
             $request->body['payment_source']['paypal']['address'] = $array['payer']['address'];
@@ -149,13 +161,44 @@ class PayPalOrder
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result->id;
         } catch (Exception $ex) {
-            logError(
+            PaymentGatewayLog::error(
                 'Create PayPal Commerce order failure',
-                sprintf(
+                [
+                    'response' => sprintf(
                     '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-                    print_r($request->body, true),
-                    print_r(json_decode($ex->getMessage(), true), true)
-                )
+                        print_r($request->body, true),
+                        print_r(json_decode($ex->getMessage(), true), true)
+                    )
+                ]
+            );
+
+            throw $ex;
+        }
+    }
+
+     /**
+     * Authorize order
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function authorizeOrder(string $orderId): string
+    {
+        $request = new OrdersAuthorizeRequest($orderId);
+
+        try {
+            $response = $this->paypalClient->getHttpClient()->execute($request)->result;
+
+            return $response->purchase_units[0]->payments->authorizations[0]->id;
+        } catch (Exception $ex) {
+             PaymentGatewayLog::error(
+                'Authorize PayPal Commerce order failure',
+                [
+                    'response' => sprintf(
+                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
+                        print_r($request->body, true),
+                        print_r(json_decode($ex->getMessage(), true), true)
+                    )
+                ]
             );
 
             throw $ex;
@@ -327,5 +370,29 @@ class PayPalOrder
         $orderDetails = (array)$this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
 
         return PayPalOrderModel::fromArray($orderDetails);
+    }
+
+    /**
+     * Capture authorized order
+     * @throws Exception
+     */
+    public function captureAuthorizedOrder(string $authorizationId): string
+    {
+        $request = new AuthorizationsCaptureRequest($authorizationId);
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
+        } catch (Exception|HttpException|IOException $exception) {
+            PaymentGatewayLog::error(
+                'Capture PayPal Commerce payment failure',
+                ['response' => sprintf(
+                    '<strong>Response</strong><pre>%1$s</pre>',
+                    print_r(json_decode($ex->getMessage(), true), true)
+                )
+                ]
+            );
+
+            throw $exception;
+        }
     }
 }
