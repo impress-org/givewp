@@ -32,13 +32,15 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donors)) : ?>
             <div class="givewp-campaign-donors-block__donate-button">
                 <?php
-                $params = [
+                if ( ! empty($_REQUEST['post']) || ! empty($_REQUEST['action']) || ! empty($_REQUEST['_locale'])) {
+                    echo "<button type='button' class='givewp-donation-form-modal__open'>$donateButtonText</button>";
+                }
+
+                echo (new BlockRenderController())->render([
                     'formId' => $campaign->defaultFormId,
                     'openFormButton' => $donateButtonText,
                     'formFormat' => 'modal',
-                ];
-
-                echo (new BlockRenderController())->render($params);
+                ]);
                 ?>
             </div>
         <?php
@@ -70,13 +72,17 @@ $blockInlineStyles = sprintf(
             if ($attributes['showButton']) : ?>
                 <div class="givewp-campaign-donors-block__empty-button">
                     <?php
-                    $params = [
-                        'formId' => $campaign->defaultFormId,
-                        'openFormButton' => __('Be the first donor', 'give'),
-                        'formFormat' => 'modal',
-                    ];
+                    $firstDonationButtonText = __('Be the first donor', 'give');
 
-                    echo (new BlockRenderController())->render($params);
+                    if ( ! empty($_REQUEST['post']) || ! empty($_REQUEST['action']) || ! empty($_REQUEST['_locale'])) {
+                        echo "<button type='button' class='givewp-donation-form-modal__open'>{$firstDonationButtonText}</button>";
+                    }
+
+                    echo (new BlockRenderController())->render([
+                        'formId' => $campaign->defaultFormId,
+                        'openFormButton' => $firstDonationButtonText,
+                        'formFormat' => 'modal',
+                    ]);
                     ?>
                 </div>
             <?php
