@@ -91,7 +91,7 @@ export default function ExistingUserIntroModal({isOpen, setOpen}: ExisingUserInt
                     className={styles.previewImage}
                     src={`${
                         getGiveCampaignsListTableWindowData().pluginUrl
-                    }/assets/src/images/admin/campaigns/campaigns-cover.jpg`}
+                    }/build/assets/dist/images/admin/campaigns/campaigns-cover.jpg`}
                     alt={'Campaign Preview Image'}
                 />
             </div>
