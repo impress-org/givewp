@@ -6,7 +6,6 @@ import {
     usePayPalHostedFields,
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
-import type {Gateway} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
@@ -15,6 +14,7 @@ import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';
 import authorizeOrder from './resources/js/authorizeOrder';
+import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
 
 (() => {
     /**
@@ -542,7 +542,7 @@ import authorizeOrder from './resources/js/authorizeOrder';
         );
     }
 
-    const payPalCommerceGateway: Gateway = {
+    const payPalCommerceGateway: PayPalCommerceGateway = {
         id: 'paypal-commerce',
         initialize() {
             payPalDonationsSettings = this.settings;
@@ -571,22 +571,17 @@ import authorizeOrder from './resources/js/authorizeOrder';
                 throw new Error('Invalid hosted fields');
             }
 
-            const approveOrderCallback = async (data) => {
-                const response = await fetch(
-                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=${data.orderId}&update_amount=${updateOrderAmount}`,
-                    {
-                        method: 'POST',
-                        body: getFormData(),
-                    }
+            const approveOrderCallback = async (data: HostedFieldsSubmitResponse) => {
+                const orderId = data.orderId;
+
+                const authorizationId = await authorizeOrder(
+                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_authorize_order&orderId=${orderId}`,
+                    payPalCommerceGateway,
+                    getFormData(),
+                    orderId
                 );
 
-                const {data: ajaxResponseData} = await response.json();
-
-                if (ajaxResponseData.hasOwnProperty('error')) {
-                    throw new Error(ajaxResponseData.error);
-                }
-
-                return {...data, payPalOrderId: data.orderId};
+                return {...data, payPalOrderId: data.orderId, payPalAuthorizationId: authorizationId};
             };
 
             try {
@@ -636,7 +631,7 @@ import authorizeOrder from './resources/js/authorizeOrder';
                     'form#give-next-gen button[type="submit"]'
                 );
 
-                if (submitButton) {
+                if (submitButton && !hostedField) {
                     submitButton.style.display = 'none';
                 }
 
