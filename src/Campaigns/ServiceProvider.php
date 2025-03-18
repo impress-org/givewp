@@ -24,11 +24,9 @@ use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\DonationForms\V2\DonationFormsAdminPage;
-use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -65,7 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignForms();
         $this->loadCampaignOptions();
         $this->addNewBadgeToMenu();
-        //$this->registerAsyncData();
+        $this->registerAsyncData();
     }
 
     /**
@@ -210,37 +208,28 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerAsyncData()
     {
         // Campaigns List View Columns
-        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class,
+        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminCampaignListView::class,
             'maybeChangeAchievedIconOpacity');
         add_action(
-            sprintf("givewp_list_table_cell_value_%s_before", GoalColumn::getId()),
-            function () {
-                $usePlaceholder = give(AdminCampaignListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
-
-                if ($usePlaceholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats', function ($stats) {
-                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
-
-                        return $stats;
-                    });
-                }
+            sprintf("givewp_list_table_cell_value_%s_content", GoalColumn::getId()),
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetGoalColumnAsync($value, $campaign->id);
             },
             10,
             2
         );
         add_filter(
             sprintf("givewp_list_table_cell_value_%s_content", DonationsCountColumn::getId()),
-            function ($value, DonationForm $form) {
-                return give(AdminCampaignListView::class)->maybeSetDonationsColumnAsync($value, $form->id);
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetDonationsColumnAsync($value, $campaign->id);
             },
             10,
             2
         );
         add_filter(
             sprintf("givewp_list_table_cell_value_%s_content", RevenueColumn::getId()),
-            function ($value, DonationForm $form) {
-                return give(AdminCampaignListView::class)->maybeSetRevenueColumnAsync($value, $form->id);
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetRevenueColumnAsync($value, $campaign->id);
             },
             10,
             2

@@ -21,22 +21,19 @@ class AdminCampaignListView
         return $achievedIconOpacity;
     }
 
-    /**
-     * @unreleased
-     */
-    public function maybeUsePlaceholderOnGoalAmountRaised(bool $usePlaceholder = false): bool
+    public function maybeSetGoalColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isGoalColumnAsync()) {
-            $usePlaceholder = true;
+            $value['actualFormatted'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
-        return $usePlaceholder;
+        return $value;
     }
 
     /**
      * @unreleased
      */
-    public function maybeSetDonationsColumnAsync($donationsCountCachedValue, $formId)
+    public function maybeSetDonationsColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isDonationColumnAsync()) {
             return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
@@ -44,15 +41,17 @@ class AdminCampaignListView
 
         /*if (AdminCampaignListViewOptions::useCachedMetaKeys()) {
             return $donationsCountCachedValue;
-        }*/
+        }
 
-        return AsyncDataHelpers::getFormDonationsCountValue($formId);
+        return AsyncDataHelpers::getFormDonationsCountValue($campaignId);*/
+
+        return $value;
     }
 
     /**
      * @unreleased
      */
-    public function maybeSetRevenueColumnAsync($revenueCachedValue, $formId)
+    public function maybeSetRevenueColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isRevenueColumnAsync()) {
             return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
@@ -60,10 +59,12 @@ class AdminCampaignListView
 
         /*if (AdminCampaignListViewOptions::useCachedMetaKeys()) {
             return $revenueCachedValue;
-        }*/
+        }
 
-        $revenue = AsyncDataHelpers::getFormRevenueValue($formId);
+        $revenue = AsyncDataHelpers::getFormRevenueValue($campaignId);
 
-        return give_currency_filter(give_format_amount($revenue));
+        return give_currency_filter(give_format_amount($revenue));*/
+
+        return $value;
     }
 }
