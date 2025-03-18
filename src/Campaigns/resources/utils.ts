@@ -1,6 +1,7 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 import type {GiveCampaignOptions} from '@givewp/campaigns/types';
+import apiFetch from '@wordpress/api-fetch';
 
 declare const window: {
     GiveCampaignOptions: GiveCampaignOptions;
@@ -32,6 +33,13 @@ export function useCampaignEntityRecord(campaignId?: number) {
  */
 export function getCampaignOptionsWindowData(): GiveCampaignOptions {
     return window.GiveCampaignOptions;
+}
+
+export function handleTooltipDismiss(id: string) {
+    return apiFetch({
+        url: window.GiveCampaignOptions.adminUrl + '/admin-ajax.php?action=' + id,
+        method: 'POST',
+    })
 }
 
 /**

@@ -26,7 +26,9 @@ class LoadCampaignOptions
                     : null,
                 'admin' => is_admin()
                     ? [
-                        'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', true),
+                        'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_interaction_notice', true),
+                        'showCampaignListTableNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_listtable_notice', true),
+                        'showCampaignFormNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_notice', true),
                     ]
                     : null,
             ]

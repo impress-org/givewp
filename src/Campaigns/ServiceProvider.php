@@ -117,9 +117,22 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
 
         // notices
-        add_action('wp_ajax_givewp_campaign_interaction_notice', static function () {
-            add_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', time(), true);
-        });
+        $notices = [
+            'givewp_campaign_interaction_notice',
+            'givewp_campaign_listtable_notice',
+            'givewp_campaign_form_notice',
+        ];
+
+        foreach ($notices as $name) {
+            add_action('wp_ajax_' . $name, static function () use ($name) {
+                add_user_meta(
+                    get_current_user_id(),
+                    $name,
+                    time(),
+                    true
+                );
+            });
+        }
     }
 
     /**
@@ -168,7 +181,7 @@ class ServiceProvider implements ServiceProviderInterface
          *
          * @see https://github.com/impress-org/givewp/pull/7483
          */
-        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
 

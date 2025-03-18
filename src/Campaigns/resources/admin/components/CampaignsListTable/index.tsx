@@ -8,6 +8,8 @@ import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
+import CampaignList from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignList';
+import {getCampaignOptionsWindowData, handleTooltipDismiss} from '@givewp/campaigns/utils';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -87,8 +89,9 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 export default function CampaignsListTable() {
+    const campaignWindowData = getCampaignOptionsWindowData();
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
-
+    const [showTooltip, setShowTooltip] = useState(campaignWindowData.admin.showCampaignListTableNotice);
     /**
      * Displays a blank slate for the Campaigns table.
      *
@@ -130,6 +133,11 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
+                {showTooltip && (
+                    <CampaignList
+                        handleClick={() => handleTooltipDismiss('givewp_campaign_listtable_notice').then(() => setShowTooltip(false))}
+                    />
+                )}
             </ListTablePage>
         </>
     );
