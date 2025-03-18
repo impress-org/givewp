@@ -1,13 +1,14 @@
-import {paragraph as icon} from '@wordpress/icons';
 import schema from './block.json';
 import Edit from './edit';
+import GiveIcon from '@givewp/components/GiveIcon';
 
 /**
  * @unreleased
  */
 const settings = {
-    icon,
+    icon: <GiveIcon color="grey" />,
     edit: Edit,
+    save: () => null,
 };
 
 export default {
