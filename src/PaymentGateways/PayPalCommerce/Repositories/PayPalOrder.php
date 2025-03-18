@@ -193,7 +193,7 @@ class PayPalOrder
                 ]
             );
 
-            throw $ex;
+            throw $exception;
         }
     }
 
