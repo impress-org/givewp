@@ -50,7 +50,6 @@ export default function CampaignDetailsSettingsTab() {
 
                 <div className={styles.rightColumn}>
                     <div className={styles.sectionField}>
-                        <img src={campaignPageImage} alt={__('Enable campaign page for your campaign.', 'give')} />
                         <div className={styles.toggle}>
                             <ToggleControl
                                 label={__('Enable campaign page for your campaign.', 'give')}
