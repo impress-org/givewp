@@ -330,7 +330,7 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
         const props: PayPalButtonsComponentProps = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
-            forceReRender: [amount, feeRecovery, firstName, lastName, email, currency],
+            forceReRender: [donationType, amount, feeRecovery, firstName, lastName, email, currency],
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
