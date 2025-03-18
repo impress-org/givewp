@@ -185,15 +185,11 @@ class PayPalOrder
             $response = $this->paypalClient->getHttpClient()->execute($request)->result;
 
             return $response->purchase_units[0]->payments->authorizations[0]->id;
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
              PaymentGatewayLog::error(
                 'Authorize PayPal Commerce order failure',
                 [
-                    'response' => sprintf(
-                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-                        print_r($request->body, true),
-                        print_r(json_decode($ex->getMessage(), true), true)
-                    )
+                    'response' => $exception->getMessage()
                 ]
             );
 
