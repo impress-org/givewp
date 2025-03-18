@@ -6,9 +6,8 @@ export default async function authorizeOrder(
     formData: FormData,
     orderId: string
 ) {
-    console.log('authorizeOrder', {orderId});
-
     formData.append('orderId', orderId);
+
     const response = await fetch(url, {
         method: 'POST',
         body: formData,
