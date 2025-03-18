@@ -73,6 +73,7 @@ class FormBuilderViewModelTest extends TestCase
                 ],
                 'formFieldManagerData' => [
                     'isInstalled' => defined('GIVE_FFM_VERSION'),
+                    'isLicensed' => true,
                 ],
                 'emailTemplateTags' => $viewModel->getEmailTemplateTags(),
                 'emailNotifications' => array_map(static function ($notification) {

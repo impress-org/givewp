@@ -18,6 +18,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
+use Give_License;
 
 class FormBuilderViewModel
 {
@@ -66,6 +67,7 @@ class FormBuilderViewModel
             ],
             'formFieldManagerData' => [
                 'isInstalled' => defined('GIVE_FFM_VERSION'),
+                'isLicensed' => (bool) Give_License::get_license_by_plugin_dirname('give-form-field-manager'),
             ],
             'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
