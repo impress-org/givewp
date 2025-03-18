@@ -14,6 +14,7 @@ use Give\Helpers\Language;
 class BlockRenderController
 {
     /**
+     * @unreleased Return a mocked button when inside the editor.
      * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
@@ -22,9 +23,12 @@ class BlockRenderController
      */
     public function render(array $attributes)
     {
-        // return early if we're still inside the editor to avoid server side effects
+        // return early with a mocked button if we're still inside the editor to avoid server side effects
         if (!empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale'])) {
-            return null;
+            return sprintf(
+                '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
+                $attributes['openFormButton']
+            );
         }
 
         $blockAttributes = BlockAttributes::fromArray($attributes);
