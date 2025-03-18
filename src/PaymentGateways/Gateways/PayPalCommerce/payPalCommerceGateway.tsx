@@ -56,6 +56,8 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
 
     let eventTickets;
 
+    let submitButton;
+
     /**
      * @since 3.12.2
      */
@@ -395,8 +397,6 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
-                const donationFormWithSubmitButton = Array.from(document.forms).pop();
-                const submitButton: HTMLButtonElement = donationFormWithSubmitButton.querySelector('[type="submit"]');
                 const submitButtonDefaultText = submitButton.textContent;
                 submitButton.textContent = __('Waiting for PayPal...', 'give');
                 submitButton.disabled = true;
@@ -625,12 +625,9 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
+            submitButton = window.givewp.form.hooks.useFormSubmitButton();
 
             useEffect(() => {
-                const submitButton = document.querySelector<HTMLButtonElement>(
-                    'form#give-next-gen button[type="submit"]'
-                );
-
                 if (submitButton && !hostedField) {
                     submitButton.style.display = 'none';
                 }
