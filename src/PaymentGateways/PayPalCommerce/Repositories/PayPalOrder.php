@@ -142,7 +142,7 @@ class PayPalOrder
                         "given_name" => $array['payer']['firstName'],
                         "surname" => $array['payer']['lastName'],
                     ],
-                    "email_address" => $array['payer']['email'],
+                    "email_address" => !empty($array['payer']['address']) ? $array['payer']['address'] :  $array['payer']['email'],
                 ],
             ],
             'purchase_units' => $purchaseUnits,
@@ -154,25 +154,17 @@ class PayPalOrder
 
         $request->body = $requestBody;
 
-        if (! empty($array['payer']['address'])) {
-            $request->body['payment_source']['paypal']['address'] = $array['payer']['address'];
-        }
-
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result->id;
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
             PaymentGatewayLog::error(
                 'Create PayPal Commerce order failure',
                 [
-                    'response' => sprintf(
-                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-                        print_r($request->body, true),
-                        print_r(json_decode($ex->getMessage(), true), true)
-                    )
+                    'response' => $exception->getMessage()
                 ]
             );
 
-            throw $ex;
+            throw $exception;
         }
     }
 
@@ -385,10 +377,7 @@ class PayPalOrder
         } catch (Exception|HttpException|IOException $exception) {
             PaymentGatewayLog::error(
                 'Capture PayPal Commerce payment failure',
-                ['response' => sprintf(
-                    '<strong>Response</strong><pre>%1$s</pre>',
-                    print_r(json_decode($ex->getMessage(), true), true)
-                )
+                    ['response' => $exception->getMessage()
                 ]
             );
 
