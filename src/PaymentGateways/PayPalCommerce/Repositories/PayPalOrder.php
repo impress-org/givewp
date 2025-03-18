@@ -113,18 +113,16 @@ class PayPalOrder
         $request = new OrdersCreateRequest();
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-        $purchaseUnits = [
-            array_merge(
-                $this->getAmountParameters($array),
-                [
-                    'description' => $array['formTitle'],
-                    'payee' => [
-                        'email_address' => $this->merchantDetails->merchantId,
-                        'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
-                    ],
-                ]
-            ),
-        ];
+        $purchaseUnits = array_merge(
+            $this->getAmountParameters($array),
+            [
+                'description' => $array['formTitle'],
+                'payee' => [
+                    'email_address' => $this->merchantDetails->merchantId,
+                    'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
+                ],
+            ]
+        );
 
         if ($intent === 'CAPTURE') {
             $purchaseUnits = array_merge($purchaseUnits, [
@@ -142,15 +140,21 @@ class PayPalOrder
                         "given_name" => $array['payer']['firstName'],
                         "surname" => $array['payer']['lastName'],
                     ],
-                    "email_address" => !empty($array['payer']['address']) ? $array['payer']['address'] :  $array['payer']['email'],
+                    "email_address" => $array['payer']['email'],
                 ],
             ],
-            'purchase_units' => $purchaseUnits,
+            'purchase_units' => [
+                $purchaseUnits
+            ],
             'application_context' => [
                 'shipping_preference' => 'NO_SHIPPING',
                 'user_action' => 'PAY_NOW',
             ],
         ];
+
+        if (!empty($array['payer']['address'])){
+            $requestBody['payment_source']['paypal']['address'] = $array['payer']['address'];
+        }
 
         $request->body = $requestBody;
 
