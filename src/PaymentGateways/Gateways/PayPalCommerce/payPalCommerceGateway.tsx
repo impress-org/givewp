@@ -1,13 +1,12 @@
 import {
-    PayPalButtons,
+    PayPalButtons, PayPalButtonsComponentProps,
     PayPalHostedField,
     PayPalHostedFieldsProvider,
     PayPalScriptProvider,
     usePayPalHostedFields,
-    usePayPalScriptReducer,
+    usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
 import {__, sprintf} from '@wordpress/i18n';
-import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
 import {PayPalCommerceGateway, PayPalSubscriber} from './types';
@@ -50,7 +49,7 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
     let postalCode;
 
     let updateOrderAmount = false;
-    let orderCreated = false;
+    let orderCreating = false;
 
     let currency;
 
@@ -305,7 +304,7 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
         eventTickets = useWatch({name: 'event-tickets'});
 
         useEffect(() => {
-            if (orderCreated) {
+            if (orderCreating) {
                 updateOrderAmount = true;
             }
         }, [amount, eventTickets]);
@@ -328,10 +327,10 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
         } = useFormContext();
         const gateway = window.givewp.gateways.get('paypal-commerce') as PayPalCommerceGateway;
 
-        const props = {
+        const props: PayPalButtonsComponentProps = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
-            forceReRender: debounce(() => [amount, feeRecovery, firstName, lastName, email, currency], 500),
+            forceReRender: [amount, feeRecovery, firstName, lastName, email, currency],
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
@@ -349,7 +348,7 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
                     // Scroll to the top of the form.
                     // Add this moment we do not have a way to scroll to the error message.
                     // In the future we can add a way to scroll to the error message and remove this code.
-                    document.querySelector('#give-next-gen button[type="submit"]').scrollIntoView({behavior: 'smooth'});
+                    submitButton.scrollIntoView({behavior: 'smooth'});
 
                     return actions.reject();
                 }
@@ -393,16 +392,27 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
                     return actions.reject();
                 }
 
-                orderCreated = true;
+                orderCreating = true;
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
+                  //TODO: figure out what to do with updateOrderAmount
+                const orderId = data.orderID;
+                const subscriptionId = data?.subscriptionID;
+
                 const submitButtonDefaultText = submitButton.textContent;
                 submitButton.textContent = __('Waiting for PayPal...', 'give');
                 submitButton.disabled = true;
 
-                //TODO: figure out what to do with updateOrderAmount
-                const orderId = data.orderID;
+                if (subscriptionId && donationType === 'subscription') {
+                    payPalSubscriptionId = subscriptionId;
+
+                    submitButton.disabled = false;
+                    submitButton.textContent = submitButtonDefaultText;
+                    submitButton.click();
+                    return;
+                }
+
                 if (orderId) {
                     try {
                         const authorizationId = await authorizeOrder(
@@ -418,15 +428,14 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
                         console.error(error);
                         submitButton.disabled = false;
                         submitButton.textContent = submitButtonDefaultText;
-                        throw new Error(__('Failed to authorize payment', 'give'));
+                        setError(
+                            'FORM_ERROR',
+                            {
+                                message: __('Failed to authorize payment', 'give'),
+                            },
+                            {shouldFocus: true}
+                        );
                     }
-                }
-
-                if (donationType === 'subscription') {
-                    submitButton.disabled = false;
-                    submitButton.textContent = submitButtonDefaultText;
-                    submitButton.click();
-                    return;
                 }
 
                 submitButton.disabled = false;
@@ -437,10 +446,8 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
         };
 
         return donationType === 'subscription' ? (
-            // @ts-ignore
             <PayPalButtons {...props} createSubscription={createSubscriptionHandler} />
         ) : (
-            // @ts-ignore
             <PayPalButtons {...props} createOrder={createOrderHandler} />
         );
     };
@@ -553,17 +560,17 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {
+             if (payPalSubscriptionId) {
+                return {
+                    payPalSubscriptionId: payPalSubscriptionId,
+                };
+            }
+
             if (payPalOrderId && payPalAuthorizationId) {
                 // If order ID already set by payment buttons then return early.
                 return {
                     payPalOrderId: payPalOrderId,
                     payPalAuthorizationId: payPalAuthorizationId
-                };
-            }
-
-            if (payPalSubscriptionId) {
-                return {
-                    payPalSubscriptionId: payPalSubscriptionId,
                 };
             }
 
