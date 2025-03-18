@@ -18,6 +18,7 @@ use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give_License;
 
 class FormBuilderViewModelTest extends TestCase
 {
@@ -73,7 +74,7 @@ class FormBuilderViewModelTest extends TestCase
                 ],
                 'formFieldManagerData' => [
                     'isInstalled' => defined('GIVE_FFM_VERSION'),
-                    'isLicensed' => true,
+                    'isLicensed' => (bool)Give_License::get_license_by_plugin_dirname('give-form-field-manager'),
                 ],
                 'emailTemplateTags' => $viewModel->getEmailTemplateTags(),
                 'emailNotifications' => array_map(static function ($notification) {
