@@ -220,7 +220,7 @@ abstract class Endpoint implements RestRoute
     /**
      * Check permissions
      *
-     * @unreleased change permissions to view_give_reports
+     * @since 3.22.2 change permissions to view_give_reports
      *
      * @param WP_REST_Request $request Current request.
      *
