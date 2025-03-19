@@ -30,15 +30,16 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donations)) : ?>
             <div class="givewp-campaign-donations-block__donate-button">
                 <?php
-                if ( ! empty($_REQUEST['post']) || ! empty($_REQUEST['action']) || ! empty($_REQUEST['_locale'])) {
-                    echo "<button type='button' class='givewp-donation-form-modal__open'>$donateButtonText</button>";
-                }
-
-                echo (new BlockRenderController())->render([
+                $blockRender = (new BlockRenderController())->render([
                     'formId' => $campaign->defaultFormId,
                     'openFormButton' => $donateButtonText,
                     'formFormat' => 'modal',
                 ]);
+
+                echo $blockRender ?? sprintf(
+                    '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
+                    $donateButtonText
+                );
                 ?>
             </div>
         <?php
@@ -67,16 +68,17 @@ $blockInlineStyles = sprintf(
                 <div class="givewp-campaign-donations-block__empty-button">
                     <?php
                     $firstDonationButtonText = __('Be the first', 'give');
-                    
-                    if ( ! empty($_REQUEST['post']) || ! empty($_REQUEST['action']) || ! empty($_REQUEST['_locale'])) {
-                        echo "<button type='button' class='givewp-donation-form-modal__open'>{$firstDonationButtonText}</button>";
-                    }
 
-                    echo (new BlockRenderController())->render([
+                    $blockRender = (new BlockRenderController())->render([
                         'formId' => $campaign->defaultFormId,
                         'openFormButton' => $firstDonationButtonText,
                         'formFormat' => 'modal',
                     ]);
+
+                    echo $blockRender ?? sprintf(
+                        '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
+                        $firstDonationButtonText
+                    );
                     ?>
                 </div>
             <?php
