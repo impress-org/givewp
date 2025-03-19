@@ -20,7 +20,7 @@ const goalInputAttributesLookup = (currencyFormatter: ReturnType<typeof amountFo
         label: __('How much do you want to raise?', 'give'),
         description: __('Set the target amount for your campaign to raise.', 'give'),
         help: sprintf(
-            __('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
+            __('Your goal progress is measured by the total amount of funds raised e.g. %s of %s raised.', 'give'),
             currencyFormatter.format(500),
             currencyFormatter.format(1000)
         ),
@@ -29,13 +29,13 @@ const goalInputAttributesLookup = (currencyFormatter: ReturnType<typeof amountFo
     donations: {
         label: __('How many donations?', 'give'),
         description: __('Set the target number of donations for your campaign.', 'give'),
-        help: __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give'),
+        help: __('Your goal progress is measured by the number of donations. e.g. 1 of 5 donations.', 'give'),
         placeholder: __('e.g. 100 donations', 'give'),
     },
     donors: {
         label: __('How many donors?', 'give'),
         description: __('Set the target number of donors for your campaign.', 'give'),
-        help: __('Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.', 'give'),
+        help: __('Your goal progress is measured by the number of donors. e.g. 10 of 50 donors have given.', 'give'),
         placeholder: __('e.g. 100 donors', 'give'),
     },
     amountFromSubscriptions: {
@@ -45,7 +45,7 @@ const goalInputAttributesLookup = (currencyFormatter: ReturnType<typeof amountFo
             'give'
         ),
         help: __('Only the first donation amount of a recurring donation is counted toward the goal.', 'give'),
-        placeholder: sprintf(__('eg. %s', 'give'), currencyFormatter.format(2000)),
+        placeholder: sprintf(__('e.g. %s', 'give'), currencyFormatter.format(2000)),
     },
     subscriptions: {
         label: __('How many recurring donations?', 'give'),
