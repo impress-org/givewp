@@ -6,16 +6,17 @@ import {__, sprintf} from '@wordpress/i18n';
 /**
  * Internal Dependencies
  */
-import {GoalInputAttributes} from '@givewp/campaigns/admin/components/CampaignFormModal/types';
+import type {GoalInputAttributes} from '@givewp/campaigns/admin/components/CampaignFormModal/types';
+import type {GoalType} from '@givewp/campaigns/types';
 import {amountFormatter} from '@givewp/campaigns/utils';
 
 /**
  * @unreleased
  */
-export function getGoalInputAttributes(goalType: string, currency: string): GoalInputAttributes | undefined {
+export function getGoalInputAttributes(goalType: GoalType, currency: string): GoalInputAttributes | undefined {
     const currencyFormatter = amountFormatter(currency);
 
-    const attributes: {[selectedGoalType: string]: GoalInputAttributes} = {
+    const attributes: {[selectedGoalType in GoalType]: GoalInputAttributes} = {
         amount: {
             label: __('How much do you want to raise?', 'give'),
             description: __('Set the target amount for your campaign to raise.', 'give'),
