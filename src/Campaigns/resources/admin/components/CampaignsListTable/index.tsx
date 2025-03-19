@@ -92,6 +92,8 @@ export default function CampaignsListTable() {
     const campaignWindowData = getCampaignOptionsWindowData();
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
     const [showTooltip, setShowTooltip] = useState(campaignWindowData.admin.showCampaignListTableNotice);
+    const dismissTooltip = () => handleTooltipDismiss('givewp_campaign_listtable_notice').then(() => setShowTooltip(false));
+
     /**
      * Displays a blank slate for the Campaigns table.
      *
@@ -133,11 +135,7 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
-                {showTooltip && (
-                    <CampaignList
-                        handleClick={() => handleTooltipDismiss('givewp_campaign_listtable_notice').then(() => setShowTooltip(false))}
-                    />
-                )}
+                {showTooltip && <CampaignList handleClick={dismissTooltip} />}
             </ListTablePage>
         </>
     );

@@ -15,14 +15,12 @@ import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice'
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 import {getCampaignOptionsWindowData, handleTooltipDismiss, useCampaignEntityRecord} from '@givewp/campaigns/utils';
-import CampaignFormNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignForm';
 
 import styles from './CampaignDetailsPage.module.scss';
 
 interface Show {
     contextMenu?: boolean;
     confirmationModal?: boolean;
-    formTooltip?: boolean;
 }
 
 const StatusBadge = ({status}: {status: string}) => {
@@ -42,13 +40,12 @@ const StatusBadge = ({status}: {status: string}) => {
 };
 
 export default function CampaignsDetailsPage({campaignId}) {
-    const {adminUrl, admin} = getCampaignOptionsWindowData();
+    const {adminUrl} = getCampaignOptionsWindowData();
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false,
-        formTooltip: admin.showCampaignFormNotice,
+        confirmationModal: false
     });
 
     const dispatch = useDispatch('givewp/campaign-notifications');
@@ -273,11 +270,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 )}
                             </div>
                         </div>
-                        {show.formTooltip && (
-                            <CampaignFormNotice
-                                handleClick={() => handleTooltipDismiss('givewp_campaign_form_notice').then(() => setShow({formTooltip: false}))}
-                            />
-                        )}
                     </header>
                     <Tabs />
                     <ArchiveCampaignDialog
