@@ -121,6 +121,7 @@ class ServiceProvider implements ServiceProviderInterface
             'givewp_campaign_interaction_notice',
             'givewp_campaign_listtable_notice',
             'givewp_campaign_form_notice',
+            'givewp_campaign_settings_notice'
         ];
 
         foreach ($notices as $name) {
