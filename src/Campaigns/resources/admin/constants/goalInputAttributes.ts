@@ -9,6 +9,9 @@ import {__, sprintf} from '@wordpress/i18n';
 import {GoalInputAttributes} from '@givewp/campaigns/admin/components/CampaignFormModal/types';
 import {amountFormatter} from '@givewp/campaigns/utils';
 
+/**
+ * @unreleased
+ */
 export function getGoalInputAttributes(goalType: string, currency: string): GoalInputAttributes | undefined {
     const currencyFormatter = amountFormatter(currency);
 
