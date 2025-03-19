@@ -24,7 +24,7 @@ class AdminCampaignListView
     public function maybeSetGoalColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isGoalColumnAsync()) {
-            $value['actualFormatted'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+            $value['actualFormatted'] = AsyncDataHelpers::getSkeletonPlaceholder('2rem');
         }
 
         return $value;
@@ -36,7 +36,7 @@ class AdminCampaignListView
     public function maybeSetDonationsColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isDonationColumnAsync()) {
-            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('5rem');
         }
 
         return $value;
@@ -48,7 +48,7 @@ class AdminCampaignListView
     public function maybeSetRevenueColumnAsync($value, $campaignId)
     {
         if (AdminCampaignListViewOptions::isRevenueColumnAsync()) {
-            return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
+            return AsyncDataHelpers::getSkeletonPlaceholder('2rem');
         }
 
         return $value;
