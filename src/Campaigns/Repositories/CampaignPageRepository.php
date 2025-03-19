@@ -4,6 +4,7 @@ namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\CampaignPage;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -58,6 +59,7 @@ class CampaignPageRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $campaignPage->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
+        $status = $campaignPage->status ?? CampaignPageStatus::PUBLISH();
         $campaign = $campaignPage->campaign();
 
         DB::query('START TRANSACTION');
@@ -71,7 +73,7 @@ class CampaignPageRepository
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateUpdatedFormatted,
                     'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
-                    'post_status' => 'publish', // TODO: Update to value object
+                    'post_status' => $status->getValue(),
                     'post_type' => 'give_campaign_page',
                     'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign),
                 ]);
@@ -79,6 +81,7 @@ class CampaignPageRepository
             $campaignPage->id = DB::last_insert_id();
             $campaignPage->createdAt = $dateCreated;
             $campaignPage->updatedAt = $dateUpdated;
+            $campaignPage->status = $status;
 
             DB::table('postmeta')
                 ->insert([
@@ -110,6 +113,7 @@ class CampaignPageRepository
 
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
+        $status = $campaignPage->status ?? CampaignPageStatus::PUBLISH();
 
         DB::query('START TRANSACTION');
 
@@ -119,11 +123,12 @@ class CampaignPageRepository
                 ->update([
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
-                    'post_status' => 'publish', // TODO: Update to value object
+                    'post_status' => $status->getValue(),
                     'post_type' => 'give_campaign_page',
                 ]);
 
             $campaignPage->updatedAt = $now;
+            $campaignPage->status = $status;
 
             DB::table('postmeta')
                 ->where('post_id', $campaignPage->id)
