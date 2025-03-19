@@ -18,42 +18,42 @@ export function getGoalInputAttributes(goalType: string, currency: string): Goal
     const attributes: {[selectedGoalType: string]: GoalInputAttributes} = {
         amount: {
             label: __('How much do you want to raise?', 'give'),
-            description: __('Set the target amount your campaign should raise.', 'give'),
-            placeholder: sprintf(__('eg. %s', 'give'), currencyFormatter.format(2000)),
+            description: __('Set the target amount for your campaign to raise.', 'give'),
+            placeholder: sprintf(__('e.g. %s', 'give'), currencyFormatter.format(2000)),
         },
         donations: {
-            label: __('How many donations do you need?', 'give'),
-            description: __('Set the target number of donations your campaign should bring in.', 'give'),
-            placeholder: __('eg. 100 donations', 'give'),
+            label: __('How many donations?', 'give'),
+            description: __('Set the target number of donations for your campaign.', 'give'),
+            placeholder: __('e.g. 100 donations', 'give'),
         },
         donors: {
-            label: __('How many donors do you need?', 'give'),
-            description: __('Set the target number of donors your campaign should bring in.', 'give'),
-            placeholder: __('eg. 100 donors', 'give'),
+            label: __('How many donors?', 'give'),
+            description: __('Set the target number of donors for your campaign.', 'give'),
+            placeholder: __('e.g. 100 donors', 'give'),
         },
         amountFromSubscriptions: {
             label: __('How much do you want to raise?', 'give'),
             description: __(
-                'Set the target recurring amount your campaign should raise. One-time donations do not count.',
+                'Set the target recurring amount for your campaign to raise. One-time donations do not count.',
                 'give'
             ),
             placeholder: sprintf(__('eg. %s', 'give'), currencyFormatter.format(2000)),
         },
         subscriptions: {
-            label: __('How many recurring donations do you need?', 'give'),
+            label: __('How many recurring donations?', 'give'),
             description: __(
-                'Set the target number of recurring donations your campaign should bring in. One-time donations do not count.',
+                'Set the target number of recurring donations for your campaign. One-time donations do not count.',
                 'give'
             ),
-            placeholder: __('eg. 100 subscriptions', 'give'),
+            placeholder: __('e.g. 100 subscriptions', 'give'),
         },
         donorsFromSubscriptions: {
-            label: __('How many recurring donors do you need?', 'give'),
+            label: __('How many recurring donors?', 'give'),
             description: __(
-                'Set the target number of recurring donors your campaign should bring in. One-time donations do not count.',
+                'Set the target number of recurring donors for your campaign. One-time donations do not count.',
                 'give'
             ),
-            placeholder: __('eg. 100 subscribers', 'give'),
+            placeholder: __('e.g. 100 subscribers', 'give'),
         },
     };
 
