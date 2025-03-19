@@ -52,7 +52,7 @@ class GoalColumn extends ModelColumn
         $template = '
             <div
                 role="progressbar"
-                aria-labelledby="giveDonationFormsProgressBar-%1$d"
+                aria-labelledby="giveCampaignsProgressBar-%1$d"
                 aria-valuenow="%2$s"
                 aria-valuemin="0"
                 aria-valuemax="100"
@@ -60,7 +60,7 @@ class GoalColumn extends ModelColumn
             >
                 <span style="width: %2$s%%"></span>
             </div>
-            <div id="giveDonationFormsProgressBar-%1$d">
+            <div id="giveCampaignsProgressBar-%1$d">
                 <span class="goal">%3$s</span>%4$s %5$s
             </div>
         ';

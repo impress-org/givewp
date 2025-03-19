@@ -70,6 +70,7 @@ const legacyStyleEntry = {
     'assets/dist/css/give-donation-forms-load-async-data': srcPath(
         'DonationForms/AsyncData/resources/loadAsyncData.scss'
     ),
+    'assets/dist/css/give-campaigns-load-async-data': srcPath('Campaigns/AsyncData/resources/loadAsyncData.scss'),
     'assets/dist/css/design-system/foundation': path.resolve(
         __dirname,
         'node_modules/@givewp/design-system-foundation/css/foundation.css'
@@ -103,6 +104,7 @@ const legacyScriptsEntry = {
     'assets/dist/js/give-donation-summary': srcPath('DonationSummary/resources/js/summary.js'),
     'assets/dist/js/admin-upsell-addons-page': srcPath('Promotions/InPluginUpsells/resources/js/addons-admin-page.js'),
     'assets/dist/js/give-donation-forms-load-async-data': srcPath('DonationForms/AsyncData/resources/loadAsyncData.js'),
+    'assets/dist/js/give-campaigns-load-async-data': srcPath('Campaigns/AsyncData/resources/loadAsyncData.js'),
     'assets/dist/js/give-admin-donation-forms': srcPath('DonationForms/V2/resources/admin-donation-forms.tsx'),
     'assets/dist/js/give-edit-v2form': srcPath('DonationForms/V2/resources/edit-v2form.tsx'),
     'assets/dist/js/give-add-v2form': srcPath('DonationForms/V2/resources/add-v2form.tsx'),

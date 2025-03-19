@@ -2,7 +2,7 @@
 
 namespace Give\Campaigns\AsyncData\AdminCampaignListView;
 
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
+use Give\Campaigns\AsyncData\AsyncDataHelpers;
 
 /**
  * @unreleased

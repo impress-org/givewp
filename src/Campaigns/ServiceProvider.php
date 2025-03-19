@@ -12,6 +12,8 @@ use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
+use Give\Campaigns\AsyncData\Actions\GetAsyncCampaignDataForListView;
+use Give\Campaigns\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\Campaigns\AsyncData\AdminCampaignListView\AdminCampaignListView;
 use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
 use Give\Campaigns\ListTable\Columns\GoalColumn;
@@ -207,6 +209,18 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerAsyncData()
     {
+        // Load assets on the admin campaigns page
+        $isAdminCampaignsPage = isset($_GET['page']) && ! isset($_GET['id']) && 'give-campaigns' === $_GET['page'];
+        if ($isAdminCampaignsPage) {
+            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
+        }
+
+        // Async ajax request
+        Hooks::addAction('wp_ajax_givewp_get_campaign_async_data_for_list_view',
+            GetAsyncCampaignDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_campaign_async_data_for_list_view',
+            GetAsyncCampaignDataForListView::class);
+
         // Campaigns List View Columns
         Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminCampaignListView::class,
             'maybeChangeAchievedIconOpacity');
