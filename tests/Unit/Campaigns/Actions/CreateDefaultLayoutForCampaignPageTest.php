@@ -35,6 +35,7 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
 <!-- wp:givewp/campaign-donors {"campaignId":"1"} /-->
 HTML;
 
-        $this->assertEquals($expectedLayout, (new CreateDefaultLayoutForCampaignPage)($campaign->toArray()));
+        $this->assertEquals($expectedLayout,
+            (new CreateDefaultLayoutForCampaignPage)($campaign->id, $campaign->shortDescription));
     }
 }

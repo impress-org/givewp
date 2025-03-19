@@ -23,12 +23,12 @@ class CreateDefaultLayoutForCampaignPage
     /**
      * @unreleased
      */
-    public function __invoke(array $campaign): string
+    public function __invoke(int $campaignId, string $shortDescription): string
     {
-        $layout = array_map(function($block) use ($campaign) {
+        $layout = array_map(function ($block) use ($campaignId, $shortDescription) {
             return str_replace(
                 ['%id%', '%description%'],
-                [$campaign['id'], $campaign['shortDescription']],
+                [$campaignId, $shortDescription],
                 $block
             );
         }, $this->blocks);

@@ -70,7 +70,8 @@ class CampaignPageRepository
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => 'publish',
                 'post_type' => 'give_campaign_page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign->toArray()),
+                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign->id,
+                    $campaign->shortDescription),
             ]);
 
             if ( ! $campaignPage->id) {
