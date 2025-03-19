@@ -39,12 +39,6 @@ class AdminCampaignListView
             return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
 
-        /*if (AdminCampaignListViewOptions::useCachedMetaKeys()) {
-            return $donationsCountCachedValue;
-        }
-
-        return AsyncDataHelpers::getFormDonationsCountValue($campaignId);*/
-
         return $value;
     }
 
@@ -56,14 +50,6 @@ class AdminCampaignListView
         if (AdminCampaignListViewOptions::isRevenueColumnAsync()) {
             return AsyncDataHelpers::getSkeletonPlaceholder('1rem');
         }
-
-        /*if (AdminCampaignListViewOptions::useCachedMetaKeys()) {
-            return $revenueCachedValue;
-        }
-
-        $revenue = AsyncDataHelpers::getFormRevenueValue($campaignId);
-
-        return give_currency_filter(give_format_amount($revenue));*/
 
         return $value;
     }
