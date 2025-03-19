@@ -400,7 +400,7 @@ class CampaignRepository
                 ['end_date', 'endDate'],
                 ['date_created', 'createdAt']
             )
-            // Exclude Peer to Peer campaign type until it is fully supported.
-            ->where('campaigns.campaign_type', CampaignType::PEER_TO_PEER, '!=');
+            // Select only core campaign
+            ->where('campaigns.campaign_type', CampaignType::CORE);
     }
 }
