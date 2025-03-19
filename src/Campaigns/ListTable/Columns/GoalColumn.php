@@ -46,7 +46,7 @@ class GoalColumn extends ModelColumn
         ], $model, $this);
 
         if (empty($content->actualFormatted)) {
-            $content = new CampaignGoalData($model);
+            $content = self::getCampaignGoalData($model);
         }
 
         $template = '
@@ -83,5 +83,13 @@ class GoalColumn extends ModelColumn
                 __('Goal achieved!', 'give')
             )
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getCampaignGoalData(Campaign $campaign): CampaignGoalData
+    {
+        return new CampaignGoalData($campaign);
     }
 }

@@ -3,8 +3,9 @@
 namespace Give\Campaigns\AsyncData\Actions;
 
 use Give\Campaigns\AsyncData\AdminCampaignListView\AdminCampaignListViewOptions;
-use Give\Campaigns\CampaignDonationQuery;
-use Give\Campaigns\DataTransferObjects\CampaignGoalData;
+use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
+use Give\Campaigns\ListTable\Columns\GoalColumn;
+use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\Models\Campaign;
 
 /**
@@ -43,32 +44,19 @@ class GetAsyncCampaignDataForListView
         $amountRaised = 0;
         $percentComplete = 0;
         if ($this->isAsyncProgressBar() && $campaign->goal > 0) {
-            $goalStats = new CampaignGoalData($campaign);
-            $amountRaised = $goalStats->actualFormatted;
-            $percentComplete = $goalStats->percentage;
+            $goalData = GoalColumn::getCampaignGoalData($campaign);
+            $amountRaised = $goalData->actualFormatted;
+            $percentComplete = $goalData->percentage;
         }
 
         $donationsCount = 0;
         if ($this->isAsyncDonationCount()) {
-            $query = new CampaignDonationQuery($campaign);
-            $totalDonations = $query->countDonations();
-
-            $donationsCount = $totalDonations > 0
-                ? sprintf(
-                    _n(
-                        '%1$s donation',
-                        '%1$s donations',
-                        $totalDonations,
-                        'give'
-                    ),
-                    $totalDonations
-                ) : __('No donations', 'give');
+            $donationsCount = DonationsCountColumn::getTotalDonationsLabel($campaign);
         }
 
         $revenue = $amountRaised;
         if (0 === $revenue && $this->isAsyncRevenue()) {
-            $query = new CampaignDonationQuery($campaign);
-            $revenue = give_currency_filter(give_format_amount($query->sumIntendedAmount()));
+            $revenue = RevenueColumn::getFormattedRevenue($campaign);
         }
 
         $response = [

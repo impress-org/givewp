@@ -39,8 +39,7 @@ class RevenueColumn extends ModelColumn
         $content = apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", '', $model, $this);
 
         if (empty($content)) {
-            $query = new CampaignDonationQuery($model);
-            $content = give_currency_filter(give_format_amount($query->sumIntendedAmount()));
+            $content = self::getFormattedRevenue($model);
         }
 
         return sprintf(
@@ -49,5 +48,15 @@ class RevenueColumn extends ModelColumn
             __('Visit form reports page', 'give'),
             $content
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getFormattedRevenue(Campaign $campaign): string
+    {
+        $query = new CampaignDonationQuery($campaign);
+
+        return give_currency_filter(give_format_amount($query->sumIntendedAmount()));
     }
 }
