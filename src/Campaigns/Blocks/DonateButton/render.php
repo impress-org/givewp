@@ -12,7 +12,8 @@ use Give\DonationForms\V2\Models\DonationForm;
 
 if (!isset($attributes['campaignId']) ||
     !($campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])) ||
-    !DonationForm::find($campaign->defaultFormId)->status->isPublished()
+    !$campaign->defaultForm() ||
+    !$campaign->defaultForm()->status->isPublished()
 ) {
     return;
 }
