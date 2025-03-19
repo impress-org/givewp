@@ -17,8 +17,7 @@ import {
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
-import {CampaignGoalInputAttributes} from '@givewp/campaigns/admin/constants/goalInputAttributes';
-import type {GoalType} from '@givewp/campaigns/types';
+import {CampaignGoalInputAttributes, isValidGoalType} from '../../constants/goalInputAttributes';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -121,7 +120,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
             image: campaign?.image ?? '',
-            goalType: campaign?.goalType ?? '',
+            goalType: campaign?.goalType ?? 'amount',
             goal: campaign?.goal ?? null,
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
@@ -154,7 +153,10 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         return null;
     };
 
-    const goalInputAttribute = new CampaignGoalInputAttributes(selectedGoalType as GoalType, currency);
+    const goalInputAttribute =
+        selectedGoalType && isValidGoalType(selectedGoalType)
+            ? new CampaignGoalInputAttributes(selectedGoalType, currency)
+            : new CampaignGoalInputAttributes('amount', currency);
 
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
 
