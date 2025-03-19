@@ -28,7 +28,7 @@
         },
         "sortBy": {
             "type": "string",
-            "default": "top-donations"
+            "default": "recent-donations"
         },
         "donationsPerPage": {
             "type": "number",
