@@ -1,11 +1,12 @@
 import {
-    PayPalButtons, PayPalButtonsComponentProps,
+    PayPalButtons,
     PayPalHostedField,
     PayPalHostedFieldsProvider,
     PayPalScriptProvider,
     usePayPalHostedFields,
     usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
+import type {PayPalButtonsComponentProps, PayPalHostedFieldsComponentProps} from '@paypal/react-paypal-js';
 import {__, sprintf} from '@wordpress/i18n';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
@@ -13,7 +14,11 @@ import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';
 import authorizeOrder from './resources/js/authorizeOrder';
-import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
+import type {
+    CreateSubscriptionRequestBody,
+    HostedFieldsSubmitResponse,
+    PayPalButtonsComponentOptions
+} from '@paypal/paypal-js';
 
 (() => {
     /**
@@ -191,12 +196,11 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
         );
     };
 
-    const createOrderHandler = async (): Promise<string> => {
+    const createOrderHandler: PayPalHostedFieldsComponentProps['createOrder'] = async (): Promise<string> => {
         return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalDonationsSettings, getFormData());
     };
 
-    const createSubscriptionHandler = async (data, actions) => {
-        // eslint-disable-next-line
+    const createSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
         const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, {
             method: 'POST',
             body: getFormData(),
@@ -232,11 +236,19 @@ import type {HostedFieldsSubmitResponse} from '@paypal/paypal-js';
             };
         }
 
+        const createSubscriptionPayload: CreateSubscriptionRequestBody = {
+            plan_id: responseJson.data.id,
+            subscriber: subscriberData,
+        };
+
+        if (responseJson.data?.user_action) {
+            createSubscriptionPayload.application_context = {
+                user_action: responseJson.data.user_action
+            }
+        }
+
         return actions.subscription
-            .create({
-                plan_id: responseJson.data.id,
-                subscriber: subscriberData,
-            })
+            .create(createSubscriptionPayload)
             .then((orderId) => {
                 return (payPalSubscriptionId = orderId);
             });
