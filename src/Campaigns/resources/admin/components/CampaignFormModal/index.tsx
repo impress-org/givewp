@@ -17,7 +17,8 @@ import {
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
-import {getGoalInputAttributes} from '../../constants/goalInputAttributes';
+import {CampaignGoalInputAttributes} from '@givewp/campaigns/admin/constants/goalInputAttributes';
+import type {GoalType} from '@givewp/campaigns/types';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -153,7 +154,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         return null;
     };
 
-    const goalInputAttribute = getGoalInputAttributes(selectedGoalType, currency);
+    const goalInputAttribute = new CampaignGoalInputAttributes(selectedGoalType as GoalType, currency);
 
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
 
@@ -332,21 +333,21 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         {selectedGoalType && (
                             <div className="givewp-campaigns__form-row">
                                 <label htmlFor="title">
-                                    {goalInputAttribute.label} {requiredAsterisk}
+                                    {goalInputAttribute.getLabel()} {requiredAsterisk}
                                 </label>
-                                <span>{goalInputAttribute.description}</span>
+                                <span>{goalInputAttribute.getDescription()}</span>
                                 {selectedGoalType === 'amount' || selectedGoalType === 'amountFromSubscriptions' ? (
                                     <Currency
                                         name="goal"
                                         currency={currency}
-                                        placeholder={goalInputAttribute.placeholder}
+                                        placeholder={goalInputAttribute.getPlaceholder()}
                                     />
                                 ) : (
                                     <input
                                         type="number"
                                         {...register('goal', {valueAsNumber: true})}
                                         aria-invalid={errors.goal ? 'true' : 'false'}
-                                        placeholder={goalInputAttribute.placeholder}
+                                        placeholder={goalInputAttribute.getPlaceholder()}
                                     />
                                 )}
                                 {errors.goal && (
