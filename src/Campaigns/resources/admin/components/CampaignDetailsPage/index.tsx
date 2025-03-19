@@ -231,7 +231,10 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 <button
                                     className={`button button-secondary ${styles.campaignButtonDots}`}
-                                    onClick={() => setShow({contextMenu: !show.contextMenu})}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShow({contextMenu: !show.contextMenu});
+                                    }}
                                 >
                                     <DotsIcons />
                                 </button>
