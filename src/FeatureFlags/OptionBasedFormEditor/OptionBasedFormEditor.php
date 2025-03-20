@@ -44,8 +44,8 @@ class OptionBasedFormEditor implements FeatureFlags
                                 <p>%4$s</p>
                             </div>
                         </div>',
-            esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/help-circle.svg'),
-            esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/give-settings-gateways-v2.jpg'),
+            esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/help-circle.svg'),
+            esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/give-settings-gateways-v2.jpg'),
             __('Only for Option-Based Form Editor', 'give'),
             __('Uses the traditional settings options for creating and customizing a donation form.',
                 'give')

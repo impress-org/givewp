@@ -4,8 +4,10 @@ namespace Unit\Donations\Routes;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\Routes\RegisterDonationRoutes;
 use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -17,6 +19,16 @@ use WP_REST_Server;
 class GetDonationRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function setUp()
+    {
+        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+
+        parent::setUp();
+    }
 
     /**
      * @unreleased

@@ -24,6 +24,7 @@ export type CampaignFormInputs = {
 export type GoalInputAttributes = {
     label: string;
     description: string;
+    help: string;
     placeholder: string;
 };
 

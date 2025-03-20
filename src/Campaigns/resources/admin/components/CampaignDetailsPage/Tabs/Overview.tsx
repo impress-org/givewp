@@ -6,7 +6,7 @@ import CampaignFormNotice from '@givewp/campaigns/admin/components/CampaignDetai
 /**
  * @unreleased
  */
-export default () => {
+export default function CampaignDetailsOverviewTab() {
     const campaignWindowData = getCampaignOptionsWindowData();
     const [showTooltip, setShowTooltip] = useState(campaignWindowData.admin.showCampaignFormNotice);
     const dismissTooltip = () => handleTooltipDismiss('givewp_campaign_form_notice').then(() => setShowTooltip(false))
