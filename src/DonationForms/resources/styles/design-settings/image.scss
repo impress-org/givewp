@@ -56,10 +56,8 @@
                     padding: 0;
                     width: 100%;
                     gap: 0;
+                    background-color: var(--givewp-primary-color);
 
-                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-                    }
 
                     .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                         color: var(--givewp-grey-900);
@@ -86,9 +84,7 @@
                 }
 
                 &--center {
-                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-                    }
+                    background-color: var(--givewp-primary-color);
 
                     .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
                         color: var(--givewp-grey-900);
