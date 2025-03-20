@@ -197,7 +197,7 @@ import type {
     };
 
     const createOrderHandler: PayPalHostedFieldsComponentProps['createOrder'] = async (): Promise<string> => {
-        return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalDonationsSettings, getFormData());
+        return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalCommerceGateway, getFormData());
     };
 
     const createSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
