@@ -4,20 +4,8 @@ div.media-modal.wp-core-ui {
 
 .givewp-media-library-control-wrapper {
     &.is-disabled {
-        pointer-events: none;
-
-        .givewp-media-library-drop-area,
-        .givewp-media-library-control__image {
+        .givewp-media-library-drop-area {
             opacity: 0.7;
-        }
-
-        button {
-            background: #f6f7f7;
-            border-color: #dcdcde;
-            box-shadow: none;
-            color: #a7aaad;
-            cursor: default;
-            text-shadow: none;
         }
     }
 }
@@ -37,6 +25,10 @@ div.media-modal.wp-core-ui {
         border: initial;
         padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
         border-radius: var(--givewp-rounded-4);
+
+        &:disabled {
+            cursor: not-allowed;
+        }
     }
 
     p, svg {
@@ -72,7 +64,6 @@ div.media-modal.wp-core-ui {
                 pointer-events: none;
             }
         }
-
     }
 
     svg {
@@ -134,6 +125,12 @@ div.media-modal.wp-core-ui {
             &:hover {
                 background-color: var(--givewp-red-25);
             }
+
+            &:disabled {
+                background-color: var(--givewp-red-50);
+                border-color: currentColor;
+                color: var(--givewp-red-200);
+            }
         }
 
         &--update {
@@ -142,6 +139,12 @@ div.media-modal.wp-core-ui {
 
             &:hover {
                 background-color: var(--givewp-neutral-50);
+            }
+
+            &:disabled {
+                background-color: var(--givewp-neutral-50);
+                border-color: currentColor;
+                color: var(--givewp-neutral-300);
             }
         }
     }

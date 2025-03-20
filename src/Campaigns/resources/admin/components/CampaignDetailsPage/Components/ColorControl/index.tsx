@@ -64,6 +64,7 @@ function ColorControl({name, disabled = false, className}: { name: string; disab
                             })}
                             onClick={toggleVisible}
                             aria-label={__('Edit color', 'give')}
+                            disabled={disabled}
                         >
                             <EditIcon />
                             {__('Edit', 'give')}
