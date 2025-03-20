@@ -6,6 +6,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {__, sprintf} from '@wordpress/i18n';
+import classnames from 'classnames';
 import './styles.scss';
 
 type MediaLibrary = {
@@ -51,7 +52,7 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
                 frame.open();
                 return;
             }
-            
+
             onChange(attachment.url, attachment.alt);
         });
 
@@ -68,22 +69,8 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
         openMediaLibrary(event);
     };
 
-    if (value && disabled) {
-        return (
-            <img
-                className={'givewp-media-library-control__image'}
-                src={value}
-                alt={__('uploaded image', 'give')}
-            />
-        )
-    }
-
-    if (disabled) {
-        return;
-    }
-
     return (
-        <div id={id}>
+        <div id={id} className={classnames('givewp-media-library-control-wrapper', {'is-disabled': disabled})}>
             {value ? (
                 <div className={'givewp-media-library-control'}>
                     <button className={'givewp-media-library-control__reset'} onClick={resetImage}>

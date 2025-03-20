@@ -2,6 +2,26 @@ div.media-modal.wp-core-ui {
     z-index: 99999999999999;
 }
 
+.givewp-media-library-control-wrapper {
+    &.is-disabled {
+        pointer-events: none;
+
+        .givewp-media-library-drop-area,
+        .givewp-media-library-control__image {
+            opacity: 0.7;
+        }
+
+        button {
+            background: #f6f7f7;
+            border-color: #dcdcde;
+            box-shadow: none;
+            color: #a7aaad;
+            cursor: default;
+            text-shadow: none;
+        }
+    }
+}
+
 .givewp-media-library-drop-area {
     text-align: center;
     padding: var(--givewp-spacing-8) 0;

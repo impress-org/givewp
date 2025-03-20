@@ -3,6 +3,23 @@
     display: flex;
     gap: var(--givewp-spacing-4);
 
+    &.is-disabled {
+        pointer-events: none;
+
+        .givewp-color-control__indicator {
+            opacity: 0.7;
+        }
+
+        button {
+            background: #f6f7f7;
+            border-color: #dcdcde;
+            box-shadow: none;
+            color: #a7aaad;
+            cursor: default;
+            text-shadow: none;
+        }
+    }
+
     &__indicator {
         align-items: center;
         display: flex;
