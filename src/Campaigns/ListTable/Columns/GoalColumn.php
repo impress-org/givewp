@@ -2,8 +2,8 @@
 
 namespace Give\Campaigns\ListTable\Columns;
 
-use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignsData;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -11,6 +11,7 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class GoalColumn extends ModelColumn
 {
+    protected $useData = true;
     protected $sortColumn = 'goal';
 
     /**
@@ -36,7 +37,12 @@ class GoalColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $goalData = new CampaignGoalData($model);
+        /**
+         * @var CampaignsData $campaignsData
+         */
+        $campaignsData = $this->getListTableData();
+
+        $goalData = $campaignsData->getGoalData($model);
 
         $template = '
             <div
@@ -57,16 +63,16 @@ class GoalColumn extends ModelColumn
         return sprintf(
             $template,
             $model->id,
-            $goalData->percentage,
-            $goalData->actualFormatted,
+            $goalData['percentage'],
+            $goalData['actualFormatted'],
             sprintf(
                 ' %s %s',
                 __('of', 'give'),
-                $goalData->goalFormatted
+                $goalData['goalFormatted']
             ),
             sprintf(
                 '<span style="opacity:%1$s" class="goalProgress--achieved"><img src="%2$s" alt="%3$s" />%4$s</span>',
-                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goalData->percentage >= 100 ? 1 : 0),
+                apply_filters('givewp_list_table_goal_progress_achieved_opacity', $goalData['percentage'] >= 100 ? 1 : 0),
                 GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/star-icon.svg',
                 __('Goal achieved icon', 'give'),
                 __('Goal achieved!', 'give')

@@ -3,8 +3,10 @@
 namespace Give\Campaigns\Routes;
 
 use Give\API\RestRoute;
+use Give\Campaigns\CampaignDonationListTableQuery;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignsData;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -100,9 +102,11 @@ class GetCampaignsListTable implements RestRoute
         $campaignsCount = $this->getTotalCampaignsCount();
         $pageCount = (int)ceil($campaignsCount / $request->get_param('perPage'));
 
-        $this->listTable->items($campaigns, $this->request->get_param('locale') ?? '');
-        $items = $this->listTable->getItems();
+        $this->listTable
+            ->setData($this->getCampaignsData($campaigns))
+            ->items($campaigns, $this->request->get_param('locale') ?? '');
 
+        $items = $this->listTable->getItems();
 
         return new WP_REST_Response(
             [
@@ -171,7 +175,7 @@ class GetCampaignsListTable implements RestRoute
         }
 
         if ($status === 'any') {
-            $query->whereNotLike('status', 'archived');
+            $query->where('status', 'archived', '!=');
         } elseif ($status === 'inactive') {
             $query->where('status', 'archived');
         } elseif ($status) {
@@ -193,5 +197,42 @@ class GetCampaignsListTable implements RestRoute
             esc_html__("You don't have permission to view Campaigns", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
+    }
+
+
+    /**
+     * Get data for selected campaigns
+     *
+     * @unreleased
+     *
+     * @param Campaign[] $campaigns
+     *
+     * @return CampaignsData
+     */
+    private function getCampaignsData(array $campaigns): CampaignsData
+    {
+        $ids = array_map(function (Campaign $campaign) {
+            return $campaign->id;
+        }, $campaigns);
+
+        $core = CampaignDonationListTableQuery::core($ids);
+
+        $data = [
+            'donors' => $core->collectDonors(),
+            'donations' => $core->collectDonations(),
+            'amounts' => $core->collectIntendedAmounts(),
+        ];
+
+        if (defined('GIVE_RECURRING_VERSION')) {
+            $subscriptions = CampaignDonationListTableQuery::subscriptions($ids);
+
+            $data = [
+                'subscription_donors' => $subscriptions->collectDonors(),
+                'subscription_donations' => $subscriptions->collectDonations(),
+                'subscription_amounts' => $subscriptions->collectInitialAmounts(),
+            ];
+        }
+
+        return CampaignsData::fromArray($data);
     }
 }
