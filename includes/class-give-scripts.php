@@ -93,15 +93,15 @@ class Give_Scripts {
 	public function register_styles() {
 
 		// Global WP-admin.
-		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin-global' . $this->direction . '.css', [], GIVE_VERSION );
+		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-global' . $this->direction . '.css', [], GIVE_VERSION );
 
 		// GiveWP-only WP-admin.
-		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', [], GIVE_VERSION );
+		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'build/assets/dist/css/admin' . $this->direction . '.css', [], GIVE_VERSION );
 
 		// WP-admin: plugin page.
 		wp_register_style(
 			'plugin-deactivation-survey-css',
-			GIVE_PLUGIN_URL . 'assets/dist/css/plugin-deactivation-survey.css',
+			GIVE_PLUGIN_URL . 'build/assets/dist/css/plugin-deactivation-survey.css',
 			[],
 			GIVE_VERSION
 		);
@@ -121,7 +121,7 @@ class Give_Scripts {
         // WP-Admin.
         EnqueueScript::make(
             'give-admin-scripts',
-            'assets/dist/js/admin.js'
+            'build/assets/dist/js/admin.js'
         )
             ->dependencies(
                 [
@@ -137,7 +137,7 @@ class Give_Scripts {
 		// WP-admin: plugin page.
 		wp_register_script(
 			'plugin-deactivation-survey-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/plugin-deactivation-survey.js',
+			GIVE_PLUGIN_URL . 'build/assets/dist/js/plugin-deactivation-survey.js',
 			[ 'jquery' ],
 			GIVE_VERSION,
 			true
@@ -146,14 +146,14 @@ class Give_Scripts {
 		// WP-admin: add-ons page.
 		wp_register_script(
 			'admin-add-ons-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
+			GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-add-ons.js',
 			[ 'jquery' ],
 			GIVE_VERSION,
 			true
 		);
 
         // Frontend.
-        $giveScript = EnqueueScript::make('give', 'assets/dist/js/give.js')
+        $giveScript = EnqueueScript::make('give', 'build/assets/dist/js/give.js')
                                    ->registerTranslations();
 
         if (self::$scripts_footer) {
@@ -428,10 +428,10 @@ class Give_Scripts {
 		<style type="text/css" media="screen">
 			@font-face {
 				font-family: 'give-icomoon';
-				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?ngjl88'; ?>');
-				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?#iefixngjl88'; ?>') format('embedded-opentype'),
-				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
-				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
+				src: url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?ngjl88'; ?>');
+				src: url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.eot?#iefixngjl88'; ?>') format('embedded-opentype'),
+				url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
+				url('<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
 				font-weight: normal;
 				font-style: normal;
 			}
@@ -570,7 +570,7 @@ class Give_Scripts {
 		$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give' . $this->direction . '.css';
 		$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
 		$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give' . $this->direction . '.css';
-		$give_plugin_style_sheet    = trailingslashit( GIVE_PLUGIN_DIR ) . 'assets/dist/css/' . $file;
+		$give_plugin_style_sheet    = trailingslashit( GIVE_PLUGIN_DIR ) . 'build/assets/dist/css/' . $file;
 		$uri                        = false;
 
 		/**
@@ -594,7 +594,7 @@ class Give_Scripts {
 				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . $file;
 			}
 		} elseif ( file_exists( $give_plugin_style_sheet ) ) {
-			$uri = trailingslashit( GIVE_PLUGIN_URL ) . 'assets/dist/css/' . $file;
+			$uri = trailingslashit( GIVE_PLUGIN_URL ) . 'build/assets/dist/css/' . $file;
 		}
 
 		return apply_filters( 'give_get_stylesheet_uri', $uri );
@@ -613,7 +613,7 @@ class Give_Scripts {
     {
         wp_enqueue_style(
             'give-blocks-css',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-editor.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-block-editor.css',
             [],
             GIVE_VERSION
         );

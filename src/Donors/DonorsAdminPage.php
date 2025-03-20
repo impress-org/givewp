@@ -73,7 +73,7 @@ class DonorsAdminPage
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
         ];
 
-        EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
+        EnqueueScript::make('give-admin-donors', 'build/assets/dist/js/give-admin-donors.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonors', $data)->enqueue();

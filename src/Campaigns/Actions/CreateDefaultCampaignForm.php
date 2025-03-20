@@ -23,7 +23,7 @@ class CreateDefaultCampaignForm
     {
         $defaultCampaignForm = DonationForm::create([
             'title' => $campaign->title,
-            'status' => DonationFormStatus::DRAFT(),
+            'status' => DonationFormStatus::PUBLISHED(),
             'settings' => FormSettings::fromArray([
                 'enableDonationGoal' => true,
                 'goalAmount' => $campaign->goal,

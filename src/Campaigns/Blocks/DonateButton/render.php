@@ -3,15 +3,17 @@
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
+use Give\DonationForms\V2\Models\DonationForm;
 
 /**
  * @var array    $attributes
  * @var Campaign $campaign
  */
 
-if (
-    ! isset($attributes['campaignId'])
-    || ! $campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])
+if (!isset($attributes['campaignId']) ||
+    !($campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])) ||
+    !$campaign->defaultForm() ||
+    !$campaign->defaultForm()->status->isPublished()
 ) {
     return;
 }

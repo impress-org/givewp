@@ -56,8 +56,6 @@ class ServiceProvider implements ServiceProviderInterface
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
         ]);
-
-        $this->registerRoutes();
     }
 
     /**
@@ -130,13 +128,5 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
             echo (new DonationDetailsController())->show($donationId);
         });
-    }
-
-    /**
-     * @unreleased
-     */
-    private function registerRoutes()
-    {
-        Hooks::addAction('rest_api_init', Routes\RegisterDonationRoutes::class);
     }
 }
