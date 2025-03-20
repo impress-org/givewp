@@ -56,7 +56,6 @@ export type PayPalCommerceGatewaySettings = {
     sdkOptions: {
         "data-namespace": string,
         "client-id": string,
-        "merchant-id": string,
         "components": string,
         "disable-funding": string,
         "intent": string,
