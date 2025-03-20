@@ -7,7 +7,7 @@ import {CampaignBlockType} from './types';
 import CampaignSelector from '../shared/components/CampaignSelector';
 import CampaignCard from '../shared/components/CampaignCard';
 import {BlockNotice} from '@givewp/form-builder-library';
-import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, updateUserNoticeOptions, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 
 const styles = {
@@ -73,8 +73,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                     <span
                         style={styles['close']}
                         onClick={() => {
-                            fetch(campaignWindowData.adminUrl + '/admin-ajax.php?action=givewp_campaign_interaction_notice', {method: 'POST'})
-                                .then(() => setShowNotification(false))
+                            updateUserNoticeOptions('givewp_campaign_interaction_notice').then(() => setShowNotification(false))
                         }}>
                         <CloseIcon />
                     </span>
