@@ -19,6 +19,7 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
      */
     public function testCampaignPageHasDefaultLayout()
     {
+        /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create([
             'id' => 1,
             'shortDescription' => 'This is the start of the story',
@@ -34,6 +35,7 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
 <!-- wp:givewp/campaign-donors {"campaignId":"1"} /-->
 HTML;
 
-        $this->assertEquals($expectedLayout, (new CreateDefaultLayoutForCampaignPage)($campaign));
+        $this->assertEquals($expectedLayout,
+            (new CreateDefaultLayoutForCampaignPage)($campaign->id, $campaign->shortDescription));
     }
 }

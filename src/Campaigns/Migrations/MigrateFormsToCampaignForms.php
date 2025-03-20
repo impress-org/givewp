@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Migrations;
 
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
@@ -58,6 +59,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->select(
                 ['forms.ID', 'id'],
                 ['forms.post_title', 'title'],
+                ['forms.post_name', 'name'], // unique slug
                 ['forms.post_status', 'status'],
                 ['forms.post_date', 'createdAt']
             )
@@ -139,6 +141,7 @@ class MigrateFormsToCampaignForms extends Migration
     {
         $formId = $formData->id;
         $formStatus = $formData->status;
+        $formName = $formData->name;
         $formTitle = $formData->title;
         $formCreatedAt = $formData->createdAt;
         $isV3Form = ! is_null($formData->settings);
@@ -148,6 +151,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_type' => 'core',
+                'enable_campaign_page' => false,
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
@@ -166,6 +170,35 @@ class MigrateFormsToCampaignForms extends Migration
         $campaignId = DB::last_insert_id();
 
         $this->addCampaignFormRelationship($formId, $campaignId);
+
+        DB::table('posts')
+            ->insert([
+                'post_title' => $formTitle,
+                'post_name' => $formName, // unique slug
+                'post_date' => $formCreatedAt,
+                'post_date_gmt' => get_gmt_from_date($formCreatedAt),
+                'post_modified' => $formCreatedAt,
+                'post_modified_gmt' => get_gmt_from_date($formCreatedAt),
+                'post_status' => 'publish',
+                'post_type' => 'give_campaign_page',
+                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignId,
+                    $formSettings->formExcerpt),
+            ]);
+
+        $campaignPageId = DB::last_insert_id();
+
+        DB::table('postmeta')
+            ->insert([
+                'post_id' => $campaignPageId,
+                'meta_key' => 'campaignId',
+                'meta_value' => $campaignId,
+            ]);
+
+        DB::table('give_campaigns')
+            ->where('id', $campaignId)
+            ->update([
+                'campaign_page_id' => $campaignPageId,
+            ]);
     }
 
     /**
