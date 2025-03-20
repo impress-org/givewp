@@ -36,10 +36,7 @@ div.media-modal.wp-core-ui {
     }
 }
 
-
 .givewp-media-library-control {
-    cursor: pointer;
-
     & > button:not(svg + button) {
         min-height: 160px;
 
@@ -49,6 +46,7 @@ div.media-modal.wp-core-ui {
     }
 
     &__reset {
+        cursor: pointer;
         position: relative;
         display: flex;
         background: transparent;
@@ -58,11 +56,19 @@ div.media-modal.wp-core-ui {
         color: var(--givewp-shades-white);
         border: none;
 
-        &:hover {
+        &:hover:not(:disabled) {
             svg {
                 visibility: visible;
                 pointer-events: none;
             }
+
+            img {
+                filter: brightness(80%);
+            }
+        }
+
+        &:disabled {
+            cursor: not-allowed;
         }
     }
 
@@ -82,11 +88,6 @@ div.media-modal.wp-core-ui {
         object-position: center;
         transition: filter 0.3s ease;
         border-radius: var(--givewp-rounded-4);
-        cursor: pointer;
-
-        &:hover {
-            filter: brightness(80%); /* Adjust the brightness percentage for the desired tint */
-        }
     }
 
     &__button {
