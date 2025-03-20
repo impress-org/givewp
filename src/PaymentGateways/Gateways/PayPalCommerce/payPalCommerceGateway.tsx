@@ -19,6 +19,7 @@ import type {
     HostedFieldsSubmitResponse,
     PayPalButtonsComponentOptions
 } from '@paypal/paypal-js';
+import updateOrder from './resources/js/updateOrder';
 
 (() => {
     /**
@@ -53,13 +54,8 @@ import type {
     let addressLine2;
     let postalCode;
 
-    let updateOrderAmount = false;
-    let orderCreating = false;
-
     let currency;
-
     let eventTickets;
-
     let submitButton;
 
     /**
@@ -315,12 +311,6 @@ import type {
 
         eventTickets = useWatch({name: 'event-tickets'});
 
-        useEffect(() => {
-            if (orderCreating) {
-                updateOrderAmount = true;
-            }
-        }, [amount, eventTickets]);
-
         return children;
     };
 
@@ -404,13 +394,24 @@ import type {
                     return actions.reject();
                 }
 
-                orderCreating = true;
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
-                  //TODO: figure out what to do with updateOrderAmount
                 const orderId = data.orderID;
                 const subscriptionId = data?.subscriptionID;
+
+                // Check if the order amount is different from the form amount.
+                const order = await actions.order.get();
+                const orderAmount = Number(order.purchase_units[0].amount.value);
+                const formAmount = Number(getAmount());
+
+                // If the order amount is different from the form amount, update the order amount.
+                if (orderAmount !== formAmount) {
+                    // Update the order amount to match the form amount.
+                    const formData = getFormData();
+                    formData.append('orderId', orderId);
+                    await updateOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_authorized_order_amount`, formData);
+                }
 
                 const submitButtonDefaultText = submitButton.textContent;
                 submitButton.textContent = __('Waiting for PayPal...', 'give');

@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 use Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -294,6 +295,40 @@ class PayPalOrder
     }
 
     /**
+     * @unreleased
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function updateAuthorizedOrderAmount(string $orderId, Money $amount)
+    {
+        $patchRequest = new OrdersPatchRequest($orderId);
+
+        $patchRequest->body = [
+            [
+                'op' => 'replace',
+                'path' => "/purchase_units/@reference_id=='default'/amount",
+                'value' => [
+                    'value' => $amount->formatToDecimal(),
+                    'currency_code' => $amount->getCurrency(),
+                ]
+            ],
+        ];
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($patchRequest)->result->id;
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error(
+                'Update PayPal Commerce order failure',
+                [
+                    'response' => $exception->getMessage()
+                ]
+            );
+
+            throw $exception;
+        }
+    }
+
+    /**
      * Refunds a processed payment
      *
      * @since 2.9.0
@@ -362,6 +397,17 @@ class PayPalOrder
         $orderDetails = (array)$this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
 
         return PayPalOrderModel::fromArray($orderDetails);
+    }
+
+    /**
+     * Get order details from paypal commerce.
+     *
+     * @unreleased
+     */
+    public function getAuthorizedOrder(string $orderId)
+    {
+        $orderDetailRequest = new OrdersGetRequest($orderId);
+        return $this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
     }
 
     /**
