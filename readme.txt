@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.22.1
+Stable tag: 3.22.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -266,6 +266,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 3.22.2: March 19th, 2025 =
+* Fix: Resolved an issue with PayPal hiding the donate button when hosted fields are available
+* Security: Improved the permission check for a GiveWP reporting request (CVE-2025-2331)
+
 = 3.22.1: March 7th, 2025 =
 * Security: Added a permission check to a GiveWP reporting request (CVE-2025-2025)
 
