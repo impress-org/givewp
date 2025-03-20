@@ -215,6 +215,8 @@ class DonationFormViewModel
         );
 
         $formDesign = $this->getFormDesign($this->designId());
+        $shouldLoadGoalData = $this->formSettings->showHeader && $this->formSettings->enableDonationGoal;
+        $shouldLoadStatsData = $this->formSettings->showHeader && $this->formSettings->enableDonationGoal;
 
         return [
             'donateUrl' => $donateUrl,
@@ -227,8 +229,8 @@ class DonationFormViewModel
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData(),
+                'goal' => $shouldLoadGoalData ? $donationFormGoalData->toArray() : [],
+                'stats' => $shouldLoadStatsData ? $this->formStatsData() : [],
                 'design' => $formDesign ? [
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
