@@ -588,7 +588,7 @@ import updateOrder from './resources/js/updateOrder';
             }
 
             if (!validateHostedFields()) {
-                throw new Error('Invalid hosted fields');
+                throw new Error('Invalid PayPal card fields');
             }
 
             const approveOrderCallback = async (data: HostedFieldsSubmitResponse) => {

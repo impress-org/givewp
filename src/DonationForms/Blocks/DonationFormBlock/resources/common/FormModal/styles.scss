@@ -7,6 +7,7 @@
         width: 100%;
         display: flex;
         background-color: rgba(0, 0, 0, 0.35);
+        z-index: 100;
     }
 
     &__dialog {
