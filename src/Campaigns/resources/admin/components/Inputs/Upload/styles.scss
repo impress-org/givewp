@@ -131,6 +131,7 @@ div.media-modal.wp-core-ui {
                 background-color: var(--givewp-red-50);
                 border-color: currentColor;
                 color: var(--givewp-red-200);
+                cursor: not-allowed;
             }
         }
 
@@ -146,6 +147,7 @@ div.media-modal.wp-core-ui {
                 background-color: var(--givewp-neutral-50);
                 border-color: currentColor;
                 color: var(--givewp-neutral-300);
+                cursor: not-allowed;
             }
         }
     }
