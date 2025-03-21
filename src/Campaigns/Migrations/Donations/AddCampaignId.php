@@ -122,12 +122,12 @@ class AddCampaignId extends BatchMigration
      */
     public function getBatchItemsAfter($lastId): ?array
     {
-        $item = $this->query()
-            ->select('MIN(id) AS first_id, MAX(id) AS last_id')
-            ->where('ID', $lastId, '>')
-            ->orderBy('ID')
-            ->limit($this->getBatchSize())
-            ->get();
+        $item = DB::get_row(sprintf(
+            'SELECT MIN(ID) AS first_id, MAX(ID) AS last_id FROM (SELECT ID FROM %1s WHERE ID > %d ORDER BY ID ASC LIMIT %d) as batch',
+            DB::prefix('posts'),
+            $lastId,
+            $this->getBatchSize()
+        ));
 
         if ( ! $item) {
             return null;
