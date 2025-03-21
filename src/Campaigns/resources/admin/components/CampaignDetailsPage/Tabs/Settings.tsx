@@ -1,17 +1,17 @@
-import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {getCampaignOptionsWindowData, handleTooltipDismiss} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from '@givewp/form-builder-library';
 import type {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 import {CampaignGoalInputAttributes} from '@givewp/campaigns/admin/constants/goalInputAttributes';
-import CampaignSettingsNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignSettings';
+import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
+import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 
@@ -19,9 +19,7 @@ const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
  * @unreleased
  */
 export default function CampaignDetailsSettingsTab() {
-    const campaignWindowData = getCampaignOptionsWindowData();
-    const [showTooltip, setShowTooltip] = useState(campaignWindowData.admin.showCampaignSettingsNotice);
-    const dismissTooltip = () => handleTooltipDismiss('givewp_campaign_settings_notice').then(() => setShowTooltip(false));
+    const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_settings_notice');
 
     const {
         register,
@@ -258,7 +256,16 @@ export default function CampaignDetailsSettingsTab() {
                 </div>
             </div>
 
-            {showTooltip && <CampaignSettingsNotice handleClick={dismissTooltip} />}
+            {showTooltip && (
+                <CampaignNotice
+                    title={__('Campaign Settings', 'give')}
+                    description={__('You can make changes to your campaign page, campaign details, campaign goal, and campaign theme. Publish your campaign when you’re done with your changes.', 'give')}
+                    linkHref="#"
+                    linkText={__('Learn more about campaign and form settings', 'give')}
+                    handleDismiss={dismissTooltip}
+                    type={'campaignSettings'}
+                />
+            )}
         </>
     );
 };

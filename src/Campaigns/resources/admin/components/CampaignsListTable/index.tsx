@@ -8,8 +8,8 @@ import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
-import CampaignList from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignList';
-import {getCampaignOptionsWindowData, handleTooltipDismiss} from '@givewp/campaigns/utils';
+import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
+import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -89,10 +89,8 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 export default function CampaignsListTable() {
-    const campaignWindowData = getCampaignOptionsWindowData();
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
-    const [showTooltip, setShowTooltip] = useState(campaignWindowData.admin.showCampaignListTableNotice);
-    const dismissTooltip = () => handleTooltipDismiss('givewp_campaign_listtable_notice').then(() => setShowTooltip(false));
+    const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_listtable_notice');
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -135,7 +133,16 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
-                {showTooltip && <CampaignList handleClick={dismissTooltip} />}
+                {showTooltip && (
+                    <CampaignNotice
+                        title={__('Campaign List', 'give')}
+                        description={__('We\'ve created a campaign from each of your donation forms. Your forms still work as before, but now with the added power of campaign management! Select a campaign to see how you can seamlessly manage your online fundraising.', 'give')}
+                        linkText={__('Read documentation on what we changed', 'give')}
+                        linkHref="#"
+                        handleDismiss={dismissTooltip}
+                        type={'campaignList'}
+                    />
+                )}
             </ListTablePage>
         </>
     );
