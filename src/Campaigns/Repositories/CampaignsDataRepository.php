@@ -1,8 +1,9 @@
 <?php
 
-namespace Give\Campaigns\Models;
+namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\CampaignsDataQuery;
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 
 /**
@@ -11,7 +12,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
  *
  * @unreleased
  */
-class CampaignsData
+class CampaignsDataRepository
 {
     /**
      * @var array
@@ -41,9 +42,9 @@ class CampaignsData
     /**
      * @param int[] $ids
      *
-     * @return CampaignsData
+     * @return CampaignsDataRepository
      */
-    public static function campaigns(array $ids): CampaignsData
+    public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
 

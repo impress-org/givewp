@@ -4,8 +4,8 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignsData;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
@@ -77,7 +77,7 @@ class CampaignRequestController
 
         // We don't have to optimize if the number of campaigns is less than 3
         $campaignsData = count($ids) >= 3
-            ? CampaignsData::campaigns($ids)
+            ? CampaignsDataRepository::campaigns($ids)
             : null;
 
         $campaigns = array_map(function ($campaign) use ($campaignsData) {

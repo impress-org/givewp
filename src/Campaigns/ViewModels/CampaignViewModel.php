@@ -3,7 +3,7 @@
 namespace Give\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignsData;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
@@ -17,7 +17,7 @@ class CampaignViewModel
     private $campaign;
 
     /**
-     * @var CampaignsData|null
+     * @var CampaignsDataRepository|null
      */
     private $data;
 
@@ -32,11 +32,11 @@ class CampaignViewModel
     /**
      * Set data source
      *
-     * @param CampaignsData $data
+     * @param CampaignsDataRepository $data
      *
      * @return CampaignViewModel
      */
-    public function setData(CampaignsData $data): CampaignViewModel
+    public function setData(CampaignsDataRepository $data): CampaignViewModel
     {
         $this->data = $data;
 

@@ -3,7 +3,7 @@
 namespace Give\Campaigns\ListTable\Columns;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignsData;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -37,7 +37,7 @@ class DonationsCountColumn extends ModelColumn
     public function getCellValue($model): string
     {
         /**
-         * @var CampaignsData $campaignsData
+         * @var CampaignsDataRepository $campaignsData
          */
         $campaignsData = $this->getListTableData();
 
