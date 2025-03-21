@@ -34,10 +34,29 @@ class DonationsCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $query = new CampaignDonationQuery($model);
+        $content = apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", '', $model, $this);
+
+        if (empty($content)) {
+            $content = self::getTotalDonationsLabel($model);
+        }
+
+        return sprintf(
+            '<a class="column-donations-count-value" href="%s" aria-label="%s">%s</a>',
+            admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
+            __('Visit donations page', 'give'),
+            $content
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function getTotalDonationsLabel(Campaign $campaign): string
+    {
+        $query = new CampaignDonationQuery($campaign);
         $totalDonations = $query->countDonations();
 
-        $label = $totalDonations > 0
+        return $totalDonations > 0
             ? sprintf(
                 _n(
                     '%1$s donation',
@@ -47,13 +66,5 @@ class DonationsCountColumn extends ModelColumn
                 ),
                 $totalDonations
             ) : __('No donations', 'give');
-
-
-        return sprintf(
-            '<a class="column-donations-count-value" href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
-            __('Visit donations page', 'give'),
-            apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $label, $model, $this)
-        );
     }
 }

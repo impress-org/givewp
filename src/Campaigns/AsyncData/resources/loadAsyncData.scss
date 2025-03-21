@@ -1,0 +1,15 @@
+.give-skeleton {
+    display: inline-block;
+    position: relative;
+    top: 0.1rem;
+    animation: give-skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes give-skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 80%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
+}

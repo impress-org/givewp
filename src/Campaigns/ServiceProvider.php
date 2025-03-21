@@ -12,6 +12,12 @@ use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
+use Give\Campaigns\AsyncData\Actions\GetAsyncCampaignDataForListView;
+use Give\Campaigns\AsyncData\Actions\LoadAsyncDataAssets;
+use Give\Campaigns\AsyncData\AdminCampaignListView\AdminCampaignListView;
+use Give\Campaigns\ListTable\Columns\DonationsCountColumn;
+use Give\Campaigns\ListTable\Columns\GoalColumn;
+use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -20,6 +26,7 @@ use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -58,6 +65,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignForms();
         $this->loadCampaignOptions();
         $this->addNewBadgeToMenu();
+        $this->registerAsyncData();
     }
 
     /**
@@ -168,18 +176,6 @@ class ServiceProvider implements ServiceProviderInterface
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
         }
 
-        /**
-         * We implemented a feature to load the stats columns ("Goal", "Donations" and "Revenue") using an async approach,
-         * so we could prevent a long page load on websites with lots of forms. However, the campaign details page's current
-         * "Forms" tab still doesn't support it. Still, it's using the same Form List Table that active the async approach by
-         * default, so the line below is necessary to disable it while we still don't have support for async loading on this screen.
-         *
-         * @see https://github.com/impress-org/givewp/pull/7483
-         */
-        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-            define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
-        }
-
         Hooks::addAction('admin_init', RedirectLegacyCreateFormToCreateCampaign::class);
 
         Hooks::addAction('save_post_give_forms', AddCampaignFormFromRequest::class, 'optionBasedFormEditor', 10, 3);
@@ -214,5 +210,51 @@ class ServiceProvider implements ServiceProviderInterface
     private function addNewBadgeToMenu(): void
     {
         (new AddNewBadgeToAdminMenuItem())();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerAsyncData()
+    {
+        // Load assets on the admin campaigns page
+        $isAdminCampaignsPage = isset($_GET['page']) && ! isset($_GET['id']) && 'give-campaigns' === $_GET['page'];
+        if ($isAdminCampaignsPage) {
+            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
+        }
+
+        // Async ajax request
+        Hooks::addAction('wp_ajax_givewp_get_campaign_async_data_for_list_view',
+            GetAsyncCampaignDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_campaign_async_data_for_list_view',
+            GetAsyncCampaignDataForListView::class);
+
+        // Campaigns List View Columns
+        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminCampaignListView::class,
+            'maybeChangeAchievedIconOpacity');
+        add_action(
+            sprintf("givewp_list_table_cell_value_%s_content", GoalColumn::getId()),
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetGoalColumnAsync($value, $campaign->id);
+            },
+            10,
+            2
+        );
+        add_filter(
+            sprintf("givewp_list_table_cell_value_%s_content", DonationsCountColumn::getId()),
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetDonationsColumnAsync($value, $campaign->id);
+            },
+            10,
+            2
+        );
+        add_filter(
+            sprintf("givewp_list_table_cell_value_%s_content", RevenueColumn::getId()),
+            function ($value, Campaign $campaign) {
+                return give(AdminCampaignListView::class)->maybeSetRevenueColumnAsync($value, $campaign->id);
+            },
+            10,
+            2
+        );
     }
 }

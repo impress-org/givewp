@@ -1,15 +1,13 @@
 /**
- * This file contains all the logic to load async data on the project's available form list views, including form grid and admin form list views.
+ * This file contains all the logic to load async data on the project's available campaign list views.
  *
  * The async data are loaded (only for the items visible on the screen) on the following conditions:
  *
  * 1) At the page's first load
- * 2) When the user adds a block in the WP block editor
- * 3) When the user scrolls the mouse
- * 4) When the user resizes the screen
- * 5) the "Forms" tab of the campaign details page gets updated
+ * 2) When the user scrolls the mouse
+ * 3) When the user resizes the screen
  *
- * @since 3.16.0
+ * @unreleased
  */
 document.addEventListener('DOMContentLoaded', () => {
     /**
@@ -23,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * This function check if the element is visible on the screen.
      *
-     * @since 3.16.0
+     * @unreleased
      */
     function isInViewport(element) {
         const {top, bottom} = element.getBoundingClientRect();
@@ -35,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Check if an element is a placeholder waiting to have the value updated.
      *
-     * @since 3.16.0
+     * @unreleased
      */
     function isPlaceholder(element) {
         return !!element && Boolean(element.querySelector('.js-give-async-data'));
@@ -44,10 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * This function fetch the async data from the server and set the values to the proper elements in the DOM.
      *
-     * @since 3.16.0
+     * @unreleased
      */
-    const loadFormData = (
-        formId,
+    const loadCampaignData = (
+        campaignId,
         itemElement,
         amountRaisedElement = null,
         progressBarElement = null,
@@ -65,16 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Limit requests to run one per time.
-        if (window.GiveDonationFormsAsyncData.throttlingEnabled && throttleTimer) {
-            window.GiveDonationFormsAsyncData.scriptDebug && console.log('throttleTimer start: ', throttleTimer);
+        if (window.GiveCampaignsAsyncData.throttlingEnabled && throttleTimer) {
+            window.GiveCampaignsAsyncData.scriptDebug && console.log('throttleTimer start: ', throttleTimer);
             return;
         }
 
         throttleTimer = true;
-        window.GiveDonationFormsAsyncData.scriptDebug &&
-            console.log('request start: ', new Date().toLocaleTimeString());
+        window.GiveCampaignsAsyncData.scriptDebug && console.log('request start: ', new Date().toLocaleTimeString());
 
-        window.GiveDonationFormsAsyncData.scriptDebug && console.log('item: ', itemElement);
+        window.GiveCampaignsAsyncData.scriptDebug && console.log('item: ', itemElement);
 
         // This class ensures that once the element has the fetch request triggered we'll not try to fetch it again.
         itemElement.classList.add('give-async-data-fetch-triggered');
@@ -84,14 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const signal = controller.signal;
 
         fetch(
-            `${window.GiveDonationFormsAsyncData.ajaxUrl}?action=givewp_get_form_async_data_for_list_view&formId=${formId}&nonce=${window.GiveDonationFormsAsyncData.ajaxNonce}`,
+            `${window.GiveCampaignsAsyncData.ajaxUrl}?action=givewp_get_campaign_async_data_for_list_view&campaignId=${campaignId}&nonce=${window.GiveCampaignsAsyncData.ajaxNonce}`,
             {signal}
         )
             .then(function (response) {
                 return response.json();
             })
             .then(function (response) {
-                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Response: ', response);
+                window.GiveCampaignsAsyncData.scriptDebug && console.log('Response: ', response);
 
                 // Replace the placeholders with the real data returned by the server.
                 if (response.success) {
@@ -122,17 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch((error) => {
                 // When there is an error remove the class that prevents fetch request duplication, so we can try fetching it again in the next try.
                 itemElement.classList.remove('give-async-data-fetch-triggered');
-                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Error: ', error);
+                window.GiveCampaignsAsyncData.scriptDebug && console.log('Error: ', error);
             })
             .finally(() => {
-                window.GiveDonationFormsAsyncData.scriptDebug &&
+                window.GiveCampaignsAsyncData.scriptDebug &&
                     console.log('request end: ', new Date().toLocaleTimeString());
-                if (window.GiveDonationFormsAsyncData.throttlingEnabled && throttleTimer) {
+                if (window.GiveCampaignsAsyncData.throttlingEnabled && throttleTimer) {
                     throttleTimer = false;
-                    window.GiveDonationFormsAsyncData.scriptDebug && console.log('throttleTimer end: ', throttleTimer);
+                    window.GiveCampaignsAsyncData.scriptDebug && console.log('throttleTimer end: ', throttleTimer);
                     maybeLoadAsyncData();
                 }
-                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Request finalized.');
+                window.GiveCampaignsAsyncData.scriptDebug && console.log('Request finalized.');
             });
 
         // Make sure to abort all unfinished async requests when leave or refresh the page.
@@ -151,26 +148,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Handle the async data logic for ALL form list views available.
+     * Handle the async data logic for ALL campaign list views available.
      *
-     * @since 3.16.0
+     * @unreleased
      */
     const maybeLoadAsyncData = () => {
         // If the async requests were aborted on the "beforeunload" or "giveListTableIsLoading" event, we don't want to create more async requests
         if (abortLoadAsyncData) {
-            window.GiveDonationFormsAsyncData.scriptDebug && console.log('abortLoadAsyncData');
+            window.GiveCampaignsAsyncData.scriptDebug && console.log('abortLoadAsyncData');
             return;
         }
 
-        handleAdminFormsListViewItems();
-        handleAdminLegacyFormsListViewItems();
-        handleFormGridItems();
+        handleAdminCampaignsListViewItems();
     };
 
     /**
      * Check for changes in the "giveListTable" classes to trigger the "giveListTableIsLoadingEvent" when appropriated.
      *
-     * @since 3.16.0
+     * @unreleased
      */
     function maybeTriggerGiveListTableIsLoadingEvent() {
         if (giveListTable) {
@@ -198,32 +193,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Load the async data of all forms (visible on the screen) from the NEW admin form list view - giveListTable.
+     * Load the async data of all campaigns (visible on the screen) from the admin campaign list view - giveListTable.
      *
-     * @since 3.16.0
+     * @unreleased
      */
-    function handleAdminFormsListViewItems() {
-        const adminFormsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
-        if (adminFormsListViewItems.length > 0) {
+    function handleAdminCampaignsListViewItems() {
+        const adminCampaignsListViewItems = document.querySelectorAll('tr:not(.give-async-data-fetch-triggered)');
+        if (adminCampaignsListViewItems.length > 0) {
             maybeTriggerGiveListTableIsLoadingEvent();
 
-            adminFormsListViewItems.forEach((itemElement) => {
+            adminCampaignsListViewItems.forEach((itemElement) => {
                 const select = itemElement.querySelector('.giveListTableSelect');
 
                 if (!select) {
                     return;
                 }
 
-                const formId = select.getAttribute('data-id');
-                const amountRaisedElement = itemElement.querySelector("[id^='giveDonationFormsProgressBar'] > span");
+                const campaignId = select.getAttribute('data-id');
+                const amountRaisedElement = itemElement.querySelector("[id^='giveCampaignsProgressBar'] > span");
                 const progressBarElement = itemElement.querySelector('.goalProgress > span');
                 const goalAchievedElement = itemElement.querySelector('.goalProgress--achieved');
                 const donationsElement = itemElement.querySelector('.column-donations-count-value');
                 const earningsElement = itemElement.querySelector('.column-earnings-value');
 
                 if (isInViewport(itemElement)) {
-                    loadFormData(
-                        formId,
+                    loadCampaignData(
+                        campaignId,
                         itemElement,
                         amountRaisedElement,
                         progressBarElement,
@@ -231,82 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         donationsElement,
                         earningsElement
                     );
-                }
-            });
-        }
-    }
-
-    /**
-     * Load the async data of all forms (visible on the screen) from the LEGACY admin form list view.
-     *
-     * @since 3.16.0
-     */
-    function handleAdminLegacyFormsListViewItems() {
-        const adminLegacyFormsListViewItems = document.querySelectorAll(
-            '.type-give_forms:not(.give-async-data-fetch-triggered)'
-        );
-        if (adminLegacyFormsListViewItems.length > 0) {
-            adminLegacyFormsListViewItems.forEach((itemElement) => {
-                if (!itemElement.hasAttribute('id') || !itemElement.id.includes('post-')) {
-                    return;
-                }
-
-                const formId = itemElement.id.split('post-')[1];
-                const goalElement = itemElement.querySelector('.column-goal');
-                const amountRaisedElement = goalElement.querySelector('.give-goal-text > span');
-                const progressBarElement = goalElement.querySelector('.give-admin-progress-bar > span');
-                const goalAchievedElement = goalElement.querySelector('.give-admin-goal-achieved');
-                const donationsElement = itemElement.querySelector('.column-donations > a');
-                const earningsElement = itemElement.querySelector('.column-earnings > a');
-
-                if (isInViewport(itemElement)) {
-                    loadFormData(
-                        formId,
-                        itemElement,
-                        amountRaisedElement,
-                        progressBarElement,
-                        goalAchievedElement,
-                        donationsElement,
-                        earningsElement
-                    );
-                }
-            });
-        }
-    }
-
-    /**
-     * Load the async data in all form grid items that have the progress bar enabled.
-     *
-     * @since 3.16.0
-     */
-    function handleFormGridItems() {
-        const formGridItems = document.querySelectorAll('.give-grid__item:not(.give-async-data-fetch-triggered)');
-
-        if (formGridItems.length > 0) {
-            formGridItems.forEach((itemElement) => {
-                const giveCard = itemElement.querySelector('.give-card');
-
-                if (!giveCard || !giveCard.hasAttribute('id') || !giveCard.id.includes('give-card-')) {
-                    return;
-                }
-
-                const formId = giveCard.id.split('give-card-')[1];
-                const formGridRaised = itemElement.querySelector('.form-grid-raised');
-
-                if (!formGridRaised) {
-                    return;
-                }
-
-                const amountRaisedElement = formGridRaised
-                    .querySelector('div:nth-child(1)')
-                    .querySelector('span:nth-child(1)');
-                const progressBarElement = itemElement.querySelector('.give-progress-bar').querySelector('span');
-                const donationsElement = formGridRaised
-                    .querySelector('div:nth-child(2)')
-                    .querySelector('span:nth-child(1)');
-
-                if (isInViewport(itemElement)) {
-                    loadFormData(formId, itemElement, amountRaisedElement, progressBarElement, null, donationsElement);
                 }
             });
         }
@@ -333,23 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         true
     );
 
-    // Trigger the async logic every time the user add a new Form Grid Block to the WordPress Block Editor - Gutenberg.
-    window.onload = function () {
-        const wpBlockEditorContent = document.querySelector('.wp-block-post-content');
-        if (!!wpBlockEditorContent) {
-            // create an Observer instance
-            const resizeObserver = new ResizeObserver((entries) => {
-                window.GiveDonationFormsAsyncData.scriptDebug &&
-                    console.log('WP Block Editor height changed:', entries[0].target.clientHeight);
-                maybeLoadAsyncData();
-            });
-
-            // start observing a DOM node
-            resizeObserver.observe(wpBlockEditorContent);
-        }
-    };
-
-    // Trigger the async logic every time the "Forms" tab of the campaign details page gets updated
+    // Trigger the async logic every time the Campaigns page gets updated
     window.onload = function () {
         const campaignsPage = document.querySelector('#give-admin-campaigns-root');
         if (!!campaignsPage) {
@@ -357,9 +260,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const resizeObserver = new ResizeObserver((entries) => {
                 const queryString = window.location.search;
                 const params = new URLSearchParams(queryString);
-                const isCampaignFormsTab = params.has('tab') && 'forms' === params.get('tab');
-                if (isCampaignFormsTab) {
-                    window.GiveDonationFormsAsyncData.scriptDebug &&
+                const isCampaignsPage = !params.has('id');
+                if (isCampaignsPage) {
+                    window.GiveCampaignsAsyncData.scriptDebug &&
                         console.log('Campaigns Page height changed:', entries[0].target.clientHeight);
                     maybeLoadAsyncData();
                 }
