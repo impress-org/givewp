@@ -6,12 +6,12 @@ use Give\Campaigns\Models\CampaignPage;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class EnqueueCampaignPageEditorAssets
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {

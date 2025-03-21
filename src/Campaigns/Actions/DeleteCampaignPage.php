@@ -5,7 +5,7 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * Deletes campaign page when the campaign is deleted
  *
@@ -14,7 +14,7 @@ use Give\Campaigns\Models\Campaign;
 class DeleteCampaignPage
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(Campaign $campaign): void
     {

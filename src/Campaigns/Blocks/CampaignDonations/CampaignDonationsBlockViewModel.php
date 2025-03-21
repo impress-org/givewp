@@ -7,7 +7,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\Views\View;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignDonationsBlockViewModel
 {
@@ -27,7 +27,7 @@ class CampaignDonationsBlockViewModel
     private $attributes;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign, array $donations, array $attributes)
     {
@@ -37,7 +37,7 @@ class CampaignDonationsBlockViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function render(): void
     {
@@ -50,7 +50,7 @@ class CampaignDonationsBlockViewModel
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function formatDonationsData(array $donations): array
     {

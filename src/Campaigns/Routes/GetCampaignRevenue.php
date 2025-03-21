@@ -15,12 +15,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetCampaignRevenue implements RestRoute
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute()
     {
@@ -55,7 +55,7 @@ class GetCampaignRevenue implements RestRoute
      * If the date range is more than 6 months, the result will be grouped by month.
      * If the date range is more than 5 years, the result will be grouped by year.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -102,7 +102,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
@@ -143,7 +143,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getGroupByFromDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): string
     {
@@ -164,7 +164,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getFormattedDateFromGroupBy(string $groupBy, DateTimeInterface $date): string
     {
@@ -180,7 +180,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function mergeResultsWithDates(array $dates, array $resultMap): array
     {
@@ -197,7 +197,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function mapResultsByDate(array $results, string $groupBy): array
     {

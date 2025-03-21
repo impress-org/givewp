@@ -11,7 +11,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignFactory extends ModelFactory
 {

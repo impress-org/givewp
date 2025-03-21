@@ -14,19 +14,19 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignPageRepository
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected $requiredProperties = [
         'campaignId',
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getById(int $id)
     {
@@ -36,7 +36,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function findByCampaignId(int $campaignId): ?CampaignPage
     {
@@ -46,7 +46,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function insert(CampaignPage $campaignPage): void
@@ -104,7 +104,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function update(CampaignPage $campaignPage): void
     {
@@ -151,7 +151,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function delete(CampaignPage $campaignPage): bool
     {
@@ -183,7 +183,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<CampaignPage>
      */
@@ -208,7 +208,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function validate(CampaignPage $campaignPage)
     {

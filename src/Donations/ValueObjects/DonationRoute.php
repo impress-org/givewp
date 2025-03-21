@@ -5,7 +5,7 @@ namespace Give\Donations\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @method static DonationRoute NAMESPACE()
  * @method static DonationRoute DONATION()

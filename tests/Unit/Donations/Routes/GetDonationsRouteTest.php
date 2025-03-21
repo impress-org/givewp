@@ -20,14 +20,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function setUp()
     {
@@ -37,7 +37,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
     {
@@ -107,7 +107,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -136,7 +136,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -181,7 +181,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -216,7 +216,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -270,7 +270,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -302,7 +302,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -329,7 +329,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -373,7 +373,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -409,7 +409,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -455,7 +455,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -567,7 +567,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function sortableColumnsDataProvider(): array
     {
@@ -585,7 +585,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -610,7 +610,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -635,7 +635,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

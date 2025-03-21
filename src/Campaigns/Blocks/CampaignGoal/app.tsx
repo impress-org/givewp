@@ -13,7 +13,7 @@ const BlockApp = ({campaignId}: { campaignId: number }) => {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const nodeList = document.querySelectorAll('[data-givewp-campaign-goal]');
 

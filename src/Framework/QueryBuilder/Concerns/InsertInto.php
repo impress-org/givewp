@@ -5,12 +5,12 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 trait InsertInto
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getInsertIntoSQL($data, $format): string
     {
@@ -31,7 +31,7 @@ trait InsertInto
     /**
      * Get values format used by DB::prepare()
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @param array $data
      *

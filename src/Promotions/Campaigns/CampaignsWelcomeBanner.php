@@ -10,7 +10,7 @@ use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 use Give\Vendors\StellarWP\AdminNotices\DataTransferObjects\NoticeElementProperties;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsWelcomeBanner
 {
@@ -20,7 +20,7 @@ class CampaignsWelcomeBanner
     public $id = 'givewp-campaigns-welcome-banner-2025';
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -28,7 +28,7 @@ class CampaignsWelcomeBanner
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function render()
     {
@@ -42,7 +42,7 @@ class CampaignsWelcomeBanner
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function renderCallback(AdminNotice $notice, NoticeElementProperties $elements): string
     {

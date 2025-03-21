@@ -14,7 +14,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetCampaignsListTable implements RestRoute
 {
@@ -34,7 +34,7 @@ class GetCampaignsListTable implements RestRoute
     protected $listTable;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute(): void
     {
@@ -89,7 +89,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -114,7 +114,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getCampaigns(): array
     {
@@ -143,7 +143,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getTotalCampaignsCount(): int
     {
@@ -154,7 +154,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
@@ -182,7 +182,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return bool|WP_Error
      */

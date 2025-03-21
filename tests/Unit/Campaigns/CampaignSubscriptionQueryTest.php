@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignSubscriptionQueryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonations()
     {
@@ -39,7 +39,7 @@ class CampaignSubscriptionQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testSumCampaignDonations()
     {
@@ -61,7 +61,7 @@ class CampaignSubscriptionQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonors()
     {

@@ -8,13 +8,13 @@ use Give\Framework\Models\Model;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class TestModelFactory extends TestCase
 {
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function setUp()
     {
@@ -23,7 +23,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testDefinitionAsAttributes()
     {
@@ -41,7 +41,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testPassedAttributesOverrideDefinition()
     {
@@ -61,7 +61,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testResolvesCallableDefinitions()
     {
@@ -81,7 +81,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testDoesNotResolveCallableWhenPassedAttribute()
     {
@@ -103,7 +103,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testMakeResolvesDependencyDefinition()
     {
@@ -131,7 +131,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testMakeResolvesDependencyDefinitionWithCount()
     {
@@ -162,7 +162,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testMakeDoesNotResolveDependencyWhenPassedAttribute()
     {
@@ -197,7 +197,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCreateResolvesDependencyDefinition()
     {
@@ -225,7 +225,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCreateResolvesDependencyDefinitionWithCount()
     {
@@ -255,7 +255,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCreateDoesNotResolveDependencyWhenPassedAttribute()
     {
@@ -290,7 +290,7 @@ class TestModelFactory extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testDoesNotResolveInvokableClasses()
     {
@@ -313,7 +313,7 @@ class TestModelFactory extends TestCase
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int $id
  */
@@ -336,7 +336,7 @@ class MockModel extends Model
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int $id
  * @property int $nestedId
@@ -350,7 +350,7 @@ class MockModelWithDependency extends MockModel
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 abstract class MockInvokableClass
 {
@@ -358,7 +358,7 @@ abstract class MockInvokableClass
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property MockInvokableClass $invokable
  */

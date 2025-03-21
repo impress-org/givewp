@@ -18,12 +18,12 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignRequestController
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
      */
@@ -39,7 +39,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getCampaigns(WP_REST_Request $request): WP_REST_Response
     {
@@ -108,7 +108,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
      *
@@ -165,7 +165,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -181,7 +181,7 @@ class CampaignRequestController
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -207,7 +207,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
     {

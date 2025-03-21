@@ -3,7 +3,7 @@ import icon from './icon';
 import schema from './block.json';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default {
     schema,

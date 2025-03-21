@@ -22,7 +22,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int              $id
  * @property int              $pageId
@@ -71,7 +71,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function defaultForm(): ?DonationForm
     {
@@ -79,7 +79,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function forms(): ModelQueryBuilder
     {
@@ -93,7 +93,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function page()
     {
@@ -101,7 +101,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function factory(): CampaignFactory
     {
@@ -111,7 +111,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public static function find($id): ?Campaign
     {
@@ -121,7 +121,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find campaign by Form ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public static function findByFormId(int $formId): ?Campaign
     {
@@ -129,7 +129,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -143,7 +143,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -157,7 +157,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -167,7 +167,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -182,7 +182,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */
@@ -192,7 +192,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param object $object
      */

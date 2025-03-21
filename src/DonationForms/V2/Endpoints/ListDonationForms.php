@@ -37,7 +37,7 @@ class ListDonationForms extends Endpoint
     protected $defaultForm;
 
     /**
-     * @unreleased Add campaignId parameter
+     * @since 4.0.0 Add campaignId parameter
      * @inheritDoc
      */
     public function registerRoute()
@@ -220,7 +220,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased Add "campaignId" support
+     * @since 4.0.0 Add "campaignId" support
      * @since 2.24.0
      *
      * @param QueryBuilder $query

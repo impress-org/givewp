@@ -65,7 +65,7 @@ abstract class ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function makeAndResolveTo($property): Closure
     {
@@ -99,7 +99,7 @@ abstract class ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function createAndResolveTo($property): Closure
     {
@@ -113,7 +113,7 @@ abstract class ModelFactory
     /**
      * Creates an instance of the model from the attributes and definition.
      *
-     * @unreleased Add support for resolving Closures.
+     * @since 4.0.0 Add support for resolving Closures.
      * @since 2.23.0
      *
      * @return M

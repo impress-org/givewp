@@ -6,7 +6,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignViewModel
 {
@@ -16,7 +16,7 @@ class CampaignViewModel
     private $campaign;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign)
     {
@@ -24,7 +24,7 @@ class CampaignViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function exports(): array
     {

@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class CampaignDonationQueryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonations()
     {
@@ -48,7 +48,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testSumCampaignDonations()
     {
@@ -72,7 +72,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonors()
     {
@@ -96,7 +96,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCoalesceIntendedAmountWithoutRecoveredFees()
     {
@@ -116,7 +116,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testGetDonationsByDate(): void
     {
@@ -215,7 +215,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getYear(string $date): string
     {
@@ -223,7 +223,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getMonth(string $date): string
     {
@@ -231,7 +231,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getDay(string $date): string
     {

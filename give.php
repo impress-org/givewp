@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Give - Donation Plugin (4.0.0-beta.1)
+ * Plugin Name: Give - Donation Plugin
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP

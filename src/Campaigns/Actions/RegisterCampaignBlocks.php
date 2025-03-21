@@ -5,12 +5,12 @@ namespace Give\Campaigns\Actions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RegisterCampaignBlocks
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -22,7 +22,7 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function loadBlockEditorAssets(): void
     {
@@ -68,7 +68,7 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerSharedStyles(): void
     {

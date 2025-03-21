@@ -6,7 +6,7 @@ namespace Give\Campaigns\Actions;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by campaign scripts (list tables, blocks, etc.)
  *
- * @unreleased
+ * @since 4.0.0
  */
 class LoadCampaignOptions
 {

@@ -6,7 +6,7 @@ use DateTimeInterface;
 use Give\Framework\Support\Facades\Facade;
 
 /**
- * @unreleased added withStartOfDay, withEndOfDay, immutableOrClone
+ * @since 4.0.0 added withStartOfDay, withEndOfDay, immutableOrClone
  * @since 3.20. added getDateTimestamp
  * @since 2.19.6
  *

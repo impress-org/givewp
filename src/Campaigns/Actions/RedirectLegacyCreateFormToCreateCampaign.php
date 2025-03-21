@@ -5,12 +5,12 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RedirectLegacyCreateFormToCreateCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -29,7 +29,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isAddingNewForm(): bool
     {
@@ -43,7 +43,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isEditingCampaignForm(): bool
     {

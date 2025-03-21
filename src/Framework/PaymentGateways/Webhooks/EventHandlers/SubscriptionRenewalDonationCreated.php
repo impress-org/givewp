@@ -12,7 +12,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
-     * @unreleased updated to create the renewal from subscription model
+     * @since 4.0.0 updated to create the renewal from subscription model
      * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
      */

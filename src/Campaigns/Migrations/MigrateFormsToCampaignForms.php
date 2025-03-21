@@ -12,7 +12,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use stdClass;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class MigrateFormsToCampaignForms extends Migration
 {
@@ -33,7 +33,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      * @throws \Exception
      */
@@ -51,7 +51,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getAllFormsData(): array
     {
@@ -110,7 +110,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */
     protected function getUpgradedV2FormsData(): array
@@ -135,7 +135,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function createCampaignForForm($formData): void
     {
@@ -210,7 +210,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function addCampaignFormRelationship($formId, $campaignId)
     {
@@ -222,7 +222,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function mapFormToCampaignStatus(string $status): string
     {
@@ -248,7 +248,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormSettings(int $formId): stdClass
     {
@@ -271,7 +271,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormFeaturedImage(array $templateSettings, int $formId): string
     {
@@ -292,7 +292,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormDescription(array $templateSettings): string
     {
@@ -310,7 +310,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormPrimaryColor(array $templateSettings): string
     {
@@ -328,7 +328,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormGoalAmount(int $formId)
     {
@@ -336,7 +336,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormGoalType(int $formId): string
     {

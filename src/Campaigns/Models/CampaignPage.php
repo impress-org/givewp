@@ -12,7 +12,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int $id
  * @property int $campaignId
@@ -35,7 +35,7 @@ class CampaignPage extends Model implements ModelCrud
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getEditLinkUrl(): string
     {
@@ -45,7 +45,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function campaign()
     {
@@ -53,7 +53,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function find($id)
     {
@@ -64,7 +64,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function create(array $attributes): CampaignPage
     {
@@ -76,7 +76,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function save(): void
     {
@@ -88,7 +88,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function delete(): bool
     {
@@ -96,7 +96,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<CampaignPage>
      */
@@ -106,7 +106,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function fromQueryBuilderObject($object): CampaignPage
     {

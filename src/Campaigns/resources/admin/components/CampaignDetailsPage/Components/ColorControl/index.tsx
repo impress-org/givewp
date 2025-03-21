@@ -35,7 +35,7 @@ const defaultColors: ColorOption[] = [
 ];
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 function ColorControl({name, disabled = false, className}: { name: string; disabled?: boolean; className?: string }) {
     const [popoverIsVisible, setPopoverIsVisible] = useState<boolean>(false);

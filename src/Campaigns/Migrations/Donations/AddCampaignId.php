@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class AddCampaignId extends Migration
 {

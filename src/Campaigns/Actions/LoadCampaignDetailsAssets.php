@@ -5,12 +5,12 @@ namespace Give\Campaigns\Actions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class LoadCampaignDetailsAssets
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {

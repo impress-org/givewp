@@ -15,14 +15,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class GetCampaignStatisticsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testReturnsAllTimeDonationsStatistics()
     {
@@ -65,7 +65,7 @@ final class GetCampaignStatisticsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testReturnsPeriodStatisticsWithPreviousPeriod()
     {

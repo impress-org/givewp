@@ -6,12 +6,12 @@ use Give\Campaigns\Models\Campaign;
 use Give\Framework\Views\View;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignPageTemplate
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerTemplate()
     {
@@ -30,7 +30,7 @@ class CampaignPageTemplate
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function loadTemplate($template)
     {
@@ -55,7 +55,7 @@ class CampaignPageTemplate
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function canRegisterBlockTemplate(): bool
     {
@@ -64,7 +64,7 @@ class CampaignPageTemplate
 
     /**
      *
-     * @unreleased
+     * @since 4.0.0
      */
     private function isPageVisible(): bool
     {

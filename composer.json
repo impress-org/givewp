@@ -45,7 +45,6 @@
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
-        "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
             "bin/strauss-installar.sh",
             "@php vendor/stellarwp/validation/bin/set-domain domain=give",

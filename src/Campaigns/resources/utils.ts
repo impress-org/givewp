@@ -8,7 +8,7 @@ declare const window: {
 } & Window;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export function useCampaignEntityRecord(campaignId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -29,14 +29,14 @@ export function useCampaignEntityRecord(campaignId?: number) {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export function getCampaignOptionsWindowData(): GiveCampaignOptions {
     return window.GiveCampaignOptions;
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], options?: Intl.NumberFormatOptions): Intl.NumberFormat {
     return new Intl.NumberFormat(navigator.language, {
@@ -47,7 +47,7 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export async function updateUserNoticeOptions(metaKey: string){
     try {

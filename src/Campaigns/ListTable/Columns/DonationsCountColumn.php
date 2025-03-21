@@ -7,12 +7,12 @@ use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class DonationsCountColumn extends ModelColumn
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function getId(): string
     {
@@ -20,7 +20,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getLabel(): string
     {
@@ -28,7 +28,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param Campaign $model
      */

@@ -13,14 +13,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use PHPUnit_Framework_MockObject_MockBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class CampaignGoalDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testGetPercentageDoesNotDivideByZero()
     {

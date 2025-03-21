@@ -7,7 +7,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @var array    $attributes
  * @var Campaign $campaign

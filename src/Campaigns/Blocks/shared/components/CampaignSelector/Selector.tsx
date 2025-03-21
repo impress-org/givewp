@@ -14,7 +14,7 @@ type CampaignSelectorProps = {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) => {
     const [selectedCampaign, setSelectedCampaign] = useState<number>(null);

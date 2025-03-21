@@ -32,7 +32,7 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 	/**
 	 * Define the shortcode attribute fields
      *
-     * @unreleased Replace "new form" with "new campaign form" link
+     * @since 4.0.0 Replace "new form" with "new campaign form" link
 	 *
 	 * @return array
 	 */
