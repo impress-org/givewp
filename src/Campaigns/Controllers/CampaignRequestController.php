@@ -5,6 +5,7 @@ namespace Give\Campaigns\Controllers;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
@@ -70,8 +71,23 @@ class CampaignRequestController
         $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
         $totalPages = (int)ceil($totalCampaigns / $perPage);
 
-        $campaigns = array_map(function ($campaign) {
-            return (new CampaignViewModel($campaign))->exports();
+        $ids = array_map(function ($campaign) {
+            return $campaign->id;
+        }, $campaigns);
+
+        // We don't have to optimize if the number of campaigns is less than 3
+        $campaignsData = count($ids) >= 3
+            ? CampaignsDataRepository::campaigns($ids)
+            : null;
+
+        $campaigns = array_map(function ($campaign) use ($campaignsData) {
+            $view = new CampaignViewModel($campaign);
+
+            if ($campaignsData) {
+                $view->setData($campaignsData);
+            }
+
+            return $view->exports();
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
