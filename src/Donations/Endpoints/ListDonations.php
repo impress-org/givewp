@@ -73,6 +73,11 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'default' => 0
                     ],
+                    'campaignId' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'default' => 0
+                    ],
                     'search' => [
                         'type' => 'string',
                         'required' => false,
@@ -234,9 +239,9 @@ class ListDonations extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
+        $campaignId = $this->request->get_param('campaignId');
 
         $dependencies = [
             DonationMetaKeys::MODE(),
@@ -274,10 +279,10 @@ class ListDonations extends Endpoint
             }
         }
 
-        if ($form) {
+        if ($campaignId) {
             $query
-                ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
-            $dependencies[] = DonationMetaKeys::FORM_ID();
+                ->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
+            $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
         }
 
         if ($start && $end) {
