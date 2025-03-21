@@ -45,7 +45,7 @@ class CampaignsListTableData
      */
     public static function campaigns(array $ids): CampaignsListTableData
     {
-        $self = new static();
+        $self = new self();
 
         $core = CampaignDonationListTableQuery::core($ids);
 
