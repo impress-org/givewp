@@ -7,11 +7,12 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
+ * Class used for eager loading the number of donors, donations and revenue amounts for a range of campaign Ids
+ *
  * @unreleased
  */
 class CampaignDonationListTableQuery extends QueryBuilder
 {
-
     private function __construct(array $campaigns)
     {
         $this->select('campaignId.meta_value as campaign_id');
@@ -28,7 +29,7 @@ class CampaignDonationListTableQuery extends QueryBuilder
      */
     public static function core(array $campaigns): CampaignDonationListTableQuery
     {
-        return (new static($campaigns))
+        return (new self($campaigns))
             ->from('posts', 'donation')
             ->where('post_type', 'give_payment')
             ->joinDonationMeta(DonationMetaKeys::CAMPAIGN_ID, 'campaignId')
@@ -43,7 +44,7 @@ class CampaignDonationListTableQuery extends QueryBuilder
      */
     public static function subscriptions(array $campaigns): CampaignDonationListTableQuery
     {
-        return (new static($campaigns))
+        return (new self($campaigns))
             ->from('give_subscriptions', 'subscription')
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
@@ -108,13 +109,6 @@ class CampaignDonationListTableQuery extends QueryBuilder
         $query->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
 
         return $query->getAll(ARRAY_A);
-    }
-
-    /**
-     * @unreleased
-     */
-    private function joinDonation(): void
-    {
     }
 
     /**
