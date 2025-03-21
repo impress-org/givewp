@@ -47,6 +47,7 @@ interface FormBuilderWindowData {
     gateways: Gateway[];
     formFieldManagerData?: {
         isInstalled: boolean;
+        isLicensed: boolean;
     };
     recurringAddonData?: {
         isInstalled: boolean;

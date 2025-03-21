@@ -6,13 +6,13 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 
 const BlockListInserter = () => {
     const {
-        formFieldManagerData: {isInstalled: isFormFieldManagerInstalled},
+        formFieldManagerData: {isInstalled: isFormFieldManagerInstalled, isLicensed: isFormFieldManagerLicensed},
     } = getFormBuilderWindowData();
 
     return (
         <div>
             <Library showInserterHelpPanel={false} />
-            {!isFormFieldManagerInstalled && <AdditionalFieldsPanel />}
+            {!isFormFieldManagerInstalled && <AdditionalFieldsPanel isLicensed={isFormFieldManagerLicensed} />}
         </div>
     );
 };
