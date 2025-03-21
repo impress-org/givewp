@@ -2,7 +2,7 @@
 
 namespace Give\Campaigns\Models;
 
-use Give\Campaigns\CampaignDonationListTableQuery;
+use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 
 /**
@@ -11,7 +11,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
  *
  * @unreleased
  */
-class CampaignsListTableData
+class CampaignsData
 {
     /**
      * @var array
@@ -41,13 +41,13 @@ class CampaignsListTableData
     /**
      * @param int[] $ids
      *
-     * @return CampaignsListTableData
+     * @return CampaignsData
      */
-    public static function campaigns(array $ids): CampaignsListTableData
+    public static function campaigns(array $ids): CampaignsData
     {
         $self = new self();
 
-        $core = CampaignDonationListTableQuery::donations($ids);
+        $core = CampaignsDataQuery::donations($ids);
 
         $self->amounts = $core->collectIntendedAmounts();
         $self->donationsCount = $core->collectDonations();
@@ -55,7 +55,7 @@ class CampaignsListTableData
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = CampaignDonationListTableQuery::subscriptions($ids);
+            $subscriptions = CampaignsDataQuery::subscriptions($ids);
 
             $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
             $self->subscriptionDonationsCount = $subscriptions->collectDonations();

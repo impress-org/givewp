@@ -11,7 +11,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  *
  * @unreleased
  */
-class CampaignDonationListTableQuery extends QueryBuilder
+class CampaignsDataQuery extends QueryBuilder
 {
     private function __construct(array $campaigns)
     {
@@ -27,9 +27,9 @@ class CampaignDonationListTableQuery extends QueryBuilder
      *
      * @param int[] $campaigns - campaign ids
      *
-     * @return CampaignDonationListTableQuery
+     * @return CampaignsDataQuery
      */
-    public static function donations(array $campaigns): CampaignDonationListTableQuery
+    public static function donations(array $campaigns): CampaignsDataQuery
     {
         return (new self($campaigns))
             ->from('posts', 'donation')
@@ -44,9 +44,9 @@ class CampaignDonationListTableQuery extends QueryBuilder
      *
      * @param int[] $campaigns - campaign ids
      *
-     * @return CampaignDonationListTableQuery
+     * @return CampaignsDataQuery
      */
-    public static function subscriptions(array $campaigns): CampaignDonationListTableQuery
+    public static function subscriptions(array $campaigns): CampaignsDataQuery
     {
         return (new self($campaigns))
             ->from('give_subscriptions', 'subscription')

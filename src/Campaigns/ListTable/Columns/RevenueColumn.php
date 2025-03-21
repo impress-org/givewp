@@ -3,7 +3,7 @@
 namespace Give\Campaigns\ListTable\Columns;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignsListTableData;
+use Give\Campaigns\Models\CampaignsData;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -38,7 +38,7 @@ class RevenueColumn extends ModelColumn
     public function getCellValue($model, $locale = ''): string
     {
         /**
-         * @var CampaignsListTableData $campaignsData
+         * @var CampaignsData $campaignsData
          */
         $campaignsData = $this->getListTableData();
 

@@ -5,7 +5,7 @@ namespace Give\Campaigns\Routes;
 use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignsListTableData;
+use Give\Campaigns\Models\CampaignsData;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -105,7 +105,7 @@ class GetCampaignsListTable implements RestRoute
             return $campaign->id;
         }, $campaigns);
 
-        $campaignsData = CampaignsListTableData::campaigns($ids);
+        $campaignsData = CampaignsData::campaigns($ids);
 
         $this->listTable
             ->setData($campaignsData)
