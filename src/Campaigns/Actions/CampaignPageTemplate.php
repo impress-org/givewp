@@ -36,7 +36,7 @@ class CampaignPageTemplate
     {
         if (
             'give_campaign_page' === get_query_var('post_type')
-            && current_theme_supports('block-templates')
+            && ( $this->isFSETheme() || current_theme_supports( 'block-template-parts' ) )
         ) {
             if (!$this->isPageVisible()) {
                 status_header(404);
@@ -60,6 +60,23 @@ class CampaignPageTemplate
     private function canRegisterBlockTemplate(): bool
     {
         return function_exists('register_block_template');
+    }
+
+    /**
+     * Check if the current theme is a block theme.
+     *
+     * @since 6.0.0
+     * @return bool
+     */
+    private function isFSETheme() {
+        if ( function_exists( 'wp_is_block_theme' ) ) {
+            return (bool) wp_is_block_theme();
+        }
+        if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
+            return (bool) gutenberg_is_fse_theme();
+        }
+
+        return false;
     }
 
     /**
