@@ -158,13 +158,16 @@ class TestCase extends WP_UnitTestCase
      *
      * @see https://phpunit.de/manual/5.5/en/test-doubles.html
      *
+     * @unreleased rename to createMockWithCallback to prevent conflict with PHPUnit's createMock
      * @since 2.25.0 add suppression for phpunit internal deprecated notice
      * @since 2.11.0
      *
      * @param  string  $abstract  The class to create a mock for
      * @param  null|callable  $builderCallable  A callable for applying additional changes to the builder
+     *
+     * @return object
      */
-    public function createMock($abstract, $builderCallable = null): MockObject
+    public function createMockWithCallback($abstract, $builderCallable = null)
     {
         static::setSuppressedErrorHandler();
 
@@ -221,7 +224,7 @@ class TestCase extends WP_UnitTestCase
      */
     public function mock($abstract, $builderCallable = null)
     {
-        $mock = $this->createMock($abstract, $builderCallable);
+        $mock = $this->createMockWithCallback($abstract, $builderCallable);
 
         give()->singleton($abstract, function () use ($mock) {
             return $mock;

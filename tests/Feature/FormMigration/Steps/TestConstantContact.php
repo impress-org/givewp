@@ -42,7 +42,7 @@ class TestConstantContact extends TestCase
 
         // Assert
         $block = $v3Form->blocks->findByName('givewp/constantcontact');
-        $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
+        $this->assertTrue($block->getAttribute('checked' === 'on'));
         $this->assertSame($options['givewp_constant_contact_label'], $block->getAttribute('label'));
         $this->assertSame($options['givewp_constant_contact_list'], $block->getAttribute('selectedEmailLists'));
     }
@@ -85,7 +85,7 @@ class TestConstantContact extends TestCase
 
         // Assert
         $block = $v3Form->blocks->findByName('givewp/constantcontact');
-        $this->assertTrue(true, $block->getAttribute('checked' === 'on'));
+        $this->assertSame($block->getAttribute('checked'), 'on');
         $this->assertSame($meta['_give_constant_contact_custom_label'], $block->getAttribute('label'));
         $this->assertSame($meta['_give_constant_contact'], $block->getAttribute('selectedEmailLists'));
     }
