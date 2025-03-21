@@ -39,6 +39,30 @@
     }
 }
 
+.givewp-header-campaign-overview {
+    background-color: #fafafa !important;
+    display: flex;
+    gap: 0.2rem;
+    width: fit-content;
+    white-space: nowrap;
+    height: 60px;
+    align-items: center;
+    margin-left: -1rem;
+    padding: 0 1.2rem 0 0.8rem;
+    color: #0e0e0e;
+    font-size: 0.8125rem;
+    font-weight: 500;
+
+    a {
+        color: #0e0e0e;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
 .givewp-header-tabs {
     display: flex;
     height: 3.75rem;

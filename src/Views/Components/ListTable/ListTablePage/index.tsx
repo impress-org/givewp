@@ -13,6 +13,7 @@ import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
 
 export interface ListTablePageProps {
     //required
@@ -32,6 +33,7 @@ export interface ListTablePageProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
+    contentMode?: boolean;
 }
 
 export interface FilterConfig {
@@ -48,22 +50,51 @@ export interface FilterConfig {
 
 export interface ColumnFilterConfig {
     column: string;
-    filter: Function
+    filter: Function;
 }
 
-export interface BulkActionsConfig {
+interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-    confirm: (selected: Array<string | number>, names?: Array<string>) => JSX.Element | JSX.Element[] | string;
+    confirm: (
+        selected: Array<string | number>,
+        names?: Array<string>,
+        isOpen?: boolean,
+        setOpen?: (isOpen?: boolean) => void
+    ) => JSX.Element | JSX.Element[] | string;
 
     //optional
-    isVisible?: (data, parameters) => Boolean;
-    type?: 'normal' | 'warning' | 'danger';
+    isVisible?: (data: any, parameters: any) => boolean;
+    isIdSelectable?: (id: string, data: any) => boolean;
+    type?: 'normal' | 'warning' | 'danger' | 'custom';
 }
 
-export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
+// Makes the "action" property required for the standard types
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+    type: 'normal' | 'warning' | 'danger';
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property required for the undefined type
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+    type?: undefined;
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property forbidden for the custom type
+export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
+    type: 'custom';
+}
+
+export type BulkActionsConfig =
+    | BulkActionsConfigWithAction
+    | BulkActionsConfigWithoutType
+    | BulkActionsConfigWithoutAction;
+
+export const ShowConfirmModalContext = createContext(
+    (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
+);
 export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
@@ -80,15 +111,24 @@ export default function ListTablePage({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
-    banner
+    banner,
+    contentMode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
+    const [isOpen, setOpen] = useState(false);
+    const [modalContent, setModalContent] = useState<{
+        confirm;
+        action?;
+        label;
+        confirmButtonText?: string;
+        type?: 'normal' | 'warning' | 'danger' | 'custom';
+    }>({
         confirm: (selected) => {},
         action: (selected) => {},
         label: '',
+        confirmButtonText: '',
     });
     const [selectedAction, setSelectedAction] = useState<string>('');
     const [selectedIds, setSelectedIds] = useState([]);
@@ -127,8 +167,14 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
-        setModalContent({confirm, action, label, type});
+    const showConfirmActionModal = (
+        label,
+        confirm,
+        action,
+        type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
+        confirmButtonText?: string
+    ) => {
+        setModalContent({label, confirm, action, type, confirmButtonText});
         dialog.current.show();
     };
 
@@ -139,23 +185,30 @@ export default function ListTablePage({
             bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
         }
 
-        const actionIndex = bulkActions.findIndex((config) => selectedAction === config.value);
+        const bulkAction = bulkActions.find((config) => selectedAction === config.value);
 
-        if (actionIndex < 0) return;
+        if (!bulkAction) return;
 
         const selected = [];
         const names = [];
-        checkboxRefs.current.forEach((checkbox) => {
-            if (checkbox.checked) {
-                selected.push(checkbox.dataset.id);
-                names.push(checkbox.dataset.name);
-            }
+        const selectedRefs = checkboxRefs.current.filter((checkbox) => {
+            const isSelectable = bulkAction?.isIdSelectable?.(checkbox.dataset.id, data) ?? true;
+            return checkbox.checked && isSelectable;
+        });
+        selectedRefs.forEach((checkbox) => {
+            selected.push(checkbox.dataset.id);
+            names.push(checkbox.dataset.name);
         });
         setSelectedIds(selected);
         setSelectedNames(names);
         if (selected.length) {
-            setModalContent({...bulkActions[actionIndex]});
-            dialog.current.show();
+            setModalContent({...bulkAction});
+            if ('custom' === bulkAction.type) {
+                setOpen(true);
+                bulkAction?.confirm(selected, names, isOpen, setOpen);
+            } else {
+                dialog.current.show();
+            }
         }
     };
 
@@ -192,7 +245,7 @@ export default function ListTablePage({
                     showModal={openBulkActionModal}
                 />
                 {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {page && setPage && showPagination()}
+                {!PageActionsTop && page && setPage && showPagination()}
             </div>
         );
     };
@@ -206,33 +259,58 @@ export default function ListTablePage({
     return (
         <>
             <article className={styles.page}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.flexRow}>
-                        <GiveIcon size={'1.875rem'} />
-                        <h1 className={styles.pageTitle}>{title}</h1>
-                        {testModeFilter && testMode && <TestModeBadge />}
-                    </div>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </header>
-                {banner && (
-                    <section role="banner">
-                        {banner()}
-                    </section>
+                {contentMode ? (
+                    <>
+                        <section role="search" id={styles.searchContainer}>
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </>
+                ) : (
+                    <>
+                        <header className={styles.pageHeader}>
+                            <div className={styles.flexRow}>
+                                <GiveIcon size={'1.875rem'} />
+                                <h1 className={styles.pageTitle}>{title}</h1>
+                                {testModeFilter && testMode && <TestModeBadge />}
+                            </div>
+                            {children && <div className={styles.flexRow}>{children}</div>}
+                        </header>
+                        {banner && <section role="banner">{banner()}</section>}
+                        <section role="search" id={styles.searchContainer}>
+                            <div className={styles.flexRow}>
+                                <PageActions PageActionsTop />
+                            </div>
+                            <div className={styles.flexRow}>
+                                {filterSettings.map((filter) => (
+                                    <Filter
+                                        key={filter.name}
+                                        value={filters[filter.name]}
+                                        filter={filter}
+                                        onChange={handleFilterChange}
+                                        debouncedOnChange={handleDebouncedFilterChange}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </>
                 )}
-                <section role="search" id={styles.searchContainer}>
-                    {filterSettings.map((filter) => (
-                        <Filter
-                            key={filter.name}
-                            value={filters[filter.name]}
-                            filter={filter}
-                            onChange={handleFilterChange}
-                            debouncedOnChange={handleDebouncedFilterChange}
-                        />
-                    ))}
-                </section>
+
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions PageActionsTop />
+                    {contentMode && children ? <>{children}</> : <br />}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
@@ -261,7 +339,12 @@ export default function ListTablePage({
             <A11yDialog
                 id="giveListTableModal"
                 dialogRef={(instance) => (dialog.current = instance)}
-                title={modalContent.label}
+                title={
+                    <>
+                        {modalContent?.type === 'danger' && <DeleteIcon />}
+                        {modalContent?.label}
+                    </>
+                }
                 titleId={styles.modalTitle}
                 classNames={{
                     container: styles.container,
@@ -273,7 +356,9 @@ export default function ListTablePage({
                     closeButton: 'hidden',
                 }}
             >
-                <div className={styles.modalContent}>{modalContent?.confirm(selectedIds, selectedNames) || null}</div>
+                <div className={styles.modalContent}>
+                    {modalContent?.confirm(selectedIds, selectedNames, isOpen, setOpen) || null}
+                </div>
                 <div className={styles.gutter}>
                     <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
                         {__('Cancel', 'give')}
@@ -286,7 +371,7 @@ export default function ListTablePage({
                             await mutate();
                         }}
                     >
-                        {__('Confirm', 'give')}
+                        {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
                     </button>
                 </div>
             </A11yDialog>

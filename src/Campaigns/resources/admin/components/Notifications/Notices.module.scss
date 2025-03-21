@@ -1,0 +1,96 @@
+
+.snackbarContainer {
+    position: fixed;
+    z-index: 9999;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    width: 300px;
+    left: 50%;
+    transform: translateY(-50%);
+
+    .snackbar {
+        gap: 20px;
+        display: flex;
+        flex-direction: row;
+        border-radius: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        box-shadow: 0 5px 5px #b6b6b6;
+        align-items: center;
+        justify-content: space-between;
+
+        a {
+            color: #fff;
+            padding: 0;
+            line-height: 0.5;
+            text-decoration: none;
+        }
+    }
+
+    .type-error-snackbar {
+        background-color: #dc1e1e;
+        color: #fff;
+    }
+
+    .type-info-snackbar {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .type-warning-snackbar {
+        background-color: #f29718;
+        color: #1a0f00;
+
+        a {
+            color: #1a0f00;
+        }
+    }
+
+}
+
+
+.noticeContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: var(--givewp-spacing-6);
+    gap: 10px;
+
+    .notice {
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+        border-radius: 4px;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-3);
+        align-items: center;
+        justify-content: space-between;
+        border-width: 1px 1px 1px 4px;
+        border-style: solid;
+        font-size: 14px;
+
+        a {
+            padding: 0;
+            line-height: 0.5;
+            text-decoration: none;
+        }
+    }
+
+    .type-warning {
+        background-color: #fffaf2;
+        color: #1a0f00;
+        border-color: #f29718;
+
+        a {
+            color: #1a0f00;
+        }
+    }
+
+    // Note: other notification types styles are not defined. You can define them below
+}
+
+
+.notificationContent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

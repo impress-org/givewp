@@ -3,6 +3,7 @@
 namespace Give\Framework\QueryBuilder\Concerns;
 
 use Give\Framework\Database\DB;
+use Give\Vendors\StellarWP\Arrays\Arr;
 
 /**
  * @since 2.19.0
@@ -12,6 +13,7 @@ trait CRUD
     /**
      * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
+     * @unreleased Add support for inserting multiple rows at once
      * @since 2.19.0
      *
      * @param  array|string  $format
@@ -22,6 +24,12 @@ trait CRUD
      */
     public function insert($data, $format = null)
     {
+        if (Arr::is_list($data)) {
+            return DB::query(
+                $this->getInsertIntoSQL($data, $format)
+            );
+        }
+
         return DB::insert(
             $this->getTable(),
             $data,
