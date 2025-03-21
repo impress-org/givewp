@@ -160,7 +160,7 @@ function give_setup_post_types() {
             'editor',
         ],
         'rewrite' => [
-            'slug' => 'campaign',
+            'slug' => 'campaigns',
             'with_front' => true,
         ],
         'template' => [],
