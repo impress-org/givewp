@@ -44,11 +44,11 @@
         "fork-ts-checker-webpack-plugin": "^9.0.2",
         "jest": "^29.6.2",
         "prettier": "^2.8.3",
-        "typescript": "^4.9.4",
+        "rtlcss-webpack-plugin": "^4.0.7",
+        "typescript": "^5.8.2",
         "typescript-plugin-css-modules": "^4.1.1",
         "webpack": "^5.75.0",
         "webpack-cli": "^6.0.1",
-        "webpack-rtl-plugin": "^2.0.0",
         "wp-pot": "^1.10.2",
         "wp-textdomain": "^1.0.1"
     },
@@ -59,7 +59,7 @@
         "@fortawesome/free-regular-svg-icons": "^5.15.1",
         "@fortawesome/free-solid-svg-icons": "^5.15.1",
         "@fortawesome/react-fontawesome": "^0.1.12",
-        "@givewp/design-system-foundation": "^1.1.0",
+        "@givewp/design-system-foundation": "^1.2.0",
         "@givewp/form-builder-library": "^1.7.1",
         "@hookform/error-message": "^2.0.1",
         "@hookform/resolvers": "^2.9.10",
@@ -69,6 +69,7 @@
         "@stripe/react-stripe-js": "^2.1.0",
         "@stripe/stripe-js": "^1.52.0",
         "@svgr/webpack": "^6.5.1",
+        "@wordpress/api-fetch": "^7.8.0",
         "@wordpress/block-editor": "^11.2.0",
         "@wordpress/block-library": "^8.15.0",
         "@wordpress/components": "^23.2.0",
@@ -81,6 +82,7 @@
         "@wordpress/interface": "^5.11.0",
         "@wordpress/server-side-render": "^4.2.0",
         "accounting": "^0.4.1",
+        "ajv": "^7.0.4",
         "axios": "^1.7.9",
         "chart.js": "^2.9.3",
         "chartjs-plugin-crosshair": "^1.1.4",
@@ -109,6 +111,7 @@
         "react-a11y-dialog": "^6.1.5",
         "react-acceptjs": "^0.3.0",
         "react-ace": "^10.1.0",
+        "react-apexcharts": "^1.4.1",
         "react-aria-components": "^1.0.0-alpha.6",
         "react-beautiful-dnd": "^13.1.1",
         "react-csv": "^2.0.1",
@@ -156,7 +159,6 @@
         }
     },
     "volta": {
-        "node": "16.16.0",
-        "npm": "9.3.1"
+        "node": "18.20.7"
     }
 }

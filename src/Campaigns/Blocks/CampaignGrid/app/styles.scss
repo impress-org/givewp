@@ -1,0 +1,11 @@
+.givewp-campaign-grid {
+    display: grid;
+    column-gap: 16px;
+    row-gap: 16px;
+
+    &__pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 16px;
+    }
+}

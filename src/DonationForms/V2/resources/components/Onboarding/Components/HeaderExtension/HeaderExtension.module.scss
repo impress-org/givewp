@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    background: red;
+    gap: 1rem;
+    width: 100%;
+    max-width: 700px;
+    position: absolute;
+    top: 18px;
+    right: 12%;
+}

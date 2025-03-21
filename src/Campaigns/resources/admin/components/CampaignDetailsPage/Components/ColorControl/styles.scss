@@ -1,0 +1,63 @@
+.givewp-color-control {
+    align-items: center;
+    display: flex;
+    gap: var(--givewp-spacing-4);
+
+    &__indicator {
+        align-items: center;
+        display: flex;
+        position: relative;
+
+        span {
+            border-radius: 0.5rem;
+            border: 0;
+            box-shadow: none;
+            height: 3rem;
+            width: 3rem;
+        }
+
+        svg {
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    &__edit-button {
+        align-items: center;
+        background: none;
+        border-radius: 0.5rem;
+        border: solid 1px var(--givewp-neutral-300);
+        color: var(--givewp-neutral-900);
+        display: flex;
+        font-size: 1rem;
+        font-weight: 500;
+        gap: var(--givewp-spacing-2);
+        height: 3rem;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6) var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+        &:hover {
+            background: var(--givewp-neutral-50);
+            cursor: pointer;
+        }
+
+        &--active {
+            background: var(--givewp-neutral-700);
+            border: solid 1px var(--givewp-neutral-700);
+            color: var(--givewp-neutral-25);
+
+            &:hover {
+                background: var(--givewp-neutral-900);
+            }
+        }
+    }
+
+    &__popover-content {
+        .components-popover__content {
+            padding: var(--givewp-spacing-4);
+            width: auto;
+        }
+    }
+}

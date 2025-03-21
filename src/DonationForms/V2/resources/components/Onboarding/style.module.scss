@@ -153,12 +153,28 @@
     }
 }
 
-.tryNewFormBuilderBtnContainer {
+.actionsContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 60%;
     position: absolute;
     top: 18px;
-    left: 50%;
-    transform: translate(-50%, 0);
+    right: 1.8%;
+
+
+    a {
+        font-weight: bold;
+        margin-top: 22px;
+    }
 }
+
+/*.tryNewFormBuilderBtnContainer {
+  position: absolute;
+   top: 18px;
+   left: 50%;
+   transform: translate(-50%, 0);
+}*/
 
 .formName {
     color: #459948;
