@@ -7,7 +7,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 
 /**
  * Used to optimize the campaigns list table performance and to avoid n+1 problems.
- * Instead of doing expensive queries in multiple columns in each row, this class loads everything upfront for a range of campaigns.
+ * Instead of doing expensive queries in multiple columns in each row, this class loads everything upfront for multiple campaigns.
  *
  * @unreleased
  */
@@ -171,9 +171,9 @@ class CampaignsData
      *
      * @param Campaign $campaign
      *
-     * @return int|string
+     * @return int
      */
-    private function getActualGoal(Campaign $campaign)
+    private function getActualGoal(Campaign $campaign): int
     {
         switch ($campaign->goalType->getValue()) {
             case CampaignGoalType::DONATIONS():

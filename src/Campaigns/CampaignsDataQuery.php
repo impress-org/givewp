@@ -7,12 +7,17 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * Class used for eager loading the number of donors, donations and revenue amounts for a range of campaign Ids
+ * Class used for loading the number of donors, donations and revenue amounts for multiple campaigns
  *
  * @unreleased
  */
 class CampaignsDataQuery extends QueryBuilder
 {
+    /**
+     * @unreleased
+     *
+     * @param int[] $campaigns
+     */
     private function __construct(array $campaigns)
     {
         $this->select('campaignId.meta_value as campaign_id');
@@ -69,12 +74,11 @@ class CampaignsDataQuery extends QueryBuilder
      */
     public function collectIntendedAmounts()
     {
-        $query = clone $this;
-        $query->select('SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))) as sum');
-        $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
-
-        return $query->getAll(ARRAY_A);
+        return (clone $this)
+            ->select('SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))) as sum')
+            ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount')
+            ->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount')
+            ->getAll(ARRAY_A);
     }
 
     /**
@@ -86,10 +90,9 @@ class CampaignsDataQuery extends QueryBuilder
      */
     public function collectInitialAmounts()
     {
-        $query = clone $this;
-        $query->select('SUM(initial_amount) as sum');
-
-        return $query->getAll(ARRAY_A);
+        return (clone $this)
+            ->select('SUM(initial_amount) as sum')
+            ->getAll(ARRAY_A);
     }
 
     /**
@@ -97,10 +100,9 @@ class CampaignsDataQuery extends QueryBuilder
      */
     public function collectDonations()
     {
-        $query = clone $this;
-        $query->select('COUNT(donation.ID) as count');
-
-        return $query->getAll(ARRAY_A);
+        return (clone $this)
+            ->select('COUNT(donation.ID) as count')
+            ->getAll(ARRAY_A);
     }
 
     /**
@@ -108,11 +110,10 @@ class CampaignsDataQuery extends QueryBuilder
      */
     public function collectDonors()
     {
-        $query = clone $this;
-        $query->select('COUNT(DISTINCT donorId.meta_value) as count');
-        $query->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId');
-
-        return $query->getAll(ARRAY_A);
+        return (clone $this)
+            ->select('COUNT(DISTINCT donorId.meta_value) as count')
+            ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorId')
+            ->getAll(ARRAY_A);
     }
 
     /**
