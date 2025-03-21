@@ -16,13 +16,13 @@ class CampaignsDataQuery extends QueryBuilder
     /**
      * @unreleased
      *
-     * @param int[] $campaigns
+     * @param int[] $campaignIds
      */
-    private function __construct(array $campaigns)
+    private function __construct(array $campaignIds)
     {
         $this->select('campaignId.meta_value as campaign_id');
         $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
-        $this->whereIn('campaignId.meta_value', $campaigns);
+        $this->whereIn('campaignId.meta_value', $campaignIds);
         $this->groupBy('campaign_id');
     }
 
@@ -30,13 +30,13 @@ class CampaignsDataQuery extends QueryBuilder
     /**
      * Donations query for campaigns
      *
-     * @param int[] $campaigns - campaign ids
+     * @param int[] $campaignIds - campaign ids
      *
      * @return CampaignsDataQuery
      */
-    public static function donations(array $campaigns): CampaignsDataQuery
+    public static function donations(array $campaignIds): CampaignsDataQuery
     {
-        return (new self($campaigns))
+        return (new self($campaignIds))
             ->from('posts', 'donation')
             ->where('post_type', 'give_payment')
             ->joinDonationMeta(DonationMetaKeys::CAMPAIGN_ID, 'campaignId')
@@ -47,13 +47,13 @@ class CampaignsDataQuery extends QueryBuilder
     /**
      * Subscriptions query for campaigns
      *
-     * @param int[] $campaigns - campaign ids
+     * @param int[] $campaignIds - campaign ids
      *
      * @return CampaignsDataQuery
      */
-    public static function subscriptions(array $campaigns): CampaignsDataQuery
+    public static function subscriptions(array $campaignIds): CampaignsDataQuery
     {
-        return (new self($campaigns))
+        return (new self($campaignIds))
             ->from('give_subscriptions', 'subscription')
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
