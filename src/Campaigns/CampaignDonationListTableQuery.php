@@ -23,11 +23,13 @@ class CampaignDonationListTableQuery extends QueryBuilder
 
 
     /**
-     * @param array $campaigns
+     * Donations query for campaigns
+     *
+     * @param int[] $campaigns - campaign ids
      *
      * @return CampaignDonationListTableQuery
      */
-    public static function core(array $campaigns): CampaignDonationListTableQuery
+    public static function donations(array $campaigns): CampaignDonationListTableQuery
     {
         return (new self($campaigns))
             ->from('posts', 'donation')
@@ -38,7 +40,9 @@ class CampaignDonationListTableQuery extends QueryBuilder
     }
 
     /**
-     * @param array $campaigns
+     * Subscriptions query for campaigns
+     *
+     * @param int[] $campaigns - campaign ids
      *
      * @return CampaignDonationListTableQuery
      */

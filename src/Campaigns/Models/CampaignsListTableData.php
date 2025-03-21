@@ -47,7 +47,7 @@ class CampaignsListTableData
     {
         $self = new self();
 
-        $core = CampaignDonationListTableQuery::core($ids);
+        $core = CampaignDonationListTableQuery::donations($ids);
 
         $self->amounts = $core->collectIntendedAmounts();
         $self->donationsCount = $core->collectDonations();
