@@ -2,12 +2,16 @@
 
 namespace Give\Campaigns\Models;
 
+use Give\Campaigns\CampaignDonationListTableQuery;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 
 /**
+ * Used to optimize the campaigns list table performance and to avoid n+1 problems.
+ * Instead of doing expensive queries in multiple columns in each row, this class loads everything upfront for a range of campaigns.
+ *
  * @unreleased
  */
-class CampaignsData
+class CampaignsListTableData
 {
     /**
      * @var array
@@ -16,7 +20,7 @@ class CampaignsData
     /**
      * @var array
      */
-    private $subscriptionAmounts;
+    private $subscriptionAmounts = [];
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class CampaignsData
     /**
      * @var array
      */
-    private $subscriptionDonationsCount;
+    private $subscriptionDonationsCount = [];
     /**
      * @var array
      */
@@ -32,17 +36,31 @@ class CampaignsData
     /**
      * @var array
      */
-    private $subscriptionDonorsCount;
+    private $subscriptionDonorsCount = [];
 
-    public static function fromArray(array $data): CampaignsData
+    /**
+     * @param int[] $ids
+     *
+     * @return CampaignsListTableData
+     */
+    public static function campaigns(array $ids): CampaignsListTableData
     {
         $self = new static();
-        $self->amounts = $data['amounts'];
-        $self->subscriptionAmounts = $data['subscription_amounts'] ?? [];
-        $self->donationsCount = $data['donations'];
-        $self->subscriptionDonationsCount = $data['subscriptions_donations'] ?? [];
-        $self->donorsCount = $data['donors'];
-        $self->subscriptionDonorsCount = $data['subscription_donors'] ?? [];
+
+        $core = CampaignDonationListTableQuery::core($ids);
+
+        $self->amounts = $core->collectIntendedAmounts();
+        $self->donationsCount = $core->collectDonations();
+        $self->donorsCount = $core->collectDonors();
+
+        // Set subscriptions data
+        if (defined('GIVE_RECURRING_VERSION')) {
+            $subscriptions = CampaignDonationListTableQuery::subscriptions($ids);
+
+            $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
+            $self->subscriptionDonationsCount = $subscriptions->collectDonations();
+            $self->subscriptionDonorsCount = $subscriptions->collectDonors();
+        }
 
         return $self;
     }
@@ -50,11 +68,13 @@ class CampaignsData
     /**
      * @unreleased
      *
+     * Get revenue for campaign
+     *
      * @param Campaign $campaign
      *
-     * @return string
+     * @return int
      */
-    public function getRevenue(Campaign $campaign): string
+    public function getRevenue(Campaign $campaign): int
     {
         $data = $campaign->goalType->isSubscriptions()
             ? $this->subscriptionAmounts
@@ -62,15 +82,17 @@ class CampaignsData
 
         foreach ($data as $row) {
             if (isset($row['campaign_id']) && $row['campaign_id'] == $campaign->id) {
-                return $row['sum'];
+                return (int)$row['sum'];
             }
         }
 
-        return give_currency_filter(0);
+        return 0;
     }
 
     /**
      * @unreleased
+     *
+     * Get donations count for campaign
      *
      * @param Campaign $campaign
      *
@@ -93,6 +115,8 @@ class CampaignsData
 
     /**
      * @unreleased
+     *
+     * Get donors count for campaign
      *
      * @param Campaign $campaign
      *
@@ -117,9 +141,11 @@ class CampaignsData
     /**
      * @unreleased
      *
+     * Get goal data for campaign
+     *
      * @param Campaign $campaign
      *
-     * @return array
+     * @return array{actual: int|float, actualFormatted: string, goalFormatted:string, percentage:float}
      */
     public function getGoalData(Campaign $campaign): array
     {
@@ -140,13 +166,19 @@ class CampaignsData
         ];
     }
 
+    /**
+     * @unreleased
+     *
+     * @param Campaign $campaign
+     *
+     * @return int|string
+     */
     private function getActualGoal(Campaign $campaign)
     {
         switch ($campaign->goalType->getValue()) {
             case CampaignGoalType::DONATIONS():
             case CampaignGoalType::SUBSCRIPTIONS():
                 return $this->getDonationsCount($campaign);
-
             case CampaignGoalType::DONORS():
             case CampaignGoalType::DONORS_FROM_SUBSCRIPTIONS():
                 return $this->getDonorsCount($campaign);
