@@ -35,11 +35,10 @@ jobs:
 
             -   uses: actions/setup-node@v4
                 with:
-                    node-version: '16'
+                    node-version: '18'
 
             -   name: Install npm dependencies & build for translation
                 run: |
-                    npm install -g npm@7
                     npm ci
                     npm run dev
 
