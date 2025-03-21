@@ -58,6 +58,7 @@ export default function CampaignDetailsSettingsTab() {
                                 help={__('This will create a default campaign page for your campaign.', 'give')}
                                 name="enableCampaignPage"
                                 checked={enableCampaignPage}
+                                disabled={isDisabled}
                                 onChange={(value) => {
                                     setValue('enableCampaignPage', value, {shouldDirty: true});
                                 }}

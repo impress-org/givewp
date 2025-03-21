@@ -50,47 +50,46 @@ function ColorControl({name, disabled = false, className}: { name: string; disab
             name={name}
             control={control}
             render={({field}) => (
-                <div className={classnames('givewp-color-control', className)}>
+                <div className={classnames('givewp-color-control', className, {'is-disabled': disabled})}>
                     <div className="givewp-color-control__indicator">
                         <ColorIndicator colorValue={field.value} />
                         {field.value && <CheckIcon refColor={field.value} />}
                     </div>
 
-                    {!disabled && (
-                        <div className="givewp-color-control__popover">
-                            <button
-                                type="button"
-                                className={classnames('givewp-color-control__edit-button', {
-                                    'givewp-color-control__edit-button--active': popoverIsVisible,
-                                })}
-                                onClick={toggleVisible}
-                                aria-label={__('Edit color', 'give')}
+                    <div className="givewp-color-control__popover">
+                        <button
+                            type="button"
+                            className={classnames('givewp-color-control__edit-button', {
+                                'givewp-color-control__edit-button--active': popoverIsVisible,
+                            })}
+                            onClick={toggleVisible}
+                            aria-label={__('Edit color', 'give')}
+                            disabled={disabled}
+                        >
+                            <EditIcon />
+                            {__('Edit', 'give')}
+                        </button>
+                        {popoverIsVisible && (
+                            <Popover
+                                className="givewp-color-control__popover-content"
+                                offset={8}
+                                onClose={toggleVisible}
+                                placement="right"
                             >
-                                <EditIcon />
-                                {__('Edit', 'give')}
-                            </button>
-                            {popoverIsVisible && (
-                                <Popover
-                                    className="givewp-color-control__popover-content"
-                                    offset={8}
-                                    onClose={toggleVisible}
-                                    placement="right"
-                                >
-                                    <ColorPalette
-                                        clearable={false}
-                                        colors={[
-                                            {
-                                                colors: defaultColors,
-                                                name: __('Theme', 'give'),
-                                            },
-                                        ]}
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                    />
-                                </Popover>
-                            )}
-                        </div>
-                    )}
+                                <ColorPalette
+                                    clearable={false}
+                                    colors={[
+                                        {
+                                            colors: defaultColors,
+                                            name: __('Theme', 'give'),
+                                        },
+                                    ]}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                />
+                            </Popover>
+                        )}
+                    </div>
                 </div>
             )}
         />
