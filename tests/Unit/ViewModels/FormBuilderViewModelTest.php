@@ -74,7 +74,7 @@ class FormBuilderViewModelTest extends TestCase
                 ],
                 'formFieldManagerData' => [
                     'isInstalled' => defined('GIVE_FFM_VERSION'),
-                    'isLicensed' => (bool)Give_License::get_license_by_plugin_dirname('give-form-field-manager'),
+                    'isLicensed' => Give_License::get_license_by_plugin_dirname('give-form-field-manager')['license'] === 'valid',
                 ],
                 'emailTemplateTags' => $viewModel->getEmailTemplateTags(),
                 'emailNotifications' => array_map(static function ($notification) {
