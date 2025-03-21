@@ -4,6 +4,7 @@ namespace Give\Campaigns\Models;
 
 use DateTime;
 use Give\Campaigns\Repositories\CampaignPageRepository;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -17,6 +18,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
  * @property int $campaignId
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
+ * @property CampaignPageStatus $status
  */
 class CampaignPage extends Model implements ModelCrud
 {
@@ -25,6 +27,7 @@ class CampaignPage extends Model implements ModelCrud
         'campaignId' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
+        'status' => CampaignPageStatus::class,
     ];
 
     public $relationships = [
@@ -112,6 +115,7 @@ class CampaignPage extends Model implements ModelCrud
             'campaignId' => (int) $object->campaignId,
             'createdAt' => Temporal::toDateTime($object->createdAt),
             'updatedAt' => Temporal::toDateTime($object->updatedAt),
+            'status' => new CampaignPageStatus($object->status),
         ]);
     }
 }

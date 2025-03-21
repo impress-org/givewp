@@ -1,15 +1,15 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
-import campaignPageImage from './images/campaign-page.svg';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from '@givewp/form-builder-library';
 import type {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
+import {CampaignGoalInputAttributes} from '@givewp/campaigns/admin/constants/goalInputAttributes';
 
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -33,6 +33,8 @@ export default function CampaignDetailsSettingsTab() {
         'enableCampaignPage',
     ]);
     const isDisabled = status === 'archived';
+
+    const goalInputAttributes = new CampaignGoalInputAttributes(goalType, currency);
 
     return (
         <div className={styles.sections}>
@@ -177,23 +179,22 @@ export default function CampaignDetailsSettingsTab() {
                             )}
                         </select>
 
-                        <div className={styles.sectionFieldDescription}>{goalDescription(goalType)}</div>
+                        <div className={styles.sectionFieldDescription}>{goalInputAttributes.getHelp()}</div>
 
                         {errors.goalType && <div className={styles.errorMsg}>{`${errors.goalType.message}`}</div>}
                     </div>
 
                     <div className={styles.sectionField}>
-                        <div className={styles.sectionSubtitle}>{__('How much do you want to raise?', 'give')}</div>
-                        <div className={styles.sectionFieldDescription}>
-                            {__('Let us know the target amount you’re aiming for in your campaign.', 'give')}
-                        </div>
+                        <div className={styles.sectionSubtitle}>{goalInputAttributes.getLabel()}</div>
+                        <div className={styles.sectionFieldDescription}>{goalInputAttributes.getDescription()}</div>
 
-                        {goalType === 'amount' || goalType === 'amountFromSubscriptions' ? (
+                        {goalInputAttributes.isCurrencyType() ? (
                             <div className={styles.sectionFieldCurrencyControl}>
                                 <CurrencyControl
                                     name="goal"
                                     currency={currency as CurrencyCode}
                                     disabled={isDisabled}
+                                    placeholder={goalInputAttributes.getPlaceholder()}
                                     value={watch('goal')}
                                     onValueChange={(value) => {
                                         setValue('goal', Number(value), {shouldDirty: true});
@@ -201,7 +202,12 @@ export default function CampaignDetailsSettingsTab() {
                                 />
                             </div>
                         ) : (
-                            <input type="number" {...register('goal', {valueAsNumber: true})} disabled={isDisabled} />
+                            <input
+                                type="number"
+                                {...register('goal', {valueAsNumber: true})}
+                                disabled={isDisabled}
+                                placeholder={goalInputAttributes.getPlaceholder()}
+                            />
                         )}
 
                         {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
@@ -246,29 +252,4 @@ export default function CampaignDetailsSettingsTab() {
             </div>
         </div>
     );
-};
-
-const goalDescription = (type: string) => {
-    switch (type) {
-        case 'amount':
-            return sprintf(__('Your goal progress is measured by the total amount of funds raised eg. %s of %s raised.', 'give'),
-                currencyFormatter.format(500),
-                currencyFormatter.format(1000)
-            );
-        case 'donations':
-            return __('Your goal progress is measured by the number of donations. eg. 1 of 5 donations.', 'give');
-        case 'donors':
-            return __(
-                'Your goal progress is measured by the number of donors. eg. 10 of 50 donors have given.',
-                'give'
-            );
-        case 'amountFromSubscriptions':
-            return __('Only the first donation amount of a recurring donation is counted toward the goal.', 'give');
-        case 'subscriptions':
-            return __('Only the first donation of a recurring donation is counted toward the goal.', 'give');
-        case 'donorsFromSubscriptions':
-            return __('Only the donors that subscribed to a recurring donation are counted toward the goal.', 'give');
-        default:
-            return null;
-    }
 };
