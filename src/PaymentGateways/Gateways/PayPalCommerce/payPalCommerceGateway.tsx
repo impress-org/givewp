@@ -20,6 +20,7 @@ import type {
     PayPalButtonsComponentOptions
 } from '@paypal/paypal-js';
 import updateOrder from './resources/js/updateOrder';
+import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
 (() => {
     /**
@@ -197,16 +198,7 @@ import updateOrder from './resources/js/updateOrder';
     };
 
     const createSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
-        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, {
-            method: 'POST',
-            body: getFormData(),
-        });
-
-        const responseJson = await response.json();
-
-        if (!responseJson.success) {
-            throw responseJson.data.error;
-        }
+        const {planId, userAction} = await createSubscriptionPlan(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, payPalCommerceGateway, getFormData());
 
         const subscriberData: PayPalSubscriber = {
             name: {
@@ -233,13 +225,13 @@ import updateOrder from './resources/js/updateOrder';
         }
 
         const createSubscriptionPayload: CreateSubscriptionRequestBody = {
-            plan_id: responseJson.data.id,
+            plan_id: planId,
             subscriber: subscriberData,
         };
 
-        if (responseJson.data?.user_action) {
+        if (userAction) {
             createSubscriptionPayload.application_context = {
-                user_action: responseJson.data.user_action
+                user_action: userAction
             }
         }
 
@@ -400,19 +392,6 @@ import updateOrder from './resources/js/updateOrder';
                 const orderId = data.orderID;
                 const subscriptionId = data?.subscriptionID;
 
-                // Check if the order amount is different from the form amount.
-                const order = await actions.order.get();
-                const orderAmount = Number(order.purchase_units[0].amount.value);
-                const formAmount = Number(getAmount());
-
-                // If the order amount is different from the form amount, update the order amount.
-                if (orderAmount !== formAmount) {
-                    // Update the order amount to match the form amount.
-                    const formData = getFormData();
-                    formData.append('orderId', orderId);
-                    await updateOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_authorized_order_amount`, formData);
-                }
-
                 const submitButtonDefaultText = submitButton.textContent;
                 submitButton.textContent = __('Waiting for PayPal...', 'give');
                 submitButton.disabled = true;
@@ -424,6 +403,19 @@ import updateOrder from './resources/js/updateOrder';
                     submitButton.textContent = submitButtonDefaultText;
                     submitButton.click();
                     return;
+                }
+
+                 // Check if the order amount is different from the form amount.
+                const order = await actions.order.get();
+                const orderAmount = Number(order.purchase_units[0].amount.value);
+                const formAmount = Number(getAmount());
+
+                // If the order amount is different from the form amount, update the order amount.
+                if (orderAmount !== formAmount) {
+                    // Update the order amount to match the form amount.
+                    const formData = getFormData();
+                    formData.append('orderId', orderId);
+                    await updateOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_authorized_order_amount`, formData);
                 }
 
                 if (orderId) {

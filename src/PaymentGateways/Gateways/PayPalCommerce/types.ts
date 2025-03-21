@@ -75,4 +75,5 @@ export interface PayPalCommerceGateway extends Gateway {
     settings?: GatewaySettings & PayPalCommerceGatewaySettings;
     payPalOrderId?: string;
     payPalAuthorizationId?: string;
+    payPalPlanId?: string;
 }
