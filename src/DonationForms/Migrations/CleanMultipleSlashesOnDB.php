@@ -61,7 +61,7 @@ class CleanMultipleSlashesOnDB extends Migration
      */
     public static function timestamp()
     {
-        return strtotime('2023-20-11');
+        return strtotime('2023-11-20');
     }
 
     /**
