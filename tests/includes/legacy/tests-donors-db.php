@@ -14,7 +14,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->_post_id = $this->factory->post->create(
@@ -114,9 +114,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	/**
 	 * Tear Down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test get customer columns.
@@ -146,7 +144,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$donor = Give()->donors->get_donor_by( 'email', 'testadmin@domain.com' );
 
-		$this->assertInternalType( 'object', $donor );
+        $this->assertIsObject( $donor );
 		$this->assertObjectHasAttribute( 'email', $donor );
 
 	}
@@ -213,14 +211,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->get_total_donation_amount() );
+		$this->assertEquals( 20, (int)$customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->increment_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '30', $updated_customer->get_total_donation_amount() );
+		$this->assertEquals( 30, (int)$updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '2', $updated_customer->purchase_count );
 	}
 
@@ -231,14 +229,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->get_total_donation_amount() );
+		$this->assertEquals( '20', (int)$customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->decrement_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '10', $updated_customer->get_total_donation_amount() );
+		$this->assertEquals( 10, (int)$updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '0', $updated_customer->purchase_count );
 	}
 

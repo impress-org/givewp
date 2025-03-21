@@ -6,14 +6,12 @@
 class Tests_Give extends Give_Unit_Test_Case {
 	protected $object;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->object = Give();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * @covers Give::setup_constants

@@ -65,7 +65,7 @@ class Give_Cron {
 	 *
 	 * @since 1.8.13
 	 */
-	private function setup() {
+	public function setUp(): void {
 		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
 		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
 	}

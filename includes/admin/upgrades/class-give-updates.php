@@ -132,7 +132,7 @@ class Give_Updates {
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function setup() {
+	public function setUp(): void {
 		/**
 		 * Load file
 		 */

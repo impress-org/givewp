@@ -19,7 +19,7 @@ class TestListDonationForms extends TestCase
 
     private $donationForms = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -48,7 +48,8 @@ class Tests_API extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void
+    {
 		parent::setUp();
 
 		global $wp_rewrite, $wp_query;
@@ -192,7 +193,8 @@ class Tests_API extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
+	public function tearDown(): void
+    {
 		parent::tearDown();
 		remove_action( 'give_api_output_override_xml', array( $this, 'override_api_xml_format' ) );
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
@@ -229,7 +231,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 * Test Get Versions
 	 */
 	public function test_get_versions() {
-		$this->assertInternalType( 'array', $this->_api->get_versions() );
+        $this->assertIsArray( $this->_api->get_versions() );
 		$this->assertArrayHasKey( 'v1', $this->_api->get_versions() );
 	}
 
@@ -305,9 +307,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'earnings', $out['forms'][0]['stats']['monthly_average'] );
 
 		$this->assertEquals( '60', $out['forms'][0]['stats']['total']['donations'] );
-		$this->assertEquals( '140', $out['forms'][0]['stats']['total']['earnings'] );
+		$this->assertEquals( '140.00', $out['forms'][0]['stats']['total']['earnings'] );
 		$this->assertEquals( '60', $out['forms'][0]['stats']['monthly_average']['donations'] );
-		$this->assertEquals( '140', $out['forms'][0]['stats']['monthly_average']['earnings'] );
+		$this->assertEquals( '140.00', $out['forms'][0]['stats']['monthly_average']['earnings'] );
 	}
 
 	/**
@@ -320,7 +322,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'amount', $out['forms'][0]['goal'] );
 		$this->assertArrayHasKey( 'percentage_completed', $out['forms'][0]['goal'] );
 
-		$this->assertEquals( '2000', $out['forms'][0]['goal']['amount'] );
+		$this->assertEquals( '2000.00', $out['forms'][0]['goal']['amount'] );
 		$this->assertEquals( '7.0', $out['forms'][0]['goal']['percentage_completed'] );
 
 	}
@@ -336,9 +338,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'intermediatelevel', $out['forms'][0]['pricing'] );
 		$this->assertArrayHasKey( 'advancedlevel', $out['forms'][0]['pricing'] );
 
-		$this->assertEquals( '10', $out['forms'][0]['pricing']['basiclevel'] );
-		$this->assertEquals( '20', $out['forms'][0]['pricing']['intermediatelevel'] );
-		$this->assertEquals( '40', $out['forms'][0]['pricing']['advancedlevel'] );
+		$this->assertEquals( '10.00', $out['forms'][0]['pricing']['basiclevel'] );
+		$this->assertEquals( '20.00', $out['forms'][0]['pricing']['intermediatelevel'] );
+		$this->assertEquals( '40.00', $out['forms'][0]['pricing']['advancedlevel'] );
 	}
 
 	/**

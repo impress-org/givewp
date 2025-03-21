@@ -10,15 +10,13 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	/**
 	 * Set up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->_post = Give_Helper_Form::create_multilevel_form();
 
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test get_donation_form()

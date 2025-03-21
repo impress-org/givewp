@@ -24,7 +24,7 @@ class GetDonorRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function setUp()
+    public function setUp(): void
     {
         Hooks::addAction('rest_api_init', RegisterDonorRoutes::class);
 

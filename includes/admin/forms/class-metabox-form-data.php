@@ -81,7 +81,7 @@ class Give_MetaBox_Form_Data {
 	 *
 	 * @return void
 	 */
-	function setup() {
+	public function setUp(): void {
 		$this->settings = $this->get_settings();
 	}
 

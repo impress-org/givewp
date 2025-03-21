@@ -20,14 +20,14 @@ class DonationFormVariablePricesDropdownTest extends TestCase
      */
     private $donation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->donation = new Give_Payment(Give_Helper_Payment::create_multilevel_payment());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

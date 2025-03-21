@@ -13,7 +13,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -41,7 +41,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 	/**
 	 * Tear Down
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 
 		parent::tearDown();
 

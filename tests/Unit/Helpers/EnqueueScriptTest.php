@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 
 class EnqueueScriptTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

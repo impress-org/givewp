@@ -14,7 +14,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Set it up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		// Create a Donation Form
@@ -119,9 +119,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test Add Donor
@@ -248,17 +246,17 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $donor->get_total_donation_amount() );
+		$this->assertEquals( 20, (int)$donor->get_total_donation_amount() );
 		$this->assertEquals( '1', $donor->purchase_count );
 
 		$donor->increase_purchase_count();
 		$donor->increase_value( 10 );
 
-		$this->assertEquals( '30', $donor->get_total_donation_amount() );
+		$this->assertEquals( 30, (int)$donor->get_total_donation_amount() );
 		$this->assertEquals( '2', $donor->purchase_count );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '2' );
-		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '30' );
+		$this->assertEquals( (int)give_donation_total_of_user( $this->_user_id ), 30 );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->increase_purchase_count( - 1 ) );
@@ -280,7 +278,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( $donor->purchase_count, '0' );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '0' );
-		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '10' );
+		$this->assertEquals((int)give_donation_total_of_user( $this->_user_id ), 10 );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->decrease_donation_count( - 1 ) );

@@ -8,6 +8,7 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\AssertIsType;
 use Give_Cache_Setting;
+use PHPUnit\Framework\MockObject\MockObject;
 use WP_UnitTestCase;
 
 /**
@@ -21,17 +22,14 @@ use WP_UnitTestCase;
  */
 class TestCase extends WP_UnitTestCase
 {
-    use AssertIsType;
-
     /**
      * Cache Give setting
      * Note: we will use this variable to reset setting after each test to prevent test failure
      * which happen due to change in setting during test.
      *
      * @since 2.4.0
-     * @var array
      */
-    private static $saved_settings;
+    private static array $saved_settings;
 
     /**
      * @inheritDoc
@@ -39,7 +37,7 @@ class TestCase extends WP_UnitTestCase
      * @since 2.22.1 add setUpTraits
      * @since 1.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Ensure server variable is set for WP email functions.
         if (!isset($_SERVER['SERVER_NAME'])) {
@@ -69,7 +67,7 @@ class TestCase extends WP_UnitTestCase
      * @since 1.0
      * @inheritDoc
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         // Reset Give setting to prevent failing test which happen we update setting in test function.
         update_option('give_settings', self::$saved_settings);
@@ -102,7 +100,7 @@ class TestCase extends WP_UnitTestCase
      * @param mixed $actual
      * @param string $message
      */
-    public function assertNotWPError($actual, $message = '')
+    public function assertNotWPError($actual, $message = ''): void
     {
         $this->assertNotInstanceOf('WP_Error', $actual, $message);
     }
@@ -113,7 +111,7 @@ class TestCase extends WP_UnitTestCase
      * @param mixed $actual
      * @param string $message
      */
-    public function assertIsWPError($actual, $message = '')
+    public function assertIsWPError($actual, $message = ''): void
     {
         $this->assertInstanceOf('WP_Error', $actual, $message);
     }
@@ -128,7 +126,7 @@ class TestCase extends WP_UnitTestCase
      *
      * @return void
      */
-    public static function assertNotFalse($condition, $message = '')
+    public static function assertNotFalse($condition, $message = ''): void
     {
         if (version_compare(phpversion(), '5.3', '<')) {
             self::assertThat($condition, self::logicalNot(self::isFalse()), $message);
@@ -144,10 +142,8 @@ class TestCase extends WP_UnitTestCase
      *
      * @param Money $expected
      * @param Money $actual
-     *
-     * @return void
      */
-    public static function assertMoneyEquals(Money $expected, Money $actual)
+    public static function assertMoneyEquals(Money $expected, Money $actual): void
     {
         self::assertTrue(
             $expected->equals($actual),
@@ -167,10 +163,8 @@ class TestCase extends WP_UnitTestCase
      *
      * @param  string  $abstract  The class to create a mock for
      * @param  null|callable  $builderCallable  A callable for applying additional changes to the builder
-     *
-     * @return object
      */
-    public function createMock($abstract, $builderCallable = null)
+    public function createMock($abstract, $builderCallable = null): MockObject
     {
         static::setSuppressedErrorHandler();
 
@@ -199,10 +193,8 @@ class TestCase extends WP_UnitTestCase
      * Set error handler to suppress `ReflectionType::__toString()` deprecation warning
      *
      * @since 2.25.0
-     *
-     * @return void
      */
-    public static function setSuppressedErrorHandler()
+    public static function setSuppressedErrorHandler(): void
     {
         $previousHandler = set_error_handler(
             static function ($code, $description, $file = null, $line = null, $context = null) use (&$previousHandler) {
@@ -245,7 +237,7 @@ class TestCase extends WP_UnitTestCase
      *
      * @return void
      */
-    protected function setUpTraits()
+    protected function setUpTraits(): void
     {
         //
     }
@@ -257,7 +249,7 @@ class TestCase extends WP_UnitTestCase
      *
      * @return void
      */
-    protected function tearDownTraits()
+    protected function tearDownTraits(): void
     {
         $uses = array_flip(class_uses(static::class));
 
@@ -271,10 +263,8 @@ class TestCase extends WP_UnitTestCase
      * Registers Test Gateway to be used in tests to avoid any side effects caused by gateway not being registered.
      *
      * @since 2.22.1
-     *
-     * @return void
      */
-    private function registerTestGateway()
+    private function registerTestGateway(): void
     {
         /** @var PaymentGatewayRegister $registrar */
         $registrar = give(PaymentGatewayRegister::class);
