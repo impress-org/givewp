@@ -128,6 +128,24 @@ class ServiceProvider implements ServiceProviderInterface
                 'single' => true,
             ]);
         }
+        // notices
+        $notices = [
+            'givewp_campaign_interaction_notice',
+            'givewp_campaign_listtable_notice',
+            'givewp_campaign_form_notice',
+            'givewp_campaign_settings_notice'
+        ];
+
+        foreach ($notices as $name) {
+            add_action('wp_ajax_' . $name, static function () use ($name) {
+                add_user_meta(
+                    get_current_user_id(),
+                    $name,
+                    time(),
+                    true
+                );
+            });
+        }
     }
 
     /**

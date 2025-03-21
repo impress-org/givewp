@@ -1,7 +1,5 @@
 .tooltip {
     position: absolute;
-    top: 420px; // hacky but I can't think of any other way as the entire list table is wrapped in an element that has the overflow property set
-    left: 100px;
     z-index: 9;
     width: 377px;
     display: flex;
@@ -15,23 +13,43 @@
     border: solid 2px #6b7280;
     background-color: #fff;
 
-    .close {
-        cursor: pointer;
-        position: absolute;
-        right: 13px;
-        top: 13px;
-    }
-
     h3 {
         padding: 0;
         margin: 0;
         font-size: 16px;
         color: #060c1a;
     }
+}
 
-    .content {
-        font-size: 14px;
-        color: #1f2937;
-        font-weight: normal;
-    }
+.defaultForm {
+    top: 420px;
+    left: 100px;
+}
+
+.campaignSettings {
+    right: 20px;
+    top: 150px;
+}
+
+.campaignList {
+    left: 20px;
+    top: 90px;
+}
+
+.campaignForm {
+    left: 250px;
+    top: 150px;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+}
+
+.content {
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: normal;
 }

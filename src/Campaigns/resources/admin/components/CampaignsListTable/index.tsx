@@ -10,6 +10,8 @@ import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
 import {getCampaignOptionsWindowData} from "@givewp/campaigns/utils";
+import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
+import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -93,6 +95,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
     const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(shouldShowExistingUserIntroModal);
+    const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_listtable_notice');
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -136,6 +139,16 @@ export default function CampaignsListTable() {
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
                 <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
+                {showTooltip && (
+                    <CampaignNotice
+                        title={__('Campaign List', 'give')}
+                        description={__('We\'ve created a campaign from each of your donation forms. Your forms still work as before, but now with the added power of campaign management! Select a campaign to see how you can seamlessly manage your online fundraising.', 'give')}
+                        linkText={__('Read documentation on what we changed', 'give')}
+                        linkHref="#"
+                        handleDismiss={dismissTooltip}
+                        type={'campaignList'}
+                    />
+                )}
             </ListTablePage>
         </>
     );
