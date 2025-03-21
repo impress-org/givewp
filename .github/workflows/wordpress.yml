@@ -22,9 +22,9 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ 7.2, 7.4, 8.0 ]
+                php: [7.4, 8.0]
                 mysql: [ 'mysql:5.7', 'mysql:8.0' ]
-                wordpress: [ '6.0', latest ]
+                wordpress: [ '6.5', latest ]
 
         services:
             mysql57:
@@ -50,7 +50,7 @@ jobs:
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v4
             -   name: Cache dependencies
                 uses: actions/cache@v3
                 with:
