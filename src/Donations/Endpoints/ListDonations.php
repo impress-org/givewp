@@ -68,11 +68,6 @@ class ListDonations extends Endpoint
                         'default' => 30,
                         'minimum' => 1
                     ],
-                    'form' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'default' => 0
-                    ],
                     'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
