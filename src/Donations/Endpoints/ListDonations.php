@@ -13,6 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
+ * @unreleased replace form with campaignId.
  * @since 3.4.0 The class is extendable
  */
 class ListDonations extends Endpoint
@@ -242,7 +243,7 @@ class ListDonations extends Endpoint
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $form || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $donor;
 
         if ($search) {
             if (ctype_digit($search)) {
