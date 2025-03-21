@@ -17,8 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers and sets up the Donation Forms (give_forms) custom post type
  *
- * @return void
+ * @unreleased updated menu_name to GiveWP
  * @since 1.0
+ *
+ * @return void
  */
 function give_setup_post_types() {
 
@@ -56,8 +58,8 @@ function give_setup_post_types() {
 			'name'               => __( 'Donation Forms', 'give' ),
 			'singular_name'      => __( 'Form', 'give' ),
 			'add_new'            => __( 'Add Form', 'give' ),
-            'add_new_item'       => __('Add New Donation Form', 'give'),
-            'edit_item'          => __('Edit Donation Form', 'give'),
+			'add_new_item'       => __( 'Add New Donation Form', 'give' ),
+			'edit_item'          => __( 'Edit Donation Form', 'give' ),
 			'new_item'           => __( 'New Form', 'give' ),
 			'all_items'          => __( 'All Forms', 'give' ),
 			'view_item'          => __( 'View Form', 'give' ),
@@ -65,7 +67,7 @@ function give_setup_post_types() {
 			'not_found'          => __( 'No forms found.', 'give' ),
 			'not_found_in_trash' => __( 'No forms found in Trash.', 'give' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => apply_filters( 'give_menu_name', __( 'Donations', 'give' ) ),
+			'menu_name'          => apply_filters( 'give_menu_name', 'GiveWP'),
 			'name_admin_bar'     => apply_filters( 'give_name_admin_bar_name', __( 'Donation Form', 'give' ) ),
 		]
 	);
@@ -135,6 +137,34 @@ function give_setup_post_types() {
 		'can_export'      => true,
 	];
 	register_post_type( 'give_payment', $payment_args );
+
+    /**
+     * Register Campaign Page CPT
+     *
+     * @unreleased
+     */
+    register_post_type('give_campaign_page', [
+        'label' => __('Campaign Page', 'give'),
+        'labels' => [
+            'edit_item' => __('Edit Campaign Page', 'give'),
+        ],
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => false,
+        'show_in_rest' => true,
+        'show_in_admin_bar' => true,
+        'query_var' => true,
+        'hierarchical' => false,
+        'supports' => [
+            'title',
+            'editor',
+        ],
+        'rewrite' => [
+            'slug' => 'campaigns',
+            'with_front' => true,
+        ],
+        'template' => [],
+    ]);
 
 }
 

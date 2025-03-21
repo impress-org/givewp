@@ -32,18 +32,18 @@ const API = new ListTableApi(window.GiveDonations);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or Donation ID', 'give'),
-        ariaLabel: __('search donations', 'give'),
-    },
-    {
         name: 'form',
         type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
         options: window.GiveDonations.forms,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or Donation ID', 'give'),
+        ariaLabel: __('search donations', 'give'),
     },
     {
         name: 'toggle',
@@ -64,7 +64,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donations?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>

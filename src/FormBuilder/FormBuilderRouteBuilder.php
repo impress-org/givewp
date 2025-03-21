@@ -63,12 +63,20 @@ class FormBuilderRouteBuilder
      */
     public function getUrl(): string
     {
+        $queryArgs = [
+            'post_type' => 'give_forms',
+            'page' => self::SLUG,
+            'donationFormID' => $this->donationFormID,
+            'locale' => $this->locale,
+        ];
+
+        if (isset($_GET['campaignId'])) {
+            $queryArgs['campaignId'] = $_GET['campaignId'];
+        }
+
         return add_query_arg(
             [
-                'post_type' => 'give_forms',
-                'page' => self::SLUG,
-                'donationFormID' => $this->donationFormID,
-                'locale' => $this->locale,
+                $queryArgs,
             ],
             admin_url('edit.php')
         );

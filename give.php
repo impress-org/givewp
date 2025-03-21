@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Plugin Name: Give - Donation Plugin
+ * Plugin Name: Give - Donation Plugin (4.0.0-beta.1)
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 3.22.2
+ * Version: 4.0.0
  * Requires at least: 6.5
- * Requires PHP: 7.2
+ * Requires PHP: 7.4
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -42,6 +42,7 @@
  * - The GiveWP Team
  */
 
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Container\Container;
 use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
@@ -133,6 +134,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read DonationFormsRepository $donationForms
+ * @property-read CampaignRepository $campaigns
  * @property-read Profile $donorDashboard
  * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
@@ -245,6 +247,7 @@ final class Give
         Give\FormTaxonomies\ServiceProvider::class,
         Give\DonationSpam\ServiceProvider::class,
         Give\Settings\ServiceProvider::class,
+        Give\Campaigns\ServiceProvider::class,
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
         Give\ThirdPartySupport\ServiceProvider::class,
     ];
@@ -417,7 +420,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.22.2');
+            define('GIVE_VERSION', '4.0.0');
         }
 
         // Plugin Root File.
