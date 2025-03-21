@@ -47,11 +47,11 @@ class CampaignsData
     {
         $self = new self();
 
-        $core = CampaignsDataQuery::donations($ids);
+        $donations = CampaignsDataQuery::donations($ids);
 
-        $self->amounts = $core->collectIntendedAmounts();
-        $self->donationsCount = $core->collectDonations();
-        $self->donorsCount = $core->collectDonors();
+        $self->amounts = $donations->collectIntendedAmounts();
+        $self->donationsCount = $donations->collectDonations();
+        $self->donorsCount = $donations->collectDonors();
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
@@ -145,7 +145,7 @@ class CampaignsData
      *
      * @param Campaign $campaign
      *
-     * @return array{actual: int|float, actualFormatted: string, goalFormatted:string, percentage:float}
+     * @return array{actual: int, goal: int, actualFormatted: string, goalFormatted:string, percentage:float}
      */
     public function getGoalData(Campaign $campaign): array
     {
@@ -156,6 +156,7 @@ class CampaignsData
 
         return [
             'actual' => $actual,
+            'goal' => $campaign->goal,
             'actualFormatted' => $campaign->goalType == CampaignGoalType::AMOUNT
                 ? give_currency_filter(give_format_amount($actual))
                 : $actual,
