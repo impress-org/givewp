@@ -1,16 +1,16 @@
 import {CSSProperties, useState} from 'react';
-import {Icon} from '@wordpress/components';
-import {external, close} from '@wordpress/icons';
-import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
-import {__} from '@wordpress/i18n';
 import {
     __experimentalNumberControl as NumberControl,
+    Icon,
     PanelBody,
     PanelRow,
     SelectControl,
     TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
+import {close, external} from '@wordpress/icons';
+import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
+import {__} from '@wordpress/i18n';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
@@ -35,11 +35,11 @@ const DonationGoal = ({dispatch}) => {
             goalProgressType,
             goalAmount,
             goalStartDate,
-            goalEndDate
+            goalEndDate,
         },
     } = useFormState();
 
-    const {publishGoal, publishGoalType} = useDonationFormPubSub();
+    const {publishGoal, publishGoalType, publishGoalSource} = useDonationFormPubSub();
     const [showNotice, setShowNotice] = useState(!window.goalNotificationData.isDismissed);
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
@@ -77,7 +77,7 @@ const DonationGoal = ({dispatch}) => {
             float: 'left',
             marginTop: 2,
             marginRight: 8,
-        }
+        },
     };
 
     return (
@@ -96,6 +96,29 @@ const DonationGoal = ({dispatch}) => {
 
             {enableDonationGoal && (
                 <>
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Form Goal', 'give')}
+                            value={goalSource}
+                            options={
+                                [
+                                    {
+                                        label: __('Campaign', 'give'),
+                                        value: 'campaign',
+                                    },
+                                    {
+                                        label: __('Custom', 'give'),
+                                        value: 'custom',
+                                    },
+                                ]
+                            }
+                            onChange={(goalSource: string) => {
+                                dispatch(setFormSettings({goalSource}));
+                                publishGoalSource({goalSource});
+                            }}
+                            help={selectedGoalDescription}
+                        />
+                    </PanelRow>
                     <PanelRow>
                         <SelectControl
                             label={__('Goal Type', 'give')}

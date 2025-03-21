@@ -1,9 +1,11 @@
 <?php
 
-namespace Give\Tests\Unit\DonationForms\VieModels;
+namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -17,8 +19,15 @@ class DonationFormGoalDataTest extends TestCase
      */
     public function testToArrayShouldReturnExpectedArrayOfData()
     {
-        /** @var DonationForm $donationForm */
-        $donationForm = DonationForm::factory()->create();
+        /**
+         * @var DonationForm $donationForm
+         */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'goalSource' => GoalSource::FORM()
+            ]),
+        ]);
+
         $donationFormGoalData = new DonationFormGoalData($donationForm->id, $donationForm->settings);
         $currentAmount = $donationFormGoalData->getCurrentAmount();
         $isEnabled = $donationForm->settings->enableDonationGoal ?? false;
