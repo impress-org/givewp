@@ -4,7 +4,7 @@
  * @group email_tags
  */
 class Tests_Email_Tags extends Give_Unit_Test_Case {
-	public function setUp() {
+	public function setUp(): void {
 
         $current_user = new WP_User( 1 );
         $current_user->set_role( 'administrator' );
@@ -22,9 +22,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
         parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test function give_email_tag_first_name

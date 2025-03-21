@@ -9,7 +9,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	/**
 	 * Set up tests.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 

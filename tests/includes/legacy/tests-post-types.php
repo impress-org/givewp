@@ -5,13 +5,11 @@
  */
 class Tests_Post_Types extends Give_Unit_Test_Case {
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * @covers ::give_setup_post_types

@@ -15,7 +15,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -29,7 +29,7 @@ class Tests_Stats extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		global $wpdb;
 
 		parent::tearDown();

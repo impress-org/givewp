@@ -18,7 +18,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->_tags       = new Give_Email_Template_Tags();
 		$this->_payment_id = Give_Helper_Payment::create_simple_payment();
@@ -27,9 +27,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 
 	/**

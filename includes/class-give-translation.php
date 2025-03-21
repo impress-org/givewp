@@ -70,7 +70,7 @@ class Give_Translations {
 	 * @since  2.0
 	 * @access public
 	 */
-	public function setup() {
+	public function setUp(): void {
 		self::setup_hooks();
 	}
 

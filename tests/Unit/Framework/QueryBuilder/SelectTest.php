@@ -15,7 +15,7 @@ final class SelectTest extends TestCase
             ->select('ID')
             ->from(DB::raw('posts'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT ID FROM posts',
             $builder->getSQL()
         );
@@ -26,7 +26,7 @@ final class SelectTest extends TestCase
         $builder = new QueryBuilder();
         $builder->from(DB::raw('posts'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT * FROM posts',
             $builder->getSQL()
         );
@@ -41,7 +41,7 @@ final class SelectTest extends TestCase
             ->from(DB::raw('posts'));
 
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT ID AS posts_id FROM posts',
             $builder->getSQL()
         );
@@ -55,7 +55,7 @@ final class SelectTest extends TestCase
             ->from(DB::raw('posts'))
             ->distinct();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT DISTINCT ID, post_author FROM posts',
             $builder->getSQL()
         );
@@ -67,7 +67,7 @@ final class SelectTest extends TestCase
 
         $builder->selectRaw('SELECT * FROM posts WHERE post_status = %s', 'give_subscription');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'give_subscription'",
             $builder->getSQL()
         );
@@ -82,7 +82,7 @@ final class SelectTest extends TestCase
             ->selectRaw('(SELECT COUNT(ID) FROM posts WHERE post_status = %s) as post_count', 'give_subscription')
             ->from(DB::raw('posts'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT ID, post_title, (SELECT COUNT(ID) FROM posts WHERE post_status = 'give_subscription') as post_count FROM posts",
             $builder->getSQL()
         );

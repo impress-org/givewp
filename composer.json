@@ -28,7 +28,7 @@
         "phpcompatibility/phpcompatibility-wp": "*",
         "phpcompatibility/php-compatibility": "^9.3",
         "wp-coding-standards/wpcs": "*",
-        "phpunit/phpunit": "^5",
+        "phpunit/phpunit": "^9",
         "wp-cli/wp-cli-bundle": "^2.5",
         "wordpress/wordpress": "dev-trunk",
         "squizlabs/php_codesniffer": "^3.5",
@@ -44,8 +44,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --colors --stop-on-failure",
-        "unreleased": "./vendor/bin/since-unreleased.sh",
+        "test": "./vendor/bin/phpunit --colors",
         "strauss": [
             "bin/strauss-installar.sh",
             "@php vendor/stellarwp/validation/bin/set-domain domain=give",

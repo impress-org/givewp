@@ -20,7 +20,7 @@ final class DonationsTest extends TestCase
             Give_Helper_Payment::create_simple_payment()
         );
 
-        $receiptInfo = $getReceiptInfo->invokeArgs(new DonationsRepository, [$payment]);
+        $receiptInfo = $getReceiptInfo->invokeArgs(new DonationsRepository(), [$payment]);
         $receiptInfo = json_encode($receiptInfo);
 
         // Expected values provided by sample data.

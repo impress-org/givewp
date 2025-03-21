@@ -7,7 +7,7 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 use Give\DonationForms\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
+use PHPUnit\Framework\MockObject\MockBuilder;
 
 class BlockRenderControllerTest extends TestCase
 {
@@ -15,18 +15,16 @@ class BlockRenderControllerTest extends TestCase
 
     /**
      * @since 3.0.0
-     *
-     * @return void
      */
-    public function testShouldReturnIframe()
+    public function testShouldReturnIframe(): void
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create();
         $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
 
-        $blockRenderController = $this->createMock(
+        $blockRenderController = $this->createMockWithCallback(
             BlockRenderController::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 $mockBuilder->setMethods(['loadEmbedScript']); // partial mock gateway by setting methods on the mock builder
                 return $mockBuilder->getMock();
             }

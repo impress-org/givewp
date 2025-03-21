@@ -7,8 +7,8 @@ use Give\DonationSpam\Akismet\API;
 use Give\DonationSpam\EmailAddressWhiteList;
 use Give\DonationSpam\Exceptions\SpamDonationException;
 use Give\Tests\TestCase;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @since 3.15.0
@@ -29,7 +29,7 @@ final class ValidateDonationTest extends TestCase
         $comment = 'this is a comment';
         $firstName = 'test';
 
-        /** @var API|PHPUnit_Framework_MockObject_MockObject $akismet */
+        /** @var API $akismet */
         $akismet = $this->mockAkismetAPI();
         $akismet->method('commentCheck')->willReturn($this->notSpamResponse);
 
@@ -54,7 +54,7 @@ final class ValidateDonationTest extends TestCase
         $comment = 'this is a comment';
         $firstName = 'test';
 
-        /** @var API|PHPUnit_Framework_MockObject_MockObject $akismet */
+        /** @var API|MockObject $akismet */
         $akismet = $this->mockAkismetAPI();
         $akismet->method('commentCheck')->willReturn($this->spamResponse);
 
@@ -73,7 +73,7 @@ final class ValidateDonationTest extends TestCase
      */
     protected function mockAkismetAPI()
     {
-        return $this->createMock(API::class, function(PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+        return $this->createMockWithCallback(API::class, function(MockBuilder $mockBuilder) {
             $mockBuilder->setMethods(['commentCheck']);
             return $mockBuilder->getMock();
         });

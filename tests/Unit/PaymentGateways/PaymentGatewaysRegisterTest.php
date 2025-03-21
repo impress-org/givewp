@@ -20,7 +20,7 @@ class PaymentGatewaysRegisterTest extends TestCase
      */
     private $paymentGatewayRegister;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->paymentGatewayRegister = new PaymentGatewayRegister();
     }

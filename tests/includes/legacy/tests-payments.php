@@ -33,7 +33,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -56,7 +56,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 
 		parent::tearDown();
 		Give_Helper_Payment::delete_payment( $this->_payment_id );

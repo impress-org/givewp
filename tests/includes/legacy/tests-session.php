@@ -8,16 +8,14 @@ class Tests_Session extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test Set Session Var

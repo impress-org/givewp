@@ -18,7 +18,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.0
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
@@ -27,9 +27,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.0
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test get_sql
