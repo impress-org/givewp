@@ -17,7 +17,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             adminUrl: string;
-            forms: Array<{value: string; text: string}>;
+            campaigns: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
@@ -32,11 +32,11 @@ const API = new ListTableApi(window.GiveDonations);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'form',
+        name: 'campaignId',
         type: 'formselect',
-        text: __('Select Form', 'give'),
+        text: __('Select Campaign', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
-        options: window.GiveDonations.forms,
+        options: window.GiveDonations.campaigns,
     },
     {
         name: 'search',
