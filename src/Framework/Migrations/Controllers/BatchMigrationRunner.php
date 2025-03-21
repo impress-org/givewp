@@ -172,6 +172,11 @@ class BatchMigrationRunner
 
         [, $lastId] = $action->get_args();
 
+        // bailout if for some strange reason we can't get the last id
+        if ( ! $lastId) {
+            return false;
+        }
+
         if ($this->migration->hasMoreItemsToBatch($lastId)) {
             as_enqueue_async_action($this->getHook(), [$lastId, null], $this->getGroup());
 
