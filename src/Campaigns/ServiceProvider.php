@@ -116,6 +116,18 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
         Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
 
+        $noticeActions = [
+            'givewp_campaign_interaction_notice',
+            'givewp_campaign_existing_user_intro_notice',
+        ];
+
+        foreach ($noticeActions as $metaKey) {
+            register_meta('user', $metaKey, [
+                'type' => 'boolean',
+                'show_in_rest' => true,
+                'single' => true,
+            ]);
+        }
         // notices
         $notices = [
             'givewp_campaign_interaction_notice',
@@ -182,7 +194,7 @@ class ServiceProvider implements ServiceProviderInterface
          *
          * @see https://github.com/impress-org/givewp/pull/7483
          */
-        if ( ! defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
+        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
             define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
 

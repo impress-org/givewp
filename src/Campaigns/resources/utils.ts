@@ -52,3 +52,23 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
         ...options
     });
 }
+
+/**
+ * @unreleased
+ */
+export async function updateUserNoticeOptions(metaKey: string){
+    try {
+        const currentUser = await apiFetch( { path: '/wp/v2/users/me' } );
+        // @ts-ignore
+        const currentUserId = currentUser?.id;
+
+        return await wp.data.dispatch('core').saveEntityRecord('root', 'user', {
+            id: currentUserId,
+            meta: {
+                [metaKey]: true
+            }
+        });
+    } catch (error) {
+        console.error('Error updating user meta:', error);
+    }
+}

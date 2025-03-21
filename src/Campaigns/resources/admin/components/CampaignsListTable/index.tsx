@@ -8,6 +8,8 @@ import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
+import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
+import {getCampaignOptionsWindowData} from "@givewp/campaigns/utils";
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
 
@@ -26,6 +28,8 @@ const autoOpenCreateCampaignModal = () => {
 
     return newParam === 'campaign';
 };
+
+const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.showExistingUserIntroNotice;
 
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
@@ -90,6 +94,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
+    const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(shouldShowExistingUserIntroModal);
     const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_listtable_notice');
 
     /**
@@ -133,6 +138,7 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
+                <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
                 {showTooltip && (
                     <CampaignNotice
                         title={__('Campaign List', 'give')}
