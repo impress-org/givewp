@@ -15,11 +15,12 @@
 
     .givewp-modal-dialog {
         position: relative;
-        font-family: 'Open Sans', sans-serif;
-        max-width: 32rem;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        max-width: 35rem;
         width: 100%;
         border-radius: var(--givewp-rounded-4);
-        background-color: #fff;
+        background-color: var(--givewp-shades-white);
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
         color: var(--givewp-grey-700);
@@ -27,19 +28,21 @@
         .givewp-modal-header {
             display: flex;
             align-self: stretch;
-            font-size: 1rem;
-            font-weight: 700;
+            justify-content: flex-start;
+            font-size: 1.25rem;
+            line-height: 2rem;
+            font-weight: 600;
             align-items: center;
-            padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
-            background-color: #fff;
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+            background-color: var(--givewp-shades-white);
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
             border-bottom: 1px solid var(--givewp-grey-50);
-            color: var(--givewp-grey-900);
+            color: var(--givewp-neutral-900);
         }
 
         .givewp-modal-icon-header {
-            margin-right: 10px;
+            margin-right: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -58,12 +61,12 @@
             position: absolute;
             cursor: pointer;
             z-index: 999;
-            fill: var(--givewp-grey-500);
+            fill: var(--givewp-neutral-500);
         }
 
         .givewp-modal-close {
-            top: var(--givewp-spacing-4);
-            right: var(--givewp-spacing-5);
+            top: var(--givewp-spacing-5);
+            right: var(--givewp-spacing-6);
         }
 
         .givewp-modal-close-headless {

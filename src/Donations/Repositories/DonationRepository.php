@@ -320,6 +320,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
@@ -352,8 +353,14 @@ class DonationRepository
                 ),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
-            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous,
+            DonationMetaKeys::CAMPAIGN_ID => $donation->campaignId,
         ];
+
+        // If the donation is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$donation->campaignId && $campaign = give()->campaigns->getByFormId($donation->formId)) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
+        }
 
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();

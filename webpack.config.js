@@ -133,6 +133,7 @@ const alias = {
     '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
     '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
     '@givewp/src': path.resolve(__dirname, 'src/'),
+    '@givewp/campaigns': srcPath('Campaigns/resources'),
     ...defaultConfig.resolve.alias,
 };
 
@@ -171,6 +172,27 @@ const entry = {
     formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
     adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
+    campaignEntity: srcPath('Campaigns/resources/entity.ts'),
+    campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
+    campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
+    campaignBlocksLandingPage: srcPath('Campaigns/Blocks/landingPage.ts'),
+    campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
+    campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
+    campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
+    campaignGoalBlockApp: srcPath('Campaigns/Blocks/CampaignGoal/app.tsx'),
+    campaignGridBlock: srcPath('Campaigns/Blocks/CampaignGrid/index.tsx'),
+    campaignGridApp: srcPath('Campaigns/Blocks/CampaignGrid/app.tsx'),
+    campaignGoalBlock: srcPath('Campaigns/Blocks/CampaignGoal/index.tsx'),
+    campaignDonateButtonBlock: srcPath('Campaigns/Blocks/DonateButton/index.tsx'),
+    campaignTitleBlock: srcPath('Campaigns/Blocks/CampaignTitle/index.tsx'),
+    campaignCoverBlock: srcPath('Campaigns/Blocks/CampaignCover/index.tsx'),
+    campaignCommentsBlockApp: srcPath('Campaigns/Blocks/CampaignComments/resources/app.tsx'),
+    campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
+    campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
+    campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
+    campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
+    campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
+    campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };
@@ -219,7 +241,7 @@ const plugins = [
         },
     },
     // TypeScript type checking
-    new ForkTsCheckerWebpackPlugin()
+    new ForkTsCheckerWebpackPlugin(),
 ];
 
 /**
@@ -248,8 +270,8 @@ module.exports = {
                      * Preserving this with a new syntax of "frontend.(pc|sc|sa|c)ss" instead of "style.(pc|sc|sa|c)ss" in case we need it in the future.
                      */
                     test: /[\\/]frontend(\.module)?\.(pc|sc|sa|c)ss$/,
-                }
-            }
-        }
+                },
+            },
+        },
     },
 };
