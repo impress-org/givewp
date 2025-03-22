@@ -13,13 +13,10 @@ import {CSSProperties, useEffect, useState} from 'react';
 import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';
-import authorizeOrder from './resources/js/authorizeOrder';
 import type {
     CreateSubscriptionRequestBody,
-    HostedFieldsSubmitResponse,
     PayPalButtonsComponentOptions
 } from '@paypal/paypal-js';
-import updateOrder from './resources/js/updateOrder';
 import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
 (() => {
@@ -41,7 +38,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let hostedField;
     let payPalDonationsSettings;
     let payPalOrderId;
-    let payPalAuthorizationId;
     let payPalSubscriptionId;
 
     let subscriptionFrequency;
@@ -405,42 +401,8 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
                     return;
                 }
 
-                 // Check if the order amount is different from the form amount.
-                const order = await actions.order.get();
-                const orderAmount = Number(order.purchase_units[0].amount.value);
-                const formAmount = Number(getAmount());
-
-                // If the order amount is different from the form amount, update the order amount.
-                if (orderAmount !== formAmount) {
-                    // Update the order amount to match the form amount.
-                    const formData = getFormData();
-                    formData.append('orderId', orderId);
-                    await updateOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_authorized_order_amount`, formData);
-                }
-
                 if (orderId) {
-                    try {
-                        const authorizationId = await authorizeOrder(
-                            `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_authorize_order&orderId=${orderId}`,
-                            gateway,
-                            getFormData(),
-                            orderId
-                        );
-
-                        payPalOrderId = orderId;
-                        payPalAuthorizationId = authorizationId;
-                    } catch (error) {
-                        console.error(error);
-                        submitButton.disabled = false;
-                        submitButton.textContent = submitButtonDefaultText;
-                        setError(
-                            'FORM_ERROR',
-                            {
-                                message: __('Failed to authorize payment', 'give'),
-                            },
-                            {shouldFocus: true}
-                        );
-                    }
+                    payPalOrderId = orderId;
                 }
 
                 submitButton.disabled = false;
@@ -571,30 +533,16 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
                 };
             }
 
-            if (payPalOrderId && payPalAuthorizationId) {
+            if (payPalOrderId) {
                 // If order ID already set by payment buttons then return early.
                 return {
-                    payPalOrderId: payPalOrderId,
-                    payPalAuthorizationId: payPalAuthorizationId
+                    payPalOrderId: payPalOrderId
                 };
             }
 
             if (!validateHostedFields()) {
                 throw new Error('Invalid PayPal card fields');
             }
-
-            const approveOrderCallback = async (data: HostedFieldsSubmitResponse) => {
-                const orderId = data.orderId;
-
-                const authorizationId = await authorizeOrder(
-                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_authorize_order&orderId=${orderId}`,
-                    payPalCommerceGateway,
-                    getFormData(),
-                    orderId
-                );
-
-                return {...data, payPalOrderId: data.orderId, payPalAuthorizationId: authorizationId};
-            };
 
             try {
                 const result = await hostedField.cardFields.submit({
@@ -616,7 +564,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
                     );
                 }
 
-                return await approveOrderCallback(result);
+                return {
+                    ...result,
+                    payPalOrderId: result.orderId
+                }
             } catch (err) {
                 console.log('paypal donations error', err);
 

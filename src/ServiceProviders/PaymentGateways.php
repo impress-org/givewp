@@ -210,8 +210,6 @@ class PaymentGateways implements ServiceProvider
     /**
      * Register action/filter hooks for paypal commerce.
      *
-     * @unreleased added authorization hooks
-     *
      * @since 2.19.0
      */
     private function registerPayPalCommerceHooks()
@@ -251,22 +249,6 @@ class PaymentGateways implements ServiceProvider
             'wp_ajax_nopriv_give_paypal_commerce_update_order_amount',
             AjaxRequestHandler::class,
             'updateOrderAmount'
-        );
-
-        Hooks::addAction('wp_ajax_give_paypal_commerce_update_authorized_order_amount', AjaxRequestHandler::class,
-            'updateAuthorizedOrderAmount');
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_update_authorized_order_amount',
-            AjaxRequestHandler::class,
-            'updateAuthorizedOrderAmount'
-        );
-
-        Hooks::addAction('wp_ajax_give_paypal_commerce_authorize_order', AjaxRequestHandler::class,
-            'authorizeOrder');
-        Hooks::addAction(
-            'wp_ajax_nopriv_give_paypal_commerce_authorize_order',
-            AjaxRequestHandler::class,
-            'authorizeOrder'
         );
 
         Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');

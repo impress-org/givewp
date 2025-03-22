@@ -400,7 +400,7 @@ class PayPalOrder
     }
 
     /**
-     * Get order details from paypal commerce.
+     * Get order details from PayPal commerce.
      *
      * @unreleased
      */
