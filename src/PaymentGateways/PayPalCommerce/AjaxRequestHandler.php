@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -259,33 +258,6 @@ class AjaxRequestHandler
     }
 
     /**
-     * Authorize order.
-     *
-     * @unreleased
-     */
-    public function authorizeOrder()
-    {
-        $this->validateFrontendRequest();
-        $orderId = give_clean((string)$_POST['orderId']);
-
-        try {
-            $result = give(PayPalOrder::class)->authorizeOrder($orderId);
-
-            wp_send_json_success(
-                [
-                    'id' => $result,
-                ]
-            );
-        } catch (\Exception $ex) {
-            wp_send_json_error(
-                [
-                    'error' => json_decode($ex->getMessage(), true),
-                ]
-            );
-        }
-    }
-
-    /**
      * @since 3.4.2
      */
     private function getOrderData(): array
@@ -358,28 +330,6 @@ class AjaxRequestHandler
             give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
 
             wp_send_json_success(['order' => $orderId,]);
-        } catch (\Exception $ex) {
-            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function updateAuthorizedOrderAmount()
-    {
-        $this->validateFrontendRequest();
-
-        $request = give_clean($_POST);
-        $orderId = (string)$request['orderId'];
-        $currency = (string)($request['give-cs-form-currency']);
-        $amount = (string)($request['give-amount']);
-        $amount = Money::fromDecimal($amount, $currency);
-
-        try {
-            give(PayPalOrder::class)->updateAuthorizedOrderAmount($orderId, $amount);
-
-            wp_send_json_success(['order' => $orderId]);
         } catch (\Exception $ex) {
             wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
         }
