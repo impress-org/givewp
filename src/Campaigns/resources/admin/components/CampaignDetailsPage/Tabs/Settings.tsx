@@ -197,7 +197,7 @@ export default function CampaignDetailsSettingsTab() {
                                     placeholder={goalInputAttributes.getPlaceholder()}
                                     value={watch('goal')}
                                     onValueChange={(value) => {
-                                        setValue('goal', Number(value), {shouldDirty: true});
+                                        setValue('goal', Number(value ?? 0), {shouldDirty: true});
                                     }}
                                 />
                             </div>
