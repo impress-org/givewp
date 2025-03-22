@@ -31,7 +31,7 @@ class CampaignGoalData implements Arrayable
     /**
      * @var int
      */
-    private $goal;
+    public $goal;
 
     /**
      * @var int|string
@@ -103,7 +103,7 @@ class CampaignGoalData implements Arrayable
      */
     private function getActualFormatted(): string
     {
-        if ($this->campaign->goalType == CampaignGoalType::AMOUNT) {
+        if ($this->campaign->goalType->isAmount()) {
             return give_currency_filter(give_format_amount($this->actual));
         }
 
@@ -115,7 +115,7 @@ class CampaignGoalData implements Arrayable
      */
     private function getGoalFormatted(): string
     {
-        if ($this->campaign->goalType == CampaignGoalType::AMOUNT) {
+        if ($this->campaign->goalType->isAmount()) {
             return give_currency_filter(give_format_amount($this->goal));
         }
 

@@ -75,6 +75,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
+        shouldFocusError: true,
         ...resolver,
     });
 

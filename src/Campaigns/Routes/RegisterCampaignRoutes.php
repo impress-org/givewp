@@ -294,7 +294,6 @@ class RegisterCampaignRoutes
                 ],
                 'goal' => [
                     'type' => 'number',
-                    'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
                     'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
@@ -336,7 +335,7 @@ class RegisterCampaignRoutes
                     'then' => [
                         'properties' => [
                             'goal' => [
-                                'minimum' => 1,
+                                //'minimum' => 1,
                                 'type' => 'number',
                             ],
                         ],
