@@ -9,15 +9,15 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use PayPalCheckoutSdk\Orders\OrdersAuthorizeRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Orders\OrdersPatchRequest;
-use PayPalCheckoutSdk\Payments\AuthorizationsCaptureRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
+
+use stdClass;
 
 use function give_record_gateway_error as logError;
 
@@ -71,27 +71,26 @@ class PayPalOrder
      *
      * @since 2.9.0
      *
-     * @param string $orderId
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
      *
-     * @return \stdClass
+     * @return object
      * @throws Exception
      */
-    public function approveOrder($orderId)
+    public function approveOrder(string $orderId)
     {
         $request = new OrdersCaptureRequest($orderId);
 
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result;
-        } catch (Exception $ex) {
-            logError(
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error(
                 'Capture PayPal Commerce payment failure',
-                sprintf(
-                    '<strong>Response</strong><pre>%1$s</pre>',
-                    print_r(json_decode($ex->getMessage(), true), true)
-                )
+                [
+                    'response' => $exception->getMessage()
+                ]
             );
 
-            throw $ex;
+            throw $exception;
         }
     }
 
@@ -164,31 +163,6 @@ class PayPalOrder
         } catch (Exception $exception) {
             PaymentGatewayLog::error(
                 'Create PayPal Commerce order failure',
-                [
-                    'response' => $exception->getMessage()
-                ]
-            );
-
-            throw $exception;
-        }
-    }
-
-     /**
-     * Authorize order
-     *
-     * @throws Exception|HttpException|IOException
-     */
-    public function authorizeOrder(string $orderId): string
-    {
-        $request = new OrdersAuthorizeRequest($orderId);
-
-        try {
-            $response = $this->paypalClient->getHttpClient()->execute($request)->result;
-
-            return $response->purchase_units[0]->payments->authorizations[0]->id;
-        } catch (Exception $exception) {
-             PaymentGatewayLog::error(
-                'Authorize PayPal Commerce order failure',
                 [
                     'response' => $exception->getMessage()
                 ]
@@ -297,9 +271,11 @@ class PayPalOrder
     /**
      * @unreleased
      *
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
+     *
      * @throws Exception|HttpException|IOException
      */
-    public function updateAuthorizedOrderAmount(string $orderId, Money $amount)
+    public function updateApprovedOrder(string $orderId, Money $amount)
     {
         $patchRequest = new OrdersPatchRequest($orderId);
 
@@ -402,32 +378,16 @@ class PayPalOrder
     /**
      * Get order details from PayPal commerce.
      *
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
+     *
      * @unreleased
+     *
+     * @throws HttpException | IOException
      */
-    public function getAuthorizedOrder(string $orderId)
+    public function getApprovedOrder(string $orderId)
     {
         $orderDetailRequest = new OrdersGetRequest($orderId);
+
         return $this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
-    }
-
-    /**
-     * Capture authorized order
-     * @throws Exception
-     */
-    public function captureAuthorizedOrder(string $authorizationId): string
-    {
-        $request = new AuthorizationsCaptureRequest($authorizationId);
-
-        try {
-            return $this->paypalClient->getHttpClient()->execute($request)->result->id;
-        } catch (Exception|HttpException|IOException $exception) {
-            PaymentGatewayLog::error(
-                'Capture PayPal Commerce payment failure',
-                    ['response' => $exception->getMessage()
-                ]
-            );
-
-            throw $exception;
-        }
     }
 }

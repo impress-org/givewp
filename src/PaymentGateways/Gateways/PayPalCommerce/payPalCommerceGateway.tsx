@@ -178,8 +178,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
          */
         formData.append('give-cs-form-currency', currency);
 
-        formData.append('give-paypal-authorize-order', 'true');
-
         return formData;
     };
 

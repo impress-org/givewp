@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
@@ -77,7 +78,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased updated to authorize and capture payment
+     * @unreleased updated to update and capture payment
      * @since 2.19.0
      *
      * @param  array{payPalOrderId: string|null, payPalAuthorizationId: string|null}  $gatewayData
@@ -90,18 +91,22 @@ class PayPalCommerce extends PaymentGateway
          /** @var Repositories\PayPalOrder $payPalOrderRepository */
         $payPalOrderRepository = give(Repositories\PayPalOrder::class);
 
-        $payPalOrder = $payPalOrderRepository->getAuthorizedOrder($payPalOrderId);
+        $payPalOrder = $payPalOrderRepository->getApprovedOrder($payPalOrderId);
 
-        if ($payPalOrder->intent === 'AUTHORIZE') {
+        if ($payPalOrder->status === 'COMPLETED') {
+            $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
+
+        } elseif ($payPalOrder->status === 'APPROVED') {
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
-                $payPalOrderRepository->updateAuthorizedOrderAmount($payPalOrderId, $donation->amount);
+                $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount);
             }
 
-            $payPalAuthorizationId = $payPalOrderRepository->authorizeOrder($payPalOrderId);
+            // capture order
+            $response = $payPalOrderRepository->approveOrder($payPalOrderId);
 
-            $transactionId = $payPalOrderRepository->captureAuthorizedOrder($payPalAuthorizationId);
+            $transactionId  = $response->purchase_units[0]->payments->captures[0]->id;
         } else {
-            $transactionId = $payPalOrder->purchase_units[0]->amount->value;
+            throw new PaymentGatewayException('PayPal Order status is not approved or completed.');
         }
 
         give()->payment_meta->update_meta(

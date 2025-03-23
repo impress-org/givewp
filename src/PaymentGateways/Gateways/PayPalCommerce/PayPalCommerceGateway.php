@@ -9,7 +9,6 @@ use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
-use Give\Helpers\Form\Utils;
 
 /**
  * An extension of the PayPalCommerce gateway in GiveWP that supports the NextGenPaymentGatewayInterface.
@@ -83,8 +82,6 @@ class PayPalCommerceGateway extends PayPalCommerce
         /* @var MerchantDetails $merchantDetailRepository */
         $merchantDetailRepository = give(MerchantDetails::class);
 
-        $formIsV3 = Utils::isV3Form($formId);
-
         // Add hosted fields if payment field type is auto and connect account type supports custom payments.
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
         $paymentComponents[] = 'buttons';
@@ -98,7 +95,7 @@ class PayPalCommerceGateway extends PayPalCommerce
             'client-id' => $merchantDetailModel->clientId,
             'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
-            'intent' => $formIsV3 ? 'authorize' : 'capture',
+            'intent' => 'capture',
             'vault' => 'false',
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $merchantDetailRepository->getClientToken(),

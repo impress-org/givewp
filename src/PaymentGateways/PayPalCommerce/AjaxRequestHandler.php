@@ -238,10 +238,9 @@ class AjaxRequestHandler
     {
         $this->validateFrontendRequest();
         $data = $this->getOrderData();
-        $shouldAuthorize = isset($_POST['give-paypal-authorize-order']);
 
         try {
-            $result = give(PayPalOrder::class)->createOrder($data, $shouldAuthorize ? 'AUTHORIZE' : 'CAPTURE');
+            $result = give(PayPalOrder::class)->createOrder($data);
 
             wp_send_json_success(
                 [
