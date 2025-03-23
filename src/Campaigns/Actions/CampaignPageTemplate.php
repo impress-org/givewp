@@ -19,7 +19,7 @@ class CampaignPageTemplate
             return;
         }
 
-        register_block_template('givewp//campaign-page-template', [
+        register_block_template('givewp//single-give_campaign_page', [
             'title' => __('Campaign page', 'give'),
             'description' => __('Give Campaign Page template', 'give'),
             'post_types' => [
