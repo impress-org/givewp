@@ -38,6 +38,10 @@ class GoalColumn extends ModelColumn
     {
         $goalData = new CampaignGoalData($model);
 
+        if ($goalData->goal === 0) {
+            return __('No Goal Set', 'give');
+        }
+
         $template = '
             <div
                 role="progressbar"
