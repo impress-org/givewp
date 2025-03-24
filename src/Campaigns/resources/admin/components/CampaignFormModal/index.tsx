@@ -3,12 +3,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
-import {
-    CampaignFormInputs,
-    CampaignModalProps,
-    GoalInputAttributes,
-    GoalTypeOption as GoalTypeOptionType,
-} from './types';
+import {CampaignFormInputs, CampaignModalProps, GoalTypeOption as GoalTypeOptionType} from './types';
 import {useRef, useState} from 'react';
 import {Currency, Upload} from '../Inputs';
 import {
@@ -22,6 +17,7 @@ import {
 import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
+import {CampaignGoalInputAttributes, isValidGoalType} from '../../constants/goalInputAttributes';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -124,7 +120,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             title: campaign?.title ?? '',
             shortDescription: campaign?.shortDescription ?? '',
             image: campaign?.image ?? '',
-            goalType: campaign?.goalType ?? '',
+            goalType: campaign?.goalType ?? 'amount',
             goal: campaign?.goal ?? null,
             startDateTime: getDateString(
                 campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
@@ -157,51 +153,10 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         return null;
     };
 
-    const goalInputAttributes: {[selectedGoalType: string]: GoalInputAttributes} = {
-        amount: {
-            label: __('How much do you want to raise?', 'give'),
-            description: __('Set the target amount your campaign should raise.', 'give'),
-            placeholder: sprintf(__('eg. %s', 'give'),
-                currencyFormatter.format(2000),
-            ),
-        },
-        donations: {
-            label: __('How many donations do you need?', 'give'),
-            description: __('Set the target number of donations your campaign should bring in.', 'give'),
-            placeholder: __('eg. 100 donations', 'give'),
-        },
-        donors: {
-            label: __('How many donors do you need?', 'give'),
-            description: __('Set the target number of donors your campaign should bring in.', 'give'),
-            placeholder: __('eg. 100 donors', 'give'),
-        },
-        amountFromSubscriptions: {
-            label: __('How much do you want to raise?', 'give'),
-            description: __(
-                'Set the target recurring amount your campaign should raise. One-time donations do not count.',
-                'give'
-            ),
-             placeholder: sprintf(__('eg. %s', 'give'),
-                currencyFormatter.format(2000),
-            ),
-        },
-        subscriptions: {
-            label: __('How many recurring donations do you need?', 'give'),
-            description: __(
-                'Set the target number of recurring donations your campaign should bring in. One-time donations do not count.',
-                'give'
-            ),
-            placeholder: __('eg. 100 subscriptions', 'give'),
-        },
-        donorsFromSubscriptions: {
-            label: __('How many recurring donors do you need?', 'give'),
-            description: __(
-                'Set the target number of recurring donors your campaign should bring in. One-time donations do not count.',
-                'give'
-            ),
-            placeholder: __('eg. 100 subscribers', 'give'),
-        },
-    };
+    const goalInputAttribute =
+        selectedGoalType && isValidGoalType(selectedGoalType)
+            ? new CampaignGoalInputAttributes(selectedGoalType, currency)
+            : new CampaignGoalInputAttributes('amount', currency);
 
     const requiredAsterisk = <span className={`givewp-field-required ${styles.fieldRequired}`}>*</span>;
 
@@ -380,21 +335,21 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                         {selectedGoalType && (
                             <div className="givewp-campaigns__form-row">
                                 <label htmlFor="title">
-                                    {goalInputAttributes[selectedGoalType].label} {requiredAsterisk}
+                                    {goalInputAttribute.getLabel()} {requiredAsterisk}
                                 </label>
-                                <span>{goalInputAttributes[selectedGoalType].description}</span>
+                                <span>{goalInputAttribute.getDescription()}</span>
                                 {selectedGoalType === 'amount' || selectedGoalType === 'amountFromSubscriptions' ? (
                                     <Currency
                                         name="goal"
                                         currency={currency}
-                                        placeholder={goalInputAttributes[selectedGoalType].placeholder}
+                                        placeholder={goalInputAttribute.getPlaceholder()}
                                     />
                                 ) : (
                                     <input
                                         type="number"
                                         {...register('goal', {valueAsNumber: true})}
                                         aria-invalid={errors.goal ? 'true' : 'false'}
-                                        placeholder={goalInputAttributes[selectedGoalType].placeholder}
+                                        placeholder={goalInputAttribute.getPlaceholder()}
                                     />
                                 )}
                                 {errors.goal && (
@@ -425,7 +380,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             style={{marginBottom: 0}}
                         >
                             <button
-                                type="submit"
+                                type="button"
                                 onClick={() => setStep(1)}
                                 className={`button button-secondary ${styles.button} ${styles.previousButton}`}
                             >

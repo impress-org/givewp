@@ -8,6 +8,8 @@ import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
+import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
+import {getCampaignOptionsWindowData} from "@givewp/campaigns/utils";
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -24,6 +26,8 @@ const autoOpenCreateCampaignModal = () => {
 
     return newParam === 'campaign';
 };
+
+const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.showExistingUserIntroNotice;
 
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
@@ -88,6 +92,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 
 export default function CampaignsListTable() {
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
+    const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(shouldShowExistingUserIntroModal);
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -97,13 +102,13 @@ export default function CampaignsListTable() {
     const ListTableBlankSlate = () => {
         const imagePath = `${
             getGiveCampaignsListTableWindowData().pluginUrl
-        }/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
+        }build/assets/dist/images/list-table/blank-slate-campaigns-icon.svg`;
         return (
             <div className={styles.container}>
                 <img src={imagePath} alt={__('No campaign created yet', 'give')} />
                 <h3>{__('No campaign created yet', 'give')}</h3>
                 <p className={styles.helpMessage}>
-                    {__('Don’t worry, let’s help you setup your first campaign.', 'give')}
+                    {__('Don’t worry, let’s help you set up your first campaign.', 'give')}
                 </p>
                 <p>
                     <a
@@ -130,6 +135,7 @@ export default function CampaignsListTable() {
                 listTableBlankSlate={ListTableBlankSlate()}
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
+                <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
             </ListTablePage>
         </>
     );

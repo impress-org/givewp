@@ -78,7 +78,7 @@ class DonationsAdminPage
             'addonsBulkActions' => [],
         ];
 
-        EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
+        EnqueueScript::make('give-admin-donations', 'build/assets/dist/js/give-admin-donations.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonations', $data)->enqueue();

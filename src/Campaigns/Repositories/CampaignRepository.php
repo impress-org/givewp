@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -37,9 +38,20 @@ class CampaignRepository
      */
     public function getById(int $id)
     {
+        return $this->queryById($id)->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * Query Campaign by ID
+     *
+     * @unreleased
+     */
+    public function queryById(int $id): ModelQueryBuilder
+    {
         return $this->prepareQuery()
-            ->where('id', $id)
-            ->get();
+            ->where('id', $id);
     }
 
     /**
@@ -317,6 +329,15 @@ class CampaignRepository
                     ])
             );
 
+            // Update donations campaign id meta value
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix('give_donationmeta') . " SET meta_value = %d WHERE meta_key = %s AND meta_value IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                        DonationMetaKeys::CAMPAIGN_ID
+                    ])
+            );
+
             // Delete campaigns to merge now that we already migrated the necessary data to the destination campaign
             DB::query("DELETE FROM " . DB::prefix('give_campaigns') . " WHERE id IN ($campaignsToMergeIdsString)");
         } catch (Exception $exception) {
@@ -379,7 +400,7 @@ class CampaignRepository
                 ['end_date', 'endDate'],
                 ['date_created', 'createdAt']
             )
-            // Exclude Peer to Peer campaign type until it is fully supported.
-            ->where('campaigns.campaign_type', CampaignType::PEER_TO_PEER, '!=');
+            // Select only core campaign
+            ->where('campaigns.campaign_type', CampaignType::CORE);
     }
 }
