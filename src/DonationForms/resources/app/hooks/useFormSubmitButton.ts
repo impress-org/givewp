@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function useFormSubmitButton(): HTMLButtonElement | null {
     const donationFormWithSubmitButton = Array.from(document.forms).pop();

@@ -269,6 +269,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 4.0.0: March 26th, 2025 =
 * New: Introducing Campaigns!
+* Enhancement: Improved the processing of PayPal donations to be more reliable on forms using the visual form builder
 
 = 3.22.2: March 19th, 2025 =
 * Fix: Resolved an issue with PayPal hiding the donate button when hosted fields are available

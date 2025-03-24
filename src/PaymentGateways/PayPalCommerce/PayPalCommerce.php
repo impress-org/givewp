@@ -78,7 +78,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased updated to update and capture payment
+     * @since 4.0.0 updated to update and capture payment
      * @since 2.19.0
      *
      * @param  array{payPalOrderId: string|null, payPalAuthorizationId: string|null}  $gatewayData
@@ -275,7 +275,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function shouldUpdateOrder(Donation $donation, $payPalOrder): bool
     {
