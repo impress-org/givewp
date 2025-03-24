@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms\ViewModels;
 
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
@@ -113,16 +115,30 @@ class DonationFormViewModel
 
     /**
      * @since 3.0.0
+     *
+     * @return GoalType|CampaignGoalType
      */
-    private function goalType(): GoalType
+    private function goalType()
     {
-        return $this->formSettings->goalType ?? GoalType::AMOUNT();
+        if ($this->formSettings->goalSource->isCampaign()) {
+            $campaign = Campaign::findByFormId($this->donationFormId);
+
+            if ($campaign) {
+                return $campaign->goalType;
+            }
+        }
+
+        return $this->formSettings->goalType;
     }
 
     /**
      * @since 3.0.0
+     *
+     * @unreleased
+     *
+     * @param GoalType|CampaignGoalType $goalType
      */
-    private function getTotalCountValue(GoalType $goalType): ?int
+    private function getTotalCountValue($goalType): ?int
     {
         if ($goalType->isDonors()) {
             return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
@@ -145,8 +161,12 @@ class DonationFormViewModel
 
     /**
      * @since 3.0.0
+     *
+     * @unreleased
+     *
+     * @param GoalType|CampaignGoalType $goalType
      */
-    private function getCountLabel(GoalType $goalType): ?string
+    public function getCountLabel($goalType): ?string
     {
         if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()) {
             return __('Donors', 'give');
@@ -165,8 +185,12 @@ class DonationFormViewModel
 
     /**
      * @since 3.0.0
+     *
+     * @unreleased
+     *
+     * @param GoalType|CampaignGoalType $goalType
      */
-    private function getTotalRevenue(GoalType $goalType)
+    private function getTotalRevenue($goalType)
     {
         if ($goalType->isAmountFromSubscriptions()) {
             return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
@@ -184,7 +208,7 @@ class DonationFormViewModel
 
         $donationQuery = (new DonationQuery)->form($this->donationFormId);
 
-        if($this->formSettings->goalProgressType->isCustom()) {
+        if ($this->formSettings->goalProgressType->isCustom()) {
             $donationQuery->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
         }
 
