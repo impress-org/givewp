@@ -109,6 +109,7 @@ class DonationFormsAdminPage
             'apiRoot' => $this->apiRoot,
             'bannerActionUrl' => $this->bannerActionUrl,
             'tooltipActionUrl' => $this->tooltipActionUrl,
+            'defaultFormActionUrl' => $this->defaultFormActionUrl,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
@@ -123,7 +124,7 @@ class DonationFormsAdminPage
             'locale' => Language::getLocale(),
             'swrConfig' => [
                 'revalidateOnFocus' => false
-            ]
+            ],
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
