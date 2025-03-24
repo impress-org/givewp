@@ -25,13 +25,15 @@ export default function CampaignDetailsSettingsTab() {
         formState: {errors},
     } = useFormContext();
 
-    const [goalType, image, status, shortDescription, enableCampaignPage] = watch([
+    const [goal, goalType, image, status, shortDescription, enableCampaignPage] = watch([
+        'goal',
         'goalType',
         'image',
         'status',
         'shortDescription',
         'enableCampaignPage',
     ]);
+
     const isDisabled = status === 'archived';
 
     const goalInputAttributes = new CampaignGoalInputAttributes(goalType, currency);
@@ -58,6 +60,7 @@ export default function CampaignDetailsSettingsTab() {
                                 help={__('This will create a default campaign page for your campaign.', 'give')}
                                 name="enableCampaignPage"
                                 checked={enableCampaignPage}
+                                disabled={isDisabled}
                                 onChange={(value) => {
                                     setValue('enableCampaignPage', value, {shouldDirty: true});
                                 }}
@@ -195,9 +198,9 @@ export default function CampaignDetailsSettingsTab() {
                                     currency={currency as CurrencyCode}
                                     disabled={isDisabled}
                                     placeholder={goalInputAttributes.getPlaceholder()}
-                                    value={watch('goal')}
+                                    value={goal}
                                     onValueChange={(value) => {
-                                        setValue('goal', Number(value), {shouldDirty: true});
+                                        setValue('goal', Number(value ?? 0), {shouldDirty: true});
                                     }}
                                 />
                             </div>
