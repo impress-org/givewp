@@ -35,7 +35,7 @@ const filters: Array<FilterConfig> = [
         name: 'campaignId',
         type: 'formselect',
         text: __('Select Campaign', 'give'),
-        ariaLabel: __('filter donation forms by status', 'give'),
+        ariaLabel: __('filter donations by campaign', 'give'),
         options: window.GiveDonations.campaigns,
     },
     {
