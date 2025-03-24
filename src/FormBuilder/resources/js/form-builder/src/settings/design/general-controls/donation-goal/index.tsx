@@ -15,7 +15,7 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import DatePicker from '@givewp/form-builder/components/DatePicker';
-import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, updateUserNoticeOptions} from '@givewp/campaigns/utils';
 
 declare const window: {
     goalNotificationData: {
@@ -78,7 +78,7 @@ const DonationGoal = ({dispatch}) => {
     const campaignWindowData = getCampaignOptionsWindowData();
     const {publishGoal, publishGoalType, publishGoalSource} = useDonationFormPubSub();
     const [showNotice, setShowNotice] = useState(!window.goalNotificationData.isDismissed);
-    const [showGoalSourceNotice, setShowGoalSourceNotice] = useState(campaignWindowData.admin.showCampaignInteractionNotice);
+    const [showGoalSourceNotice, setShowGoalSourceNotice] = useState(campaignWindowData.admin.showFormGoalNotice);
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
@@ -256,10 +256,8 @@ const DonationGoal = ({dispatch}) => {
                                                 icon={close}
                                                 style={noticeStyles['closeIcon']}
                                                 onClick={() => {
-                                                    fetch(window.goalNotificationData.actionUrl, {method: 'POST'})
-                                                        .then(() => {
-                                                            setShowNotice(false);
-                                                        });
+                                                    updateUserNoticeOptions('givewp_campaign_form_goal_notice')
+                                                        .then(() => setShowGoalSourceNotice(false))
                                                 }}
                                             />
                                         </span>

@@ -40,6 +40,7 @@ export type GiveCampaignOptions = {
     defaultForm: string;
     admin: {
         showCampaignInteractionNotice: boolean
+        showFormGoalNotice: boolean
         showExistingUserIntroNotice: boolean
     }
 }
