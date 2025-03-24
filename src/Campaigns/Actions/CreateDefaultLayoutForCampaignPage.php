@@ -11,13 +11,13 @@ class CreateDefaultLayoutForCampaignPage
      * @unreleased
      */
     protected $blocks = [
-        '<!-- wp:givewp/campaign-title {"campaignId":"%id%"} /-->',
-        '<!-- wp:givewp/campaign-cover-block {"campaignId":"%id%"} /-->',
-        '<!-- wp:givewp/campaign-goal {"campaignId":"%id%"} /-->',
-        '<!-- wp:givewp/campaign-donate-button {"campaignId":"%id%"} /-->',
+        '<!-- wp:givewp/campaign-title {"campaignId":%id%} /-->',
+        '<!-- wp:givewp/campaign-cover-block {"campaignId":%id%} /-->',
+        '<!-- wp:givewp/campaign-goal {"campaignId":%id%} /-->',
+        '<!-- wp:givewp/campaign-donate-button {"campaignId":%id%} /-->',
         '<!-- wp:paragraph --><p>%description%</p><!-- /wp:paragraph -->',
-        '<!-- wp:givewp/campaign-donations {"campaignId":"%id%"} /-->',
-        '<!-- wp:givewp/campaign-donors {"campaignId":"%id%"} /-->',
+        '<!-- wp:givewp/campaign-donations {"campaignId":%id%} /-->',
+        '<!-- wp:givewp/campaign-donors {"campaignId":%id%} /-->',
     ];
 
     /**

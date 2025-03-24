@@ -46,7 +46,7 @@ class RegisterCampaignBlocks
             $scriptAsset['version']
         );
 
-        if ($post && $post->post_type === 'give_campaign_page') {
+        //if ($post && $post->post_type === 'give_campaign_page') {
             $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
 
             wp_register_script(
@@ -64,7 +64,7 @@ class RegisterCampaignBlocks
                 ['wp-components'],
                 $scriptAsset['version']
             );
-        }
+        //}
     }
 
     /**

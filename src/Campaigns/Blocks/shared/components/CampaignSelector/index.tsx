@@ -12,7 +12,7 @@ type CampaignSelectorProps = {
     showInspectorControl?: boolean;
 }
 
-export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = false}: CampaignSelectorProps) => {
+export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = true}: CampaignSelectorProps) => {
 
     // set campaign id from context
     useEffect(() => {

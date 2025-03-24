@@ -71,7 +71,7 @@ class CampaignPageRepository
                 'post_date' => $dateCreatedFormatted,
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => 'publish',
-                'post_type' => 'give_campaign_page',
+                'post_type' => 'page',
                 'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign->id,
                     $campaign->shortDescription),
             ]);
@@ -84,12 +84,8 @@ class CampaignPageRepository
             $campaignPage->updatedAt = $dateUpdated;
             $campaignPage->status = $status;
 
-            DB::table('postmeta')
-                ->insert([
-                    'post_id' => $campaignPage->id,
-                    'meta_key' => 'campaignId',
-                    'meta_value' => $campaignPage->campaignId,
-                ]);
+            //TODO: update to give specific like give_campaign_id
+            update_post_meta($campaignPage->id, 'campaignId', $campaignPage->campaignId);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
