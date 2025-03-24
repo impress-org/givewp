@@ -49,6 +49,15 @@ class CampaignPageTemplate
                 : GIVE_PLUGIN_DIR . '/src/Campaigns/resources/views/campaign-page-template.php';
 
             return locate_block_template($template, 'campaign-page-template', ['campaign-page-template.php']);
+        } else if ('give_campaign_page' === get_query_var('post_type') && strpos($template, 'canvas.php') !== false ) {
+            // If the theme is not an FSE theme we should not load the canvas template.
+            $template = get_template_directory() . '/single-give_campaign_page.php';
+            if ( ! file_exists( $template ) ) {
+                $template = get_template_directory() . '/single.php';
+            }
+            if ( ! file_exists( $template ) ) {
+                $template = get_template_directory() . '/index.php';
+            }
         }
 
         return $template;
