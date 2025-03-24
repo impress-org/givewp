@@ -44,7 +44,7 @@ const PercentChangePill = ({value, comparison}: PercentChangePillProps) => {
     const [color, backgroundColor, symbol] =
         change === 0
             ? ['#060c1a', '#f2f2f2', <IconArrowRight />]
-            : change > 0
+            : Number(change) > 0
             ? ['#2d802f', '#f2fff3', <IconArrowUp />]
             : ['#e35f45', '#fff4f2', <IconArrowDown />];
 

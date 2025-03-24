@@ -75,6 +75,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
+        shouldFocusError: true,
         ...resolver,
     });
 
@@ -98,8 +99,14 @@ export default function CampaignsDetailsPage({campaignId}) {
         dispatch.addNotice({
             id: 'update-archive-notice',
             type: 'warning',
-            onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
+            content: (onDismiss) => (
+                <ArchivedCampaignNotice
+                    handleClick={() => {
+                        onDismiss();
+                        updateStatus('draft');
+                    }}
+                />
+            ),
         });
     }, [campaign?.status]);
 
@@ -231,7 +238,10 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 <button
                                     className={`button button-secondary ${styles.campaignButtonDots}`}
-                                    onClick={() => setShow({contextMenu: !show.contextMenu})}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShow({contextMenu: !show.contextMenu});
+                                    }}
                                 >
                                     <DotsIcons />
                                 </button>

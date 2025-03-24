@@ -568,7 +568,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             }
 
             if (!validateHostedFields()) {
-                throw new Error('Invalid hosted fields');
+                throw new Error('Invalid PayPal card fields');
             }
 
             const approveOrderCallback = async (data) => {
@@ -636,7 +636,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     'form#give-next-gen button[type="submit"]'
                 );
 
-                if (submitButton) {
+                if (submitButton && !hostedField) {
                     submitButton.style.display = 'none';
                 }
 

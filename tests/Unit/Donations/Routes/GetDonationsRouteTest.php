@@ -5,12 +5,15 @@ namespace Unit\Donations\Routes;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
+use Give\Donations\Routes\RegisterDonationRoutes;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Routes\RegisterDonorRoutes;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -22,6 +25,16 @@ use WP_REST_Server;
 class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function setUp()
+    {
+        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+
+        parent::setUp();
+    }
 
     /**
      * @unreleased

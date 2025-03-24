@@ -1,3 +1,5 @@
+import {GoalType} from '@givewp/campaigns/types';
+
 export type Campaign = {
     id?: number;
     pageId: number;
@@ -10,13 +12,7 @@ export type Campaign = {
     image: string;
     primaryColor: string;
     secondaryColor: string;
-    goalType:
-        | 'amount'
-        | 'donations'
-        | 'donors'
-        | 'amountFromSubscriptions'
-        | 'subscriptions'
-        | 'donorsFromSubscriptions';
+    goalType: GoalType;
     goal: number;
     goalStats: {
         actual: number;
