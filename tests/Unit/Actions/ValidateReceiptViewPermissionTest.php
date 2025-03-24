@@ -78,6 +78,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
      */
     public function testReturnsOriginalPermissionWhenDonationIdDoesNotMatch(): void
     {
+        /** @var Donation $donation */
         $donation = Donation::factory()->create();
         $_GET['receipt_id'] = $donation->purchaseKey;
 
@@ -92,6 +93,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
      */
     public function testReturnsTrueWhenDonationIdMatches(): void
     {
+        /** @var Donation $donation */
         $donation = Donation::factory()->create();
         $_GET['receipt_id'] = $donation->purchaseKey;
 
