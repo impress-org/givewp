@@ -11,7 +11,6 @@ class CreateDefaultLayoutForCampaignPage
      * @unreleased
      */
     protected $blocks = [
-        '<!-- wp:givewp/campaign-title {"campaignId":%id%} /-->',
         '<!-- wp:givewp/campaign-cover-block {"campaignId":%id%} /-->',
         '<!-- wp:givewp/campaign-goal {"campaignId":%id%} /-->',
         '<!-- wp:givewp/campaign-donate-button {"campaignId":%id%} /-->',
