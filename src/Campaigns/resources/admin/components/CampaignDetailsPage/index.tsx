@@ -99,8 +99,14 @@ export default function CampaignsDetailsPage({campaignId}) {
         dispatch.addNotice({
             id: 'update-archive-notice',
             type: 'warning',
-            onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
+            content: (onDismiss) => (
+                <ArchivedCampaignNotice
+                    handleClick={() => {
+                        onDismiss();
+                        updateStatus('draft');
+                    }}
+                />
+            ),
         });
     }, [campaign?.status]);
 
