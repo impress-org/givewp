@@ -138,6 +138,7 @@ function give_setup_post_types() {
 	];
 	register_post_type( 'give_payment', $payment_args );
 
+	$campaigns_url_slug = apply_filters( 'give_campaigns_url_slug', 'campaigns' );
     /**
      * Register Campaign Page CPT
      *
@@ -158,9 +159,14 @@ function give_setup_post_types() {
         'supports' => [
             'title',
             'editor',
+			'revisions',
+			'author',
+			'thumbnail',
+			'excerpt',
+			'custom-fields',
         ],
         'rewrite' => [
-            'slug' => 'campaigns',
+            'slug' => $campaigns_url_slug,
             'with_front' => true,
         ],
         'template' => [],
