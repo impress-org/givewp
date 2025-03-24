@@ -251,7 +251,7 @@ const DonationGoal = ({dispatch}) => {
                                 <PanelRow>
                                     <div style={noticeStyles['notice']}>
                                         <span style={noticeStyles['title']}>
-                                            {__('What is custom goal progress?', 'give')}
+                                            {__('Campaign and Form Goal', 'give')}
                                             <Icon
                                                 icon={close}
                                                 style={noticeStyles['closeIcon']}
@@ -264,7 +264,7 @@ const DonationGoal = ({dispatch}) => {
                                             />
                                         </span>
                                         <span>
-                                            {__('You can now set a time frame to show progress toward your goal.', 'give')}
+                                            {__('You can either use the campaign goal or set a separate goal specifically for this form.', 'give')}
                                         </span>
                                         <span>
                                             <a href="https://docs.givewp.com/goal-timeframe" target="_blank">
@@ -272,7 +272,7 @@ const DonationGoal = ({dispatch}) => {
                                                     style={noticeStyles['externalIcon']}
                                                     icon={external}
                                                 />
-                                                {__('Learn more about how to use the custom goal progress.', 'give')}
+                                                {__('Learn more about the difference', 'give')}
                                             </a>
                                         </span>
                                     </div>
