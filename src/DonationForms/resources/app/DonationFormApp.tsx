@@ -81,6 +81,7 @@ function App({form}: { form: DonationForm }) {
 function AppPreview() {
     const {
         subscribeToGoal,
+        subscribeToGoalSource,
         subscribeToColors,
         subscribeToSettings,
         subscribeToCss,
@@ -110,6 +111,15 @@ function AppPreview() {
                         ...prevState.goal,
                         ...goal,
                     },
+                };
+            });
+        });
+
+        subscribeToGoalSource((goalSource) => {
+            setFormState((prevState) => {
+                return {
+                    ...prevState,
+                    goalSource,
                 };
             });
         });
