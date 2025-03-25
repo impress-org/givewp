@@ -138,7 +138,7 @@ class DonationFormViewModel
     /**
      * @unreleased use DonationFormGoalData
      *
-     * @since 3.0.0
+     * @since      3.0.0
      *
      */
     private function getTotalCountValue(): ?int
@@ -235,7 +235,9 @@ class DonationFormViewModel
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
                 'goal' => $this->donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData(),
+                'stats' => $this->formSettings->goalSource->isCampaign() || $this->formSettings->enableDonationGoal
+                    ? $this->formStatsData()
+                    : [],
                 'design' => $formDesign ? [
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
