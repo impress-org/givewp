@@ -41,50 +41,50 @@ export default function CampaignDetailsSettingsTab() {
     return (
         <div className={styles.sections}>
             {/* Campaign Page */}
-            <div className={styles.section}>
-                <div className={styles.leftColumn}>
-                    <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>
-                    <div className={styles.sectionDescription}>
-                        {__(
-                            'Set up a landing page for your campaign. The default campaign page has the campaign details, the campaign form, and donor wall.',
-                            'give'
-                        )}
-                    </div>
-                </div>
+            {/*<div className={styles.section}>*/}
+            {/*    <div className={styles.leftColumn}>*/}
+            {/*        <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>*/}
+            {/*        <div className={styles.sectionDescription}>*/}
+            {/*            {__(*/}
+            {/*                'Set up a landing page for your campaign. The default campaign page has the campaign details, the campaign form, and donor wall.',*/}
+            {/*                'give'*/}
+            {/*            )}*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
 
-                <div className={styles.rightColumn}>
-                    <div className={styles.sectionField}>
-                        <div className={styles.toggle}>
-                            <ToggleControl
-                                label={__('Enable campaign page for your campaign.', 'give')}
-                                help={__('This will create a default campaign page for your campaign.', 'give')}
-                                name="enableCampaignPage"
-                                checked={enableCampaignPage}
-                                disabled={isDisabled}
-                                onChange={(value) => {
-                                    setValue('enableCampaignPage', value, {shouldDirty: true});
-                                }}
-                            />
-                        </div>
+            {/*    <div className={styles.rightColumn}>*/}
+            {/*        <div className={styles.sectionField}>*/}
+            {/*            <div className={styles.toggle}>*/}
+            {/*                <ToggleControl*/}
+            {/*                    label={__('Enable campaign page for your campaign.', 'give')}*/}
+            {/*                    help={__('This will create a default campaign page for your campaign.', 'give')}*/}
+            {/*                    name="enableCampaignPage"*/}
+            {/*                    checked={enableCampaignPage}*/}
+            {/*                    disabled={isDisabled}*/}
+            {/*                    onChange={(value) => {*/}
+            {/*                        setValue('enableCampaignPage', value, {shouldDirty: true});*/}
+            {/*                    }}*/}
+            {/*                />*/}
+            {/*            </div>*/}
 
-                        {!enableCampaignPage && (
-                            <div className={styles.warningNotice}>
-                                <WarningIcon />
-                                <p>
-                                    {__(
-                                        'This will affect the campaign blocks associated with this campaign. Ensure that no campaign blocks are being used on any page.',
-                                        'give'
-                                    )}
-                                </p>
-                            </div>
-                        )}
+            {/*            {!enableCampaignPage && (*/}
+            {/*                <div className={styles.warningNotice}>*/}
+            {/*                    <WarningIcon />*/}
+            {/*                    <p>*/}
+            {/*                        {__(*/}
+            {/*                            'This will affect the campaign blocks associated with this campaign. Ensure that no campaign blocks are being used on any page.',*/}
+            {/*                            'give'*/}
+            {/*                        )}*/}
+            {/*                    </p>*/}
+            {/*                </div>*/}
+            {/*            )}*/}
 
-                        {errors.enableCampaignPage && (
-                            <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
-                        )}
-                    </div>
-                </div>
-            </div>
+            {/*            {errors.enableCampaignPage && (*/}
+            {/*                <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>*/}
+            {/*            )}*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
             {/* Campaign Details */}
             <div className={styles.section}>
