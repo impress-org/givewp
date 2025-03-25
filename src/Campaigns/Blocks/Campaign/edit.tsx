@@ -90,7 +90,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
                     href="#"
                     onClick={async (e) => {
                         e.preventDefault();
-                        const campaignPage = await createCampaignPage(campaign.id, campaign.title, campaign.shortDescription)
+                        const campaignPage = await createCampaignPage(campaign)
 
                         if (campaignPage) {
                             edit({...campaign, pageId: campaignPage.id});

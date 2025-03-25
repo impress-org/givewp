@@ -31,6 +31,9 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
     );
     const editCampaignUrl = `${adminBaseUrl}&id=${attributes.campaignId}&tab=settings`;
 
+    // @ts-ignore
+    const imageUrl = useSelect(select => select('core').getMedia(campaign.image)?.source_url, [campaign?.image]);
+
     return (
         <figure {...blockProps}>
             <CampaignSelector
@@ -38,10 +41,10 @@ export default function Edit({attributes, setAttributes, toggleSelection}: EditP
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
 
-                {hasResolved && campaign?.image ? (
+                {hasResolved && campaign?.image && imageUrl ? (
                     <img
                         className={'givewp-campaign-cover-block-preview__image'}
-                        src={campaign?.image}
+                        src={imageUrl}
                         alt={attributes.alt ?? __('Campaign Image', 'give')}
                     />
                 ) : (

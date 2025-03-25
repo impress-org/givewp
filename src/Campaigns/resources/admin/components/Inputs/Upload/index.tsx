@@ -8,11 +8,12 @@ import _ from 'lodash';
 import {__, sprintf} from '@wordpress/i18n';
 import classnames from 'classnames';
 import './styles.scss';
+import {useSelect} from '@wordpress/data';
 
 type MediaLibrary = {
     id: string;
-    value: string;
-    onChange: (url: string, alt: string) => void;
+    value: number;
+    onChange: (id: number) => void;
     reset: () => void;
     label: string;
     actionLabel?: string;
@@ -20,6 +21,11 @@ type MediaLibrary = {
 };
 
 export default function UploadMedia({id, value, onChange, label, actionLabel, reset, disabled}: MediaLibrary) {
+    const { imageAttachment } = useSelect((select) => ({
+        //@ts-ignore
+		imageAttachment: select('core').getMedia(value),
+	}), [value]);
+
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -53,7 +59,7 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
                 return;
             }
 
-            onChange(attachment.url, attachment.alt);
+            onChange(attachment.id);
         });
 
         // Finally, open the modal on click
@@ -76,7 +82,7 @@ export default function UploadMedia({id, value, onChange, label, actionLabel, re
                     <button className={'givewp-media-library-control__reset'} onClick={resetImage} disabled={disabled}>
                         <img
                             className={'givewp-media-library-control__image'}
-                            src={value}
+                            src={imageAttachment?.source_url}
                             alt={__('uploaded image', 'give')}
                         />
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14" fill="#fff">

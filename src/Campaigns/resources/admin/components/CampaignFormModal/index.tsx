@@ -231,9 +231,9 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 id="givewp-campaigns-upload-cover-image"
                                 label={__('Cover', 'give')}
                                 actionLabel={__('Select to upload', 'give')}
-                                value={image}
-                                onChange={(coverImageUrl, coverImageAlt) => {
-                                    setValue('image', coverImageUrl);
+                                value={Number(image)}
+                                onChange={(coverImageId) => {
+                                    setValue('image', coverImageId.toString());
                                 }}
                                 reset={() => setValue('image', '')}
                             />

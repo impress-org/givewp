@@ -11,7 +11,7 @@ class CreateDefaultLayoutForCampaignPage
      * @unreleased
      */
     protected $blocks = [
-        '<!-- wp:givewp/campaign-cover-block {"campaignId":%id%} /-->',
+        '<!-- wp:post-featured-image /-->',
         '<!-- wp:givewp/campaign-goal {"campaignId":%id%} /-->',
         '<!-- wp:givewp/campaign-donate-button {"campaignId":%id%} /-->',
         '<!-- wp:paragraph --><p>%description%</p><!-- /wp:paragraph -->',
@@ -24,7 +24,7 @@ class CreateDefaultLayoutForCampaignPage
      */
     public function __invoke(int $campaignId, string $shortDescription): string
     {
-        $layout = array_map(function ($block) use ($campaignId, $shortDescription) {
+        $layout = array_map(static function ($block) use ($campaignId, $shortDescription) {
             return str_replace(
                 ['%id%', '%description%'],
                 [$campaignId, $shortDescription],

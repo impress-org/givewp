@@ -38,6 +38,7 @@ export default function CampaignDetailsSettingsTab() {
 
     const goalInputAttributes = new CampaignGoalInputAttributes(goalType, currency);
 
+
     return (
         <>
         <div className={styles.sections}>
@@ -93,9 +94,9 @@ export default function CampaignDetailsSettingsTab() {
                                     id="givewp-campaigns-upload-cover-image"
                                     label={__('Cover', 'give')}
                                     actionLabel={__('Select to upload', 'give')}
-                                    value={image}
-                                    onChange={(coverImageUrl, coverImageAlt) => {
-                                        setValue('image', coverImageUrl, {shouldDirty: true});
+                                    value={Number(image)}
+                                    onChange={(coverImageId) => {
+                                        setValue('image', coverImageId.toString(), {shouldDirty: true});
                                     }}
                                     reset={() => setValue('image', '', {shouldDirty: true})}
                                 />

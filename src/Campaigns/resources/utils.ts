@@ -2,6 +2,7 @@ import {useEntityRecord} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 import type {GiveCampaignOptions} from '@givewp/campaigns/types';
 import apiFetch from '@wordpress/api-fetch';
+import {isNumber} from 'lodash';
 
 declare const window: {
     GiveCampaignOptions: GiveCampaignOptions;
@@ -76,10 +77,12 @@ export async function updateUserNoticeOptions(metaKey: string){
 /**
  * @unreleased
  */
-export async function createCampaignPage(campaignId: number, title: string, description: string = '') {
+export async function createCampaignPage(campaign: Campaign) {
+    const {title, shortDescription: description, id: campaignId, image} = campaign;
+
     try {
         const content = `
-            <!-- wp:givewp/campaign-cover-block {"campaignId":${campaignId}} /-->
+            <!-- wp:post-featured-image /-->
             <!-- wp:givewp/campaign-goal {"campaignId":${campaignId}} /-->
             <!-- wp:givewp/campaign-donate-button {"campaignId":${campaignId}} /-->
             <!-- wp:paragraph --><p>${description}</p><!-- /wp:paragraph -->
@@ -93,7 +96,8 @@ export async function createCampaignPage(campaignId: number, title: string, desc
             status: 'draft',
             meta: {
                 give_campaign_id: campaignId
-            }
+            },
+            featured_media: campaign.image.length > 0 && !Number.isNaN(campaign.image) ? campaign.image : 0
         });
 
         console.log('Campaign page created:', newPage);

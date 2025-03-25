@@ -92,6 +92,10 @@ class CampaignPageRepository
             $campaignPage->status = $status;
 
             update_post_meta($campaignPage->id, CampaignPageMetaKeys::CAMPAIGN_ID, $campaignPage->campaignId);
+
+            if ($campaign->image && is_numeric($campaign->image)) {
+                set_post_thumbnail($campaignPage->id, $campaign->image);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

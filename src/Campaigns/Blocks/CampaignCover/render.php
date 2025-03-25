@@ -36,7 +36,7 @@ if ($attributes['align'] !== 'full' && $attributes['align'] !== 'wide') {
 >
     <figure class="givewp-campaign-cover-block__figure">
         <img
-            src="<?php echo esc_url($campaign->image); ?>"
+            src="<?php echo esc_url(wp_get_attachment_image_url($campaign->image)); ?>"
             alt="<?php echo esc_attr($altText); ?>"
             style="<?php echo trim(esc_attr($widthStyle) . esc_attr($heightStyle) . esc_attr($borderRadius)); ?>"
         />
