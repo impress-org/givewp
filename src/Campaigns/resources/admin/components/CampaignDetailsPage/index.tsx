@@ -14,7 +14,7 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord, createLandingPage} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -64,7 +64,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}: { schema: JSONSchemaType<any> }) => {
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -111,10 +111,10 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, [campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
-
-        const shouldSave = formState.isDirty
+        const shouldSave =
+            formState.isDirty ||
             // Force save if first publish to account for a race condition.
-            || (campaign.status === 'draft' && data.status === 'active');
+            (campaign.status === 'draft' && data.status === 'active');
 
         if (shouldSave) {
             setIsSaving(data.status);
@@ -146,7 +146,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
 
-        edit({...campaign, status})
+        edit({...campaign, status});
 
         try {
             const response: Campaign = await save();
@@ -175,6 +175,24 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
+    async function handleCampaignPageCreation() {
+        const campaignPage = await createLandingPage(campaign.id, campaign.title, campaign.shortDescription);
+
+        if (campaignPage) {
+            edit({...campaign, pageId: campaignPage.id, enableCampaignPage: true});
+
+            const response: Campaign = await save();
+            console.log(response);
+
+            reset(response);
+
+            dispatch.addSnackbarNotice({
+                id: `create-campaign-page`,
+                content: __('Campaign page created', 'give'),
+            });
+        }
+    }
+
     if (!hasResolved) {
         return (
             <div className={styles.loadingContainer}>
@@ -192,9 +210,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 <article className={`interface-interface-skeleton__content ${styles.page}`}>
                     <header className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
-                            <a
-                                href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}
-                            >
+                            <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
                                 {__('Campaigns', 'give')}
                             </a>
                             <BreadcrumbSeparatorIcon />
@@ -207,7 +223,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                {enableCampaignPage && (
+                                {enableCampaignPage && campaign.pageId > 0 && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
                                         href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
@@ -216,6 +232,17 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         {__('Edit campaign page', 'give')}
                                     </a>
                                 )}
+
+                                {!campaign.pageId && (
+                                    <button
+                                        type="button"
+                                        className={`button button-primary ${styles.updateCampaignButton}`}
+                                        onClick={handleCampaignPageCreation}
+                                    >
+                                        {__('Create Campaign Page', 'give')}
+                                    </button>
+                                )}
+
                                 <button
                                     type="submit"
                                     disabled={campaign.status !== 'draft' && !formState.isDirty}

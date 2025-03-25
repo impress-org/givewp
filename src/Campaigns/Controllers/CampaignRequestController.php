@@ -150,6 +150,9 @@ class CampaignRequestController
                     give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
                         $request->get_param('defaultFormId'));
                     break;
+                case 'pageId':
+                    $campaign->pageId = (int)$value;
+                    break;
                 default:
                     if ($campaign->hasProperty($key)) {
                         $campaign->$key = $value;

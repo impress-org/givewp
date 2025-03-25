@@ -65,3 +65,33 @@ export async function updateUserNoticeOptions(metaKey: string){
         console.error('Error updating user meta:', error);
     }
 }
+
+/**
+ * @unreleased
+ */
+export async function createLandingPage(campaignId: number, title: string, description: string = '') {
+    try {
+        const content = `
+            <!-- wp:givewp/campaign-cover-block {"campaignId":${campaignId}} /-->
+            <!-- wp:givewp/campaign-goal {"campaignId":${campaignId}} /-->
+            <!-- wp:givewp/campaign-donate-button {"campaignId":${campaignId}} /-->
+            <!-- wp:paragraph --><p>${description}</p><!-- /wp:paragraph -->
+            <!-- wp:givewp/campaign-donations {"campaignId":${campaignId}} /-->
+            <!-- wp:givewp/campaign-donors {"campaignId":${campaignId}} /-->
+        `;
+
+        const newPage = await wp.data.dispatch('core').saveEntityRecord('postType', 'page', {
+            title,
+            content: content.trim(),
+            status: 'publish',
+            meta: {
+                campaignId
+            }
+        });
+
+        console.log('Campaign page created:', newPage);
+        return newPage;
+    } catch (error) {
+        console.error('Error creating Campaign page:', error);
+    }
+}
