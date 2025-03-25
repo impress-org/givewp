@@ -26,7 +26,6 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
         ]);
 
         $expectedLayout = <<<HTML
-<!-- wp:givewp/campaign-title {"campaignId":1} /-->
 <!-- wp:givewp/campaign-cover-block {"campaignId":1} /-->
 <!-- wp:givewp/campaign-goal {"campaignId":1} /-->
 <!-- wp:givewp/campaign-donate-button {"campaignId":1} /-->
