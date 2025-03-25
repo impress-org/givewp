@@ -4,7 +4,7 @@ import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from '@givewp/form-builder-library';
@@ -28,13 +28,15 @@ export default function CampaignDetailsSettingsTab() {
         formState: {errors},
     } = useFormContext();
 
-    const [goalType, image, status, shortDescription, enableCampaignPage] = watch([
+    const [goal, goalType, image, status, shortDescription, enableCampaignPage] = watch([
+        'goal',
         'goalType',
         'image',
         'status',
         'shortDescription',
         'enableCampaignPage',
     ]);
+
     const isDisabled = status === 'archived';
 
     const goalInputAttributes = new CampaignGoalInputAttributes(goalType, currency);
@@ -54,19 +56,20 @@ export default function CampaignDetailsSettingsTab() {
                         </div>
                     </div>
 
-                    <div className={styles.rightColumn}>
-                        <div className={styles.sectionField}>
-                            <div className={styles.toggle}>
-                                <ToggleControl
-                                    label={__('Enable campaign page for your campaign.', 'give')}
-                                    help={__('This will create a default campaign page for your campaign.', 'give')}
-                                    name="enableCampaignPage"
-                                    checked={enableCampaignPage}
-                                    onChange={(value) => {
-                                        setValue('enableCampaignPage', value, {shouldDirty: true});
-                                    }}
-                                />
-                            </div>
+                <div className={styles.rightColumn}>
+                    <div className={styles.sectionField}>
+                        <div className={styles.toggle}>
+                            <ToggleControl
+                                label={__('Enable campaign page for your campaign.', 'give')}
+                                help={__('This will create a default campaign page for your campaign.', 'give')}
+                                name="enableCampaignPage"
+                                checked={enableCampaignPage}
+                                disabled={isDisabled}
+                                onChange={(value) => {
+                                    setValue('enableCampaignPage', value, {shouldDirty: true});
+                                }}
+                            />
+                        </div>
 
                             {!enableCampaignPage && (
                                 <div className={styles.warningNotice}>
@@ -192,27 +195,27 @@ export default function CampaignDetailsSettingsTab() {
                             <div className={styles.sectionSubtitle}>{goalInputAttributes.getLabel()}</div>
                             <div className={styles.sectionFieldDescription}>{goalInputAttributes.getDescription()}</div>
 
-                            {goalInputAttributes.isCurrencyType() ? (
-                                <div className={styles.sectionFieldCurrencyControl}>
-                                    <CurrencyControl
-                                        name="goal"
-                                        currency={currency as CurrencyCode}
-                                        disabled={isDisabled}
-                                        placeholder={goalInputAttributes.getPlaceholder()}
-                                        value={watch('goal')}
-                                        onValueChange={(value) => {
-                                            setValue('goal', Number(value), {shouldDirty: true});
-                                        }}
-                                    />
-                                </div>
-                            ) : (
-                                <input
-                                    type="number"
-                                    {...register('goal', {valueAsNumber: true})}
+                        {goalInputAttributes.isCurrencyType() ? (
+                            <div className={styles.sectionFieldCurrencyControl}>
+                                <CurrencyControl
+                                    name="goal"
+                                    currency={currency as CurrencyCode}
                                     disabled={isDisabled}
                                     placeholder={goalInputAttributes.getPlaceholder()}
+                                    value={goal}
+                                    onValueChange={(value) => {
+                                        setValue('goal', Number(value ?? 0), {shouldDirty: true});
+                                    }}
                                 />
-                            )}
+                            </div>
+                        ) : (
+                            <input
+                                type="number"
+                                {...register('goal', {valueAsNumber: true})}
+                                disabled={isDisabled}
+                                placeholder={goalInputAttributes.getPlaceholder()}
+                            />
+                        )}
 
                             {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                         </div>

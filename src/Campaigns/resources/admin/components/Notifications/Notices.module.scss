@@ -49,11 +49,10 @@
 
 }
 
-
 .noticeContainer {
     display: flex;
     flex-direction: column-reverse;
-    padding: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6) 0;
     gap: 10px;
 
     .notice {
