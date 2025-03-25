@@ -298,7 +298,7 @@ class CampaignRepository
     {
         // Make sure the destination campaign ID will not be included into $campaignsToMergeIds
         $campaignsToMergeIds = array_column($campaignsToMerge, 'id');
-        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds)) {
+        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds, true)) {
             unset($campaignsToMergeIds[$key]);
         }
 

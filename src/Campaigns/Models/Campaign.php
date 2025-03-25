@@ -174,6 +174,9 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
     }
 
+    /**
+     * @unreleased
+     */
     public function getGoalStats(): array
     {
         return (new CampaignGoalData($this))->toArray();

@@ -31,7 +31,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -54,7 +54,7 @@ class CampaignRequestController
 
         $query->whereIn('status', $status);
 
-        if ( ! empty($ids)) {
+        if (!empty($ids)) {
             $query->whereIn('id', $ids);
         }
 
@@ -118,7 +118,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -147,8 +147,10 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
-                        $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm(
+                        $campaign,
+                        $request->get_param('defaultFormId')
+                    );
                     break;
                 case 'pageId':
                     $campaign->pageId = (int)$value;
@@ -171,10 +173,16 @@ class CampaignRequestController
      * @unreleased
      *
      * @throws Exception
+     * @return WP_Error | WP_REST_Response
      */
-    public function mergeCampaigns(WP_REST_Request $request): WP_REST_Response
+    public function mergeCampaigns(WP_REST_Request $request)
     {
         $destinationCampaign = Campaign::find($request->get_param('id'));
+
+        if (!$destinationCampaign) {
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
         $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
 
         $campaignsMerged = $destinationCampaign->merge(...$campaignsToMerge);
@@ -221,15 +229,19 @@ class CampaignRequestController
                 break;
             case 'amount':
                 $query
-                    ->selectRaw('(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
-                        DB::prefix('give_revenue'))
+                    ->selectRaw(
+                        '(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
+                        DB::prefix('give_revenue')
+                    )
                     ->orderBy('amount', $orderBy);
 
                 break;
             case 'donations':
                 $query
-                    ->selectRaw('(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
-                        DB::prefix('give_revenue'))
+                    ->selectRaw(
+                        '(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
+                        DB::prefix('give_revenue')
+                    )
                     ->orderBy('donationsCount', $orderBy);
 
                 break;

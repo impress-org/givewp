@@ -88,12 +88,14 @@ class RegisterCampaignRoutes
                     'permission_callback' => '__return_true',
                 ],
                 'args' => [
-                    'type' => 'array',
-                    'items' => [
-                        'type' => 'string',
-                        'enum' => ['active', 'draft', 'archived'],
+                    'status' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => ['active', 'draft', 'archived'],
+                        ],
+                        'default' => ['active'],
                     ],
-                    'default' => ['active'],
                     'ids' => [
                         'type' => 'array',
                         'default' => [],
