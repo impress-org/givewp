@@ -283,7 +283,7 @@ class Give_Donation_Form_Grid_Block {
 		ob_start();
 
 		$content = array(
-			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_url' => GIVE_PLUGIN_URL . 'build/assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'Give Icon', 'give' ),
             'heading' => __('No campaign forms found.', 'give'),
             'message' => __('The first step towards accepting online donations is to create a campaign.',

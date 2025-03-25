@@ -124,7 +124,7 @@ class DefaultFormFactory
                     'Help our organization by donating today! All donations go directly to making a difference for our cause.',
                     'give'
                 ),
-                'image' => GIVE_PLUGIN_URL . 'assets/dist/images/onboarding-preview-form-image.min.jpg',
+                'image' => GIVE_PLUGIN_URL . 'build/assets/dist/images/onboarding-preview-form-image.min.jpg',
                 'primary_color' => $this->primaryColor,
                 'donate_label' => __('Donate Now', 'give'),
             ],

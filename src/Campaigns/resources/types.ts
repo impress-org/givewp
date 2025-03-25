@@ -1,3 +1,6 @@
+/**
+ * @unreleased
+ */
 export type Notification = {
     id: string;
     content: string | JSX.Element | Function;
@@ -9,6 +12,9 @@ export type Notification = {
     duration?: number,
 }
 
+/**
+ * @unreleased
+ */
 declare module "@wordpress/data" {
     export function select(key: 'givewp/campaign-notifications'): {
         getNotifications(): Notification[],
@@ -22,6 +28,9 @@ declare module "@wordpress/data" {
     };
 }
 
+/**
+ * @unreleased
+ */
 export type GiveCampaignOptions = {
     isAdmin: boolean;
     adminUrl: string;
@@ -31,5 +40,17 @@ export type GiveCampaignOptions = {
     defaultForm: string;
     admin: {
         showCampaignInteractionNotice: boolean
+        showExistingUserIntroNotice: boolean
     }
 }
+
+/**
+ * @unreleased
+ */
+export type GoalType =
+    'amount'
+    | 'donations'
+    | 'donors'
+    | 'amountFromSubscriptions'
+    | 'subscriptions'
+    | 'donorsFromSubscriptions';

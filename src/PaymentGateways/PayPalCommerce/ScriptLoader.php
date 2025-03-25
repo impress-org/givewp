@@ -108,7 +108,7 @@ class ScriptLoader
 
         wp_enqueue_style(
             'give-admin-paypal-commerce-css',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-paypal-commerce.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-paypal-commerce.css',
             [],
             GIVE_VERSION
         );
@@ -273,7 +273,7 @@ EOT;
             )
         ];
 
-        EnqueueScript::make($scriptId, 'assets/dist/js/paypal-commerce.js')
+        EnqueueScript::make($scriptId, 'build/assets/dist/js/paypal-commerce.js')
             ->registerTranslations()
             ->loadInFooter()
             ->registerLocalizeData('givePayPalCommerce', $data)

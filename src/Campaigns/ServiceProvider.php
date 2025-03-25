@@ -116,10 +116,18 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
         Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
 
-        // notices
-        add_action('wp_ajax_givewp_campaign_interaction_notice', static function () {
-            add_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', time(), true);
-        });
+        $noticeActions = [
+            'givewp_campaign_interaction_notice',
+            'givewp_campaign_existing_user_intro_notice',
+        ];
+
+        foreach ($noticeActions as $metaKey) {
+            register_meta('user', $metaKey, [
+                'type' => 'boolean',
+                'show_in_rest' => true,
+                'single' => true,
+            ]);
+        }
     }
 
     /**

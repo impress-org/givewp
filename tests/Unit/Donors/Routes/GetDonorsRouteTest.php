@@ -9,9 +9,11 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
+use Give\Donors\Routes\RegisterDonorRoutes;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -23,6 +25,16 @@ use WP_REST_Server;
 class GetDonorsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function setUp()
+    {
+        Hooks::addAction('rest_api_init', RegisterDonorRoutes::class);
+
+        parent::setUp();
+    }
 
     /**
      * @unreleased

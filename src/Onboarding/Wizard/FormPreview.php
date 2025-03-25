@@ -88,7 +88,7 @@ class FormPreview
             'all'
         );
 
-        EnqueueScript::make('give', 'assets/dist/js/give.js' )
+        EnqueueScript::make('give', 'build/assets/dist/js/give.js' )
             ->registerTranslations()
             ->register();
     }
