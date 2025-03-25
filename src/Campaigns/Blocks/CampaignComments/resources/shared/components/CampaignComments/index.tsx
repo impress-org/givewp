@@ -8,7 +8,7 @@ import {Attributes, CommentData} from '../../../types';
 
 import './styles.scss';
 
-export default function CampaignComments({attributes}: {attributes: Attributes}) {
+export default function CampaignComments({attributes, primaryColor}: {attributes: Attributes; primaryColor: string}) {
     const {title = __('Share your support', 'give')} = attributes;
 
     const {data, isLoading} = useSWR<CommentData[]>(
@@ -25,7 +25,7 @@ export default function CampaignComments({attributes}: {attributes: Attributes})
     }
 
     if (data && data?.length === 0) {
-        return <EmptyState />;
+        return <EmptyState primaryColor={primaryColor} />;
     }
 
     return (
