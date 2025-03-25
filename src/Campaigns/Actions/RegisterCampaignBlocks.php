@@ -45,8 +45,8 @@ class RegisterCampaignBlocks
             ['wp-components'],
             $scriptAsset['version']
         );
-        
-        if ($post && get_post_meta($post->ID, 'campaignId', true)) {
+
+        //if ($post && get_post_meta($post->ID, 'campaignId', true)) {
             $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
 
             wp_register_script(
@@ -64,7 +64,7 @@ class RegisterCampaignBlocks
                 ['wp-components'],
                 $scriptAsset['version']
             );
-        }
+        //}
     }
 
     /**
