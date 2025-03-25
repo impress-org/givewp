@@ -23,7 +23,7 @@ class CampaignPageTemplate
             'title' => __('Campaign page', 'give'),
             'description' => __('Give Campaign Page template', 'give'),
             'post_types' => [
-                'give_campaign_page',
+                'page',
             ],
             'content' => View::load('Campaigns.campaign-page-content'),
         ]);
@@ -35,7 +35,7 @@ class CampaignPageTemplate
     public function loadTemplate($template)
     {
         if (
-            'give_campaign_page' === get_query_var('post_type')
+            get_post_field('campaignId')
             && current_theme_supports('block-templates')
         ) {
             if (!$this->isPageVisible()) {

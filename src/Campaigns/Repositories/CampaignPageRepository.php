@@ -121,7 +121,6 @@ class CampaignPageRepository
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $status->getValue(),
-                    'post_type' => 'give_campaign_page',
                 ]);
 
             $campaignPage->updatedAt = $now;
@@ -199,8 +198,7 @@ class CampaignPageRepository
                 'ID',
                 'post_id',
                 'campaignId'
-            )
-            ->where('post_type', 'give_campaign_page');
+            );
     }
 
     /**

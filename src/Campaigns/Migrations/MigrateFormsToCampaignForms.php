@@ -180,7 +180,7 @@ class MigrateFormsToCampaignForms extends Migration
                 'post_modified' => $formCreatedAt,
                 'post_modified_gmt' => get_gmt_from_date($formCreatedAt),
                 'post_status' => 'publish',
-                'post_type' => 'give_campaign_page',
+                'post_type' => 'page',
                 'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignId,
                     $formSettings->formExcerpt),
             ]);

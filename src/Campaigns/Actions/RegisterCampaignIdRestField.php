@@ -14,7 +14,7 @@ class RegisterCampaignIdRestField
     {
         //TODO: update this to be more GiveWP specific like give_campaign_id
         register_rest_field(
-            'post',
+            'page',
             'campaignId',
             [
                 'get_callback' => function ($object) {

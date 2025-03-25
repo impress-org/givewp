@@ -13,7 +13,7 @@ class PreventDeletingCampaignPage
             return $caps;
         }
 
-        if ('give_campaign_page' === get_post_type($args[0])) {
+        if (get_post_meta($args[0], 'campaignId', true)) {
             $caps[] = 'do_not_allow';
         }
 
