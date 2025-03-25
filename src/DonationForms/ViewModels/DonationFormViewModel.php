@@ -236,8 +236,10 @@ class DonationFormViewModel
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $this->donationFormGoalData->toArray(),
-                'stats' => $this->formSettings->goalSource->isCampaign() || $this->formSettings->enableDonationGoal
+                'goal' => $this->formSettings->showHeader && $this->formSettings->enableDonationGoal
+                    ? $this->donationFormGoalData->toArray()
+                    : [],
+                'stats' => $this->formSettings->showHeader && $this->formSettings->enableDonationGoal
                     ? $this->formStatsData()
                     : [],
                 'design' => $formDesign ? [
