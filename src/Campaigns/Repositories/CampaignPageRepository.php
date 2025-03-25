@@ -60,7 +60,7 @@ class CampaignPageRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $campaignPage->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
-        $status = $campaignPage->status ?? CampaignPageStatus::PUBLISH();
+        $status = $campaignPage->status ?? CampaignPageStatus::DRAFT();
         $campaign = $campaignPage->campaign();
 
         if (!$campaign) {
@@ -75,7 +75,7 @@ class CampaignPageRepository
                 'post_name' => sanitize_title($campaign->title),
                 'post_date' => $dateCreatedFormatted,
                 'post_modified' => $dateUpdatedFormatted,
-                'post_status' => $campaignPage->status->getValue(),
+                'post_status' => $status->getValue(),
                 'post_type' => 'page',
                 'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
                     $campaign->id,
