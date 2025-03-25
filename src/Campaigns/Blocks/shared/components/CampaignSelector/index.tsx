@@ -26,7 +26,7 @@ export default ({campaignId, handleSelect, children, inspectorControls = null, s
         }
     }, []);
 
-    const {campaigns, hasResolved} = useCampaigns();
+    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
     return (
         <>

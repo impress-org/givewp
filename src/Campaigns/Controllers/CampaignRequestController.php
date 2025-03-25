@@ -52,7 +52,7 @@ class CampaignRequestController
 
         $query = Campaign::query();
 
-        $query->where('status', $status);
+        $query->whereIn('status', $status);
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
