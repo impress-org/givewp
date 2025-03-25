@@ -19,7 +19,10 @@ export function useCampaignNoticeHook(id: NoticeId): [boolean, () => void] {
         showTooltip,
         () => {
             handleTooltipDismiss(id)
-                .then(() => setShowTooltip(false));
+                .then(() => {
+                    setShowTooltip(false)
+                    campaignWindowData.admin[noticesMap[id]] = false;
+                });
         },
     ];
 }
