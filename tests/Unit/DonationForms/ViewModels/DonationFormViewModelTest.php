@@ -32,7 +32,7 @@ class DonationFormViewModelTest extends TestCase
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray([
                 'designId' => $formDesign::id(),
-                'goalSource' => GoalSource::FORM()
+                'goalSource' => GoalSource::FORM(),
             ]),
         ]);
 
@@ -57,23 +57,26 @@ class DonationFormViewModelTest extends TestCase
             'validateUrl' => $validateUrl,
             'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
-                'donation-confirmation-receipt-view'
+                'donation-confirmation-receipt-view',
             ],
             'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $donationForm->settings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => [
-                    'totalRevenue' => $totalRevenue,
-                    'totalCountValue' => $goalType->isDonors() ?
-                        $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
-                        $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
-                    'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                        'Donations',
-                        'give'
-                    ),
-                ],
+                'goal' => $donationForm->settings->showHeader && $donationForm->settings->enableDonationGoal
+                    ? $donationFormGoalData->toArray()
+                    : [],
+                'stats' => $donationForm->settings->showHeader && $donationForm->settings->enableDonationGoal
+                    ? [
+                        'totalRevenue' => $totalRevenue,
+                        'totalCountValue' => $goalType->isDonors() ?
+                            $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
+                            $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
+                        'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
+                            'Donations',
+                            'give'
+                        ),
+                    ] : [],
                 'design' => [
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
@@ -81,7 +84,7 @@ class DonationFormViewModelTest extends TestCase
                     'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ],
             ]),
-            'previewMode' => false
+            'previewMode' => false,
         ]);
     }
 }
