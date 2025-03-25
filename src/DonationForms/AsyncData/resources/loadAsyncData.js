@@ -353,21 +353,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trigger the async logic every time the "Forms" tab of the campaign details page gets updated
     window.onload = function () {
         const campaignsPage = document.querySelector('#give-admin-campaigns-root');
-        if (!!campaignsPage) {
-            // create an Observer instance
-            const resizeObserver = new ResizeObserver((entries) => {
-                const queryString = window.location.search;
-                const params = new URLSearchParams(queryString);
-                const isCampaignFormsTab = params.has('tab') && 'forms' === params.get('tab');
-                if (isCampaignFormsTab) {
-                    window.GiveDonationFormsAsyncData.scriptDebug &&
-                        console.log('Campaigns Page height changed:', entries[0].target.clientHeight);
-                    maybeLoadAsyncData();
-                }
-            });
 
-            // start observing a DOM node
-            resizeObserver.observe(campaignsPage);
+        if (!campaignsPage) {
+            return;
         }
+
+        const observer = new MutationObserver(() => {
+            const params = new URLSearchParams(window.location.search);
+            const isCampaignFormsTab = params.get('tab') === 'forms';
+
+            if (isCampaignFormsTab) {
+                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Campaigns Page mutated on Forms Tab');
+                maybeLoadAsyncData();
+            }
+        });
+
+        observer.observe(campaignsPage, {
+            childList: true,
+            subtree: true,
+        });
     };
 });
