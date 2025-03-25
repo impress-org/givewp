@@ -4,15 +4,20 @@ import {
     PayPalHostedFieldsProvider,
     PayPalScriptProvider,
     usePayPalHostedFields,
-    usePayPalScriptReducer,
+    usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
-import type {Gateway} from '@givewp/forms/types';
+import type {PayPalButtonsComponentProps, PayPalHostedFieldsComponentProps} from '@paypal/react-paypal-js';
 import {__, sprintf} from '@wordpress/i18n';
-import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
-import {PayPalSubscriber} from './types';
+import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
+import createOrder from './resources/js/createOrder';
+import type {
+    CreateSubscriptionRequestBody,
+    PayPalButtonsComponentOptions
+} from '@paypal/paypal-js';
+import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
 (() => {
     /**
@@ -46,12 +51,9 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
     let addressLine2;
     let postalCode;
 
-    let updateOrderAmount = false;
-    let orderCreated = false;
-
     let currency;
-
     let eventTickets;
+    let submitButton;
 
     /**
      * @since 3.12.2
@@ -185,32 +187,12 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
         );
     };
 
-    const createOrderHandler = async (): Promise<string> => {
-        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
-            method: 'POST',
-            body: getFormData(),
-        });
-        const responseJson = await response.json();
-
-        if (!responseJson.success) {
-            throw responseJson.data.error;
-        }
-
-        return (payPalOrderId = responseJson.data.id);
+    const createOrderHandler: PayPalHostedFieldsComponentProps['createOrder'] = async (): Promise<string> => {
+        return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalCommerceGateway, getFormData());
     };
 
-    const createSubscriptionHandler = async (data, actions) => {
-        // eslint-disable-next-line
-        const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, {
-            method: 'POST',
-            body: getFormData(),
-        });
-
-        const responseJson = await response.json();
-
-        if (!responseJson.success) {
-            throw responseJson.data.error;
-        }
+    const createSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
+        const {planId, userAction} = await createSubscriptionPlan(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, payPalCommerceGateway, getFormData());
 
         const subscriberData: PayPalSubscriber = {
             name: {
@@ -236,11 +218,19 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             };
         }
 
+        const createSubscriptionPayload: CreateSubscriptionRequestBody = {
+            plan_id: planId,
+            subscriber: subscriberData,
+        };
+
+        if (userAction) {
+            createSubscriptionPayload.application_context = {
+                user_action: userAction
+            }
+        }
+
         return actions.subscription
-            .create({
-                plan_id: responseJson.data.id,
-                subscriber: subscriberData,
-            })
+            .create(createSubscriptionPayload)
             .then((orderId) => {
                 return (payPalSubscriptionId = orderId);
             });
@@ -307,12 +297,6 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
 
         eventTickets = useWatch({name: 'event-tickets'});
 
-        useEffect(() => {
-            if (orderCreated) {
-                updateOrderAmount = true;
-            }
-        }, [amount, eventTickets]);
-
         return children;
     };
 
@@ -329,12 +313,12 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             trigger,
             setError,
         } = useFormContext();
-        const gateway = window.givewp.gateways.get('paypal-commerce');
+        const gateway = window.givewp.gateways.get('paypal-commerce') as PayPalCommerceGateway;
 
-        const props = {
+        const props: PayPalButtonsComponentProps = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
-            forceReRender: debounce(() => [amount, feeRecovery, firstName, lastName, email, currency], 500),
+            forceReRender: [donationType, amount, feeRecovery, firstName, lastName, email, currency],
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
@@ -352,7 +336,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     // Scroll to the top of the form.
                     // Add this moment we do not have a way to scroll to the error message.
                     // In the future we can add a way to scroll to the error message and remove this code.
-                    document.querySelector('#give-next-gen button[type="submit"]').scrollIntoView({behavior: 'smooth'});
+                    submitButton.scrollIntoView({behavior: 'smooth'});
 
                     return actions.reject();
                 }
@@ -396,54 +380,39 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     return actions.reject();
                 }
 
-                orderCreated = true;
                 return actions.resolve();
             },
             onApprove: async (data, actions) => {
-                const donationFormWithSubmitButton = Array.from(document.forms).pop();
-                const submitButton: HTMLButtonElement = donationFormWithSubmitButton.querySelector('[type="submit"]');
+                const orderId = data.orderID;
+                const subscriptionId = data?.subscriptionID;
+
                 const submitButtonDefaultText = submitButton.textContent;
                 submitButton.textContent = __('Waiting for PayPal...', 'give');
                 submitButton.disabled = true;
 
-                if (payPalOrderId && updateOrderAmount) {
-                    const response = await fetch(
-                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_update_order_amount&order=${payPalOrderId}`,
-                        {
-                            method: 'POST',
-                            body: getFormData(),
-                        }
-                    );
+                if (subscriptionId && donationType === 'subscription') {
+                    payPalSubscriptionId = subscriptionId;
 
-                    const {data: ajaxResponseData} = await response.json();
-
-                    if (ajaxResponseData.hasOwnProperty('error')) {
-                        submitButton.disabled = false;
-                        submitButton.textContent = submitButtonDefaultText;
-                        throw new Error(ajaxResponseData.error);
-                    }
-                }
-
-                if (donationType === 'subscription') {
                     submitButton.disabled = false;
                     submitButton.textContent = submitButtonDefaultText;
                     submitButton.click();
                     return;
                 }
 
-                return actions.order.capture().then((details) => {
-                    submitButton.disabled = false;
-                    submitButton.textContent = submitButtonDefaultText;
-                    submitButton.click();
-                });
+                if (orderId) {
+                    payPalOrderId = orderId;
+                }
+
+                submitButton.disabled = false;
+                submitButton.textContent = submitButtonDefaultText;
+                submitButton.click();
+                return;
             },
         };
 
         return donationType === 'subscription' ? (
-            // @ts-ignore
             <PayPalButtons {...props} createSubscription={createSubscriptionHandler} />
         ) : (
-            // @ts-ignore
             <PayPalButtons {...props} createOrder={createOrderHandler} />
         );
     };
@@ -524,13 +493,15 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
         useEffect(() => {
             const isSubscription = donationType === 'subscription';
 
+            const options = getPayPalScriptOptions({isSubscription});
+
             dispatch({
                 type: 'resetOptions',
                 value: {
-                    ...getPayPalScriptOptions({isSubscription}),
+                    ...options,
                     currency: currency,
                     vault: donationType === 'subscription',
-                    intent: donationType === 'subscription' ? 'subscription' : 'capture',
+                    intent: donationType === 'subscription' ? 'subscription' : options.intent,
                 },
             });
         }, [currency, donationType]);
@@ -543,7 +514,7 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
         );
     }
 
-    const payPalCommerceGateway: Gateway = {
+    const payPalCommerceGateway: PayPalCommerceGateway = {
         id: 'paypal-commerce',
         initialize() {
             payPalDonationsSettings = this.settings;
@@ -554,40 +525,22 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {
-            if (payPalOrderId) {
-                // If order ID already set by payment buttons then return early.
+             if (payPalSubscriptionId) {
                 return {
-                    payPalOrderId: payPalOrderId,
+                    payPalSubscriptionId: payPalSubscriptionId,
                 };
             }
 
-            if (payPalSubscriptionId) {
+            if (payPalOrderId) {
+                // If order ID already set by payment buttons then return early.
                 return {
-                    payPalSubscriptionId: payPalSubscriptionId,
+                    payPalOrderId: payPalOrderId
                 };
             }
 
             if (!validateHostedFields()) {
                 throw new Error('Invalid PayPal card fields');
             }
-
-            const approveOrderCallback = async (data) => {
-                const response = await fetch(
-                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=${data.orderId}&update_amount=${updateOrderAmount}`,
-                    {
-                        method: 'POST',
-                        body: getFormData(),
-                    }
-                );
-
-                const {data: ajaxResponseData} = await response.json();
-
-                if (ajaxResponseData.hasOwnProperty('error')) {
-                    throw new Error(ajaxResponseData.error);
-                }
-
-                return {...data, payPalOrderId: data.orderId};
-            };
 
             try {
                 const result = await hostedField.cardFields.submit({
@@ -609,7 +562,10 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
                     );
                 }
 
-                return await approveOrderCallback(result);
+                return {
+                    ...result,
+                    payPalOrderId: result.orderId
+                }
             } catch (err) {
                 console.log('paypal donations error', err);
 
@@ -630,12 +586,9 @@ import handleValidationRequest from '@givewp/forms/app/utilities/handleValidatio
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
+            submitButton = window.givewp.form.hooks.useFormSubmitButton();
 
             useEffect(() => {
-                const submitButton = document.querySelector<HTMLButtonElement>(
-                    'form#give-next-gen button[type="submit"]'
-                );
-
                 if (submitButton && !hostedField) {
                     submitButton.style.display = 'none';
                 }
