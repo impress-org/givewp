@@ -35,7 +35,7 @@ class CampaignPageTemplate
     public function loadTemplate($template)
     {
         if (
-            get_post_field('campaignId')
+            'page' === get_query_var('post_type')
             && current_theme_supports('block-templates')
         ) {
             if (!$this->isPageVisible()) {
