@@ -26,16 +26,18 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
         ]);
 
         $expectedLayout = <<<HTML
-<!-- wp:givewp/campaign-title {"campaignId":"1"} /-->
-<!-- wp:givewp/campaign-cover-block {"campaignId":"1"} /-->
-<!-- wp:givewp/campaign-goal {"campaignId":"1"} /-->
-<!-- wp:givewp/campaign-donate-button {"campaignId":"1"} /-->
+<!-- wp:givewp/campaign-title {"campaignId":1} /-->
+<!-- wp:givewp/campaign-cover-block {"campaignId":1} /-->
+<!-- wp:givewp/campaign-goal {"campaignId":1} /-->
+<!-- wp:givewp/campaign-donate-button {"campaignId":1} /-->
 <!-- wp:paragraph --><p>This is the start of the story</p><!-- /wp:paragraph -->
-<!-- wp:givewp/campaign-donations {"campaignId":"1"} /-->
-<!-- wp:givewp/campaign-donors {"campaignId":"1"} /-->
+<!-- wp:givewp/campaign-donations {"campaignId":1} /-->
+<!-- wp:givewp/campaign-donors {"campaignId":1} /-->
 HTML;
 
-        $this->assertEquals($expectedLayout,
-            (new CreateDefaultLayoutForCampaignPage)($campaign->id, $campaign->shortDescription));
+        $this->assertEquals(
+            $expectedLayout,
+            (new CreateDefaultLayoutForCampaignPage())($campaign->id, $campaign->shortDescription)
+        );
     }
 }

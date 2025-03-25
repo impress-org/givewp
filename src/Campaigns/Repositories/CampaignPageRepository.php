@@ -62,6 +62,10 @@ class CampaignPageRepository
         $status = $campaignPage->status ?? CampaignPageStatus::PUBLISH();
         $campaign = $campaignPage->campaign();
 
+        if (!$campaign) {
+            throw new Exception('Campaign not found');
+        }
+
         DB::query('START TRANSACTION');
 
         try {
@@ -72,11 +76,13 @@ class CampaignPageRepository
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => 'publish',
                 'post_type' => 'page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign->id,
-                    $campaign->shortDescription),
+                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                    $campaign->id,
+                    $campaign->shortDescription
+                ),
             ]);
 
-            if ( ! $campaignPage->id) {
+            if (!$campaignPage->id) {
                 throw new Exception('Failed creating a campaign page');
             }
 
@@ -207,7 +213,7 @@ class CampaignPageRepository
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
-            if ( ! isset($campaignPage->$key)) {
+            if (!isset($campaignPage->$key)) {
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }
