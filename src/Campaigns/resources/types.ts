@@ -41,6 +41,9 @@ export type GiveCampaignOptions = {
     admin: {
         showCampaignInteractionNotice: boolean
         showExistingUserIntroNotice: boolean
+        showCampaignListTableNotice: boolean
+        showCampaignFormNotice: boolean
+        showCampaignSettingsNotice: boolean
     }
 }
 
