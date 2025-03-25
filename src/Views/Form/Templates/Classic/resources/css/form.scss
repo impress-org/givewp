@@ -23,6 +23,8 @@ label.give-hidden {
 @import 'variables';
 @import 'reset';
 
+$fa-font-path: '../../../../../../../assets/src/fonts' !default;
+
 // Icons
 @import '~@givewp/css/icons/fa/fontawesome';
 @import '~@givewp/css/icons/fa/regular';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import styles from './style.module.scss';
+import styles from './Spinner.module.scss';
 
 const Spinner = ({size = 'small', ...rest}) => {
     const spinnerClasses = classNames({

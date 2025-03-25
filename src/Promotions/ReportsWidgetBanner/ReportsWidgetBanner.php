@@ -34,7 +34,7 @@ class ReportsWidgetBanner extends SaleBanners
     {
         wp_enqueue_script(
             'give-in-plugin-upsells-sale-banners',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-sale-banner.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-upsell-sale-banner.js',
             [],
             GIVE_VERSION,
             true
