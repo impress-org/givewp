@@ -301,7 +301,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
         $self->goalSource = ! empty($array['goalSource']) && GoalSource::isValid($array['goalSource'])
             ? new GoalSource($array['goalSource'])
-            : GoalSource::FORM();
+            : GoalSource::CAMPAIGN();
         $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
