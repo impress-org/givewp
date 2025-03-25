@@ -87,24 +87,20 @@ class DonationFormGoalData implements Arrayable
      */
     public function getCurrentAmount()
     {
-        $query = $this->goalSource->isCampaign()
-            ? $this->getCampaignQuery()
-            : $this->getFormQuery();
-
         switch ($this->getGoalType()->getValue()):
             case 'donors':
             case 'donorsFromSubscriptions':
-                return $query->countDonors();
+                return $this->getQuery()->countDonors();
             case 'donations':
                 return $this->goalSource->isCampaign()
-                    ? $query->countDonations()
-                    : $query->count();
+                    ? $this->getQuery()->countDonations()
+                    : $this->getQuery()->count();
             case 'subscriptions':
-                return $query->count();
+                return $this->getQuery()->count();
             case 'amountFromSubscriptions':
-                return $query->sumInitialAmount();
+                return $this->getQuery()->sumInitialAmount();
             default:
-                return $query->sumIntendedAmount();
+                return $this->getQuery()->sumIntendedAmount();
         endswitch;
     }
 
@@ -121,6 +117,16 @@ class DonationFormGoalData implements Arrayable
             'amountFromSubscriptions',
             'donorsFromSubscriptions',
         ], true);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getQuery()
+    {
+        return $this->goalSource->isCampaign()
+            ? $this->getCampaignQuery()
+            : $this->getFormQuery();
     }
 
     /**
