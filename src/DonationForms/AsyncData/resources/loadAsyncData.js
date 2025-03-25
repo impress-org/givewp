@@ -9,6 +9,7 @@
  * 4) When the user resizes the screen
  * 5) When the "Forms" tab of the campaign details page gets updated
  *
+ * @unreleased Add support to campaign details page (the "Forms" tab)
  * @since 3.16.0
  */
 document.addEventListener('DOMContentLoaded', () => {
