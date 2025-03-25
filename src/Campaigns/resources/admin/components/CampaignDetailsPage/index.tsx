@@ -40,14 +40,13 @@ const StatusBadge = ({status}: {status: string}) => {
 };
 
 export default function CampaignsDetailsPage({campaignId}) {
+    const {adminUrl} = getCampaignOptionsWindowData();
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false,
+        confirmationModal: false
     });
-
-    const {adminUrl} = getCampaignOptionsWindowData();
 
     const dispatch = useDispatch('givewp/campaign-notifications');
 

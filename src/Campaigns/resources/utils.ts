@@ -35,6 +35,13 @@ export function getCampaignOptionsWindowData(): GiveCampaignOptions {
     return window.GiveCampaignOptions;
 }
 
+export function handleTooltipDismiss(id: string) {
+    return apiFetch({
+        url: window.GiveCampaignOptions.adminUrl + '/admin-ajax.php?action=' + id,
+        method: 'POST',
+    })
+}
+
 /**
  * @unreleased
  */
