@@ -23,7 +23,6 @@ class ConvertQueryDataToCampaign
             'pageId' => (int)$queryObject->pageId,
             'defaultFormId' => (int)$queryObject->defaultFormId,
             'type' => new CampaignType($queryObject->type),
-            'enableCampaignPage' => (bool)$queryObject->enableCampaignPage,
             'title' => $queryObject->title,
             'shortDescription' => $queryObject->shortDescription,
             'longDescription' => $queryObject->longDescription,

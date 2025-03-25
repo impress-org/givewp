@@ -31,8 +31,6 @@ export type Campaign = {
         timezone: string;
     };
     createdAt: string;
-    //updatedAt: string;
-    enableCampaignPage: boolean;
     defaultFormId: number;
     defaultFormTitle: string;
 };

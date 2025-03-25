@@ -69,7 +69,7 @@ export async function updateUserNoticeOptions(metaKey: string){
 /**
  * @unreleased
  */
-export async function createLandingPage(campaignId: number, title: string, description: string = '') {
+export async function createCampaignPage(campaignId: number, title: string, description: string = '') {
     try {
         const content = `
             <!-- wp:givewp/campaign-cover-block {"campaignId":${campaignId}} /-->
@@ -83,7 +83,7 @@ export async function createLandingPage(campaignId: number, title: string, descr
         const newPage = await wp.data.dispatch('core').saveEntityRecord('postType', 'page', {
             title,
             content: content.trim(),
-            status: 'publish',
+            status: 'draft',
             meta: {
                 campaignId
             }

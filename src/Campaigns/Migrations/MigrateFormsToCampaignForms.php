@@ -150,7 +150,6 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_type' => 'core',
-                'enable_campaign_page' => false,
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,

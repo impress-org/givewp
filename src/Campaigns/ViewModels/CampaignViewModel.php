@@ -35,7 +35,6 @@ class CampaignViewModel
             'id' => $this->campaign->id,
             'pageId' => $pagePermalink ? (int)$this->campaign->pageId : null,
             'pagePermalink' => $pagePermalink,
-            'enableCampaignPage' => $this->campaign->enableCampaignPage,
             'defaultFormId' => $this->campaign->defaultFormId,
             'defaultFormTitle' => $this->campaign->defaultForm()->title,
             'type' => $this->campaign->type->getValue(),

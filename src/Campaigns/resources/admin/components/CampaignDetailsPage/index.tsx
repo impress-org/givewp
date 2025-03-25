@@ -14,7 +14,7 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {getCampaignOptionsWindowData, useCampaignEntityRecord, createLandingPage} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, useCampaignEntityRecord, createCampaignPage} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -80,8 +80,6 @@ export default function CampaignsDetailsPage({campaignId}) {
     });
 
     const {formState, handleSubmit, reset, setValue, watch} = methods;
-
-    const [enableCampaignPage] = watch(['enableCampaignPage']);
 
     // Set default values when campaign is loaded
     useEffect(() => {
@@ -176,10 +174,10 @@ export default function CampaignsDetailsPage({campaignId}) {
     };
 
     async function handleCampaignPageCreation() {
-        const campaignPage = await createLandingPage(campaign.id, campaign.title, campaign.shortDescription);
+        const campaignPage = await createCampaignPage(campaign.id, campaign.title, campaign.shortDescription);
 
         if (campaignPage) {
-            edit({...campaign, pageId: campaignPage.id, enableCampaignPage: true});
+            edit({...campaign, pageId: campaignPage.id});
 
             const response: Campaign = await save();
             console.log(response);
@@ -223,7 +221,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                {enableCampaignPage && campaign.pageId > 0 && (
+                                {campaign.pageId > 0 && (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
                                         href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
@@ -256,8 +254,6 @@ export default function CampaignsDetailsPage({campaignId}) {
                                             {__('Updating campaign', 'give')}
                                             <Spinner />
                                         </>
-                                    ) : campaign.status === 'draft' ? (
-                                        __('Publish campaign', 'give')
                                     ) : (
                                         __('Update campaign', 'give')
                                     )}
@@ -275,7 +271,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
                                 {!isSaving && show.contextMenu && (
                                     <div className={styles.contextMenu}>
-                                        {enableCampaignPage && campaign.pagePermalink && (
+                                        {campaign.pagePermalink && (
                                             <a
                                                 href={campaign.pagePermalink}
                                                 aria-label={__('View Campaign', 'give')}

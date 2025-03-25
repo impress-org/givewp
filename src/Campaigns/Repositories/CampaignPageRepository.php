@@ -21,7 +21,7 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
-    protected $requiredProperties = [
+    protected array $requiredProperties = [
         'campaignId',
     ];
 
@@ -74,7 +74,7 @@ class CampaignPageRepository
                 'post_name' => sanitize_title($campaign->title), // Slug
                 'post_date' => $dateCreatedFormatted,
                 'post_modified' => $dateUpdatedFormatted,
-                'post_status' => 'publish',
+                'post_status' => $campaignPage->status->getValue(),
                 'post_type' => 'page',
                 'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
                     $campaign->id,
@@ -107,6 +107,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function update(CampaignPage $campaignPage): void
     {
@@ -153,6 +154,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function delete(CampaignPage $campaignPage): bool
     {

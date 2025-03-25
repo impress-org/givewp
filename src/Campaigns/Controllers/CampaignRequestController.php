@@ -201,7 +201,7 @@ class CampaignRequestController
             'secondaryColor' => '#27ae60',
             'goal' => (int)$request->get_param('goal'),
             'goalType' => new CampaignGoalType($request->get_param('goalType')),
-            'status' => CampaignStatus::DRAFT(),
+            'status' => CampaignStatus::ACTIVE(),
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),
         ]);
