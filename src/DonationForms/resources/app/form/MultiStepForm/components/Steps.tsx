@@ -22,7 +22,7 @@ export default function Steps({steps}: { steps: StepObject[] }) {
      * @since 3.16.0 Scroll to the top of the iframe when the step changes.
      */
     useEffect(() => {
-        if (currentStep !== 0) {
+        if (currentStep > 0) {
             /* @ts-ignore */
             window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
         }
