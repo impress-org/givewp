@@ -14,16 +14,6 @@ class RegisterCampaignIdRestField
      */
     public function __invoke()
     {
-        register_meta('post',
-            CampaignPageMetaKeys::CAMPAIGN_ID,
-            [
-                'type' => 'integer',
-                'description' => 'Campaign ID for GiveWP',
-                'single' => true,
-                'show_in_rest' => true,
-            ]
-        );
-
         register_rest_field(
             'page',
             'campaignId',

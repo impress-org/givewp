@@ -85,7 +85,7 @@ export async function createCampaignPage(campaignId: number, title: string, desc
             content: content.trim(),
             status: 'draft',
             meta: {
-                campaignId
+                give_campaign_id: campaignId
             }
         });
 

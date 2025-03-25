@@ -191,7 +191,17 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerCampaignBlocks()
     {
-        Hooks::addAction('init', Actions\RegisterCampaignIdRestField::class);
+        register_meta('post',
+            CampaignPageMetaKeys::CAMPAIGN_ID,
+            [
+                'type' => 'integer',
+                'description' => 'Campaign ID for GiveWP',
+                'single' => true,
+                'show_in_rest' => true,
+            ]
+        );
+
+        Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
     }

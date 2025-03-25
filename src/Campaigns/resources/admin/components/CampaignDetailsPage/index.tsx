@@ -14,7 +14,7 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {getCampaignOptionsWindowData, useCampaignEntityRecord, createCampaignPage} from '@givewp/campaigns/utils';
+import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -23,7 +23,7 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-const StatusBadge = ({status}: { status: string }) => {
+const StatusBadge = ({status}: {status: string}) => {
     const statusMap = {
         active: __('Active', 'give'),
         archived: __('Archived', 'give'),
@@ -79,12 +79,18 @@ export default function CampaignsDetailsPage({campaignId}) {
         ...resolver,
     });
 
-    const {formState, handleSubmit, reset, setValue, watch} = methods;
+    const {formState, handleSubmit, reset, setValue} = methods;
 
     // Set default values when campaign is loaded
     useEffect(() => {
         if (hasResolved) {
-            reset({...campaign});
+            const {pageId, ...rest} = campaign;
+            // exclude pageId from default values if null
+             if (pageId > 0) {
+                reset({...campaign, pageId});
+            } else {
+                reset({...rest});
+             }
         }
     }, [hasResolved]);
 
@@ -130,6 +136,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     content: __('Campaign updated', 'give'),
                 });
             } catch (err) {
+                console.error(err);
                 setIsSaving(null);
 
                 dispatch.addSnackbarNotice({
@@ -185,7 +192,7 @@ export default function CampaignsDetailsPage({campaignId}) {
 
             dispatch.addSnackbarNotice({
                 id: `create-campaign-page`,
-                content: __('Campaign page created.', 'give')
+                content: __('Campaign page created.', 'give'),
             });
         }
     }
@@ -220,7 +227,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                {campaign.pageId > 0 && (
+                                {campaign.pageId > 0 ? (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
                                         href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
@@ -228,9 +235,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                     >
                                         {__('Edit campaign page', 'give')}
                                     </a>
-                                )}
-
-                                {!campaign.pageId && (
+                                ) : (
                                     <button
                                         type="button"
                                         className={`button button-primary ${styles.updateCampaignButton}`}
@@ -313,7 +318,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                     />
                 </article>
             </form>
-            <NotificationPlaceholder type="snackbar" />
+            <NotificationPlaceholder type="snackbar" />;
         </FormProvider>
     );
 }

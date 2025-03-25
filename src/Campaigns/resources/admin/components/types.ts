@@ -2,8 +2,8 @@ import {GoalType} from '@givewp/campaigns/types';
 
 export type Campaign = {
     id?: number;
-    pageId: number;
-    pagePermalink: string & Location;
+    pageId?: number;
+    pagePermalink?: string & Location;
     type: string;
     title: string;
     shortDescription: string;
