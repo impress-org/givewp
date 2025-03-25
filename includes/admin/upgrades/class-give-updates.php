@@ -222,7 +222,7 @@ class Give_Updates {
 
 			$menu[ $index ][0] = sprintf(
 				'%1$s <span class="update-plugins"><span class="plugin-count give-update-progress-count">%2$s%3$s</span></span>',
-				__( 'Donations', 'give' ),
+				__( 'GiveWP', 'give' ),
 				$is_update ?
 					$this->get_db_update_processing_percentage() :
 					$this->get_total_update_count(),
