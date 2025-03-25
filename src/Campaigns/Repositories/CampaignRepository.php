@@ -9,7 +9,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;

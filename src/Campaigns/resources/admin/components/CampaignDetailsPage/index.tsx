@@ -180,13 +180,12 @@ export default function CampaignsDetailsPage({campaignId}) {
             edit({...campaign, pageId: campaignPage.id});
 
             const response: Campaign = await save();
-            console.log(response);
 
             reset(response);
 
             dispatch.addSnackbarNotice({
                 id: `create-campaign-page`,
-                content: __('Campaign page created', 'give'),
+                content: __('Campaign page created.', 'give')
             });
         }
     }

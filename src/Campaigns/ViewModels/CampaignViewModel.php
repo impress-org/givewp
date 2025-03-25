@@ -3,6 +3,7 @@
 namespace Give\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
@@ -79,7 +80,7 @@ class CampaignViewModel
 
         $query = DB::table('postmeta')
             ->select('post_id')
-            ->where('meta_key', 'campaignId')
+            ->where('meta_key', CampaignPageMetaKeys::CAMPAIGN_ID)
             ->where('meta_value', $this->campaign->id)
             ->get();
 

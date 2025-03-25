@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+
 /**
  * @unreleased
  */
@@ -12,16 +14,25 @@ class RegisterCampaignIdRestField
      */
     public function __invoke()
     {
-        //TODO: update this to be more GiveWP specific like give_campaign_id
+        register_meta('post',
+            CampaignPageMetaKeys::CAMPAIGN_ID,
+            [
+                'type' => 'integer',
+                'description' => 'Campaign ID for GiveWP',
+                'single' => true,
+                'show_in_rest' => true,
+            ]
+        );
+
         register_rest_field(
             'page',
             'campaignId',
             [
                 'get_callback' => function ($object) {
-                    return get_post_meta($object['id'], 'campaignId', true);
+                    return get_post_meta($object['id'], CampaignPageMetaKeys::CAMPAIGN_ID, true);
                 },
                 'update_callback' => function ($value, $object) {
-                    return update_post_meta($object->ID, 'campaignId', (int) $value);
+                    return update_post_meta($object->ID, CampaignPageMetaKeys::CAMPAIGN_ID, (int) $value);
                 },
                 'schema' => [
                     'description' => 'Campaign ID',

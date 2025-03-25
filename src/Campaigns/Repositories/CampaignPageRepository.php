@@ -4,6 +4,7 @@ namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\CampaignPage;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -21,14 +22,14 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
-    protected array $requiredProperties = [
+    protected $requiredProperties = [
         'campaignId',
     ];
 
     /**
      * @unreleased
      */
-    public function getById(int $id)
+    public function getById(int $id): ?CampaignPage
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -71,7 +72,7 @@ class CampaignPageRepository
         try {
             $campaignPage->id = wp_insert_post([
                 'post_title' => $campaign->title,
-                'post_name' => sanitize_title($campaign->title), // Slug
+                'post_name' => sanitize_title($campaign->title),
                 'post_date' => $dateCreatedFormatted,
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => $campaignPage->status->getValue(),
@@ -90,8 +91,7 @@ class CampaignPageRepository
             $campaignPage->updatedAt = $dateUpdated;
             $campaignPage->status = $status;
 
-            //TODO: update to give specific like give_campaign_id
-            update_post_meta($campaignPage->id, 'campaignId', $campaignPage->campaignId);
+            update_post_meta($campaignPage->id, CampaignPageMetaKeys::CAMPAIGN_ID, $campaignPage->campaignId);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -133,12 +133,7 @@ class CampaignPageRepository
             $campaignPage->updatedAt = $now;
             $campaignPage->status = $status;
 
-            DB::table('postmeta')
-                ->where('post_id', $campaignPage->id)
-                ->where('meta_key', 'campaignId')
-                ->update([
-                    'meta_value' => $campaignPage->campaignId,
-                ]);
+            update_post_meta($campaignPage->id, CampaignPageMetaKeys::CAMPAIGN_ID, $campaignPage->campaignId);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -205,7 +200,7 @@ class CampaignPageRepository
                 'postmeta',
                 'ID',
                 'post_id',
-                'campaignId'
+                ...CampaignPageMetaKeys::getColumnsForAttachMetaQuery()
             );
     }
 
