@@ -181,6 +181,8 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased  use DonationFormGoalData instead of repository
+     *
      * @since 3.0.0
      */
     private function formStatsData(): array
