@@ -37,6 +37,7 @@ class RegisterCampaignRoutes
         $this->registerGetCampaigns();
         $this->registerMergeCampaigns();
         $this->registerCreateCampaign();
+        $this->registerCreateCampaignPage();
     }
 
     /**
@@ -456,5 +457,33 @@ class RegisterCampaignRoutes
                 ],
             ],
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function registerCreateCampaignPage(): void
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/page',
+            [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->createCampaignPage($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                 'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+            ]
+        );
     }
 }

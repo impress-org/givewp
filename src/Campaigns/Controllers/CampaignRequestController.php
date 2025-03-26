@@ -4,8 +4,10 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -215,6 +217,21 @@ class CampaignRequestController
         ]);
 
         return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function createCampaignPage(WP_REST_Request $request): WP_REST_Response
+    {
+        $campaignPage = CampaignPage::create([
+            'campaignId' => (int)$request->get_param('id'),
+            'status' => CampaignPageStatus::DRAFT(),
+        ]);
+
+        return new WP_REST_Response($campaignPage->toArray(), 201);
     }
 
     /**

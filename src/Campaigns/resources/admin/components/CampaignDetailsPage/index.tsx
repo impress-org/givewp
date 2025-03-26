@@ -180,10 +180,10 @@ export default function CampaignsDetailsPage({campaignId}) {
     };
 
     async function handleCampaignPageCreation() {
-        const campaignPage = await createCampaignPage(campaign.id, campaign.title, campaign.shortDescription);
+        const campaignPageResponse = await createCampaignPage(campaign.id);
 
-        if (campaignPage) {
-            edit({...campaign, pageId: campaignPage.id});
+        if (campaignPageResponse) {
+            edit({...campaign, pageId: campaignPageResponse?.id});
 
             const response: Campaign = await save();
 
