@@ -37,7 +37,7 @@ class Model
         isset($args['color']) ? $this->color = $args['color'] : $this->color = '#28c77b';
         isset($args['heading']) ? $this->heading = $args['heading'] : $this->heading = 'Example Heading';
         isset($args['summary']) ? $this->summary = $args['summary'] : $this->summary = 'This is a summary.';
-        isset($args['imageSrc']) ? $this->imageSrc = $args['imageSrc'] : $this->imageSrc = GIVE_PLUGIN_URL . 'assets/dist/images/onboarding-preview-form-image.min.jpg';
+        isset($args['imageSrc']) ? $this->imageSrc = $args['imageSrc'] : $this->imageSrc = GIVE_PLUGIN_URL . 'build/assets/dist/images/onboarding-preview-form-image.min.jpg';
         isset($args['innerBlocks']) ? $this->innerBlocks = $args['innerBlocks'] : $this->innerBlocks = false;
     }
 

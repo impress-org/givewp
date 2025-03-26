@@ -88,7 +88,7 @@ class Give_Forms_Widget extends WP_Widget {
 		}
 
 		// Directories of assets.
-		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/';
+		$js_dir = GIVE_PLUGIN_URL . 'build/assets/dist/';
 
 		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
 		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets.css', [], GIVE_VERSION, false );

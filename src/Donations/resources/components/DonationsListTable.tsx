@@ -17,7 +17,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             adminUrl: string;
-            forms: Array<{value: string; text: string}>;
+            campaigns: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
@@ -32,11 +32,11 @@ const API = new ListTableApi(window.GiveDonations);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'form',
+        name: 'campaignId',
         type: 'formselect',
-        text: __('Select Form', 'give'),
-        ariaLabel: __('filter donation forms by status', 'give'),
-        options: window.GiveDonations.forms,
+        text: __('Select Campaign', 'give'),
+        ariaLabel: __('filter donations by campaign', 'give'),
+        options: window.GiveDonations.campaigns,
     },
     {
         name: 'search',
@@ -146,7 +146,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        imagePath={`${window.GiveDonations.pluginUrl}build/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
         description={__('No donations found', 'give')}
         href={'https://docs.givewp.com/donations'}
         linkText={__('GiveWP Donations.', 'give')}
@@ -231,7 +231,7 @@ export default function DonationsListTable() {
                     {__('Enter Donations', 'give')}
                     <span className={styles.manualDonationsMessage}>
                         <img
-                            src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/triangle-tip.svg`}
+                            src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
                             alt={'manual donations'}
                         />{' '}
                         {__(

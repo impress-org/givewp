@@ -58,6 +58,7 @@ class MigrateFormsToCampaignForms extends Migration
             ->select(
                 ['forms.ID', 'id'],
                 ['forms.post_title', 'title'],
+                ['forms.post_name', 'name'], // unique slug
                 ['forms.post_status', 'status'],
                 ['forms.post_date', 'createdAt']
             )
@@ -98,7 +99,13 @@ class MigrateFormsToCampaignForms extends Migration
         // Ensure campaigns will be displayed in the same order on the list table
         $query->orderBy('forms.ID');
 
-        return $query->getAll();
+        $results = $query->getAll();
+
+        if (!$results) {
+            return [];
+        }
+
+        return $results;
     }
 
     /**
@@ -107,7 +114,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getUpgradedV2FormsData(): array
     {
-        return DB::table('posts', 'forms')
+        $results = DB::table('posts', 'forms')
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
             ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
             ->join(function (JoinQueryBuilder $builder) {
@@ -118,6 +125,12 @@ class MigrateFormsToCampaignForms extends Migration
             ->where('forms.post_type', 'give_forms')
             ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
             ->getAll();
+
+        if (!$results) {
+            return [];
+        }
+
+        return $results;
     }
 
     /**
@@ -127,6 +140,7 @@ class MigrateFormsToCampaignForms extends Migration
     {
         $formId = $formData->id;
         $formStatus = $formData->status;
+        $formName = $formData->name;
         $formTitle = $formData->title;
         $formCreatedAt = $formData->createdAt;
         $isV3Form = ! is_null($formData->settings);
@@ -146,8 +160,8 @@ class MigrateFormsToCampaignForms extends Migration
                 'secondary_color' => $formSettings->secondaryColor,
                 'campaign_goal' => $formSettings->goalAmount,
                 'goal_type' => $formSettings->goalType,
-                'start_date' => $formSettings->goalStartDate,
-                'end_date' => $formSettings->goalEndDate,
+                'start_date' => $formCreatedAt,
+                'end_date' => null,
                 'date_created' => $formCreatedAt,
             ]);
 

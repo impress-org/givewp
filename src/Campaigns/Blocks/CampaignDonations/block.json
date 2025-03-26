@@ -28,7 +28,7 @@
         },
         "sortBy": {
             "type": "string",
-            "default": "top-donations"
+            "default": "recent-donations"
         },
         "donationsPerPage": {
             "type": "number",
@@ -42,6 +42,7 @@
     "supports": {
         "className": true
     },
+    "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
     "style": "file:../../../../build/campaignDonationsBlockApp.css"

@@ -6,6 +6,7 @@ use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
@@ -38,7 +39,7 @@ class GetCampaignsListTable implements RestRoute
     public function registerRoute(): void
     {
         register_rest_route(
-            'give-api/v2',
+            CampaignRoute::NAMESPACE,
             $this->endpoint,
             [
                 [
@@ -169,7 +170,11 @@ class GetCampaignsListTable implements RestRoute
             }
         }
 
-        if ($status && 'any' !== $status) {
+        if ($status === 'any') {
+            $query->whereNotLike('status', 'archived');
+        } elseif ($status === 'inactive') {
+            $query->where('status', 'archived');
+        } elseif ($status) {
             $query->where('status', $status);
         }
 

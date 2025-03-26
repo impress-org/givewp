@@ -3,8 +3,9 @@
 namespace Give\Campaigns\DataTransferObjects;
 
 use Give\Campaigns\CampaignDonationQuery;
+use Give\Campaigns\CampaignSubscriptionQuery;
 use Give\Campaigns\Models\Campaign;
-use Give\DonationForms\ValueObjects\GoalType;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
@@ -30,7 +31,7 @@ class CampaignGoalData implements Arrayable
     /**
      * @var int
      */
-    private $goal;
+    public $goal;
 
     /**
      * @var int|string
@@ -60,16 +61,27 @@ class CampaignGoalData implements Arrayable
      */
     private function getActual(): int
     {
-        $query = new CampaignDonationQuery($this->campaign);
+        $query = $this->campaign->goalType->isOneOf(
+            CampaignGoalType::SUBSCRIPTIONS(),
+            CampaignGoalType::AMOUNT_FROM_SUBSCRIPTIONS(),
+            CampaignGoalType::DONORS_FROM_SUBSCRIPTIONS()
+        )
+            ? new CampaignSubscriptionQuery($this->campaign)
+            : new CampaignDonationQuery($this->campaign);
 
         switch ($this->campaign->goalType->getValue()) {
-            case GoalType::DONATIONS():
+            case CampaignGoalType::DONATIONS():
+            case CampaignGoalType::SUBSCRIPTIONS():
                 return $query->countDonations();
 
-            case GoalType::DONORS():
+            case CampaignGoalType::DONORS():
+            case CampaignGoalType::DONORS_FROM_SUBSCRIPTIONS():
                 return $query->countDonors();
 
-            case GoalType::AMOUNT():
+            case CampaignGoalType::AMOUNT_FROM_SUBSCRIPTIONS():
+                return $query->sumInitialAmount();
+
+            case CampaignGoalType::AMOUNT():
             default:
                 return $query->sumIntendedAmount();
         }
@@ -91,7 +103,7 @@ class CampaignGoalData implements Arrayable
      */
     private function getActualFormatted(): string
     {
-        if ($this->campaign->goalType == GoalType::AMOUNT) {
+        if ($this->campaign->goalType->isAmount()) {
             return give_currency_filter(give_format_amount($this->actual));
         }
 
@@ -103,7 +115,7 @@ class CampaignGoalData implements Arrayable
      */
     private function getGoalFormatted(): string
     {
-        if ($this->campaign->goalType == GoalType::AMOUNT) {
+        if ($this->campaign->goalType->isAmount()) {
             return give_currency_filter(give_format_amount($this->goal));
         }
 

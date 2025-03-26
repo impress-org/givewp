@@ -88,7 +88,7 @@ function DonationFormBlockApp({
 const roots = document.querySelectorAll('.root-data-givewp-embed');
 
 /**
- * @unreleased Add locale support
+ * @since 3.22.0 Add locale support
  */
 roots.forEach((root) => {
     let dataSrcUrl = root.getAttribute('data-src');

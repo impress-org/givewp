@@ -93,7 +93,6 @@ class PayPalCommerceGateway extends PayPalCommerce
             // data-namespace is required for multiple PayPal SDKs to load in harmony.
             'data-namespace' => 'givewp/paypal-commerce',
             'client-id' => $merchantDetailModel->clientId,
-            'merchant-id' => $merchantDetailModel->merchantIdInPayPal,
             'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
             'intent' => 'capture',

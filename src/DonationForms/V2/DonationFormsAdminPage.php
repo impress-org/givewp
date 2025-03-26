@@ -59,12 +59,13 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @unreleased set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            'edit.php?post_type=give_forms',
+            '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
             'edit_give_forms',
@@ -100,7 +101,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {
@@ -123,10 +124,10 @@ class DonationFormsAdminPage
             'locale' => Language::getLocale(),
             'swrConfig' => [
                 'revalidateOnFocus' => false
-            ]
+            ],
         ];
 
-        EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
+        EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
@@ -150,7 +151,7 @@ class DonationFormsAdminPage
     public function loadMigrationScripts()
     {
         if ($this->isShowingAddV2FormPage()) {
-            EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
+            EnqueueScript::make('give-add-v2form', 'build/assets/dist/js/give-add-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
@@ -165,7 +166,7 @@ class DonationFormsAdminPage
         if ($this->isShowingEditV2FormPage()) {
             $formId = (int)$_GET['post'];
             $campaign = Campaign::findByFormId($formId);
-            EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
+            EnqueueScript::make('give-edit-v2form', 'build/assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [

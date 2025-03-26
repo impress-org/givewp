@@ -19,7 +19,7 @@ class CommentCheckArgs
     public $comment_author_email;
 
     /**
-     * @unreleased updated params to receive
+     * @since 3.22.0 updated params to receive
      * @since 3.15.0
      */
     public static function make(string $comment, string $email, string $firstName): CommentCheckArgs

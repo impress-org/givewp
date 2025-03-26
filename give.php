@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Plugin Name: Give - Donation Plugin
+ * Plugin Name: Give - Donation Plugin (4.0.0-beta.1)
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 3.21.1
+ * Version: 4.0.0
  * Requires at least: 6.5
- * Requires PHP: 7.2
+ * Requires PHP: 7.4
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -420,7 +420,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '3.21.1');
+            define('GIVE_VERSION', '4.0.0');
         }
 
         // Plugin Root File.

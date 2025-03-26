@@ -1,7 +1,9 @@
+import {GoalType} from '@givewp/campaigns/types';
+
 export type Campaign = {
     id?: number;
-    pageId: number;
-    pagePermalink: string & Location;
+    pageId?: number;
+    pagePermalink?: string & Location;
     type: string;
     title: string;
     shortDescription: string;
@@ -10,12 +12,12 @@ export type Campaign = {
     image: string;
     primaryColor: string;
     secondaryColor: string;
-    goalType: string;
+    goalType: GoalType;
     goal: number;
     goalStats: {
-        actual: number,
-        percentage: number,
-        goal: number,
+        actual: number;
+        percentage: number;
+        goal: number;
     };
     status: string;
     startDateTime: {
@@ -29,8 +31,6 @@ export type Campaign = {
         timezone: string;
     };
     createdAt: string;
-    //updatedAt: string;
-    enableCampaignPage: boolean;
     defaultFormId: number;
     defaultFormTitle: string;
 };

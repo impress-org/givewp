@@ -21,6 +21,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased set parent slug to empty string
      * @since 3.0.0
      *
      * @return void
@@ -28,7 +29,7 @@ class RegisterFormBuilderPageRoute
     public function __invoke()
     {
         add_submenu_page(
-            null, // do not display in menu, just register page
+            '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
             'manage_options',
@@ -59,7 +60,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased Add locale support
+     * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *

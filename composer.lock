@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7434cdff752e188e2bb665489b6bd156",
+    "content-hash": "2041bc746ca5cf124a78fa356e680133",
     "packages": [
         {
             "name": "composer/installers",
@@ -193,16 +193,16 @@
         },
         {
             "name": "moneyphp/money",
-            "version": "v3.3.1",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moneyphp/money.git",
-                "reference": "122664c2621a95180a13c1ac81fea1d2ef20781e"
+                "reference": "0dc40e3791c67e8793e3aa13fead8cf4661ec9cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moneyphp/money/zipball/122664c2621a95180a13c1ac81fea1d2ef20781e",
-                "reference": "122664c2621a95180a13c1ac81fea1d2ef20781e",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/0dc40e3791c67e8793e3aa13fead8cf4661ec9cd",
+                "reference": "0dc40e3791c67e8793e3aa13fead8cf4661ec9cd",
                 "shasum": ""
             },
             "require": {
@@ -273,9 +273,9 @@
             ],
             "support": {
                 "issues": "https://github.com/moneyphp/money/issues",
-                "source": "https://github.com/moneyphp/money/tree/master"
+                "source": "https://github.com/moneyphp/money/tree/v3.3.3"
             },
-            "time": "2020-03-18T17:49:59+00:00"
+            "time": "2022-09-21T07:43:36+00:00"
         },
         {
             "name": "paypal/paypal-checkout-sdk",
@@ -2359,34 +2359,6 @@
                 "source": "https://github.com/jsonrainbow/json-schema/tree/5.3.0"
             },
             "time": "2024-07-06T21:00:26+00:00"
-        },
-        {
-            "name": "kjohnson/since-unreleased",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kjohnson/since-unreleased.git",
-                "reference": "31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kjohnson/since-unreleased/zipball/31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f",
-                "reference": "31c93bb0eb65d1d0b404ce081bf4c56e48fcb42f",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/since-unreleased.sh"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "support": {
-                "issues": "https://github.com/kjohnson/since-unreleased/issues",
-                "source": "https://github.com/kjohnson/since-unreleased/tree/1.0.0"
-            },
-            "time": "2021-03-26T15:00:24+00:00"
         },
         {
             "name": "mck89/peast",
@@ -7860,7 +7832,7 @@
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "7.2.24"
+        "php": "7.4.0"
     },
     "plugin-api-version": "2.6.0"
 }

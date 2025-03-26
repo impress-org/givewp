@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
+use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
@@ -23,12 +24,13 @@ class CreateDefaultCampaignForm
     {
         $defaultCampaignForm = DonationForm::create([
             'title' => $campaign->title,
-            'status' => DonationFormStatus::DRAFT(),
+            'status' => DonationFormStatus::PUBLISHED(),
             'settings' => FormSettings::fromArray([
-                'enableDonationGoal' => true,
+                'showHeader' => false,
+                'enableDonationGoal' => false,
                 'goalAmount' => $campaign->goal,
                 'goalType' => $campaign->goalType->getValue(),
-                'designId' => ClassicFormDesign::id(),
+                'designId' => MultiStepFormDesign::id(),
             ]),
             'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
         ]);

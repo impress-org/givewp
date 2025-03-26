@@ -8,6 +8,10 @@ import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
 import {useState} from 'react';
 import MergeCampaignModal from '../MergeCampaign/Modal';
+import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
+import {getCampaignOptionsWindowData} from "@givewp/campaigns/utils";
+import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
+import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -18,12 +22,14 @@ declare const window: {
  *
  * @unreleased
  */
-const autoOpenModal = () => {
+const autoOpenCreateCampaignModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const newParam = queryParams.get('new');
 
     return newParam === 'campaign';
 };
+
+const shouldShowExistingUserIntroModal = getCampaignOptionsWindowData().admin.showExistingUserIntroNotice;
 
 export function getGiveCampaignsListTableWindowData() {
     return window.GiveCampaignsListTable;
@@ -48,18 +54,6 @@ const campaignStatus = [
         value: 'draft',
         text: __('Draft', 'give'),
     },
-    {
-        value: 'pending',
-        text: __('Pending', 'give'),
-    },
-    {
-        value: 'processing',
-        text: __('Processing', 'give'),
-    },
-    {
-        value: 'failed',
-        text: __('Failed', 'give'),
-    },
 ];
 
 const filters: Array<FilterConfig> = [
@@ -83,22 +77,25 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Merge', 'give'),
         value: 'merge',
         type: 'custom',
-        confirm: (selected, names) => {
-            const urlParams = new URLSearchParams(window.location.search);
-            urlParams.set('action', 'merge');
-            window.history.replaceState(
-                {selected: selected, names: names},
-                __('Merge Campaigns', 'give'),
-                `${window.location.pathname}?${urlParams.toString()}`
+        confirm: (selected, names, isOpen, setOpen) => {
+            return (
+                <MergeCampaignModal
+                    isOpen={isOpen}
+                    setOpen={setOpen}
+                    campaigns={{
+                        selected: selected,
+                        names: names,
+                    }}
+                />
             );
-
-            return null;
         },
     },
 ];
 
 export default function CampaignsListTable() {
-    const [isOpen, setOpen] = useState<boolean>(autoOpenModal());
+    const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
+    const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(shouldShowExistingUserIntroModal);
+    const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_listtable_notice');
 
     /**
      * Displays a blank slate for the Campaigns table.
@@ -108,16 +105,19 @@ export default function CampaignsListTable() {
     const ListTableBlankSlate = () => {
         const imagePath = `${
             getGiveCampaignsListTableWindowData().pluginUrl
-        }/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`;
+        }build/assets/dist/images/list-table/blank-slate-campaigns-icon.svg`;
         return (
             <div className={styles.container}>
                 <img src={imagePath} alt={__('No campaign created yet', 'give')} />
                 <h3>{__('No campaign created yet', 'give')}</h3>
                 <p className={styles.helpMessage}>
-                    {__('Don’t worry, let’s help you setup your first campaign.', 'give')}
+                    {__('Don’t worry, let’s help you set up your first campaign.', 'give')}
                 </p>
                 <p>
-                    <a onClick={() => setOpen(true)} className={`button button-primary ${styles.button}`}>
+                    <a
+                        onClick={() => setCreateCampaignModalOpen(true)}
+                        className={`button button-primary ${styles.button}`}
+                    >
                         {__('Create campaign', 'give')}
                     </a>
                 </p>
@@ -137,8 +137,18 @@ export default function CampaignsListTable() {
                 rowActions={CampaignsRowActions}
                 listTableBlankSlate={ListTableBlankSlate()}
             >
-                <CreateCampaignModal isOpen={isOpen} setOpen={setOpen} />
-                <MergeCampaignModal />
+                <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
+                <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
+                {showTooltip && (
+                    <CampaignNotice
+                        title={__('Campaign List', 'give')}
+                        description={__('We\'ve created a campaign from each of your donation forms. Your forms still work as before, but now with the added power of campaign management! Select a campaign to see how you can seamlessly manage your online fundraising.', 'give')}
+                        linkText={__('Read documentation on what we changed', 'give')}
+                        linkHref="#"
+                        handleDismiss={dismissTooltip}
+                        type={'campaignList'}
+                    />
+                )}
             </ListTablePage>
         </>
     );

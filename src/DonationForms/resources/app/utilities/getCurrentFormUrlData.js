@@ -1,5 +1,5 @@
 /**
- * @unreleased Add locale support
+ * @since 3.22.0 Add locale support
  */
 export default function getCurrentFormUrlData() {
     const originUrl = window.top.location.href;

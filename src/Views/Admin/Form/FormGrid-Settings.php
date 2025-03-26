@@ -2,7 +2,7 @@
     <div class="form-template-introduction">
 
         <div class="form-template-notice">
-            <img src="<?= esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/cap-books.svg'); ?>" alt=""/>
+            <img src="<?= esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/cap-books.svg'); ?>" alt=""/>
             <p>
                 <?php _e('What is the Form Grid?', 'give'); ?><br />
                 <?php _e('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give'); ?>

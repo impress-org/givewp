@@ -5,6 +5,7 @@ namespace Give\Campaigns\Repositories;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -36,9 +37,20 @@ class CampaignRepository
      */
     public function getById(int $id)
     {
+        return $this->queryById($id)->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * Query Campaign by ID
+     *
+     * @unreleased
+     */
+    public function queryById(int $id): ModelQueryBuilder
+    {
         return $this->prepareQuery()
-            ->where('id', $id)
-            ->get();
+            ->where('id', $id);
     }
 
     /**
@@ -81,7 +93,9 @@ class CampaignRepository
         $dateCreated = Temporal::withoutMicroseconds($campaign->createdAt ?: $currentDate);
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
-        $startDateFormatted = Temporal::getFormattedDateTime($campaign->startDate ?: $currentDate);
+        $startDate = Temporal::withoutMicroseconds($campaign->startDate ?: $currentDate);
+        $startDateFormatted = Temporal::getFormattedDateTime($startDate);
+
         $endDateFormatted = $campaign->endDate ? Temporal::getFormattedDateTime($campaign->endDate) : $campaign->endDate;
 
         DB::query('START TRANSACTION');
@@ -90,7 +104,6 @@ class CampaignRepository
             DB::table('give_campaigns')
                 ->insert([
                     'campaign_type' => $campaign->type->getValue(),
-                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
@@ -120,6 +133,7 @@ class CampaignRepository
 
         $campaign->id = $campaignId;
         $campaign->createdAt = $dateCreated;
+        $campaign->startDate = $startDate;
 
         Hooks::doAction('givewp_campaign_created', $campaign);
     }
@@ -145,7 +159,6 @@ class CampaignRepository
                 ->where('id', $campaign->id)
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
-                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
@@ -285,7 +298,7 @@ class CampaignRepository
     {
         // Make sure the destination campaign ID will not be included into $campaignsToMergeIds
         $campaignsToMergeIds = array_column($campaignsToMerge, 'id');
-        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds)) {
+        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds, true)) {
             unset($campaignsToMergeIds[$key]);
         }
 
@@ -310,6 +323,15 @@ class CampaignRepository
                 DB::prepare("UPDATE " . DB::prefix('give_campaign_forms') . " SET campaign_id = %d WHERE campaign_id IN ($campaignsToMergeIdsString)",
                     [
                         $destinationCampaign->id,
+                    ])
+            );
+
+            // Update donations campaign id meta value
+            DB::query(
+                DB::prepare("UPDATE " . DB::prefix('give_donationmeta') . " SET meta_value = %d WHERE meta_key = %s AND meta_value IN ($campaignsToMergeIdsString)",
+                    [
+                        $destinationCampaign->id,
+                        DonationMetaKeys::CAMPAIGN_ID
                     ])
             );
 
@@ -360,7 +382,6 @@ class CampaignRepository
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
                 ['campaign_page_id', 'pageId'],
-                ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],
                 ['long_desc', 'longDescription'],
@@ -375,7 +396,7 @@ class CampaignRepository
                 ['end_date', 'endDate'],
                 ['date_created', 'createdAt']
             )
-            // Exclude Peer to Peer campaign type until it is fully supported.
-            ->where('campaigns.campaign_type', CampaignType::PEER_TO_PEER, '!=');
+            // Select only core campaign
+            ->where('campaigns.campaign_type', CampaignType::CORE);
     }
 }

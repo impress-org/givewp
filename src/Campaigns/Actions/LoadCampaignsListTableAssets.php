@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
@@ -16,11 +17,11 @@ class LoadCampaignsListTableAssets
     public function __invoke()
     {
         $handleName = 'givewp-admin-campaigns-list-table';
-        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'assets/dist/js/give-admin-campaigns-list-table.asset.php');
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignListTable.asset.php');
 
         wp_register_script(
             $handleName,
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-campaigns-list-table.js',
+            GIVE_PLUGIN_URL . 'build/campaignListTable.js',
             $asset['dependencies'],
             $asset['version'],
             true
@@ -28,7 +29,7 @@ class LoadCampaignsListTableAssets
 
         wp_localize_script($handleName, 'GiveCampaignsListTable',
             [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2/campaigns/list-table')),
+                'apiRoot' => esc_url_raw(rest_url(CampaignRoute::NAMESPACE . '/campaigns/list-table')),
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'table' => give(CampaignsListTable::class)->toArray(),
                 'adminUrl' => admin_url(),
@@ -41,5 +42,11 @@ class LoadCampaignsListTableAssets
 
         wp_enqueue_script($handleName);
         wp_enqueue_style('givewp-design-system-foundation');
+        wp_enqueue_style(
+            $handleName,
+            GIVE_PLUGIN_URL . 'build/campaignListTable.css',
+            [],
+            $asset['version']
+        );
     }
 }
