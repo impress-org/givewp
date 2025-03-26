@@ -25,7 +25,7 @@ GiveWP is free and full of many advanced features to suit your needs. Start by c
 
 Free donor tools also help keep your donors happy. The donor dashboard helps your donor base easily manage their accounts and access their donation history. With our [premium add-ons](https://go.givewp.com/addons "See all our Premium Add-ons"), you can add additional donor tools, like annual receipts.
 
-**[Campaign-Based Fundraising and Forms](https://go.givewp.com/features-forms "See how powerful our fundraising forms can be")**
+**[Campaign-Based Fundraising and Forms](https://docs.givewp.com/campaigns-release-readme "See how powerful our fundraising campaigns and forms can be")**
 
 GiveWP makes it easy to manage and launch successful fundraising campaigns directly from your WordPress site. Whether you’re raising funds for a single project, a long-term cause, or a series of initiatives, GiveWP's campaign-based approach helps you streamline your efforts and maximize your fundraising potential.
 
@@ -280,7 +280,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.0.0: March 26th, 2025 =
-* New: Introducing Campaigns!
+* New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.
+* New: The Campaign overview dashboard provides donation data and goal progress monitoring for all forms under the same fundraising campaign.
+* New: Campaign pages give you a landing page for each campaign to tell your story and engage with donors.
+* New: All donation forms belong to a campaign, and each campaign can have multiple forms.
 * Enhancement: Improved the processing of PayPal donations to be more reliable on forms using the visual form builder
 
 [See the full GiveWP changelog on Github](https://github.com/impress-org/givewp/blob/master/changelog.txt)
