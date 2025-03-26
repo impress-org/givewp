@@ -15,6 +15,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 class ArchiveCampaignFormsAsDraftStatus
 {
     /**
+     * TODO: update this to use single update query (QB was not working with whereIn and update)
      * @unreleased
      */
     public function __invoke(Campaign $campaign)
