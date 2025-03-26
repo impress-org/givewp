@@ -279,7 +279,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 4.0.0: March 26th, 2025 =
+= 4.0.0: March 31st, 2025 =
 * New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.
 * New: The Campaign overview dashboard provides donation data and goal progress monitoring for all forms under the same fundraising campaign.
 * New: Campaign pages give you a landing page for each campaign to tell your story and engage with donors.
