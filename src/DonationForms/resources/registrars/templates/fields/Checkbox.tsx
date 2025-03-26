@@ -1,7 +1,7 @@
 import type {CheckboxProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased updated inputProps and value to prevent checkbox from being a controlled component
+ * @since 4.0.0 updated inputProps and value to prevent checkbox from being a controlled component
  * @since 3.0.0
  */
 export default function Checkbox({Label, ErrorMessage, value, helpText, fieldError, inputProps}: CheckboxProps) {
