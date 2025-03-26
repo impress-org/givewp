@@ -5,6 +5,7 @@ export const OnboardingContext = createContext([]);
 
 export interface OnboardingStateProps {
     showFeatureNoticeDialog: boolean;
+    showDefaultFormTooltip: boolean;
 }
 
 export default function Onboarding() {

@@ -5,6 +5,7 @@ namespace Give\Tests\Unit\DonationForms\Endpoints;
 use Exception;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\Helpers\Language;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
@@ -90,6 +91,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
+     * @unreleased Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
      * @param array  $donationForms
@@ -109,11 +111,14 @@ class TestListDonationForms extends TestCase
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
             $expectedItem['name'] = $donationForm->title;
-            $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
+            $expectedItem['edit'] = add_query_arg(['locale' => Language::getLocale()],
+                get_edit_post_link($donationForm->id, 'edit'));
             $expectedItem['permalink'] = get_permalink($donationForm->id);
 
             $expectedItem['v3form'] = false;
             $expectedItem['status_raw'] = $donationForm->status->getValue();
+
+            $expectedItem['isDefaultCampaignForm'] = false;
 
             $expectedItems[] = $expectedItem;
         }

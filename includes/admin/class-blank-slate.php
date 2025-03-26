@@ -257,12 +257,13 @@ class Give_Blank_Slate {
 	private function get_content( $context ) {
 		// Define default content.
 		$defaults = array(
-			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
-			'image_alt' => __( 'GiveWP Icon', 'give' ),
-			'heading'   => __( 'No donation forms found.', 'give' ),
-			'message'   => __( 'The first step towards accepting online donations is to create a form.', 'give' ),
-			'cta_text'  => __( 'Create Donation Form', 'give' ),
-			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
+			'image_url' => GIVE_PLUGIN_URL . 'build/assets/dist/images/give-icon-full-circle.svg',
+			'image_alt' => __( 'GiveWP Icon', 'give'),
+            'heading' => __('No campaign forms found.', 'give'),
+            'message' => __('The first step towards accepting online donations is to create a campaign.',
+                'give'),
+            'cta_text' => __('Create Campaign Form', 'give'),
+            'cta_link' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'),
 			'help'      => sprintf(
 				/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 				__( 'Need help? Get started with %1$sGive 101%2$s.', 'give' ),

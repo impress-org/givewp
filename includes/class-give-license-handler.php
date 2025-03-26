@@ -327,8 +327,8 @@ if ( ! class_exists('Give_License') ) :
             $show_failed_activation_notice = static function ($license_key, $reason) {
                 AdminNotices::show(
                     "license-bundle-activation-error-$license_key",
-                    "An error occurred while attempting to activate license $license_key: $reason. Please activate the license manually."
-                )->asError()->isDismissible();
+                    "An error occurred while attempting to activate license <code>$license_key</code>. $reason. Please activate the license manually."
+                )->autoParagraph()->asError()->dismissible();
             };
 
             foreach ($unactivated_bundled_licenses as $license => $addons) {
@@ -347,7 +347,8 @@ if ( ! class_exists('Give_License') ) :
                 }
 
                 if ( ! $check_license_res['success']) {
-                    $show_failed_activation_notice($license, $check_license_res['error']);
+                    $reason = $check_license_res['error'] ?? 'The licensing server was unreachable';
+                    $show_failed_activation_notice( $license, $reason );
                     continue;
                 }
 
@@ -465,13 +466,16 @@ if ( ! class_exists('Give_License') ) :
          *
          * Note: note only for internal logic
          *
+         * @since 3.21.1 use array_map to safely access the private property
          * @since 3.21.0 plucks the basename for backwards compatibility
          * @since 2.1.4
          * @return string[]
          */
         static function get_licensed_addons(): array
         {
-            return wp_list_pluck(self::$licensed_addons, 'plugin_basename');
+            return array_map( static function ( Give_License $license ) {
+                return $license->plugin_basename;
+            }, self::$licensed_addons );
         }
 
         /**

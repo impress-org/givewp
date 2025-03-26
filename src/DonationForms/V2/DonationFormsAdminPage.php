@@ -2,9 +2,12 @@
 
 namespace Give\DonationForms\V2;
 
+use Give\Campaigns\CampaignsAdminPage;
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Language;
 use WP_Post;
 use WP_REST_Request;
 
@@ -38,11 +41,17 @@ class DonationFormsAdminPage
      */
     protected $migrationApiRoot;
 
+    /**
+     * @var string
+     */
+    protected $defaultFormActionUrl;
+
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
         $this->bannerActionUrl = admin_url('admin-ajax.php?action=givewp_show_onboarding_banner');
         $this->tooltipActionUrl = admin_url('admin-ajax.php?action=givewp_show_upgraded_tooltip');
+        $this->defaultFormActionUrl = admin_url('admin-ajax.php?action=givewp_show_default_form_tooltip');
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
@@ -50,12 +59,13 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @unreleased set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            'edit.php?post_type=give_forms',
+            '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
             'edit_give_forms',
@@ -90,6 +100,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @since 3.22.0 Add locale support
      */
     public function loadScripts()
     {
@@ -97,6 +109,7 @@ class DonationFormsAdminPage
             'apiRoot' => $this->apiRoot,
             'bannerActionUrl' => $this->bannerActionUrl,
             'tooltipActionUrl' => $this->tooltipActionUrl,
+            'defaultFormActionUrl' => $this->defaultFormActionUrl,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
@@ -104,12 +117,17 @@ class DonationFormsAdminPage
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
             'showUpgradedTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-upgraded-tooltip', true),
+            'showDefaultFormTooltip' => !get_user_meta(get_current_user_id(), 'givewp-show-default-form-tooltip', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
+            'locale' => Language::getLocale(),
+            'swrConfig' => [
+                'revalidateOnFocus' => false
+            ],
         ];
 
-        EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
+        EnqueueScript::make('give-admin-donation-forms', 'build/assets/dist/js/give-admin-donation-forms.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
@@ -133,7 +151,7 @@ class DonationFormsAdminPage
     public function loadMigrationScripts()
     {
         if ($this->isShowingAddV2FormPage()) {
-            EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
+            EnqueueScript::make('give-add-v2form', 'build/assets/dist/js/give-add-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
@@ -146,7 +164,9 @@ class DonationFormsAdminPage
         }
 
         if ($this->isShowingEditV2FormPage()) {
-            EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
+            $formId = (int)$_GET['post'];
+            $campaign = Campaign::findByFormId($formId);
+            EnqueueScript::make('give-edit-v2form', 'build/assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
                 ->registerLocalizeData('GiveDonationForms', [
@@ -154,7 +174,8 @@ class DonationFormsAdminPage
                     'supportedGateways' => $this->getSupportedGateways(),
                     'migrationApiRoot' => $this->migrationApiRoot,
                     'apiNonce' => $this->apiNonce,
-                    'isMigrated' => _give_is_form_migrated((int)$_GET['post']),
+                    'isMigrated' => _give_is_form_migrated($formId),
+                    'campaignUrl' => $campaign ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id) : '',
                 ])
                 ->enqueue();
 
@@ -165,6 +186,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
+     * @unreleased Add campaignId parameter on campaigns page
      * @since 2.20.0
      * @return array
      */
@@ -173,7 +195,12 @@ class DonationFormsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 30,
+
         ];
+
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            $queryParameters['campaignId'] = isset($_GET['id']) ? absint($_GET['id']) : null;
+        }
 
         $request = WP_REST_Request::from_url(
             add_query_arg(
@@ -249,12 +276,13 @@ class DonationFormsAdminPage
             }
 
             jQuery(function() {
-                jQuery(jQuery('.wrap .page-title-action')[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e(
+                jQuery(jQuery('.wrap .wp-heading-inline')).after(
+                    '<button class="page-title-action switch-new-view" onclick="showReactTable()"><?php _e(
                         'Switch to New View',
                         'give'
                     ) ?></button>'
                 );
+                jQuery('.page-title-action:not(.switch-new-view)').remove();
             });
         </script>
         <?php
@@ -267,7 +295,7 @@ class DonationFormsAdminPage
      */
     public static function isShowing(): bool
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+        return isset($_GET['page']) && ($_GET['page'] === 'give-forms');
     }
 
     /**

@@ -45,7 +45,7 @@ class SubscriptionsAdminPage
             'pluginUrl' => GIVE_PLUGIN_URL
         ];
 
-        EnqueueScript::make('give-admin-subscriptions', 'assets/dist/js/give-admin-subscriptions.js')
+        EnqueueScript::make('give-admin-subscriptions', 'build/assets/dist/js/give-admin-subscriptions.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveSubscriptions', $data)->enqueue();
@@ -56,6 +56,8 @@ class SubscriptionsAdminPage
             [],
             null
         );
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**
