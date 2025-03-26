@@ -43,7 +43,7 @@ class Shortcode
                 'enddate' => '',
                 'color' => '#28c77b',
                 'heading' => 'Example Heading',
-                'image' => GIVE_PLUGIN_URL . 'assets/dist/images/onboarding-preview-form-image.min.jpg',
+                'image' => GIVE_PLUGIN_URL . 'build/assets/dist/images/onboarding-preview-form-image.min.jpg',
                 'summary' => 'This is a summary.',
 
             ],

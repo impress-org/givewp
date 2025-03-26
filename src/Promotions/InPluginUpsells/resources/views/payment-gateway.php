@@ -5,7 +5,7 @@ echo '
             <td colspan="10">
                 <div class="givewp-payment-gateway-fee-recovery-recommendation inner-panel">
                     <div>
-                        <img src="' . esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/list-table/light-bulb-icon.svg') . '"
+                        <img src="' . esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/light-bulb-icon.svg') . '"
                              alt="light-bulb-icon" />
                         <p>';
 _e(
@@ -18,13 +18,13 @@ echo '</p>
 _e('Recover your fees', 'give');
 echo '<img
                                 src="' . esc_url(
-        GIVE_PLUGIN_URL . 'assets/dist/images/list-table/external-link-icon.svg'
+        GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/external-link-icon.svg'
     ) . '"
                                 alt="external-link" />
                         </a>
                     </div>
                     <button type="button" class="givewp-payment-gateway-fee-recovery-recommendation_close">
-                        <img src="' . esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/close-icon.svg') . '"
+                        <img src="' . esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/close-icon.svg') . '"
                              alt="close-message" />
                     </button>
                 </div>

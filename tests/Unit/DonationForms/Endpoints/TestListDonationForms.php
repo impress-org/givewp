@@ -91,6 +91,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
+     * @unreleased Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
      * @param array  $donationForms
@@ -116,6 +117,8 @@ class TestListDonationForms extends TestCase
 
             $expectedItem['v3form'] = false;
             $expectedItem['status_raw'] = $donationForm->status->getValue();
+
+            $expectedItem['isDefaultCampaignForm'] = false;
 
             $expectedItems[] = $expectedItem;
         }

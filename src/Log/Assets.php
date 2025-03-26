@@ -26,7 +26,7 @@ class Assets
 
         EnqueueScript::make(
             'give-admin-log-list-table-app',
-            'assets/dist/js/give-log-list-table-app.js'
+            'build/assets/dist/js/give-log-list-table-app.js'
         )->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveLogs', $data)

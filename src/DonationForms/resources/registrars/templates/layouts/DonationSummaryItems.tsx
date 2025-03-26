@@ -32,6 +32,9 @@ const LineItem = ({id, label, value, description, className}: LineItem) => {
     );
 };
 
+/**
+ * TODO: account for when the total donation amount is different than subscription amount
+ */
 export default function DonationSummaryItems({items, total}) {
     return (
         <ul className="givewp-elements-donationSummary__list">
