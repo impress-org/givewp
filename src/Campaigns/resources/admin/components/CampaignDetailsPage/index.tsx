@@ -72,7 +72,6 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, []);
 
     const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
-    console.log(hasResolved);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
