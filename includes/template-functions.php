@@ -332,6 +332,11 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-page';
 	}
 
+    if ( give_is_campaign_page() ) {
+        $classes[] = 'give-campaign-page';
+        $classes[] = 'give-page';
+    }
+
 	// Theme-specific Classes used to prevent conflicts via CSS
 	/* @var WP_Theme $current_theme */
 	$current_theme = wp_get_theme();
