@@ -4,6 +4,8 @@ namespace Give\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
@@ -48,13 +50,12 @@ class CampaignViewModel
      */
     public function exports(): array
     {
+        $pagePermalink = $this->getPagePermalink();
+
         return [
             'id' => $this->campaign->id,
-            'pageId' => (int)$this->campaign->pageId,
-            'pagePermalink' => $this->campaign->pageId
-                ? get_permalink($this->campaign->pageId)
-                : null,
-            'enableCampaignPage' => $this->campaign->enableCampaignPage,
+            'pageId' => $pagePermalink ? (int)$this->campaign->pageId : null,
+            'pagePermalink' => $pagePermalink,
             'defaultFormId' => $this->campaign->defaultFormId,
             'defaultFormTitle' => $this->campaign->defaultForm()->title,
             'type' => $this->campaign->type->getValue(),
@@ -77,5 +78,38 @@ class CampaignViewModel
                 : null,
             'createdAt' => Temporal::getFormattedDateTime($this->campaign->createdAt),
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getPagePermalink(): ?string
+    {
+        $page = get_post($this->campaign->pageId);
+        if (!$page){
+            return null;
+        }
+
+        if ($page->post_status === 'trash') {
+            return null;
+        }
+
+        $permalink = get_permalink($this->campaign->pageId ?? 0);
+
+        if ($permalink){
+            return $permalink;
+        }
+
+        $query = DB::table('postmeta')
+            ->select('post_id')
+            ->where('meta_key', CampaignPageMetaKeys::CAMPAIGN_ID)
+            ->where('meta_value', $this->campaign->id)
+            ->get();
+
+        if (!$query) {
+            return null;
+        }
+
+        return get_permalink($query->post_id);
     }
 }

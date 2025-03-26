@@ -352,12 +352,29 @@ select[name="campaignId"] {
 
                 input, select {
                     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-                }
 
-                input:focus, select:focus {
-                    border-color: rgb(34, 113, 177);
-                    outline: none;
-                    box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                    &:not([type="checkbox"]) {
+                        height: auto;
+                    }
+
+                    &:focus {
+                        border-color: rgb(34, 113, 177);
+                        outline: none;
+                        box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                    }
+
+                    &:disabled {
+                        cursor: not-allowed;
+
+                        &:not([type="checkbox"]) {
+                            background-color: #f6f7f7;
+                            box-shadow: none;
+                            border-color: #9ca0af;
+                            opacity: 0.7;
+                            text-shadow: 0 1px 0 #fff;
+                            transform: none;
+                        }
+                    }
                 }
             }
 
@@ -365,23 +382,7 @@ select[name="campaignId"] {
                 margin: 0;
 
                 .sectionFieldCurrencyControl {
-                    font-size: 1rem;
-                    line-height: 2;
-                    display: block;
-                    width: 100%;
-                    border: 1px solid #9ca0af;
-                    border-radius: var(--givewp-spacing-1);
-                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-
                     div {
-                        margin: 0;
-                    }
-
-                    input {
-                        border: none;
-                        outline: none;
-                        box-shadow: none;
-                        padding: 0;
                         margin: 0;
                     }
                 }
@@ -521,6 +522,7 @@ select[name="campaignId"] {
 :global(#give-admin-campaigns-root) {
 
 
+    .createCampaignPageButton,
     .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;

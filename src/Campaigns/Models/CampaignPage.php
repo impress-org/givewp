@@ -47,7 +47,7 @@ class CampaignPage extends Model implements ModelCrud
     /**
      * @unreleased
      */
-    public function campaign()
+    public function campaign(): ?Campaign
     {
         return Campaign::find($this->campaignId);
     }
@@ -55,12 +55,9 @@ class CampaignPage extends Model implements ModelCrud
     /**
      * @unreleased
      */
-    public static function find($id)
+    public static function find($id): ?CampaignPage
     {
-        return give(CampaignPageRepository::class)
-            ->prepareQuery()
-            ->where('ID', $id)
-            ->get();
+        return give(CampaignPageRepository::class)->getById($id);
     }
 
     /**

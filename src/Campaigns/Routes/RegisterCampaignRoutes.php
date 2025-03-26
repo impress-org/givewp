@@ -37,6 +37,7 @@ class RegisterCampaignRoutes
         $this->registerGetCampaigns();
         $this->registerMergeCampaigns();
         $this->registerCreateCampaign();
+        $this->registerCreateCampaignPage();
     }
 
     /**
@@ -89,13 +90,12 @@ class RegisterCampaignRoutes
                 ],
                 'args' => [
                     'status' => [
-                        'type' => 'enum',
-                        'enum' => [
-                            'active',
-                            'draft',
-                            'archived',
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => ['active', 'draft', 'archived'],
                         ],
-                        'default' => 'active',
+                        'default' => ['active'],
                     ],
                     'ids' => [
                         'type' => 'array',
@@ -294,7 +294,6 @@ class RegisterCampaignRoutes
                 ],
                 'goal' => [
                     'type' => 'number',
-                    'minimum' => 1,
                     'description' => esc_html__('Campaign goal', 'give'),
                     'errorMessage' => esc_html__('Must be a number', 'give'),
                 ],
@@ -313,15 +312,14 @@ class RegisterCampaignRoutes
                     ],
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
-                'enableCampaignPage' => [
-                    'type' => 'boolean',
-                    'default' => true,
-                    'description' => esc_html__('Enable campaign page for your campaign.', 'give'),
-                ],
                 'defaultFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Default campaign form ID', 'give'),
                 ],
+                'pageId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign page ID', 'give'),
+                ]
             ],
             'required' => ['id', 'title', 'goal', 'goalType'],
             'allOf' => [
@@ -336,7 +334,7 @@ class RegisterCampaignRoutes
                     'then' => [
                         'properties' => [
                             'goal' => [
-                                'minimum' => 1,
+                                //'minimum' => 1,
                                 'type' => 'number',
                             ],
                         ],
@@ -459,5 +457,33 @@ class RegisterCampaignRoutes
                 ],
             ],
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function registerCreateCampaignPage(): void
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/page',
+            [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->createCampaignPage($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                 'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+            ]
+        );
     }
 }
