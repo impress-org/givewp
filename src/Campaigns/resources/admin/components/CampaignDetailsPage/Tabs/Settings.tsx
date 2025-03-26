@@ -4,7 +4,7 @@ import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
 import {ToggleControl} from '@wordpress/components';
 import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from '@givewp/form-builder-library';
@@ -56,20 +56,20 @@ export default function CampaignDetailsSettingsTab() {
                         </div>
                     </div>
 
-                <div className={styles.rightColumn}>
-                    <div className={styles.sectionField}>
-                        <div className={styles.toggle}>
-                            <ToggleControl
-                                label={__('Enable campaign page for your campaign.', 'give')}
-                                help={__('This will create a default campaign page for your campaign.', 'give')}
-                                name="enableCampaignPage"
-                                checked={enableCampaignPage}
-                                disabled={isDisabled}
-                                onChange={(value) => {
-                                    setValue('enableCampaignPage', value, {shouldDirty: true});
-                                }}
-                            />
-                        </div>
+                    <div className={styles.rightColumn}>
+                        <div className={styles.sectionField}>
+                            <div className={styles.toggle}>
+                                <ToggleControl
+                                    label={__('Enable campaign page for your campaign.', 'give')}
+                                    help={__('This will create a default campaign page for your campaign.', 'give')}
+                                    name="enableCampaignPage"
+                                    checked={enableCampaignPage}
+                                    disabled={isDisabled}
+                                    onChange={(value) => {
+                                        setValue('enableCampaignPage', value, {shouldDirty: true});
+                                    }}
+                                />
+                            </div>
 
                             {!enableCampaignPage && (
                                 <div className={styles.warningNotice}>
@@ -95,13 +95,18 @@ export default function CampaignDetailsSettingsTab() {
                     <div className={styles.leftColumn}>
                         <div className={styles.sectionTitle}>{__('Campaign Details', 'give')}</div>
                         <div className={styles.sectionDescription}>
-                            {__('This includes the campaign title, description, and the cover of your campaign.', 'give')}
+                            {__(
+                                'This includes the campaign title, description, and the cover of your campaign.',
+                                'give'
+                            )}
                         </div>
                     </div>
 
                     <div className={styles.rightColumn}>
                         <div className={styles.sectionField}>
-                            <div className={styles.sectionSubtitle}>{__("What's the title of your campaign?", 'give')}</div>
+                            <div className={styles.sectionSubtitle}>
+                                {__("What's the title of your campaign?", 'give')}
+                            </div>
                             <div className={styles.sectionFieldDescription}>
                                 {__("Give your campaign a title that tells donors what it's about.", 'give')}
                             </div>
@@ -178,7 +183,9 @@ export default function CampaignDetailsSettingsTab() {
                                         <option value="amountFromSubscriptions">
                                             {__('Recurring amount raised', 'give')}
                                         </option>
-                                        <option value="subscriptions">{__('Number of recurring donations', 'give')}</option>
+                                        <option value="subscriptions">
+                                            {__('Number of recurring donations', 'give')}
+                                        </option>
                                         <option value="donorsFromSubscriptions">
                                             {__('Number of recurring donors', 'give')}
                                         </option>
@@ -195,27 +202,27 @@ export default function CampaignDetailsSettingsTab() {
                             <div className={styles.sectionSubtitle}>{goalInputAttributes.getLabel()}</div>
                             <div className={styles.sectionFieldDescription}>{goalInputAttributes.getDescription()}</div>
 
-                        {goalInputAttributes.isCurrencyType() ? (
-                            <div className={styles.sectionFieldCurrencyControl}>
-                                <CurrencyControl
-                                    name="goal"
-                                    currency={currency as CurrencyCode}
+                            {goalInputAttributes.isCurrencyType() ? (
+                                <div className={styles.sectionFieldCurrencyControl}>
+                                    <CurrencyControl
+                                        name="goal"
+                                        currency={currency as CurrencyCode}
+                                        disabled={isDisabled}
+                                        placeholder={goalInputAttributes.getPlaceholder()}
+                                        value={goal}
+                                        onValueChange={(value) => {
+                                            setValue('goal', Number(value ?? 0), {shouldDirty: true});
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <input
+                                    type="number"
+                                    {...register('goal', {valueAsNumber: true})}
                                     disabled={isDisabled}
                                     placeholder={goalInputAttributes.getPlaceholder()}
-                                    value={goal}
-                                    onValueChange={(value) => {
-                                        setValue('goal', Number(value ?? 0), {shouldDirty: true});
-                                    }}
                                 />
-                            </div>
-                        ) : (
-                            <input
-                                type="number"
-                                {...register('goal', {valueAsNumber: true})}
-                                disabled={isDisabled}
-                                placeholder={goalInputAttributes.getPlaceholder()}
-                            />
-                        )}
+                            )}
 
                             {errors.goal && <div className={styles.errorMsg}>{`${errors.goal.message}`}</div>}
                         </div>
@@ -262,8 +269,11 @@ export default function CampaignDetailsSettingsTab() {
             {showTooltip && (
                 <CampaignNotice
                     title={__('Campaign Settings', 'give')}
-                    description={__('You can make changes to your campaign page, campaign details, campaign goal, and campaign theme. Publish your campaign when you’re done with your changes.', 'give')}
-                    linkHref="#"
+                    description={__(
+                        'You can make changes to your campaign page, campaign details, campaign goal, and campaign theme. Publish your campaign when you’re done with your changes.',
+                        'give'
+                    )}
+                    linkHref="https://docs.givewp.com/campaign-settings"
                     linkText={__('Learn more about campaign and form settings', 'give')}
                     handleDismiss={dismissTooltip}
                     type={'campaignSettings'}
@@ -271,4 +281,4 @@ export default function CampaignDetailsSettingsTab() {
             )}
         </>
     );
-};
+}
