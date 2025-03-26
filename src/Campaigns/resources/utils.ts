@@ -35,6 +35,13 @@ export function getCampaignOptionsWindowData(): GiveCampaignOptions {
     return window.GiveCampaignOptions;
 }
 
+export function handleTooltipDismiss(id: string) {
+    return apiFetch({
+        url: window.GiveCampaignOptions.adminUrl + '/admin-ajax.php?action=' + id,
+        method: 'POST',
+    })
+}
+
 /**
  * @unreleased
  */
@@ -63,5 +70,23 @@ export async function updateUserNoticeOptions(metaKey: string){
         });
     } catch (error) {
         console.error('Error updating user meta:', error);
+    }
+}
+
+/**
+ * @unreleased
+ */
+export async function createCampaignPage(campaignId: number) {
+    try {
+        const response = await apiFetch({
+            path: `/givewp/v3/campaigns/${campaignId}/page`,
+            method: 'POST'
+        });
+
+        return response as {
+            id: number,
+        };
+    } catch (error) {
+        console.error('Error creating Campaign page:', error);
     }
 }

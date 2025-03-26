@@ -42,6 +42,9 @@ export type GiveCampaignOptions = {
         showCampaignInteractionNotice: boolean
         showFormGoalNotice: boolean
         showExistingUserIntroNotice: boolean
+        showCampaignListTableNotice: boolean
+        showCampaignFormNotice: boolean
+        showCampaignSettingsNotice: boolean
     }
 }
 

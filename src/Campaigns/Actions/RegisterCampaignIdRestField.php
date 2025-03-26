@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+
 /**
  * @unreleased
  */
@@ -13,14 +15,14 @@ class RegisterCampaignIdRestField
     public function __invoke()
     {
         register_rest_field(
-            'give_campaign_page',
+            'page',
             'campaignId',
             [
                 'get_callback' => function ($object) {
-                    return get_post_meta($object['id'], 'campaignId', true);
+                    return get_post_meta($object['id'], CampaignPageMetaKeys::CAMPAIGN_ID, true);
                 },
                 'update_callback' => function ($value, $object) {
-                    return update_post_meta($object->ID, 'campaignId', (int) $value);
+                    return update_post_meta($object->ID, CampaignPageMetaKeys::CAMPAIGN_ID, (int) $value);
                 },
                 'schema' => [
                     'description' => 'Campaign ID',

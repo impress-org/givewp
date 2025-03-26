@@ -351,8 +351,11 @@ select[name="campaignId"] {
                 }
 
                 input, select {
-                    height: auto;
                     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+                    &:not([type="checkbox"]) {
+                        height: auto;
+                    }
 
                     &:focus {
                         border-color: rgb(34, 113, 177);
@@ -519,6 +522,7 @@ select[name="campaignId"] {
 :global(#give-admin-campaigns-root) {
 
 
+    .createCampaignPageButton,
     .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;
