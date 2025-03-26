@@ -28,7 +28,7 @@ $blockInlineStyles = sprintf(
     style="<?php
     echo esc_attr($blockInlineStyles); ?>">
     <?php
-    (new RenderDonateButton())(
+    give(RenderDonateButton::class)(
         ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
             ? $campaign->defaultFormId
             : $attributes['selectedForm'],

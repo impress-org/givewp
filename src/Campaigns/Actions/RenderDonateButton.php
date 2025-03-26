@@ -13,13 +13,26 @@ class RenderDonateButton
     /**
      * @unreleased
      */
+    private BlockRenderController $blockRenderController;
+
+    /**
+     * @unreleased
+     */
+    public function __construct(BlockRenderController $blockRenderController)
+    {
+        $this->blockRenderController = $blockRenderController;
+    }
+
+    /**
+     * @unreleased
+     */
     public function __invoke(int $formId, string $buttonText): string
     {
         if (!$this->isFormPublished($formId)) {
             return '';
         }
 
-        $blockRender = (new BlockRenderController())->render([
+        $blockRender = $this->blockRenderController->render([
             'formId' => $formId,
             'openFormButton' => esc_html($buttonText),
             'formFormat' => 'modal',

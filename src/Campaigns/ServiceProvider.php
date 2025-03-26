@@ -11,6 +11,7 @@ use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
@@ -21,6 +22,7 @@ use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -38,6 +40,11 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(): void
     {
         give()->singleton('campaigns', CampaignRepository::class);
+        give()->bind(RenderDonateButton::class, function () {
+            return new RenderDonateButton(
+                new BlockRenderController()
+            );
+        });
         $this->registerTableNames();
     }
 
