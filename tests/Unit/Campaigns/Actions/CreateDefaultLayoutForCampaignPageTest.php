@@ -26,12 +26,7 @@ final class CreateDefaultLayoutForCampaignPageTest extends TestCase
         ]);
 
         $expectedLayout = <<<HTML
-<!-- wp:givewp/campaign-cover-block {"campaignId":1} /-->
-<!-- wp:givewp/campaign-goal {"campaignId":1} /-->
-<!-- wp:givewp/campaign-donate-button {"campaignId":1} /-->
-<!-- wp:paragraph --><p>This is the start of the story</p><!-- /wp:paragraph -->
-<!-- wp:givewp/campaign-donations {"campaignId":1} /-->
-<!-- wp:givewp/campaign-donors {"campaignId":1} /-->
+<!-- wp:columns --><div class="wp-block-columns"><!-- wp:column --><div class="wp-block-column"><!-- wp:post-featured-image /--></div><!-- /wp:column --><!-- wp:column --><div class="wp-block-column"><!-- wp:givewp/campaign-goal {"campaignId":1} /--><!-- wp:columns --><div class="wp-block-columns"><!-- wp:column --><div class="wp-block-column"><!-- wp:givewp/campaign-stats-block {"campaignId":1} /--></div><!-- /wp:column --><!-- wp:column --><div class="wp-block-column"><!-- wp:givewp/campaign-stats-block {"campaignId":1,"statistic":"average-donation"} /--></div><!-- /wp:column --></div><!-- /wp:columns --><!-- wp:givewp/campaign-donate-button {"campaignId":1} /--></div><!-- /wp:column --></div><!-- /wp:columns --><!-- wp:paragraph --><p>This is the start of the story</p><!-- /wp:paragraph --><!-- wp:givewp/campaign-donations {"campaignId":1} /--><!-- wp:givewp/campaign-donors {"campaignId":1} /-->
 HTML;
 
         $this->assertEquals(

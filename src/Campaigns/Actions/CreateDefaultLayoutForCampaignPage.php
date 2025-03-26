@@ -46,6 +46,6 @@ class CreateDefaultLayoutForCampaignPage
             );
         }, $this->blocks);
 
-        return implode(PHP_EOL, $layout);
+        return implode('', $layout);
     }
 }
