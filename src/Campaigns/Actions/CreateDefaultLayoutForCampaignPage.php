@@ -13,7 +13,7 @@ class CreateDefaultLayoutForCampaignPage
     protected $blocks = [
         '<!-- wp:columns -->',
         '<div class="wp-block-columns"><!-- wp:column -->',
-        '<div class="wp-block-column"><!-- wp:post-featured-image /--></div>',
+        '<div class="wp-block-column"><!-- wp:post-featured-image {"style":{"border":{"radius":"8px"}}} /--></div>',
         '<!-- /wp:column -->',
         '<!-- wp:column -->',
         '<div class="wp-block-column"><!-- wp:givewp/campaign-goal {"campaignId":%id%} /-->',
