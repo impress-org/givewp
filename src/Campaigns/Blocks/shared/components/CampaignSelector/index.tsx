@@ -1,8 +1,8 @@
 import {useEffect} from 'react';
-import {select} from '@wordpress/data';
 import Inspector from './Inspector';
 import useCampaigns from '../../hooks/useCampaigns';
 import Selector from './Selector';
+import {useEntityProp} from '@wordpress/core-data';
 
 type CampaignSelectorProps = {
     campaignId: number;
@@ -12,22 +12,21 @@ type CampaignSelectorProps = {
     showInspectorControl?: boolean;
 }
 
-export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = false}: CampaignSelectorProps) => {
+export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = true}: CampaignSelectorProps) => {
+    const [id] = useEntityProp('postType', 'page', 'campaignId');
 
     // set campaign id from context
     useEffect(() => {
         if (campaignId) {
             return;
         }
-        // @ts-ignore
-        const id = select('core/editor').getEditedPostAttribute('campaignId');
 
         if (id) {
             handleSelect(id);
         }
     }, []);
 
-    const {campaigns, hasResolved} = useCampaigns();
+    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
     return (
         <>

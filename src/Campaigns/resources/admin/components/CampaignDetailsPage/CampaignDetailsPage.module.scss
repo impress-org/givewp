@@ -522,6 +522,7 @@ select[name="campaignId"] {
 :global(#give-admin-campaigns-root) {
 
 
+    .createCampaignPageButton,
     .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;

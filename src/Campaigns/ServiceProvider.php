@@ -4,10 +4,11 @@ namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
+use Give\Campaigns\Actions\ArchiveCampaignFormsAsDraftStatus;
+use Give\Campaigns\Actions\ArchiveCampaignPagesAsDraftStatus;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
-use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
@@ -21,6 +22,7 @@ use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -108,13 +110,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerActions(): void
     {
-        Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
+        Hooks::addAction('givewp_campaign_updated', ArchiveCampaignFormsAsDraftStatus::class);
+        Hooks::addAction('givewp_campaign_updated', ArchiveCampaignPagesAsDraftStatus::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
-        Hooks::addAction('init', Actions\CampaignPageTemplate::class, 'registerTemplate');
-        Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
-        Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
@@ -211,6 +211,16 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerCampaignBlocks()
     {
+        register_meta('post',
+            CampaignPageMetaKeys::CAMPAIGN_ID,
+            [
+                'type' => 'integer',
+                'description' => 'Campaign ID for GiveWP',
+                'single' => true,
+                'show_in_rest' => true,
+            ]
+        );
+
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
