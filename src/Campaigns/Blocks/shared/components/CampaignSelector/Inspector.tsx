@@ -21,7 +21,7 @@ export default function Inspector({campaignId, campaigns, hasResolved, handleSel
 
         if (campaigns.length) {
             const campaignOptions = campaigns.map((campaign) => ({
-                label: campaign.title,
+                label: `${campaign.title} ${campaign.status === 'draft' ? `(${__('Draft', 'give')})` : ''}`.trim(),
                 value: campaign.id.toString(),
             }));
 

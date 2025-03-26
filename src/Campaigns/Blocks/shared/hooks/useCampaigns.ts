@@ -1,11 +1,13 @@
 import {useEntityRecords} from '@wordpress/core-data';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 
+type CampaignStatus = 'active' | 'draft' | 'archived';
+
 type useCampaignsParams = {
     ids?: number[],
     page?: number,
     per_page?: number;
-    status?: 'active' | 'draft' | 'archived';
+    status?: CampaignStatus[]
     sortBy?: string;
     orderBy?: string;
 }
@@ -14,7 +16,7 @@ export default function useCampaigns({
      ids = [],
      page = 1,
      per_page = 30,
-     status = 'active',
+     status = ['active'],
      sortBy = 'date',
      orderBy = 'desc',
  }: useCampaignsParams = {}) {

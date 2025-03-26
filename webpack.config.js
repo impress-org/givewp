@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const RtlCssPlugin = require('rtlcss-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 /**
@@ -219,10 +219,7 @@ const plugins = [
     // Generate RTL files
     ...(isProduction
         ? [
-              new WebpackRTLPlugin({
-                  suffix: '-rtl',
-                  minify: true,
-              }),
+              new RtlCssPlugin({filename: '[name]-rtl.css'}),
           ]
         : []),
     {
