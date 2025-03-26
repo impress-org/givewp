@@ -7,7 +7,7 @@ import {CampaignBlockType} from './types';
 import CampaignSelector from '../shared/components/CampaignSelector';
 import CampaignCard from '../shared/components/CampaignCard';
 import {BlockNotice} from '@givewp/form-builder-library';
-import {getCampaignOptionsWindowData, updateUserNoticeOptions, useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, updateUserNoticeOptions, useCampaignEntityRecord, createCampaignPage} from '@givewp/campaigns/utils';
 
 
 const styles = {
@@ -52,18 +52,12 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
     const {campaign, hasResolved, edit, save} = useCampaignEntityRecord(attributes.campaignId);
 
 
-    const enableCampaignPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault()
-        edit({enableCampaignPage: true});
-        save();
-    }
-
     const Notices = () => {
         if (!attributes.campaignId) {
             return null;
         }
 
-        if (campaign.enableCampaignPage) {
+        if (campaign.pageId) {
             if (!showNotification) {
                 return null;
             }
@@ -89,15 +83,24 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
 
         return (
             <BlockNotice
-                title={__('Campaign page has been disabled for this campaign.', 'give ')}
-                description={__('For this campaign block to work properly, enable the campaign page for this campaign.', 'give')}
+                title={__('There is no Campaign page for this campaign.', 'give ')}
+                description={__('For this campaign block to work properly, create a campaign page.', 'give')}
             >
                 <a
                     href="#"
-                    onClick={(e) => enableCampaignPage(e)}
+                    onClick={async (e) => {
+                        e.preventDefault();
+                        const campaignPageResponse = await createCampaignPage(campaign.id)
+
+                        if (campaignPageResponse) {
+                            edit({...campaign, pageId: campaignPageResponse?.id});
+
+                            await save();
+                        }
+                    }}
                     style={styles['link']}
                 >
-                    {__('Enable campaign page.', 'give')}
+                    {__('Create campaign page.', 'give')}
                 </a>
             </BlockNotice>
         )
