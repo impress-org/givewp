@@ -12,7 +12,7 @@ class BlockRenderController
     /**
      * @unreleased
      */
-    public function render(array $attributes, string $primaryColor): string
+    public function render(array $attributes, string $secondaryColor): string
     {
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
@@ -20,6 +20,6 @@ class BlockRenderController
 
         $blockId = $blockAttributes->blockId;
 
-        return "<div id='givewp-campaign-comments-block-{$blockId}' data-primary-color='{$primaryColor}' data-givewp-campaign-comments data-attributes='{$encodedAttributes}'></div>";
+        return "<div id='givewp-campaign-comments-block-{$blockId}' data-secondary-color='{$secondaryColor}' data-givewp-campaign-comments data-attributes='{$encodedAttributes}'></div>";
     }
 }
