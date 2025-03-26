@@ -1,0 +1,7 @@
+.givewp-campaign-donate-button-block {
+    .givewp-donation-form-modal__open {
+        &:hover {
+            background-color: color-mix(in srgb, var(--givewp-primary-color), black 20%);
+        }
+    }
+}
