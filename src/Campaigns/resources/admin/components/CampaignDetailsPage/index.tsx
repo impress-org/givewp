@@ -14,7 +14,7 @@ import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} f
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
-import {getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData, handleTooltipDismiss, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
 
@@ -23,7 +23,7 @@ interface Show {
     confirmationModal?: boolean;
 }
 
-const StatusBadge = ({status}: { status: string }) => {
+const StatusBadge = ({status}: {status: string}) => {
     const statusMap = {
         active: __('Active', 'give'),
         archived: __('Archived', 'give'),
@@ -40,14 +40,13 @@ const StatusBadge = ({status}: { status: string }) => {
 };
 
 export default function CampaignsDetailsPage({campaignId}) {
+    const {adminUrl} = getCampaignOptionsWindowData();
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false,
+        confirmationModal: false
     });
-
-    const {adminUrl} = getCampaignOptionsWindowData();
 
     const dispatch = useDispatch('givewp/campaign-notifications');
 
@@ -64,7 +63,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         apiFetch({
             path: `/givewp/v3/campaigns/${campaignId}`,
             method: 'OPTIONS',
-        }).then(({schema}: { schema: JSONSchemaType<any> }) => {
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -99,8 +98,14 @@ export default function CampaignsDetailsPage({campaignId}) {
         dispatch.addNotice({
             id: 'update-archive-notice',
             type: 'warning',
-            onDismiss: () => updateStatus('draft'),
-            content: (onDismiss: Function) => <ArchivedCampaignNotice handleClick={onDismiss} />,
+            content: (onDismiss) => (
+                <ArchivedCampaignNotice
+                    handleClick={() => {
+                        onDismiss();
+                        updateStatus('draft');
+                    }}
+                />
+            ),
         });
     }, [campaign?.status]);
 
@@ -140,7 +145,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
 
-        edit({...campaign, status})
+        edit({...campaign, status});
 
         try {
             const response: Campaign = await save();

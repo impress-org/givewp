@@ -2,8 +2,10 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\Framework\Exceptions\Primitives\Exception;
+use Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -14,6 +16,8 @@ use PayPalCheckoutSdk\Orders\OrdersPatchRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
+
+use stdClass;
 
 use function give_record_gateway_error as logError;
 
@@ -67,27 +71,26 @@ class PayPalOrder
      *
      * @since 2.9.0
      *
-     * @param string $orderId
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
      *
-     * @return \stdClass
+     * @return object
      * @throws Exception
      */
-    public function approveOrder($orderId)
+    public function approveOrder(string $orderId)
     {
         $request = new OrdersCaptureRequest($orderId);
 
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result;
-        } catch (Exception $ex) {
-            logError(
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error(
                 'Capture PayPal Commerce payment failure',
-                sprintf(
-                    '<strong>Response</strong><pre>%1$s</pre>',
-                    print_r(json_decode($ex->getMessage(), true), true)
-                )
+                [
+                    'response' => $exception->getMessage()
+                ]
             );
 
-            throw $ex;
+            throw $exception;
         }
     }
 
@@ -103,15 +106,34 @@ class PayPalOrder
      *
      * @throws Exception|HttpException|IOException
      */
-    public function createOrder(array $array): string
+    public function createOrder(array $array, string $intent = 'CAPTURE'): string
     {
         $this->validateCreateOrderArguments($array);
 
         $request = new OrdersCreateRequest();
         $request->payPalPartnerAttributionId(give('PAYPAL_COMMERCE_ATTRIBUTION_ID'));
 
-        $request->body = [
-            'intent' => 'CAPTURE',
+        $purchaseUnits = array_merge(
+            $this->getAmountParameters($array),
+            [
+                'description' => $array['formTitle'],
+                'payee' => [
+                    'email_address' => $this->merchantDetails->merchantId,
+                    'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
+                ],
+            ]
+        );
+
+        if ($intent === 'CAPTURE') {
+            $purchaseUnits = array_merge($purchaseUnits, [
+                'payment_instruction' => [
+                    'disbursement_mode' => 'INSTANT',
+                ]
+            ]);
+        }
+
+        $requestBody = [
+            'intent' => $intent,
             'payment_source' => [
                 "paypal" => [
                     'name' => [
@@ -122,19 +144,7 @@ class PayPalOrder
                 ],
             ],
             'purchase_units' => [
-                array_merge(
-                    $this->getAmountParameters($array),
-                    [
-                        'description' => $array['formTitle'],
-                        'payee' => [
-                            'email_address' => $this->merchantDetails->merchantId,
-                            'merchant_id' => $this->merchantDetails->merchantIdInPayPal,
-                        ],
-                        'payment_instruction' => [
-                            'disbursement_mode' => 'INSTANT',
-                        ],
-                    ]
-                ),
+                $purchaseUnits
             ],
             'application_context' => [
                 'shipping_preference' => 'NO_SHIPPING',
@@ -142,23 +152,23 @@ class PayPalOrder
             ],
         ];
 
-        if (! empty($array['payer']['address'])) {
-            $request->body['payment_source']['paypal']['address'] = $array['payer']['address'];
+        if (!empty($array['payer']['address'])){
+            $requestBody['payment_source']['paypal']['address'] = $array['payer']['address'];
         }
+
+        $request->body = $requestBody;
 
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result->id;
-        } catch (Exception $ex) {
-            logError(
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error(
                 'Create PayPal Commerce order failure',
-                sprintf(
-                    '<strong>Request</strong><pre>%1$s</pre><br><strong>Response</strong><pre>%2$s</pre>',
-                    print_r($request->body, true),
-                    print_r(json_decode($ex->getMessage(), true), true)
-                )
+                [
+                    'response' => $exception->getMessage()
+                ]
             );
 
-            throw $ex;
+            throw $exception;
         }
     }
 
@@ -259,6 +269,42 @@ class PayPalOrder
     }
 
     /**
+     * @unreleased
+     *
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
+     *
+     * @throws Exception|HttpException|IOException
+     */
+    public function updateApprovedOrder(string $orderId, Money $amount)
+    {
+        $patchRequest = new OrdersPatchRequest($orderId);
+
+        $patchRequest->body = [
+            [
+                'op' => 'replace',
+                'path' => "/purchase_units/@reference_id=='default'/amount",
+                'value' => [
+                    'value' => $amount->formatToDecimal(),
+                    'currency_code' => $amount->getCurrency(),
+                ]
+            ],
+        ];
+
+        try {
+            return $this->paypalClient->getHttpClient()->execute($patchRequest)->result->id;
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error(
+                'Update PayPal Commerce order failure',
+                [
+                    'response' => $exception->getMessage()
+                ]
+            );
+
+            throw $exception;
+        }
+    }
+
+    /**
      * Refunds a processed payment
      *
      * @since 2.9.0
@@ -327,5 +373,21 @@ class PayPalOrder
         $orderDetails = (array)$this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
 
         return PayPalOrderModel::fromArray($orderDetails);
+    }
+
+    /**
+     * Get order details from PayPal commerce.
+     *
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
+     *
+     * @unreleased
+     *
+     * @throws HttpException | IOException
+     */
+    public function getApprovedOrder(string $orderId)
+    {
+        $orderDetailRequest = new OrdersGetRequest($orderId);
+
+        return $this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
     }
 }
