@@ -39,11 +39,18 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
-    public function findByCampaignId(int $campaignId): ?CampaignPage
+    public function queryByCampaignId(int $campaignId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId)
-            ->get();
+            ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function findByCampaignId(int $campaignId): ?CampaignPage
+    {
+        return $this->queryByCampaignId($campaignId)->get();
     }
 
     /**

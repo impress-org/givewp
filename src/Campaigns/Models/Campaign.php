@@ -93,7 +93,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function page()
+    public function page(): ?CampaignPage
     {
         return give(CampaignPageRepository::class)->findByCampaignId($this->id);
     }
