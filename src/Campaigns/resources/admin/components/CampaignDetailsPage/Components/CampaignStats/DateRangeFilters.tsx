@@ -12,7 +12,7 @@ const DateRangeFilters = ({options, onSelect, selected}: DateRangeFiltersProps) 
         <div className={styles.dateRangeFilter}>
             {options.map((option, index) => (
                 <button
-                    className={selected === option.value && styles.selectedDateRange}
+                    className={selected === option.value ? styles.selectedDateRange : ''}
                     key={index}
                     onClick={() => onSelect(option.value)}
                 >
