@@ -141,7 +141,7 @@ export default function CampaignsListTable() {
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
                 <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
-                {showTooltip && (
+                {!isExistingUserIntroModalOpen && showTooltip && (
                     <CampaignNotice
                         title={__('Campaign List', 'give')}
                         description={__(
