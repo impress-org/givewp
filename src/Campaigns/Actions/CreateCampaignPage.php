@@ -17,13 +17,13 @@ class CreateCampaignPage
      */
     public function __invoke(Campaign $campaign)
     {
-        if ( ! $campaign->type->isCore()) {
+        if (!$campaign->type->isCore()) {
             return;
         }
 
         $campaignPage = CampaignPage::create([
             'campaignId' => $campaign->id,
-            'status' => CampaignPageStatus::PUBLISH(),
+            'status' => CampaignPageStatus::DRAFT(),
         ]);
 
         $campaign->pageId = $campaignPage->id;

@@ -4,6 +4,7 @@ namespace Give\Campaigns\Repositories;
 
 use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\CampaignPage;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -28,7 +29,7 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
-    public function getById(int $id)
+    public function getById(int $id): ?CampaignPage
     {
         return $this->prepareQuery()
             ->where('id', $id)
@@ -38,11 +39,18 @@ class CampaignPageRepository
     /**
      * @unreleased
      */
-    public function findByCampaignId(int $campaignId): ?CampaignPage
+    public function queryByCampaignId(int $campaignId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId)
-            ->get();
+            ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function findByCampaignId(int $campaignId): ?CampaignPage
+    {
+        return $this->queryByCampaignId($campaignId)->get();
     }
 
     /**
@@ -59,24 +67,30 @@ class CampaignPageRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $campaignPage->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
-        $status = $campaignPage->status ?? CampaignPageStatus::PUBLISH();
+        $status = $campaignPage->status ?? CampaignPageStatus::DRAFT();
         $campaign = $campaignPage->campaign();
+
+        if (!$campaign) {
+            throw new Exception('Campaign not found');
+        }
 
         DB::query('START TRANSACTION');
 
         try {
             $campaignPage->id = wp_insert_post([
                 'post_title' => $campaign->title,
-                'post_name' => sanitize_title($campaign->title), // Slug
+                'post_name' => sanitize_title($campaign->title),
                 'post_date' => $dateCreatedFormatted,
                 'post_modified' => $dateUpdatedFormatted,
-                'post_status' => 'publish',
-                'post_type' => 'give_campaign_page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaign->id,
-                    $campaign->shortDescription),
+                'post_status' => $status->getValue(),
+                'post_type' => 'page',
+                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                    $campaign->id,
+                    $campaign->shortDescription
+                ),
             ]);
 
-            if ( ! $campaignPage->id) {
+            if (!$campaignPage->id) {
                 throw new Exception('Failed creating a campaign page');
             }
 
@@ -84,12 +98,11 @@ class CampaignPageRepository
             $campaignPage->updatedAt = $dateUpdated;
             $campaignPage->status = $status;
 
-            DB::table('postmeta')
-                ->insert([
-                    'post_id' => $campaignPage->id,
-                    'meta_key' => 'campaignId',
-                    'meta_value' => $campaignPage->campaignId,
-                ]);
+            update_post_meta($campaignPage->id, CampaignPageMetaKeys::CAMPAIGN_ID, $campaignPage->campaignId);
+
+            if ($campaign->image && $imageId = attachment_url_to_postid($campaign->image)) {
+                set_post_thumbnail($campaignPage->id, $imageId);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -105,6 +118,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function update(CampaignPage $campaignPage): void
     {
@@ -125,18 +139,12 @@ class CampaignPageRepository
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $status->getValue(),
-                    'post_type' => 'give_campaign_page',
                 ]);
 
             $campaignPage->updatedAt = $now;
             $campaignPage->status = $status;
 
-            DB::table('postmeta')
-                ->where('post_id', $campaignPage->id)
-                ->where('meta_key', 'campaignId')
-                ->update([
-                    'meta_value' => $campaignPage->campaignId,
-                ]);
+            update_post_meta($campaignPage->id, CampaignPageMetaKeys::CAMPAIGN_ID, $campaignPage->campaignId);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -152,6 +160,7 @@ class CampaignPageRepository
 
     /**
      * @unreleased
+     * @throws Exception
      */
     public function delete(CampaignPage $campaignPage): bool
     {
@@ -202,9 +211,8 @@ class CampaignPageRepository
                 'postmeta',
                 'ID',
                 'post_id',
-                'campaignId'
-            )
-            ->where('post_type', 'give_campaign_page');
+                ...CampaignPageMetaKeys::getColumnsForAttachMetaQuery()
+            );
     }
 
     /**
@@ -213,7 +221,7 @@ class CampaignPageRepository
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
-            if ( ! isset($campaignPage->$key)) {
+            if (!isset($campaignPage->$key)) {
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }

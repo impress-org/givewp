@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -394,6 +396,9 @@ function give_add_display_page_states( $post_states, $post ) {
 		case give_get_option( 'history_page' ):
 			$post_states['give_history_page'] = __( 'Donation History Page', 'give' );
 			break;
+        case (bool)get_post_meta( $post->ID, CampaignPageMetaKeys::CAMPAIGN_ID, true ):
+            $post_states['give_campaign_page'] = __( 'GiveWP Campaign Page', 'give' );
+            break;
 	}
 
 	return $post_states;

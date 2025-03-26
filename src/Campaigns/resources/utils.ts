@@ -72,3 +72,21 @@ export async function updateUserNoticeOptions(metaKey: string){
         console.error('Error updating user meta:', error);
     }
 }
+
+/**
+ * @unreleased
+ */
+export async function createCampaignPage(campaignId: number) {
+    try {
+        const response = await apiFetch({
+            path: `/givewp/v3/campaigns/${campaignId}/page`,
+            method: 'POST'
+        });
+
+        return response as {
+            id: number,
+        };
+    } catch (error) {
+        console.error('Error creating Campaign page:', error);
+    }
+}

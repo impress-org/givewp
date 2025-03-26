@@ -28,7 +28,6 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
  * @property int              $pageId
  * @property int              $defaultFormId
  * @property CampaignType     $type
- * @property bool $enableCampaignPage
  * @property string           $title
  * @property string           $url
  * @property string           $shortDescription
@@ -54,7 +53,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'pageId' => 'int',
         'defaultFormId' => 'int',
         'type' => CampaignType::class,
-        'enableCampaignPage' => ['bool', true],
         'title' => 'string',
         'shortDescription' => 'string',
         'longDescription' => 'string',
@@ -95,7 +93,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function page()
+    public function page(): ?CampaignPage
     {
         return give(CampaignPageRepository::class)->findByCampaignId($this->id);
     }
@@ -176,6 +174,9 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
     }
 
+    /**
+     * @unreleased
+     */
     public function getGoalStats(): array
     {
         return (new CampaignGoalData($this))->toArray();
