@@ -43,6 +43,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const {adminUrl} = getCampaignOptionsWindowData();
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
+    const [isCreatingPage, setIsCreatingPage] = useState<boolean>(false);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
         confirmationModal: false
@@ -71,6 +72,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, []);
 
     const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
+    console.log(hasResolved);
 
     const methods = useForm<Campaign>({
         mode: 'onBlur',
@@ -180,6 +182,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     };
 
     async function handleCampaignPageCreation() {
+        setIsCreatingPage(true);
         const campaignPageResponse = await createCampaignPage(campaign.id);
 
         if (campaignPageResponse) {
@@ -189,10 +192,9 @@ export default function CampaignsDetailsPage({campaignId}) {
 
             reset(response);
 
-            dispatch.addSnackbarNotice({
-                id: `create-campaign-page`,
-                content: __('Campaign page created.', 'give'),
-            });
+            window.location.assign(`${adminUrl}post.php?post=${response.pageId}&action=edit`);
+
+            //setIsCreatingPage(false);
         }
     }
 
@@ -226,7 +228,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                             </div>
 
                             <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                {campaign.pageId > 0 ? (
+                                {!isCreatingPage && campaign.pageId > 0 ? (
                                     <a
                                         className={`button button-secondary ${styles.editCampaignPageButton}`}
                                         href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
@@ -237,10 +239,11 @@ export default function CampaignsDetailsPage({campaignId}) {
                                 ) : (
                                     <button
                                         type="button"
-                                        className={`button button-primary ${styles.updateCampaignButton}`}
+                                        className={`button button-tertiary ${styles.createCampaignPageButton}`}
                                         onClick={handleCampaignPageCreation}
+                                        disabled={isCreatingPage}
                                     >
-                                        {__('Create Campaign Page', 'give')}
+                                        {isCreatingPage ? __('Creating Campaign Page', 'give') : __('Create Campaign Page', 'give')}
                                     </button>
                                 )}
 
