@@ -54,8 +54,8 @@ const EditorTypeOption = ({
             <img
                 src={`${window.GiveDonationForms.pluginUrl}${
                     editorType === 'visualFormBuilder'
-                        ? '/assets/dist/images/admin/give-settings-gateways-v3.jpg'
-                        : '/assets/dist/images/admin/give-settings-gateways-v2.jpg'
+                        ? 'build/assets/dist/images/admin/give-settings-gateways-v3.jpg'
+                        : 'build/assets/dist/images/admin/give-settings-gateways-v2.jpg'
                 }`}
                 alt={label}
             />

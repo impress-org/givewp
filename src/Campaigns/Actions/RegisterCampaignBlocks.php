@@ -26,8 +26,6 @@ class RegisterCampaignBlocks
      */
     public function loadBlockEditorAssets(): void
     {
-        global $post;
-
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocks.asset.php');
 
         wp_register_script(
@@ -46,25 +44,23 @@ class RegisterCampaignBlocks
             $scriptAsset['version']
         );
 
-        if ($post && $post->post_type === 'give_campaign_page') {
-            $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
 
-            wp_register_script(
-                'givewp-campaign-landing-page-blocks',
-                GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.js',
-                $scriptAsset['dependencies'],
-                $scriptAsset['version'],
-                true
-            );
+        wp_register_script(
+            'givewp-campaign-landing-page-blocks',
+            GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.js',
+            $scriptAsset['dependencies'],
+            $scriptAsset['version'],
+            true
+        );
 
-            wp_enqueue_script('givewp-campaign-landing-page-blocks');
-            wp_enqueue_style(
-                'givewp-campaign-landing-page-blocks',
-                GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.css',
-                ['wp-components'],
-                $scriptAsset['version']
-            );
-        }
+        wp_enqueue_script('givewp-campaign-landing-page-blocks');
+        wp_enqueue_style(
+            'givewp-campaign-landing-page-blocks',
+            GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.css',
+            ['wp-components'],
+            $scriptAsset['version']
+        );
     }
 
     /**

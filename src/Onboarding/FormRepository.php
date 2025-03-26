@@ -103,7 +103,7 @@ class FormRepository
             $form->title = $campaign->title;
             $form->status = DonationFormStatus::PUBLISHED();
             $form->settings->designId = 'multi-step';
-            $form->settings->designSettingsImageUrl = GIVE_PLUGIN_URL . '/assets/dist/images/admin/onboarding/header-image.jpg';
+            $form->settings->designSettingsImageUrl = GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/onboarding/header-image.jpg';
             $form->settings->designSettingsImageStyle = 'above';
             $form->settings->designSettingsImageAlt = $campaign->title;
 

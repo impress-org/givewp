@@ -10,6 +10,7 @@ use Give\DonationForms\Actions\PrintFormMetaTags;
 use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
+use Give\DonationForms\Actions\ValidateReceiptViewPermission;
 use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
 use Give\DonationForms\AsyncData\Actions\GiveGoalProgressStats;
 use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
@@ -85,6 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerPostStatus();
         $this->registerAddFormSubmenuLink();
         $this->registerHoneyPotField();
+        $this->registerReceiptViewPermission();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -399,5 +401,13 @@ class ServiceProvider implements ServiceProviderInterface
                 (new AddHoneyPotFieldToDonationForms())($form, $honeypotFieldName);
             }
         }, 10, 2);
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    private function registerReceiptViewPermission()
+    {
+        Hooks::addFilter('give_can_view_receipt', ValidateReceiptViewPermission::class, '__invoke', 10, 2);
     }
 }
