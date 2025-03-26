@@ -1,7 +1,7 @@
 <?php
 
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Models\Campaign;
-use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 
 /**
  * @var Campaign $campaign
@@ -30,16 +30,7 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donations)) : ?>
             <div class="givewp-campaign-donations-block__donate-button">
                 <?php
-                $blockRender = (new BlockRenderController())->render([
-                    'formId' => $campaign->defaultFormId,
-                    'openFormButton' => $donateButtonText,
-                    'formFormat' => 'modal',
-                ]);
-
-                echo $blockRender ?? sprintf(
-                    '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
-                    $donateButtonText
-                );
+                echo (new RenderDonateButton())($campaign->defaultFormId, $donateButtonText);
                 ?>
             </div>
         <?php
@@ -69,16 +60,7 @@ $blockInlineStyles = sprintf(
                     <?php
                     $firstDonationButtonText = __('Be the first', 'give');
 
-                    $blockRender = (new BlockRenderController())->render([
-                        'formId' => $campaign->defaultFormId,
-                        'openFormButton' => $firstDonationButtonText,
-                        'formFormat' => 'modal',
-                    ]);
-
-                    echo $blockRender ?? sprintf(
-                        '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
-                        $firstDonationButtonText
-                    );
+                    echo (new RenderDonateButton())($campaign->defaultFormId, $firstDonationButtonText);
                     ?>
                 </div>
             <?php
