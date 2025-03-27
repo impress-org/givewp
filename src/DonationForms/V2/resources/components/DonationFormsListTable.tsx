@@ -115,15 +115,29 @@ const columnFilters: Array<ColumnFilterConfig> = [
             return (
                 <>
                     {item?.v3form ? (
-                        <div className={styles.migratedForm}>
-                            <div className={styles.tooltipContainer}>
-                                <CubeIcon />
-                                <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                        <div className={styles.titleContainer}>
+                            <div className={styles.migratedForm}>
+                                <div className={styles.tooltipContainer}>
+                                    <CubeIcon />
+                                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                                </div>
+                                <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                             </div>
-                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            {item?.isDefaultCampaignForm && (
+                                <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>
+                                    {__('Default')}
+                                </div>
+                            )}
                         </div>
                     ) : (
-                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                        <div className={styles.titleContainer}>
+                            <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                            {item?.isDefaultCampaignForm && (
+                                <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>
+                                    {__('Default')}
+                                </div>
+                            )}
+                        </div>
                     )}
                 </>
             );
