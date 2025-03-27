@@ -10,42 +10,48 @@ class CreateDefaultLayoutForCampaignPage
     /**
      * @unreleased
      */
-    protected $blocks = [
-        '<!-- wp:columns -->',
-        '<div class="wp-block-columns"><!-- wp:column -->',
-        '<div class="wp-block-column"><!-- wp:post-featured-image {"style":{"border":{"radius":"8px"}}} /--></div>',
-        '<!-- /wp:column -->',
-        '<!-- wp:column -->',
-        '<div class="wp-block-column"><!-- wp:givewp/campaign-goal {"campaignId":%id%} /-->',
-        '<!-- wp:columns -->',
-        '<div class="wp-block-columns"><!-- wp:column -->',
-        '<div class="wp-block-column"><!-- wp:givewp/campaign-stats-block {"campaignId":%id%} /--></div>',
-        '<!-- /wp:column -->',
-        '<!-- wp:column -->',
-        '<div class="wp-block-column"><!-- wp:givewp/campaign-stats-block {"campaignId":%id%,"statistic":"average-donation"} /--></div>',
-        '<!-- /wp:column --></div>',
-        '<!-- /wp:columns -->',
-        '<!-- wp:givewp/campaign-donate-button {"campaignId":%id%} /--></div>',
-        '<!-- /wp:column --></div>',
-        '<!-- /wp:columns -->',
-        '<!-- wp:paragraph --><p>%description%</p><!-- /wp:paragraph -->',
-        '<!-- wp:givewp/campaign-donations {"campaignId":%id%} /-->',
-        '<!-- wp:givewp/campaign-donors {"campaignId":%id%} /-->',
-    ];
+    public function getBlocks()
+    {
+        return '<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"verticalAlignment":"center"} -->
+<div class="wp-block-column is-vertically-aligned-center"><!-- wp:post-featured-image {"aspectRatio":"16/9","style":{"border":{"radius":"8px"}}} /--></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"verticalAlignment":"center"} -->
+<div class="wp-block-column is-vertically-aligned-center"><!-- wp:givewp/campaign-goal {"campaignId":"%campaignId%"} /-->
+
+<!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
+<div class="wp-block-group"><!-- wp:givewp/campaign-stats-block {"campaignId":"%campaignId%","statistic":"average-donation"} /-->
+
+<!-- wp:givewp/campaign-stats-block {"campaignId":"%campaignId%"} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:givewp/campaign-donate-button {"campaignId":"%campaignId%"} /--></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>%description%</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:givewp/campaign-donations {"campaignId":%campaignId%} /-->
+
+<!-- wp:givewp/campaign-donors {"campaignId":%campaignId%} /-->';
+    }
 
     /**
      * @unreleased
      */
     public function __invoke(int $campaignId, string $shortDescription): string
     {
-        $layout = array_map(static function ($block) use ($campaignId, $shortDescription) {
-            return str_replace(
-                ['%id%', '%description%'],
-                [$campaignId, $shortDescription],
-                $block
-            );
-        }, $this->blocks);
-
-        return implode('', $layout);
+        return str_replace(
+            ['%id%', '%description%'],
+            [$campaignId, $shortDescription],
+            $this->getBlocks()
+        );
     }
 }
