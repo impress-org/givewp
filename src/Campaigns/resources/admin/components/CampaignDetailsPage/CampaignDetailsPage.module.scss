@@ -539,6 +539,14 @@ select[name="campaignId"] {
         }
     }
 
+    .createCampaignPageButton{
+        background-color: var(--givewp-shades-white);
+
+        &:hover {
+            background-color: #F0F6FC;
+        }
+    }
+
     .editCampaignPageButton {
         color: #060c1a;
         background-color: var(--givewp-neutral-100);
