@@ -10,7 +10,7 @@ class CreateDefaultLayoutForCampaignPage
     /**
      * @unreleased
      */
-    public function getBlocks()
+    public function getBlocks(): string
     {
         return '<!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"verticalAlignment":"center"} -->
