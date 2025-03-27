@@ -183,7 +183,7 @@ class DonationFormViewModel
     /**
      * @unreleased  use DonationFormGoalData instead of repository
      *
-     * @since 3.0.0
+     * @since       3.0.0
      */
     private function formStatsData(): array
     {
@@ -236,10 +236,10 @@ class DonationFormViewModel
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $this->formSettings->showHeader && $this->formSettings->enableDonationGoal
+                'goal' => $this->previewMode || ($this->formSettings->showHeader && $this->formSettings->enableDonationGoal)
                     ? $this->donationFormGoalData->toArray()
                     : [],
-                'stats' => $this->formSettings->showHeader && $this->formSettings->enableDonationGoal
+                'stats' => $this->previewMode || ($this->formSettings->showHeader && $this->formSettings->enableDonationGoal)
                     ? $this->formStatsData()
                     : [],
                 'design' => $formDesign ? [
