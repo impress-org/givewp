@@ -52,7 +52,7 @@ class CreateDefaultLayoutForCampaignPage
     public function __invoke(int $campaignId, string $shortDescription): string
     {
         return str_replace(
-            ['%id%', '%description%'],
+            ['%campaignId%', '%description%'],
             [$campaignId, $shortDescription],
             $this->getBlocks()
         );
