@@ -30,5 +30,6 @@
     },
     "example": {},
     "textdomain": "give",
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    "style": "file:../../../../build/campaignDonateButtonBlockApp.css"
 }
