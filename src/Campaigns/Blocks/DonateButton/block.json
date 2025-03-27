@@ -30,5 +30,5 @@
     "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
-    "style": "file:../../../../build/campaignDonateButtonBlock.css"
+    "style": "file:../../../../build/campaignDonateButtonBlockApp.css"
 }

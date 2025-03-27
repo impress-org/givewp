@@ -9,7 +9,6 @@ import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/c
 import {Button} from 'react-aria-components';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignSelector from '../shared/components/CampaignSelector';
-import './style.scss';
 
 
 /**
@@ -68,7 +67,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                     <PanelBody title="Settings" initialOpen={true}>
                         <TextControl
                             label={__('Donate button', 'give')}
-                            value={attributes.buttonText}
+                            value={buttonText}
                             onChange={(buttonText: string) => setAttributes({buttonText})}
                         />
                         <ToggleControl
