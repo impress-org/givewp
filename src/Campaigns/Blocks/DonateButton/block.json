@@ -24,11 +24,11 @@
             "type": "string"
         },
         "buttonText": {
-            "type": "string",
-            "default": "Donate now"
+            "type": "string"
         }
     },
     "example": {},
     "textdomain": "give",
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    "style": "file:../../../../build/campaignDonateButtonBlock.css"
 }

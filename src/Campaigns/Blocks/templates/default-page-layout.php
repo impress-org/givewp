@@ -1,18 +1,4 @@
-<?php
-
-namespace Give\Campaigns\Actions;
-
-/**
- * @unreleased
- */
-class CreateDefaultLayoutForCampaignPage
-{
-    /**
-     * @unreleased
-     */
-    public function getBlocks(): string
-    {
-        return '<!-- wp:columns {"verticalAlignment":null,"style":{"spacing":{"padding":{"top":"0","bottom":"0"}}}} -->
+<!-- wp:columns {"verticalAlignment":null,"style":{"spacing":{"padding":{"top":"0","bottom":"0"}}}} -->
 <div class="wp-block-columns" style="padding-top:0;padding-bottom:0">
     <!-- wp:column {"verticalAlignment":"stretch","width":"60%"} -->
     <div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:60%">
@@ -48,18 +34,3 @@ class CreateDefaultLayoutForCampaignPage
 <!-- wp:givewp/campaign-donations {"campaignId":%campaignId%} /-->
 
 <!-- wp:givewp/campaign-donors {"campaignId":%campaignId%} /-->
-';
-    }
-
-    /**
-     * @unreleased
-     */
-    public function __invoke(int $campaignId, string $shortDescription): string
-    {
-        return str_replace(
-            ['%id%', '%description%'],
-            [$campaignId, $shortDescription],
-            $this->getBlocks()
-        );
-    }
-}

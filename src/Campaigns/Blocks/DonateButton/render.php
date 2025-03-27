@@ -27,7 +27,7 @@ $params = [
     'formId' => ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
         ? $campaign->defaultFormId
         : $attributes['selectedForm'],
-    'openFormButton' => $attributes['buttonText'],
+    'openFormButton' => $attributes['buttonText'] ?? __('Donate', 'give'),
     'formFormat' => 'modal',
 ];
 ?>

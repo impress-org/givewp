@@ -9,6 +9,7 @@ import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/c
 import {Button} from 'react-aria-components';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignSelector from '../shared/components/CampaignSelector';
+import './style.scss';
 
 
 /**
@@ -21,6 +22,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
     selectedForm: string;
 }>) {
     const blockProps = useBlockProps();
+    const {buttonText = __('Donate', 'give')} = attributes;
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
 
     const adminBaseUrl = useSelect(
@@ -57,7 +59,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
                 <Button className="givewp-donation-form-modal__open">
-                    {attributes.buttonText}
+                    {buttonText}
                 </Button>
             </CampaignSelector>
 

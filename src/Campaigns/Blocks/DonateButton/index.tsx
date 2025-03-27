@@ -1,6 +1,7 @@
 import schema from './block.json';
 import Edit from './edit';
 import GiveIcon from '@givewp/components/GiveIcon';
+import './style.scss';
 
 /**
  * @unreleased
