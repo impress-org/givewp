@@ -37,7 +37,7 @@ class CreateDefaultLayoutForCampaignPage
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p></p>
+<p>%shortDescription%</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:givewp/campaign-donations {"campaignId":%campaignId%} /-->
