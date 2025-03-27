@@ -176,6 +176,7 @@ const entry = {
     campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
     campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     campaignBlocksLandingPage: srcPath('Campaigns/Blocks/landingPage.ts'),
+    campaignDonateButtonBlockApp: srcPath('Campaigns/Blocks/DonateButton/app.tsx'),
     campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
     campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
     campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
