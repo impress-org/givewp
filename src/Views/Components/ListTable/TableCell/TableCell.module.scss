@@ -16,6 +16,12 @@
             transition: all 0.05s ease-in-out;
         }
     }
+
+    input[type="checkbox"] {
+        margin: 0;
+        padding: 0;
+        transform: translateY(-1px);
+    }
 }
 
 .tableRowHeader {
