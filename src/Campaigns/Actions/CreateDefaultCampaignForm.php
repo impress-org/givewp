@@ -5,11 +5,11 @@ namespace Give\Campaigns\Actions;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 
 /**
@@ -26,10 +26,11 @@ class CreateDefaultCampaignForm
             'title' => $campaign->title,
             'status' => DonationFormStatus::PUBLISHED(),
             'settings' => FormSettings::fromArray([
-                'showHeader' => false,
-                'enableDonationGoal' => false,
+                'showHeader' => true,
+                'enableDonationGoal' => true,
                 'goalAmount' => $campaign->goal,
                 'goalType' => $campaign->goalType->getValue(),
+                'goalSource' => GoalSource::CAMPAIGN()->getValue(),
                 'designId' => MultiStepFormDesign::id(),
             ]),
             'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
