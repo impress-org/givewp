@@ -6,6 +6,7 @@ import './index.scss';
 
 type FormPreviewLoadingProps = {
     design?: 'classic' | 'multi-step' | string;
+    isLoading?: boolean;
 }
 
 const getDesignPlaceholder = (design: string) => {
@@ -19,9 +20,9 @@ const getDesignPlaceholder = (design: string) => {
     }
 }
 
-export default function FormPreviewLoading({design}: FormPreviewLoadingProps) {
+export default function FormPreviewLoading({design, isLoading}: FormPreviewLoadingProps) {
     return (
-        <div className="givewp__form-preview">
+        <div className="givewp__form-preview" style={{opacity: isLoading ? 1 : 0}}>
             <div className="givewp__form-preview__container">
                 <div className="givewp__form-preview__spinner">
                     <Spinner />

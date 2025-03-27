@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 1s ease-in-out;
 
     &__spinner {
         position: relative;
