@@ -24,8 +24,7 @@
             "type": "string"
         },
         "buttonText": {
-            "type": "string",
-            "default": "Donate now"
+            "type": "string"
         }
     },
     "example": {},

@@ -32,7 +32,7 @@ $blockInlineStyles = sprintf(
         ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
             ? $campaign->defaultFormId
             : $attributes['selectedForm'],
-        $attributes['buttonText']
+        $attributes['buttonText'] ?? __('Donate', 'give'),
     );
     ?>
 </div>
