@@ -26,8 +26,8 @@ class CreateDefaultCampaignForm
             'title' => $campaign->title,
             'status' => DonationFormStatus::PUBLISHED(),
             'settings' => FormSettings::fromArray([
-                'showHeader' => true,
-                'enableDonationGoal' => true,
+                'showHeader' => false,
+                'enableDonationGoal' => false,
                 'goalAmount' => $campaign->goal,
                 'goalType' => $campaign->goalType->getValue(),
                 'goalSource' => GoalSource::CAMPAIGN()->getValue(),
