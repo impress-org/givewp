@@ -27,7 +27,7 @@
             margin: 10px;
             border-radius: 10px;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            border: solid 1px var(--givewp-gray-10);
+            border: solid 1px var(--givewp-grey-25);
             background-color: var(--givewp-shades-white);
             overflow: hidden;
 
@@ -38,7 +38,7 @@
                 &-image,
                 &-donation-levels,
                 &-progressbar {
-                    background-color: var(--givewp-gray-10);
+                    background-color: var(--givewp-grey-25);
                     border-radius: 4px;
                 }
 
@@ -59,7 +59,7 @@
                     div {
                         height: 1.5rem;
                         width: 30%;
-                        background-color: var(--givewp-gray-10);
+                        background-color: var(--givewp-grey-25);
                     }
                 }
 
@@ -69,13 +69,13 @@
 
                 &-bar {
                     height: 1.5rem;
-                    background-color: var(--givewp-gray-10);
+                    background-color: var(--givewp-grey-25);
                     margin-bottom: 1.5rem;
                 }
 
                 &-barshort {
                     height: 1.5rem;
-                    background-color: var(--givewp-gray-10);
+                    background-color: var(--givewp-grey-25);
                     margin-top: 1.5rem;
                     margin-bottom: 0.6rem;
                     width: 40%;
@@ -104,7 +104,7 @@
                         div {
                             height: 1.5rem;
                             width: 7.5rem;
-                            background-color: var(--givewp-gray-10);
+                            background-color: var(--givewp-grey-25);
                         }
                     }
                 }
@@ -116,7 +116,7 @@
                     margin-bottom: 4rem;
 
                     div {
-                        background-color: var(--givewp-gray-10);
+                        background-color: var(--givewp-grey-25);
                         height: 4rem;
                     }
 
@@ -136,7 +136,7 @@
                 &-image,
                 &-donation-levels,
                 &-progressbar {
-                    background-color: var(--givewp-gray-10);
+                    background-color: var(--givewp-grey-25);
                     border-radius: 4px;
                 }
 
@@ -153,7 +153,7 @@
                     padding: 1.5rem 2rem;
 
                     div {
-                        background-color: var(--givewp-gray-10);
+                        background-color: var(--givewp-grey-25);
                         height: 4rem;
                     }
                 }
@@ -164,7 +164,7 @@
                     justify-content: center;
 
                     div {
-                        background-color: var(--givewp-gray-10);
+                        background-color: var(--givewp-grey-25);
                         height: 1rem;
                         width: 30%;
                     }
@@ -186,7 +186,7 @@
                         border-radius: 4px 4px 0 0;
                         flex: 1;
                         padding: 1.2rem;
-                        background-color: var(--givewp-gray-10);
+                        background-color: var(--givewp-grey-25);
                     }
 
                     div:nth-child(2) {

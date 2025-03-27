@@ -17,6 +17,7 @@ type DonationFormBlockAppProps = {
     openFormButton: string;
     formUrl: string;
     formViewUrl: string;
+    formDesign?: string
 };
 
 /**
@@ -46,6 +47,7 @@ function DonationFormBlockApp({
     openFormButton,
     formUrl,
     formViewUrl,
+    formDesign
 }: DonationFormBlockAppProps) {
     const isFormRedirect = isRedirect(dataSrc);
 
@@ -65,6 +67,7 @@ function DonationFormBlockApp({
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}
                 formViewUrl={formViewUrl}
+                formDesign={formDesign}
             />
         );
     }
@@ -105,6 +108,7 @@ roots.forEach((root) => {
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
     const formViewUrl = root.getAttribute('data-form-view-url');
+    const formDesign = root.getAttribute('data-form-design');
 
     createRoot(root).render(
         <DonationFormBlockApp
@@ -114,6 +118,7 @@ roots.forEach((root) => {
             embedId={embedId}
             formUrl={formUrl}
             formViewUrl={formViewUrl}
+            formDesign={formDesign}
         />
     );
 });

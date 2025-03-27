@@ -11,6 +11,7 @@ type ModalFormProps = {
     openFormButton: string;
     isFormRedirect: boolean;
     formViewUrl: string;
+    formDesign?: string;
 };
 
 /**
@@ -20,7 +21,7 @@ type ModalFormProps = {
  * @since 3.2.0 include types. update BEM classnames.
  * @since 3.0.0
  */
-export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedirect, formViewUrl}: ModalFormProps) {
+export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedirect, formViewUrl, formDesign}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -48,7 +49,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
 
     return (
         <>
-            <FormModal isOpen={isOpen} onChange={toggleModal} openFormButton={openFormButton} isLoading={isLoading}>
+            <FormModal isOpen={isOpen} onChange={toggleModal} openFormButton={openFormButton} isLoading={isLoading} formDesign={formDesign}>
                 <IframeResizer
                     title={__('Donation Form', 'give')}
                     id={embedId}

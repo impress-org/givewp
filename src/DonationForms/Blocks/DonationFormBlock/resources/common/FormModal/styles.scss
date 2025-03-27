@@ -6,7 +6,7 @@
         height: 100%;
         width: 100%;
         display: flex;
-        background-color: rgba(0, 0, 0, 0.35);
+        background-color: rgba(0, 0, 0, 0.5);
         z-index: 100;
     }
 
@@ -35,9 +35,9 @@
 
     &__close {
         display: flex;
-        position: absolute;
-        top: .25rem;
-        right: 50%;
+        position: fixed;
+        top: 25px;
+        right: 25px;
         padding: .75rem;
         width: fit-content;
         background: #fff;
