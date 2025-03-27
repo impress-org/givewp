@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
-import {Button} from 'react-aria-components';
+import ServerSideRender from '@wordpress/server-side-render';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignSelector from '../shared/components/CampaignSelector';
 
@@ -57,9 +57,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                 campaignId={attributes.campaignId}
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
-                <Button className="givewp-donation-form-modal__open">
-                    {buttonText}
-                </Button>
+                <ServerSideRender block="givewp/campaign-donate-button" attributes={attributes} />
             </CampaignSelector>
 
             {hasResolved && campaign?.id && (
