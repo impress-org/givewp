@@ -522,6 +522,7 @@ select[name="campaignId"] {
 :global(#give-admin-campaigns-root) {
 
 
+    .createCampaignPageButton,
     .editCampaignPageButton,
     .updateCampaignButton {
         display: flex;
@@ -535,6 +536,14 @@ select[name="campaignId"] {
 
         svg {
             margin: 3px 0 0 8px !important;
+        }
+    }
+
+    .createCampaignPageButton{
+        background-color: var(--givewp-shades-white);
+
+        &:hover {
+            background-color: #F0F6FC;
         }
     }
 

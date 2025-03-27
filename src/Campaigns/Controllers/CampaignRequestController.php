@@ -4,8 +4,10 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
@@ -31,7 +33,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -52,9 +54,9 @@ class CampaignRequestController
 
         $query = Campaign::query();
 
-        $query->where('status', $status);
+        $query->whereIn('status', $status);
 
-        if ( ! empty($ids)) {
+        if (!empty($ids)) {
             $query->whereIn('id', $ids);
         }
 
@@ -118,7 +120,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -147,8 +149,13 @@ class CampaignRequestController
                     $campaign->goalType = new CampaignGoalType($value);
                     break;
                 case 'defaultFormId':
-                    give(CampaignRepository::class)->updateDefaultCampaignForm($campaign,
-                        $request->get_param('defaultFormId'));
+                    give(CampaignRepository::class)->updateDefaultCampaignForm(
+                        $campaign,
+                        $request->get_param('defaultFormId')
+                    );
+                    break;
+                case 'pageId':
+                    $campaign->pageId = (int)$value;
                     break;
                 default:
                     if ($campaign->hasProperty($key)) {
@@ -168,10 +175,16 @@ class CampaignRequestController
      * @unreleased
      *
      * @throws Exception
+     * @return WP_Error | WP_REST_Response
      */
-    public function mergeCampaigns(WP_REST_Request $request): WP_REST_Response
+    public function mergeCampaigns(WP_REST_Request $request)
     {
         $destinationCampaign = Campaign::find($request->get_param('id'));
+
+        if (!$destinationCampaign) {
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
         $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
 
         $campaignsMerged = $destinationCampaign->merge(...$campaignsToMerge);
@@ -198,12 +211,27 @@ class CampaignRequestController
             'secondaryColor' => '#27ae60',
             'goal' => (int)$request->get_param('goal'),
             'goalType' => new CampaignGoalType($request->get_param('goalType')),
-            'status' => CampaignStatus::DRAFT(),
+            'status' => CampaignStatus::ACTIVE(),
             'startDate' => $request->get_param('startDateTime'),
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
         return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function createCampaignPage(WP_REST_Request $request): WP_REST_Response
+    {
+        $campaignPage = CampaignPage::create([
+            'campaignId' => (int)$request->get_param('id'),
+            'status' => CampaignPageStatus::DRAFT(),
+        ]);
+
+        return new WP_REST_Response($campaignPage->toArray(), 201);
     }
 
     /**
@@ -218,15 +246,19 @@ class CampaignRequestController
                 break;
             case 'amount':
                 $query
-                    ->selectRaw('(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
-                        DB::prefix('give_revenue'))
+                    ->selectRaw(
+                        '(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
+                        DB::prefix('give_revenue')
+                    )
                     ->orderBy('amount', $orderBy);
 
                 break;
             case 'donations':
                 $query
-                    ->selectRaw('(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
-                        DB::prefix('give_revenue'))
+                    ->selectRaw(
+                        '(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
+                        DB::prefix('give_revenue')
+                    )
                     ->orderBy('donationsCount', $orderBy);
 
                 break;
