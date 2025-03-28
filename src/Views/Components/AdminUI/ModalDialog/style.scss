@@ -24,6 +24,8 @@
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
         color: var(--givewp-grey-700);
+        max-height: calc(100% - 2rem);
+        overflow-y: auto;
 
         .givewp-modal-header {
             display: flex;
@@ -90,6 +92,13 @@
             padding: var(--givewp-spacing-6);
         }
     }
+}
+
+body.modalDialog-open {
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
 }
 
 @keyframes appear {
