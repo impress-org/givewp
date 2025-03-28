@@ -32,10 +32,6 @@ class CreateDefaultLayoutForCampaignPage
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:heading -->
-<h2 class="wp-block-heading"></h2>
-<!-- /wp:heading -->
-
 <!-- wp:paragraph -->
 <p>%description%</p>
 <!-- /wp:paragraph -->
