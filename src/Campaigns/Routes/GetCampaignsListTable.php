@@ -97,8 +97,19 @@ class GetCampaignsListTable implements RestRoute
         $this->request = $request;
         $this->listTable = give(CampaignsListTable::class);
 
-        $campaigns = $this->getCampaigns();
         $campaignsCount = $this->getTotalCampaignsCount();
+
+        if ($campaignsCount === 0) {
+            return new WP_REST_Response(
+                [
+                    'items' => [],
+                    'totalItems' => 0,
+                    'totalPages' => 0,
+                ]
+            );
+        }
+
+        $campaigns = $this->getCampaigns();
         $pageCount = (int)ceil($campaignsCount / $request->get_param('perPage'));
 
         $ids = array_map(function (Campaign $campaign) {

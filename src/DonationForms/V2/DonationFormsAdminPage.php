@@ -262,6 +262,11 @@ class DonationFormsAdminPage
     public function renderReactSwitch()
     {
         ?>
+        <style>
+            .page-title-action:not(.switch-new-view) {
+                display: none;
+            }
+        </style>
         <script type="text/javascript">
             function showReactTable() {
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {

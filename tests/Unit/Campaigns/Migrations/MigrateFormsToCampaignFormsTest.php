@@ -166,4 +166,16 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $this->assertEquals($form->createdAt, $campaign->startDate);
         $this->assertNull($campaign->endDate);
     }
+
+    /**
+     * @since 4.0.0
+     * @throws Exception
+     */
+    public function testMigrationRunsWithNoData(): void
+    {
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $this->assertEquals(0, DB::table('give_campaign_forms')->count());
+    }
 }

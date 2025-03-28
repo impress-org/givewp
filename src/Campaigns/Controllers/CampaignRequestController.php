@@ -71,7 +71,7 @@ class CampaignRequestController
 
         $campaigns = $query->getAll() ?? [];
         $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
-        $totalPages = (int)ceil($totalCampaigns / $perPage);
+        $totalPages = $totalCampaigns === 0 ? 0 : (int)ceil($totalCampaigns / $perPage);
 
         $ids = array_map(function ($campaign) {
             return $campaign->id;

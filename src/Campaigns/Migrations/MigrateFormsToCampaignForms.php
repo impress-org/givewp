@@ -28,7 +28,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public static function timestamp(): int
     {
-        return strtotime('2024-08-26 00:00:01');
+        return strtotime('2024-08-26 00:00:02');
     }
 
     /**

@@ -17,8 +17,11 @@ export default function CampaignDetailsOverviewTab() {
             {showTooltip && (
                 <CampaignNotice
                     title={__('Campaign Form', 'give')}
-                    description={__('Get a quick view of all the forms associated with your campaign in the forms page. You can edit and add multiple forms to your campaign.', 'give')}
-                    linkHref="#"
+                    description={__(
+                        'Get a quick view of all the forms associated with your campaign in the forms page. You can edit and add multiple forms to your campaign.',
+                        'give'
+                    )}
+                    linkHref="https://docs.givewp.com/campaign-forms"
                     linkText={__('All you need to know about campaigns', 'give')}
                     handleDismiss={dismissTooltip}
                     type={'campaignForm'}
@@ -26,4 +29,4 @@ export default function CampaignDetailsOverviewTab() {
             )}
         </div>
     );
-};
+}
