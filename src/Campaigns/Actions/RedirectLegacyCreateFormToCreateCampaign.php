@@ -3,6 +3,8 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Framework\Database\DB;
 
 /**
  * @unreleased
@@ -93,11 +95,12 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
     {
-        if (class_exists(\GiveP2P\P2P\Repositories\CampaignRepository::class)) {
-            return ! isset($_GET['donationFormID']) || ! give(\GiveP2P\P2P\Repositories\CampaignRepository::class)->getByFormId($_GET['donationFormID']);
-        }
+        $form = DB::table('give_campaigns')
+            ->where('form_id', $_GET['donationFormID'])
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->get();
 
-        return true;
+        return ! isset($_GET['donationFormID']) || ! $form;
     }
 
     /**

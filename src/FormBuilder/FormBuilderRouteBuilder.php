@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder;
 
+use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Framework\Database\DB;
 use Give\Helpers\Language;
 
 class FormBuilderRouteBuilder
@@ -75,8 +77,13 @@ class FormBuilderRouteBuilder
             $queryArgs['campaignId'] = $_GET['campaignId'];
         }
 
-        // P2P
-        if (isset($_GET['p2p'])) {
+        // Check if it's P2P form
+        $form = DB::table('give_campaigns')
+            ->where('form_id', $this->donationFormID)
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->get();
+
+        if ($form) {
             $queryArgs['p2p'] = true;
         }
 
