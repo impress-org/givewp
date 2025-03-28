@@ -22,8 +22,11 @@ class CampaignsDataQuery extends QueryBuilder
     {
         $this->select('campaignId.meta_value as campaign_id');
         $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
-        $this->whereIn('campaignId.meta_value', $campaignIds);
         $this->groupBy('campaign_id');
+
+        if (!empty($campaignIds)) {
+            $this->whereIn('campaignId.meta_value', $campaignIds);
+        }
     }
 
 
