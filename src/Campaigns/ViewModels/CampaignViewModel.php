@@ -3,6 +3,7 @@
 namespace Give\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -18,11 +19,30 @@ class CampaignViewModel
     private $campaign;
 
     /**
+     * @var CampaignsDataRepository|null
+     */
+    private $data;
+
+    /**
      * @unreleased
      */
     public function __construct(Campaign $campaign)
     {
         $this->campaign = $campaign;
+    }
+
+    /**
+     * Set data source
+     *
+     * @param CampaignsDataRepository $data
+     *
+     * @return CampaignViewModel
+     */
+    public function setData(CampaignsDataRepository $data): CampaignViewModel
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
@@ -48,7 +68,9 @@ class CampaignViewModel
             'secondaryColor' => $this->campaign->secondaryColor,
             'goal' => $this->campaign->goal,
             'goalType' => $this->campaign->goalType->getValue(),
-            'goalStats' => $this->campaign->getGoalStats(),
+            'goalStats' => is_null($this->data)
+                ? $this->campaign->getGoalStats()
+                : $this->data->getGoalData($this->campaign),
             'status' => $this->campaign->status->getValue(),
             'startDate' => Temporal::getFormattedDateTime($this->campaign->startDate),
             'endDate' => $this->campaign->endDate

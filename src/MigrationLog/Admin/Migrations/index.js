@@ -56,32 +56,40 @@ const Migrations = () => {
             };
         });
 
-        API.post('/run-migration', {id: migrationRunModal.id})
-            .then((response) => {
-                if (response.data.status) {
-                    closeMigrationRunModal();
-                } else {
-                    setMigrationRunModal((previousState) => {
-                        return {
-                            ...previousState,
-                            type: 'error',
-                            error: true,
-                            errorMessage: response.data.message,
-                        };
-                    });
-                }
-                // Invalidate the cache
-                mutate(getEndpoint('/get-migrations', parameters));
-            })
-            .catch(() => {
-                setMigrationRunModal((previousState) => {
-                    return {
-                        ...previousState,
-                        type: 'error',
-                        error: true,
-                    };
-                });
-            });
+        let url = '/run-migration';
+
+        if (migrationRunModal.isBatchMigration) {
+            url = migrationRunModal.status === 'incomplete'
+                ? '/reschedule-failed-actions'
+                : '/run-batch-migration'
+        }
+
+        API.post(url, {id: migrationRunModal.id})
+           .then((response) => {
+               if (response.data.status) {
+                   closeMigrationRunModal();
+               } else {
+                   setMigrationRunModal((previousState) => {
+                       return {
+                           ...previousState,
+                           type: 'error',
+                           error: true,
+                           errorMessage: response.data.message,
+                       };
+                   });
+               }
+               // Invalidate the cache
+               mutate(getEndpoint('/get-migrations', parameters));
+           })
+           .catch(() => {
+               setMigrationRunModal((previousState) => {
+                   return {
+                       ...previousState,
+                       type: 'error',
+                       error: true,
+                   };
+               });
+           });
     };
 
     const openMigrationModal = (migration) => {
@@ -98,11 +106,13 @@ const Migrations = () => {
         setMigrationModal({visible: false});
     };
 
-    const openMigrationRunModal = (migrationId) => {
+    const openMigrationRunModal = (migration) => {
         setMigrationRunModal({
-            id: migrationId,
+            id: migration.id,
             visible: true,
             type: 'warning',
+            isBatchMigration: migration.isBatchMigration,
+            status: migration.status,
         });
     };
 
@@ -136,13 +146,13 @@ const Migrations = () => {
                 <Modal.Title>
                     <strong>{__('Migration Failed', 'give')}</strong>
 
-                    <Modal.CloseIcon onClick={closeMigrationModal}/>
+                    <Modal.CloseIcon onClick={closeMigrationModal} />
                 </Modal.Title>
 
-                <Modal.Section title={__('Migration ID', 'give')} content={migrationModal.id}/>
-                <Modal.Section title={__('Last run', 'give')} content={migrationModal.last_run ?? __('n/a', 'give')}/>
+                <Modal.Section title={__('Migration ID', 'give')} content={migrationModal.id} />
+                <Modal.Section title={__('Last run', 'give')} content={migrationModal.last_run ?? __('n/a', 'give')} />
 
-                <Modal.AdditionalContext type={migrationModal.status} context={migrationModal.error}/>
+                <Modal.AdditionalContext type={migrationModal.status} context={migrationModal.error} />
             </Modal>
         );
     };
@@ -158,7 +168,7 @@ const Migrations = () => {
                     <Modal.Content align="center">
                         {migrationRunModal.error ? (
                             <>
-                                <Modal.CloseIcon onClick={closeMigrationRunModal}/>
+                                <Modal.CloseIcon onClick={closeMigrationRunModal} />
                                 <h2>{__('Database update failed!', 'give')}</h2>
                                 {migrationRunModal.errorMessage && (
                                     <Modal.Content align="center">{migrationRunModal.errorMessage}</Modal.Content>
@@ -169,7 +179,7 @@ const Migrations = () => {
                             </>
                         ) : (
                             <>
-                                <Spinner/>
+                                <Spinner />
                                 <div style={{marginTop: 20}}>{__('Running Update', 'give')}</div>
                             </>
                         )}
@@ -178,7 +188,7 @@ const Migrations = () => {
                     <>
                         <Modal.Title>
                             <span className={classNames(styles.titleIcon, styles.warning)}>
-                                <span className="dashicons dashicons-warning"/>
+                                <span className="dashicons dashicons-warning" />
                             </span>
                             {__('Create a Backup Before Running Database Update', 'give')}
                         </Modal.Title>
@@ -187,7 +197,7 @@ const Migrations = () => {
                             <strong style={{marginRight: 5}}>{__('Notice', 'give')}:</strong>
                             {__(
                                 'We strongly recommend you create a complete backup of your WordPress files and database prior to performing an update. We are not responsible for any misuse, deletions, white screens, fatal errors, or any other issue resulting from the use of this plugin.',
-                                'give'
+                                'give',
                             )}
                         </Modal.Content>
 
@@ -276,13 +286,17 @@ const Migrations = () => {
     const columnFilters = {
         status: (type) => <Label type={type}/>,
         actions: (type, migration) => {
-            if (!state.showOptions && migration.status !== 'failed') {
+            if (!state.showOptions) {
+                return null;
+            }
+
+            if (migration.status === 'failed' || migration.status === 'running') {
                 return null;
             }
 
             return (
-                <button className="button" onClick={() => openMigrationRunModal(migration.id)}>
-                    {__('Re-run Update', 'give')}
+                <button className="button" onClick={() => openMigrationRunModal(migration)}>
+                    {migration.status === 'incomplete' ? __('Continue Update', 'give') : __('Re-run Update', 'give')}
                 </button>
             );
         },
@@ -299,7 +313,7 @@ const Migrations = () => {
                     }}
                     icon={true}
                 >
-                    <span className="dashicons dashicons-visibility"/>
+                    <span className="dashicons dashicons-visibility" />
                 </Button>
             );
         },
@@ -309,7 +323,7 @@ const Migrations = () => {
     if (!state.initialLoad && isLoading) {
         return (
             <Notice>
-                <Spinner/>
+                <Spinner />
                 <h2>{__('Loading updates activity', 'give')}</h2>
             </Notice>
         );
