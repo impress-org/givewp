@@ -58,6 +58,6 @@ class AddMissingDonorIdToDonationComments extends Migration
      */
     public static function timestamp()
     {
-        return strtotime('2022-19-12');
+        return strtotime('2022-12-19');
     }
 }

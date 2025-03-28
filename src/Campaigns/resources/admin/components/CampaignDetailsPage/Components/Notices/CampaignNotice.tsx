@@ -20,11 +20,13 @@ export default ({title, description, type, linkHref, linkText, handleDismiss}: N
                 <CloseIcon />
             </div>
         )}
+        <div>
         <h3>
             {title}
         </h3>
         <div className={styles['content']}>
             {description}
+        </div>
         </div>
         {linkText && (
             <div className={styles['content']}>

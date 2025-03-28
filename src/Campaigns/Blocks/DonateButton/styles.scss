@@ -1,0 +1,11 @@
+.givewp-campaign-donate-button-block, .wp-block-givewp-campaign-donate-button {
+    .givewp-donation-form-modal__open {
+        line-height: 1.5;
+        transition: all 0.2s ease;
+        width: 100%;
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--givewp-primary-color), black 20%);
+        }
+    }
+}
