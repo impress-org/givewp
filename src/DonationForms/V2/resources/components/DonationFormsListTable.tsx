@@ -112,33 +112,24 @@ const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
         filter: (item) => {
+            const CubeTooltip = () => (
+                <div className={styles.tooltipContainer}>
+                    <CubeIcon />
+                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                </div>
+            );
+
             return (
                 <>
-                    {item?.v3form ? (
-                        <div className={styles.titleContainer}>
-                            <div className={styles.migratedForm}>
-                                <div className={styles.tooltipContainer}>
-                                    <CubeIcon />
-                                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
-                                </div>
-                                <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                            </div>
-                            {item?.isDefaultCampaignForm && (
-                                <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>
-                                    {__('Default')}
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        <div className={styles.titleContainer}>
+                    <div className={styles.titleContainer}>
+                        <div className={styles.migratedForm}>
+                            {item?.v3Form && <CubeTooltip />}
                             <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                            {item?.isDefaultCampaignForm && (
-                                <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>
-                                    {__('Default')}
-                                </div>
-                            )}
                         </div>
-                    )}
+                        {item?.isDefaultCampaignForm && (
+                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
+                        )}
+                    </div>
                 </>
             );
         },
