@@ -46,7 +46,7 @@ class RevenueColumn extends ModelColumn
 
         return sprintf(
             '<a class="column-earnings-value" href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=$model->id"),
+            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id=$model->id"),
             __('Visit form reports page', 'give'),
             apply_filters(
                 "givewp_list_table_cell_value_{$this::getId()}_content",
