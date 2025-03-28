@@ -58,6 +58,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
+     * @unreleased add p2p param
      * @since 3.22.0 Add locale support
      * @since 3.0.0
      */
@@ -72,6 +73,11 @@ class FormBuilderRouteBuilder
 
         if (isset($_GET['campaignId'])) {
             $queryArgs['campaignId'] = $_GET['campaignId'];
+        }
+
+        // P2P
+        if (isset($_GET['p2p'])) {
+            $queryArgs['p2p'] = true;
         }
 
         return add_query_arg(
