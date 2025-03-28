@@ -215,7 +215,7 @@ export default function CampaignDetailsSettingsTab() {
                 <CampaignNotice
                     title={__('Campaign Settings', 'give')}
                     description={__('You can make changes to your campaign page, campaign details, campaign goal, and campaign theme. Publish your campaign when you’re done with your changes.', 'give')}
-                    linkHref="#"
+                    linkHref="https://docs.givewp.com/campaign-settings"
                     linkText={__('Learn more about campaign and form settings', 'give')}
                     handleDismiss={dismissTooltip}
                     type={'campaignSettings'}
