@@ -59,7 +59,7 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     private function isP2P(): bool
     {
-        return class_exists(CampaignRepository::class) && isset($_GET['p2p']);
+        return class_exists(\GiveP2P\P2P\Repositories\CampaignRepository::class) && isset($_GET['p2p']);
     }
 
     /**
