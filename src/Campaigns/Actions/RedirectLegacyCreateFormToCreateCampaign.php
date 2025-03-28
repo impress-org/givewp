@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
-use GiveP2P\P2P\Repositories\CampaignRepository;
 
 /**
  * @unreleased
@@ -94,7 +93,7 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
     {
-        return ! isset($_GET['donationFormID']) || ! give(CampaignRepository::class)->getByFormId($_GET['donationFormID']);
+        return ! isset($_GET['donationFormID']) || ! give(\GiveP2P\P2P\Repositories\CampaignRepository::class)->getByFormId($_GET['donationFormID']);
     }
 
     /**
