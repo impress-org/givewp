@@ -52,7 +52,7 @@ function includesPath(relativePath) {
  */
 const legacyStyleEntry = {
     'assets/dist/css/give': assetPath('src/css/frontend/give-frontend.scss'),
-    'assets/dist/css/admin-block-editor.css': assetPath('src/css/admin/block-editor.scss'),
+    'assets/dist/css/admin-block-editor': assetPath('src/css/admin/block-editor.scss'),
     'assets/dist/css/admin': assetPath('src/css/admin/give-admin.scss'),
     'assets/dist/css/admin-global': assetPath('src/css/admin/give-admin-global.scss'),
     'assets/dist/css/admin-setup': assetPath('src/css/admin/setup.scss'),
