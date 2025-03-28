@@ -27,6 +27,8 @@ class RedirectLegacyCreateFormToCreateCampaign
                 wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'));
                 exit;
             }
+
+            return;
         }
 
         if (
