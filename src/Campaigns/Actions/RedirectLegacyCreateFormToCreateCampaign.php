@@ -59,7 +59,7 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     private function isP2P(): bool
     {
-        return class_exists(\GiveP2P\P2P\Repositories\CampaignRepository::class) && isset($_GET['p2p']);
+        return isset($_GET['p2p']);
     }
 
     /**
@@ -93,7 +93,11 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
     {
-        return ! isset($_GET['donationFormID']) || ! give(\GiveP2P\P2P\Repositories\CampaignRepository::class)->getByFormId($_GET['donationFormID']);
+        if (class_exists(\GiveP2P\P2P\Repositories\CampaignRepository::class)) {
+            return ! isset($_GET['donationFormID']) || ! give(\GiveP2P\P2P\Repositories\CampaignRepository::class)->getByFormId($_GET['donationFormID']);
+        }
+
+        return true;
     }
 
     /**
