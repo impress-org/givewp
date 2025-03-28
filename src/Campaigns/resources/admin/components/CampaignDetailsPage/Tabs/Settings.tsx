@@ -99,6 +99,7 @@ export default function CampaignDetailsSettingsTab() {
                                     }}
                                     reset={() => setValue('image', '', {shouldDirty: true})}
                                 />
+                                <p className={styles.sectionFieldHelpText}>{__('This will be displayed in your campaign block and campaign grid.', 'give')}</p>
                             </div>
 
                             {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
