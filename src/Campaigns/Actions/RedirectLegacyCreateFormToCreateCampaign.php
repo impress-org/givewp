@@ -34,7 +34,11 @@ class RedirectLegacyCreateFormToCreateCampaign
             && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'
             && isset($_GET['page']) && $_GET['page'] === 'givewp-form-builder'
         ) {
-            if (defined('GIVE_P2P_VERSION') && isset($_GET['p2p'])) {
+            // p2p
+            if (
+                class_exists(\GiveP2P\P2P\Repositories\CampaignRepository::class)
+                && isset($_GET['p2p'])
+            ) {
                 if (
                     ! isset($_GET['donationFormID'])
                     || ! give(\GiveP2P\P2P\Repositories\CampaignRepository::class)->getByFormId($_GET['donationFormID'])
