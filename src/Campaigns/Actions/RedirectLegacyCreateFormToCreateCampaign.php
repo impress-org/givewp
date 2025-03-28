@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use GiveP2P\P2P\Repositories\CampaignRepository;
 
 /**
  * @unreleased
@@ -14,8 +15,10 @@ class RedirectLegacyCreateFormToCreateCampaign
      */
     public function __invoke()
     {
+        global $pagenow;
+
         if (
-            $GLOBALS['pagenow'] === 'post-new.php'
+            $pagenow === 'post-new.php'
             && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'
         ) {
             if (
@@ -24,6 +27,30 @@ class RedirectLegacyCreateFormToCreateCampaign
             ) {
                 wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'));
                 exit;
+            }
+        }
+
+        if (
+            $pagenow === 'edit.php'
+            && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms'
+            && isset($_GET['page']) && $_GET['page'] === 'givewp-form-builder'
+        ) {
+            if (isset($_GET['p2p'])) {
+                if (
+                    ! isset($_GET['donationFormID'])
+                    || ! give(CampaignRepository::class)->getByFormId($_GET['donationFormID'])
+                ) {
+                    wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=p2p-add-campaign'));
+                    exit;
+                }
+            } else {
+                if (
+                    ! isset($_GET['donationFormID'])
+                    || ! Campaign::findByFormId(absint($_GET['donationFormID']))
+                ) {
+                    wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'));
+                    exit;
+                }
             }
         }
     }
