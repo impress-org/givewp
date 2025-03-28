@@ -1,4 +1,4 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
@@ -7,7 +7,6 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import {createInterpolateElement} from '@wordpress/element';
-
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -87,6 +86,11 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         );
     };
 
+    const copyShortcode = (event) => {
+        navigator.clipboard.writeText(`[give_form id="${item.id}"]`);
+        alert(sprintf(__('The shortcode for Donation Form #%d has been copied to your clipboard!', 'give'), item.id));
+    };
+
     return (
         <>
             {parameters.status === 'trash' ? (
@@ -134,6 +138,12 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
+                    <RowAction
+                        onClick={copyShortcode}
+                        actionId={item.id}
+                        displayText={__('Copy shortcode', 'give')}
+                        hiddenText={item?.name}
+                    />
                     {isCampaignDetailsPage && !item.isDefaultCampaignForm && (
                         <RowAction
                             onClick={confirmDefaultCampaignFormModal}
