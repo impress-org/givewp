@@ -45,6 +45,8 @@ class Tests_API extends Give_Unit_Test_Case {
 	 */
 	protected $_payment_id = null;
 
+    protected $_query = null;
+
 	/**
 	 * Set it up.
 	 */

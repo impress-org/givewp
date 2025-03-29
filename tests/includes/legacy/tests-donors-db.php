@@ -1,9 +1,13 @@
 <?php
 
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+
 /**
  * Class Tests_Donors_DB
  */
-class Tests_Donors_DB extends Give_Unit_Test_Case {
+class Tests_Donors_DB extends TestCase {
+    use RefreshDatabase;
 
 	protected $_post_id = null;
 
@@ -247,7 +251,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$donors = Give()->donors->get_donors();
 
-		$this->assertEquals( 2, count( $donors ) );
+		$this->assertEquals( 1, count( $donors ) );
 
 	}
 
@@ -256,7 +260,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_count_customers() {
 
-		$this->assertEquals( 2, intval( Give()->donors->count() ) );
+		$this->assertEquals( 1, intval( Give()->donors->count() ) );
 
 		$args = array(
 			'date' => array(

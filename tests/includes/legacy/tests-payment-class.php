@@ -9,6 +9,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 	protected $_key         = null;
 	protected $_post        = null;
 	protected $_payment_key = null;
+    protected $_transaction_id = null;
 
 	/**
 	 * Set it Up
