@@ -52,7 +52,7 @@ class Give_Recurring_Cache {
 	 *
 	 * @since 1.6
 	 */
-	public function setUp(): void {
+	public function setup() {
 		$this->sub_db = new Give_Subscriptions_DB();
 
 		add_action( 'give_subscription_inserted', array( $this, 'flush_on_subscription_insert' ) );
