@@ -27,7 +27,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	 */
 	public function test_add() {
 		$this->assertNotNull( Give()->logs->add() );
-		$this->assertInternalType( 'integer', Give()->logs->add() );
+        $this->assertIsInt( Give()->logs->add() );
 	}
 
 	/**
@@ -43,14 +43,12 @@ class Tests_Logging extends Give_Unit_Test_Case {
 				)
 			)
 		);
-		$this->assertInternalType(
-			'integer',
-			Give()->logs->insert_log(
+
+        $this->assertIsInt( Give()->logs->insert_log(
 				array(
 					'log_type' => 'error',
 				)
-			)
-		);
+			));
 	}
 
 	/**
@@ -117,7 +115,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 
 		$count = Give()->logs->get_log_count( 0, 'error' );
 
-		$this->assertInternalType( 'integer', $count );
+        $this->assertIsInt( $count );
 		$this->assertEquals( 5, $count );
 	}
 }

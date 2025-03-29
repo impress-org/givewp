@@ -299,7 +299,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertInternalType( 'array', $donor->notes );
+        $this->assertIsArray( $donor->notes );
 		$this->assertEquals( 0, $donor->get_notes_count() );
 
 		$note_1 = $donor->add_note( 'Testing' );
@@ -332,7 +332,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$out = give_get_users_donations( $this->_user_id );
 
-		$this->assertInternalType( 'object', $out[0] );
+        $this->assertIsObject( $out[0] );
 		$this->assertEquals( 'give_payment', $out[0]->post_type );
 		$this->assertTrue( give_has_donations( $this->_user_id ) );
 		$this->assertEquals( 1, give_count_donations_of_donor( $this->_user_id ) );
@@ -352,9 +352,9 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$out2 = give_get_users_completed_donations( $this->_user_id );
 
-		$this->assertInternalType( 'array', $out2 );
+        $this->assertisArray( $out2 );
 		$this->assertEquals( 1, count( $out2 ) );
-		$this->assertInternalType( 'object', $out2[0] );
+		$this->assertIsObject( $out2[0] );
 		$this->assertEquals( $out2[0]->post_type, 'give_forms' );
 
 	}
@@ -365,7 +365,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	public function test_get_donation_stats_by_user() {
 
 		$donation_stats = give_get_donation_stats_by_user( $this->_user_id );
-		$this->assertInternalType( 'array', $donation_stats );
+        $this->assertIsArray( $donation_stats );
 		$this->assertEquals( 2, count( $donation_stats ) );
 		$this->assertTrue( isset( $donation_stats['purchases'] ) );
 		$this->assertTrue( isset( $donation_stats['total_spent'] ) );
@@ -580,7 +580,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		 *
 		 * @since 2.0
 		 */
-		$this->assertInternalType( 'object', $donor_name_split );
+        $this->assertIsObject( $donor_name_split );
 
 		/**
 		 * Check 2 - Check for existence of attribute first_name in object.

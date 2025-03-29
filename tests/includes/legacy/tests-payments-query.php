@@ -70,7 +70,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$result   = $payment3->get_payment_by_group();
 		foreach ( $result as $donation_status => $value ) {
 			$this->assertContains( $donation_status, $donation_statuses );
-			$this->assertInternalType( 'array', $value );
+            $this->assertIsArray( $value );
 		}
 	}
 

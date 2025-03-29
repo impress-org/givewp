@@ -113,18 +113,18 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 * Test default message.
 	 */
 	public function test_give_get_default_donation_notification_email() {
-		$this->assertContains( 'Hi there', give_get_default_donation_notification_email() );
-		$this->assertContains( 'This email is to inform you that a new donation has been made on your website', give_get_default_donation_notification_email() );
-		$this->assertContains( 'Donor:', give_get_default_donation_notification_email() );
-		$this->assertContains( '{name}', give_get_default_donation_notification_email() );
-		$this->assertContains( 'Donation:', give_get_default_donation_notification_email() );
-		$this->assertContains( '{donation}', give_get_default_donation_notification_email() );
-		$this->assertContains( 'Amount:', give_get_default_donation_notification_email() );
-		$this->assertContains( '{amount}', give_get_default_donation_notification_email() );
-		$this->assertContains( 'Payment Method:', give_get_default_donation_notification_email() );
-		$this->assertContains( '{payment_method}', give_get_default_donation_notification_email() );
-		$this->assertContains( 'Thank you,', give_get_default_donation_notification_email() );
-		$this->assertContains( '{sitename}', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Hi there', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'This email is to inform you that a new donation has been made on your website', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Donor:', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( '{name}', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Donation:', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( '{donation}', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Amount:', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( '{amount}', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Payment Method:', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( '{payment_method}', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( 'Thank you,', give_get_default_donation_notification_email() );
+		$this->assertStringContainsString( '{sitename}', give_get_default_donation_notification_email() );
 
 	}
 
@@ -134,7 +134,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	public function test_email_tags_get_tags() {
 
 		// Should be array type.
-		$this->assertInternalType( 'array', give_get_email_tags() );
+        $this->assertIsArray( give_get_email_tags() );
 
 		// Ensure default tags are in the array.
 		$this->assertarrayHasKey( 'donation', give_get_email_tags() );
@@ -242,7 +242,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 		$receipt_link = give_get_view_receipt_link( $this->_payment_id );
 
-		$this->assertContains( $receipt_link, give_email_tag_receipt_link( $this->_payment_id ) );
+		$this->assertStringContainsString( $receipt_link, give_email_tag_receipt_link( $this->_payment_id ) );
 	}
 
 	/**
@@ -252,7 +252,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 		$receipt_url = give_get_view_receipt_url( $this->_payment_id );
 
-		$this->assertContains( $receipt_url, give_email_tag_receipt_link( $this->_payment_id ) );
+		$this->assertStringContainsString( $receipt_url, give_email_tag_receipt_link( $this->_payment_id ) );
 	}
 
 	/**
@@ -298,7 +298,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 		$from_name    = Give()->emails->get_from_name();
 		$from_address = Give()->emails->get_from_address();
-		$this->assertContains( "From: {$from_name} <{$from_address}>", Give()->emails->get_headers() );
+		$this->assertStringContainsString( "From: {$from_name} <{$from_address}>", Give()->emails->get_headers() );
 
 	}
 

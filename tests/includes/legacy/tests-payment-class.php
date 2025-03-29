@@ -192,7 +192,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		);
 		$payment->save();
 
-		$this->assertInternalType( 'array', $payment->user_info );
+        $this->assertisArray( $payment->user_info );
 		foreach ( $payment->user_info as $key => $value ) {
 			$this->assertFalse( is_serialized( $value ), $key . ' returned a serialized value' );
 		}

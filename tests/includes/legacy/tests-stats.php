@@ -74,32 +74,32 @@ class Tests_Stats extends Give_Unit_Test_Case {
 
 		// Set start date only
 		$stats->setup_dates( 'yesterday' );
-		$this->assertInternalType( 'numeric', $stats->start_date );
+        $this->assertIsNumeric( $stats->start_date  );
 		$this->assertGreaterThan( $stats->start_date, $stats->end_date );
 		$this->assertEquals( $stats->end_date - $stats->start_date, DAY_IN_SECONDS - 1 );
 
 		// Set some valid predefined date ranges
 		$stats->setup_dates( 'yesterday', 'today' );
-		$this->assertInternalType( 'numeric', $stats->start_date );
-		$this->assertInternalType( 'numeric', $stats->end_date );
+        $this->assertIsNumeric( $stats->start_date );
+		$this->assertIsNumeric( $stats->end_date );
 		$this->assertGreaterThan( $stats->start_date, $stats->end_date );
 
 		// Set some valid dates
 		$stats->setup_dates( '2012-01-12', '2012-04-15' );
-		$this->assertInternalType( 'numeric', $stats->start_date );
-		$this->assertInternalType( 'numeric', $stats->end_date );
+		$this->assertIsNumeric( $stats->start_date );
+		$this->assertIsNumeric( $stats->end_date );
 		$this->assertGreaterThan( $stats->start_date, $stats->end_date );
 
 		// Set some valid date strings
 		$stats->setup_dates( 'January 15, 2013', 'February 24, 2013' );
-		$this->assertInternalType( 'numeric', $stats->start_date );
-		$this->assertInternalType( 'numeric', $stats->end_date );
+		$this->assertIsNumeric( $stats->start_date );
+		$this->assertIsNumeric( $stats->end_date );
 		$this->assertGreaterThan( $stats->start_date, $stats->end_date );
 
 		// Set some valid timestamps
 		$stats->setup_dates( '1379635200', '1379645200' );
-		$this->assertInternalType( 'numeric', $stats->start_date );
-		$this->assertInternalType( 'numeric', $stats->end_date );
+		$this->assertIsNumeric( $stats->start_date );
+		$this->assertIsNumeric( $stats->end_date );
 		$this->assertGreaterThan( $stats->start_date, $stats->end_date );
 
 		// Set some invalid dates
