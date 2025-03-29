@@ -227,7 +227,8 @@ final class CampaignDonationQueryTest extends TestCase
      */
     protected function getMonth(string $date): string
     {
-        return date_create($date)->format('m');
+        // MySQL returns without leading zero
+        return date_create($date)->format('n');
     }
 
     /**
@@ -235,6 +236,7 @@ final class CampaignDonationQueryTest extends TestCase
      */
     protected function getDay(string $date): string
     {
-        return date_create($date)->format('d');
+        // MySQL returns without leading zero
+        return date_create($date)->format('j');
     }
 }
