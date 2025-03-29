@@ -54,7 +54,7 @@ class Give_Admin {
 	 * @sinve  2.4.0
 	 * @access private
 	 */
-	public function setUp(): void {
+	private function setup() {
 		$this->admin_loading();
 		$this->conditional_loading();
 	}

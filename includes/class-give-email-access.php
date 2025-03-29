@@ -114,7 +114,7 @@ class Give_Email_Access {
 	 *
 	 * @since 2.4.0
 	 */
-	public function setUp(): void {
+	public function setup() {
 
 		$is_email_access_on_page = apply_filters( 'give_is_email_access_on_page', give_is_success_page() || give_is_history_page() );
 

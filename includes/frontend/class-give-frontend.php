@@ -51,7 +51,7 @@ class Give_Frontend {
 	 * @sinve  2.4.0
 	 * @access private
 	 */
-	public function setUp(): void {
+	private function setup() {
 		$this->frontend_loading();
 
 		add_action( 'give_init', array( $this, 'bc_240' ), 0 );

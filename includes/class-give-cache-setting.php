@@ -128,7 +128,7 @@ class Give_Cache_Setting {
 	 * @since  2.4.0
 	 * @access private
 	 */
-	public function setUp(): void {
+	private function setup() {
 		self::$all_option_ids = array_keys( $this->settings );
 
 		$this->load_plugin_settings();

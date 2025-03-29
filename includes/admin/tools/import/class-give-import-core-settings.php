@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * @return void
 		 */
-		public function setUp(): void {
+		public function setup() {
 			$this->setup_hooks();
 		}
 

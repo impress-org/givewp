@@ -72,7 +72,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		 *
 		 * @return void
 		 */
-		public function setUp(): void {
+		public function setup() {
 			$this->setup_hooks();
 		}
 

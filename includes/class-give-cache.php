@@ -66,7 +66,7 @@ class Give_Cache {
 	 * @since  1.8.7
 	 * @access public
 	 */
-	public function setUp(): void {
+	public function setup() {
 		// Currently enable cache only for backend.
 		self::$instance->is_cache = defined( 'GIVE_CACHE' ) ? GIVE_CACHE : $this->is_cache_enabled();
 
