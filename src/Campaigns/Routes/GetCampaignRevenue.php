@@ -93,7 +93,7 @@ class GetCampaignRevenue implements RestRoute
         $resultMap = $this->mapResultsByDate($results, $groupBy);
 
         // Get all dates between the start and end date based on the group by
-        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate, $groupBy);
+        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate->modify("+1 day"), $groupBy);
 
         // Merge the results with the dates to ensure that all dates are included
         $data = $this->mergeResultsWithDates($dates, $resultMap);
@@ -106,9 +106,6 @@ class GetCampaignRevenue implements RestRoute
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
-        // Include the end date
-        $endDate->modify('+1 day');
-
         $startDateInterval = $startDate->diff($endDate);
 
         // If the date range is less than 7 days, pad the start date to include the last 7 days
