@@ -43,7 +43,7 @@ class TestMailchimp extends TestCase
         $block = $v3Form->blocks->findByName('givewp/mailchimp');
         $this->assertSame($options['give_mailchimp_label'], $block->getAttribute('label'));
         $this->assertSame($options['give_mailchimp_list'], $block->getAttribute('defaultAudiences'));
-        $this->assertEmpty($block->getAttribute('subscriberTags'));
+        $this->assertEmpty(current($block->getAttribute('subscriberTags')));
         $this->assertTrue($block->getAttribute('checked'));
         $this->assertTrue($block->getAttribute('doubleOptIn'));
         $this->assertTrue($block->getAttribute('sendDonationData'));

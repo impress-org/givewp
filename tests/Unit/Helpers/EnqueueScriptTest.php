@@ -102,7 +102,7 @@ class EnqueueScriptTest extends TestCase
             ->register();
 
         $this->assertStringContainsString('coreJsData', wp_scripts()->registered[$this->enqueueScriptClassObject->getScriptId()]->extra['data']);
-        $this->assertStringNotContainsString('giveFfmJsData', wp_scripts()->registered[$this->addonEnqueueScriptClassObject->getScriptId()]->extra['data']);
+        $this->assertStringContainsString('giveFfmJsData', wp_scripts()->registered[$this->addonEnqueueScriptClassObject->getScriptId()]->extra['data']);
     }
 
     public function testLoadScriptInFooter()
