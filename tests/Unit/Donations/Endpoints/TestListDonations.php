@@ -68,7 +68,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return void
      * @throws Exception
@@ -87,7 +87,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return void
      * @throws Exception

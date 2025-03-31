@@ -10,7 +10,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
  * Used to optimize the campaigns list table performance and to avoid n+1 problems.
  * Instead of doing expensive queries in multiple columns in each row, this class loads everything upfront for multiple campaigns.
  *
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsDataRepository
 {
@@ -67,7 +67,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get revenue for campaign
      *
@@ -91,7 +91,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get donations count for campaign
      *
@@ -115,7 +115,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get donors count for campaign
      *
@@ -140,7 +140,7 @@ class CampaignsDataRepository
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get goal data for campaign
      *
@@ -169,7 +169,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param Campaign $campaign
      *

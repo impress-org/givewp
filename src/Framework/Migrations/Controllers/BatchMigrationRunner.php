@@ -11,7 +11,7 @@ use Give\MigrationLog\MigrationLogStatus;
 /**
  * Batch Migration runner controller
  *
- * @unreleased
+ * @since 4.0.0
  */
 class BatchMigrationRunner
 {
@@ -26,7 +26,7 @@ class BatchMigrationRunner
     private $actionSchedulerStore;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(BatchMigration $migration)
     {
@@ -37,7 +37,7 @@ class BatchMigrationRunner
     /**
      * Run batch migration
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -111,7 +111,7 @@ class BatchMigrationRunner
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getHook(): string
     {
@@ -119,7 +119,7 @@ class BatchMigrationRunner
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getGroup(): string
     {
@@ -129,7 +129,7 @@ class BatchMigrationRunner
     /**
      * Register batch migration action
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -153,7 +153,7 @@ class BatchMigrationRunner
     /**
      * Check if the current migration has new data
      *
-     * @unreleased
+     * @since 4.0.0
      */
     private function migrationHasMoreItemsToBatch(): bool
     {
@@ -189,7 +189,7 @@ class BatchMigrationRunner
     /**
      * Reschedule failed and canceled actions
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function rescheduleFailedActions()
     {

@@ -12,7 +12,7 @@ import CampaignSelector from '../shared/components/CampaignSelector';
 
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function Edit({attributes, setAttributes}: BlockEditProps<{
     campaignId: number;

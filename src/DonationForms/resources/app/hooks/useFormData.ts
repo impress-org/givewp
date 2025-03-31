@@ -5,7 +5,7 @@ import type {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups
 /**
  * Zero decimal currencies are currencies that do not have a minor unit.
  * For example, the Japanese Yen (JPY) does not have a minor unit.
- * @unreleased
+ * @since 4.0.0
  *
  * @see https://stripe.com/docs/currencies#zero-decimal
  */
@@ -31,7 +31,7 @@ const zeroDecimalCurrencies = [
 /**
  * Takes in an amount value in dollar units and returns the calculated cents (minor) amount
  *
- * @unreleased
+ * @since 4.0.0
  */
 const amountToMinorUnit = (amount: string, currency: string) => {
     if (zeroDecimalCurrencies.includes(currency)) {
@@ -44,7 +44,7 @@ const amountToMinorUnit = (amount: string, currency: string) => {
 /**
  * Donation total calculation
  *
- * @unreleased
+ * @since 4.0.0
  */
 const getAmountTotal = (totals: DonationTotals, amount: number) =>
     Number(
@@ -60,7 +60,7 @@ const getAmountTotal = (totals: DonationTotals, amount: number) =>
  * Subscription total calculation
  * TODO: figure out which totals will be included in subscriptions
  *
- * @unreleased
+ * @since 4.0.0
  */
 const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
     let total = 0;
@@ -78,7 +78,7 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function useFormData() {
     const {totals} = useDonationSummaryContext();

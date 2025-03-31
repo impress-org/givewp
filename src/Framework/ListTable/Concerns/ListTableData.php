@@ -3,7 +3,7 @@
 namespace Give\Framework\ListTable\Concerns;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 trait ListTableData
 {
@@ -18,7 +18,7 @@ trait ListTableData
     protected $useData = true;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @param array|object $data;
      */
     public function setListTableData($data)
@@ -27,7 +27,7 @@ trait ListTableData
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @return array|object
      */
     public function getListTableData()
@@ -37,7 +37,7 @@ trait ListTableData
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return bool
      */

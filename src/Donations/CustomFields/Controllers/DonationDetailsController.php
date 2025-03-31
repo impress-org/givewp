@@ -13,7 +13,7 @@ use Give\Donations\Models\Donation;
 class DonationDetailsController
 {
     /**
-     * @unreleased return early if no form is found
+     * @since 4.0.0 return early if no form is found
      * @since 3.0.0
      */
     public function show(int $donationID): string

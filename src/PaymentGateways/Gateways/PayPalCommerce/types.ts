@@ -44,7 +44,7 @@ export type PayPalSubscriber = {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type PayPalCommerceGatewaySettings = {
     ajaxUrl: string,
@@ -70,7 +70,7 @@ export type PayPalCommerceGatewaySettings = {
 
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export interface PayPalCommerceGateway extends Gateway {
     settings?: GatewaySettings & PayPalCommerceGatewaySettings;

@@ -91,7 +91,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased Add support to isDefaultCampaignForm key
+     * @since 4.0.0 Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
      * @param array  $donationForms

@@ -27,7 +27,7 @@ const EditorSelectedIcon = () => {
 /**
  * Editor Type Option component
  *
- * @unreleased
+ * @since 4.0.0
  */
 const EditorTypeOption = ({
     editorType,
@@ -82,7 +82,7 @@ const EditorTypeOption = ({
 /**
  * Form Modal component that renders a modal with a styled form inside
  *
- * @unreleased
+ * @since 4.0.0
  */
 export default function AddCampaignFormModal({isOpen, handleClose, title, campaignId}: FormModalProps) {
     const [editorSelected, setEditorSelected] = useState('');

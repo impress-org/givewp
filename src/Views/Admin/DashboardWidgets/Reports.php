@@ -49,7 +49,7 @@ class Reports
     /**
      * Enqueue app scripts
      *
-     * @unreleased Replace "new form" with "new campaign form" link
+     * @since 4.0.0 Replace "new form" with "new campaign form" link
      */
     public function enqueue_scripts($base)
     {

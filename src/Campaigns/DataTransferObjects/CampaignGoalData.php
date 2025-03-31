@@ -9,7 +9,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignGoalData implements Arrayable
 {
@@ -44,7 +44,7 @@ class CampaignGoalData implements Arrayable
     public $actualFormatted;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign)
     {
@@ -57,7 +57,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getActual(): int
     {
@@ -88,7 +88,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getPercentage(): float
     {
@@ -99,7 +99,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getActualFormatted(): string
     {
@@ -111,7 +111,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getGoalFormatted(): string
     {
@@ -123,7 +123,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function toArray(): array
     {

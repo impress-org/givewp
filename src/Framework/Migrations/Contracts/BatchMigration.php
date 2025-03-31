@@ -5,14 +5,14 @@ namespace Give\Framework\Migrations\Contracts;
 /**
  * Extend this class when you need database migration to run in batches.
  *
- * @unreleased
+ * @since 4.0.0
  */
 abstract class BatchMigration extends BaseMigration
 {
     /**
      * Get the number of items per batch
      *
-     * @unreleased
+     * @since 4.0.0
      */
     abstract public function getBatchSize(): int;
 
@@ -20,7 +20,7 @@ abstract class BatchMigration extends BaseMigration
      *
      * Get the total items count
      *
-     * @unreleased
+     * @since 4.0.0
      */
     abstract public function getItemsCount(): int;
 
@@ -29,7 +29,7 @@ abstract class BatchMigration extends BaseMigration
      *
      * Get the first and the last item ID for a batch
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array{0: int, 1: int} the first value is the first id and the second value is the last id of a batch
      */
@@ -41,7 +41,7 @@ abstract class BatchMigration extends BaseMigration
      * @param $firstId - first item ID in batch
      * @param $lastId  - last item ID in batch
      *
-     * @unreleased
+     * @since 4.0.0
      */
     abstract public function runBatch($firstId, $lastId);
 
@@ -50,7 +50,7 @@ abstract class BatchMigration extends BaseMigration
      *
      * The purpose of this method is to check if we have new items that came during the migration.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @param $lastProcessedId
      *

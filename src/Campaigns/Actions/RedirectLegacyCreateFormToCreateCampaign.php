@@ -7,12 +7,12 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RedirectLegacyCreateFormToCreateCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -36,7 +36,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isAddingNewForm(): bool
     {
@@ -46,7 +46,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isEditingCampaignForm(): bool
     {
@@ -57,7 +57,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isP2P(): bool
     {
@@ -65,7 +65,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function redirectToNewCampaignPage(): void
     {
@@ -74,7 +74,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function redirectToP2PNewCampaignPage(): void
     {
@@ -83,7 +83,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isCampaignIdInvalidOrMissing(): bool
     {
@@ -91,7 +91,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
     {
@@ -104,7 +104,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isCampaignFormIdInvalidOrMissing(): bool
     {

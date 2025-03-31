@@ -9,12 +9,12 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 /**
  * Class used for loading the number of donors, donations and revenue amounts for multiple campaigns
  *
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsDataQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param int[] $campaignIds
      */
@@ -68,7 +68,7 @@ class CampaignsDataQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array|object|null
      */
@@ -84,7 +84,7 @@ class CampaignsDataQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the initial amounts
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array|object|null
      */
@@ -96,7 +96,7 @@ class CampaignsDataQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function collectDonations()
     {
@@ -106,7 +106,7 @@ class CampaignsDataQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function collectDonors()
     {
@@ -118,7 +118,7 @@ class CampaignsDataQuery extends QueryBuilder
 
     /**
      * An opinionated join method for the donation meta table.
-     * @unreleased
+     * @since 4.0.0
      */
     private function joinDonationMeta($key, $alias): self
     {

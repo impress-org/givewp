@@ -9,12 +9,12 @@ use Give\Tests\RestApiTestCase;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class MergeCampaignsTest extends RestApiTestCase
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -43,7 +43,7 @@ class MergeCampaignsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

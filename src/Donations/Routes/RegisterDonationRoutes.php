@@ -10,7 +10,7 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RegisterDonationRoutes
 {
@@ -20,7 +20,7 @@ class RegisterDonationRoutes
     protected $donationRequestController;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(DonationRequestController $donationRequestController)
     {
@@ -28,7 +28,7 @@ class RegisterDonationRoutes
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -39,7 +39,7 @@ class RegisterDonationRoutes
     /**
      * Get Donation route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerGetDonation()
     {
@@ -82,7 +82,7 @@ class RegisterDonationRoutes
     /**
      * Get Donations route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerGetDonations()
     {
@@ -159,7 +159,7 @@ class RegisterDonationRoutes
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function permissionsCheck(WP_REST_Request $request)
     {
@@ -187,7 +187,7 @@ class RegisterDonationRoutes
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function authorizationStatusCode(): int
     {

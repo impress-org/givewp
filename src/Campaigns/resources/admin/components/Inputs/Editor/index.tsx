@@ -7,7 +7,7 @@ type Props = {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default ({name, rows = 4, ...rest}: Props) => {
 

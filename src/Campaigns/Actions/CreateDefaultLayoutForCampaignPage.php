@@ -3,12 +3,12 @@
 namespace Give\Campaigns\Actions;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CreateDefaultLayoutForCampaignPage
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getBlocks(): string
     {
@@ -43,7 +43,7 @@ class CreateDefaultLayoutForCampaignPage
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(int $campaignId, string $shortDescription): string
     {

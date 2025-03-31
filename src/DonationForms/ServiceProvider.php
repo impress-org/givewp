@@ -404,7 +404,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerReceiptViewPermission()
     {

@@ -190,7 +190,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */

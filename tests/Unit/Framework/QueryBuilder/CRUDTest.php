@@ -131,7 +131,7 @@ final class CRUDTest extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return void
      */

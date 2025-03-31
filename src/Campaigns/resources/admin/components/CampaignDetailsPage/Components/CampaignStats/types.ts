@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type StatWidgetProps = {
     label: string;
@@ -11,7 +11,7 @@ export type StatWidgetProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type CampaignOverViewStat = {
     amountRaised: number;
@@ -20,7 +20,7 @@ export type CampaignOverViewStat = {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type PercentChangePillProps = {
     value: number;

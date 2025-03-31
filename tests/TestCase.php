@@ -158,7 +158,7 @@ class TestCase extends WP_UnitTestCase
      *
      * @see https://phpunit.de/manual/5.5/en/test-doubles.html
      *
-     * @unreleased rename to createMockWithCallback to prevent conflict with PHPUnit's createMock
+     * @since 4.0.0 rename to createMockWithCallback to prevent conflict with PHPUnit's createMock
      * @since 2.25.0 add suppression for phpunit internal deprecated notice
      * @since 2.11.0
      *

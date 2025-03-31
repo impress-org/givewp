@@ -17,7 +17,7 @@ class GetCampaignRevenueTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByDay(): void
@@ -62,7 +62,7 @@ class GetCampaignRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByMonth(): void
@@ -117,7 +117,7 @@ class GetCampaignRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByYear(): void
@@ -165,7 +165,7 @@ class GetCampaignRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getResultData(string $dateCreated, $amount = 0): array
     {

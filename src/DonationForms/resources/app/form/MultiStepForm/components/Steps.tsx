@@ -18,7 +18,7 @@ export default function Steps({steps}: { steps: StepObject[] }) {
     const previousStep = usePrevious(currentStep);
 
     /**
-     * @unreleased prevent scroll on initial step.
+     * @since 4.0.0 prevent scroll on initial step.
      * @since 3.16.0 Scroll to the top of the iframe when the step changes.
      */
     useEffect(() => {

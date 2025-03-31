@@ -19,7 +19,7 @@ class MigrationsRegister
     /**
      * Returns all of the registered migrations
      *
-     * @unreleased sort migrations
+     * @since 4.0.0 sort migrations
      * @since 2.9.0
      *
      * @return string[]
