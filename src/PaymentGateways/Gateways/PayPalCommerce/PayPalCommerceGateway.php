@@ -86,19 +86,24 @@ class PayPalCommerceGateway extends PayPalCommerce
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
         $paymentComponents[] = 'buttons';
         if ('auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments) {
-            $paymentComponents[] = 'hosted-fields';
+            $paymentComponents[] = 'card-fields';
         }
 
         $data = [
             // data-namespace is required for multiple PayPal SDKs to load in harmony.
             'data-namespace' => 'givewp/paypal-commerce',
+            'dataNamespace' => 'givewp/paypal-commerce',
             'client-id' => $merchantDetailModel->clientId,
+            'clientId' => $merchantDetailModel->clientId,
             'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
+            'disableFunding' => 'credit',
             'intent' => 'capture',
             'vault' => 'false',
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
+            'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $merchantDetailRepository->getClientToken(),
+            'dataClientToken' => $merchantDetailRepository->getClientToken(),
             'currency' => give_get_currency($formId),
         ];
 

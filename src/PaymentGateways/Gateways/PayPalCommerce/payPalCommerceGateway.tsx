@@ -1,21 +1,23 @@
 import {
-    PayPalButtons,
-    PayPalHostedField,
-    PayPalHostedFieldsProvider,
-    PayPalScriptProvider,
-    usePayPalHostedFields,
-    usePayPalScriptReducer
+    PayPalButtonsComponentProps, PayPalCardFieldsForm,
 } from '@paypal/react-paypal-js';
-import type {PayPalButtonsComponentProps, PayPalHostedFieldsComponentProps} from '@paypal/react-paypal-js';
-import {__, sprintf} from '@wordpress/i18n';
-import {Flex, TextControl} from '@wordpress/components';
-import {CSSProperties, useEffect, useState} from 'react';
-import {PayPalCommerceGateway, PayPalSubscriber} from './types';
+import {
+    DISPATCH_ACTION,
+    PayPalButtons,
+    PayPalScriptProvider,
+    usePayPalScriptReducer,
+    PayPalCardFieldsProvider,
+    usePayPalCardFields,
+} from '@paypal/react-paypal-js';
+import {__} from '@wordpress/i18n';
+import {CSSProperties, useEffect} from 'react';
+import {PayPalCommerceGateway, PayPalCommerceGatewayData, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';
 import type {
-    CreateSubscriptionRequestBody,
-    PayPalButtonsComponentOptions
+    CreateSubscriptionRequestBody, PayPalButtonCreateOrder,
+    PayPalButtonsComponentOptions,
+    PayPalCardFieldsComponentBasics
 } from '@paypal/paypal-js';
 import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
@@ -34,8 +36,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let firstName;
     let lastName;
     let email;
-    let cardholderName;
-    let hostedField;
     let payPalDonationsSettings;
     let payPalOrderId;
     let payPalSubscriptionId;
@@ -54,6 +54,18 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let currency;
     let eventTickets;
     let submitButton;
+
+    const payPalCommerceGatewayData: PayPalCommerceGatewayData = {
+        cardFieldsForm: null,
+        orderId: null,
+        planId: null,
+    };
+
+    const showOrHideDonateButton = (showOrHide: "show" | "hide") => {
+        if (submitButton) {
+            submitButton.style.display = showOrHide === 'hide' ? 'none' : '';
+        }
+    }
 
     /**
      * @since 3.12.2
@@ -112,10 +124,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
 
         // Remove hosted fields from components if subscription.
-        if (isSubscription && -1 !== paypalScriptOptions.components.indexOf('hosted-fields')) {
+        if (isSubscription && -1 !== paypalScriptOptions.components.indexOf('card-fields')) {
             paypalScriptOptions.components = paypalScriptOptions.components
                 .split(',')
-                .filter((component) => component !== 'hosted-fields')
+                .filter((component) => component !== 'card-fields')
                 .join(',');
         }
 
@@ -181,18 +193,59 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         return formData;
     };
 
-    const validateHostedFields = () => {
-        return Object.values(hostedField.cardFields.getState().fields).some(
-            (field: {isValid: boolean}) => field.isValid
+    const smartButtonsCreateOrderHandler: PayPalButtonsComponentOptions['createOrder'] = async (): Promise<string> => {
+        return await createOrder(
+            `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`,
+            payPalCommerceGateway,
+            getFormData()
         );
     };
 
-    const createOrderHandler: PayPalHostedFieldsComponentProps['createOrder'] = async (): Promise<string> => {
-        return await createOrder(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, payPalCommerceGateway, getFormData());
+    /**
+     * @unreleased
+     */
+    const cardFieldsOnErrorHandler: PayPalCardFieldsComponentBasics['onError'] = (error) => {
+        console.error('PayPal Card Fields Error:', error);
+        // Handle the error as needed
     };
 
-    const createSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
-        const {planId, userAction} = await createSubscriptionPlan(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`, payPalCommerceGateway, getFormData());
+    /**
+     * @unreleased
+     */
+    const cardFieldsCreateOrderHandler: () => Promise<any> = () => {
+        return createOrder(
+            `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`,
+            payPalCommerceGateway,
+            getFormData()
+        );
+    };
+
+    /**
+     * @unreleased
+     */
+    const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
+        const orderId = data.orderID;
+
+        const submitButtonDefaultText = submitButton.textContent;
+        submitButton.textContent = __('Waiting for PayPal...', 'give');
+        submitButton.disabled = true;
+
+        if (orderId) {
+            payPalOrderId = orderId;
+        }
+
+        submitButton.disabled = false;
+        submitButton.textContent = submitButtonDefaultText;
+        submitButton.click();
+        return;
+    };
+
+    const smartButtonsCreateSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
+        const {planId, userAction} = await createSubscriptionPlan(
+            `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`,
+            payPalCommerceGateway,
+            getFormData()
+        );
 
         const subscriberData: PayPalSubscriber = {
             name: {
@@ -225,15 +278,14 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
         if (userAction) {
             createSubscriptionPayload.application_context = {
-                user_action: userAction
-            }
+                ...createSubscriptionPayload.application_context,
+                user_action: userAction as 'CONTINUE' | 'SUBSCRIBE_NOW',
+            };
         }
 
-        return actions.subscription
-            .create(createSubscriptionPayload)
-            .then((orderId) => {
-                return (payPalSubscriptionId = orderId);
-            });
+        return actions.subscription.create(createSubscriptionPayload).then((orderId) => {
+            return (payPalSubscriptionId = orderId);
+        });
     };
 
     const Divider = ({label, style = {}}) => {
@@ -266,11 +318,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
                 <div className="dashed-line" style={styles.dashedLine} />
             </div>
         );
-    };
-
-    const HoistHostedFieldContext = () => {
-        hostedField = usePayPalHostedFields();
-        return <></>;
     };
 
     const FormFieldsProvider = ({children}) => {
@@ -411,77 +458,36 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         };
 
         return donationType === 'subscription' ? (
-            <PayPalButtons {...props} createSubscription={createSubscriptionHandler} />
+            <PayPalButtons {...props} createSubscription={smartButtonsCreateSubscriptionHandler} />
         ) : (
-            <PayPalButtons {...props} createOrder={createOrderHandler} />
+            <PayPalButtons {...props} createOrder={smartButtonsCreateOrderHandler} />
         );
     };
 
-    const HostedFieldsContainer = () => {
-        const {useWatch} = window.givewp.form.hooks;
-        const firstName = useWatch({name: 'firstName'});
-        const lastName = useWatch({name: 'lastName'});
+    /**
+     * @unreleased
+     */
+    const PayPalGatewayCardFieldsForm = () => {
+        const {cardFieldsForm} = usePayPalCardFields();
+        payPalCommerceGatewayData.cardFieldsForm = cardFieldsForm;
 
-        const cardholderDefault = [firstName ?? '', lastName ?? ''].filter((x) => x).join(' ');
-        const [_cardholderName, setCardholderName] = useState(null);
+        return <PayPalCardFieldsForm />;
+    };
 
-        useEffect(() => {
-            cardholderName = _cardholderName ?? cardholderDefault;
-        });
+    const CardFieldsContainer = () => {
+        showOrHideDonateButton('show');
 
         return (
-            <PayPalHostedFieldsProvider createOrder={createOrderHandler}>
-                <div>
+            <PayPalCardFieldsProvider
+                createOrder={cardFieldsCreateOrderHandler}
+                onApprove={cardFieldsOnApproveHandler}
+                onError={cardFieldsOnErrorHandler}
+            >
+                <>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
-
-                    <TextControl
-                        className="givewp-fields"
-                        label={__('Cardholder Name', 'give')}
-                        hideLabelFromVision={true}
-                        placeholder={__('Cardholder Name', 'give')}
-                        value={_cardholderName ?? cardholderDefault}
-                        onChange={(value) => setCardholderName(value)}
-                    />
-
-                    <PayPalHostedField
-                        id="card-number"
-                        className="card-field"
-                        style={CUSTOM_FIELD_STYLE}
-                        hostedFieldType="number"
-                        options={{
-                            selector: '#card-number',
-                            placeholder: '4111 1111 1111 1111',
-                        }}
-                    />
-
-                    <Flex gap="10px">
-                        <PayPalHostedField
-                            id="expiration-date"
-                            className="givewp-fields"
-                            style={CUSTOM_FIELD_STYLE}
-                            hostedFieldType="expirationDate"
-                            options={{
-                                selector: '#expiration-date',
-                                placeholder: __('MM/YYYY', 'give'),
-                            }}
-                        />
-                        <PayPalHostedField
-                            id="cvv"
-                            className="card-field"
-                            style={CUSTOM_FIELD_STYLE}
-                            hostedFieldType="cvv"
-                            options={{
-                                selector: '#cvv',
-                                placeholder: __('CVV', 'give'),
-                                maskInput: true,
-                            }}
-                        />
-                    </Flex>
-                    <div style={{display: 'flex', gap: '10px'}}></div>
-
-                    <HoistHostedFieldContext />
-                </div>
-            </PayPalHostedFieldsProvider>
+                    <PayPalGatewayCardFieldsForm />
+                </>
+            </PayPalCardFieldsProvider>
         );
     };
 
@@ -489,6 +495,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         const {useWatch} = window.givewp.form.hooks;
         const donationType = useWatch({name: 'donationType'});
         const [{options}, dispatch] = usePayPalScriptReducer();
+        const shouldShowCardFields = -1 !== options.components.indexOf('card-fields');
 
         useEffect(() => {
             const isSubscription = donationType === 'subscription';
@@ -496,7 +503,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             const options = getPayPalScriptOptions({isSubscription});
 
             dispatch({
-                type: 'resetOptions',
+                type: DISPATCH_ACTION.RESET_OPTIONS,
                 value: {
                     ...options,
                     currency: currency,
@@ -506,10 +513,17 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             });
         }, [currency, donationType]);
 
+        useEffect(() => {
+            // hide donate buttons if card fields are not expected to be shown
+            if (!shouldShowCardFields) {
+                showOrHideDonateButton('hide');
+            }
+        }, [shouldShowCardFields]);
+
         return (
             <>
                 <SmartButtonsContainer />
-                {-1 !== options.components.indexOf('hosted-fields') && <HostedFieldsContainer />}
+                {shouldShowCardFields && <CardFieldsContainer />}
             </>
         );
     }
@@ -525,7 +539,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
          * @param {Object} values
          */
         beforeCreatePayment: async function (values): Promise<object> {
-             if (payPalSubscriptionId) {
+            if (payPalSubscriptionId) {
                 return {
                     payPalSubscriptionId: payPalSubscriptionId,
                 };
@@ -534,48 +548,39 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             if (payPalOrderId) {
                 // If order ID already set by payment buttons then return early.
                 return {
-                    payPalOrderId: payPalOrderId
+                    payPalOrderId: payPalOrderId,
                 };
             }
 
-            if (!validateHostedFields()) {
-                throw new Error('Invalid PayPal card fields');
+            const {cardFieldsForm} = payPalCommerceGatewayData;
+
+            if (!cardFieldsForm) {
+                return new Error('PayPal Card Fields form is not available.');
             }
 
             try {
-                const result = await hostedField.cardFields.submit({
-                    // Trigger 3D Secure authentication
-                    contingencies: ['SCA_WHEN_REQUIRED'],
-                    cardholderName: cardholderName,
-                });
+                const cardFormState = await cardFieldsForm.getState();
 
-                if (
-                    !result || // Check whether get result from paypal gateway server.
-                    (['NO', 'POSSIBLE'].includes(result.liabilityShift) && // Check whether card required 3D secure validation.
-                        !(result.liabilityShifted && 'POSSIBLE' === result.liabilityShift)) // Check whether card passed 3D secure validation.
-                ) {
-                    throw new Error(
-                        __(
-                            'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
-                            'give'
-                        )
-                    );
+                if (!cardFormState.isFormValid) {
+                    return new Error('PayPal Card Fields form is invalid');
+                }
+
+                console.log('Card Fields submitting...');
+
+                const response = await cardFieldsForm.submit();
+
+                console.log({response});
+
+                if (!payPalOrderId) {
+                    return new Error('PayPal Order ID is not available.');
                 }
 
                 return {
-                    ...result,
-                    payPalOrderId: result.orderId
-                }
+                    payPalOrderId,
+                };
             } catch (err) {
-                console.log('paypal donations error', err);
-
-                // Handle PayPal error.
-                const isPayPalDonationError = err.hasOwnProperty('details');
-                if (isPayPalDonationError) {
-                    throw new Error(err.details[0].description);
-                }
-
-                throw new Error(sprintf(__('Paypal Donations Error: %s', 'give'), err.message));
+                console.error(err);
+                return new Error('Error submitting PayPal Card Fields form.');
             }
         },
 
@@ -588,17 +593,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             const isSubscription = donationType === 'subscription';
             submitButton = window.givewp.form.hooks.useFormSubmitButton();
 
-            useEffect(() => {
-                if (submitButton && !hostedField) {
-                    submitButton.style.display = 'none';
-                }
-
-                return () => {
-                    if (submitButton) {
-                        submitButton.style.display = '';
-                    }
-                };
-            }, []);
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>

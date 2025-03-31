@@ -1,4 +1,5 @@
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+import type {PayPalCardFieldsComponent} from '@paypal/paypal-js';
 
 /**
  * PayPal Commerce Platform: Standard address.
@@ -75,4 +76,11 @@ export interface PayPalCommerceGateway extends Gateway {
     settings?: GatewaySettings & PayPalCommerceGatewaySettings;
     payPalOrderId?: string;
     payPalPlanId?: string;
+    payPalCardFieldsForm?: PayPalCardFieldsComponent
+}
+
+export type PayPalCommerceGatewayData = {
+    orderId?: string;
+    planId?: string;
+    cardFieldsForm?: PayPalCardFieldsComponent
 }
