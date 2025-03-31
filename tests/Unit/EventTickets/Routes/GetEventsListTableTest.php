@@ -28,7 +28,7 @@ class GetEventsListTableTest extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
 
         $listEvents = give(GetEventsListTable::class);
 
@@ -50,7 +50,7 @@ class GetEventsListTableTest extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
 
