@@ -53,6 +53,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		/**
 		 * This function is used to include the related Stripe core files.
 		 *
+         * @unreleased prevented loading translation when using get_plugin_data
 		 * @since  2.5.0
 		 * @since 2.11.0 Stripe sdk loading logic has been removed because
 		 *             Composer autoloader will load it when required.

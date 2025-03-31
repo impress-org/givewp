@@ -103,7 +103,7 @@ class TestListSubscriptions extends TestCase
         foreach ( $subscriptions as $subscription ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($subscription);
+                $expectedItem[$column::getId()] = $column->getCellValue($subscription, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

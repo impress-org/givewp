@@ -100,7 +100,7 @@ class TestListDonors extends TestCase
         foreach ( $donors as $donor ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($donor);
+                $expectedItem[$column::getId()] = $column->getCellValue($donor, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

@@ -86,7 +86,7 @@ class GetEventsListTableTest extends TestCase
         foreach ($events as $event) {
             $expectedItem = [];
             foreach ($columns as $column) {
-                $expectedItem[$column::getId()] = $column->getCellValue($event);
+                $expectedItem[$column::getId()] = $column->getCellValue($event, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

@@ -108,7 +108,7 @@ class TestListDonationForms extends TestCase
         foreach ( $donationForms as $donationForm ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
+                $expectedItem[$column::getId()] = $column->getCellValue($donationForm, 'en-US');
             }
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = add_query_arg(['locale' => Language::getLocale()],
