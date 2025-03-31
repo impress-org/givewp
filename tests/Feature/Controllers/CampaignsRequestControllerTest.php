@@ -16,14 +16,14 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsRequestControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -45,7 +45,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -71,7 +71,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -89,7 +89,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -114,7 +114,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -130,7 +130,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testShowShouldFailIfCampaignDoesNotExist()
     {
@@ -146,7 +146,7 @@ class CampaignsRequestControllerTest extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function getMockRequest(string $method): WP_REST_Request
     {

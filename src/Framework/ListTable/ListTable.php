@@ -24,7 +24,7 @@ abstract class ListTable implements Arrayable
     private $items = [];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @var array|object
      */
     private $data = [];
@@ -122,7 +122,7 @@ abstract class ListTable implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param array|object $data
      *
@@ -136,7 +136,7 @@ abstract class ListTable implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array|object
      */

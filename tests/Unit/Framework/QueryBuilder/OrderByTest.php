@@ -18,7 +18,7 @@ final class OrderByTest extends TestCase
             ->where('post_status', 'published')
             ->orderBy('ID', 'DESC');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' ORDER BY ID DESC",
             $builder->getSQL()
         );
@@ -35,7 +35,7 @@ final class OrderByTest extends TestCase
             ->where('post_status', 'published')
             ->orderBy('ID', 'ASC');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' ORDER BY ID ASC",
             $builder->getSQL()
         );

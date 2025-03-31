@@ -21,7 +21,7 @@ const BlockApp = ({attributes}: { attributes: CampaignBlockType }) => {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const nodeList = document.querySelectorAll('[data-givewp-campaign-block]');
 

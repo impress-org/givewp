@@ -10,9 +10,6 @@
     syntaxCheck="true"
 >
     <testsuites>
-        <testsuite name="Legacy Unit Tests">
-            <directory prefix="tests-" suffix=".php">./tests/includes/legacy</directory>
-        </testsuite>
         <testsuite name="Unit Tests">
             <directory suffix="Test.php">./tests/Unit</directory>
             <directory prefix="Test" suffix=".php">./tests/Unit</directory>
@@ -20,6 +17,9 @@
         <testsuite name="Feature Tests">
             <directory suffix="Test.php">./tests/Feature</directory>
             <directory prefix="Test" suffix=".php">./tests/Feature</directory>
+        </testsuite>
+         <testsuite name="Legacy Unit Tests">
+            <directory prefix="tests-" suffix=".php">./tests/includes/legacy</directory>
         </testsuite>
     </testsuites>
     <filter>

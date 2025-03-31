@@ -15,12 +15,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetCampaignStatistics implements RestRoute
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute()
     {
@@ -53,7 +53,7 @@ class GetCampaignStatistics implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

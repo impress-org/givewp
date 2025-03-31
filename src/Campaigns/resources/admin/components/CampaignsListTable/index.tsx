@@ -20,7 +20,7 @@ declare const window: {
 /**
  * Auto open modal if the URL has the query parameter id as new
  *
- * @unreleased
+ * @since 4.0.0
  */
 const autoOpenCreateCampaignModal = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -102,7 +102,7 @@ export default function CampaignsListTable() {
     /**
      * Displays a blank slate for the Campaigns table.
      *
-     * @unreleased
+     * @since 4.0.0
      */
     const ListTableBlankSlate = () => {
         const imagePath = `${

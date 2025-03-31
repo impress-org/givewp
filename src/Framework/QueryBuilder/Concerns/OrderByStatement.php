@@ -32,7 +32,7 @@ trait OrderByStatement
     /**
      * Add raw SQL Order By statement
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @param $sql
      * @param ...$args

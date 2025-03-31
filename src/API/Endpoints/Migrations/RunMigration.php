@@ -17,7 +17,7 @@ use WP_REST_Response;
  * Class RunMigration
  * @package    Give\API\Endpoints\Migrations
  *
- * @unreleased run batch migrations
+ * @since 4.0.0 run batch migrations
  * @since      2.10.0
  */
 class RunMigration extends Endpoint
@@ -173,7 +173,7 @@ class RunMigration extends Endpoint
     /**
      * Run batch migration
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function runBatchMigration(WP_REST_Request $request): WP_REST_Response
     {
@@ -206,7 +206,7 @@ class RunMigration extends Endpoint
     /**
      * Reschedule failed actions
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function rescheduleFailedActions(WP_REST_Request $request): WP_REST_Response
     {

@@ -13,7 +13,7 @@ trait CRUD
     /**
      * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
-     * @unreleased Add support for inserting multiple rows at once
+     * @since 4.0.0 Add support for inserting multiple rows at once
      * @since 2.19.0
      *
      * @param  array|string  $format

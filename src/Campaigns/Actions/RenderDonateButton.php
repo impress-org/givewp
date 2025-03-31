@@ -6,17 +6,17 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 use Give\DonationForms\Models\DonationForm;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RenderDonateButton
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private BlockRenderController $blockRenderController;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(BlockRenderController $blockRenderController)
     {
@@ -24,7 +24,7 @@ class RenderDonateButton
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(int $formId, string $buttonText): string
     {
@@ -45,7 +45,7 @@ class RenderDonateButton
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isFormPublished(int $formId): bool
     {

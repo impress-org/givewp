@@ -17,7 +17,7 @@ class DonationHandler
     /**
      * Handle new donation.
      *
-     * @unreleased - set campaign id
+     * @since 4.0.0 - set campaign id
      * @since 2.9.0
      *
      * @param int $donationId

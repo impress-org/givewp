@@ -12,12 +12,12 @@ use Give\Framework\ListTable\ListTable;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function id(): string
     {
@@ -25,7 +25,7 @@ class CampaignsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array|ModelColumn[]
      */
@@ -47,7 +47,7 @@ class CampaignsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return array|string[]
      */

@@ -3,7 +3,7 @@ import {CampaignGridType} from './types';
 import App from './app/index';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const nodeList = document.querySelectorAll('[data-givewp-campaign-grid]');
 

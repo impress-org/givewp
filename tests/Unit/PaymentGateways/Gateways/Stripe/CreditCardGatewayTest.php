@@ -13,7 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
  */
 class CreditCardGatewayTest extends \Give\Tests\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setUpStripeAccounts();
@@ -27,7 +27,7 @@ class CreditCardGatewayTest extends \Give\Tests\TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         $donationsTable = DB::prefix('posts');

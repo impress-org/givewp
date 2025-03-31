@@ -13,7 +13,7 @@ use Money\Money as VendorMoney;
  * A decorator class for the vendor Money class which adds additional formatting and other convenience methods. Try and
  * keep the vendor Money logic in the Currency facade.
  *
- * @unreleased added JsonSerializable interface
+ * @since 4.0.0 added JsonSerializable interface
  * @since 2.20.0
  *
  * @method bool equals(Money $money )
@@ -161,7 +161,7 @@ class Money implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function toArray(): array
     {
@@ -173,7 +173,7 @@ class Money implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function jsonSerialize(): array
     {

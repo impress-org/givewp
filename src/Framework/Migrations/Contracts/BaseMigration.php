@@ -7,7 +7,7 @@ use Give\Framework\Exceptions\Primitives\RuntimeException;
 /**
  * Base Migration class
  *
- * @unreleased
+ * @since 4.0.0
  */
 abstract class BaseMigration
 {

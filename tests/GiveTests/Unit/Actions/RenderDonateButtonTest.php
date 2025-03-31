@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RenderDonateButtonTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testItReturnsEmptyIfFormIsNotFound(): void
     {
@@ -28,7 +28,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testItReturnsEmptyIfFormIsNotPublished(): void
     {
@@ -43,7 +43,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testItRendersButtonWithBlockControllerWhenFormIsPublished()
     {
@@ -68,7 +68,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testItRendersDefaultButtonIfBlockControllerReturnsNull()
     {

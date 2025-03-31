@@ -4,7 +4,7 @@ import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPa
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsOverviewTab() {
     const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_form_notice');

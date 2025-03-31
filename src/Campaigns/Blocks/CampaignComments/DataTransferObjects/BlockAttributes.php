@@ -5,7 +5,7 @@ namespace Give\Campaigns\Blocks\CampaignComments\DataTransferObjects;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class BlockAttributes implements Arrayable
 {
@@ -60,7 +60,7 @@ class BlockAttributes implements Arrayable
     public $commentsPerPage;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function fromArray(array $array): BlockAttributes
     {
@@ -81,7 +81,7 @@ class BlockAttributes implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function toArray(): array
     {

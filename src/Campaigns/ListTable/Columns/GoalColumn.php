@@ -7,7 +7,7 @@ use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GoalColumn extends ModelColumn
 {
@@ -15,7 +15,7 @@ class GoalColumn extends ModelColumn
     protected $sortColumn = 'goal';
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function getId(): string
     {
@@ -23,7 +23,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getLabel(): string
     {
@@ -31,7 +31,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param Campaign $model
      */

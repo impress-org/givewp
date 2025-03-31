@@ -14,7 +14,7 @@ import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsSettingsTab() {
     const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_settings_notice');

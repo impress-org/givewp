@@ -6,7 +6,7 @@ use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Log\Log;
 use Give\Tests\TestCase;
-use PHPUnit_Framework_MockObject_MockBuilder;
+use PHPUnit\Framework\MockObject\MockBuilder;
 
 class UncaughtExceptionLoggerTest extends TestCase
 {
@@ -14,7 +14,7 @@ class UncaughtExceptionLoggerTest extends TestCase
     {
         $logger = new UncaughtExceptionLogger();
 
-        $this->mock(Log::class, function (PHPUnit_Framework_MockObject_MockBuilder $builder) {
+        $this->mock(Log::class, function (MockBuilder $builder) {
             $mock = $builder->setMethods(['error'])->getMock();
 
             $mock->expects($this->once())

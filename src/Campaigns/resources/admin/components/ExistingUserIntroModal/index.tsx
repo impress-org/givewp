@@ -8,7 +8,7 @@ import styles from './ExistingUserIntroModal.module.scss';
 import {updateUserNoticeOptions} from '@givewp/campaigns/utils';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 
 export type stepConfig = {
@@ -46,7 +46,7 @@ const stepsConfig: stepConfig[] = [
 ];
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 
 type ExisingUserIntroModalProps = {

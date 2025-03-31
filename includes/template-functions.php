@@ -303,7 +303,7 @@ function give_is_donation_history_page() {
 /**
  * Adds body classes for Give pages
  *
- * @unreleased updated with give-campaign-page
+ * @since 4.0.0 updated with give-campaign-page
  * @since 1.0
  *
  * @param array $class current classes

@@ -76,7 +76,7 @@ class AsBackgroundJobsFacade
 
     /**
      * @since 3.6.0
-     * @unreleased - switch parameter $status position with $returnFormat position
+     * @since 4.0.0 - switch parameter $status position with $returnFormat position
      *
      * @param string $group        The group to assign this job to.
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.

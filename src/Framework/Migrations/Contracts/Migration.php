@@ -7,7 +7,7 @@ namespace Give\Framework\Migrations\Contracts;
  *
  * Extend this class when create database migration. up and timestamp are required member functions
  *
- * @unreleased extend BaseMigration class
+ * @since 4.0.0 extend BaseMigration class
  * @since 2.9.0
  */
 abstract class Migration extends BaseMigration

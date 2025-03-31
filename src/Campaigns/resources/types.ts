@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type Notification = {
     id: string;
@@ -13,7 +13,7 @@ export type Notification = {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 declare module "@wordpress/data" {
     export function select(key: 'givewp/campaign-notifications'): {
@@ -29,7 +29,7 @@ declare module "@wordpress/data" {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type GiveCampaignOptions = {
     isAdmin: boolean;
@@ -48,7 +48,7 @@ export type GiveCampaignOptions = {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type GoalType =
     'amount'

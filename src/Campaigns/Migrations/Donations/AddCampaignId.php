@@ -10,7 +10,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class AddCampaignId extends BatchMigration
 {
@@ -41,7 +41,7 @@ class AddCampaignId extends BatchMigration
     /**
      * Base query
      *
-     * @unreleased
+     * @since 4.0.0
      */
     protected function query(): QueryBuilder
     {

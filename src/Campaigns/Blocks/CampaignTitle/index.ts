@@ -3,7 +3,7 @@ import schema from './block.json';
 import Edit from './edit';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const settings = {
     icon,

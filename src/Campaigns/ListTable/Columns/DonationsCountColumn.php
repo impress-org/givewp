@@ -7,14 +7,14 @@ use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class DonationsCountColumn extends ModelColumn
 {
     protected $useData = true;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function getId(): string
     {
@@ -22,7 +22,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getLabel(): string
     {
@@ -30,7 +30,7 @@ class DonationsCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param Campaign $model
      */

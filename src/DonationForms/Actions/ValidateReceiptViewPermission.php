@@ -3,7 +3,7 @@
 namespace Give\DonationForms\Actions;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ValidateReceiptViewPermission
 {
@@ -15,7 +15,7 @@ class ValidateReceiptViewPermission
     private const RECEIPT_ID = 'receipt_id';
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(bool $canViewReceipt, int $donationId): bool
     {

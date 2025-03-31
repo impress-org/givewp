@@ -2,7 +2,7 @@ import styles from './styles.module.scss';
 import type {PercentChangePillProps} from './types';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const getPercentageChange = (previousValue: number, currentValue: number) => {
     if (previousValue === 0) {
@@ -36,7 +36,7 @@ const IconArrowRight = () => (
 )
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const PercentChangePill = ({value, comparison}: PercentChangePillProps) => {
     const change = getPercentageChange(comparison, value);

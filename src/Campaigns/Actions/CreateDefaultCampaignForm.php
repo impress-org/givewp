@@ -13,7 +13,7 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CreateDefaultCampaignForm
 {

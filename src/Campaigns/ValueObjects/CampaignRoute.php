@@ -5,7 +5,7 @@ namespace Give\Campaigns\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @method static CampaignRoute NAMESPACE()
  * @method static CampaignRoute CAMPAIGN()

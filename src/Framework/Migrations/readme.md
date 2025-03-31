@@ -121,7 +121,7 @@ class MyBatchMigration extends BatchMigration
     /**
      * Base query
      *
-     * @unreleased
+     * @since 4.0.0
      */
     protected function query(): QueryBuilder
     {

@@ -70,7 +70,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @unreleased add support for batch processing
+     * @since 4.0.0 add support for batch processing
      * @since      2.9.0
      */
     public function run()

@@ -20,7 +20,7 @@ final class HavingTest extends TestCase
             ->groupBy('id')
             ->having('id', '>', 10);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY id HAVING id > '10'",
             $builder->getSQL()
         );
@@ -37,7 +37,7 @@ final class HavingTest extends TestCase
             ->groupBy('ID')
             ->havingCount('ID', '>', 10);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING COUNT( ID) > '10'",
             $builder->getSQL()
         );
@@ -55,7 +55,7 @@ final class HavingTest extends TestCase
             ->groupBy('ID')
             ->havingSum('post_count', '>', 1000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000'",
             $builder->getSQL()
         );
@@ -74,7 +74,7 @@ final class HavingTest extends TestCase
             ->havingSum('post_count', '>', 1000)
             ->havingSum('post_count', '<', 5000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000' AND SUM(post_count) < '5000'",
             $builder->getSQL()
         );
@@ -93,7 +93,7 @@ final class HavingTest extends TestCase
             ->havingSum('post_count', '>', 1000)
             ->orHavingSum('post_count', '<', 100);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING SUM(post_count) > '1000' OR SUM(post_count) < '100'",
             $builder->getSQL()
         );
@@ -111,7 +111,7 @@ final class HavingTest extends TestCase
             ->groupBy('ID')
             ->havingMin('post_count', '>', 1000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MIN(post_count) > '1000'",
             $builder->getSQL()
         );
@@ -130,7 +130,7 @@ final class HavingTest extends TestCase
             ->havingMin('post_count', '>', 1000)
             ->orHavingMin('post_count', '<', 100); // Doesn't make sense, but hey...
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MIN(post_count) > '1000' OR MIN(post_count) < '100'",
             $builder->getSQL()
         );
@@ -148,7 +148,7 @@ final class HavingTest extends TestCase
             ->groupBy('ID')
             ->havingMax('post_count', '>', 1000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MAX(post_count) > '1000'",
             $builder->getSQL()
         );
@@ -167,7 +167,7 @@ final class HavingTest extends TestCase
             ->havingMax('post_count', '>', 1000)
             ->orHavingMax('post_count', '<', 100);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING MAX(post_count) > '1000' OR MAX(post_count) < '100'",
             $builder->getSQL()
         );
@@ -185,7 +185,7 @@ final class HavingTest extends TestCase
             ->groupBy('ID')
             ->havingAvg('post_count', '>', 1000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING AVG(post_count) > '1000'",
             $builder->getSQL()
         );
@@ -204,7 +204,7 @@ final class HavingTest extends TestCase
             ->havingAvg('post_count', '<', 1000)
             ->orHavingAvg('post_count', '>', 10000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_parent = '5' GROUP BY ID HAVING AVG(post_count) < '1000' OR AVG(post_count) > '10000'",
             $builder->getSQL()
         );
@@ -220,7 +220,7 @@ final class HavingTest extends TestCase
             ->groupBy('id')
             ->havingRaw('HAVING COUNT(id) > %d', 1000);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT ID FROM give_donations GROUP BY id HAVING COUNT(id) > 1000",
             $builder->getSQL()
         );
@@ -238,7 +238,7 @@ final class HavingTest extends TestCase
             ->havingRaw('HAVING COUNT(id) > %d', 1000)
             ->orHavingAvg('id', '<', 400);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT ID FROM give_donations GROUP BY id HAVING COUNT(id) > 1000 OR AVG( id) < '400'",
             $builder->getSQL()
         );
