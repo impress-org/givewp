@@ -83,7 +83,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						require_once ABSPATH . 'wp-admin/includes/plugin.php';
 					}
 
-					$recurring_plugin_data = get_plugin_data( $recurring_file_path );
+					$recurring_plugin_data = get_plugin_data( $recurring_file_path, true, false );
 
 					// Avoid fatal error for smooth update for customers.
 					if (
