@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
@@ -85,34 +86,39 @@ class PayPalCommerceGateway extends PayPalCommerce
         // Add hosted fields if payment field type is auto and connect account type supports custom payments.
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
         $paymentComponents[] = 'buttons';
-        if ('auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments) {
-            $paymentComponents[] = 'hosted-fields';
-            $paymentComponents[] = 'card-fields';
-        }
 
-        $formIsV3 = \Give\Helpers\Form\Utils::isV3Form($formId);
+        $formIsV3 = Utils::isV3Form($formId);
         $venmoEnabled = give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'));
+        $fieldsEnabled = 'auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments;
 
         $data = [
-            'components' => implode(',', $paymentComponents),
             'intent' => 'capture',
             'vault' => 'false',
             'currency' => give_get_currency($formId),
         ];
 
         if ($formIsV3) {
+            if ($fieldsEnabled) {
+                $paymentComponents[] = 'card-fields';
+            }
+
             $data = array_merge($data, [
                 'dataNamespace' => 'givewp/paypal-commerce',
                 'clientId' => $merchantDetailModel->clientId,
                 'disableFunding' => 'credit',
                 'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
                 'dataClientToken' => $merchantDetailRepository->getClientToken(),
+                'components' => implode(',', $paymentComponents),
             ]);
 
             if ($venmoEnabled){
                 $data['enableFunding'] = 'venmo';
             }
         } else {
+            if ($fieldsEnabled) {
+                $paymentComponents[] = 'hosted-fields';
+            }
+
             $data = array_merge($data, [
                 // data-namespace is required for multiple PayPal SDKs to load in harmony.
                 'data-namespace' => 'givewp/paypal-commerce',
@@ -120,6 +126,7 @@ class PayPalCommerceGateway extends PayPalCommerce
                 'disable-funding' => 'credit',
                 'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
                 'data-client-token' => $merchantDetailRepository->getClientToken(),
+                'components' => implode(',', $paymentComponents),
             ]);
 
             if ($venmoEnabled){

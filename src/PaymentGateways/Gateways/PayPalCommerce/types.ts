@@ -78,9 +78,3 @@ export interface PayPalCommerceGateway extends Gateway {
     payPalPlanId?: string;
     payPalCardFieldsForm?: PayPalCardFieldsComponent
 }
-
-export type PayPalCommerceGatewayData = {
-    orderId?: string;
-    planId?: string;
-    cardFieldsForm?: PayPalCardFieldsComponent
-}

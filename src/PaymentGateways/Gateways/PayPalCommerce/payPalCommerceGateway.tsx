@@ -1,23 +1,23 @@
 import {
-    PayPalButtonsComponentProps, PayPalCardFieldsForm,
-} from '@paypal/react-paypal-js';
-import {
     DISPATCH_ACTION,
     PayPalButtons,
-    PayPalScriptProvider,
-    usePayPalScriptReducer,
+    PayPalButtonsComponentProps,
+    PayPalCardFieldsForm,
     PayPalCardFieldsProvider,
+    PayPalScriptProvider,
     usePayPalCardFields,
+    usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import {__} from '@wordpress/i18n';
-import {CSSProperties, useEffect} from 'react';
-import {PayPalCommerceGateway, PayPalCommerceGatewayData, PayPalSubscriber} from './types';
+import {useEffect} from 'react';
+import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';
 import type {
-    CreateSubscriptionRequestBody, PayPalButtonCreateOrder,
+    CreateSubscriptionRequestBody,
     PayPalButtonsComponentOptions,
-    PayPalCardFieldsComponentBasics
+    PayPalCardFieldsComponent,
+    PayPalCardFieldsComponentBasics,
 } from '@paypal/paypal-js';
 import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
@@ -55,17 +55,13 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let eventTickets;
     let submitButton;
 
-    const payPalCommerceGatewayData: PayPalCommerceGatewayData = {
-        cardFieldsForm: null,
-        orderId: null,
-        planId: null,
-    };
+    let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
-    const showOrHideDonateButton = (showOrHide: "show" | "hide") => {
+    const showOrHideDonateButton = (showOrHide: 'show' | 'hide') => {
         if (submitButton) {
             submitButton.style.display = showOrHide === 'hide' ? 'none' : '';
         }
-    }
+    };
 
     /**
      * @since 3.12.2
@@ -92,25 +88,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         shape: 'rect' as 'rect' | 'pill',
         tagline: false,
     };
-
-    const CUSTOM_FIELD_STYLE = {
-        height: '50px', // @todo Magic number, but it works
-        borderWidth: '.078rem',
-        borderStyle: 'solid',
-        borderColor: '#666',
-        borderRadius: '.25rem',
-        padding: '0 1.1875rem',
-        width: '100%',
-        marginBottom: '.5rem',
-        boxSizing: 'inherit',
-        inlineSize: '100%',
-        backgroundColor: '#fff',
-        color: '#4d4d4d',
-        fontSize: '1rem',
-        fontFamily: 'inherit',
-        fontWeight: '500',
-        lineHeight: '1.2',
-    } as CSSProperties;
 
     /**
      * Get PayPal script options.
@@ -212,8 +189,8 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     /**
      * @unreleased
      */
-    const cardFieldsCreateOrderHandler: () => Promise<any> = () => {
-        return createOrder(
+    const cardFieldsCreateOrderHandler = async () => {
+        return await createOrder(
             `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`,
             payPalCommerceGateway,
             getFormData()
@@ -224,23 +201,14 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      * @unreleased
      */
     const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
-        const orderId = data.orderID;
-
-        const submitButtonDefaultText = submitButton.textContent;
-        submitButton.textContent = __('Waiting for PayPal...', 'give');
-        submitButton.disabled = true;
-
-        if (orderId) {
-            payPalOrderId = orderId;
-        }
-
-        submitButton.disabled = false;
-        submitButton.textContent = submitButtonDefaultText;
-        submitButton.click();
+        payPalOrderId = data.orderID;
         return;
     };
 
-    const smartButtonsCreateSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (data, actions) => {
+    const smartButtonsCreateSubscriptionHandler: PayPalButtonsComponentOptions['createSubscription'] = async (
+        data,
+        actions
+    ) => {
         const {planId, userAction} = await createSubscriptionPlan(
             `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_plan_id`,
             payPalCommerceGateway,
@@ -469,7 +437,8 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      */
     const PayPalGatewayCardFieldsForm = () => {
         const {cardFieldsForm} = usePayPalCardFields();
-        payPalCommerceGatewayData.cardFieldsForm = cardFieldsForm;
+        payPalCardFieldsForm = cardFieldsForm;
+        payPalCommerceGateway.payPalCardFieldsForm = cardFieldsForm;
 
         return <PayPalCardFieldsForm />;
     };
@@ -533,6 +502,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         initialize() {
             payPalDonationsSettings = this.settings;
         },
+
         /**
          * Before create payment.
          * @since 3.2.0 Handle error response in approveOrderCallback.
@@ -552,36 +522,33 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
                 };
             }
 
-            const {cardFieldsForm} = payPalCommerceGatewayData;
-
-            if (!cardFieldsForm) {
+            if (!payPalCardFieldsForm) {
                 return new Error('PayPal Card Fields form is not available.');
             }
 
-            try {
-                const cardFormState = await cardFieldsForm.getState();
+            const cardFormState = await payPalCardFieldsForm.getState();
 
-                if (!cardFormState.isFormValid) {
-                    return new Error('PayPal Card Fields form is invalid');
-                }
-
-                console.log('Card Fields submitting...');
-
-                const response = await cardFieldsForm.submit();
-
-                console.log({response});
-
-                if (!payPalOrderId) {
-                    return new Error('PayPal Order ID is not available.');
-                }
-
-                return {
-                    payPalOrderId,
-                };
-            } catch (err) {
-                console.error(err);
-                return new Error('Error submitting PayPal Card Fields form.');
+            if (!cardFormState.isFormValid) {
+                throw new Error('PayPal Card Fields form is invalid');
             }
+
+            const submitButtonDefaultText = submitButton.textContent;
+            submitButton.textContent = __('Waiting for PayPal...', 'give');
+            submitButton.disabled = true;
+
+            await payPalCardFieldsForm.submit();
+
+            submitButton.textContent = submitButtonDefaultText;
+
+            if (!payPalOrderId) {
+                submitButton.disabled = false;
+
+                throw new Error('PayPal Order ID is not available.');
+            }
+
+            return {
+                payPalOrderId,
+            };
         },
 
         /**
