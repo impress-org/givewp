@@ -5,13 +5,11 @@
  */
 class Tests_Post_Types extends Give_Unit_Test_Case {
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * @covers ::give_setup_post_types
@@ -89,11 +87,11 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 
 		$wp_post_statuses = get_post_stati( array(), 'objects' );
 
-		$this->assertInternalType( 'object', $wp_post_statuses['refunded'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['failed'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['revoked'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['cancelled'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['abandoned'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['processing'] );
+		$this->assertIsObject( $wp_post_statuses['refunded'] );
+		$this->assertIsObject( $wp_post_statuses['failed'] );
+		$this->assertIsObject( $wp_post_statuses['revoked'] );
+		$this->assertIsObject( $wp_post_statuses['cancelled'] );
+		$this->assertIsObject( $wp_post_statuses['abandoned'] );
+		$this->assertIsObject( $wp_post_statuses['processing'] );
 	}
 }

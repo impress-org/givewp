@@ -30,7 +30,7 @@ class TestListSubscriptions extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
 
         $listSubscriptions = new ListSubscriptions();
@@ -54,7 +54,7 @@ class TestListSubscriptions extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
@@ -103,7 +103,7 @@ class TestListSubscriptions extends TestCase
         foreach ( $subscriptions as $subscription ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($subscription);
+                $expectedItem[$column::getId()] = $column->getCellValue($subscription, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

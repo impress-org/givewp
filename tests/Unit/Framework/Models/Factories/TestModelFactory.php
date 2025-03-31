@@ -16,7 +16,7 @@ class TestModelFactory extends TestCase
     /**
      * @since 4.0.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         MockModel::resetAutoIncrementId();

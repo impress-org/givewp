@@ -19,7 +19,7 @@ class TestListDonationForms extends TestCase
 
     private $donationForms = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -42,7 +42,7 @@ class TestListDonationForms extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('status', 'any');
 
         $listDonationForms = new ListDonationForms();
@@ -64,7 +64,7 @@ class TestListDonationForms extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
         $mockRequest->set_param('status', 'any');
@@ -108,7 +108,7 @@ class TestListDonationForms extends TestCase
         foreach ( $donationForms as $donationForm ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
+                $expectedItem[$column::getId()] = $column->getCellValue($donationForm, 'en-US');
             }
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = add_query_arg(['locale' => Language::getLocale()],

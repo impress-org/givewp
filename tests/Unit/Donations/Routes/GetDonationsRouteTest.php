@@ -29,7 +29,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     /**
      * @since 4.0.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
 

@@ -23,17 +23,17 @@
         "moneyphp/money": "^3.3.3"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpcompatibility/phpcompatibility-wp": "*",
         "phpcompatibility/php-compatibility": "^9.3",
         "wp-coding-standards/wpcs": "*",
-        "phpunit/phpunit": "^5",
+        "phpunit/phpunit": "^9",
         "wp-cli/wp-cli-bundle": "^2.5",
         "wordpress/wordpress": "dev-trunk",
         "squizlabs/php_codesniffer": "^3.5",
         "php-stubs/wp-cli-stubs": "^2.8",
-        "yoast/phpunit-polyfills": "^1.1.0"
+        "yoast/phpunit-polyfills": "^4.0",
+        "fakerphp/faker": "^1.24"
     },
     "keywords": [
         "wordpress",
@@ -44,7 +44,7 @@
         "issues": "https://github.com/impress-org/givewp/issues"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --colors --stop-on-failure",
+        "test": "./vendor/bin/phpunit --colors",
         "strauss": [
             "bin/strauss-installar.sh",
             "@php vendor/stellarwp/validation/bin/set-domain domain=give",

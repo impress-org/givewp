@@ -4,13 +4,8 @@ namespace Give\Tests\Unit\Campaigns\DataTransferObjects;
 
 use Give\Campaigns\DataTransferObjects\CampaignGoalData;
 use Give\Campaigns\Models\Campaign;
-use Give\DonationForms\Models\DonationForm;
-use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
 
 /**
  * @since 4.0.0
