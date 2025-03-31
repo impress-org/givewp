@@ -21,7 +21,8 @@ class PreventDeleteDefaultForm
         $campaign = Campaign::findByFormId($postId);
 
         if ($campaign && $campaign->defaultFormId == $postId) {
-            wp_die(sprintf('The form %s with ID %d cannot be deleted because it is the default form for a campaign.',
+            wp_die(sprintf(__('The form %s with ID %d cannot be deleted because it is the default form for a campaign.',
+                'give'),
                 $campaign->defaultForm()->title,
                 $postId));
         }
@@ -42,7 +43,8 @@ class PreventDeleteDefaultForm
                     'post_status' => $oldStatus,
                 ]);
 
-                wp_die(sprintf('The form %s with ID %d cannot be moved to trash because it is the default form for a campaign.',
+                wp_die(sprintf(__('The form %s with ID %d cannot be moved to trash because it is the default form for a campaign.',
+                    'give'),
                     $campaign->defaultForm()->title,
                     $post->ID));
             }
