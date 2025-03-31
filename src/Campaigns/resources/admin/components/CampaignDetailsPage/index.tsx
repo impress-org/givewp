@@ -12,11 +12,13 @@ import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
+import DraftCampaignPageNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DraftCampaignPageNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
+import {useEntityRecord} from '@wordpress/core-data';
 
 interface Show {
     contextMenu?: boolean;
@@ -46,7 +48,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const [isCreatingPage, setIsCreatingPage] = useState<boolean>(false);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false
+        confirmationModal: false,
     });
 
     const dispatch = useDispatch('givewp/campaign-notifications');
@@ -80,17 +82,18 @@ export default function CampaignsDetailsPage({campaignId}) {
     });
 
     const {formState, handleSubmit, reset, setValue} = methods;
+    const {record} = useEntityRecord('postType', 'page', campaign?.pageId);
 
     // Set default values when campaign is loaded
     useEffect(() => {
         if (hasResolved) {
             const {pageId, ...rest} = campaign;
             // exclude pageId from default values if null
-             if (pageId > 0) {
+            if (pageId > 0) {
                 reset({...campaign, pageId});
             } else {
                 reset({...rest});
-             }
+            }
         }
     }, [hasResolved]);
 
@@ -113,6 +116,26 @@ export default function CampaignsDetailsPage({campaignId}) {
             ),
         });
     }, [campaign?.status]);
+
+    // Show campaign page draft notice
+    useEffect(() => {
+        // @ts-ignore
+        if (record?.status === 'publish') {
+            return;
+        }
+
+        // @ts-ignore
+        if (record && record?.status !== 'publish') {
+            dispatch.addNotice({
+                id: 'update-campaign-draft-page-notice',
+                type: 'info',
+                isDismissible: false,
+                content: <DraftCampaignPageNotice />,
+            });
+        } else {
+            dispatch.dismissNotification('update-campaign-draft-page-notice');
+        }
+    }, [record]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
         const shouldSave =
@@ -242,7 +265,9 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         onClick={handleCampaignPageCreation}
                                         disabled={isCreatingPage}
                                     >
-                                        {isCreatingPage ? __('Creating Campaign Page', 'give') : __('Create Campaign Page', 'give')}
+                                        {isCreatingPage
+                                            ? __('Creating Campaign Page', 'give')
+                                            : __('Create Campaign Page', 'give')}
                                     </button>
                                 )}
 
