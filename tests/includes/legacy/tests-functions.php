@@ -23,7 +23,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		// Create form.
@@ -34,9 +34,7 @@ class Tests_Functions extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Function to test give_goal_progress_stats()

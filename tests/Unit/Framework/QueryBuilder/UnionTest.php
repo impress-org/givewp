@@ -22,7 +22,7 @@ final class UnionTest extends TestCase
             ->where('ID', 100, '>')
             ->union($builder1);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT ID FROM give_subscriptions WHERE ID > '100' UNION SELECT ID FROM give_donations",
             $builder2->getSQL()
         );
@@ -50,7 +50,7 @@ final class UnionTest extends TestCase
             ->where('post_status', 'published')
             ->unionAll($builder1, $builder2);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' UNION ALL SELECT ID FROM give_donations UNION ALL SELECT ID FROM give_subscriptions WHERE ID > '100'",
             $builder3->getSQL()
         );

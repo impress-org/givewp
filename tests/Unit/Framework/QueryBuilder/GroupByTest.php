@@ -17,7 +17,7 @@ final class GroupByTest extends TestCase
             ->where('post_status', 'published')
             ->groupBy('ID');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' GROUP BY ID",
             $builder->getSQL()
         );

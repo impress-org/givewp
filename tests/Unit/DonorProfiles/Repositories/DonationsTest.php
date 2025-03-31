@@ -2,13 +2,18 @@
 
 namespace Give\Tests\Unit\DonorProfiles\Repositories;
 
+use Give\Donations\Models\Donation;
 use Give\DonorDashboards\Repositories\Donations as DonationsRepository;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Helper_Payment;
 use Give\Tests\TestCase;
+use Give_Payment;
 use ReflectionClass;
 
 final class DonationsTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function testReceiptInfoContainsDonationData()
     {
@@ -16,15 +21,18 @@ final class DonationsTest extends TestCase
         $getReceiptInfo = $class->getMethod('getReceiptInfo');
         $getReceiptInfo->setAccessible(true);
 
-        $payment = get_post(
-            Give_Helper_Payment::create_simple_payment()
-        );
+        $donation = Donation::factory()->create([
+            'email' => 'admin@example.org',
+            'amount' => new Money('2000', 'USD'),
+        ]);
 
-        $receiptInfo = $getReceiptInfo->invokeArgs(new DonationsRepository, [$payment]);
+        $payment = new Give_Payment( $donation->id );
+
+        $receiptInfo = $getReceiptInfo->invokeArgs(new DonationsRepository(), [$payment]);
         $receiptInfo = json_encode($receiptInfo);
 
         // Expected values provided by sample data.
-        $this->assertContains('$20.00', $receiptInfo);
-        $this->assertContains('admin@example.org', $receiptInfo);
+        $this->assertStringContainsString('$20.00', $receiptInfo);
+        $this->assertStringContainsString('admin@example.org', $receiptInfo);
     }
 }
