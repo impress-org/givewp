@@ -86,29 +86,45 @@ class PayPalCommerceGateway extends PayPalCommerce
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
         $paymentComponents[] = 'buttons';
         if ('auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments) {
+            $paymentComponents[] = 'hosted-fields';
             $paymentComponents[] = 'card-fields';
         }
 
+        $formIsV3 = \Give\Helpers\Form\Utils::isV3Form($formId);
+        $venmoEnabled = give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'));
+
         $data = [
-            // data-namespace is required for multiple PayPal SDKs to load in harmony.
-            'data-namespace' => 'givewp/paypal-commerce',
-            'dataNamespace' => 'givewp/paypal-commerce',
-            'client-id' => $merchantDetailModel->clientId,
-            'clientId' => $merchantDetailModel->clientId,
             'components' => implode(',', $paymentComponents),
-            'disable-funding' => 'credit',
-            'disableFunding' => 'credit',
             'intent' => 'capture',
             'vault' => 'false',
-            'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $merchantDetailRepository->getClientToken(),
-            'dataClientToken' => $merchantDetailRepository->getClientToken(),
             'currency' => give_get_currency($formId),
         ];
 
-        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
-            $data['enable-funding'] = 'venmo';
+        if ($formIsV3) {
+            $data = array_merge($data, [
+                'dataNamespace' => 'givewp/paypal-commerce',
+                'clientId' => $merchantDetailModel->clientId,
+                'disableFunding' => 'credit',
+                'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
+                'dataClientToken' => $merchantDetailRepository->getClientToken(),
+            ]);
+
+            if ($venmoEnabled){
+                $data['enableFunding'] = 'venmo';
+            }
+        } else {
+            $data = array_merge($data, [
+                // data-namespace is required for multiple PayPal SDKs to load in harmony.
+                'data-namespace' => 'givewp/paypal-commerce',
+                'client-id' => $merchantDetailModel->clientId,
+                'disable-funding' => 'credit',
+                'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
+                'data-client-token' => $merchantDetailRepository->getClientToken(),
+            ]);
+
+            if ($venmoEnabled){
+                $data['enable-funding'] = 'venmo';
+            }
         }
 
         return $data;
