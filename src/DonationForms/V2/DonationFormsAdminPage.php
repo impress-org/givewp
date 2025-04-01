@@ -59,7 +59,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
-     * @unreleased set submenu parent to empty string to hide "all forms" from admin menu
+     * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()
     {
@@ -186,7 +186,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
-     * @unreleased Add campaignId parameter on campaigns page
+     * @since 4.0.0 Add campaignId parameter on campaigns page
      * @since 2.20.0
      * @return array
      */
@@ -262,6 +262,11 @@ class DonationFormsAdminPage
     public function renderReactSwitch()
     {
         ?>
+        <style>
+            .page-title-action:not(.switch-new-view) {
+                display: none;
+            }
+        </style>
         <script type="text/javascript">
             function showReactTable() {
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {

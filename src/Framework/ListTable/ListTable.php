@@ -24,6 +24,12 @@ abstract class ListTable implements Arrayable
     private $items = [];
 
     /**
+     * @since 4.0.0
+     * @var array|object
+     */
+    private $data = [];
+
+    /**
      * @since 2.24.0
      *
      * @throws ColumnIdCollisionException
@@ -93,6 +99,9 @@ abstract class ListTable implements Arrayable
             $row = [];
 
             foreach ($columns as $column) {
+                if ($column->isUsingListTableData()) {
+                    $column->setListTableData($this->getData());
+                }
                 $row[$column::getId()] = $this->safelyGetCellValue($column, $model, $locale);;
             }
 
@@ -110,6 +119,30 @@ abstract class ListTable implements Arrayable
     public function getItems(): array
     {
         return $this->items;
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @param array|object $data
+     *
+     * @return ListTable
+     */
+    public function setData($data): ListTable
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @return array|object
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -131,8 +164,13 @@ abstract class ListTable implements Arrayable
             /**
              * @since 3.16.0
              */
-            $cellValue = apply_filters("givewp_list_table_cell_value_{$column::getId()}",
-                $column->getCellValue($model, $locale), $column, $model, $locale);
+            $cellValue = apply_filters(
+                "givewp_list_table_cell_value_{$column::getId()}",
+                $column->getCellValue($model, $locale),
+                $column,
+                $model,
+                $locale
+            );
         } catch (Exception $exception) {
             Log::error(
                 sprintf(

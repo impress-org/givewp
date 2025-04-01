@@ -21,7 +21,7 @@ final class PageViewTest extends TestCase
             $this->createMock(FormRepository::class), $connectClient
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<article id="" class="setup-item foo" data-givewp-test="">',
             $pageView->render_template('row-item', ['class' => 'foo'])
         );

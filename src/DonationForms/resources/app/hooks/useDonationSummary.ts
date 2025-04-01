@@ -16,7 +16,7 @@ import {useCallback} from '@wordpress/element';
  * It provides methods to add and remove items from the summary, as well as to add and remove amounts from the total.
  * It also provides the current items and totals from the context, making it easier to access form values specific to donations.
  *
- * @unreleased added getTotalSum
+ * @since 4.0.0 added getTotalSum
  * @since 3.0.0
  */
 export default function useDonationSummary() {

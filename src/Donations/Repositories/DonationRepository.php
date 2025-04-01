@@ -166,7 +166,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getByReceiptId(string $receiptId): ?Donation
     {
@@ -174,7 +174,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function queryByReceiptId(string $receiptId): ModelQueryBuilder
     {
@@ -344,7 +344,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased added campaignId
+     * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate

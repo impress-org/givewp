@@ -7,7 +7,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * Form inherits campaign goal
  *
@@ -16,7 +16,7 @@ use Give\DonationForms\ValueObjects\GoalType;
 class FormInheritsCampaignGoal
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(DonationForm $donationForm): void
     {

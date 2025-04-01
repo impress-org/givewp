@@ -6,6 +6,7 @@ use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignRoute;
@@ -20,12 +21,12 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignRequestController
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
      */
@@ -41,7 +42,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getCampaigns(WP_REST_Request $request): WP_REST_Response
     {
@@ -70,10 +71,25 @@ class CampaignRequestController
 
         $campaigns = $query->getAll() ?? [];
         $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
-        $totalPages = (int)ceil($totalCampaigns / $perPage);
+        $totalPages = $totalCampaigns === 0 ? 0 : (int)ceil($totalCampaigns / $perPage);
 
-        $campaigns = array_map(function ($campaign) {
-            return (new CampaignViewModel($campaign))->exports();
+        $ids = array_map(function ($campaign) {
+            return $campaign->id;
+        }, $campaigns);
+
+        // We don't have to optimize if the number of campaigns is less than 3
+        $campaignsData = count($ids) >= 3
+            ? CampaignsDataRepository::campaigns($ids)
+            : null;
+
+        $campaigns = array_map(function ($campaign) use ($campaignsData) {
+            $view = new CampaignViewModel($campaign);
+
+            if ($campaignsData) {
+                $view->setData($campaignsData);
+            }
+
+            return $view->exports();
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
@@ -110,7 +126,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
      *
@@ -172,7 +188,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      * @return WP_Error | WP_REST_Response
@@ -194,7 +210,7 @@ class CampaignRequestController
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -220,7 +236,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -235,7 +251,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
     {

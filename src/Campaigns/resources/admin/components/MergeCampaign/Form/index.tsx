@@ -11,7 +11,7 @@ import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';
 /**
  * Campaign Form Modal component
  *
- * @unreleased
+ * @since 4.0.0
  */
 export default function MergeCampaignsForm({isOpen, handleClose, title, campaigns}: MergeCampaignFormProps) {
     const [step, setStep] = useState<number>(1);

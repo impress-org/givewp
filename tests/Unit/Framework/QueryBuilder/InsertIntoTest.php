@@ -5,12 +5,12 @@ use Give\Framework\Database\DB;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class InsertIntoTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testInsertManyQuery()
     {

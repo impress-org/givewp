@@ -3,7 +3,7 @@ import Edit from './edit';
 import {GalleryIcon} from './Icon';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const settings = {
     icon: <GalleryIcon />,

@@ -4,21 +4,6 @@
  * Class Tests_Country_Functions
  */
 class Tests_Country_Functions extends Give_Unit_Test_Case {
-
-	/**
-	 * Set it up.
-	 */
-	function setUp() {
-		parent::setUp();
-	}
-
-	/**
-	 * Tear it down.
-	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
 	/**
 	 * Test getting country by the key name.
 	 *

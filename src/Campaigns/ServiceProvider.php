@@ -12,6 +12,7 @@ use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
@@ -22,6 +23,7 @@ use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
@@ -29,22 +31,27 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      */
     public function register(): void
     {
         give()->singleton('campaigns', CampaignRepository::class);
+        give()->bind(RenderDonateButton::class, function () {
+            return new RenderDonateButton(
+                new BlockRenderController()
+            );
+        });
         $this->registerTableNames();
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      */
     public function boot(): void
@@ -63,7 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerRoutes()
     {
@@ -76,7 +83,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerMigrations(): void
     {
@@ -95,7 +102,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerTableNames(): void
     {
@@ -106,7 +113,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerActions(): void
     {
@@ -149,7 +156,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerMenus()
     {
@@ -157,7 +164,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function replaceGiveFormsCptLabels()
     {
@@ -170,7 +177,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerCampaignEntity()
     {
@@ -178,7 +185,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function setupCampaignForms()
     {
@@ -207,7 +214,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerCampaignBlocks()
     {
@@ -227,7 +234,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function loadCampaignOptions()
     {
@@ -235,7 +242,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return void
      */

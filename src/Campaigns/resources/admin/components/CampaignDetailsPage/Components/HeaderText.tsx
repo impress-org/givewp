@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const HeaderText = ({children}) => {
     return (

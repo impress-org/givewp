@@ -3,7 +3,7 @@ import GiveIcon from '@givewp/components/GiveIcon';
 import schema from './block.json';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default {
     schema,

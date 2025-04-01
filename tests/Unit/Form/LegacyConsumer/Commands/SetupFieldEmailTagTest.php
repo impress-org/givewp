@@ -10,7 +10,7 @@ use Give\Tests\TestCase;
 final class SetupFieldEmailTagTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->paymentID = Give_Helper_Payment::create_simple_payment();

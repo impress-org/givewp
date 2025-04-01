@@ -3,7 +3,7 @@
 namespace Give\Framework\Migrations;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\BaseMigration;
 
 class MigrationsRegister
 {
@@ -19,13 +19,20 @@ class MigrationsRegister
     /**
      * Returns all of the registered migrations
      *
+     * @since 4.0.0 sort migrations
      * @since 2.9.0
      *
      * @return string[]
      */
     public function getMigrations()
     {
-        return $this->migrations;
+        $sortedMigrations = $this->migrations;
+
+        uasort($sortedMigrations, function($a, $b) {
+            return $a::timestamp() <=> $b::timestamp();
+        });
+
+        return $sortedMigrations;
     }
 
     /**
@@ -81,8 +88,8 @@ class MigrationsRegister
      */
     public function addMigration($migrationClass)
     {
-        if ( ! is_subclass_of($migrationClass, Migration::class)) {
-            throw new InvalidArgumentException('Class must extend the ' . Migration::class . ' class');
+        if ( ! is_subclass_of($migrationClass, BaseMigration::class)) {
+            throw new InvalidArgumentException('Class must extend the ' . BaseMigration::class . ' class');
         }
 
         $migrationId = $migrationClass::id();

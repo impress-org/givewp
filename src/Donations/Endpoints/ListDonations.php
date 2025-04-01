@@ -13,7 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased replace form with campaignId.
+ * @since 4.0.0 replace form with campaignId.
  * @since 3.4.0 The class is extendable
  */
 class ListDonations extends Endpoint

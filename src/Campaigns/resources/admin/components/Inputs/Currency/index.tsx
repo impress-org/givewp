@@ -9,7 +9,7 @@ type Props = {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 function getNumberFormattingParts(): { groupSeparator: string; decimalSeparator: string } {
     const numberFormat = new Intl.NumberFormat(window.navigator.language);
@@ -30,7 +30,7 @@ function getNumberFormattingParts(): { groupSeparator: string; decimalSeparator:
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default ({name, currency, placeholder, disabled, ...rest}: Props) => {
     const {control} = useFormContext();

@@ -137,7 +137,7 @@ final class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @unreleased Added campaignId property
+     * @since 4.0.0 Added campaignId property
      * @since 3.9.0 Add support for "phone" property
      * @since 3.2.0 add fallback for donation mode
      * @since 2.23.0 remove parentId property

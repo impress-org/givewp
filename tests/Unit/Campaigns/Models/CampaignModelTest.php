@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class CampaignModelTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testFindShouldReturnCampaign()
     {
@@ -29,7 +29,7 @@ final class CampaignModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCampaignHasManyForms()
     {
@@ -45,7 +45,7 @@ final class CampaignModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

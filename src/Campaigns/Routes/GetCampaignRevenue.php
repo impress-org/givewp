@@ -15,12 +15,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetCampaignRevenue implements RestRoute
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute()
     {
@@ -55,7 +55,7 @@ class GetCampaignRevenue implements RestRoute
      * If the date range is more than 6 months, the result will be grouped by month.
      * If the date range is more than 5 years, the result will be grouped by year.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -93,7 +93,7 @@ class GetCampaignRevenue implements RestRoute
         $resultMap = $this->mapResultsByDate($results, $groupBy);
 
         // Get all dates between the start and end date based on the group by
-        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate, $groupBy);
+        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate->modify("+1 day"), $groupBy);
 
         // Merge the results with the dates to ensure that all dates are included
         $data = $this->mergeResultsWithDates($dates, $resultMap);
@@ -102,13 +102,10 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
-        // Include the end date
-        $endDate->modify('+1 day');
-
         $startDateInterval = $startDate->diff($endDate);
 
         // If the date range is less than 7 days, pad the start date to include the last 7 days
@@ -143,7 +140,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getGroupByFromDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): string
     {
@@ -164,7 +161,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getFormattedDateFromGroupBy(string $groupBy, DateTimeInterface $date): string
     {
@@ -180,7 +177,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function mergeResultsWithDates(array $dates, array $resultMap): array
     {
@@ -197,7 +194,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function mapResultsByDate(array $results, string $groupBy): array
     {
