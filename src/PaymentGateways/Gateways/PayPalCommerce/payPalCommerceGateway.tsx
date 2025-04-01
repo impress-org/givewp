@@ -523,13 +523,13 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             }
 
             if (!payPalCardFieldsForm) {
-                return new Error('PayPal Card Fields form is not available.');
+                throw new Error(__('PayPal Card Fields are not available.', 'give'));
             }
 
             const cardFormState = await payPalCardFieldsForm.getState();
 
             if (!cardFormState.isFormValid) {
-                throw new Error('PayPal Card Fields form is invalid');
+                throw new Error(__('PayPal Card Fields are invalid', 'give'));
             }
 
             const submitButtonDefaultText = submitButton.textContent;
@@ -543,7 +543,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             if (!payPalOrderId) {
                 submitButton.disabled = false;
 
-                throw new Error('PayPal Order ID is not available.');
+                throw new Error(__('Missing PayPal Order ID.', 'give'));
             }
 
             return {
