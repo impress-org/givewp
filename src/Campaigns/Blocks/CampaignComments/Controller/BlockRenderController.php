@@ -5,12 +5,12 @@ namespace Give\Campaigns\Blocks\CampaignComments\Controller;
 use Give\Campaigns\Blocks\CampaignComments\DataTransferObjects\BlockAttributes;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class BlockRenderController
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function render(array $attributes): string
     {

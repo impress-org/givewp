@@ -10,7 +10,7 @@ import NotificationsPlaceholder from '../../Notifications';
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsTabs() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);

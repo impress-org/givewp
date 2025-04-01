@@ -82,7 +82,8 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.1
 	 */
-	function setUp() {
+	public function setUp(): void
+    {
 		// Load import functions.
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
@@ -109,16 +110,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		parent::setUp();
 	}
 
-	/**
-	 * Tear it down.
-	 *
-	 * @since 2.1
-	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-	/**
+    /**
 	 * Get CSV mapped items.
 	 *
 	 * @since 2.1

@@ -13,7 +13,7 @@ import {amountFormatter} from '@givewp/campaigns/utils';
 /**
  * Lookup object for all goal input attributes
  *
- * @unreleased
+ * @since 4.0.0
  */
 const goalInputAttributesLookup = (currencyFormatter: ReturnType<typeof amountFormatter>) => ({
     amount: {
@@ -70,7 +70,7 @@ const goalInputAttributesLookup = (currencyFormatter: ReturnType<typeof amountFo
 /**
  * Type guard to check if a string is a valid GoalType
  *
- * @unreleased
+ * @since 4.0.0
  */
 export const isValidGoalType = (goalType: string): goalType is GoalType => {
     const VALID_GOAL_TYPES = Object.keys(goalInputAttributesLookup(amountFormatter('USD')));
@@ -81,7 +81,7 @@ export const isValidGoalType = (goalType: string): goalType is GoalType => {
 /**
  * Goal type handler class
  *
- * @unreleased
+ * @since 4.0.0
  */
 export class CampaignGoalInputAttributes {
     protected goalType: GoalType;
@@ -90,7 +90,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Constructor
      *
-     * @unreleased
+     * @since 4.0.0
      */
     constructor(goalType: GoalType, currency: string) {
         if (!isValidGoalType(goalType)) {
@@ -104,7 +104,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Get the attributes for this goal type
      *
-     * @unreleased
+     * @since 4.0.0
      */
     getAttributes(): GoalInputAttributes {
         const attributes = goalInputAttributesLookup(this.currencyFormatter);
@@ -114,7 +114,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Get the label for this goal type
      *
-     * @unreleased
+     * @since 4.0.0
      */
     getLabel(): string {
         return this.getAttributes().label;
@@ -123,7 +123,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Get the description for this goal type
      *
-     * @unreleased
+     * @since 4.0.0
      */
     getDescription(): string {
         return this.getAttributes().description;
@@ -132,7 +132,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Get the placeholder for this goal type
      *
-     * @unreleased
+     * @since 4.0.0
      */
     getPlaceholder(): string {
         return this.getAttributes().placeholder;
@@ -141,7 +141,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Get the help text for this goal type
      *
-     * @unreleased
+     * @since 4.0.0
      */
     getHelp(): string {
         return this.getAttributes().help;
@@ -150,7 +150,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Check if this goal type is related to currency
      *
-     * @unreleased
+     * @since 4.0.0
      */
     isCurrencyType(): boolean {
         return this.goalType === 'amount' || this.goalType === 'amountFromSubscriptions';
@@ -159,7 +159,7 @@ export class CampaignGoalInputAttributes {
     /**
      * Check if this goal type is related to subscriptions
      *
-     * @unreleased
+     * @since 4.0.0
      */
     isSubscriptionType(): boolean {
         return [

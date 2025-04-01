@@ -32,6 +32,7 @@ export interface MultiSelectProps extends SelectableFieldProps {
 export interface CheckboxProps extends FieldProps {
     value: string | number;
     helpText?: string;
+    inputProps: UseFormRegisterReturn & {checked: boolean};
 }
 
 export interface TextareaProps extends FieldProps {

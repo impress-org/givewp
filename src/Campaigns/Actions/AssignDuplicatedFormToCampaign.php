@@ -6,18 +6,18 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class AssignDuplicatedFormToCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      * @var CampaignRepository
      */
     protected $campaignRepository;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(CampaignRepository $campaignRepository)
     {
@@ -25,7 +25,7 @@ class AssignDuplicatedFormToCampaign
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke($duplicatedFormID, $originalFormID)
     {

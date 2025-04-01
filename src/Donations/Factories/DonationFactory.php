@@ -16,7 +16,7 @@ class DonationFactory extends ModelFactory
 {
 
     /**
-     * @unreleased added campaignId
+     * @since 4.0.0 added campaignId
      * @since 2.22.0 add optional support for anonymous and company properties
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6

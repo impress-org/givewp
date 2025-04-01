@@ -17,7 +17,7 @@ class GetCampaignRevenueTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByDay(): void
@@ -48,9 +48,9 @@ class GetCampaignRevenueTest extends TestCase
         $response = $route->handleRequest($request);
 
         $this->assertEquals([
-            $this->getResultData('2025-03-01', '10.00'),
-            $this->getResultData('2025-03-02', '10.00'),
-            $this->getResultData('2025-03-03', '10.00'),
+            $this->getResultData('2025-03-01', '10'),
+            $this->getResultData('2025-03-02', '10'),
+            $this->getResultData('2025-03-03', '10'),
             $this->getResultData('2025-03-04'),
             $this->getResultData('2025-03-05'),
             $this->getResultData('2025-03-06'),
@@ -62,7 +62,7 @@ class GetCampaignRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByMonth(): void
@@ -97,8 +97,8 @@ class GetCampaignRevenueTest extends TestCase
         $response = $route->handleRequest($request);
 
         $this->assertEquals([
-            $this->getResultData('2024-01', '30.00'),
-            $this->getResultData('2024-02', '10.00'),
+            $this->getResultData('2024-01', '30'),
+            $this->getResultData('2024-02', '10'),
             $this->getResultData('2024-03'),
             $this->getResultData('2024-04'),
             $this->getResultData('2024-05'),
@@ -111,13 +111,13 @@ class GetCampaignRevenueTest extends TestCase
             $this->getResultData('2024-12'),
             $this->getResultData('2025-01'),
             $this->getResultData('2025-02'),
-            $this->getResultData('2025-03', '30.00'),
+            $this->getResultData('2025-03', '30'),
 
         ], $response->data);
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testShouldReturnRevenueByYear(): void
@@ -165,7 +165,7 @@ class GetCampaignRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getResultData(string $dateCreated, $amount = 0): array
     {

@@ -11,7 +11,7 @@ use Give\Helpers\Language;
 class DonationFormsAdminPage
 {
     /**
-     * @unreleased Remove logic to add the "Add Form" menu item
+     * @since 4.0.0 Remove logic to add the "Add Form" menu item
      * @since 3.15.0
      */
     public function addFormSubmenuLink()

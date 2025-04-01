@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * Set campaign type for existing P2P campaign
  */

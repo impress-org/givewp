@@ -9,7 +9,7 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RegisterCampaignRoutes
 {
@@ -20,7 +20,7 @@ class RegisterCampaignRoutes
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(CampaignRequestController $campaignRequestController)
     {
@@ -28,7 +28,7 @@ class RegisterCampaignRoutes
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -43,7 +43,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerGetCampaign()
     {
@@ -57,7 +57,7 @@ class RegisterCampaignRoutes
                         return $this->campaignRequestController->getCampaign($request);
                     },
                     'permission_callback' => function () {
-                        return current_user_can('manage_options');
+                        return '__return_true';
                     },
                 ],
                 'args' => [
@@ -73,7 +73,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaigns route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerGetCampaigns()
     {
@@ -138,7 +138,7 @@ class RegisterCampaignRoutes
     /**
      * Update Campaign route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerUpdateCampaign()
     {
@@ -165,7 +165,7 @@ class RegisterCampaignRoutes
     /**
      * Update Campaign route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerMergeCampaigns()
     {
@@ -203,7 +203,7 @@ class RegisterCampaignRoutes
     /**
      * Create Campaign route
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerCreateCampaign()
     {
@@ -256,7 +256,7 @@ class RegisterCampaignRoutes
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getSchema(): array
     {
@@ -460,7 +460,7 @@ class RegisterCampaignRoutes
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerCreateCampaignPage(): void
     {

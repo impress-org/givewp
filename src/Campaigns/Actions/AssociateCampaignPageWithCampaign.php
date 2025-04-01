@@ -7,7 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class AssociateCampaignPageWithCampaign
 {

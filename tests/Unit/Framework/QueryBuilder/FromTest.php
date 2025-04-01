@@ -15,7 +15,7 @@ final class FromTest extends TestCase
             ->select('*')
             ->from(DB::raw('posts'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT * FROM posts',
             $builder->getSQL()
         );
@@ -29,7 +29,7 @@ final class FromTest extends TestCase
             ->select('*')
             ->from(DB::raw('posts'), 'donations');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT * FROM posts AS donations',
             $builder->getSQL()
         );
@@ -43,7 +43,7 @@ final class FromTest extends TestCase
             ->from(DB::raw('posts'))
             ->from(DB::raw('postmeta'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT * FROM posts, postmeta',
             $builder->getSQL()
         );

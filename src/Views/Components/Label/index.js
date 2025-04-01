@@ -5,10 +5,10 @@ const Label = ({type, text}) => {
     const labelClasses = classNames(
         styles.label,
         {[styles.error]: type === 'error' || type === 'failed'},
-        {[styles.warning]: type === 'warning'},
+        {[styles.warning]: type === 'warning' || type === 'incomplete'},
         {[styles.notice]: type === 'notice'},
         {[styles.success]: type === 'success'},
-        {[styles.info]: type === 'info'},
+        {[styles.info]: type === 'info' || type === 'running'},
         {[styles.http]: type.toUpperCase() === 'HTTP'}
     );
 

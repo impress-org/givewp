@@ -7,17 +7,17 @@ use Give\Donations\Models\Donation;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ValidateReceiptViewPermissionTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private ValidateReceiptViewPermission $action;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function setUp(): void
     {
@@ -26,7 +26,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function tearDown(): void
     {
@@ -35,7 +35,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testReturnsOriginalPermissionWhenReceiptIdIsNotSet(): void
     {
@@ -47,7 +47,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testReturnsOriginalPermissionWhenReceiptIdIsEmpty(): void
     {
@@ -61,7 +61,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testReturnsOriginalPermissionWhenDonationNotFound(): void
     {
@@ -72,7 +72,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws \Exception
      */
@@ -87,7 +87,7 @@ class ValidateReceiptViewPermissionTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws \Exception
      */

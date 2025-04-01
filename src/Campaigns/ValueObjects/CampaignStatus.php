@@ -5,7 +5,7 @@ namespace Give\Campaigns\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * Statuses copied from https://github.com/impress-org/give-peer-to-peer/blob/develop/src/P2P/ValueObjects/Status.php
  *

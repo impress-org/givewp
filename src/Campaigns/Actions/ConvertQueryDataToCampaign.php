@@ -9,12 +9,12 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ConvertQueryDataToCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(object $queryObject): Campaign
     {

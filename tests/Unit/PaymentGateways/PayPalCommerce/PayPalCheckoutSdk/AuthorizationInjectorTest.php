@@ -45,7 +45,7 @@ class AuthorizationInjectorTest extends TestCase
 
         $authorizationInjector->inject($dummyHttpRequest);
 
-        $this->assertContains($accessToken->token, $dummyHttpRequest->headers['Authorization']);
+        $this->assertStringContainsString($accessToken->token, $dummyHttpRequest->headers['Authorization']);
     }
 
     /**
@@ -76,7 +76,7 @@ class AuthorizationInjectorTest extends TestCase
 
         $authorizationInjector->inject($dummyHttpRequest);
 
-        $this->assertContains("$accessToken->token", $dummyHttpRequest->headers['Authorization']);
+        $this->assertStringContainsString("$accessToken->token", $dummyHttpRequest->headers['Authorization']);
     }
 }
 

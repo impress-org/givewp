@@ -14,7 +14,7 @@ use WP_REST_Server;
 class GetCampaignComments implements RestRoute
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute()
     {
@@ -49,7 +49,7 @@ class GetCampaignComments implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

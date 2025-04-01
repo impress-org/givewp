@@ -4,7 +4,7 @@ import {ErrorIcon} from '../../Icons';
 import styles from '../CampaignDetailsPage.module.scss'
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default ({
     isOpen,

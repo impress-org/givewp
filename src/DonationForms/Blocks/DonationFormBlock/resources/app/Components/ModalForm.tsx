@@ -14,7 +14,7 @@ type ModalFormProps = {
 };
 
 /**
- * @unreleased updated to include loading state
+ * @since 4.0.0 updated to include loading state
  * @since 3.6.1
  * @since 3.4.0
  * @since 3.2.0 include types. update BEM classnames.

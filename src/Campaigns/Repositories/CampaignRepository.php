@@ -14,12 +14,12 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignRepository
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @var string[]
      */
@@ -29,11 +29,11 @@ class CampaignRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get Campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function getById(int $id)
     {
@@ -41,11 +41,11 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Query Campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function queryById(int $id): ModelQueryBuilder
     {
@@ -54,7 +54,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get Campaign by Form ID using a lookup table
      */
@@ -64,7 +64,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param int $formId
      *
@@ -78,7 +78,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -139,7 +139,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -187,7 +187,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -227,7 +227,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -259,7 +259,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -290,7 +290,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -356,7 +356,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function validateProperties(Campaign $campaign): void
     {
@@ -368,7 +368,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */

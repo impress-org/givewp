@@ -5,13 +5,14 @@ namespace Give\Campaigns\Migrations\Donations;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
-use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
-class AddCampaignId extends Migration
+class AddCampaignId extends BatchMigration
 {
     /**
      * @inheritDoc
@@ -38,10 +39,20 @@ class AddCampaignId extends Migration
     }
 
     /**
+     * Base query
+     *
+     * @since 4.0.0
+     */
+    protected function query(): QueryBuilder
+    {
+        return DB::table('posts')->where('post_type', 'give_payment');
+    }
+
+    /**
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
-    public function run()
+    public function runBatch($firstId, $lastId)
     {
         $relationships = [];
 
@@ -54,16 +65,23 @@ class AddCampaignId extends Migration
                 $relationships[$relationship->campaign_id][] = $relationship->form_id;
             }
 
-            $donations = DB::table('posts')
+            $query = $this->query()
                 ->select('ID')
                 ->attachMeta(
                     'give_donationmeta',
                     'ID',
                     'donation_id',
                     [DonationMetaKeys::FORM_ID(), 'formId']
-                )
-                ->where('post_type', 'give_payment')
-                ->getAll();
+                );
+
+            // Migration Runner will pass null for lastId in the last step
+            if (is_null($lastId)) {
+                $query->where('ID', $firstId, '>');
+            } else {
+                $query->whereBetween('ID', $firstId, $lastId);
+            }
+
+            $donations = $query->getAll();
 
             $donationMeta = [];
 
@@ -86,7 +104,57 @@ class AddCampaignId extends Migration
                     ->insert($donationMeta, ['%d', '%s', '%d']);
             }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table", 0, $exception);
+            throw new DatabaseMigrationException("An error occurred while adding campaign ID to the donation meta table",
+                0, $exception);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItemsCount(): int
+    {
+        return $this->query()->count();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBatchItemsAfter($lastId): ?array
+    {
+        $item = DB::get_row(sprintf(
+            'SELECT MIN(ID) AS first_id, MAX(ID) AS last_id FROM (SELECT ID FROM %1s WHERE ID > %d ORDER BY ID ASC LIMIT %d) as batch',
+            DB::prefix('posts'),
+            $lastId,
+            $this->getBatchSize()
+        ));
+
+        if ( ! $item) {
+            return null;
+        }
+
+        return [
+            $item->first_id,
+            $item->last_id,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBatchSize(): int
+    {
+        return 100;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasMoreItemsToBatch($lastProcessedId): ?bool
+    {
+        return $this->query()
+            ->where('ID', $lastProcessedId, '>')
+            ->limit(1)
+            ->count();
     }
 }

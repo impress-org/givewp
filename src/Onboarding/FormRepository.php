@@ -74,7 +74,7 @@ class FormRepository
     }
 
     /**
-     * @unreleased Replace "Donation Form" with "Campaign Form"
+     * @since 4.0.0 Replace "Donation Form" with "Campaign Form"
      * @since 3.15.0 Create the default v3 form.
      * @since 2.8.0
      * @return int Form ID

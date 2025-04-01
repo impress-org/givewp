@@ -120,7 +120,7 @@ class DonationsAdminPage
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
      *
-     * @unreleased replace formselect with campaigns.
+     * @since 4.0.0 replace formselect with campaigns.
      * @since 2.20.0
      * @return array
      */

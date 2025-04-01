@@ -1,15 +1,13 @@
 import {useState} from 'react';
 import {getCampaignOptionsWindowData, handleTooltipDismiss} from '@givewp/campaigns/utils';
 
-type NoticeId = 'givewp_campaign_form_notice'
-    | 'givewp_campaign_settings_notice'
-    | 'givewp_campaign_listtable_notice';
+type NoticeId = 'givewp_campaign_form_notice' | 'givewp_campaign_settings_notice' | 'givewp_campaign_listtable_notice';
 
 const noticesMap = {
-    'givewp_campaign_listtable_notice': 'showCampaignListTableNotice',
-    'givewp_campaign_settings_notice': 'showCampaignSettingsNotice',
-    'givewp_campaign_form_notice': 'showCampaignFormNotice',
-}
+    givewp_campaign_listtable_notice: 'showCampaignListTableNotice',
+    givewp_campaign_settings_notice: 'showCampaignSettingsNotice',
+    givewp_campaign_form_notice: 'showCampaignFormNotice',
+};
 
 export function useCampaignNoticeHook(id: NoticeId): [boolean, () => void] {
     const campaignWindowData = getCampaignOptionsWindowData();
@@ -18,11 +16,9 @@ export function useCampaignNoticeHook(id: NoticeId): [boolean, () => void] {
     return [
         showTooltip,
         () => {
-            handleTooltipDismiss(id)
-                .then(() => {
-                    setShowTooltip(false)
-                    campaignWindowData.admin[noticesMap[id]] = false;
-                });
+            setShowTooltip(false);
+            campaignWindowData.admin[noticesMap[id]] = false;
+            handleTooltipDismiss(id);
         },
     ];
 }
