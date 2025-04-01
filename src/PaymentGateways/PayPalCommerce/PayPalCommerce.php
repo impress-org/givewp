@@ -94,11 +94,9 @@ class PayPalCommerce extends PaymentGateway
         $payPalOrder = $payPalOrderRepository->getApprovedOrder($payPalOrderId);
 
         if ($payPalOrder->status === 'COMPLETED') {
-            $transaction = $payPalOrder->purchase_units[0]->payments->captures[0];
-
             $this->validatePayPalOrder($payPalOrder);
 
-            $transactionId = $transaction->id;
+            $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
 
         } elseif ($payPalOrder->status === 'APPROVED') {
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
