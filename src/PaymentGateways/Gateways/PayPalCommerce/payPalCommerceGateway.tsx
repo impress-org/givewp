@@ -183,7 +183,8 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      */
     const cardFieldsOnErrorHandler: PayPalCardFieldsComponentBasics['onError'] = (error) => {
         console.error('PayPal Card Fields Error:', error);
-        // Handle the error as needed
+
+        throw new Error(__('PayPal Card Fields Error:', 'give') + error.message);
     };
 
     /**
