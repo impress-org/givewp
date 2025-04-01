@@ -94,15 +94,21 @@ class PayPalCommerce extends PaymentGateway
         $payPalOrder = $payPalOrderRepository->getApprovedOrder($payPalOrderId);
 
         if ($payPalOrder->status === 'COMPLETED') {
-            $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
+            $transaction = $payPalOrder->purchase_units[0]->payments->captures[0];
+
+            $this->validatePayPalOrder($payPalOrder);
+
+            $transactionId = $transaction->id;
 
         } elseif ($payPalOrder->status === 'APPROVED') {
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
                 $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount);
             }
 
-            // capture order
+            // ready to capture order, response is the updated PayPal order.
             $response = $payPalOrderRepository->approveOrder($payPalOrderId);
+
+            $this->validatePayPalOrder($response);
 
             $transactionId  = $response->purchase_units[0]->payments->captures[0]->id;
         } else {
@@ -296,5 +302,37 @@ class PayPalCommerce extends PaymentGateway
         }
 
         return false;
+    }
+
+    /**
+     * @throws PaymentGatewayException
+     */
+    private function validatePayPalOrder(object $payPalOrder): void
+    {
+        $transaction = $payPalOrder->purchase_units[0]->payments->captures[0];
+
+        $errors = property_exists($payPalOrder, 'details') ? $payPalOrder->details[0] : [];
+
+        if (!$transaction) {
+            throw new PaymentGatewayException('PayPal Order does not have a transaction.');
+        }
+
+        if ($transaction->status === "DECLINED") {
+            $errorMessage = sprintf(
+                __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
+                $transaction->status
+            );
+
+            throw new PaymentGatewayException($errorMessage);
+        }
+
+        if (!empty($errors)) {
+            $errorMessage = sprintf(
+                __('PayPal Order has an error: %s', 'give'),
+                $errors->issue[0]->description
+            );
+
+            throw new PaymentGatewayException($errorMessage);
+        }
     }
 }
