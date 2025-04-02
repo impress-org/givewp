@@ -125,7 +125,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
 
         // @ts-ignore
-        if (record && record?.status !== 'publish') {
+        if (record && record?.status !== 'publish' && campaign?.status !== 'archived') {
             dispatch.addNotice({
                 id: 'update-campaign-draft-page-notice',
                 type: 'info',
@@ -135,7 +135,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         } else {
             dispatch.dismissNotification('update-campaign-draft-page-notice');
         }
-    }, [record]);
+    }, [record, campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
         const shouldSave =
@@ -340,7 +340,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                         title={__('Archive Campaign', 'give')}
                         isOpen={show.confirmationModal}
                         handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
-                        handleConfirm={() => updateStatus('archived')}
+                        handleConfirm={() => {
+                            updateStatus('archived');
+                            dispatch.dismissNotification('update-campaign-draft-page-notice');
+                        }}
                     />
                 </article>
             </form>
