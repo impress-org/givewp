@@ -457,9 +457,9 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         };
 
         return donationType === 'subscription' ? (
-            <PayPalButtons {...props} createSubscription={smartButtonsCreateSubscriptionHandler} />
+            <PayPalButtons {...props} createSubscription={smartButtonsCreateSubscriptionHandler} createOrder={null} />
         ) : (
-            <PayPalButtons {...props} createOrder={smartButtonsCreateOrderHandler} />
+            <PayPalButtons {...props} createOrder={smartButtonsCreateOrderHandler} createSubscription={null} />
         );
     };
 
