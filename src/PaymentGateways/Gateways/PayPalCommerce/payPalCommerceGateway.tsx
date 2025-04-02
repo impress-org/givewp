@@ -52,7 +52,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let postalCode;
 
     let currency;
-    let eventTickets;
+    //let eventTickets;
     let submitButton;
 
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
@@ -66,7 +66,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     /**
      * @since 3.12.2
      */
-    const getEventTicketsTotalAmount = (
+    /*const getEventTicketsTotalAmount = (
         eventTickets: Array<{
             ticketId: number;
             quantity: number;
@@ -79,7 +79,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         } else {
             return 0;
         }
-    };
+    };*/
 
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
@@ -118,13 +118,13 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      * @since 3.2.0
      * @return {number} Amount with fee.
      */
-    const getAmount = () => {
+    /*const getAmount = () => {
         const feeAmount = feeRecovery ? feeRecovery : 0;
         let amountWithFee = amount + feeAmount;
         amountWithFee = Math.round(amountWithFee * 100) / 100;
 
         return amountWithFee;
-    };
+    };*/
 
     const getFormData = () => {
         const formData = new FormData();
@@ -320,7 +320,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
         currency = formData.currency;
 
-        eventTickets = useWatch({name: 'event-tickets'});
+        //eventTickets = useWatch({name: 'event-tickets'});
 
         /*amount = useWatch({name: 'amount'});
         feeRecovery = useWatch({name: 'feeRecovery'});
