@@ -78,24 +78,6 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
 };
 
 /**
- * @unreleased
- */
-const getEventTicketsTotalAmount = (
-    eventTickets: Array<{
-        ticketId: number;
-        quantity: number;
-        amount: number;
-    }>
-) => {
-    const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
-    if (totalAmount > 0) {
-        return totalAmount / 100;
-    } else {
-        return 0;
-    }
-};
-
-/**
  * @since 4.0.0
  */
 export default function useFormData() {
@@ -132,10 +114,6 @@ export default function useFormData() {
     const isOneTime = donationType === 'single';
     const isRecurring = donationType === 'subscription';
 
-    const feeRecovery = useWatch({name: 'feeRecovery'}) as number;
-    const eventTickets = useWatch({name: 'event-tickets'});
-    const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
-
     return {
         firstName,
         lastName,
@@ -150,7 +128,5 @@ export default function useFormData() {
         subscriptionPeriod,
         subscriptionFrequency,
         subscriptionInstallments,
-        feeRecovery,
-        eventTicketsTotalAmount,
     };
 }

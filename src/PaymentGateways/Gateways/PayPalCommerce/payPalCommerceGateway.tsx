@@ -52,7 +52,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let postalCode;
 
     let currency;
-    //let eventTickets;
     let submitButton;
 
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
@@ -62,24 +61,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             submitButton.style.display = showOrHide === 'hide' ? 'none' : '';
         }
     };
-
-    /**
-     * @since 3.12.2
-     */
-    /*const getEventTicketsTotalAmount = (
-        eventTickets: Array<{
-            ticketId: number;
-            quantity: number;
-            amount: number;
-        }>
-    ) => {
-        const totalAmount = eventTickets.reduce((accumulator, eventTicket) => accumulator + eventTicket.amount, 0);
-        if (totalAmount > 0) {
-            return totalAmount / 100;
-        } else {
-            return 0;
-        }
-    };*/
 
     const buttonsStyle = {
         color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
@@ -111,45 +92,15 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         return paypalScriptOptions;
     };
 
-    /**
-     * Get amount with fee (if any).
-     *
-     * @since 3.6.1 Append 'give-cs-form-currency' to formData
-     * @since 3.2.0
-     * @return {number} Amount with fee.
-     */
-    /*const getAmount = () => {
-        const feeAmount = feeRecovery ? feeRecovery : 0;
-        let amountWithFee = amount + feeAmount;
-        amountWithFee = Math.round(amountWithFee * 100) / 100;
-
-        return amountWithFee;
-    };*/
-
     const getFormData = () => {
         const formData = new FormData();
-
-        //const {isRecurring} = window.givewp.form.hooks.useFormData();
-
-        //console.log('isRecurring: ', isRecurring);
 
         formData.append('give-form-id', payPalDonationsSettings.donationFormId);
         formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
 
         formData.append('give_payment_mode', 'paypal-commerce');
 
-        /*const eventTicketsTotalAmount = eventTickets ? getEventTicketsTotalAmount(JSON.parse(eventTickets)) : 0;
-        const isSubscription = subscriptionPeriod ? subscriptionPeriod !== 'one-time' : false;
-        if (!isSubscription) {
-            formData.append('give-amount', getAmount() + eventTicketsTotalAmount);
-        } else {
-            formData.append('give-amount', getAmount()); // We don't want to charge the event tickets for each subscription renewal
-        }
-
-        formData.append('give-event-tickets-total-amount', String(eventTicketsTotalAmount));*/
-
         formData.append('give-amount', amount.toString());
-
         formData.append('give-recurring-period', subscriptionPeriod);
         formData.append('period', subscriptionPeriod);
         formData.append('frequency', subscriptionFrequency);
@@ -297,12 +248,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
     const FormFieldsProvider = ({children}) => {
         const {useWatch} = window.givewp.form.hooks;
-
         const formData = window.givewp.form.hooks.useFormData();
 
         amount = formData.amount;
-        console.log('amount: ', amount);
-        feeRecovery = formData.feeRecovery;
+        feeRecovery = useWatch({name: 'feeRecovery'});
         firstName = formData.firstName;
         lastName = formData.lastName;
         email = formData.email;
@@ -319,29 +268,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         country = formData.billingAddress.country;
 
         currency = formData.currency;
-
-        //eventTickets = useWatch({name: 'event-tickets'});
-
-        /*amount = useWatch({name: 'amount'});
-        feeRecovery = useWatch({name: 'feeRecovery'});
-        firstName = useWatch({name: 'firstName'});
-        lastName = useWatch({name: 'lastName'});
-        email = useWatch({name: 'email'});
-
-        subscriptionFrequency = useWatch({name: 'subscriptionFrequency'});
-        subscriptionInstallments = useWatch({name: 'subscriptionInstallments'});
-        subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});
-
-        addressLine1 = useWatch({name: 'address1'});
-        addressLine2 = useWatch({name: 'address2'});
-        city = useWatch({name: 'city'});
-        state = useWatch({name: 'state'});
-        postalCode = useWatch({name: 'zip'});
-        country = useWatch({name: 'country'});
-
-        currency = useWatch({name: 'currency'});
-
-        eventTickets = useWatch({name: 'event-tickets'});*/
 
         return children;
     };
