@@ -249,7 +249,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
     const FormFieldsProvider = ({children}) => {
         const {useWatch} = window.givewp.form.hooks;
-
         const formData = window.givewp.form.hooks.useFormData();
 
         amount = formData.amount;
@@ -420,26 +419,24 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     function PaymentMethodsWrapper() {
-        const {useWatch} = window.givewp.form.hooks;
-        const donationType = useWatch({name: 'donationType'});
+        const {isRecurring} = window.givewp.form.hooks.useFormData();
+
         const [{options}, dispatch] = usePayPalScriptReducer();
         const shouldShowCardFields = -1 !== options.components.indexOf('card-fields');
 
         useEffect(() => {
-            const isSubscription = donationType === 'subscription';
-
-            const options = getPayPalScriptOptions({isSubscription});
+            const options = getPayPalScriptOptions({isSubscription: isRecurring});
 
             dispatch({
                 type: DISPATCH_ACTION.RESET_OPTIONS,
                 value: {
                     ...options,
                     currency: currency,
-                    vault: donationType === 'subscription',
-                    intent: donationType === 'subscription' ? 'subscription' : options.intent,
+                    vault: isRecurring,
+                    intent: isRecurring ? 'subscription' : options.intent,
                 },
             });
-        }, [currency, donationType]);
+        }, [currency, isRecurring]);
 
         useEffect(() => {
             // hide donate buttons if card fields are not expected to be shown
@@ -514,14 +511,15 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
          * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
          */
         Fields() {
-            const {useWatch} = window.givewp.form.hooks;
-            const donationType = useWatch({name: 'donationType'});
-            const isSubscription = donationType === 'subscription';
+            const {isRecurring} = window.givewp.form.hooks.useFormData();
             submitButton = window.givewp.form.hooks.useFormSubmitButton();
 
             return (
                 <FormFieldsProvider>
-                    <PayPalScriptProvider deferLoading={true} options={getPayPalScriptOptions({isSubscription})}>
+                    <PayPalScriptProvider
+                        deferLoading={true}
+                        options={getPayPalScriptOptions({isSubscription: isRecurring})}
+                    >
                         <PaymentMethodsWrapper />
                     </PayPalScriptProvider>
                 </FormFieldsProvider>
