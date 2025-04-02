@@ -50,8 +50,9 @@ class TitleColumn extends ModelColumn
     public function getCellValue($model): string
     {
         return sprintf(
-            '<a href="%s" rel="noopener noreferrer" class="giveDonationFormsLink">%s</a>',
+            '<a href="%s" rel="noopener noreferrer" class="giveDonationFormsLink" title="%s">%s</a>',
             add_query_arg(['locale' => Language::getLocale()], get_edit_post_link($model->id)),
+            esc_attr($model->title),
             wp_strip_all_tags($model->title)
         );
     }

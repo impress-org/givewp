@@ -24,7 +24,6 @@ tr.duplicated {
 .tableRowActions {
     position: absolute;
     inset-block-end: 1rem;
-
     display: flex;
     align-items: center;
     column-gap: 1.25rem;
@@ -133,3 +132,13 @@ div.abandoned {
         opacity: 0;
     }
 }
+
+.tableRow:hover {
+    :global {
+        .givewp-default-form-pill {
+            opacity: 0;
+        }
+    }
+}
+
+
