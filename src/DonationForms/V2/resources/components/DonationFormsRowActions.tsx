@@ -8,7 +8,6 @@ import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import {createInterpolateElement} from '@wordpress/element';
 
-
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters, entity}) {
@@ -24,7 +23,14 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         return response;
     };
 
-    const deleteForm = async (selected) => await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
+    const deleteForm = async (selected) => {
+        try {
+            await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
+        } catch (error) {
+            const errorData = JSON.parse(error.message.replace('Error: ', ''));
+            alert(errorData.message);
+        }
+    };
 
     const confirmDeleteForm = (selected) => (
         <p>
@@ -75,15 +81,15 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
             (selected) => <p>{defaultCampaignModalContent}</p>,
             async () => {
                 await entity.edit({
-                    defaultFormId: item.id
-                })
+                    defaultFormId: item.id,
+                });
 
                 const response = await entity.save();
 
                 await mutate(parameters);
                 return response;
             },
-            __('Yes proceed','give')
+            __('Yes proceed', 'give')
         );
     };
 
