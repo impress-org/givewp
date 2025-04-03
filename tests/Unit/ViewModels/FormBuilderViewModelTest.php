@@ -94,8 +94,8 @@ class FormBuilderViewModelTest extends TestCase
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
                 'intlTelInputSettings' => IntlTelInput::getSettings(),
                 'campaignColors' => [
-                    'primary' => '',
-                    'secondary' => '',
+                    'primaryColor' => '',
+                    'secondaryColor' => '',
                 ],
             ],
             $viewModel->storageData($formId)
