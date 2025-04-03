@@ -45,6 +45,7 @@ class CreateFormRoute
                     'settings' => FormSettings::fromArray([
                         'enableDonationGoal' => true,
                         'goalAmount' => 1000,
+                        'inheritCampaignColors' => true,
                     ]),
                     'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
                 ]);
