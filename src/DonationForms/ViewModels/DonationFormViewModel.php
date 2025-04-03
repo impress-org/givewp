@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\ViewModels;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
@@ -72,18 +73,36 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased Add support for campaign colors
      * @since 3.0.0
      */
     public function primaryColor(): string
     {
+        if ($this->formSettings->inheritCampaignColors) {
+            $campaignColors = $this->getCampaignColors($this->donationFormId);
+
+            if ($campaignColors['primaryColor']) {
+                return $campaignColors['primaryColor'];
+            }
+        }
+
         return $this->formSettings->primaryColor ?? '';
     }
 
     /**
+     * @unreleased Add support for campaign colors
      * @since 3.0.0
      */
     public function secondaryColor(): string
     {
+        if ($this->formSettings->inheritCampaignColors) {
+            $campaignColors = $this->getCampaignColors($this->donationFormId);
+
+            if ($campaignColors['secondaryColor']) {
+                return $campaignColors['secondaryColor'];
+            }
+        }
+
         return $this->formSettings->secondaryColor ?? '';
     }
 
@@ -459,5 +478,26 @@ class DonationFormViewModel
         $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
 
         $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getCampaignColors(int $formId): array
+    {
+        /** @var Campaign $campaign */
+        $campaign = give()->campaigns->getByFormId($formId);
+
+        if ($campaign) {
+            return [
+                'primaryColor' => $campaign->primaryColor,
+                'secondaryColor' => $campaign->secondaryColor,
+            ];
+        }
+
+        return [
+            'primaryColor' => '',
+            'secondaryColor' => '',
+        ];
     }
 }
