@@ -88,6 +88,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased Added custom form styles
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()
@@ -106,6 +107,11 @@ class DonationFormViewModel
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
             }"
+        );
+
+        wp_add_inline_style(
+            'givewp-base-form-styles',
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
         );
 
         wp_enqueue_style('givewp-base-form-styles');
