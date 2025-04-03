@@ -142,6 +142,13 @@ class PayPalOrder
                     ],
                     "email_address" => $array['payer']['email'],
                 ],
+                'card' => [
+                    'attributes' => [
+                        'verification' => [
+                            'method' => 'SCA_WHEN_REQUIRED'
+                        ]
+                    ]
+                ]
             ],
             'purchase_units' => [
                 $purchaseUnits
