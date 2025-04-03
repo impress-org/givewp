@@ -185,7 +185,7 @@ class Classic extends Template implements Hookable, Scriptable
         // Custom styles
         wp_add_inline_style(
             'give-classic-template',
-            give_get_option('custom_form_styles', '')
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
         );
 
         // JS

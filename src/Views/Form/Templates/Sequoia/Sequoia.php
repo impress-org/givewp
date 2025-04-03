@@ -353,7 +353,7 @@ class Sequoia extends Template implements Hookable, Scriptable
         // Custom styles
         wp_add_inline_style(
             'give-sequoia-template-css',
-            give_get_option('custom_form_styles', '')
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
         );
 
         wp_enqueue_script(
