@@ -10,7 +10,11 @@
         "align": [
             "wide",
             "full"
-        ]
+        ],
+        "color": {
+            "text": true,
+            "background": false
+        }
     },
     "attributes": {
         "campaignId": {
@@ -24,6 +28,13 @@
             "type": "string"
         },
         "buttonText": {
+            "type": "string"
+        },
+        "width": {
+            "type": "string",
+            "default": "100%"
+        },
+        "textColor": {
             "type": "string"
         }
     },

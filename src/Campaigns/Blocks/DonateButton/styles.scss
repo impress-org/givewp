@@ -3,6 +3,7 @@
         line-height: 1.5;
         transition: all 0.2s ease;
         width: 100%;
+        color: inherit;
 
         &:hover {
             background-color: color-mix(in srgb, var(--givewp-primary-color), black 20%);

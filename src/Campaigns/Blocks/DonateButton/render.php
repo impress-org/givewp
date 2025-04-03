@@ -10,29 +10,28 @@ use Give\Campaigns\Repositories\CampaignRepository;
  */
 
 if (
-    ! isset($attributes['campaignId']) ||
-    ! ($campaign = give(CampaignRepository::class)->getById($attributes['campaignId']))
+    !isset($attributes['campaignId']) ||
+    !($campaign = give(CampaignRepository::class)->getById($attributes['campaignId']))
 ) {
     return;
 }
 
 $blockInlineStyles = sprintf(
-    '--givewp-primary-color: %s;',
-    esc_attr($campaign->primaryColor ?? '#0b72d9')
+    '--givewp-primary-color: %s; width: %s;',
+    esc_attr($attributes['backgroundColor'] ?? $campaign->primaryColor ?? '#0b72d9'),
+    esc_attr($attributes['width'] ?? '100%')
 );
+
 ?>
 
 <div
-    <?php
-    echo wp_kses_data(get_block_wrapper_attributes(['class' => 'givewp-campaign-donate-button-block'])); ?>
-    style="<?php
-    echo esc_attr($blockInlineStyles); ?>">
-    <?php
-    echo give(RenderDonateButton::class)(
-        ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
+    <?php echo wp_kses_data(get_block_wrapper_attributes(['class' => 'givewp-campaign-donate-button-block'])); ?>
+    style="<?php echo esc_attr($blockInlineStyles); ?>">
+    <?php echo give(RenderDonateButton::class)(
+        ($attributes['useDefaultForm'] || !isset($attributes['selectedForm']))
             ? $campaign->defaultFormId
             : $attributes['selectedForm'],
-        $attributes['buttonText'] ?? __('Donate', 'give'),
+        $attributes['buttonText'] ?? __('Donate', 'give')
     );
     ?>
 </div>
