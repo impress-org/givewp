@@ -153,6 +153,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         } else {
             dispatch.dismissNotification('update-campaign-draft-page-notice');
         }
+        // @ts-ignore
     }, [record?.status, campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
