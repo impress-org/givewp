@@ -86,7 +86,7 @@ class FormRepository
     {
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
-            'title' => __('Fundraising Campaign Form', 'give'),
+            'title' => __('Fundraising Campaign', 'give'),
             'shortDescription' => '',
             'longDescription' => '',
             'logo' => '',
