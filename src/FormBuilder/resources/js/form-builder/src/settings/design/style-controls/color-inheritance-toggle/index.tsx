@@ -2,30 +2,48 @@ import {__} from '@wordpress/i18n';
 import {ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
+import {getWindowData} from '@givewp/form-builder/common';
 
+/**
+ * @unreleased
+ */
 export default function ColorInheritanceToggle({dispatch, children}) {
     const {
-        settings: {inheritCampaignColors},
+        settings: {primaryColor, secondaryColor, inheritCampaignColors = false},
     } = useFormState();
 
+    const {campaignColors} = getWindowData();
     const {publishColors} = useDonationFormPubSub();
+    const hasCampaignColors = !!(campaignColors.primaryColor && campaignColors.secondaryColor);
 
-    // TODO: Retrieve campaign colors from settings then pass them to the publishColors function
+    const handleToggleChange = (inheritCampaignColors) => {
+        dispatch(setFormSettings({inheritCampaignColors: inheritCampaignColors}));
+
+        if (inheritCampaignColors) {
+            if (campaignColors.primaryColor) {
+                publishColors({primaryColor: campaignColors.primaryColor});
+            }
+
+            if (campaignColors.secondaryColor) {
+                publishColors({secondaryColor: campaignColors.secondaryColor});
+            }
+        } else {
+            publishColors({primaryColor, secondaryColor});
+        }
+    };
 
     return (
         <>
-            <ToggleControl
-                label={__('Inherit Campaign Colors', 'give')}
-                checked={inheritCampaignColors ?? false}
-                onChange={(inheritCampaignColors: boolean) => {
-                    console.log('inheritCampaignColors', inheritCampaignColors);
-                    dispatch(setFormSettings({inheritCampaignColors}));
-                    //publishColors(value);
-                }}
-                help={__('Inherit the colors from the campaign settings.', 'give')}
-            />
+            {hasCampaignColors && (
+                <ToggleControl
+                    label={__('Inherit Campaign Colors', 'give')}
+                    checked={inheritCampaignColors}
+                    onChange={handleToggleChange}
+                    help={__('Inherit the colors from the campaign settings.', 'give')}
+                />
+            )}
 
-            {!inheritCampaignColors && children}
+            {(!inheritCampaignColors || !hasCampaignColors) && children}
         </>
     );
 }
