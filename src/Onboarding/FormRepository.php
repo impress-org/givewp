@@ -85,7 +85,7 @@ class FormRepository
     {
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
-            'title' => __('GiveWP Onboarding', 'give'),
+            'title' => __('Fundraising Campaign Form', 'give'),
             'shortDescription' => '',
             'longDescription' => '',
             'logo' => '',
