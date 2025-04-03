@@ -44,22 +44,26 @@ const amountToMinorUnit = (amount: string, currency: string) => {
 /**
  * Donation total calculation
  *
+ * @unreleased Round return value
  * @since 4.0.0
  */
 const getAmountTotal = (totals: DonationTotals, amount: number) =>
-    Number(
-        Object.values({
-            ...totals,
-            amount,
-        }).reduce((total: number, amount: number) => {
-            return total + amount;
-        }, 0)
-    );
+    Math.round(
+        Number(
+            Object.values({
+                ...totals,
+                amount,
+            }).reduce((total: number, amount: number) => {
+                return total + amount;
+            }, 0)
+        ) * 100
+    ) / 100;
 
 /**
  * Subscription total calculation
  * TODO: figure out which totals will be included in subscriptions
  *
+ * @unreleased Round return value
  * @since 4.0.0
  */
 const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
@@ -74,7 +78,7 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
         }
     }
 
-    return Number(total + amount);
+    return Math.round(Number(total + amount) * 100) / 100;
 };
 
 /**
