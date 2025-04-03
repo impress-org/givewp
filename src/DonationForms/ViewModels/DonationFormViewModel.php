@@ -108,6 +108,11 @@ class DonationFormViewModel
             }"
         );
 
+        wp_add_inline_style(
+            'givewp-base-form-styles',
+            give_get_option('custom_form_styles', '')
+        );
+
         wp_enqueue_style('givewp-base-form-styles');
     }
 
