@@ -88,6 +88,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased Added custom form styles
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()

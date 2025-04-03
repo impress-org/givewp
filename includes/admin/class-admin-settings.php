@@ -446,8 +446,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
+         * @unreleased Added support for code editor field.
 		 * @since  2.5.5
-		 * @access public
 		 *
 		 * @param array  $value       Settings Field Array.
 		 * @param string $option_name Option Name.
@@ -1138,6 +1138,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
+         * @unreleased Added validation for code editor field.
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Options array to output
