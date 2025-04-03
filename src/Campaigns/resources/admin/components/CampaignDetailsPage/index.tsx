@@ -84,6 +84,24 @@ export default function CampaignsDetailsPage({campaignId}) {
     const {formState, handleSubmit, reset, setValue} = methods;
     const {record} = useEntityRecord('postType', 'page', campaign?.pageId);
 
+    // Close context menu when clicked outside
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (show.contextMenu) {
+                return;
+            }
+
+            if (
+                e.target instanceof HTMLElement &&
+                !e.target.closest(`.${styles.campaignButtonDots}`) &&
+                !e.target.closest(`.${styles.contextMenu}`)
+            ) {
+                setShow({contextMenu: false});
+                (document.querySelector(`.${styles.campaignButtonDots}`) as HTMLElement)?.blur();
+            }
+        });
+    }, []);
+
     // Set default values when campaign is loaded
     useEffect(() => {
         if (hasResolved) {

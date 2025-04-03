@@ -292,10 +292,16 @@
     }
 
     .giveDonationFormsLink {
-        font-size: 1.125rem;
-        font-weight: 700;
-        text-decoration: none;
         color: #2271b1;
+        display: block;
+        font-size: 1rem;
+        font-weight: 700;
+        max-width: 32ch;
+        overflow: hidden;
+        position: relative;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .shortcode {
