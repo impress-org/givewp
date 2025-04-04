@@ -9,6 +9,7 @@ use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 
 /**
@@ -32,6 +33,7 @@ class CreateDefaultCampaignForm
                 'enableDonationGoal' => false,
                 'goalAmount' => $campaign->goal,
                 'goalType' => $campaign->goalType->getValue(),
+                'goalSource' => GoalSource::CAMPAIGN()->getValue(),
                 'designId' => MultiStepFormDesign::id(),
                 'inheritCampaignColors' => true,
             ]),

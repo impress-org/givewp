@@ -8,6 +8,7 @@ use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
 use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalProgressType;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
@@ -44,6 +45,12 @@ class FormSettings implements Arrayable, Jsonable
      * @var boolean
      */
     public $enableAutoClose;
+    /**
+     * @unreleased
+     *
+     * @var GoalSource
+     */
+    public $goalSource;
     /**
      * @var GoalType
      */
@@ -270,6 +277,7 @@ class FormSettings implements Arrayable, Jsonable
     public $enableReceiptConfirmationPage;
 
     /**
+     * @unreleased Added goalSource
      * @unreleased
      */
     public bool $inheritCampaignColors;
@@ -298,6 +306,9 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
+        $self->goalSource = ! empty($array['goalSource']) && GoalSource::isValid($array['goalSource'])
+            ? new GoalSource($array['goalSource'])
+            : GoalSource::FORM();
         $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
@@ -413,6 +424,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
+     * @unreleased Add goalSource
      * @since 3.2.0 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
@@ -422,6 +434,7 @@ class FormSettings implements Arrayable, Jsonable
             array_merge(
                 $this->toArray(),
                 [
+                    'goalSource' => $this->goalSource ? $this->goalSource->getValue() : GoalSource::FORM()->getValue(),
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
                 ]
             )

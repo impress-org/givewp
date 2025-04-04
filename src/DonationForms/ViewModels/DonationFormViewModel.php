@@ -3,11 +3,11 @@
 namespace Give\DonationForms\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
-use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -47,6 +47,10 @@ class DonationFormViewModel
      * @var bool
      */
     private $previewMode;
+    /**
+     * @unreleased
+     */
+    private DonationFormGoalData $donationFormGoalData;
 
     /**
      * @since 3.0.0
@@ -62,6 +66,7 @@ class DonationFormViewModel
         $this->formSettings = $formSettings;
         $this->donationFormRepository = give(DonationFormRepository::class);
         $this->previewMode = $previewMode;
+        $this->donationFormGoalData = new DonationFormGoalData($donationFormId, $formSettings);
     }
 
     /**
@@ -138,50 +143,61 @@ class DonationFormViewModel
 
     /**
      * @since 3.0.0
+     *
+     * @return GoalType|CampaignGoalType
      */
-    private function goalType(): GoalType
+    private function goalType()
     {
-        return $this->formSettings->goalType ?? GoalType::AMOUNT();
+        if ($this->formSettings->goalSource->isCampaign()) {
+            $campaign = Campaign::findByFormId($this->donationFormId);
+
+            if ($campaign) {
+                return $campaign->goalType;
+            }
+        }
+
+        return $this->formSettings->goalType;
+    }
+
+    /**
+     * @unreleased use DonationFormGoalData
+     *
+     * @since      3.0.0
+     *
+     */
+    private function getTotalCountValue(): ?int
+    {
+        switch ($this->goalType()->getValue()):
+            case 'donors':
+            case 'donorsFromSubscriptions':
+                return $this->donationFormGoalData->getQuery()->countDonors();
+            case 'donations':
+                return $this->formSettings->goalSource->isCampaign()
+                    ? $this->donationFormGoalData->getQuery()->countDonations()
+                    : $this->donationFormGoalData->getQuery()->count();
+            case 'subscriptions':
+                return $this->donationFormGoalData->getQuery()->count();
+            case 'amountFromSubscriptions':
+                return $this->donationFormGoalData->getQuery()->sumInitialAmount();
+            default:
+                return $this->donationFormGoalData->getQuery()->sumIntendedAmount();
+        endswitch;
     }
 
     /**
      * @since 3.0.0
      */
-    private function getTotalCountValue(GoalType $goalType): ?int
+    public function getCountLabel(): ?string
     {
-        if ($goalType->isDonors()) {
-            return $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId);
-        }
-
-        if ($goalType->isDonations() || $goalType->isAmount()) {
-            return $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId);
-        }
-
-        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
-            return $this->donationFormRepository->getTotalNumberOfSubscriptions($this->donationFormId);
-        }
-
-        if ($goalType->isDonorsFromSubscriptions()) {
-            return $this->donationFormRepository->getTotalNumberOfDonorsFromSubscriptions($this->donationFormId);
-        }
-
-        return 0;
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    private function getCountLabel(GoalType $goalType): ?string
-    {
-        if ($goalType->isDonors() || $goalType->isDonorsFromSubscriptions()) {
+        if ($this->goalType()->isDonors() || $this->goalType()->isDonorsFromSubscriptions()) {
             return __('Donors', 'give');
         }
 
-        if ($goalType->isDonations() || $goalType->isAmount()) {
+        if ($this->goalType()->isDonations() || $this->goalType()->isAmount()) {
             return __('Donations', 'give');
         }
 
-        if ($goalType->isSubscriptions() || $goalType->isAmountFromSubscriptions()) {
+        if ($this->goalType()->isSubscriptions() || $this->goalType()->isAmountFromSubscriptions()) {
             return __('Recurring Donations', 'give');
         }
 
@@ -189,36 +205,27 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0
-     */
-    private function getTotalRevenue(GoalType $goalType)
-    {
-        if ($goalType->isAmountFromSubscriptions()) {
-            return $this->donationFormRepository->getTotalInitialAmountFromSubscriptions($this->donationFormId);
-        }
-
-        return $this->donationFormRepository->getTotalRevenue($this->donationFormId);
-    }
-
-    /**
-     * @since 3.0.0
+     * @unreleased  use DonationFormGoalData instead of repository
+     *
+     * @since       3.0.0
      */
     private function formStatsData(): array
     {
-        $goalType = $this->goalType();
+        $query = $this->donationFormGoalData->getQuery();
 
-        $donationQuery = (new DonationQuery)->form($this->donationFormId);
-
-        if($this->formSettings->goalProgressType->isCustom()) {
-            $donationQuery->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
+        // Only form goal has range
+        if ($this->formSettings->goalSource->isForm()) {
+            if ($this->formSettings->goalProgressType->isCustom()) {
+                $query->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
+            }
         }
 
         return [
-            'totalRevenue' => $donationQuery->sumIntendedAmount(),
-            'totalCountValue' => $goalType->isDonations() || $goalType->isAmount()
-                ? $donationQuery->count()
-                : $this->getTotalCountValue($goalType),
-            'totalCountLabel' => $this->getCountLabel($goalType),
+            'totalRevenue' => $this->donationFormGoalData->getCurrentAmount(),
+            'totalCountValue' => $this->goalType()->isDonations() || $this->goalType()->isAmount()
+                ? $query->count()
+                : $this->getTotalCountValue(),
+            'totalCountLabel' => $this->getCountLabel(),
         ];
     }
 
@@ -231,7 +238,6 @@ class DonationFormViewModel
         $donateUrl = (new GenerateDonateRouteUrl())();
         $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
         $authUrl = (new GenerateAuthUrl())();
-        $donationFormGoalData = new DonationFormGoalData($this->donationFormId, $this->formSettings);
 
         $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
         $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
@@ -252,8 +258,12 @@ class DonationFormViewModel
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $this->formSettings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => $this->formStatsData(),
+                'goal' => $this->previewMode || ($this->formSettings->showHeader && $this->formSettings->enableDonationGoal)
+                    ? $this->donationFormGoalData->toArray()
+                    : [],
+                'stats' => $this->previewMode || ($this->formSettings->showHeader && $this->formSettings->enableDonationGoal)
+                    ? $this->formStatsData()
+                    : [],
                 'design' => $formDesign ? [
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),

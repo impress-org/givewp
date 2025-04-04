@@ -130,6 +130,7 @@ class ServiceProvider implements ServiceProviderInterface
         $noticeActions = [
             'givewp_campaign_interaction_notice',
             'givewp_campaign_existing_user_intro_notice',
+            'givewp_campaign_form_goal_notice',
         ];
 
         foreach ($noticeActions as $metaKey) {

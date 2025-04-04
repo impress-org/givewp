@@ -27,6 +27,7 @@ class LoadCampaignOptions
                 'admin' => is_admin()
                     ? [
                         'showCampaignInteractionNotice' => !get_user_meta(get_current_user_id(), 'givewp_show_campaign_interaction_notice', true),
+                        'showFormGoalNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_goal_notice', true),
                         'showExistingUserIntroNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_existing_user_intro_notice', true) &&
                                                          version_compare((string)get_option('give_version_upgraded_from', '4.0.0'), '4.0.0', '<'),
                         'showCampaignListTableNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_listtable_notice', true),

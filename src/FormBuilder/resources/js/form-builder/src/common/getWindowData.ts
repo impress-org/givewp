@@ -20,6 +20,15 @@ type GoalTypeOption = {
 };
 
 /**
+ * @unreleased
+ */
+type GoalSourceOption = {
+    value: string;
+    label: string;
+    description: string;
+};
+
+/**
  * @since 3.12.0
  */
 type GoalProgressOption = {
@@ -63,6 +72,7 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    goalSourceOptions: GoalSourceOption[];
     goalProgressOptions: GoalProgressOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;

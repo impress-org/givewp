@@ -6,6 +6,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalProgressType;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -83,6 +84,7 @@ class FormBuilderViewModel
                 'agreementText' => give_get_option('agreement_text'),
             ],
             'goalTypeOptions' => $this->getGoalTypeOptions(),
+            'goalSourceOptions' => $this->getGoalSourceOptions(),
             'goalProgressOptions' => $this->getGoalProgressOptions(),
             'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
@@ -116,6 +118,24 @@ class FormBuilderViewModel
             'isCurrency' => $isCurrency,
         ];
     }
+
+
+    /**
+     * @unreleased
+     */
+    public function getGoalSourceOption(
+        string $value,
+        string $label,
+        string $description
+    ): array
+    {
+        return [
+            'value' => $value,
+            'label' => $label,
+            'description' => $description,
+        ];
+    }
+
 
     /**
      * @since 3.12.0
@@ -180,6 +200,25 @@ class FormBuilderViewModel
         }
 
         return $options;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGoalSourceOptions(): array
+    {
+        return [
+            $this->getGoalTypeOption(
+                GoalSource::CAMPAIGN,
+                __('Campaign', 'give'),
+                __('The goal for this form will automatically adjust according to the campaign goal. Change campaign goal.', 'give')
+            ),
+            $this->getGoalTypeOption(
+                GoalSource::FORM,
+                __('Custom', 'give'),
+                __('Set the custom goal for this form', 'give')
+            ),
+        ];
     }
 
     /**
