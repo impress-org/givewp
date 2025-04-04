@@ -46,7 +46,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     const [isCreatingPage, setIsCreatingPage] = useState<boolean>(false);
     const [show, _setShowValue] = useState<Show>({
         contextMenu: false,
-        confirmationModal: false
+        confirmationModal: false,
     });
 
     const dispatch = useDispatch('givewp/campaign-notifications');
@@ -81,16 +81,34 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     const {formState, handleSubmit, reset, setValue} = methods;
 
+    // Close context menu when clicked outside
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (show.contextMenu) {
+                return;
+            }
+
+            if (
+                e.target instanceof HTMLElement &&
+                !e.target.closest(`.${styles.campaignButtonDots}`) &&
+                !e.target.closest(`.${styles.contextMenu}`)
+            ) {
+                setShow({contextMenu: false});
+                (document.querySelector(`.${styles.campaignButtonDots}`) as HTMLElement)?.blur();
+            }
+        });
+    }, []);
+
     // Set default values when campaign is loaded
     useEffect(() => {
         if (hasResolved) {
             const {pageId, ...rest} = campaign;
             // exclude pageId from default values if null
-             if (pageId > 0) {
+            if (pageId > 0) {
                 reset({...campaign, pageId});
             } else {
                 reset({...rest});
-             }
+            }
         }
     }, [hasResolved]);
 
@@ -242,7 +260,9 @@ export default function CampaignsDetailsPage({campaignId}) {
                                         onClick={handleCampaignPageCreation}
                                         disabled={isCreatingPage}
                                     >
-                                        {isCreatingPage ? __('Creating Campaign Page', 'give') : __('Create Campaign Page', 'give')}
+                                        {isCreatingPage
+                                            ? __('Creating Campaign Page', 'give')
+                                            : __('Create Campaign Page', 'give')}
                                     </button>
                                 )}
 

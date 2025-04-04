@@ -112,19 +112,24 @@ const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
         filter: (item) => {
+            const CubeTooltip = () => (
+                <div className={styles.tooltipContainer}>
+                    <CubeIcon />
+                    <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
+                </div>
+            );
+
             return (
                 <>
-                    {item?.v3form ? (
+                    <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
-                            <div className={styles.tooltipContainer}>
-                                <CubeIcon />
-                                <div className={styles.tooltip}>{__('Uses the Visual Form Builder', 'give')}</div>
-                            </div>
+                            {item?.v3form && <CubeTooltip />}
                             <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
-                    ) : (
-                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
-                    )}
+                        {item?.isDefaultCampaignForm && (
+                            <div className={`${styles.defaultFormPill} givewp-default-form-pill`}>{__('Default')}</div>
+                        )}
+                    </div>
                 </>
             );
         },
@@ -221,7 +226,14 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         value: 'delete',
         type: 'danger',
         isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
-        action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
+        action: async (selected) => {
+            try {
+                return await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
+            } catch (error) {
+                const errorData = JSON.parse(error.message.replace('Error: ', ''));
+                alert(errorData.message);
+            }
+        },
         confirm: (selected, names) => (
             <div>
                 <p>{__('Really delete the following donation forms?', 'give')}</p>
@@ -241,7 +253,14 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
         type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
         isIdSelectable: (id, data) => !(typeof data?.defaultForm === 'number') || data.defaultForm !== Number(id),
-        action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
+        action: async (selected) => {
+            try {
+                return await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
+            } catch (error) {
+                const errorData = JSON.parse(error.message.replace('Error: ', ''));
+                alert(errorData.message);
+            }
+        },
         confirm: (selected, names) => (
             <div>
                 <p>{__('Are you sure you want to trash the following donation forms?', 'give')}</p>

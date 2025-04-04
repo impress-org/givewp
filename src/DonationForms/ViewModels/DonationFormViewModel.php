@@ -78,22 +78,41 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased Add support for campaign colors
      * @since 3.0.0
      */
     public function primaryColor(): string
     {
+        if ($this->formSettings->inheritCampaignColors) {
+            $campaignColors = $this->getCampaignColors($this->donationFormId);
+
+            if ($campaignColors['primaryColor']) {
+                return $campaignColors['primaryColor'];
+            }
+        }
+
         return $this->formSettings->primaryColor ?? '';
     }
 
     /**
+     * @unreleased Add support for campaign colors
      * @since 3.0.0
      */
     public function secondaryColor(): string
     {
+        if ($this->formSettings->inheritCampaignColors) {
+            $campaignColors = $this->getCampaignColors($this->donationFormId);
+
+            if ($campaignColors['secondaryColor']) {
+                return $campaignColors['secondaryColor'];
+            }
+        }
+
         return $this->formSettings->secondaryColor ?? '';
     }
 
     /**
+     * @unreleased Added custom form styles
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()
@@ -112,6 +131,11 @@ class DonationFormViewModel
             --givewp-primary-color:{$this->primaryColor()};
             --givewp-secondary-color:{$this->secondaryColor()};
             }"
+        );
+
+        wp_add_inline_style(
+            'givewp-base-form-styles',
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
         );
 
         wp_enqueue_style('givewp-base-form-styles');
@@ -470,5 +494,26 @@ class DonationFormViewModel
         $classNames[] = 'givewp-design-settings--section-style__' . $this->formSettings->designSettingsSectionStyle;
 
         $classNames[] = 'givewp-design-settings--textField-style__' . $this->formSettings->designSettingsTextFieldStyle;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getCampaignColors(int $formId): array
+    {
+        /** @var Campaign $campaign */
+        $campaign = give()->campaigns->getByFormId($formId);
+
+        if ($campaign) {
+            return [
+                'primaryColor' => $campaign->primaryColor,
+                'secondaryColor' => $campaign->secondaryColor,
+            ];
+        }
+
+        return [
+            'primaryColor' => '',
+            'secondaryColor' => '',
+        ];
     }
 }

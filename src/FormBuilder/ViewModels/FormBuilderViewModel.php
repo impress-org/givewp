@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalProgressType;
@@ -19,6 +20,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
+use Give_License;
 
 class FormBuilderViewModel
 {
@@ -67,6 +69,7 @@ class FormBuilderViewModel
             ],
             'formFieldManagerData' => [
                 'isInstalled' => defined('GIVE_FFM_VERSION'),
+                'isLicensed' => (Give_License::get_license_by_plugin_dirname('give-form-field-manager')['license'] ?? '') === 'valid',
             ],
             'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
@@ -86,6 +89,7 @@ class FormBuilderViewModel
             'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
             'intlTelInputSettings' => IntlTelInput::getSettings(),
+            'campaignColors' => $this->getCampaignColors($donationFormId),
         ];
     }
 
@@ -376,5 +380,26 @@ class FormBuilderViewModel
         );
 
         return array_values(array_unique($disallowedFieldNames));
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getCampaignColors(int $formId): array
+    {
+        /** @var Campaign $campaign */
+        $campaign = give()->campaigns->getByFormId($formId);
+
+        if ($campaign) {
+            return [
+                'primaryColor' => $campaign->primaryColor,
+                'secondaryColor' => $campaign->secondaryColor,
+            ];
+        }
+
+        return [
+            'primaryColor' => '',
+            'secondaryColor' => '',
+        ];
     }
 }

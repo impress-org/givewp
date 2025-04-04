@@ -29,7 +29,6 @@
     border-spacing: 0;
     inline-size: 100%;
     font-size: 1em;
-    table-layout: fixed;
 }
 
 /* Visually hidden class omitting position: absolute since that breaks the table
@@ -76,7 +75,12 @@
 }
 
 .selectAll {
-    width: 2rem;
+    inline-size: 1rem;
+    padding-right: 0;
+
+    input[type="checkbox"] {
+        transform: translateX(-2px);
+    }
 }
 
 #updateError {
@@ -166,11 +170,7 @@
 }
 
 .id {
-    inline-size: 3.25rem;
-}
-
-.donationForms .levels {
-    inline-size: 8rem;
+    inline-size: 2.5rem;
 }
 
 .donationForms .goal {

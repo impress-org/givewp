@@ -26,7 +26,7 @@ export default function Edit({attributes, setAttributes, clientId}: BlockEditPro
                 campaignId={attributes.campaignId}
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
-                <CampaignComments attributes={attributes} />
+                <CampaignComments attributes={attributes} secondaryColor={campaign?.secondaryColor} />
             </CampaignSelector>
 
             {hasResolved && campaign?.id && (

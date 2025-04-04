@@ -18,6 +18,9 @@ use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 class CreateDefaultCampaignForm
 {
     /**
+     * @unreleased Added inheritCampaignColors property to FormSettings
+     * @since      4.0.0
+     *
      * @throws Exception
      */
     public function __invoke(Campaign $campaign)
@@ -32,6 +35,7 @@ class CreateDefaultCampaignForm
                 'goalType' => $campaign->goalType->getValue(),
                 'goalSource' => GoalSource::CAMPAIGN()->getValue(),
                 'designId' => MultiStepFormDesign::id(),
+                'inheritCampaignColors' => true,
             ]),
             'blocks' => (new GenerateDefaultDonationFormBlockCollection())(),
         ]);
