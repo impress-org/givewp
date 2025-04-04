@@ -197,9 +197,7 @@ class DonationFormViewModel
         }
 
         return [
-            'totalRevenue' => $this->goalType()->isAmountFromSubscriptions()
-                ? $query->sumInitialAmount()
-                : $query->sumIntendedAmount(),
+            'totalRevenue' => $this->donationFormGoalData->getCurrentAmount(),
             'totalCountValue' => $this->goalType()->isDonations() || $this->goalType()->isAmount()
                 ? $query->count()
                 : $this->getTotalCountValue(),
