@@ -10,7 +10,7 @@
  */
 
 // Exit if accessed directly.
-use Give\Campaigns\Models\Campaign;
+use Give\Framework\Database\DB;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -270,7 +270,19 @@ class Give_HTML_Elements {
          */
         $campaigns_args = apply_filters('give_campaigns_dropdown_args', $campaigns_args);
 
-        $campaigns = Campaign::query()
+        $campaigns = DB::table('give_campaigns', 'campaigns')
+            ->select(
+                ['campaigns.id', 'id'],
+                ['campaigns.form_id', 'defaultFormId'],
+                ['campaign_title', 'title'],
+                ['GROUP_CONCAT(campaign_forms.form_id)', 'form_ids']
+            )
+            ->join(function ($builder) {
+                $builder
+                    ->leftJoin("give_campaign_forms", "campaign_forms")
+                    ->on("campaign_forms.campaign_id", "id");
+            })
+            ->groupBy("campaigns.id")
             ->orderBy($campaigns_args['orderby'], $campaigns_args['order'])
             ->limit($campaigns_args['per_page'])
             ->getAll();
@@ -306,7 +318,10 @@ class Give_HTML_Elements {
                 'placeholder' => $args['placeholder'],
                 'show_option_all' => false,
                 'show_option_none' => false,
-                'data' => $args['data'],
+                'data' => array_merge(
+                    $args['data'],
+                    ['campaigns' => json_encode($campaigns)]
+                ),
             ]
         );
 

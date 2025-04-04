@@ -207,6 +207,47 @@ const gravatar = require('gravatar');
         $('#post').on('click', '.give-thickbox', function () {
             $('.give-select-chosen', '#choose-give-form').css('width', '100%');
         });
+
+        const $campaignSelect = $('#give_payment_campaign_select');
+        const $formSelect = $('#give_payment_form_select');
+
+        if ($campaignSelect.length && $formSelect.length) {
+            const campaignsData = $campaignSelect.data('campaigns');
+            const formsData = Array.from($formSelect.find('option'))
+                .filter((option) => option.value > 0)
+                .map((option) => ({
+                    id: parseInt(option.value),
+                    title: option.text.trim(),
+                }));
+
+            $campaignSelect
+                .on('change', function () {
+                    const selectedCampaignId = $(this).val();
+                    const campaign = campaignsData.find(
+                        (campaign) => Number(campaign.id) === Number(selectedCampaignId)
+                    );
+
+                    if (campaign) {
+                        const formIds = campaign.form_ids.split(',').map(Number);
+
+                        if (formIds.length > 0) {
+                            $formSelect.empty();
+
+                            const filteredForms = formsData.filter((form) => formIds.includes(form.id));
+                            filteredForms.forEach((form) => {
+                                $formSelect.append(new Option(form.title, form.id));
+                            });
+                        }
+
+                        if (campaign.default_form) {
+                            $formSelect.val(campaign.default_form);
+                        }
+                    }
+
+                    $formSelect.trigger('chosen:updated');
+                })
+                .change();
+        }
     };
 
     /**
