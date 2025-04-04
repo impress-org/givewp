@@ -10,6 +10,7 @@ import type {
 
 import BlockRegistrar from '@givewp/form-builder/registrars/blocks';
 import {IntlTelInputSettings} from '@givewp/forms/propTypes';
+import {FormColors} from '@givewp/forms/types';
 
 type GoalTypeOption = {
     value: string;
@@ -66,6 +67,7 @@ interface FormBuilderWindowData {
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
     intlTelInputSettings: IntlTelInputSettings;
+    campaignColors: FormColors;
 }
 
 /**

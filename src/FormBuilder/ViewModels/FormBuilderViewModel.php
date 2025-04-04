@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalProgressType;
@@ -86,6 +87,7 @@ class FormBuilderViewModel
             'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
             'intlTelInputSettings' => IntlTelInput::getSettings(),
+            'campaignColors' => $this->getCampaignColors($donationFormId),
         ];
     }
 
@@ -339,5 +341,26 @@ class FormBuilderViewModel
         );
 
         return array_values(array_unique($disallowedFieldNames));
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getCampaignColors(int $formId): array
+    {
+        /** @var Campaign $campaign */
+        $campaign = give()->campaigns->getByFormId($formId);
+
+        if ($campaign) {
+            return [
+                'primaryColor' => $campaign->primaryColor,
+                'secondaryColor' => $campaign->secondaryColor,
+            ];
+        }
+
+        return [
+            'primaryColor' => '',
+            'secondaryColor' => '',
+        ];
     }
 }

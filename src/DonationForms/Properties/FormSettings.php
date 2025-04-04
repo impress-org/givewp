@@ -262,6 +262,7 @@ class FormSettings implements Arrayable, Jsonable
      * @var array
      */
     public $currencySwitcherSettings;
+
     /**
      * @since 3.16.0
      * @var bool
@@ -269,6 +270,12 @@ class FormSettings implements Arrayable, Jsonable
     public $enableReceiptConfirmationPage;
 
     /**
+     * @unreleased
+     */
+    public bool $inheritCampaignColors;
+
+    /**
+     * @unreleased Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
      * @since 3.11.0 Sanitize customCSS property
@@ -300,6 +307,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalStartDate = $array['goalStartDate'] ?? '';
         $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
+        $self->inheritCampaignColors = $array['inheritCampaignColors'] ?? false;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
