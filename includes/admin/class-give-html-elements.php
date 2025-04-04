@@ -270,18 +270,10 @@ class Give_HTML_Elements {
          */
         $campaigns_args = apply_filters('give_campaigns_dropdown_args', $campaigns_args);
 
-        $cache_key = Give_Cache::get_key('give_campaigns', $campaigns_args, false);
-
-        // Get campaigns from cache.
-        $campaigns = Give_Cache::get_db_query($cache_key);
-
-        if (is_null($campaigns)) {
-            $campaigns = Campaign::query()
-                ->orderBy($campaigns_args['orderby'], $campaigns_args['order'])
-                ->limit($campaigns_args['per_page'])
-                ->getAll();
-            Give_Cache::set_db_query($cache_key, $campaigns);
-        }
+        $campaigns = Campaign::query()
+            ->orderBy($campaigns_args['orderby'], $campaigns_args['order'])
+            ->limit($campaigns_args['per_page'])
+            ->getAll();
 
         $options = [];
 
