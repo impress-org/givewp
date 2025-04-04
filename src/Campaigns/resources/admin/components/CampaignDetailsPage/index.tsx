@@ -12,11 +12,13 @@ import Tabs from './Tabs';
 import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
 import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
+import DraftCampaignPageNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DraftCampaignPageNotice';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
 import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 import styles from './CampaignDetailsPage.module.scss';
+import {useEntityRecord} from '@wordpress/core-data';
 
 interface Show {
     contextMenu?: boolean;
@@ -80,6 +82,7 @@ export default function CampaignsDetailsPage({campaignId}) {
     });
 
     const {formState, handleSubmit, reset, setValue} = methods;
+    const {record} = useEntityRecord('postType', 'page', campaign?.pageId);
 
     // Close context menu when clicked outside
     useEffect(() => {
@@ -131,6 +134,27 @@ export default function CampaignsDetailsPage({campaignId}) {
             ),
         });
     }, [campaign?.status]);
+
+    // Show campaign page draft notice
+    useEffect(() => {
+        // @ts-ignore
+        if (record?.status === 'publish') {
+            return;
+        }
+
+        // @ts-ignore
+        if (record && record?.status !== 'publish' && campaign?.status !== 'archived') {
+            dispatch.addNotice({
+                id: 'update-campaign-draft-page-notice',
+                type: 'info',
+                isDismissible: false,
+                content: <DraftCampaignPageNotice />,
+            });
+        } else {
+            dispatch.dismissNotification('update-campaign-draft-page-notice');
+        }
+        // @ts-ignore
+    }, [record?.status, campaign?.status]);
 
     const onSubmit: SubmitHandler<Campaign> = async (data) => {
         const shouldSave =
@@ -335,7 +359,10 @@ export default function CampaignsDetailsPage({campaignId}) {
                         title={__('Archive Campaign', 'give')}
                         isOpen={show.confirmationModal}
                         handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
-                        handleConfirm={() => updateStatus('archived')}
+                        handleConfirm={() => {
+                            updateStatus('archived');
+                            dispatch.dismissNotification('update-campaign-draft-page-notice');
+                        }}
                     />
                 </article>
             </form>
