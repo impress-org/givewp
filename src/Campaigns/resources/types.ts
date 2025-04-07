@@ -34,7 +34,7 @@ declare module "@wordpress/data" {
 export type GiveCampaignOptions = {
     isAdmin: boolean;
     adminUrl: string;
-    campaignsAdminUrl: string;s
+    campaignsAdminUrl: string;
     currency: string;
     isRecurringEnabled: boolean;
     defaultForm: string;
@@ -45,6 +45,7 @@ export type GiveCampaignOptions = {
         showCampaignListTableNotice: boolean
         showCampaignFormNotice: boolean
         showCampaignSettingsNotice: boolean
+        orphanedForms?: []
     }
 }
 

@@ -33,6 +33,7 @@ class LoadCampaignOptions
                         'showCampaignListTableNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_listtable_notice', true),
                         'showCampaignFormNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_notice', true),
                         'showCampaignSettingsNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_settings_notice', true),
+                        'orphanedForms' => give_get_option('give_campaign_orphaned_forms')
                     ]
                     : null,
             ]

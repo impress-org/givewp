@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
 use Give\Campaigns\Actions\ArchiveCampaignFormsAsDraftStatus;
 use Give\Campaigns\Actions\ArchiveCampaignPagesAsDraftStatus;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
+use Give\Campaigns\Actions\OrphanedForms;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -118,12 +119,15 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerActions(): void
     {
+        // @unreleased
+        Hooks::addAction('init', OrphanedForms::class, 'registerAction');
+
         Hooks::addAction('givewp_campaign_updated', ArchiveCampaignFormsAsDraftStatus::class);
         Hooks::addAction('givewp_campaign_updated', ArchiveCampaignPagesAsDraftStatus::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
-        
+
         Hooks::addAction('before_delete_post', PreventDeleteDefaultForm::class);
         Hooks::addAction('transition_post_status', PreventDeleteDefaultForm::class, 'preventTrashStatusChange', 10, 3);
 
