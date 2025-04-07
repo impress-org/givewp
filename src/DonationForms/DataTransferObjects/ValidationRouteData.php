@@ -64,7 +64,7 @@ class ValidationRouteData implements Arrayable
         }
 
         $formFields = array_filter($form->schema()->getFields(), function ($field) use ($request) {
-            return array_key_exists($field->getName(), $request) && !$this->isFieldSecurityChallenge($field);
+            return array_key_exists($field->getName(), $request) && !$this->isSecurityChallengeField($field);
         });
 
         $validator = (new CreateValidatorFromFormFields())($formFields, $request);
@@ -142,7 +142,7 @@ class ValidationRouteData implements Arrayable
     /**
      * @unreleased
      */
-    protected function isFieldSecurityChallenge(Field $field): bool
+    protected function isSecurityChallengeField(Field $field): bool
     {
         return is_subclass_of($field, SecurityChallenge::class);
     }
