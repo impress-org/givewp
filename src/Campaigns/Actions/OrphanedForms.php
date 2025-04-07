@@ -38,7 +38,7 @@ class OrphanedForms
     private function runAction()
     {
         // Bail out if we already collected orphaned forms
-        if ( ! give_get_option($this->optionName)) {
+        if (give_get_option($this->optionName)) {
             return;
         }
 
