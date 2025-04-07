@@ -212,41 +212,57 @@ const gravatar = require('gravatar');
         const $formSelect = $('#give_payment_form_select');
 
         if ($campaignSelect.length && $formSelect.length) {
-            const campaignsData = $campaignSelect.data('campaigns');
-            const formsData = Array.from($formSelect.find('option'))
-                .filter((option) => option.value > 0)
-                .map((option) => ({
-                    id: parseInt(option.value),
-                    title: option.text.trim(),
-                }));
+            (function () {
+                let initialized = false;
+                const campaignsData = $campaignSelect.data('campaigns');
+                const formsData = Array.from($formSelect.find('option'))
+                    .filter((option) => option.value > 0)
+                    .map((option) => ({
+                        id: parseInt(option.value),
+                        title: option.text.trim(),
+                    }));
 
-            $campaignSelect
-                .on('change', function () {
-                    const selectedCampaignId = $(this).val();
-                    const campaign = campaignsData.find(
-                        (campaign) => Number(campaign.id) === Number(selectedCampaignId)
-                    );
+                const flashElement = (element) => {
+                    element.classList.add('flash');
 
-                    if (campaign) {
-                        const formIds = campaign.form_ids.split(',').map(Number);
+                    setTimeout(() => {
+                        element.classList.remove('flash');
+                    }, 200);
+                };
 
-                        if (formIds.length > 0) {
-                            $formSelect.empty();
+                $campaignSelect
+                    .on('change', function () {
+                        const selectedCampaignId = $(this).val();
+                        const campaign = campaignsData.find(
+                            (campaign) => Number(campaign.id) === Number(selectedCampaignId)
+                        );
 
-                            const filteredForms = formsData.filter((form) => formIds.includes(form.id));
-                            filteredForms.forEach((form) => {
-                                $formSelect.append(new Option(form.title, form.id));
-                            });
+                        if (campaign) {
+                            const formIds = campaign.form_ids.split(',').map(Number);
+
+                            if (formIds.length > 0) {
+                                $formSelect.empty();
+
+                                const filteredForms = formsData.filter((form) => formIds.includes(form.id));
+                                filteredForms.forEach((form) => {
+                                    $formSelect.append(new Option(form.title, form.id));
+                                });
+
+                                if (initialized) {
+                                    flashElement($formSelect[0]);
+                                }
+                            }
+
+                            if (campaign.default_form) {
+                                $formSelect.val(campaign.default_form);
+                            }
                         }
 
-                        if (campaign.default_form) {
-                            $formSelect.val(campaign.default_form);
-                        }
-                    }
-
-                    $formSelect.trigger('chosen:updated');
-                })
-                .change();
+                        $formSelect.trigger('chosen:updated');
+                        initialized = true;
+                    })
+                    .change();
+            })();
         }
     };
 
