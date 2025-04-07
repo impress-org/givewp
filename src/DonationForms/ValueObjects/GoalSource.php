@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.1.0
  *
  * @method static GoalSource CAMPAIGN()
  * @method static GoalSource FORM()

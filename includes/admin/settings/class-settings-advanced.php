@@ -58,7 +58,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
-         * @unreleased Added Donation Forms section
+         * @since 4.1.0 Added Donation Forms section
          * @since  1.8
          * @return array
          */

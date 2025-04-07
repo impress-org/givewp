@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.0
+Stable tag: 4.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -278,6 +278,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.1.0: April 16th, 2025 =
+* New: Added the ability for donation forms to inherit Campaign goals and colors
+* New: Added a campaign filter to the donation list table
+* New: Added a global setting to apply custom css to all donation forms
+* New: Added a notice to the campaigns overview that lets your know when the landing page is in draft
+* Fix: Fixed an issue where a Form Field Manager upgrade notice was still showing with an active license
 
 = 4.0.0: March 31st, 2025 =
 * New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.
