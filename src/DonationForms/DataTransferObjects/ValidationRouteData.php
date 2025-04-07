@@ -7,6 +7,7 @@ use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromFormFields;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\SecurityChallenge;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
@@ -62,8 +63,8 @@ class ValidationRouteData implements Arrayable
             throw new DonationFormForbidden();
         }
 
-        $formFields = array_filter($form->schema()->getFields(), static function ($field) use ($request) {
-            return array_key_exists($field->getName(), $request) && !is_subclass_of($field, SecurityChallenge::class);
+        $formFields = array_filter($form->schema()->getFields(), function ($field) use ($request) {
+            return array_key_exists($field->getName(), $request) && !$this->isFieldSecurityChallenge($field);
         });
 
         $validator = (new CreateValidatorFromFormFields())($formFields, $request);
@@ -136,5 +137,13 @@ class ValidationRouteData implements Arrayable
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function isFieldSecurityChallenge(Field $field): bool
+    {
+        return is_subclass_of($field, SecurityChallenge::class);
     }
 }
