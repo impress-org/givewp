@@ -99,6 +99,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
+     * @unreleased updated to include 3d secure params for card payments
      * @since 3.4.2 Extract the amount parameters to a separate method
      * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
