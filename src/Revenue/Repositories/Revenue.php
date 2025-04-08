@@ -86,6 +86,24 @@ class Revenue
     }
 
     /**
+     * @unreleased
+     *
+     * @return false|int
+     */
+    public function updateRevenueCampaignId(Donation $donation)
+    {
+        global $wpdb;
+
+        return DB::update(
+            $wpdb->give_revenue,
+            ['campaign_id' => $donation->campaignId],
+            ['donation_id' => $donation->id],
+            ['%d'],
+            ['%d']
+        );
+    }
+
+    /**
      * Validate new revenue data.
      *
      * @since 2.9.0
