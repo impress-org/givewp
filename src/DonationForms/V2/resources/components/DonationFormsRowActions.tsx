@@ -1,4 +1,4 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
@@ -7,7 +7,6 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import {createInterpolateElement} from '@wordpress/element';
-
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -24,7 +23,14 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         return response;
     };
 
-    const deleteForm = async (selected) => await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
+    const deleteForm = async (selected) => {
+        try {
+            await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
+        } catch (error) {
+            const errorData = JSON.parse(error.message.replace('Error: ', ''));
+            alert(errorData.message);
+        }
+    };
 
     const confirmDeleteForm = (selected) => (
         <p>
@@ -75,16 +81,21 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
             (selected) => <p>{defaultCampaignModalContent}</p>,
             async () => {
                 await entity.edit({
-                    defaultFormId: item.id
-                })
+                    defaultFormId: item.id,
+                });
 
                 const response = await entity.save();
 
                 await mutate(parameters);
                 return response;
             },
-            __('Yes proceed','give')
+            __('Yes proceed', 'give')
         );
+    };
+
+    const copyShortcode = (event) => {
+        navigator.clipboard.writeText(`[give_form id="${item.id}"]`);
+        alert(sprintf(__('The shortcode for Donation Form #%d has been copied to your clipboard!', 'give'), item.id));
     };
 
     return (
@@ -134,6 +145,12 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
+                    <RowAction
+                        onClick={copyShortcode}
+                        actionId={item.id}
+                        displayText={__('Copy shortcode', 'give')}
+                        hiddenText={item?.name}
+                    />
                     {isCampaignDetailsPage && !item.isDefaultCampaignForm && (
                         <RowAction
                             onClick={confirmDefaultCampaignFormModal}

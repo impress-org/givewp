@@ -17,7 +17,7 @@ type TextareaControlProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 function TextareaControl({name, help, maxLength, className, ...rest}: TextareaControlProps) {
     const {control} = useFormContext();

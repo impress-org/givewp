@@ -5,7 +5,7 @@ import HeaderSubText from '../HeaderSubText';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const DefaultFormWidget = ({defaultForm}: {defaultForm: string}) => {
     return (

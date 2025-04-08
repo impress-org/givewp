@@ -13,7 +13,7 @@ type FormModalProps = {
 };
 
 /**
- * @unreleased updated to include loading state
+ * @since 4.0.0 updated to include loading state
  * @since 3.6.1
  */
 export default function FormModal({openFormButton, children, onChange, isOpen, isLoading, formDesign}: FormModalProps) {

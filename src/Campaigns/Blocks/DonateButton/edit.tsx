@@ -6,13 +6,13 @@ import useSWR from 'swr';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
-import {Button} from 'react-aria-components';
+import ServerSideRender from '@wordpress/server-side-render';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignSelector from '../shared/components/CampaignSelector';
 
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function Edit({attributes, setAttributes}: BlockEditProps<{
     campaignId: number;
@@ -21,6 +21,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
     selectedForm: string;
 }>) {
     const blockProps = useBlockProps();
+    const {buttonText = __('Donate', 'give')} = attributes;
     const {campaign, hasResolved} = useCampaign(attributes.campaignId);
 
     const adminBaseUrl = useSelect(
@@ -56,9 +57,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                 campaignId={attributes.campaignId}
                 handleSelect={(campaignId: number) => setAttributes({campaignId})}
             >
-                <Button className="givewp-donation-form-modal__open">
-                    {attributes.buttonText}
-                </Button>
+                <ServerSideRender block="givewp/campaign-donate-button" attributes={attributes} />
             </CampaignSelector>
 
             {hasResolved && campaign?.id && (
@@ -66,7 +65,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
                     <PanelBody title="Settings" initialOpen={true}>
                         <TextControl
                             label={__('Donate button', 'give')}
-                            value={attributes.buttonText}
+                            value={buttonText}
                             onChange={(buttonText: string) => setAttributes({buttonText})}
                         />
                         <ToggleControl

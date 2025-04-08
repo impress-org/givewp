@@ -55,6 +55,6 @@ class AddPhoneColumn extends Migration
      */
     public static function timestamp()
     {
-        return strtotime('2024-26-03');
+        return strtotime('2024-03-26');
     }
 }

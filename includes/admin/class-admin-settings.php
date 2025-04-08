@@ -446,8 +446,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
+         * @unreleased Added support for code editor field.
 		 * @since  2.5.5
-		 * @access public
 		 *
 		 * @param array  $value       Settings Field Array.
 		 * @param string $option_name Option Name.
@@ -645,6 +645,71 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					</tr>
 					<?php
 					break;
+
+                // Code Editor.
+                case 'code_editor':
+                    $option_value = self::get_option($option_name, $value['id'], $value['default']);
+                    $editor_attributes = isset($value['editor_attributes']) ? $value['editor_attributes'] : [];
+
+                    wp_enqueue_code_editor([
+                        'type' => $editor_attributes['mode'] ?? 'text/html',
+                    ]);
+                    ?>
+                    <tr valign="top" <?php
+                    echo ! empty($value['wrapper_class']) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
+                        <th scope="row" class="titledesc">
+                            <label
+                                for="<?php
+                                echo esc_attr($value['id']); ?>"><?php
+                                echo self::get_field_title($value); ?></label>
+                        </th>
+                        <td class="give-forminp give-forminp-<?php
+                        echo sanitize_title($value['type']); ?>">
+                            <textarea
+                                name="<?php
+                                echo esc_attr($value['id']); ?>"
+                                id="<?php
+                                echo esc_attr($value['id']); ?>"
+                                style="<?php
+                                echo esc_attr($value['css']); ?>"
+                                class="<?php
+                                echo esc_attr($value['class']); ?>"
+                            ><?php
+                                echo esc_textarea($option_value); ?></textarea>
+                            <?php
+                            echo $description; ?>
+
+                            <script>
+                                window.addEventListener('DOMContentLoaded', function() {
+                                    if (typeof wp.codeEditor === 'undefined') {
+                                        return;
+                                    }
+
+                                    wp.codeEditor.initialize(<?php echo esc_attr($value['id']); ?>, {
+                                        codeEditor: {
+                                            mode: '<?php echo esc_attr($editor_attributes['mode'] ?? 'text/html'); ?>',
+                                            lineNumbers: <?php echo esc_attr(
+                                                $editor_attributes['lineNumbers'] ?? true
+                                            ); ?>,
+                                            lineWrapping: <?php echo esc_attr(
+                                                $editor_attributes['lineWrapping'] ?? true
+                                            ); ?>,
+                                            autoCloseBrackets:  <?php echo esc_attr(
+                                                $editor_attributes['autoCloseBrackets'] ?? true
+                                            ); ?>,
+                                            matchBrackets:  <?php echo esc_attr(
+                                                $editor_attributes['matchBrackets'] ?? true
+                                            ); ?>,
+                                            indentUnit: <?php echo esc_attr($editor_attributes['indentUnit'] ?? 4); ?>,
+                                            tabSize: <?php echo esc_attr($editor_attributes['tabSize'] ?? 4); ?>,
+                                        },
+                                    });
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <?php
+                    break;
 
 				// Select boxes.
 				case 'select':
@@ -1073,6 +1138,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
+         * @unreleased Added validation for code editor field.
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Options array to output
@@ -1141,6 +1207,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						break;
 					case 'wysiwyg':
 					case 'textarea':
+                    case 'code_editor':
 						$value = wp_kses_post( trim( $raw_value ) );
 						break;
 					case 'multiselect':

@@ -13,12 +13,12 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class DonorRequestController
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return WP_Error|WP_REST_Response
      */
@@ -36,7 +36,7 @@ class DonorRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getDonors(WP_REST_Request $request): WP_REST_Response
     {
@@ -138,7 +138,7 @@ class DonorRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function escDonor(
         Donor $donor,
@@ -185,7 +185,7 @@ class DonorRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getSortColumn(string $sortColumn): string
     {
@@ -203,7 +203,7 @@ class DonorRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isAnonymousDonor(Donor $donor): bool
     {

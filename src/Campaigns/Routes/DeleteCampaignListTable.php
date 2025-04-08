@@ -13,7 +13,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class DeleteCampaignListTable implements RestRoute
 {
@@ -66,7 +66,7 @@ class DeleteCampaignListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -88,7 +88,7 @@ class DeleteCampaignListTable implements RestRoute
     /**
      * Split string
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return string[]
      */
@@ -102,7 +102,7 @@ class DeleteCampaignListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return bool|WP_Error
      */

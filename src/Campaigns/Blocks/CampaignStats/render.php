@@ -7,7 +7,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @var array    $attributes
  * @var Campaign $campaign
@@ -37,7 +37,7 @@ $amount = $donationStat && $donationStat->amount
 $title = $attributes['statistic'] === 'top-donation' ? __('Top Donation', 'give') : __('Average Donation', 'give');
 ?>
 
-<div class="givewp-campaign-stats-block">
+<div <?= get_block_wrapper_attributes(['class' => 'givewp-campaign-stats-block']) ?>>
     <span><?php echo $title ?></span>
     <strong><?php echo esc_html($amount->formatToLocale()) ?></strong>
 </div>

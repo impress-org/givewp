@@ -269,7 +269,7 @@ class PayPalOrder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
      *
@@ -380,7 +380,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws HttpException | IOException
      */

@@ -62,7 +62,7 @@ trait LegacyDonationFormAdapter
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function createCampaignForDonationForm($formId)
     {

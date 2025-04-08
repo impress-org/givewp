@@ -52,7 +52,7 @@ function includesPath(relativePath) {
  */
 const legacyStyleEntry = {
     'assets/dist/css/give': assetPath('src/css/frontend/give-frontend.scss'),
-    'assets/dist/css/admin-block-editor.css': assetPath('src/css/admin/block-editor.scss'),
+    'assets/dist/css/admin-block-editor': assetPath('src/css/admin/block-editor.scss'),
     'assets/dist/css/admin': assetPath('src/css/admin/give-admin.scss'),
     'assets/dist/css/admin-global': assetPath('src/css/admin/give-admin-global.scss'),
     'assets/dist/css/admin-setup': assetPath('src/css/admin/setup.scss'),
@@ -176,6 +176,7 @@ const entry = {
     campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
     campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     campaignBlocksLandingPage: srcPath('Campaigns/Blocks/landingPage.ts'),
+    campaignDonateButtonBlockApp: srcPath('Campaigns/Blocks/DonateButton/app.tsx'),
     campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
     campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
     campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),

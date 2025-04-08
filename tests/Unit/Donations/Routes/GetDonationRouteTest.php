@@ -14,16 +14,16 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetDonationRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
 
@@ -31,7 +31,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
     {
@@ -122,7 +122,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -152,7 +152,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -198,7 +198,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -235,7 +235,7 @@ class GetDonationRouteTest extends RestApiTestCase
 
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -256,7 +256,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -294,7 +294,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -330,7 +330,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

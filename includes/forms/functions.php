@@ -135,7 +135,7 @@ function give_is_success_page() {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @return bool
  */

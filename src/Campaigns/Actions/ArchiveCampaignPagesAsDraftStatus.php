@@ -11,12 +11,12 @@ use Give\Campaigns\ValueObjects\CampaignPageStatus;
 /**
  * When a Campaign is archived, set all pages to Draft Status
  *
- * @unreleased
+ * @since 4.0.0
  */
 class ArchiveCampaignPagesAsDraftStatus
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(Campaign $campaign)
     {

@@ -9,10 +9,12 @@ use Give\Campaigns\Repositories\CampaignRepository;
  * @var Campaign $campaign
  */
 
-if (! isset($attributes['campaignId'])
-    || ! $campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])
+if (!isset($attributes['campaignId'])
+    || !$campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])
 ) {
     return;
 }
 
-echo (new BlockRenderController())->render($attributes);
+$secondaryColor = esc_attr($campaign->secondaryColor ?? '#27ae60');
+
+echo (new BlockRenderController())->render($attributes, $secondaryColor);

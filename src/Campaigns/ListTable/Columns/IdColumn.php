@@ -6,14 +6,14 @@ use Give\Campaigns\Models\Campaign;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class IdColumn extends ModelColumn
 {
     protected $sortColumn = 'id';
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function getId(): string
     {
@@ -21,7 +21,7 @@ class IdColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getLabel(): string
     {
@@ -29,7 +29,7 @@ class IdColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param Campaign $model
      */

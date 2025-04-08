@@ -7,12 +7,12 @@ use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class LoadCampaignsListTableAssets
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {

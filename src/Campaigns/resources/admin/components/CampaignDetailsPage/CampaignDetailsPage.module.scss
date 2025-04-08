@@ -394,6 +394,14 @@ select[name="campaignId"] {
                 color: var(--givewp-neutral-500);
             }
 
+            .sectionFieldHelpText {
+                font-size: 0.875rem;
+                line-height: 1.43;
+                margin: var(--givewp-spacing-1) 0 0;
+                font-weight: 400;
+                color: var(--givewp-neutral-500);
+            }
+
             .errorMsg {
                 font-size: 14px;
                 padding: var(--givewp-spacing-2) 0;
@@ -536,6 +544,14 @@ select[name="campaignId"] {
 
         svg {
             margin: 3px 0 0 8px !important;
+        }
+    }
+
+    .createCampaignPageButton{
+        background-color: var(--givewp-shades-white);
+
+        &:hover {
+            background-color: #F0F6FC;
         }
     }
 

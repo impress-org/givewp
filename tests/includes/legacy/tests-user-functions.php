@@ -12,7 +12,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 	/**
 	 * Setup
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->_simple_form = Give_Helper_Form::create_simple_form();
@@ -21,9 +21,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 
 	/**

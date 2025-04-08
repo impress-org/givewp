@@ -9,7 +9,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	/**
 	 * Set up tests.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -31,14 +31,14 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * Test that the login form shortcode returns the expected string.
 	 */
 	public function test_login_form() {
-		$this->assertContains( '<legend>Log into Your Account</legend>', give_login_form() );
+		$this->assertStringContainsString( '<legend>Log into Your Account</legend>', give_login_form() );
 	}
 
 	/**
 	 * Test that the registration form shortcode returns the expected output.
 	 */
 	public function test_register_form() {
-		$this->assertContains( '<legend>Register a New Account</legend>', give_register_form() );
+		$this->assertStringContainsString( '<legend>Register a New Account</legend>', give_register_form() );
 	}
 
 	/**

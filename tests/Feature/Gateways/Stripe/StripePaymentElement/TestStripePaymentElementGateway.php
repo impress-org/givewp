@@ -14,8 +14,8 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransfe
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
@@ -27,7 +27,6 @@ class TestStripePaymentElementGateway extends TestCase
     /**
      * @since 3.0.0
      *
-     * @throws ApiErrorException
      * @throws Exception
      */
     public function testFormSettingsShouldReturnData()
@@ -38,11 +37,11 @@ class TestStripePaymentElementGateway extends TestCase
         $stripePublishableKey = 'stripe-publishable-key';
         $stripeConnectedAccountKey = 'stripe-connected-account-key';
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->method('getStripePublishableKey')
             ->willReturn($stripePublishableKey);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->method('getStripeConnectedAccountKey')
             ->willReturn($stripeConnectedAccountKey);
 
@@ -87,7 +86,7 @@ class TestStripePaymentElementGateway extends TestCase
             ['stripe_account' => $stripeConnectedAccountId]
         ]);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('getOrCreateStripeCustomerFromDonation')
             ->with($stripeConnectedAccountId, $donation)
@@ -96,25 +95,25 @@ class TestStripePaymentElementGateway extends TestCase
         $intentData = StripePaymentIntentData::fromArray([
             'amount' => $donation->amount->formatToMinorAmount(),
             'customer' => $mockCustomer->id,
-            'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
+            'description' => (new SaveDonationSummary())($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
             'currency' => $donation->amount->getCurrency()->getCode(),
             'statement_descriptor' => 'statement-descriptor',
         ]);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('getPaymentIntentDataFromDonation')
             ->with($donation, $mockCustomer)
             ->willReturn($intentData);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('generateStripePaymentIntent')
             ->with($stripeConnectedAccountId, $intentData)
             ->willReturn($stripePaymentIntent);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('updateDonationMetaFromPaymentIntent')
             ->with($donation, $stripePaymentIntent);
@@ -160,9 +159,9 @@ class TestStripePaymentElementGateway extends TestCase
      */
     protected function getMockGateway(array $methods = [])
     {
-        return $this->createMock(
+        return $this->createMockWithCallback(
             StripePaymentElementGateway::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) use ($methods) {
+            function (MockBuilder $mockBuilder) use ($methods) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(
                     array_merge(

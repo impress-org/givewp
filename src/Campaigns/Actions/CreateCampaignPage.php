@@ -8,7 +8,7 @@ use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CreateCampaignPage
 {

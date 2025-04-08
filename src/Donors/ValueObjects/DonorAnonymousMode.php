@@ -5,7 +5,7 @@ namespace Give\Donors\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @method static DonorAnonymousMode EXCLUDE()
  * @method static DonorAnonymousMode INCLUDED()

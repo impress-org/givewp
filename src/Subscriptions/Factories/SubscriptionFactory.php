@@ -46,7 +46,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased Add $donationAttributes parameter and merge it with the default attributes when creating a donation
+     * @since 4.0.0 Add $donationAttributes parameter and merge it with the default attributes when creating a donation
      * @since 2.23.0
      *
      * @return Subscription|Subscription[]

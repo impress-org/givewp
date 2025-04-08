@@ -6,6 +6,7 @@ use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
@@ -14,7 +15,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class GetCampaignsListTable implements RestRoute
 {
@@ -34,7 +35,7 @@ class GetCampaignsListTable implements RestRoute
     protected $listTable;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function registerRoute(): void
     {
@@ -89,20 +90,39 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
         $this->listTable = give(CampaignsListTable::class);
 
-        $campaigns = $this->getCampaigns();
         $campaignsCount = $this->getTotalCampaignsCount();
+
+        if ($campaignsCount === 0) {
+            return new WP_REST_Response(
+                [
+                    'items' => [],
+                    'totalItems' => 0,
+                    'totalPages' => 0,
+                ]
+            );
+        }
+
+        $campaigns = $this->getCampaigns();
         $pageCount = (int)ceil($campaignsCount / $request->get_param('perPage'));
 
-        $this->listTable->items($campaigns, $this->request->get_param('locale') ?? '');
-        $items = $this->listTable->getItems();
+        $ids = array_map(function (Campaign $campaign) {
+            return $campaign->id;
+        }, $campaigns);
 
+        $campaignsData = CampaignsDataRepository::campaigns($ids);
+
+        $this->listTable
+            ->setData($campaignsData)
+            ->items($campaigns, $this->request->get_param('locale') ?? '');
+
+        $items = $this->listTable->getItems();
 
         return new WP_REST_Response(
             [
@@ -114,7 +134,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getCampaigns(): array
     {
@@ -143,7 +163,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getTotalCampaignsCount(): int
     {
@@ -154,7 +174,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
@@ -171,7 +191,7 @@ class GetCampaignsListTable implements RestRoute
         }
 
         if ($status === 'any') {
-            $query->whereNotLike('status', 'archived');
+            $query->where('status', 'archived', '!=');
         } elseif ($status === 'inactive') {
             $query->where('status', 'archived');
         } elseif ($status) {
@@ -182,7 +202,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return bool|WP_Error
      */

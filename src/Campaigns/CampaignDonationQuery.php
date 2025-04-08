@@ -9,12 +9,12 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignDonationQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign)
     {
@@ -34,7 +34,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
@@ -50,7 +50,7 @@ class CampaignDonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return int|float
      */
@@ -71,7 +71,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function countDonations(): int
     {
@@ -80,7 +80,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function countDonors(): int
     {
@@ -90,7 +90,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getOldestDonationDate()
     {
@@ -108,7 +108,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getDonationsByDate($groupBy = 'DATE'): array
     {
@@ -140,7 +140,7 @@ class CampaignDonationQuery extends QueryBuilder
 
     /**
      * An opinionated join method for the donation meta table.
-     * @unreleased
+     * @since 4.0.0
      */
     public function joinDonationMeta($key, $alias): self
     {

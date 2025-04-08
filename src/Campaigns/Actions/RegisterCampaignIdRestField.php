@@ -5,12 +5,12 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RegisterCampaignIdRestField
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {

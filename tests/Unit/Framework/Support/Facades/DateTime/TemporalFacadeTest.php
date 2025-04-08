@@ -8,12 +8,12 @@ use Give\Framework\Support\Facades\DateTime\TemporalFacade;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class TemporalFacadeTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testImmutableOrCloneReturnsCloneOfDateTimeObject()
     {
@@ -27,7 +27,7 @@ final class TemporalFacadeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testImmutableOrCloneReturnsSameImmutableDateTimeObject()
     {
@@ -41,7 +41,7 @@ final class TemporalFacadeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testImmutableStartOfDay()
     {
@@ -55,7 +55,7 @@ final class TemporalFacadeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testImmutableEndOfDay()
     {
