@@ -10,6 +10,7 @@
  */
 
 // Exit if accessed directly.
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
 if (!defined('ABSPATH')) {
@@ -311,6 +312,19 @@ function give_update_payment_details( $data ) {
 		// Re setup payment to update new meta value in object.
 		$payment->update_payment_setup( $payment->ID );
 	}
+
+    // Update payment campaign.
+    $donation = Donation::find($payment->ID);
+
+    if ($donation) {
+        $new_campaign_id = absint($data['give-payment-campaign-select']);
+        $current_campaign_id = absint($donation->campaignId);
+
+        if ($new_campaign_id && $new_campaign_id !== $current_campaign_id) {
+            $donation->campaignId = $new_campaign_id;
+            $donation->save();
+        }
+    }
 
 	$comment_id                  = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
 	$has_anonymous_setting_field = give_is_anonymous_donation_field_enabled( $payment->form_id );
