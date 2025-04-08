@@ -1,0 +1,49 @@
+.skeletonContainer {
+    width: 100%;
+    max-width: 35rem;
+    padding: 30px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.skeletonHeader {
+    text-align: center;
+}
+
+.skeletonTitle {
+    margin: 0 auto;
+}
+
+.skeletonProgressBar {
+    margin-bottom: 20px;
+}
+
+.skeletonHeading {
+    margin: 5px auto;
+}
+
+.skeletonSectionLabel {
+    margin: 30px 0 10px;
+}
+
+.skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.skeletonInput {
+    margin: 20px 0;
+}
+
+.skeletonButton {
+    margin: 20px 0;
+}
+
+.skeletonBadge {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}

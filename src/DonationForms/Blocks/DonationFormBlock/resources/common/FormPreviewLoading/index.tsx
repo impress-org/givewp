@@ -1,6 +1,5 @@
-import {Spinner} from '@givewp/components';
-import Classic from './placeholders/Classic';
-import MultiStep from './placeholders/MultiStep';
+import Classic from './Classic';
+import MultiStep from './MultiStep';
 
 import './index.scss';
 
