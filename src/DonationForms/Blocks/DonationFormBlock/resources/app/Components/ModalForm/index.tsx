@@ -57,14 +57,17 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 id={embedId}
                 src={dataSrcUrl}
                 checkOrigin={false}
-                heightCalculationMethod={'taggedElement'}
+                heightCalculationMethod='taggedElement'
                 style={{
                     minWidth: '100%',
                     border: 'none',
+                    display: isLoading ? 'none' : 'block',
+                }}
+                onLoad={() => {
+                    setLoading(false);
                 }}
                 onInit={(iframe) => {
                     iframe.iFrameResizer.resize();
-                    setLoading(false);
                 }}
             />
         ),
@@ -79,19 +82,19 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 onPress={openModal}
                 isDisabled={isLoading || isOpen}
             >
-                <span>{isLoading ? <Spinner style={{margin: '0 auto'}} /> : openFormButton}</span>
+                <span style={{margin: '0'}}>{isLoading ? <Spinner style={{margin: '0 auto'}} /> : openFormButton}</span>
             </Button>
 
             {isLoading && <div style={{display: 'none'}}>{<Form />}</div>}
 
             <Modal className="givewp-donation-form-modal__overlay" isOpen={isOpen && !isLoading}>
                 <Dialog className="givewp-donation-form-modal__dialog">
+                    <Button type="button" className="givewp-donation-form-modal__close" onPress={closeModal}>
+                        <ModalCloseIcon />
+                    </Button>
+
                     <div className="givewp-donation-form-modal__dialog__content">
                         <Form />
-
-                        <Button type="button" className="givewp-donation-form-modal__close" onPress={closeModal}>
-                            <ModalCloseIcon />
-                        </Button>
                     </div>
                 </Dialog>
             </Modal>
