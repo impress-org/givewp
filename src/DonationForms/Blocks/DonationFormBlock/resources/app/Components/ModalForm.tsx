@@ -23,7 +23,7 @@ type ModalFormProps = {
 export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedirect, formViewUrl}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
-    const [isLoading, setLoading] = useState<boolean>(true);
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     // Offline gateways like Stripe refresh the page and need to programmatically
     // open the confirmation page from the modal.
@@ -34,16 +34,15 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
         }
     };
 
-    const resetLoading = () => {
-        if (!isOpen) {
-            setLoading(true);
-        }
-    }
-
     const toggleModal = () => {
         setIsOpen(!isOpen);
         resetDataSrcUrl();
-        resetLoading();
+
+         if (!isOpen) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+         }
     };
 
     return (

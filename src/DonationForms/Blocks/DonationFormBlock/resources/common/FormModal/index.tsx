@@ -1,7 +1,7 @@
 import {Button, Dialog, Modal} from 'react-aria-components';
 import './styles.scss';
 import ModalCloseIcon from './ModalClose';
-import {Spinner} from '@givewp/components';
+import {Spinner} from '@wordpress/components';
 
 type FormModalProps = {
     children: any;
@@ -18,15 +18,13 @@ type FormModalProps = {
 export default function FormModal({openFormButton, children, onChange, isOpen, isLoading}: FormModalProps) {
     return (
         <>
-            <Button className={'givewp-donation-form-modal__open'} onPress={onChange}>
-                {openFormButton}
+            <Button className={'givewp-donation-form-modal__open'} onPress={onChange} isDisabled={isLoading || isOpen}>
+                <span>{isLoading ? <Spinner /> : openFormButton}</span>
             </Button>
-            <Modal className='givewp-donation-form-modal__overlay' isOpen={isOpen}>
+            {isLoading && <div style={{display: 'none'}}>{children}</div>}
+            <Modal className='givewp-donation-form-modal__overlay' isOpen={isOpen && !isLoading}>
                 <Dialog className='givewp-donation-form-modal__dialog'>
-                    <div className='givewp-donation-form-modal__spinner' style={{visibility: isLoading ? 'visible' : 'hidden', opacity: isLoading ? 1 : 0, height: isLoading ? '80vh' : 0}}>
-                       <Spinner />
-                    </div>
-                    <div className="givewp-donation-form-modal__dialog__content" style={{visibility: isLoading ? 'hidden' : 'visible', opacity: isLoading ? 0 : 1}}>
+                    <div className="givewp-donation-form-modal__dialog__content">
                         {children}
 
                         <Button className="givewp-donation-form-modal__close" onPress={onChange}>
