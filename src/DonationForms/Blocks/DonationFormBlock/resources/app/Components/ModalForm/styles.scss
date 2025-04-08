@@ -34,6 +34,12 @@
         }
     }
 
+    &__open {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     &__close {
         display: flex;
         position: fixed;
@@ -57,18 +63,6 @@
             border: 1px solid darken(#fff, 10%);
             background-color: darken(#fff, 10%);
         }
-    }
-
-    &__spinner {
-        width: 35rem;
-        height: 80vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #fff;
-        border-radius: 8px;
-        transition: opacity 0.12s ease-out;
-        z-index: 100;
     }
 }
 
