@@ -1,9 +1,11 @@
 .givewp__form-preview {
-    position: relative;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 1s ease-in-out;
+    transition: 1s ease-out;
+    width: 100%;
+    margin-top: 0.5rem;
 
     &__spinner {
         position: relative;
@@ -20,17 +22,21 @@
     }
 
     &__container {
-        margin: 10px;
         border-radius: 10px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         border: solid 1px var(--givewp-grey-25);
         background-color: var(--givewp-shades-white);
         overflow: hidden;
+        padding: var(--givewp-spacing-2);
+        width: 100%;
+        max-width: min(100%, 50.5rem);
+
+         &__multistep {
+            max-width: min(100%, 35rem);
+        }
     }
 
     &__classic {
-        width: 720px;
-
         &-header,
         &-image,
         &-donation-levels,
@@ -127,8 +133,7 @@
     }
 
     &__multistep {
-        width: 35rem;
-        padding: 1.5rem;
+        padding: 1rem;
 
         &-header,
         &-image,

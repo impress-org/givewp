@@ -23,12 +23,7 @@ const getDesignPlaceholder = (design: string) => {
 export default function FormPreviewLoading({design, isLoading}: FormPreviewLoadingProps) {
     return (
         <div className="givewp__form-preview" style={{opacity: isLoading ? 1 : 0}}>
-            <div className="givewp__form-preview__container">
-                <div className="givewp__form-preview__spinner">
-                    <Spinner />
-                </div>
-                {getDesignPlaceholder(design)}
-            </div>
+            {getDesignPlaceholder(design)}
         </div>
     );
 }

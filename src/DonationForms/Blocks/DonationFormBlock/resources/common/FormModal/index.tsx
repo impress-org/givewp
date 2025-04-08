@@ -27,13 +27,10 @@ export default function FormModal({openFormButton, children, onChange, isOpen, i
                     <Button className="givewp-donation-form-modal__close" onPress={onChange}>
                         <ModalCloseIcon />
                     </Button>
-                    <FormPreviewLoading design={formDesign} isLoading={isLoading} />
-                    {/*<div className='givewp-donation-form-modal__spinner' style={{visibility: isLoading ? 'visible' : 'hidden', opacity: isLoading ? 1 : 0, height: isLoading ? '80vh' : 0}}>*/}
-                    {/*   <Spinner />*/}
-                    {/*</div>*/}
                     <div className="givewp-donation-form-modal__dialog__content" style={{visibility: isLoading ? 'hidden' : 'visible', opacity: isLoading ? 0 : 1}}>
                         {children}
                     </div>
+                    <FormPreviewLoading design={formDesign} isLoading={isLoading} />
                 </Dialog>
             </Modal>
         </>
