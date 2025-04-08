@@ -149,7 +149,7 @@ class Tests_Donors_DB extends TestCase {
 		$donor = Give()->donors->get_donor_by( 'email', 'testadmin@domain.com' );
 
         $this->assertIsObject( $donor );
-		$this->assertObjectHasAttribute( 'email', $donor );
+		$this->assertObjectHasProperty( 'email', $donor );
 
 	}
 
