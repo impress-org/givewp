@@ -1,5 +1,6 @@
 import Classic from './Classic';
 import MultiStep from './MultiStep';
+import Basic from './Basic';
 
 import './index.scss';
 
@@ -15,7 +16,7 @@ const getDesignPlaceholder = (design: string) => {
         case 'multi-step':
             return <MultiStep />
         default :
-            return <Classic />
+            return <Basic />
     }
 }
 
