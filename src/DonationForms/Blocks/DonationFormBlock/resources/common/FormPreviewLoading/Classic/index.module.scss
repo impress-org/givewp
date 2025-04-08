@@ -1,4 +1,4 @@
-.skeleton-container {
+.skeletonContainer {
     width: 100%;
     max-width: 50.5rem;
     background: #fff;
@@ -8,49 +8,49 @@
     font-family: sans-serif;
 }
 
-.skeleton-header {
+.skeletonHeader {
     background-color: var(--givewp-grey-50);
     color: white;
     text-align: center;
     padding: 30px 20px;
 }
 
-.skeleton-badge {
+.skeletonBadge {
     margin-top: 20px;
 }
 
-.skeleton-section {
+.skeletonSection {
     padding: 30px 20px;
 }
 
-.skeleton-grid {
+.skeletonGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin: 20px 0;
 }
 
-.skeleton-subsection {
+.skeletonSubsection {
     margin-top: 40px;
 }
 
-.skeleton-row {
+.skeletonRow {
     display: flex;
     gap: 10px;
     margin-top: 12px;
 }
 
-.skeleton-summary {
+.skeletonSummary {
     margin-top: 20px;
 }
 
-.skeleton-payment-options {
+.skeletonPaymentOptions {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.skeleton-button {
+.skeletonButton {
     margin-top: 30px;
 }
