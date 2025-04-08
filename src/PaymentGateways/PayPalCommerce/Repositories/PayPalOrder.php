@@ -17,8 +17,6 @@ use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
 
-use stdClass;
-
 use function give_record_gateway_error as logError;
 
 /**
