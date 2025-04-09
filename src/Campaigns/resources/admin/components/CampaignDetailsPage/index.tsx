@@ -190,7 +190,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = async (status: 'archived' | 'draft') => {
+    const updateStatus = async (status: 'archived' | 'draft' | 'active') => {
         setValue('status', status);
 
         edit({...campaign, status});
@@ -334,11 +334,11 @@ export default function CampaignsDetailsPage({campaignId}) {
                                                 href="#"
                                                 className={cx(styles.contextMenuItem, styles.draft)}
                                                 onClick={() => {
-                                                    updateStatus('draft');
+                                                    updateStatus('active');
                                                     dispatch.dismissNotification('update-archive-notice');
                                                 }}
                                             >
-                                                <ArrowReverse /> {__('Move to draft', 'give')}
+                                                <ArrowReverse /> {__('Move to Publish', 'give')}
                                             </a>
                                         ) : (
                                             <a
