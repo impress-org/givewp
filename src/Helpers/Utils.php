@@ -41,30 +41,41 @@ class Utils
      */
     public static function switchRequestedURL($location, $url, $addArgs = [], $removeArgs = [])
     {
+        $urlAnchor = '';
+
+        if (strpos($url, '#') !== false) {
+            [$url, $urlAnchor] = explode('#', $url, 2);
+        }
+
         $queryString = [];
 
-        if ($index = strpos($location, '?')) {
-            $queryString = wp_parse_args(substr($location, strpos($location, '?') + 1));
+        if (($index = strpos($location, '?')) !== false) {
+            $queryString = wp_parse_args(substr($location, $index + 1));
         }
 
-        if ($index = strpos($url, '?')) {
-            $queryString = array_merge($queryString, wp_parse_args(substr($url, strpos($url, '?') + 1)));
+        if (($index = strpos($url, '?')) !== false) {
+            $queryString = array_merge(
+                $queryString,
+                wp_parse_args(substr($url, $index + 1))
+            );
+            $url = substr($url, 0, $index); // Remove query part from URL
         }
 
-        $url = add_query_arg(
-            $queryString,
-            $url
-        );
+        $url = add_query_arg($queryString, $url);
 
-        if ($removeArgs) {
-            foreach ($removeArgs as $name) {
-                $url = add_query_arg([$name => false], $url);
-            }
+        foreach ((array) $removeArgs as $name) {
+            $url = add_query_arg([$name => false], $url);
         }
 
-        if ($addArgs) {
-            foreach ($addArgs as $name => $value) {
-                $url = add_query_arg([$name => $value], $url);
+        foreach ((array) $addArgs as $name => $value) {
+            $url = add_query_arg([$name => $value], $url);
+        }
+
+        if (!empty($urlAnchor)) {
+            $urlParts = explode('?', $url, 2);
+            $url = $urlParts[0] . '#' . $urlAnchor;
+            if (isset($urlParts[1])) {
+                $url .= '?' . $urlParts[1];
             }
         }
 
