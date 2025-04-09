@@ -17,8 +17,6 @@ use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 use PayPalHttp\HttpException;
 use PayPalHttp\IOException;
 
-use stdClass;
-
 use function give_record_gateway_error as logError;
 
 /**
@@ -69,16 +67,18 @@ class PayPalOrder
     /**
      * Approve order.
      *
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
-     *
-     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
      *
      * @return object
      * @throws Exception
+     * @see        https://developer.paypal.com/docs/api/orders/v2/#orders_capture
+     *
      */
     public function approveOrder(string $orderId)
     {
         $request = new OrdersCaptureRequest($orderId);
+        $request->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         try {
             return $this->paypalClient->getHttpClient()->execute($request)->result;
@@ -225,19 +225,22 @@ class PayPalOrder
     }
 
     /**
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 3.4.2
-     *
-     * @see https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php
      *
      * @return mixed
      *
      * @throws Exception|HttpException|IOException
+     * @see        https://github.com/paypal/Checkout-PHP-SDK/blob/develop/samples/PatchOrder.php
+     *
      */
     public function updateOrderAmount($orderId, array $array)
     {
         $this->validateCreateOrderArguments($array);
 
         $patchRequest = new OrdersPatchRequest($orderId);
+
+        $patchRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         $patchRequest->body = [
             0 => [
@@ -269,15 +272,18 @@ class PayPalOrder
     }
 
     /**
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
      *
-     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
-     *
      * @throws Exception|HttpException|IOException
+     * @see        https://developer.paypal.com/docs/api/orders/v2/#orders_patch
+     *
      */
     public function updateApprovedOrder(string $orderId, Money $amount)
     {
         $patchRequest = new OrdersPatchRequest($orderId);
+
+        $patchRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         $patchRequest->body = [
             [
@@ -307,6 +313,7 @@ class PayPalOrder
     /**
      * Refunds a processed payment
      *
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
      * @param $captureId
@@ -317,6 +324,8 @@ class PayPalOrder
     public function refundPayment($captureId)
     {
         $refund = new CapturesRefundRequest($captureId);
+
+        $refund->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         try {
             return $this->paypalClient->getHttpClient()->execute($refund)->result->id;
@@ -360,6 +369,7 @@ class PayPalOrder
     /**
      * Get order details from paypal commerce.
      *
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 2.19.0
      *
      * @param string $orderId
@@ -370,6 +380,7 @@ class PayPalOrder
     public function getOrder($orderId)
     {
         $orderDetailRequest = new OrdersGetRequest($orderId);
+        $orderDetailRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
         $orderDetails = (array)$this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
 
         return PayPalOrderModel::fromArray($orderDetails);
@@ -380,6 +391,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
      *
+     * @unreleased Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
      *
      * @throws HttpException | IOException
@@ -387,6 +399,7 @@ class PayPalOrder
     public function getApprovedOrder(string $orderId)
     {
         $orderDetailRequest = new OrdersGetRequest($orderId);
+        $orderDetailRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         return $this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
     }
