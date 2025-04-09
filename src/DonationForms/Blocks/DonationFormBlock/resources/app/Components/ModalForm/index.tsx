@@ -1,7 +1,7 @@
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import {Button, Dialog, Modal} from 'react-aria-components';
+import {Button, Dialog, Modal, ModalOverlay} from 'react-aria-components';
 import ModalCloseIcon from './ModalClose';
 import {Spinner} from '@wordpress/components';
 import './styles.scss';
@@ -18,6 +18,7 @@ type ModalFormProps = {
 };
 
 /**
+ * @unreleased updated with improved accessibility and styling
  * @since 4.0.0 updated to include loading state
  * @since 3.6.1
  * @since 3.4.0
@@ -57,7 +58,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 id={embedId}
                 src={dataSrcUrl}
                 checkOrigin={false}
-                heightCalculationMethod='taggedElement'
+                heightCalculationMethod="taggedElement"
                 style={{
                     minWidth: '100%',
                     border: 'none',
@@ -80,24 +81,37 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 type="button"
                 className="givewp-donation-form-modal__open"
                 onPress={openModal}
-                isDisabled={isLoading || isOpen}
+                isPending={isLoading}
+                aria-label={isLoading ? __('Loading donation form', 'give') : __('Open donation form', 'give')}
             >
-                <span style={{margin: '0'}}>{isLoading ? <Spinner style={{margin: '0 auto'}} /> : openFormButton}</span>
+                <span style={{margin: '0'}}>
+                    {isLoading ? (
+                        <Spinner style={{margin: '0 auto'}} aria-label={__('In progress', 'give')} />
+                    ) : (
+                        openFormButton
+                    )}
+                </span>
             </Button>
 
             {isLoading && <div style={{display: 'none'}}>{<Form />}</div>}
 
-            <Modal className="givewp-donation-form-modal__overlay" isOpen={isOpen && !isLoading}>
-                <Dialog className="givewp-donation-form-modal__dialog">
-                    <Button type="button" className="givewp-donation-form-modal__close" onPress={closeModal}>
-                        <ModalCloseIcon />
-                    </Button>
-
-                    <div className="givewp-donation-form-modal__dialog__content">
-                        <Form />
-                    </div>
-                </Dialog>
-            </Modal>
+            <ModalOverlay
+                className="givewp-donation-form-modal__overlay"
+                isOpen={isOpen && !isLoading}
+                isDismissable
+                onOpenChange={setIsOpen}
+            >
+                <Button type="button" className="givewp-donation-form-modal__close" onPress={closeModal}>
+                    <ModalCloseIcon />
+                </Button>
+                <Modal className="givewp-donation-form-modal">
+                    <Dialog className="givewp-donation-form-modal__dialog">
+                        <div className="givewp-donation-form-modal__dialog__content">
+                            <Form />
+                        </div>
+                    </Dialog>
+                </Modal>
+            </ModalOverlay>
         </>
     );
 }

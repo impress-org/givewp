@@ -1,36 +1,52 @@
 .givewp-donation-form-modal {
+    outline: none;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: scroll;
+
+    &[data-entering] {
+        animation: modal-zoom 600ms;
+    }
+
+    @keyframes modal-fade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes modal-zoom {
+        from {
+            transform: scale(0.8);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
     &__overlay {
         position: fixed;
         top: 0;
         left: 0;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        background-color: rgba(0, 0, 0, 0.70);
-        z-index: 100;
-    }
-
-    &__dialog {
+        width: 100vw;
+        height: var(--visual-viewport-height);
+        background: rgba(0 0 0 / .7);
         display: flex;
         flex-direction: column;
         align-items: center;
-        position: relative;
-        margin: 0 auto;
-        max-height: 85%;
-        width: 100%;
-        padding-right: 3rem;
-        padding-top: 4rem;
-        overflow-y: scroll;
+        justify-content: center;
+        z-index: 100;
 
-        &:focus {
-            outline: none;
+        &[data-entering] {
+            animation: modal-fade 300ms;
         }
 
-        &__content {
-            width: 100%;
-            height: 100%;
-            transition: opacity 0.6s ease-in;
-            z-index: 100;
+        &[data-exiting] {
+            animation: modal-fade 150ms reverse ease-in;
         }
     }
 
@@ -41,7 +57,7 @@
         right: 25px;
         padding: .75rem;
         width: fit-content;
-        background: #fff;
+        background: #e7e8ed;
         cursor: pointer;
         border: 1px solid transparent;
         border-radius: 50%;
@@ -53,9 +69,9 @@
             width: 1rem;
         }
 
-        &:hover {
-            border: 1px solid darken(#fff, 10%);
-            background-color: darken(#fff, 10%);
+        &:hover, &:focus, &:active {
+            border: 1px solid darken(#e7e8ed, 10%);
+            background-color: darken(#e7e8ed, 10%);
         }
     }
 }
