@@ -128,7 +128,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 <ArchivedCampaignNotice
                     handleClick={() => {
                         onDismiss();
-                        updateStatus('draft');
+                        updateStatus('active');
                     }}
                 />
             ),
