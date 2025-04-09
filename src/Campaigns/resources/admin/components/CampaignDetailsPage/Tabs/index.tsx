@@ -6,6 +6,7 @@ import {CampaignDetailsTab} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 import NotificationsPlaceholder from '../../Notifications';
+import CampaignDetailsErrorBoundary from '../Components/CampaignDetailsErrorBoundary';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
 
@@ -79,9 +80,11 @@ export default function CampaignDetailsTabs() {
 
             <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (
-                    <TabPanel key={tab.id} id={tab.id}>
-                        <tab.content />
-                    </TabPanel>
+                    <CampaignDetailsErrorBoundary>
+                        <TabPanel key={tab.id} id={tab.id}>
+                            <tab.content />
+                        </TabPanel>
+                    </CampaignDetailsErrorBoundary>
                 ))}
             </div>
         </Tabs>
