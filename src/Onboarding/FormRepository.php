@@ -74,6 +74,7 @@ class FormRepository
     }
 
     /**
+     * @unreleased Update title to "Fundraising Campaign Form"
      * @since 4.0.0 Replace "Donation Form" with "Campaign Form"
      * @since 3.15.0 Create the default v3 form.
      * @since 2.8.0
@@ -85,7 +86,7 @@ class FormRepository
     {
         $campaign = Campaign::create([
             'type' => CampaignType::CORE(),
-            'title' => __('GiveWP Onboarding', 'give'),
+            'title' => __('Fundraising Campaign', 'give'),
             'shortDescription' => '',
             'longDescription' => '',
             'logo' => '',
