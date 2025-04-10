@@ -30,6 +30,28 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isEntering, setEntering] = useState<boolean>(false);
 
+    // Preload the iframe document
+    useEffect(() => {
+        const selector = `link[rel="preload"][href="${dataSrcUrl}"][as="document"]`;
+
+        const existingLink = document.querySelector(selector);
+
+        if (!existingLink) {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = dataSrcUrl;
+            link.as = 'document';
+            document.head.appendChild(link);
+        }
+
+        return () => {
+            const addedLink = document.querySelector(selector);
+            if (addedLink) {
+                document.head.removeChild(addedLink);
+            }
+        };
+    }, [dataSrcUrl]);
+
     useEffect(() => {
         if (isEntering && !isLoading) {
             resetEntering();
@@ -57,7 +79,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
         resetDataSrcUrl();
     };
 
-      const resetEntering = () => {
+    const resetEntering = () => {
         setTimeout(() => {
             setEntering(false);
         }, 2000);
@@ -74,17 +96,20 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
             >
                 {isLoading && (
                     <span className="givewp-donation-form-modal__open__spinner">
-                        <Spinner style={{margin: '0 auto', verticalAlign: 'middle'}} aria-label={__('In progress', 'give')} />
+                        <Spinner
+                            style={{margin: '0 auto', verticalAlign: 'middle'}}
+                            aria-label={__('In progress', 'give')}
+                        />
                     </span>
                 )}
 
-                <span style={{margin: '0', 'visibility': isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
+                <span style={{margin: '0', visibility: isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
                     {openFormButton}
                 </span>
             </Button>
 
             <ModalOverlay
-                className='givewp-donation-form-modal__overlay'
+                className="givewp-donation-form-modal__overlay"
                 data-loading={isLoading}
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
