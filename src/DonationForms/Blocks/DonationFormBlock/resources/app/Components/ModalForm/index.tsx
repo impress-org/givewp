@@ -72,12 +72,14 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 isPending={isLoading}
                 aria-label={isLoading ? __('Loading donation form', 'give') : __('Open donation form', 'give')}
             >
-                <span style={{margin: '0'}}>
-                    {isLoading ? (
-                        <Spinner style={{margin: '0 auto'}} aria-label={__('In progress', 'give')} />
-                    ) : (
-                        openFormButton
-                    )}
+                {isLoading && (
+                    <span className="givewp-donation-form-modal__open__spinner">
+                        <Spinner style={{margin: '0 auto', verticalAlign: 'middle'}} aria-label={__('In progress', 'give')} />
+                    </span>
+                )}
+
+                <span style={{margin: '0', 'visibility': isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
+                    {openFormButton}
                 </span>
             </Button>
 
@@ -88,6 +90,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 onOpenChange={setIsOpen}
                 isDismissable
                 isEntering={isEntering}
+                aria-hidden={isLoading}
             >
                 <button
                     aria-label={__('Close donation form', 'give')}
