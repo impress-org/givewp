@@ -104,6 +104,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function maybeHidePayPalStandard()
     {
+        if ( ! is_admin()) {
+            return;
+        }
+
         $isPayPalStandardConnected = is_email(give_get_option('paypal_email', false));
         $alwaysShowPayPalStandardAdminOptions = defined('GIVE_ALWAYS_SHOW_PAYPAL_STANDARD_ADMIN_OPTIONS') && GIVE_ALWAYS_SHOW_PAYPAL_STANDARD_ADMIN_OPTIONS;
 
