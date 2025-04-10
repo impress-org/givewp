@@ -42,8 +42,7 @@
         z-index: 100;
 
         &[data-loading="true"] {
-            visibility: hidden;
-            z-index: -1;
+            display: none;
         }
 
         &[data-entering="true"] {

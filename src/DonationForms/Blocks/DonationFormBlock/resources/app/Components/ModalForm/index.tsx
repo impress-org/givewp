@@ -90,7 +90,6 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 onOpenChange={setIsOpen}
                 isDismissable
                 isEntering={isEntering}
-                aria-hidden={isLoading}
             >
                 <button
                     aria-label={__('Close donation form', 'give')}
@@ -113,7 +112,6 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                                 style={{
                                     minWidth: '100%',
                                     border: 'none',
-                                    display: isLoading ? 'none' : 'block',
                                 }}
                                 onInit={(iframe) => {
                                     iframe.iFrameResizer.resize();
