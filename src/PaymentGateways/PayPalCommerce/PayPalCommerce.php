@@ -78,6 +78,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased updated to include 3D Secure validation
      * @since 4.0.0 updated to update and capture payment
      * @since 2.19.0
      *
@@ -98,7 +99,9 @@ class PayPalCommerce extends PaymentGateway
 
             $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
 
-        } elseif ($payPalOrder->status === 'APPROVED') {
+        } elseif ($payPalOrder->status === 'APPROVED' || $payPalOrder->status === 'CREATED') {
+            $this->validate3dSecure($payPalOrder);
+
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
                 $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount);
             }
@@ -110,7 +113,7 @@ class PayPalCommerce extends PaymentGateway
 
             $transactionId  = $response->purchase_units[0]->payments->captures[0]->id;
         } else {
-            throw new PaymentGatewayException('PayPal Order status is not approved or completed.');
+            throw new PaymentGatewayException('PayPal Order status is not found.');
         }
 
         give()->payment_meta->update_meta(
@@ -331,6 +334,21 @@ class PayPalCommerce extends PaymentGateway
             );
 
             throw new PaymentGatewayException($errorMessage);
+        }
+
+        $this->validate3dSecure($payPalOrder);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws PaymentGatewayException
+     */
+    private function validate3dSecure(object $payPalOrder): void
+    {
+        // Check if the order is not ready for 3D Secure authentication
+        if (isset($payPalOrder->payment_source->card->authentication_result->liability_shift) && !in_array($payPalOrder->payment_source->card->authentication_result->liability_shift, ['POSSIBLE', 'YES'])) {
+            throw new PaymentGatewayException('Card type and issuing bank are not ready to complete a 3D Secure authentication.');
         }
     }
 }

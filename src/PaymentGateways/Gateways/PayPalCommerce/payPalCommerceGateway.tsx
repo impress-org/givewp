@@ -160,7 +160,15 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      * @unreleased
      */
     const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
-        payPalOrderId = data.orderID;
+        // @ts-ignore
+        const {orderID, liabilityShift} = data;
+        payPalOrderId = orderID
+
+        if (liabilityShift && !['POSSIBLE', 'YES'].includes(liabilityShift)) {
+            console.log('Liability shift not possible or not accepted.');
+            throw new Error(__('Card type and issuing bank are not ready to complete a 3D Secure authentication.', 'give'));
+        }
+
         return;
     };
 
