@@ -1,4 +1,4 @@
-import {useState} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 import {Button, Dialog, Modal, ModalOverlay} from 'react-aria-components';
@@ -7,7 +7,6 @@ import {Spinner} from '@wordpress/components';
 import './styles.scss';
 
 import '../../../editor/styles/index.scss';
-import {useCallback} from 'react';
 
 type ModalFormProps = {
     dataSrc: string;
@@ -29,10 +28,16 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
     const [isLoading, setLoading] = useState<boolean>(false);
+    const [isEntering, setEntering] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isEntering && !isLoading) {
+            resetEntering();
+        }
+    }, [isEntering, isLoading]);
 
     // Offline gateways like Stripe refresh the page and need to programmatically
     // open the confirmation page from the modal.
-
     const resetDataSrcUrl = () => {
         if (!isOpen && isFormRedirect) {
             setDataSrcUrl(formViewUrl);
@@ -40,6 +45,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
     };
 
     const openModal = () => {
+        setEntering(true);
         setIsOpen(true);
         setLoading(true);
         resetDataSrcUrl();
@@ -51,29 +57,11 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
         resetDataSrcUrl();
     };
 
-    const Form = useCallback(
-        () => (
-            <IframeResizer
-                title={__('Donation Form', 'give')}
-                id={embedId}
-                src={dataSrcUrl}
-                checkOrigin={false}
-                heightCalculationMethod="taggedElement"
-                style={{
-                    minWidth: '100%',
-                    border: 'none',
-                    display: isLoading ? 'none' : 'block',
-                }}
-                onLoad={() => {
-                    setLoading(false);
-                }}
-                onInit={(iframe) => {
-                    iframe.iFrameResizer.resize();
-                }}
-            />
-        ),
-        [dataSrcUrl, embedId]
-    );
+      const resetEntering = () => {
+        setTimeout(() => {
+            setEntering(false);
+        }, 2000);
+    };
 
     return (
         <>
@@ -93,21 +81,42 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 </span>
             </Button>
 
-            {isLoading && <div style={{display: 'none'}}>{<Form />}</div>}
-
             <ModalOverlay
-                className="givewp-donation-form-modal__overlay"
-                isOpen={isOpen && !isLoading}
-                isDismissable
+                className='givewp-donation-form-modal__overlay'
+                data-loading={isLoading}
+                isOpen={isOpen}
                 onOpenChange={setIsOpen}
+                isDismissable
+                isEntering={isEntering}
             >
-                <Button type="button" className="givewp-donation-form-modal__close" onPress={closeModal}>
+                <button
+                    aria-label={__('Close donation form', 'give')}
+                    aria-hidden="false"
+                    type="button"
+                    className="givewp-donation-form-modal__close"
+                    onClick={closeModal}
+                >
                     <ModalCloseIcon />
-                </Button>
+                </button>
                 <Modal className="givewp-donation-form-modal">
-                    <Dialog className="givewp-donation-form-modal__dialog">
+                    <Dialog className="givewp-donation-form-modal__dialog" aria-label={__('Donation Form', 'give')}>
                         <div className="givewp-donation-form-modal__dialog__content">
-                            <Form />
+                            <IframeResizer
+                                title={__('Donation Form', 'give')}
+                                id={embedId}
+                                src={dataSrcUrl}
+                                checkOrigin={false}
+                                heightCalculationMethod="taggedElement"
+                                style={{
+                                    minWidth: '100%',
+                                    border: 'none',
+                                    display: isLoading ? 'none' : 'block',
+                                }}
+                                onInit={(iframe) => {
+                                    iframe.iFrameResizer.resize();
+                                    setLoading(false);
+                                }}
+                            />
                         </div>
                     </Dialog>
                 </Modal>

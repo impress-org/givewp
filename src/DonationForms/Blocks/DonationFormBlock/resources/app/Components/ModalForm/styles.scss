@@ -4,8 +4,8 @@
     padding: 1rem;
     overflow-y: scroll;
 
-    &[data-entering] {
-        animation: modal-zoom 600ms;
+    &[data-entering="true"] {
+        animation: modal-fade 300ms, modal-zoom 600ms;
     }
 
     @keyframes modal-fade {
@@ -41,11 +41,16 @@
         justify-content: center;
         z-index: 100;
 
-        &[data-entering] {
+        &[data-loading="true"] {
+            visibility: hidden;
+            z-index: -1;
+        }
+
+        &[data-entering="true"] {
             animation: modal-fade 300ms;
         }
 
-        &[data-exiting] {
+        &[data-exiting="true"] {
             animation: modal-fade 150ms reverse ease-in;
         }
     }
