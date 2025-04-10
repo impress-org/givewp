@@ -58,7 +58,7 @@ class Utils
                 $queryString,
                 wp_parse_args(substr($url, $index + 1))
             );
-            $url = substr($url, 0, $index); // Remove query part from URL
+            $url = substr($url, 0, $index);
         }
 
         $url = add_query_arg($queryString, $url);
@@ -71,12 +71,8 @@ class Utils
             $url = add_query_arg([$name => $value], $url);
         }
 
-        if (!empty($urlAnchor)) {
-            $urlParts = explode('?', $url, 2);
-            $url = $urlParts[0] . '#' . $urlAnchor;
-            if (isset($urlParts[1])) {
-                $url .= '?' . $urlParts[1];
-            }
+        if ($urlAnchor) {
+            $url = add_query_arg('request_anchor', $urlAnchor, $url);
         }
 
         return esc_url_raw($url);
