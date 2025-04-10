@@ -19,6 +19,7 @@ import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecor
 
 import styles from './CampaignDetailsPage.module.scss';
 import {useEntityRecord} from '@wordpress/core-data';
+import CampaignDetailsErrorBoundary from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
 
 interface Show {
     contextMenu?: boolean;
@@ -128,7 +129,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 <ArchivedCampaignNotice
                     handleClick={() => {
                         onDismiss();
-                        updateStatus('active');
+                        updateStatus('draft');
                     }}
                 />
             ),
@@ -190,7 +191,7 @@ export default function CampaignsDetailsPage({campaignId}) {
         }
     };
 
-    const updateStatus = async (status: 'archived' | 'draft' | 'active') => {
+    const updateStatus = async (status: 'archived' | 'draft') => {
         setValue('status', status);
 
         edit({...campaign, status});
@@ -251,123 +252,125 @@ export default function CampaignsDetailsPage({campaignId}) {
     }
 
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <article className={`interface-interface-skeleton__content ${styles.page}`}>
-                    <header className={styles.pageHeader}>
-                        <div className={styles.breadcrumb}>
-                            <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
-                                {__('Campaigns', 'give')}
-                            </a>
-                            <BreadcrumbSeparatorIcon />
-                            <span>{campaign.title}</span>
-                        </div>
-                        <div className={styles.flexContainer}>
-                            <div className={styles.flexRow}>
-                                <h1 className={styles.pageTitle}>{campaign.title}</h1>
-                                <StatusBadge status={campaign.status} />
+        <CampaignDetailsErrorBoundary>
+            <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <article className={`interface-interface-skeleton__content ${styles.page}`}>
+                        <header className={styles.pageHeader}>
+                            <div className={styles.breadcrumb}>
+                                <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
+                                    {__('Campaigns', 'give')}
+                                </a>
+                                <BreadcrumbSeparatorIcon />
+                                <span>{campaign.title}</span>
                             </div>
+                            <div className={styles.flexContainer}>
+                                <div className={styles.flexRow}>
+                                    <h1 className={styles.pageTitle}>{campaign.title}</h1>
+                                    <StatusBadge status={campaign.status} />
+                                </div>
 
-                            <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                {!isCreatingPage && campaign.pageId > 0 ? (
-                                    <a
-                                        className={`button button-secondary ${styles.editCampaignPageButton}`}
-                                        href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
-                                        rel="noopener noreferrer"
-                                    >
-                                        {__('Edit campaign page', 'give')}
-                                    </a>
-                                ) : (
-                                    <button
-                                        type="button"
-                                        className={`button button-tertiary ${styles.createCampaignPageButton}`}
-                                        onClick={handleCampaignPageCreation}
-                                        disabled={isCreatingPage}
-                                    >
-                                        {isCreatingPage
-                                            ? __('Creating Campaign Page', 'give')
-                                            : __('Create Campaign Page', 'give')}
-                                    </button>
-                                )}
-
-                                <button
-                                    type="submit"
-                                    disabled={campaign.status !== 'draft' && !formState.isDirty}
-                                    className={`button button-primary ${styles.updateCampaignButton}`}
-                                    onClick={(e) => {
-                                        setValue('status', 'active', {shouldDirty: true});
-                                    }}
-                                >
-                                    {isSaving === 'active' ? (
-                                        <>
-                                            {__('Updating campaign', 'give')}
-                                            <Spinner />
-                                        </>
+                                <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                                    {!isCreatingPage && campaign.pageId > 0 ? (
+                                        <a
+                                            className={`button button-secondary ${styles.editCampaignPageButton}`}
+                                            href={`${adminUrl}post.php?post=${campaign.pageId}&action=edit`}
+                                            rel="noopener noreferrer"
+                                        >
+                                            {__('Edit campaign page', 'give')}
+                                        </a>
                                     ) : (
-                                        __('Update campaign', 'give')
+                                        <button
+                                            type="button"
+                                            className={`button button-tertiary ${styles.createCampaignPageButton}`}
+                                            onClick={handleCampaignPageCreation}
+                                            disabled={isCreatingPage}
+                                        >
+                                            {isCreatingPage
+                                                ? __('Creating Campaign Page', 'give')
+                                                : __('Create Campaign Page', 'give')}
+                                        </button>
                                     )}
-                                </button>
 
-                                <button
-                                    className={`button button-secondary ${styles.campaignButtonDots}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setShow({contextMenu: !show.contextMenu});
-                                    }}
-                                >
-                                    <DotsIcons />
-                                </button>
-
-                                {!isSaving && show.contextMenu && (
-                                    <div className={styles.contextMenu}>
-                                        {campaign.pagePermalink && (
-                                            <a
-                                                href={campaign.pagePermalink}
-                                                aria-label={__('View Campaign', 'give')}
-                                                className={styles.contextMenuItem}
-                                            >
-                                                <ViewIcon /> {__('View Campaign', 'give')}
-                                            </a>
-                                        )}
-                                        {campaign.status === 'archived' ? (
-                                            <a
-                                                href="#"
-                                                className={cx(styles.contextMenuItem, styles.draft)}
-                                                onClick={() => {
-                                                    updateStatus('active');
-                                                    dispatch.dismissNotification('update-archive-notice');
-                                                }}
-                                            >
-                                                <ArrowReverse /> {__('Move to Publish', 'give')}
-                                            </a>
+                                    <button
+                                        type="submit"
+                                        disabled={campaign.status !== 'draft' && !formState.isDirty}
+                                        className={`button button-primary ${styles.updateCampaignButton}`}
+                                        onClick={(e) => {
+                                            setValue('status', 'active', {shouldDirty: true});
+                                        }}
+                                    >
+                                        {isSaving === 'active' ? (
+                                            <>
+                                                {__('Updating campaign', 'give')}
+                                                <Spinner />
+                                            </>
                                         ) : (
-                                            <a
-                                                href="#"
-                                                className={cx(styles.contextMenuItem, styles.archive)}
-                                                onClick={() => setShow({confirmationModal: true})}
-                                            >
-                                                <TrashIcon /> {__('Archive Campaign', 'give')}
-                                            </a>
+                                            __('Update campaign', 'give')
                                         )}
-                                    </div>
-                                )}
+                                    </button>
+
+                                    <button
+                                        className={`button button-secondary ${styles.campaignButtonDots}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setShow({contextMenu: !show.contextMenu});
+                                        }}
+                                    >
+                                        <DotsIcons />
+                                    </button>
+
+                                    {!isSaving && show.contextMenu && (
+                                        <div className={styles.contextMenu}>
+                                            {campaign.pagePermalink && (
+                                                <a
+                                                    href={campaign.pagePermalink}
+                                                    aria-label={__('View Campaign', 'give')}
+                                                    className={styles.contextMenuItem}
+                                                >
+                                                    <ViewIcon /> {__('View Campaign', 'give')}
+                                                </a>
+                                            )}
+                                            {campaign.status === 'archived' ? (
+                                                <a
+                                                    href="#"
+                                                    className={cx(styles.contextMenuItem, styles.draft)}
+                                                    onClick={() => {
+                                                        updateStatus('draft');
+                                                        dispatch.dismissNotification('update-archive-notice');
+                                                    }}
+                                                >
+                                                    <ArrowReverse /> {__('Move to draft', 'give')}
+                                                </a>
+                                            ) : (
+                                                <a
+                                                    href="#"
+                                                    className={cx(styles.contextMenuItem, styles.archive)}
+                                                    onClick={() => setShow({confirmationModal: true})}
+                                                >
+                                                    <TrashIcon /> {__('Archive Campaign', 'give')}
+                                                </a>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </header>
-                    <Tabs />
-                    <ArchiveCampaignDialog
-                        title={__('Archive Campaign', 'give')}
-                        isOpen={show.confirmationModal}
-                        handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
-                        handleConfirm={() => {
-                            updateStatus('archived');
-                            dispatch.dismissNotification('update-campaign-draft-page-notice');
-                        }}
-                    />
-                </article>
-            </form>
-            <NotificationPlaceholder type="snackbar" />;
-        </FormProvider>
+                        </header>
+                        <Tabs />
+                        <ArchiveCampaignDialog
+                            title={__('Archive Campaign', 'give')}
+                            isOpen={show.confirmationModal}
+                            handleClose={() => setShow({confirmationModal: false, contextMenu: false})}
+                            handleConfirm={() => {
+                                updateStatus('archived');
+                                dispatch.dismissNotification('update-campaign-draft-page-notice');
+                            }}
+                        />
+                    </article>
+                </form>
+                <NotificationPlaceholder type="snackbar" />;
+            </FormProvider>
+        </CampaignDetailsErrorBoundary>
     );
 }
 
