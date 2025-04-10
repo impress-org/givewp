@@ -84,6 +84,7 @@
 // Account for admin bar
 .admin-bar {
     .givewp-donation-form-modal {
+        margin-top: 32px;
         &__close {
             top: calc(32px + 25px);
         }
