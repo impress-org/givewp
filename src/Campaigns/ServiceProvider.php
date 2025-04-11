@@ -15,6 +15,8 @@ use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
+use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
+use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -62,7 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerActions();
         $this->setupCampaignPages();
         $this->registerMigrations();
-        $this->registerRoutes();
+        $this->registerListTableRoutes();
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
@@ -71,13 +73,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Move V3 routes to top level API folder
+     * @unreleased Move V3 routes to top level API folder and rename method
      * @since 4.0.0
      */
-    private function registerRoutes()
+    private function registerListTableRoutes()
     {
-        Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', GetCampaignsListTable::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', DeleteCampaignListTable::class, 'registerRoute');
     }
 
     /**

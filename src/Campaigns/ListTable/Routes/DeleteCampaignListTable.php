@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Routes;
+namespace Give\Campaigns\ListTable\Routes;
 
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\RestRoute;
