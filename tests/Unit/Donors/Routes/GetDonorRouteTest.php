@@ -3,10 +3,10 @@
 namespace Unit\Donors\Routes;
 
 use Exception;
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Donors\Routes\RegisterDonorRoutes;

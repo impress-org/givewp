@@ -1,16 +1,15 @@
 <?php
 
-namespace Unit\Donations\Routes;
+namespace Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
+use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
-use Give\Donations\Routes\RegisterDonationRoutes;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Routes\RegisterDonorRoutes;
 use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
