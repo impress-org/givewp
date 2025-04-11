@@ -23,9 +23,18 @@ class BlockRenderControllerTest extends TestCase
     {
         $donationForm = DonationForm::factory()->create();
 
-        $render1 = (new BlockRenderController())->render(['formId' => $donationForm->id]);
-        $render2 = (new BlockRenderController())->render(['formId' => $donationForm->id]);
-        $render3 = (new BlockRenderController())->render(['formId' => $donationForm->id]);
+        $blockRenderController = $this->createMockWithCallback(
+            BlockRenderController::class,
+            function (MockBuilder $mockBuilder) {
+                $mockBuilder->setMethods(['loadEmbedScript']
+                ); // partial mock gateway by setting methods on the mock builder
+                return $mockBuilder->getMock();
+            }
+        );
+
+        $render1 = $blockRenderController->render(['formId' => $donationForm->id]);
+        $render2 = $blockRenderController->render(['formId' => $donationForm->id]);
+        $render3 = $blockRenderController->render(['formId' => $donationForm->id]);
 
         $this->assertStringContainsString("data-givewp-embed-id='givewp-embed-1'", $render1);
         $this->assertStringContainsString("data-givewp-embed-id='givewp-embed-2'", $render2);
