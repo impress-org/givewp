@@ -71,16 +71,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Move V3 routes to top level API folder
      * @since 4.0.0
      */
     private function registerRoutes()
     {
-        Hooks::addAction('rest_api_init', Routes\RegisterCampaignRoutes::class);
         Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
         Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignStatistics::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignRevenue::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignComments::class, 'registerRoute');
     }
 
     /**
@@ -123,7 +120,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
-        
+
         Hooks::addAction('before_delete_post', PreventDeleteDefaultForm::class);
         Hooks::addAction('transition_post_status', PreventDeleteDefaultForm::class, 'preventTrashStatusChange', 10, 3);
 

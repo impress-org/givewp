@@ -2,10 +2,10 @@
 
 namespace Give\Campaigns\Routes;
 
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Unit\Campaigns\Routes;
+namespace Unit\API\REST\V3\Routes\Campaigns;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Tests\RestApiTestCase;
 use WP_REST_Request;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\Campaigns\Routes;
+namespace Give\API\REST\V3\Routes\Campaigns;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use WP_REST_Response;
 use WP_REST_Server;
