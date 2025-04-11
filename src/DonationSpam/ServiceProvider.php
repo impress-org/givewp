@@ -56,9 +56,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function isAkismetEnabledAndConfigured(): bool
     {
-        $test = give_check_akismet_key();
-        $test2 = give_get_option('akismet_spam_protection', 'enabled');
-
         return
             give_check_akismet_key()
             && give_is_setting_enabled(
