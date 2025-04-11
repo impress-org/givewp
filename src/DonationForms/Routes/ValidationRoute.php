@@ -9,7 +9,6 @@ use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use WP_Error;
@@ -39,15 +38,6 @@ class ValidationRoute
         try {
             $response = $formData->validate();
 
-            /**
-             * Allow for additional validation of the donation form data.
-             * The donation flow can be interrupted by throwing an Exception.
-             *
-             * @since 3.15.0
-             *
-             * @param JsonResponse $response
-             */
-            do_action('givewp_donate_form_data_validated', $response);
 
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
