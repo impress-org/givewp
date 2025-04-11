@@ -7,15 +7,6 @@ namespace Give\Campaigns\Blocks\Campaign;
  */
 class CampaignShortcode
 {
-
-    /**
-     * @unreleased
-     */
-    public function __invoke()
-    {
-        add_shortcode('givewp_campaign', [$this, 'renderShortcode']);
-    }
-
     /**
      * @unreleased
      *
