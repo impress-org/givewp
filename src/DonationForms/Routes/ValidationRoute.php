@@ -37,8 +37,7 @@ class ValidationRoute
 
         try {
             $response = $formData->validate();
-
-
+            
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
