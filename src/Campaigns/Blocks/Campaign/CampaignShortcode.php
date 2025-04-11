@@ -19,11 +19,11 @@ class CampaignShortcode
         $this->loadAssets();
         $attributes = $this->parseAttributes($atts);
 
-        $render_file = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/Campaign/render.php';
+        $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/Campaign/render.php';
 
-        if (file_exists($render_file)) {
+        if (file_exists($renderFile)) {
             ob_start();
-            include $render_file;
+            include $renderFile;
 
             return ob_get_clean();
         }

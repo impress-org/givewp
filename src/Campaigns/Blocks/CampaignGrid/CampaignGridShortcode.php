@@ -19,11 +19,11 @@ class CampaignGridShortcode
         $this->loadAssets();
         $attributes = $this->parseAttributes($atts);
 
-        $render_file = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/render.php';
+        $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/render.php';
 
-        if (file_exists($render_file)) {
+        if (file_exists($renderFile)) {
             ob_start();
-            include $render_file;
+            include $renderFile;
 
             return ob_get_clean();
         }
@@ -69,7 +69,7 @@ class CampaignGridShortcode
             'per_page'         => 6,
             'show_pagination'  => true,
             'filter_by'        => null,
-        ], $atts, 'givewp_campaign_block');
+        ], $atts, 'givewp_campaign_grid');
 
         return [
             'layout'          => $atts['layout'],
