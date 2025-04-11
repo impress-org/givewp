@@ -2,9 +2,9 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Controllers\DonationRequestController;
-use Give\Donations\ValueObjects\DonationAnonymousMode;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
