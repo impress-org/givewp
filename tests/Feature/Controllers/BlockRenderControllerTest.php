@@ -15,7 +15,7 @@ class BlockRenderControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.1.0
      *
      * @throws Exception
      */

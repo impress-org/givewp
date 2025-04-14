@@ -67,7 +67,7 @@ class PayPalOrder
     /**
      * Approve order.
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
      * @return object
@@ -99,7 +99,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2
      *
-     * @unreleased updated to include 3d secure params for card payments
+     * @since 4.1.0 updated to include 3d secure params for card payments
      * @since 3.4.2 Extract the amount parameters to a separate method
      * @since 3.1.0 "payer" argument is deprecated, using payment_source/paypal.
      * @since 2.9.0
@@ -233,7 +233,7 @@ class PayPalOrder
     }
 
     /**
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 3.4.2
      *
      * @return mixed
@@ -280,7 +280,7 @@ class PayPalOrder
     }
 
     /**
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
      *
      * @throws Exception|HttpException|IOException
@@ -321,7 +321,7 @@ class PayPalOrder
     /**
      * Refunds a processed payment
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
      * @param $captureId
@@ -377,7 +377,7 @@ class PayPalOrder
     /**
      * Get order details from paypal commerce.
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.19.0
      *
      * @param string $orderId
@@ -399,7 +399,7 @@ class PayPalOrder
      *
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_get
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
      *
      * @throws HttpException | IOException

@@ -285,6 +285,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * New: Added a global setting to apply custom css to all donation forms
 * New: Added a notice to the campaigns overview that lets your know when the landing page is in draft
 * New: Added the ability to update the associated campaign for a donation within the donation details screen
+* Enhancement: Updated the PayPal Donations gateway to use the new PayPal Card Fields API
 * Fix: Fixed an issue where a Form Field Manager upgrade notice was still showing with an active license
 
 = 4.0.0: March 31st, 2025 =
