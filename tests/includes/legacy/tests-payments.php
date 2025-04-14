@@ -139,10 +139,10 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 */
 	public function test_give_get_payment_by() {
 		$payment = give_get_payment_by( 'id', $this->_payment_id );
-		$this->assertObjectHasAttribute( 'ID', $payment );
+		$this->assertObjectHasProperty( 'ID', $payment );
 
 		$payment = give_get_payment_by( 'key', $this->_key );
-		$this->assertObjectHasAttribute( 'ID', $payment );
+		$this->assertObjectHasProperty( 'ID', $payment );
 	}
 
 	/**

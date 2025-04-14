@@ -591,7 +591,7 @@ class Tests_Give_Donors extends TestCase {
 		 *
 		 * @since 2.0
 		 */
-		$this->assertObjectHasAttribute( 'first_name', $donor_name_split );
+		$this->assertObjectHasProperty( 'first_name', $donor_name_split );
 
 		/**
 		 * Check 3 - Check that first_name attribute of object is not empty.
@@ -605,7 +605,7 @@ class Tests_Give_Donors extends TestCase {
 		 *
 		 * @since 2.0
 		 */
-		$this->assertObjectHasAttribute( 'last_name', $donor_name_split );
+		$this->assertObjectHasProperty( 'last_name', $donor_name_split );
 
 	}
 }
