@@ -14,26 +14,6 @@ let stripePromise = null;
 let stripePaymentMethod = null;
 let stripePaymentMethodIsCreditCard = false;
 
-// @see https://stripe.com/docs/currencies#zero-decimal
-const zeroDecimalCurrencies = [
-    'BIF',
-    'CLP',
-    'DJF',
-    'GNF',
-    'JPY',
-    'KMF',
-    'KRW',
-    'MGA',
-    'PYG',
-    'RWF',
-    'UGX',
-    'VND',
-    'VUV',
-    'XAF',
-    'XOF',
-    'XPF',
-];
-
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
     const elements = useElements();
