@@ -34,19 +34,6 @@ const zeroDecimalCurrencies = [
     'XPF',
 ];
 
-/**
- * Takes in an amount value in dollar units and returns the calculated cents amount
- *
- * @since 3.0.0
- */
-const dollarsToCents = (amount: string, currency: string) => {
-    if (zeroDecimalCurrencies.includes(currency)) {
-        return Math.round(parseFloat(amount));
-    }
-
-    return Math.round(parseFloat(amount) * 100);
-};
-
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -201,8 +188,7 @@ const stripePaymentElementGateway: StripeGateway = {
             throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
         }
 
-        const {isRecurring, currency, amount} = window.givewp.form.hooks.useFormData();
-        const stripeAmount = dollarsToCents(amount.toString(), currency.toUpperCase());
+        const {isRecurring, currency, amountInMinorUnits: stripeAmount} = window.givewp.form.hooks.useFormData();
 
         const stripeElementOptions: StripeElementsOptionsMode = {
             mode: isRecurring ? 'subscription' : 'payment',
@@ -211,7 +197,7 @@ const stripePaymentElementGateway: StripeGateway = {
             appearance: appearanceOptions,
         };
 
-        if (amount <= 0) {
+        if (stripeAmount <= 0) {
             return <>{__('Donation amount must be greater than zero to proceed.', 'give')}</>;
         }
 
