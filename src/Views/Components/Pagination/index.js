@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n'
 
 const Pagination = ({currentPage = 1, totalPages = 0, disabled = false, setPage = () => {}}) => {
     if (1 >= totalPages) {
-        return false;
+        return null;
     }
 
     const nextPage = parseInt(currentPage) + 1;
@@ -89,15 +89,6 @@ const Pagination = ({currentPage = 1, totalPages = 0, disabled = false, setPage 
     );
 };
 
-Pagination.propTypes = {
-    // Current page
-    currentPage: PropTypes.number.isRequired,
-    // Total number of pages
-    totalPages: PropTypes.number.isRequired,
-    // Function to set the next/previous page
-    setPage: PropTypes.func.isRequired,
-    // Is pagination disabled
-    disabled: PropTypes.bool.isRequired,
-};
+
 
 export default Pagination;
