@@ -12,7 +12,6 @@ import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingU
 import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 import CampaignNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/CampaignNotice';
-import OrphanedFormsModal from '@givewp/campaigns/admin/components/OrphanedFormsModal';
 
 declare const window: {
     GiveCampaignsListTable: GiveCampaignsListTable;
@@ -94,8 +93,6 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 export default function CampaignsListTable() {
-    const {admin} = getCampaignOptionsWindowData();
-    const [isOrphanedFormModalOpen, setIsOrphanedFormModalOpen] = useState<boolean>(admin.orphanedForms);
     const [isCreateCampaignModalOpen, setCreateCampaignModalOpen] = useState<boolean>(autoOpenCreateCampaignModal());
     const [isExistingUserIntroModalOpen, setExistingUserIntroModalOpen] = useState<boolean>(
         shouldShowExistingUserIntroModal
@@ -144,8 +141,6 @@ export default function CampaignsListTable() {
             >
                 <CreateCampaignModal isOpen={isCreateCampaignModalOpen} setOpen={setCreateCampaignModalOpen} />
                 <ExistingUserIntroModal isOpen={isExistingUserIntroModalOpen} setOpen={setExistingUserIntroModalOpen} />
-                <OrphanedFormsModal isOpen={isOrphanedFormModalOpen} setOpen={setIsOrphanedFormModalOpen} />
-
                 {!isExistingUserIntroModalOpen && showTooltip && (
                     <CampaignNotice
                         title={__('Campaign List', 'give')}
