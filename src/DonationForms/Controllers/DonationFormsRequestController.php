@@ -2,6 +2,9 @@
 
 namespace Give\DonationForms\Controllers;
 
+use Exception;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormsRoute;
@@ -111,5 +114,28 @@ class DonationFormsRequestController
         }
 
         return $response;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function associateFormsWithCampaign(WP_REST_Request $request): WP_REST_Response
+    {
+        $formIDs = $request->get_param('formIDs');
+        $campaignId = $request->get_param('campaignId');
+
+        if ($campaign = Campaign::find($campaignId)) {
+            $campaignRepository = give(CampaignRepository::class);
+
+            foreach($formIDs as $formID) {
+                $campaignRepository->addCampaignForm($campaign, $formID);
+            }
+
+            return new WP_REST_Response($formIDs);
+        }
+
+        return new WP_REST_Response('Campaign not found', 404);
     }
 }
