@@ -37,6 +37,7 @@ class RegisterCampaignBlocks
         );
 
         wp_enqueue_script('givewp-campaign-blocks');
+        wp_set_script_translations('givewp-campaign-blocks', 'give');
         wp_enqueue_style(
             'givewp-campaign-blocks',
             GIVE_PLUGIN_URL . 'build/campaignBlocks.css',
@@ -55,6 +56,7 @@ class RegisterCampaignBlocks
         );
 
         wp_enqueue_script('givewp-campaign-landing-page-blocks');
+        wp_set_script_translations('givewp-campaign-landing-page-blocks', 'give');
         wp_enqueue_style(
             'givewp-campaign-landing-page-blocks',
             GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.css',
