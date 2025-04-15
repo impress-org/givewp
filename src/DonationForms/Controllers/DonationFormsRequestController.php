@@ -3,7 +3,6 @@
 namespace Give\DonationForms\Controllers;
 
 use Exception;
-use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
@@ -122,10 +121,9 @@ class DonationFormsRequestController
     {
         $formIDs = $request->get_param('formIDs');
         $campaignId = $request->get_param('campaignId');
+        $campaignRepository = give(CampaignRepository::class);
 
-        if ($campaign = Campaign::find($campaignId)) {
-            $campaignRepository = give(CampaignRepository::class);
-
+        if ($campaign = $campaignRepository->getById($campaignId)) {
             foreach ($formIDs as $formID) {
                 $campaignRepository->addCampaignForm($campaign, $formID);
             }
