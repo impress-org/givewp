@@ -9,7 +9,6 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\DonationFormsRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -20,15 +19,13 @@ class DonationFormsRequestController
 {
     /**
      * @unreleased
-     *
-     * @return WP_Error | WP_REST_Response
      */
-    public function getForm(WP_REST_Request $request)
+    public function getForm(WP_REST_Request $request): WP_REST_Response
     {
         $form = DonationForm::find($request->get_param('id'));
 
         if ( ! $form) {
-            return new WP_Error('form_not_found', __('Form not found', 'give'), ['status' => 404]);
+            return new WP_REST_Response(__('Form not found', 'give'), 404);
         }
 
         return new WP_REST_Response($form->toArray());
@@ -129,7 +126,7 @@ class DonationFormsRequestController
         if ($campaign = Campaign::find($campaignId)) {
             $campaignRepository = give(CampaignRepository::class);
 
-            foreach($formIDs as $formID) {
+            foreach ($formIDs as $formID) {
                 $campaignRepository->addCampaignForm($campaign, $formID);
             }
 
