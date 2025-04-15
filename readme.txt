@@ -288,6 +288,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhancement: Updated the PayPal Donations gateway to use the new PayPal Card Fields API
 * Enhancement: Improved the donation form modal experience
 * Fix: Fixed an issue where a Form Field Manager upgrade notice was still showing with an active license
+* Fix: Resolved an issue with the cancel/pause subscription modal in the donor dashboard 
 
 = 4.0.0: March 31st, 2025 =
 * New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.
