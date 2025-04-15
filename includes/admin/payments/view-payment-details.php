@@ -441,7 +441,23 @@ $donor_phone_number = Donor::find($donor_id)->phone;
 												);
 												?>
 											</p>
-										</div>
+                                            <p>
+                                                <strong><?php
+                                                    esc_html_e('Campaign:', 'give'); ?></strong><br>
+                                                <?php
+                                                $donation = Donation::find($payment->ID);
+                                                echo Give()->html->campaigns_dropdown(
+                                                    [
+                                                        'selected' => $donation->campaignId,
+                                                        'name' => 'give-payment-campaign-select',
+                                                        'id' => 'give-payment-campaign-select',
+                                                        'chosen' => true,
+                                                        'placeholder' => '',
+                                                    ]
+                                                );
+                                                ?>
+                                            </p>
+                                        </div>
 										<div class="column">
 											<p>
 												<strong><?php _e( 'Donation Date:', 'give' ); ?></strong><br>

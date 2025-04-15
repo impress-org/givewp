@@ -65,11 +65,11 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$log_id = Give()->logs->insert_log( $args );
 		$out    = Give()->logs->get_logs( $log_id );
 
-		$this->assertObjectHasAttribute( 'ID', $out[0] );
-		$this->assertObjectHasAttribute( 'log_date', $out[0] );
-		$this->assertObjectHasAttribute( 'log_date_gmt', $out[0] );
-		$this->assertObjectHasAttribute( 'log_content', $out[0] );
-		$this->assertObjectHasAttribute( 'log_title', $out[0] );
+		$this->assertObjectHasProperty( 'ID', $out[0] );
+		$this->assertObjectHasProperty( 'log_date', $out[0] );
+		$this->assertObjectHasProperty( 'log_date_gmt', $out[0] );
+		$this->assertObjectHasProperty( 'log_content', $out[0] );
+		$this->assertObjectHasProperty( 'log_title', $out[0] );
 
 		$this->assertEquals( 'This is a test log inserted from PHPUnit', $out[0]->log_content );
 		$this->assertEquals( 'error', $out[0]->log_type );
