@@ -30,6 +30,7 @@ class DonationFormsEntityRoute
     {
         $this->registerGetForm();
         $this->registerGetForms();
+        $this->registerAssociateFormsWithCampaign();
     }
 
     /**
@@ -103,6 +104,41 @@ class DonationFormsEntityRoute
                         'default' => 30,
                         'minimum' => 1,
                         'maximum' => 100,
+                    ]
+                ],
+            ]
+        );
+    }
+
+
+    /**
+     * Associate donation forms with campaign
+     *
+     * @unreleased
+     */
+    public function registerAssociateFormsWithCampaign()
+    {
+        register_rest_route(
+            Route::NAMESPACE,
+            Route::ASSOCIATE_FORMS_WITH_CAMPAIGN,
+            [
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->controller->associateFormsWithCampaign($request);
+                    },
+                    'permission_callback' => function () {
+                        return '__return_true';
+                    },
+                ],
+                'args' => [
+                    'formIDs' => [
+                        'type' => 'array',
+                        'required' => true,
+                    ],
+                    'campaignId' => [
+                        'type' => 'integer',
+                        'required' => true,
                     ]
                 ],
             ]
