@@ -8,6 +8,28 @@
     }
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.input {
+    padding: 10px;
+    width: 100%;
+}
+
+.buttons {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
 .pagination {
     display: inline-flex;
     width: 100%;
