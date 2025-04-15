@@ -10,7 +10,6 @@
  * @subpackage  Classes/Give_Settings_Gateways
  */
 
-use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 
