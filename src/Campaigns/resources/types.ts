@@ -45,7 +45,6 @@ export type GiveCampaignOptions = {
         showCampaignListTableNotice: boolean
         showCampaignFormNotice: boolean
         showCampaignSettingsNotice: boolean
-        orphanedForms?: []
     }
 }
 
