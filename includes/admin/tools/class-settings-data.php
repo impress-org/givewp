@@ -64,7 +64,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
                  * Render orphaned forms container
                  * @unreleased
                  */
-                if ('enabled' === give_get_option('show_orphaned_forms_table')) {
+                if ('enabled' === give_get_option('show_orphaned_forms_table', 'disabled')) {
                     add_action( 'give_admin_field_' . self::GIVE_ORPHANED_FORMS_TABLE_APP, [$this, 'render_orphaned_forms_container'] );
                 }
 
