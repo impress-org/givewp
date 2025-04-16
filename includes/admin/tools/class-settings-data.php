@@ -153,7 +153,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 				'give_recount_stats' => __( 'Recount stats', 'give' ),
 			];
 
-            if ('enabled' === give_get_option('show_orphaned_forms_table')) {
+            if ('enabled' === give_get_option('show_orphaned_forms_table', 'disabled')) {
                 $sections['orphaned_forms'] = __( 'Orphaned donation forms', 'give' );
             }
 
