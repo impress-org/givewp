@@ -14,7 +14,7 @@ use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @unreleased added goalSource
+ * @since 4.1.0 added goalSource
  * @since 3.0.0
  */
 class DonationFormGoalData implements Arrayable
@@ -52,7 +52,7 @@ class DonationFormGoalData implements Arrayable
      */
     public $goalEndDate;
     /**
-     * @unreleased
+     * @since 4.1.0
      *
      * @var Campaign|null
      */
@@ -80,7 +80,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @unreleased switch between Campaign goal and Form goal
+     * @since 4.1.0 switch between Campaign goal and Form goal
      * @since      3.0.0
      *
      * @return int|float
@@ -107,7 +107,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Check if goal type is subscription
      *
-     * @unreleased
+     * @since 4.1.0
      */
     private function isSubscription(): bool
     {
@@ -120,7 +120,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function getQuery()
     {
@@ -132,7 +132,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get Campaign query
      *
-     * @unreleased
+     * @since 4.1.0
      *
      * @return CampaignDonationQuery|SubscriptionQuery
      */
@@ -156,7 +156,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get Form query
      *
-     * @unreleased
+     * @since 4.1.0
      *
      * @return DonationQuery|SubscriptionQuery
      */
@@ -186,7 +186,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get target amount
      *
-     * @unreleased
+     * @since 4.1.0
      *
      * @return float|int
      */
@@ -200,7 +200,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Check if goal type is an amount
      *
-     * @unreleased
+     * @since 4.1.0
      */
     public function isAmount(): bool
     {

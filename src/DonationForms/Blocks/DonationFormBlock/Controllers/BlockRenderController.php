@@ -14,6 +14,12 @@ use Give\Helpers\Language;
 class BlockRenderController
 {
     /**
+     * @since 4.1.0
+     */
+    protected static int $embedInstance = 0;
+
+    /**
+     * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
@@ -27,6 +33,8 @@ class BlockRenderController
             return null;
         }
 
+        static::$embedInstance++;
+
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
         if (!$blockAttributes->formId) {
@@ -38,7 +46,7 @@ class BlockRenderController
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($blockAttributes->formId);
 
-        $embedId = $blockAttributes->blockId ?? '';
+        $embedId = $blockAttributes->blockId ?? 'givewp-embed-' . static::$embedInstance;
 
         $locale = Language::getLocale();
         $viewUrl = $this->getViewUrl($donationForm, $embedId);

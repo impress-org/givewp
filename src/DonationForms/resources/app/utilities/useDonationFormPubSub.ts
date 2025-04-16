@@ -90,7 +90,7 @@ export default function useDonationFormPubSub() {
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const publishGoalSource = (data: RequireAtLeastOne<FormSettings>) => {
         publish(PREVIEW_EVENTS.GOAL_SOURCE, data, iframeRef)
@@ -128,7 +128,7 @@ export default function useDonationFormPubSub() {
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const subscribeToGoalSource = (callback: (data: 'campaign' | 'form') => void) => {
         subscribe(PREVIEW_EVENTS.GOAL, callback)

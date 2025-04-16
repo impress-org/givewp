@@ -112,6 +112,7 @@ class Webhooks
      *
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
      *
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
@@ -134,6 +135,8 @@ class Webhooks
                 $events
             ),
         ]);
+
+        $request->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
         try {
             $response = $this->payPalClient

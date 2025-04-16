@@ -86,7 +86,7 @@ class Revenue
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      *
      * @return false|int
      */

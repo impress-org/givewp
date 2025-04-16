@@ -316,16 +316,17 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 * Output admin fields.
 		 *
 		 * Loops though the give options array and outputs each field.
-		 *
-		 * @todo Refactor this function
-		 *
+         *
+         * @since 4.1.0 Display tabs only when there is more than one group available
 		 * @since  1.8
 		 * @access public
-		 *
-		 * @param array  $sections     Opens array to output.
-		 * @param string $option_name Opens array to output.
+         *
+         * @param array  $sections    Opens array to output.
+         * @param string $option_name Opens array to output.
 		 *
 		 * @return void
+         * @todo       Refactor this function
+         *
 		 */
 		public static function output_fields( $sections, $option_name = '' ) {
 
@@ -338,25 +339,29 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$defaultGroup = current( array_keys( $groups ) );
 				?>
 				<div class="give-settings-section-content">
-					<div class="give-settings-section-group-menu">
-						<ul>
-							<?php
-							foreach ( $groups as $slug => $group ) {
-								$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup;
-								$active_class  = ( $slug === $current_group ) ? 'active' : '';
+                    <?php
+                    if (count($groups) > 1) : ?>
+                        <div class="give-settings-section-group-menu">
+                            <ul>
+                                <?php
+                                foreach ($groups as $slug => $group) {
+                                    $current_group = ! empty($_GET['group']) ? give_clean($_GET['group']) : $defaultGroup;
+                                    $active_class = ($slug === $current_group) ? 'active' : '';
 
-								echo sprintf(
-									'<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
-									esc_html( $active_class ),
-									esc_url( admin_url( "edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}" ) ),
-									esc_html( $slug ),
-									esc_html( $group )
-								);
-							}
-							?>
-						</ul>
-					</div>
-					<div class="give-settings-section-group-content">
+                                    echo sprintf(
+                                        '<li><a class="%1$s" href="%2$s" data-group="%3$s">%4$s</a></li>',
+                                        esc_html($active_class),
+                                        esc_url(admin_url("edit.php?post_type=give_forms&page={$current_page}&tab={$current_tab}&section={$current_section}&group={$slug}")),
+                                        esc_html($slug),
+                                        esc_html($group)
+                                    );
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    <?php
+                    endif; ?>
+                    <div class="give-settings-section-group-content">
 						<?php
 						foreach ( $sections as $group => $fields ) {
 							$current_group = ! empty( $_GET['group'] ) ? give_clean( $_GET['group'] ) : $defaultGroup;
@@ -446,7 +451,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
-         * @unreleased Added support for code editor field.
+         * @since 4.1.0 Added support for code editor field.
 		 * @since  2.5.5
 		 *
 		 * @param array  $value       Settings Field Array.
@@ -1138,7 +1143,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
-         * @unreleased Added validation for code editor field.
+         * @since 4.1.0 Added validation for code editor field.
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Options array to output

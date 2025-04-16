@@ -20,7 +20,7 @@ type GoalTypeOption = {
 };
 
 /**
- * @unreleased
+ * @since 4.1.0
  */
 type GoalSourceOption = {
     value: string;

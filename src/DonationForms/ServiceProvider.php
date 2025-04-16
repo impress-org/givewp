@@ -109,7 +109,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Add support to campaign details page (the "Forms" tab)
+     * @since 4.1.0 Add support to campaign details page (the "Forms" tab)
      * @since 3.15.0
      */
     private function registerAsyncData()
